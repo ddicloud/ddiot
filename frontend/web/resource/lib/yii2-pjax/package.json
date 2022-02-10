@@ -1,0 +1,58 @@
+{
+  "_args": [
+    [
+      "yii2-pjax@2.0.7",
+      "F:\\gongsi\\backend"
+    ]
+  ],
+  "_from": "yii2-pjax@2.0.7",
+  "_id": "yii2-pjax@2.0.7",
+  "_inBundle": false,
+  "_integrity": "sha1-/h+DUK7RwRxuzdFNra0DvYsTsZo=",
+  "_location": "/yii2-pjax",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "yii2-pjax@2.0.7",
+    "name": "yii2-pjax",
+    "escapedName": "yii2-pjax",
+    "rawSpec": "2.0.7",
+    "saveSpec": null,
+    "fetchSpec": "2.0.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/yii2-pjax/-/yii2-pjax-2.0.7.tgz",
+  "_spec": "2.0.7",
+  "_where": "F:\\gongsi\\backend",
+  "bugs": {
+    "url": "https://github.com/yiisoft/jquery-pjax/issues"
+  },
+  "description": "pjax is a jQuery plugin that uses ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button.",
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  },
+  "files": [
+    "LICENSE",
+    "jquery.pjax.js"
+  ],
+  "homepage": "https://github.com/yiisoft/jquery-pjax#readme",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/yiisoft/jquery-pjax/blob/master/LICENSE"
+    }
+  ],
+  "main": "jquery.pjax.js",
+  "name": "yii2-pjax",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yiisoft/jquery-pjax.git"
+  },
+  "scripts": {
+    "test": "./script/test"
+  },
+  "version": "2.0.7"
+}

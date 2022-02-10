@@ -1,0 +1,12 @@
+﻿<manifest xmlns="http://www.wayfirer.com/" versionCode="1.0">
+    <application>
+        <title><![CDATA[开发文档]]></title>
+        <identifie><![CDATA[diandi_example]]></identifie>
+        <version><![CDATA[1.0]]></version>
+        <type><![CDATA[base]]></type>
+        <ability><![CDATA[店滴官方开发示例]]></ability>
+        <description><![CDATA[店滴各种组件开发示例]]></description>
+        <author><![CDATA[店滴]]></author>
+        <url><![CDATA[https://gitee.com/wayfiretech_admin/firetech]]></url>
+    </application>
+</manifest>

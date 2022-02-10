@@ -1,0 +1,35 @@
+# @Author: Wang chunsheng  email:2192138785@qq.com
+# @Date:   2021-06-05 16:01:45
+# @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+# @Last Modified time: 2021-12-05 23:48:01
+version: "3"
+services:
+  strange_knuth:
+    command:
+      - 'nginx -g daemon off;'
+    container_name: strange_knuth
+    entrypoint:
+      - /docker-entrypoint.sh
+    environment:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - NGINX_VERSION=1.21.4
+      - NJS_VERSION=0.7.0
+      - PKG_RELEASE=1~bullseye
+    hostname: 7b78e90961d2
+    image: nginx
+    ipc: private
+    labels:
+      maintainer: 'NGINX Docker Maintainers <docker-maint@nginx.com>'
+    logging:
+      driver: json-file
+      options: {}
+    mac_address: 02:42:ac:11:00:02
+    networks:
+      - bridge
+    ports:
+      - 9201:80/tcp
+    stdin_open: true
+    tty: true
+networks:
+  bridge:
+    external: true

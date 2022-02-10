@@ -1,0 +1,13 @@
+# @Author: Wang chunsheng  email:2192138785@qq.com
+# @Date:   2021-06-05 16:01:44
+# @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+# @Last Modified time: 2021-12-05 23:47:53
+# global codeception file to run tests from all apps
+include:
+    - common
+    - frontend
+    - backend
+paths:
+    log: console/runtime/logs
+settings:
+    colors: true

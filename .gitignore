@@ -1,0 +1,62 @@
+.vscode
+# phpstorm project files
+.idea
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# composer vendor dir
+vendor/*
+
+!.gitkeep
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
+/phpunit.xml
+
+/.vagrant
+api/modules/wechat/log
+api/modules/wechat/log/
+api/runtime
+
+frontend/web/ErrorFiles
+frontend/web/ErrorFiles
+frontend/web/u.asp
+frontend/web/.uini
+frontend/web/u.php
+frontend/web/attachment/*
+frontend/web/u.asp
+frontend/web/u.phpstorm
+!frontend/web/attachment/public
+frontend/web/backend/upload
+frontend/web/backend/assets
+frontend/web/backend/runtime
+frontend/web/node_modules
+
+backend/runtime
+# ignore generated files
+runtime/.gitignore
+
+node_modules
+common/addons/*
+common/widgets/adminlte/bower-asset
+common/widgets/adminlte/yii-vue/node_modules
+common/widgets/firevue/config
+common/widgets/firevue/node_modules
+addons/*
+!addons/diandi_ai
+addons/.svn
+!addons/diandi_example
+admin
