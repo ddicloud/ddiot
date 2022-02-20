@@ -1,5 +1,12 @@
 <?php
 /**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2021-12-11 00:34:06
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2021-12-28 20:44:37
+ */
+
+/**
  * The manifest of files that are local to specific environment.
  * This file returns a list of environments that the application
  * may be installed under. The returned data must be in the following

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 01:06:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-07 10:52:44
+ * @Last Modified time: 2022-01-10 02:18:01
  */
 echo "<?php\n";
 ?>
@@ -28,12 +28,9 @@ class ApiController extends AController
      *         response = 200,
      *         description = "收货地址添加",
      *     ),
-     *     @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *     ),
+     *     @SWG\Parameter(ref="#/parameters/access-token"),
+     *     @SWG\Parameter(ref="#/parameters/bloc-id"),
+     *     @SWG\Parameter(ref="#/parameters/store-id"),
      *     @SWG\Parameter(
      *     in="formData",
      *     name="name",

@@ -3,12 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-29 23:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-10 11:44:24
+ * @Last Modified time: 2022-01-16 02:51:02
  */
 
 return [
     'diandi.admin.configs' => [
-        'menuTable' => '{{%auth_backend_menu}}',
+        'menuTable' => '{{%auth_backend_menu}}',        
         'cache' => [
             // 'class' => 'yii\caching\FileCache',
             'class' => 'yii\redis\Cache',

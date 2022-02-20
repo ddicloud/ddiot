@@ -20,7 +20,7 @@ use Yii;
  */
 class FaceController extends AController
 {
-    public $modelClass = '\common\models\DdAiMember';
+    public $modelClass = '';
     public $client;
 
     public function init()

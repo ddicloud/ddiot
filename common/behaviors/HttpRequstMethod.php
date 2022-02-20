@@ -4,14 +4,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 10:40:26
+ * @Last Modified time: 2022-01-20 01:45:24
  */
 
 namespace common\behaviors;
 
+use common\models\UserBloc;
+use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\base\Behavior;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 use yii\web\Request;
 
 /**
@@ -56,7 +59,6 @@ class HttpRequstMethod extends Behavior
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
 
         $this->admin_id = Yii::$app->user->identity->id;
-
         $this->bloc_id = $bloc_id;
         $this->store_id = $store_id;
     }
@@ -90,23 +92,20 @@ class HttpRequstMethod extends Behavior
         //         $blocs = Yii::$app->service->commonGlobalsService->getBlocChild($this->bloc_id);
         //         if(!empty($blocs)){
         //             // 存在子公司
-        //             $whereInit[$this->owner->blocField] = array_column($blocs,'bloc_id');                    
+        //             $whereInit[$this->owner->blocField] = array_column($blocs,'bloc_id');
         //         }
         //     }
         // }
 
         if ($this->owner->modelSearchName && !empty($whereInit)) {
-
             if (key_exists($this->owner->modelSearchName, Yii::$app->request->queryParams)) {
-
                 $whereInit = array_merge($whereInit, Yii::$app->request->queryParams[$this->owner->modelSearchName]);
             }
 
-            $whereGpc  = is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
+            $whereGpc = is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
 
-            $where[$this->owner->modelSearchName]  =  array_merge($whereInit, $whereGpc);
+            $where[$this->owner->modelSearchName] = array_merge($whereInit, $whereGpc);
         }
-
 
         $where = array_merge(\Yii::$app->request->get(), \Yii::$app->request->post(), $where);
 
@@ -126,5 +125,29 @@ class HttpRequstMethod extends Behavior
         }
 
         return self::$_data[$name] ?? self::$_data;
+    }
+
+    public function checkDataAuth()
+    {
+        // // 校验当前登录用户的数据权限
+        $user_id = Yii::$app->user->identity->id;
+        if (!empty($user_id)) {
+            $defaultRoles = Yii::$app->authManager->defaultRoles;
+            $groupHave = AuthAssignmentGroup::find()->where([
+                  'user_id' => $user_id,
+                  'item_name' => $defaultRoles,
+              ])->asArray()->all();
+
+            if (empty($groupHave)) {
+                // 不是最高权限用户，继续校验
+                $store_id_have = UserBloc::find()->where([
+                      'store_id' => Yii::$app->params['store_id'],
+                      'user_id' => $user_id,
+                  ])->select('store_id')->scalar();
+                if (empty($store_id_have)) {
+                    throw new NotFoundHttpException('没有该商户的数据权限.');
+                }
+            }
+        }
     }
 }

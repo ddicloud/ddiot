@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-08-25 14:37:17
+ * @Last Modified time: 2022-02-08 17:27:36
  */
 
 namespace api\controllers;
@@ -50,7 +50,8 @@ class AController extends ActiveController
 
     protected $optionsAction = []; //需要options的方法
 
-
+    // 主要数据的模型
+    public $modelClass = '';
 
     public function behaviors()
     {

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-12-30 01:48:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-08-25 14:45:30
+ * @Last Modified time: 2022-01-20 11:16:40
  */
 
 namespace common\filters\auth;
@@ -23,15 +23,14 @@ class QueryParamAuth extends AuthQueryParamAuth
      */
     public $tokenParam = 'access-token';
 
-
     /**
      * {@inheritdoc}
      */
     public function authenticate($user, $request, $response)
     {
         global $_GPC;
-        $accessToken = Yii::$app->request->headers->get('access-token', '');
-
+        $key = $this->tokenParam;
+        $accessToken = Yii::$app->request->headers->get($key, '');
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));
             if ($identity !== null) {
@@ -40,8 +39,7 @@ class QueryParamAuth extends AuthQueryParamAuth
         }
         if ($accessToken !== null) {
             $this->handleFailure($response);
-        }
-
+        }        
         return null;
     }
 

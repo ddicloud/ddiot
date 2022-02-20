@@ -44,6 +44,7 @@ frontend/web/backend/upload
 frontend/web/backend/assets
 frontend/web/backend/runtime
 frontend/web/node_modules
+frontend/web/admin
 
 backend/runtime
 # ignore generated files
@@ -57,6 +58,7 @@ common/widgets/firevue/config
 common/widgets/firevue/node_modules
 addons/*
 !addons/diandi_ai
-addons/.svn
+.svn
 !addons/diandi_example
-admin
+runtime
+frontend/web/assets

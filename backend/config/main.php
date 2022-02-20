@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:21:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-11 15:28:55
+ * @Last Modified time: 2022-01-16 09:15:47
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -38,7 +38,7 @@ return [
         'allowActions' => [
             'site/*', //允许访问的节点，可自行添加
             // 'gii/*', //允许访问的节点，可自行添加
-            // 'admin/*', //允许所有人访问admin节点及其子节点
+            'admin/*', //允许所有人访问admin节点及其子节点
             'system/welcome/index',
             'system/index/info',
             'system/settings/set-cache',
@@ -121,6 +121,11 @@ return [
         'authManager' => [
             'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
             'defaultRoles' => array('基础权限组'), //默认角色
+            'routeTable'=>'{{%auth_backend_route}}',
+            'itemChildTable' => '{{%auth_backend_item_child}}',
+            'itemTable' => '{{%auth_backend_item}}',
+            'assignmentTable' => '{{%auth_backend_assignment}}',
+            'ruleTable' => '{{%auth_backend_rule}}'
         ],
         'urlManager' => [
             //用于表明urlManager是否启用URL美化功能，在Yii1.1中称为path格式URL，

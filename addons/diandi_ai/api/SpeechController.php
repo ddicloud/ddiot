@@ -11,7 +11,7 @@ use api\controllers\AController;
 
 class SpeechController extends AController
 {
-    public $modelClass = '\common\models\DdAiMember';
+    public $modelClass = '';
     
     public function actionIndex()
     {

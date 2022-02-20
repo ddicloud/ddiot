@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-22 21:27:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-10 21:31:25
+ * @Last Modified time: 2022-02-14 19:48:55
  */
 use common\helpers\ArrayHelper;
 use diandi\addons\models\Bloc;
@@ -57,10 +57,11 @@ $bloc = Bloc::findAll(['status' => 1]);
 
                     <?php echo $form->field($model, 'footerright'); ?>
                     <?php echo $form->field($model, 'footerleft'); ?>
-                    <?php echo $form->field($model, 'code'); ?>
                     <?php echo $form->field($model, 'statcode')->textarea(['rows' => 4]); ?>
 
                     <?php echo $form->field($model, 'develop_status')->radioList([1 => '开启', 0 => '关闭']); ?>
+                    
+                    <?php echo $form->field($model, 'is_send_code')->radioList([1 => '开启', 0 => '关闭']); ?>
 
                 </div>
 

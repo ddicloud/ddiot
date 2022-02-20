@@ -3,19 +3,19 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 07:34:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-05-05 18:38:02
+ * @Last Modified time: 2022-01-16 02:44:30
  */
 
 namespace backend\controllers;
 
 use common\helpers\CacheHelper;
 use common\helpers\ResultHelper;
+use diandi\addons\models\AddonsUser;
+use diandi\addons\models\searchs\DdAddons;
+use diandi\admin\models\Menu;
+use Smarty;
 use Yii;
 use yii\web\Controller;
-use diandi\admin\models\Menu;
-use diandi\addons\models\searchs\DdAddons;
-use diandi\addons\models\AddonsUser;
-use Smarty;
 
 class BaseController extends Controller
 {
@@ -26,11 +26,9 @@ class BaseController extends Controller
 
     // 是否根据商户检索
     public $storeField = 'store_id';
-    
-    
+
     public $adminField = 'admin_id';
-    
-    
+
     // 主要数据的模型
     public $modelName = '';
 
@@ -40,15 +38,15 @@ class BaseController extends Controller
     public $smart;
 
     // 赋值额外变量
-    
+
     private $_params;
-    
+
     public $cache;
-    
+
     public function beforeAction($action)
     {
         global $_GPC;
-        
+
         //没有登录则跳转到登录界面
         if (Yii::$app->user->isGuest && \Yii::$app->controller->id != 'site') {
             return  $this->redirect(Yii::$app->urlManager->createUrl(Yii::$app->user->loginUrl));
@@ -61,31 +59,30 @@ class BaseController extends Controller
         if (in_array(Yii::$app->controller->module->id, $modules)) {
             Yii::$app->params['plugins'] = Yii::$app->controller->module->id;
         }
-        
+
         $requestedRoute = '/'.\Yii::$app->controller->id;
         $nav = Yii::$app->service->backendNavService->getMenu();
-        
+
         Yii::$app->params['addons'] = Yii::$app->service->commonGlobalsService->getAddons();
-     
+
         $module = Yii::$app->params['addons'];
 
         $moduleName = $DdAddons->find()->where(['identifie' => Yii::$app->params['addons']])->asArray()->one();
 
-        Yii::$app->params['moduleAll']  = [];
-     
+        Yii::$app->params['moduleAll'] = [];
 
         $is_addons = $moduleName ? true : false;
-        if($is_addons){
+        if ($is_addons) {
             $AddonsUser = new AddonsUser();
             $module_names = $AddonsUser->find()->where([
                 'user_id' => Yii::$app->user->id,
             ])->with(['addons'])->asArray()->all();
             foreach ($module_names as $key => &$value) {
-                if(empty($value['addons'])){
+                if (empty($value['addons'])) {
                     unset($module_names[$key]);
                 }
             }
-            Yii::$app->params['moduleAll']  = $module_names?$module_names:[];
+            Yii::$app->params['moduleAll'] = $module_names ? $module_names : [];
         }
         Yii::$app->params['is_addons'] = $is_addons; //  empty($menutypes['type']) ? $nav['top'][0]['mark'] : $menutypes['type'];
         Yii::$app->params['module'] = $moduleName; //  empty($menutypes['type']) ? $nav['top'][0]['mark'] : $menutypes['type'];
@@ -94,30 +91,27 @@ class BaseController extends Controller
         // $menutypes = Menu::find()->where(['like', 'route', $requestedRoute])->select(['type'])->one();
         /*初始化当前菜单类别*/
         Yii::$app->params['plugins'] = $nav['top'][0]['mark']; //  empty($menutypes['type']) ? $nav['top'][0]['mark'] : $menutypes['type'];
-        
+
         Yii::$app->params['bloc_id'] = Yii::$app->service->commonGlobalsService->getBloc_id();
         Yii::$app->params['store_id'] = Yii::$app->service->commonGlobalsService->getStore_id();
         // p(Yii::$app->params['topNav'],Yii::$app->params['leftNav']);
         // 获取全局消息
         Yii::$app->service->commonGlobalsService->getMessage(Yii::$app->params['bloc_id']);
         /* 设置模板主题 */
-        Yii::$app->params['Website']['themcolor'] = !empty(Yii::$app->cache->get('themcolor'))?Yii::$app->cache->get('themcolor'):Yii::$app->settings->get('Website', 'themcolor');
+        Yii::$app->params['Website']['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : Yii::$app->settings->get('Website', 'themcolor');
         // 设置模板标题
         Yii::$app->params['Website']['title'] = $is_addons ? Yii::$app->params['module']['title'] : Yii::$app->settings->get('Website', 'name');
 
         Yii::$app->params['message']['total'] = 0;
-        
+
         // 获取当前用户的公司
         Yii::$app->service->commonGlobalsService->getBlocByuserId(Yii::$app->user->id);
 
         $this->smart = new Smarty();
         $this->cache = new CacheHelper();
-        
+
         return parent::beforeAction($action);
     }
-    
- 
-
 
     public function behaviors()
     {
@@ -147,74 +141,63 @@ class BaseController extends Controller
         $behaviors['request'] = [
             'class' => \common\behaviors\HttpRequstMethod::className(),
         ];
-        
+
         return $behaviors;
     }
 
-    
-    
-    public function assign($key,$val){
-        $this->_params[$key]  = $val;
+    public function assign($key, $val)
+    {
+        $this->_params[$key] = $val;
     }
 
-    
-    
     // public function render($view,$param=[],$return=false)
-    // {   
+    // {
     //     global $_GPC;
-        
+
     //     if(!empty($this->_params)){
     //         $param =  $param ===null?  $this->_params :array_merge($this->_params,$param);
     //     }
-        
+
     //     if(yii::$app->request->isPost){
     //         return ResultHelper::json(200,'请求成功',$param);
-    //     }else{            
+    //     }else{
     //         return $this->render($view, $param,$return);
     //     }
-        
+
     // }
-    
 
-    
-    public function renderHtml($view,$param=[],$return=false)
-    {   
-        if(!empty($this->_params)){
-            $param =  $param ===null?  $this->_params :array_merge($this->_params,$param);
+    public function renderHtml($view, $param = [], $return = false)
+    {
+        if (!empty($this->_params)) {
+            $param = $param === null ? $this->_params : array_merge($this->_params, $param);
         }
-        
-        return $this->render($view.'.html', $param,$return);
-    }
-    
 
-    public function renderVue($view,$param=[],$return=false)
-    {   
-        if(!empty($this->_params)){
-            $param =  $param ===null?  $this->_params :array_merge($this->_params,$param);
-        }
-        
-        return $this->render($view.'.vue', $param,$return);
+        return $this->render($view.'.html', $param, $return);
     }
 
-    public function renderView($view,$param=[],$return=false)
-    {   
+    public function renderVue($view, $param = [], $return = false)
+    {
+        if (!empty($this->_params)) {
+            $param = $param === null ? $this->_params : array_merge($this->_params, $param);
+        }
+
+        return $this->render($view.'.vue', $param, $return);
+    }
+
+    public function renderView($view, $param = [], $return = false)
+    {
         global $_GPC;
-        
-        if(!empty($this->_params)){
-            $param =  $param ===null?  $this->_params :array_merge($this->_params,$param);
+
+        if (!empty($this->_params)) {
+            $param = $param === null ? $this->_params : array_merge($this->_params, $param);
         }
 
-        if(yii::$app->request->isPost){
-            return ResultHelper::json(200,'请求成功',$param);
-        }else{            
-            return $this->render($view, $param,$return);
+        if (yii::$app->request->isPost) {
+            return ResultHelper::json(200, '请求成功', $param);
+        } else {
+            return $this->render($view, $param, $return);
         }
-        
     }
-
-    
-
-    
 
     /**
      * {@inheritdoc}

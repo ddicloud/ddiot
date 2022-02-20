@@ -1,19 +1,20 @@
 <?php
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2021-12-12 23:47:40
+ * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-09 09:54:43
+ * @Last Modified time: 2022-01-15 18:20:25
  */
+
 
 namespace backend\controllers\website;
 
-use backend\controllers\BaseController;
+use Yii;
 use common\models\DdWebsiteContact;
 use common\models\DdWebsiteContactSearch;
-use Yii;
-use yii\filters\VerbFilter;
+use backend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
  * DdWebsiteContactController implements the CRUD actions for DdWebsiteContact model.
@@ -37,7 +38,6 @@ class DdWebsiteContactController extends BaseController
 
     /**
      * Lists all DdWebsiteContact models.
-     *
      * @return mixed
      */
     public function actionIndex()
@@ -53,11 +53,8 @@ class DdWebsiteContactController extends BaseController
 
     /**
      * Displays a single DdWebsiteContact model.
-     *
-     * @param int $id
-     *
+     * @param integer $id
      * @return mixed
-     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -70,7 +67,6 @@ class DdWebsiteContactController extends BaseController
     /**
      * Creates a new DdWebsiteContact model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     *
      * @return mixed
      */
     public function actionCreate()
@@ -89,11 +85,8 @@ class DdWebsiteContactController extends BaseController
     /**
      * Updates an existing DdWebsiteContact model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param int $id
-     *
+     * @param integer $id
      * @return mixed
-     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -112,11 +105,8 @@ class DdWebsiteContactController extends BaseController
     /**
      * Deletes an existing DdWebsiteContact model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param int $id
-     *
+     * @param integer $id
      * @return mixed
-     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -129,11 +119,8 @@ class DdWebsiteContactController extends BaseController
     /**
      * Finds the DdWebsiteContact model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param int $id
-     *
+     * @param integer $id
      * @return DdWebsiteContact the loaded model
-     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

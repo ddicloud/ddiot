@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-01 16:43:19
+ * @Last Modified time: 2022-02-08 16:06:00
  */
 
 return [
@@ -17,13 +17,13 @@ return [
         '@vue' => '@common/widgets/firevue',
         '@npm' => '@vendor/npm-asset',
         // 本地上传文件处理
-        '@Local' =>'@common/components/FileUpload/libs/Local',
+        '@Local' => '@common/components/FileUpload/libs/Local',
         // 阿里云对象存储
-        '@Alioss' =>'@common/components/FileUpload/libs/alioss',
+        '@Alioss' => '@common/components/FileUpload/libs/alioss',
         // 腾讯云对象存储
-        '@Qcloud'=>'@common/components/FileUpload/libs/Qcloud',
+        '@Qcloud' => '@common/components/FileUpload/libs/Qcloud',
         // 七牛云对象存储
-        '@Qiniu'=>'@common/components/FileUpload/libs/Qiniu',
+        '@Qiniu' => '@common/components/FileUpload/libs/Qiniu',
         '@TencentYoutuyun' => '@vendor/youtu/TencentYoutuyun',
         '@diandi' => '@vendor/yii-diandi',
     ],
