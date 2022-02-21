@@ -1,16 +1,19 @@
 # 欢迎使用店滴 cms
 
-店滴cms，快速构建多商户业务模型,软硬件交互场景业务的免费开源框架。封装了常用的表单组件、权限控制、集团化SAAS模式， 实现了模块化开发，人脸库维护、人脸智能识别、百度壁虎硬件智能控制、大数据采集的AI开源框架。
+店滴云，针对多商户业务开发的一套管理cms，支持多运营主体，单运营主体运营开发。cms基于世界上最好的语言php和yi开发，采用最新的vue开发技术作为中后台管理，多终端开发框架uniapp打造，旨在让开发更有趣味和成就感，希望可以助力更多的中小企业实现业绩增长，技术创新和持续发展。官方依赖于店滴云先后开发了疫情大数据监测，企业外呼，im客服，多商户分销，外卖点餐，政企党建等系统。
 
 ## 官方地址
 
 ##### 官方网址：[http://www.wayfirer.com/](http://www.wayfirer.com/ "http://www.wayfirer.com/")
 
-##### 接口地址：[http://www.wayfirer.com//index.php?r=doc](http://www.wayfirer.com//index.php?r=doc "http://www.wayfirer.com//index.php?r=doc")
+##### 接口地址：[http://www.wayfirer.com/index.php?r=doc](http://www.wayfirer.com/index.php?r=doc "http://www.wayfirer.com/index.php?r=doc")
 
-##### 后台代码 GIT：[https://gitee.com/wayfiretech_admin/diandi](https://gitee.com/wayfiretech_admin/diandi "https://gitee.com/wayfiretech_admin/diandi")
+##### 后台代码：[https://gitee.com/wayfirer/diandicms](https://gitee.com/wayfirer/diandicms "https://gitee.com/wayfirer/diandicms")
 
-##### 前台uniapp框架 (https://gitee.com/wayfiretech_admin/diandi_vue)
+##### pro中后台代码：[https://gitee.com/wayfirer/diandi-element-admin](https://gitee.com/wayfirer/diandi-element-admin "https://gitee.com/wayfirer/diandi-element-admin")
+
+##### 前台uniapp框架 [https://gitee.com/wayfirer/diandi-fireui](https://gitee.com/wayfirer/diandi-fireui "https://gitee.com/wayfirer/diandi-fireui") 
+
 
 #### 官方媒介   
 - 点击链接加入群聊【店滴AI应用开源系统】：https://jq.qq.com/?_wv=1027&k=4d2Rl2lc
@@ -27,13 +30,16 @@
 - 多模块可安装，便于迅速扩展业务，支持横向纵向双向扩展业务需求
 - 后台支持多种开发模式，php 混合开发，element-ui 的 vue 开发模式，纯 html 的传统开发都支持
 - 表单多样，除 yii 自身的表单组件，系统还对表单做了丰富，支持一句话配置万能表单
+- gii代码自动生成，包括扩展模块，数据库模型，检索模型，控制器和接口都可以自动生成
+- element-ui+uniapp+店滴cms，中后台，多端兼容，数据处理全部支持且开源
+
 
 
 
 
 # 环境准备：
 
-    php>=7.2
+    php>=7.3
     redis
     git 工具下载：https://git-scm.com/downloads
     composer https://www.phpcomposer.com/
@@ -42,7 +48,7 @@
 # 第一步：git 下载代码
 
 ```
-git clone https://gitee.com/wayfiretech_admin/diandi.git
+git clone https://gitee.com/wayfirer/diandicms.git
 
 ```
 
