@@ -33,10 +33,6 @@
         "yii-diandi/yii2-admin": "^2.89",
         "yii-diandi/yii2-region": "^1.0",
         "yii-diandi/yii2-swoole": "^2.2",
-<<<<<<< HEAD
-=======
-        "phpoffice/phpspreadsheet": "^1.14.0",
->>>>>>> 747268b80f6e7244a03b19e5942d63a05c2d6aa1
         "2amigos/qrcode-library": "^2.0",
         "hashids/hashids": "^4.0",
         "yiisoft/yii2-smarty": "^2.0",
