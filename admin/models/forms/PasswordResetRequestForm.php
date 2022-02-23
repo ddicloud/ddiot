@@ -3,13 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-10-27 14:36:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-22 02:02:52
+ * @Last Modified time: 2022-02-23 12:46:32
  */
  
-namespace admin\models;
+namespace admin\models\forms;
 
 use Yii;
 use yii\base\Model;
+use admin\models\User;
 
 /**
  * Password reset request form

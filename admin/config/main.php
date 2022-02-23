@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 11:32:39
+ * @Last Modified time: 2022-02-23 16:43:31
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -129,6 +129,10 @@ return [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
                 ],
+                'admin' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@admin/messages',
+                ],
             ],
         ],
         'urlManager' => [
@@ -165,6 +169,7 @@ return [
                         'GET   userlist' => 'userlist',
                         'POST   delete/<id>' => 'delete',
                         'POST   activate/<id>' => 'activate',
+                        'POST   upstatus' => 'upstatus'
                     ],
                 ],
                 [

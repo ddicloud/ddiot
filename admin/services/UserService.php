@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 11:26:22
+ * @Last Modified time: 2022-02-23 17:07:08
  */
 
-namespace common\services\admin;
+namespace admin\services;
 
 use admin\models\DdApiAccessToken;
+use admin\models\enums\UserStatus;
 use admin\models\User;
 use common\models\DdStoreUser;
 use common\services\BaseService;
@@ -34,5 +35,13 @@ class UserService extends BaseService
     public static function deleteFile()
     {
         // dd_upload_file_user
+    }
+
+    public static function upStatus($user_id,$type)
+    {
+        $list = UserStatus::getConstantsByName();
+        $user = User::findOne($user_id);
+        $user->status = $list[$type];
+        return  $user->update();
     }
 }

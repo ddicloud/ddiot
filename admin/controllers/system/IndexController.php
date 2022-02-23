@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:30
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-10-27 11:20:11
+ * @Last Modified time: 2022-02-23 12:45:44
  */
 
 
@@ -23,7 +23,7 @@ use common\helpers\ResultHelper;
 use common\models\DdRegion;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use admin\models\forms\LoginForm;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\models\Menu;
 use diandi\admin\models\UserGroup;

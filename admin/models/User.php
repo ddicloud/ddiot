@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-15 13:01:34
+ * @Last Modified time: 2022-02-23 17:09:09
  */
 
 namespace admin\models;
 
+use admin\models\enums\UserStatus;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
@@ -34,9 +35,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED = UserStatus::DELETE;
+    const STATUS_INACTIVE = UserStatus::AUDIT;
+    const STATUS_ACTIVE = UserStatus::APPROVE;
 
     /**
      * {@inheritdoc}
@@ -52,8 +53,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'default', 'value' => UserStatus::AUDIT],
+            ['status', 'in', 'range' =>  UserStatus::getConstantsByName()],
             [['username', 'email'], 'safe'],
         ];
     }
@@ -66,6 +67,16 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             TimestampBehavior::className(),
         ];
+    }
+
+    public function setStatus(UserStatus $status)
+    {
+        $this->status = $status->getValue();
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**

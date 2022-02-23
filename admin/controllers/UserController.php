@@ -4,13 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 11:32:23
+ * @Last Modified time: 2022-02-23 17:04:17
  */
 
 namespace admin\controllers;
 
-use admin\models\LoginForm;
+use admin\models\forms\LoginForm;
 use admin\models\User;
+use admin\services\UserService;
 use api\models\DdApiAccessToken;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
@@ -20,7 +21,6 @@ use common\models\DdUser;
 use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
-use common\services\admin\UserService;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\components\UserStatus;
 use diandi\admin\models\searchs\User as ModelsUser;
@@ -161,7 +161,7 @@ class UserController extends AController
     public function actionLogin()
     {
         global $_GPC;
-
+        
         \YII::beginProfile('actionLogin');
 
         $model = new LoginForm();
@@ -293,6 +293,10 @@ class UserController extends AController
             $userobj = User::findByMobile($data['mobile']);
         } else {
             $userobj = User::findIdentity($user_id);
+        }
+
+        if(empty($userobj)){
+            return ResultHelper::json(401, '用户资料获取失败');
         }
 
         $service = Yii::$app->service;
@@ -757,6 +761,58 @@ class UserController extends AController
 
                 return ResultHelper::json(401, reset($errors));
             }
+        }
+    }
+    
+     /**
+     * @SWG\Post(path="/user/upstatus",
+     *     tags={"修改管理员状态"},
+     *     summary="管理员",
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "应用",
+     *     ),
+     *     @SWG\Parameter(
+     *      in="header",
+     *      name="access_token",
+     *      type="string",
+     *      description="用户token",
+     *      required=true,
+     *    ),
+     *     @SWG\Parameter(
+     *      in="formData",
+     *      name="user_id",
+     *      type="number",
+     *      description="用户ID",
+     *      required=true,
+     *    ),
+     *     @SWG\Parameter(
+     *      in="formData",
+     *      name="type",
+     *      type="string",
+     *      description="状态类型",
+     *      required=true,
+     *    ),
+     * )
+     */
+    public function actionUpstatus()
+    {
+        global $_GPC;
+        $user_id = $_GPC['user_id'];
+        $type= $_GPC['type'];
+        
+        if(empty($user_id)){
+            return ResultHelper::json(401, '用户ID不能为空');
+        }
+                
+        if(empty($type)){
+            return ResultHelper::json(401, '操作类型不能为空');
+        }
+        
+        if (UserService::upStatus($user_id,$type)) {
+            return ResultHelper::json(200, '修改成功');
+        }else{
+            return ResultHelper::json(401, '修改失败');
         }
     }
 }

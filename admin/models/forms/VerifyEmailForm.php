@@ -1,8 +1,14 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-02-21 10:06:15
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-02-23 12:46:51
+ */
 
 namespace frontend\models;
 
-use common\models\User;
+use admin\models\User;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 
@@ -18,12 +24,12 @@ class VerifyEmailForm extends Model
      */
     private $_user;
 
-
     /**
      * Creates a form model with given token.
      *
      * @param string $token
-     * @param array $config name-value pairs that will be used to initialize the object properties
+     * @param array  $config name-value pairs that will be used to initialize the object properties
+     *
      * @throws InvalidArgumentException if token is empty or not valid
      */
     public function __construct($token, array $config = [])
@@ -39,7 +45,7 @@ class VerifyEmailForm extends Model
     }
 
     /**
-     * Verify email
+     * Verify email.
      *
      * @return User|null the saved model or null if saving fails
      */
@@ -47,6 +53,7 @@ class VerifyEmailForm extends Model
     {
         $user = $this->_user;
         $user->status = User::STATUS_ACTIVE;
+
         return $user->save(false) ? $user : null;
     }
 }

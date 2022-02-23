@@ -4,13 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-02 21:40:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-10 22:50:46
+ * @Last Modified time: 2022-02-23 12:50:15
  */
 
 namespace admin\controllers;
 
-use backend\models\PasswordResetRequestForm;
-use backend\models\ResendVerificationEmailForm;
+use admin\models\form\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use backend\models\SignupForm;
 use backend\models\VerifyEmailForm;
@@ -18,7 +17,8 @@ use common\helpers\ErrorsHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\DdUser;
-use common\models\LoginForm;
+use admin\models\forms\LoginForm;
+use admin\models\forms\ResendVerificationEmailForm;
 use common\models\User;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
