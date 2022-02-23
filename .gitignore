@@ -44,7 +44,7 @@ frontend/web/backend/upload
 frontend/web/backend/assets
 frontend/web/backend/runtime
 frontend/web/node_modules
-frontend/web/admin
+frontend/web/admin/assets
 
 backend/runtime
 # ignore generated files
