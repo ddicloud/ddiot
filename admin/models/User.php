@@ -9,7 +9,7 @@
 
 namespace admin\models;
 
-use admin\models\enums\UserStatus;
+use common\models\enums\UserStatus;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

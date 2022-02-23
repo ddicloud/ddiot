@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-13 16:29:07
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-24 00:06:50
+ * @Last Modified time: 2022-02-23 18:16:37
  */
 
 
 namespace common\models;
 
+use common\models\enums\UserStatus;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -33,9 +34,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED = UserStatus::DELETE;
+    const STATUS_INACTIVE = UserStatus::AUDIT;
+    const STATUS_ACTIVE = UserStatus::APPROVE;
 
 
     /**

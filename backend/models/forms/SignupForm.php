@@ -8,7 +8,7 @@
  */
 
 
-namespace backend\models;
+namespace backend\models\forms;
 
 use Yii;
 use yii\base\Model;

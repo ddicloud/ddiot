@@ -10,7 +10,7 @@
 namespace admin\services;
 
 use admin\models\DdApiAccessToken;
-use admin\models\enums\UserStatus;
+use common\models\enums\UserStatus;
 use admin\models\User;
 use common\models\DdStoreUser;
 use common\services\BaseService;

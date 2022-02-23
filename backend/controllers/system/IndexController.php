@@ -17,7 +17,7 @@ use common\helpers\ResultHelper;
 use common\models\DdRegion;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use backend\models\forms\LoginForm;
 use yii\web\Response;
 
 /**

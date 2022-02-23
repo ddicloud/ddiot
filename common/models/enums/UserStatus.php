@@ -4,10 +4,11 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 01:01:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 12:36:06
+ * @Last Modified time: 2022-02-23 18:15:26
  */
 
-namespace admin\models\enums;
+namespace common\models\enums;
+
 
 use yii2mod\enum\helpers\BaseEnum;
 

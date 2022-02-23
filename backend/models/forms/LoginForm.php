@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-08 16:56:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-12 23:07:22
+ * @Last Modified time: 2022-02-23 18:09:15
  */
 
 
-namespace common\models;
+namespace backend\models\forms;
 
+use admin\models\User;
 use Yii;
 use yii\base\Model;
 

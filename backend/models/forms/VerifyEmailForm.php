@@ -7,7 +7,7 @@
  */
  
 
-namespace backend\models;
+namespace backend\models\forms;
 
 use common\models\User;
 use yii\base\InvalidArgumentException;

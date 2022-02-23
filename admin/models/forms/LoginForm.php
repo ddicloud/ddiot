@@ -9,7 +9,7 @@
 
 namespace admin\models\forms;
 
-use admin\models\enums\UserStatus;
+use common\models\enums\UserStatus;
 use admin\models\User;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;

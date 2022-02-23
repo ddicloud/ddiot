@@ -10,9 +10,9 @@
 namespace admin\controllers;
 
 use admin\models\form\PasswordResetRequestForm;
-use backend\models\ResetPasswordForm;
-use backend\models\SignupForm;
-use backend\models\VerifyEmailForm;
+use backend\models\forms\ResetPasswordForm;
+use backend\models\forms\SignupForm;
+use backend\models\forms\VerifyEmailForm;
 use common\helpers\ErrorsHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
