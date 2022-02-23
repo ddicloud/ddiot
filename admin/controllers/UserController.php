@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-20 16:13:49
+ * @Last Modified time: 2022-02-23 11:32:23
  */
 
 namespace admin\controllers;
@@ -12,7 +12,6 @@ namespace admin\controllers;
 use admin\models\LoginForm;
 use admin\models\User;
 use api\models\DdApiAccessToken;
-use api\models\DdMember;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
@@ -21,14 +20,16 @@ use common\models\DdUser;
 use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
+use common\services\admin\UserService;
 use diandi\addons\models\AddonsUser;
+use diandi\admin\components\UserStatus;
 use diandi\admin\models\searchs\User as ModelsUser;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 class UserController extends AController
 {
-    public $modelClass = '';
+    public $modelClass = 'admin\models\User';
     protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh'];
 
     /**
@@ -80,7 +81,7 @@ class UserController extends AController
     /**
      * @SWG\Post(path="/user/signup",
      *     tags={"登录与注册"},
-     *     summary="注册",
+     *     summary="管理员",
      *     @SWG\Response(
      *         response = 200,
      *         description = "注册",
@@ -135,7 +136,7 @@ class UserController extends AController
     /**
      * @SWG\Post(path="/user/login",
      *     tags={"登录与注册"},
-     *     summary="登录",
+     *     summary="管理员",
      *     @SWG\Response(
      *         response = 200,
      *         description = "登录",
@@ -179,7 +180,7 @@ class UserController extends AController
     /**
      * @SWG\Post(path="/user/repassword",
      *     tags={"密码设置"},
-     *     summary="重置密码",
+     *     summary="管理员",
      *     @SWG\Response(
      *         response = 200,
      *         description = "重置密码",
@@ -495,7 +496,7 @@ class UserController extends AController
         if (empty($mobile)) {
             return ResultHelper::json(401, '手机号不能为空');
         }
-        
+
         if (empty($password)) {
             return ResultHelper::json(401, '密码不能为空');
         }
@@ -503,7 +504,7 @@ class UserController extends AController
         if (empty($repassword)) {
             return ResultHelper::json(401, '确认密码不能为空');
         }
-        
+
         if (trim($repassword) != trim($password)) {
             return ResultHelper::json(401, '两次输入的密码不同');
         }
@@ -517,10 +518,10 @@ class UserController extends AController
             }
         }
         $member = User::findByMobile($mobile);
-        if(empty($member)){
+        if (empty($member)) {
             return ResultHelper::json(401, '该账户不存在或未通过审核');
         }
-        
+
         $res = Yii::$app->service->adminAccessTokenService->forgetpassword($member, $mobile, $password);
         if ($res) {
             // 清除验证码
@@ -700,5 +701,62 @@ class UserController extends AController
             'assigned' => array_values($opts['assigned']['modules']),
             'available' => array_values($opts['available']['modules']),
         ]);
+    }
+
+    /**
+     * @SWG\Post(path="/user/delete",
+     *     tags={"删除管理员"},
+     *     summary="管理员",
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "应用",
+     *     ),
+     *     @SWG\Parameter(
+     *      in="header",
+     *      name="access_token",
+     *      type="string",
+     *      description="用户token",
+     *      required=true,
+     *    ),
+     * )
+     */
+    public function actionDelete($id)
+    {
+        UserService::deleteUser($id);
+
+        return ResultHelper::json(200, '删除成功');
+    }
+
+    /**
+     * @SWG\Post(path="/user/activate",
+     *     tags={"审核管理员"},
+     *     summary="管理员",
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "应用",
+     *     ),
+     *     @SWG\Parameter(
+     *      in="header",
+     *      name="access_token",
+     *      type="string",
+     *      description="用户token",
+     *      required=true,
+     *    ),
+     * )
+     */
+    public function actionActivate($id)
+    {
+        /* @var $user User */
+        $user = $this->findModel($id);
+        if ($user->status == UserStatus::INACTIVE) {
+            $user->status = UserStatus::ACTIVE;
+            if ($user->save()) {
+                return ResultHelper::json(200, '审核成功');
+            } else {
+                $errors = $user->firstErrors;
+
+                return ResultHelper::json(401, reset($errors));
+            }
+        }
     }
 }
