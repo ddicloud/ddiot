@@ -4,12 +4,11 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-31 15:29:51
+ * @Last Modified time: 2022-02-24 14:51:20
  */
 
 namespace api\modules\wechat\controllers;
 
-use Yii;
 use api\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
@@ -17,6 +16,7 @@ use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
 use common\models\PayRefundLog;
+use Yii;
 use yii\helpers\Json;
 
 /**
@@ -36,76 +36,75 @@ class BasicsController extends AController
      *         description = "微信接口测试"
      *     ),
      *     @SWG\Parameter(
-     *      in="query",
+     *      in="query",
      *      name="code",
      *      type="string",
-     *      description="微信授权code",
-     *      required=true,
-     *    ),
+     *      description="微信授权code",
+     *      required=true,
+     *    ),
      *    @SWG\Parameter(
      *      name="user_id",
      *      type="string",
      *      in="query",
-     *      description="用户id",
+     *      description="用户id",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="avatarUrl",
      *      type="string",
      *      in="query",
-     *      description="头像",
+     *      description="头像",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="nickname",
      *      type="string",
      *      in="query",
-     *      description="昵称",
+     *      description="昵称",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="gender",
      *      type="string",
      *      in="query",
-     *      description="性别",
+     *      description="性别",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="country",
      *      type="string",
      *      in="query",
-     *      description="国家",
+     *      description="国家",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="city",
      *      type="string",
      *      in="query",
-     *      description="城市",
+     *      description="城市",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="province",
      *      type="string",
      *      in="query",
-     *      description="省份",
+     *      description="省份",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="openid",
      *      type="string",
      *      in="query",
-     *      description="openId",
+     *      description="openId",
      *      required=false
      *    ),
      *    @SWG\Parameter(
      *      name="unionid",
      *      type="string",
      *      in="query",
-     *      description="unionId",
+     *      description="unionId",
      *      required=false
      *    ),
-     *
      *
      * )
      */
@@ -149,17 +148,17 @@ class BasicsController extends AController
      *         description = "获取支付参数"
      *     ),
      *     @SWG\Parameter(
-     *      in="query",
+     *      in="query",
      *      name="access-token",
      *      type="string",
-     *      description="access-token",
-     *      required=true,
-     *    ),
+     *      description="access-token",
+     *      required=true,
+     *    ),
      *    @SWG\Parameter(
      *      name="openid",
      *      type="string",
      *      in="formData",
-     *      description="openid",
+     *      description="openid",
      *      required=false
      *    ),
      *    @SWG\Parameter(
@@ -168,28 +167,28 @@ class BasicsController extends AController
      *      in="formData",
      *      default="JSAPI",
      *      enum={"JSAPI","NATIVE","APP","MWEB","MICROPAY"},
-     *      description="支付类型:JSAPI-js支付/NATIVE-Native支付/APP--app支付/MWEB--h5支付/MICROPAY--付款码支付",
+     *      description="支付类型:JSAPI-js支付/NATIVE-Native支付/APP--app支付/MWEB--h5支付/MICROPAY--付款码支付",
      *      required=true
      *    ),
      *   @SWG\Parameter(
      *      name="body",
      *      type="string",
      *      in="formData",
-     *      description="订单名称",
+     *      description="订单名称",
      *      required=true
      *    ),
      *    @SWG\Parameter(
      *      name="out_trade_no",
      *      type="string",
      *      in="formData",
-     *      description="订单编号",
+     *      description="订单编号",
      *      required=true
      *    ),
      *    @SWG\Parameter(
      *      name="total_fee",
      *      type="string",
      *      in="formData",
-     *      description="支付总金额",
+     *      description="支付总金额",
      *      required=true
      *    ),
      * )
@@ -197,17 +196,25 @@ class BasicsController extends AController
     public function actionPayparameters()
     {
         global $_GPC;
-      
+
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
         $data = Yii::$app->request->post();
+        if (empty(Yii::$app->params['wechatPaymentConfig']['mch_id'])) {
+            return ResultHelper::json(401, '请检查商户号配置');
+        }
+
+        if (empty(Yii::$app->params['wechatPaymentConfig']['key'])) {
+            return ResultHelper::json(401, '请检查支付秘钥配置');
+        }
+
         // 生成订单
         $domain = Yii::$app->request->hostInfo;
         $orderData = [
             'openid' => $data['openid'],
             'spbill_create_ip' => Yii::$app->request->userIP,
             'fee_type' => 'CNY',
-            'body' => StringHelper::msubstr($data['body'],0,10), // 内容
+            'body' => StringHelper::msubstr($data['body'], 0, 10), // 内容
             'out_trade_no' => $data['out_trade_no'], // 订单号
             'total_fee' => $data['total_fee'] * 100,
             'trade_type' => $data['trade_type'], //支付类型
@@ -286,8 +293,7 @@ class BasicsController extends AController
 
         FileHelper::writeLog($logPath, '退款回调数据'.json_encode($input));
 
-        $response = Yii::$app->wechat->payment->handleRefundedNotify(function ($message, $reqInfo, $fail)  {
-
+        $response = Yii::$app->wechat->payment->handleRefundedNotify(function ($message, $reqInfo, $fail) {
             $logPath = Yii::getAlias('@runtime/wechat/refundednotify/'.date('ymd').'.log');
 
             FileHelper::writeLog($logPath, Json::encode(ArrayHelper::toArray($reqInfo)));
@@ -295,34 +301,33 @@ class BasicsController extends AController
 
             // return_code 表示通信状态，不代表支付状态
             if ($reqInfo['refund_status'] === 'SUCCESS') {
-                
-                $out_refund_no      =   $reqInfo['out_refund_no'];
-                
-                $refundLog = PayRefundLog::find()->where(['out_refund_no'=>$out_refund_no])->asArray()->one();
-               
+                $out_refund_no = $reqInfo['out_refund_no'];
+
+                $refundLog = PayRefundLog::find()->where(['out_refund_no' => $out_refund_no])->asArray()->one();
+
                 $module = $refundLog['module'];
 
                 $refundData = [
-                    "return_code"           =>$reqInfo['return_code'],
-                    "out_refund_no"=>$reqInfo['out_refund_no'],
-                    "out_trade_no"=>$reqInfo['out_trade_no'],
-                    "refund_account"=>$reqInfo['refund_account'],
-                    "refund_fee"=>$reqInfo['refund_fee'],
-                    "refund_id"=>$reqInfo['refund_id'],
-                    "refund_recv_accout"=>$reqInfo['refund_recv_accout'],
-                    "refund_request_source"=>$reqInfo['refund_request_source'],
-                    "refund_status"=>$reqInfo['refund_status'],
-                    "settlement_refund_fee"=>$reqInfo['settlement_refund_fee'],
-                    "settlement_total_fee"=>$reqInfo['settlement_total_fee'],
-                    "success_time"=>$reqInfo['success_time'],
-                    "total_fee"=>$reqInfo['total_fee'],
-                    "transaction_id"=>$reqInfo['transaction_id']
+                    'return_code' => $reqInfo['return_code'],
+                    'out_refund_no' => $reqInfo['out_refund_no'],
+                    'out_trade_no' => $reqInfo['out_trade_no'],
+                    'refund_account' => $reqInfo['refund_account'],
+                    'refund_fee' => $reqInfo['refund_fee'],
+                    'refund_id' => $reqInfo['refund_id'],
+                    'refund_recv_accout' => $reqInfo['refund_recv_accout'],
+                    'refund_request_source' => $reqInfo['refund_request_source'],
+                    'refund_status' => $reqInfo['refund_status'],
+                    'settlement_refund_fee' => $reqInfo['settlement_refund_fee'],
+                    'settlement_total_fee' => $reqInfo['settlement_total_fee'],
+                    'success_time' => $reqInfo['success_time'],
+                    'total_fee' => $reqInfo['total_fee'],
+                    'transaction_id' => $reqInfo['transaction_id'],
                 ];
-                
-                $Res = PayRefundLog::updateAll($refundData,[
-                    "out_refund_no"=>$reqInfo['out_refund_no']
+
+                $Res = PayRefundLog::updateAll($refundData, [
+                    'out_refund_no' => $reqInfo['out_refund_no'],
                 ]);
-                
+
                 FileHelper::writeLog($logPath, '全局更新日志结果'.json_decode($Res));
 
                 $notify = Yii::$app->getModule($module)->Refundednotify($reqInfo);
@@ -332,7 +337,6 @@ class BasicsController extends AController
                 if ($notify) {
                     return true;
                 }
-                
             }
 
             return $fail('处理失败，请稍后再通知我');
@@ -341,5 +345,4 @@ class BasicsController extends AController
 
         $response->send();
     }
-    
 }

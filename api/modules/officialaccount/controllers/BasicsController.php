@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-10 15:36:49
+ * @Last Modified time: 2022-02-24 14:51:46
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -176,10 +176,9 @@ class BasicsController extends AController
         $wechat = Yii::$app->wechat->app;
         $response = $wechat->oauth->scopes(['snsapi_userinfo'])
         ->redirect($redirect_uri);
-        
 
-        FileHelper::writeLog($logPath, 'auth'.json_encode([$redirect_uri,$route,$response]));
-        
+        FileHelper::writeLog($logPath, 'auth'.json_encode([$redirect_uri, $route, $response]));
+
         return ResultHelper::json(200, '授权成功', $response);
     }
 
@@ -305,6 +304,13 @@ class BasicsController extends AController
 
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
+        if (empty(Yii::$app->params['wechatPaymentConfig']['mch_id'])) {
+            return ResultHelper::json(401, '请检查商户号配置');
+        }
+
+        if (empty(Yii::$app->params['wechatPaymentConfig']['key'])) {
+            return ResultHelper::json(401, '请检查支付秘钥配置');
+        }
         $data = Yii::$app->request->post();
         // 生成订单
         $domain = Yii::$app->request->hostInfo;
@@ -312,7 +318,7 @@ class BasicsController extends AController
             'openid' => $data['openid'],
             'spbill_create_ip' => Yii::$app->request->userIP,
             'fee_type' => 'CNY',
-            'body' => StringHelper::msubstr($data['body'],0,10), // 内容
+            'body' => StringHelper::msubstr($data['body'], 0, 10), // 内容
             'out_trade_no' => $data['out_trade_no'], // 订单号
             'total_fee' => $data['total_fee'] * 100,
             'trade_type' => $data['trade_type'], //支付类型
@@ -343,18 +349,18 @@ class BasicsController extends AController
         global $_GPC;
 
         $bloc_id = Yii::$app->params['bloc_id'];
-        
+
         $store_id = Yii::$app->params['store_id'];
 
         $wechatPaymentConfig = Yii::$app->params['wechatPaymentConfig'];
-        
+
         $data = Yii::$app->request->post();
         // 生成订单
         $domain = Yii::$app->request->hostInfo;
         $orderData = [
             'spbill_create_ip' => Yii::$app->request->userIP,
             'fee_type' => 'CNY',
-            'body' => StringHelper::msubstr($data['body'],0,10), // 内容
+            'body' => StringHelper::msubstr($data['body'], 0, 10), // 内容
             'out_trade_no' => $data['out_trade_no'], // 订单号
             'total_fee' => $data['total_fee'] * 100,
             'trade_type' => $data['trade_type'], //支付类型
@@ -372,17 +378,15 @@ class BasicsController extends AController
         if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS') {
             $prepayId = $result['prepay_id'];
             $config = $payment->jssdk->appConfig($prepayId);
+
             return ResultHelper::json(200, '支付参数获取成功', $config);
         } else {
-
             FileHelper::writeLog($logPath, 'app支付参数获取错误'.json_encode($result));
 
             return ResultHelper::json(401, $result['err_code_des'], $result);
         }
     }
 
-
-    
     /**
      * 支付回调.
      */
@@ -423,8 +427,7 @@ class BasicsController extends AController
             return $fail('处理失败，请稍后再通知我');
         });
         FileHelper::writeLog($logPath, '回调完毕'.json_encode($response));
-        
+
         $response->send();
-        
     }
 }
