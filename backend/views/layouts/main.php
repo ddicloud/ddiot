@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-08 12:17:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-24 10:23:35
+ * @Last Modified time: 2022-02-24 11:48:56
  */
 // use common\widgets\adminlte\VueJsAsset;
 
@@ -22,7 +22,7 @@ $conf = json_encode([
 
 $this->registerJs("window.sysinfo={$conf};", View::POS_HEAD);
 // 加载单页面vue对应的js
-AddonsAsset::register($this);
+// AddonsAsset::register($this);
 
 if (Yii::$app->controller->action->id === 'login') {
     /**
