@@ -21,10 +21,11 @@
                 }
             }
 
-    location /admin {
+  location /admin {
                 index index.php index.html;
                 if (!-e $request_filename)
                 {
                     rewrite ^/admin/(.*)$ /admin/index.php last;
                 }
             }
+
