@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-30 00:43:28
+ * @Last Modified time: 2022-03-17 16:17:30
  */
 
 namespace common\services\common;
@@ -440,7 +440,6 @@ class GlobalsService extends BaseService
     public function getStoreDetail($store_id)
     {
         $cacheClass = new CacheHelper();
-
         $key = 'StoreDetail_'.intval($store_id);
         if ($cacheClass->get($key)) {
             return Yii::$app->cache->get($key);
