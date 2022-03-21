@@ -4,16 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 00:28:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-26 09:04:52
+ * @Last Modified time: 2022-03-21 18:56:25
  */
-
 
 namespace frontend\controllers\api;
 
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
-
 
 /**
  * @SWG\Swagger(
@@ -61,8 +59,9 @@ use yii\web\Controller;
 class DocController extends Controller
 {
     // public $defaultRoute = 'Index';
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function actions()
     {
@@ -73,16 +72,15 @@ class DocController extends Controller
                     ['url' => Url::to(['api/doc/json-inits']), 'name' => '基础接口'],
                     ['url' => Url::to(['api/doc/json-wechat']), 'name' => '小程序接口'],
                     ['url' => Url::to(['api/doc/json-officialaccount']), 'name' => '公众号接口'],
-                    ['url' => Url::to(['api/doc/admin']), 'name' => 'pro后台'],
                 ],
-                'view' => '@frontend/views/apidoc/index'
+                'view' => '@frontend/views/apidoc/index',
             ],
             // 小程序接口
             'admin' => [
                 'class' => 'yii2mod\swagger\OpenAPIRenderer',
                 'scanDir' => [
                     Yii::getAlias('@frontend/controllers/api'),
-                    Yii::getAlias('@admin/controllers')
+                    Yii::getAlias('@admin/controllers'),
                     // Yii::getAlias('@api/models/Definition'),
                 ],
                 'cacheKey' => 'swagger-admin',
@@ -112,10 +110,10 @@ class DocController extends Controller
                 'class' => 'yii2mod\swagger\OpenAPIRenderer',
                 'scanDir' => [
                     Yii::getAlias('@frontend/controllers/api'),
-                    Yii::getAlias('@api/controllers')
+                    Yii::getAlias('@api/controllers'),
                 ],
                 'cacheKey' => 'swagger-inits',
-            ]
+            ],
         ];
     }
 }
