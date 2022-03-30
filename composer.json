@@ -1,20 +1,20 @@
 {
-    "name": "yii-diandi/firetech",
+    "name": "tuhuokeji/diandicms",
     "description": "店滴AI-基于AI技术的应用开源管理系统，对接AI有关的软件、硬件，提供基于AI技术的整体解决方案",
     "keywords": [
         "yii2",
         "ai开源框架",
         "python开源框架"
     ],
-    "homepage": "http://www.wayfirer.com/",
+    "homepage": "https://www.dandicloud.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://gitee.com/wayfiretech_admin/firetech/issues",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "https://gitee.com/wayfiretech_admin/firetech/wikis",
+        "issues": "https://github.com/tuhuokeji/diandicms/issues",
+        "forum": "https://www.hopesfire.com",
+        "wiki": "https://github.com/tuhuokeji/diandicms/wiki",
         "irc": "irc://irc.freenode.net/yii",
-        "source": "https://gitee.com/wayfiretech_admin/firetech"
+        "source": "https://github.com/tuhuokeji/diandicms"
     },
     "minimum-stability": "stable",
     "require": {
