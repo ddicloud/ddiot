@@ -1,6 +1,6 @@
 {
     "name": "tuhuokeji/diandicms",
-    "description": "店滴AI-基于AI技术的应用开源管理系统，对接AI有关的软件、硬件，提供基于AI技术的整体解决方案",
+    "description": "店滴云-针对多商户业务开发的一套管理cms,支持多运营主体,单运营主体运营开发",
     "keywords": [
         "yii2",
         "ai开源框架",
