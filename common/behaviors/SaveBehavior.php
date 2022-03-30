@@ -4,12 +4,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-29 09:28:40
+ * @Last Modified time: 2022-03-30 10:43:48
  */
 
 namespace common\behaviors;
 
-use common\helpers\loggingHelper;
 use diandi\addons\models\Bloc;
 use Yii;
 use yii\base\Behavior;
@@ -60,11 +59,9 @@ class SaveBehavior extends Behavior
         if (!$this->is_bloc) {
             $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
             $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
-            loggingHelper::writeLog('SaveBehavior', 'init', '非集团数据', $store_id);
         } else {
             $bloc_id = Yii::$app->params['global_bloc_id'];
             $store_id = Yii::$app->params['global_store_id'];
-            loggingHelper::writeLog('SaveBehavior', 'init', '集团数据', $store_id);
         }
 
         // 后台用户使用
@@ -91,8 +88,6 @@ class SaveBehavior extends Behavior
             $this->adminAttribute => (int) $admin_id,
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'],
         ];
-
-        loggingHelper::writeLog('SaveBehavior', 'init', '获取用户信息', $this->_map);
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
