@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 16:43:31
+ * @Last Modified time: 2022-03-31 17:21:15
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -17,6 +17,9 @@ return [
     'id' => 'app-admin',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
+        // 初始化模块依赖的扩展
+        'diandi\addons\loader',
+        'queue',
         'log',
         //全局内容协商
         [
@@ -169,7 +172,7 @@ return [
                         'GET   userlist' => 'userlist',
                         'POST   delete/<id>' => 'delete',
                         'POST   activate/<id>' => 'activate',
-                        'POST   upstatus' => 'upstatus'
+                        'POST   upstatus' => 'upstatus',
                     ],
                 ],
                 [

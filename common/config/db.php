@@ -9,7 +9,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=diandi',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=wwwq',
     'tablePrefix' => 'dd_',
     'username' => 'root',
     'password' => 'root',
@@ -19,7 +19,6 @@ return [
         PDO::ATTR_EMULATE_PREPARES => false,
     ],
     'enableSchemaCache' => true,
-
     // Duration of schema cache.
     'schemaCacheDuration' => 3600,
 
