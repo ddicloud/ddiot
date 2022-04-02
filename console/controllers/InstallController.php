@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 11:07:49
+ * @Last Modified time: 2022-04-02 18:26:49
  */
 
 namespace console\controllers;
@@ -125,7 +125,7 @@ class InstallController extends \yii\console\Controller
                 ],
                 'cache' => [
                     'class' => 'yii\caching\FileCache',
-                    'cachePath' => '@runtime/cache2',
+                    'cachePath' => '@console/runtime/cache',
                 ],
                 'user' => [
                     'class' => 'yii\web\User',
