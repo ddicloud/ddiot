@@ -4,12 +4,11 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 11:59:51
+ * @Last Modified time: 2022-04-02 12:18:52
  */
 
 return [
     'name' => '店滴云CMS',
-    'version' => '1.0.1',
     'aliases' => [
         '@bower' => dirname(dirname(__DIR__)).'/frontend/web/resource/lib',
         '@npm' => dirname(dirname(__DIR__)).'/frontend/web/node_modules',
