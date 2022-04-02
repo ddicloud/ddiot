@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-01 22:42:37
+ * @Last Modified time: 2022-04-02 11:58:49
  */
 
 return [
     'name' => '店滴',
-    'version' => '1.1.5',
+    'version' => '1.0.1',
     'aliases' => [
         '@bower' => dirname(dirname(__DIR__)).'/frontend/web/resource/lib',
         '@npm' => dirname(dirname(__DIR__)).'/frontend/web/node_modules',
@@ -26,7 +26,7 @@ return [
         '@Qiniu' => '@common/components/FileUpload/libs/Qiniu',
         '@TencentYoutuyun' => '@vendor/youtu/TencentYoutuyun',
         '@diandi' => '@vendor/yii-diandi',
-        '@addonstpl' => '@frontend/web/backend/giitpl'
+        '@addonstpl' => '@frontend/web/backend/giitpl',
     ],
     'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
     'modules' => [
