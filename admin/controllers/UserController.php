@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 17:04:17
+ * @Last Modified time: 2022-03-17 16:59:48
  */
 
 namespace admin\controllers;
@@ -155,13 +155,19 @@ class UserController extends AController
      *      description="密码",
      *      required=true,
      *    ),
-     *
+     *     @SWG\Parameter(
+     *      in="formData",
+     *      name="type",
+     *      type="integer",
+     *      description="登录方式1：账户登录2手机登录",
+     *      required=true,
+     *    )
      * )
      */
     public function actionLogin()
     {
         global $_GPC;
-        
+
         \YII::beginProfile('actionLogin');
 
         $model = new LoginForm();
@@ -295,7 +301,7 @@ class UserController extends AController
             $userobj = User::findIdentity($user_id);
         }
 
-        if(empty($userobj)){
+        if (empty($userobj)) {
             return ResultHelper::json(401, '用户资料获取失败');
         }
 
@@ -763,8 +769,8 @@ class UserController extends AController
             }
         }
     }
-    
-     /**
+
+    /**
      * @SWG\Post(path="/user/upstatus",
      *     tags={"修改管理员状态"},
      *     summary="管理员",
@@ -799,19 +805,19 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
-        $type= $_GPC['type'];
-        
-        if(empty($user_id)){
+        $type = $_GPC['type'];
+
+        if (empty($user_id)) {
             return ResultHelper::json(401, '用户ID不能为空');
         }
-                
-        if(empty($type)){
+
+        if (empty($type)) {
             return ResultHelper::json(401, '操作类型不能为空');
         }
-        
-        if (UserService::upStatus($user_id,$type)) {
+
+        if (UserService::upStatus($user_id, $type)) {
             return ResultHelper::json(200, '修改成功');
-        }else{
+        } else {
             return ResultHelper::json(401, '修改失败');
         }
     }

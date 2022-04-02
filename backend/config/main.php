@@ -4,13 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:21:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-16 09:15:47
+ * @Last Modified time: 2022-03-31 18:52:10
  */
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require __DIR__.'/../../common/config/params.php',
+    require __DIR__.'/../../common/config/params-local.php',
+    require __DIR__.'/params.php',
+    require __DIR__.'/params-local.php'
 );
 
 return [
@@ -31,7 +31,6 @@ return [
         '@diandi/admin' => '@vendor/yii-diandi/yii2-admin',
         '@diandi/adminlte' => '@vendor/yii-diandi/adminlte/src',
         '@diandi/addons' => '@vendor/yii-diandi/yii2-addons',
-        '@addonstpl' => '@frontend/web/backend/giitpl',
     ],
     'as access' => [
         'class' => 'diandi\admin\components\AccessControl',
@@ -115,17 +114,17 @@ return [
                         'left_delimiter' => '<{',
                         'right_delimiter' => '}>',
                     ],
-                ]
+                ],
             ],
         ],
         'authManager' => [
             'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
-            'defaultRoles' => array('基础权限组'), //默认角色
-            'routeTable'=>'{{%auth_backend_route}}',
+            'defaultRoles' => ['基础权限组'], //默认角色
+            'routeTable' => '{{%auth_backend_route}}',
             'itemChildTable' => '{{%auth_backend_item_child}}',
             'itemTable' => '{{%auth_backend_item}}',
             'assignmentTable' => '{{%auth_backend_assignment}}',
-            'ruleTable' => '{{%auth_backend_rule}}'
+            'ruleTable' => '{{%auth_backend_rule}}',
         ],
         'urlManager' => [
             //用于表明urlManager是否启用URL美化功能，在Yii1.1中称为path格式URL，
@@ -159,7 +158,7 @@ return [
             'cache' => 'cache',
         ],
         'assetManager' => [
-            'linkAssets' =>  false,
+            'linkAssets' => false,
         ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',

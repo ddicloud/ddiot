@@ -4,15 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 17:09:09
+ * @Last Modified time: 2022-04-02 10:53:24
  */
 
 namespace admin\models;
 
-use common\models\enums\UserStatus;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
+use common\models\enums\UserStatus;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -54,7 +54,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => UserStatus::AUDIT],
-            ['status', 'in', 'range' =>  UserStatus::getConstantsByName()],
+            ['status', 'in', 'range' => UserStatus::getConstantsByName()],
             [['username', 'email'], 'safe'],
         ];
     }
@@ -174,7 +174,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findUser($mobile, $username)
     {
-        return static::findOne(['or', ['username' => $username], ['mobile' => $mobile]]);
+        $user = static::find()->where(['or', ['username' => $username], ['mobile' => $mobile]])->one();
+
+        return $user;
     }
 
     /**
@@ -186,12 +188,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::find()->where(['username' => $username, 'status' => self::STATUS_ACTIVE])->one();
     }
 
     public static function findByMobile($mobile)
     {
-        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE]);
+        return static::find()->where(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE])->one();
     }
 
     /**

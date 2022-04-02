@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 17:27:36
+ * @Last Modified time: 2022-03-18 09:04:34
  */
 
 namespace api\controllers;
@@ -17,11 +17,10 @@ use common\helpers\ResultHelper;
 use Yii;
 use yii\base\InlineAction;
 use yii\base\InvalidConfigException;
-use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
 use yii\filters\RateLimiter;
+use yii\rest\ActiveController;
 use yii\web\NotFoundHttpException;
-
 
 /**
  * 基类控制器.
@@ -62,7 +61,7 @@ class AController extends ActiveController
         $behaviors['rateLimiter'] = [
             'class' => RateLimiter::className(),
             'enableRateLimitHeaders' => true,
-            'errorMessage' => '访问接口太频繁'
+            'errorMessage' => '访问接口太频繁',
         ];
 
         $behaviors['authenticator'] = [
@@ -86,7 +85,7 @@ class AController extends ActiveController
                 'Origin' => explode(',', $urls),
                 // Allow only POST and PUT methods POST, GET, OPTIONS, DELETE
                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'GET', 'DELETE'],
-                'Access-Control-Allow-Headers'  => ['Content-Type', 'Referer', 'Content-Length', 'Authorization', 'Accept', 'X-Requested-With', 'access-token', 'bloc_id', 'store_id', 'bloc-id', 'store-id'],
+                'Access-Control-Allow-Headers' => ['Content-Type', 'Referer', 'Content-Length', 'Authorization', 'Accept', 'X-Requested-With', 'access-token', 'bloc_id', 'store_id', 'bloc-id', 'store-id'],
                 // Allow only headers 'X-Wsse'
                 'Access-Control-Request-Headers' => ['X-Wsse', 'X-PINGOTHER'],
                 // Allow credentials (cookies, authorization headers, etc.) to be exposed to the browser
@@ -98,18 +97,15 @@ class AController extends ActiveController
             ],
         ];
 
-
         return $behaviors;
     }
 
-
     public function beforeAction($action)
     {
-        Yii::$app->params['bloc_id']    = Yii::$app->service->commonGlobalsService->getBloc_id();
-        Yii::$app->params['store_id']   = Yii::$app->service->commonGlobalsService->getStore_id();
+        Yii::$app->params['bloc_id'] = Yii::$app->service->commonGlobalsService->getBloc_id();
+        Yii::$app->params['store_id'] = Yii::$app->service->commonGlobalsService->getStore_id();
         // 集团化参数赋值
         Yii::$app->service->commonGlobalsService->getGlobalBloc();
-
 
         return parent::beforeAction($action);
     }
@@ -126,7 +122,7 @@ class AController extends ActiveController
             } catch (InvalidConfigException $e) {
             }
         } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && strpos($id, '--') === false && trim($id, '-') === $id) {
-            $methodName = 'action' . str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
+            $methodName = 'action'.str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
 
             if (method_exists($this, $methodName)) {
                 $method = new \ReflectionMethod($this, $methodName);
@@ -135,7 +131,7 @@ class AController extends ActiveController
                 }
             }
         } else {
-            $methodName = 'action' . ucwords($id);
+            $methodName = 'action'.ucwords($id);
             if (method_exists($this, $methodName)) {
                 $method = new \ReflectionMethod($this, $methodName);
                 if ($method->isPublic() && $method->getName() === $methodName) {
@@ -143,6 +139,7 @@ class AController extends ActiveController
                 }
             }
         }
+
         return null;
     }
 

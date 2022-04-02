@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-13 00:54:00
+ * @Last Modified time: 2022-03-30 10:43:48
  */
 
 namespace common\behaviors;
@@ -82,10 +82,10 @@ class SaveBehavior extends Behavior
         $this->_map = [
             $this->createdAttribute => $time, //在这里你可以随意格式化
             $this->updatedAttribute => $time,
-            $this->blocAttribute =>  (int)$bloc_id,
-            $this->storeAttribute => (int)$store_id,
-            $this->blocPAttribute => (int)$blocPid['pid'],
-            $this->adminAttribute => (int)$admin_id,
+            $this->blocAttribute => (int) $bloc_id,
+            $this->storeAttribute => (int) $store_id,
+            $this->blocPAttribute => (int) $blocPid['pid'],
+            $this->adminAttribute => (int) $admin_id,
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'],
         ];
     }

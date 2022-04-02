@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:17:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-05-26 13:52:23
+ * @Last Modified time: 2022-03-30 20:27:49
  */
 $config = [
     'components' => [
@@ -28,7 +28,7 @@ if (YII_ENV) {
         'controllerNamespace' => 'backend\controllers\gii',
         'viewPath'=>'@backend/views/gii',
         /*自定义*/
-        'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1'],
         'generators' => [
             'addons' => [
                 'class' => 'addonstpl\addons\Generator',
