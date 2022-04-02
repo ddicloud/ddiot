@@ -4,15 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-21 22:58:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 15:39:12
+ * @Last Modified time: 2022-04-02 10:50:18
  */
 
 namespace admin\models\forms;
 
-use common\models\enums\UserStatus;
 use admin\models\User;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
+use common\models\enums\UserStatus;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
@@ -126,6 +126,7 @@ class LoginForm extends Model
                 $info = User::findUser($this->mobile, $this->username);
                 if (!empty($info)) {
                     $status_str = UserStatus::getLabel($info['status']);
+
                     return ResultHelper::json(400, '您的账户'.$status_str.'，请联系客服');
                 } else {
                     return ResultHelper::json(400, '账户不存在');

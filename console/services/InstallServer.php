@@ -3,17 +3,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-01 22:55:34
+ * @Last Modified time: 2022-04-02 10:59:14
  */
 
 namespace console\services;
 
 use admin\models\DdApiAccessToken;
-use common\services\BaseService;
-use yii\helpers\Console;
 use admin\models\User;
 use common\services\admin\AccessTokenService;
+use common\services\BaseService;
 use Yii;
+use yii\helpers\Console;
 
 class InstallServer extends BaseService
 {
@@ -31,7 +31,7 @@ class InstallServer extends BaseService
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host={db-host};dbname={db-dbname}',
+    'dsn' => 'mysql:host={db-host};dbname={db-dbname};port={db-port}',
     'tablePrefix' => '{db-tablePrefix}',
     'username' => '{db-username}',
     'password' => '{db-password}',
@@ -208,50 +208,52 @@ EOF;
 
     public static function adminSignUp($username, $mobile, $email, $password)
     {
-         $UserObj = new User();
-          /* 查看用户名是否重复 */
-          $userinfo = User::find()->where(['username' => $username])->select('id')->one();
-          if (!empty($userinfo)) {
-                Console::input('数据库初始成功，下一步注册管理员');
-          }
-          /* 查看手机号是否重复 */
-          if ($mobile) {
-              $userinfo = $UserObj->find()->where(['mobile' => $mobile])
+        $UserObj = new User();
+        /* 查看用户名是否重复 */
+        $userinfo = User::find()->where(['username' => $username])->select('id')->one();
+        if (!empty($userinfo)) {
+            Console::input('数据库初始成功，下一步注册管理员');
+        }
+        /* 查看手机号是否重复 */
+        if ($mobile) {
+            $userinfo = $UserObj->find()->where(['mobile' => $mobile])
                   ->andWhere(['<>', 'mobile', 0])->select('id')->one();
-              if (!empty($userinfo)) {
-                    Console::input('手机号已被占用');
-              }
-          }
-          /* 查看邮箱是否重复 */
-          if ($email) {
-              $userinfo = $UserObj->find()->where(['email' => $email])
+            if (!empty($userinfo)) {
+                Console::input('手机号已被占用');
+            }
+        }
+        /* 查看邮箱是否重复 */
+        if ($email) {
+            $userinfo = $UserObj->find()->where(['email' => $email])
                   ->andWhere(['<>', 'email', 0])->select('id')->one();
-              if (!empty($userinfo)) {                  
+            if (!empty($userinfo)) {
                 Console::input('邮箱已被占用');
-              }
-          }
-  
-          $UserObj->username = $username;
-          $UserObj->email = $email;
-          $UserObj->mobile = $mobile;
-          $UserObj->setPassword($password);
-          $UserObj->generateAuthKey();
-          $UserObj->generateEmailVerificationToken();
-          $UserObj->generatePasswordResetToken();
-          $UserObj->save();
-          
-          $AccessTokenService = new AccessTokenService();
-          $AccessTokenService->getAccessToken($UserObj,1);
-          $group_id = 1;
-          $model = self::findModel($UserObj->id, $group_id);
+            }
+        }
 
-          $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
-          $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
-          $model->status = 1;
-          return  $model->save();
+        $UserObj->username = $username;
+        $UserObj->email = $email;
+        $UserObj->mobile = $mobile;
+        $UserObj->status = 1; //命令行注册默认审核通过直接使用
+        $UserObj->setPassword($password);
+        $UserObj->generateAuthKey();
+        $UserObj->generateEmailVerificationToken();
+        $UserObj->generatePasswordResetToken();
+        $UserObj->save();
+
+        $AccessTokenService = new AccessTokenService();
+        $AccessTokenService->getAccessToken($UserObj, 1);
+        $group_id = 1;
+        $model = self::findModel($UserObj->id, $group_id);
+
+        $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+        $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
+        $model->status = 1;
+
+        return  $model->save();
     }
 
-     /**
+    /**
      * 返回模型.
      *
      * @return array|AccessToken|ActiveRecord|null

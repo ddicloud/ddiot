@@ -9,7 +9,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=wwwq',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=wozhelia;port=3306',
     'tablePrefix' => 'dd_',
     'username' => 'root',
     'password' => 'root',

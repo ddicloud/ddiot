@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-01 23:32:37
+ * @Last Modified time: 2022-04-02 11:07:49
  */
 
 namespace console\controllers;
@@ -16,7 +16,6 @@ use yii\console\widgets\Table;
 use yii\db\Exception;
 use yii\db\mssql\PDO;
 use yii\helpers\Console;
-use admin\models\User;
 
 // 使用示例： ./yii addons -addons=diandi_lottery -bloc_id=1 -store_id=3   job ninini
 
@@ -24,6 +23,10 @@ class InstallController extends \yii\console\Controller
 {
     public function actionIndex()
     {
+        if (file_exists(yii::getAlias('@common/install.lock'))) {
+            Console::output('系统已安装，需要重新安装请删除文件：'.yii::getAlias('@common/install.lock'));
+        }
+
         // 第一步配置数据库
         // $sqlType = Console::select("数据库类型：",['mysql'=>'mysql','sqlserver'=>'sqlserver']);
         // $sqlTypeVal = Console::ansiFormat($sqlType,[Console::FG_YELLOW]);
@@ -112,7 +115,7 @@ class InstallController extends \yii\console\Controller
         $version = Console::input('请输入数据库脚本版本号：');
 
         $bashPath = dirname(Yii::getAlias('@console'));
-        $oldAPP =  Yii::$app;
+        $oldAPP = Yii::$app;
         Yii::$app = new \yii\console\Application([
             'id' => 'install-console',
             'basePath' => $bashPath,
@@ -121,8 +124,8 @@ class InstallController extends \yii\console\Controller
                     'class' => 'common\services\BaseService',
                 ],
                 'cache' => [
-                    'class' => 'yii\caching\FileCache', 
-                    'cachePath' => '@runtime/cache2', 
+                    'class' => 'yii\caching\FileCache',
+                    'cachePath' => '@runtime/cache2',
                 ],
                 'user' => [
                     'class' => 'yii\web\User',
@@ -159,17 +162,17 @@ class InstallController extends \yii\console\Controller
         ob_start();
         ob_implicit_flush(false);
         $username = Console::input('请输入管理员名称(字母不含特殊字符)：');
-        
+
         $mobile = Console::input('请输入手机号：');
         $email = Console::input('请输入邮箱：');
         $password = Console::input('请输入密码：');
         $repassword = Console::input('再次输入密码：');
-        
-        if($password === $repassword){
-            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);     
-            if($res){
-                 Console::input('管理员注册成功，下一步初始系统文件权限');
-            }       
+
+        if ($password === $repassword) {
+            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
+            if ($res) {
+                Console::input('管理员注册成功，下一步初始系统文件权限');
+            }
         }
 
         // 设置文件权限
@@ -189,6 +192,8 @@ class InstallController extends \yii\console\Controller
             echo '目录'.$value.'权限设置成功'.PHP_EOL;
             sleep(1);
         }
+        touch(yii::getAlias('@common/install.lock'));
+        Console::input('系统安装成功，配置你的nginx就可以访问了');
     }
 
     public function actionSignUp()
@@ -196,21 +201,20 @@ class InstallController extends \yii\console\Controller
         // $post_log = ob_get_clean();
         // Yii::info($post_log, 'fecshop_debug');
         Console::input('数据库初始成功，下一步注册管理员');
-        
+
         $username = Console::input('请输入管理员名称(字母不含特殊字符)：');
-        
+
         $mobile = Console::input('请输入手机号：');
         $email = Console::input('请输入邮箱：');
         $password = Console::input('请输入密码：');
         $repassword = Console::input('再次输入密码：');
-        
-        if($password === $repassword){
-            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);     
-            if($res){
-                 Console::input('管理员注册成功，下一步初始系统文件权限');
-            }       
-        }
 
+        if ($password === $repassword) {
+            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
+            if ($res) {
+                Console::input('管理员注册成功，下一步初始系统文件权限');
+            }
+        }
     }
 
     public function actionIndexs()
