@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-31 18:52:05
+ * @Last Modified time: 2022-04-06 10:01:01
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -53,6 +53,10 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-api',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+                'text/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'api\models\DdApiAccessToken',
