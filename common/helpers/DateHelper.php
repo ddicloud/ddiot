@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-15 16:10:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-25 14:58:06
+ * @Last Modified time: 2022-04-02 20:14:33
  */
 
 namespace common\helpers;
@@ -371,80 +371,5 @@ class DateHelper
         }
 
         return $value;
-    }
-
-    /*
-    * 获取日期对应的星期
-    * 参数$date为输入的日期数据，格式如：2018-6-22
-    */
-    public static function dateToweek($date)
-    {
-        //强制转换日期格式
-        $date_str = date('Y-m-d', strtotime($date));
-        //封装成数组
-        $arr = explode('-', $date_str);
-        //参数赋值
-        //年
-        $year = $arr[0];
-        //月，输出2位整型，不够2位右对齐
-        $month = sprintf('%02d', $arr[1]);
-        //日，输出2位整型，不够2位右对齐
-        $day = sprintf('%02d', $arr[2]);
-        //时分秒默认赋值为0；
-        $hour = $minute = $second = 0;
-        //转换成时间戳
-        $strap = mktime($hour, $minute, $second, $month, $day, $year);
-        //获取数字型星期几
-        $number_wk = date('w', $strap);
-        //自定义星期数组
-        $weekArr = ['0', '1', '2', '3', '4', '5', '6'];
-        //获取数字对应的星期
-        return $weekArr[$number_wk];
-    }
-
-    /**
-     * 获取一周日期
-     *
-     * @param $time 时间戳
-     * @param $format 转换格式
-     */
-    public static function oneWeek($time, $format = 'Y-m-d')
-    {
-        $week = date('w', $time);
-        $weekname = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
-        //星期日排到末位
-        if (empty($week)) {
-            $week = 7;
-        }
-        $data = [];
-        for ($i = 0; $i <= 6; ++$i) {
-            $data[$i]['date'] = date($format, strtotime('+'.$i + 1 - $week.' days', $time));
-            $data[$i]['week'] = $weekname[$i];
-        }
-
-        return $data;
-    }
-
-    /*
-     * 获取某星期的开始时间和结束时间
-     * time 时间
-     * first 表示每周星期一为开始日期 0表示每周日为开始日期
-     */
-    public static function getWeekMyActionAndEnd($time = '', $first = 1)
-    {
-        //当前日期
-        if (!$time) {
-            $time = time();
-        }
-        $sdefaultDate = date('Y-m-d', $time);
-        //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
-        //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
-        $w = date('w', strtotime($sdefaultDate));
-        //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
-        $week_start = date('Y-m-d', strtotime("$sdefaultDate -".($w ? $w - $first : 6).' days'));
-        //本周结束日期
-        $week_end = date('Y-m-d', strtotime("$week_start +6 days"));
-
-        return ['week_start' => $week_start, 'week_end' => $week_end];
     }
 }
