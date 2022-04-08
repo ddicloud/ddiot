@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-11-15 13:18:17
+ * @Last Modified time: 2022-04-08 14:53:59
  */
 
 namespace api\models;
@@ -379,6 +379,7 @@ class DdMember extends ActiveRecord
             [['gender', 'address_id', 'group_id','organization_id', 'create_time', 'update_time'], 'integer'],
             [['username', 'openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email'], 'string', 'max' => 255],
             [['country', 'province', 'city'], 'string', 'max' => 100],
+            ['username','unique']
         ];
     }
 
