@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-08-25 17:17:40
+ * @Last Modified time: 2022-04-08 12:06:26
  */
 
 
@@ -115,8 +115,9 @@ class UserController extends AController
      */
     public function actionLogin()
     {
+        global $_GPC;
         $model = new LoginForm();
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
+        if ($model->load($_GPC, '') && $model->login()) {
             $userinfo = $model->login();
             return ResultHelper::json(200, '登录成功', $userinfo);
         } else {

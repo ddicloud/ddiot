@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-09 18:00:46
+ * @Last Modified time: 2022-04-06 13:23:58
  */
 
 namespace app\modules\wechat\components;
@@ -103,7 +103,9 @@ class Fans extends BaseObject
             $member_id = $res['member']['member_id'];
             FileHelper::writeLog($logPath, '登录日志:获取用户id'.json_encode($member_id));
 
-            $DdMember->updateAll(['openid' => $openid], ['member_id' => $member_id]);
+            $DdMember->updateAll([
+                'openid' => $openid,
+            ], ['member_id' => $member_id]);
             DdApiAccessToken::updateAll(['openid' => $openid], ['member_id' => $member_id]);
             FileHelper::writeLog($logPath, '登录日志:注册fans'.json_encode($member_id));
 
