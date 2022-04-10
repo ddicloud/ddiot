@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:36:31
+ * @Last Modified time: 2022-04-10 14:39:32
  */
 
 
@@ -209,7 +209,7 @@ class UserController extends AController
     public function actionUpRepassword()
     {
         global $_GPC;
-        $model = new PasswdForm();
+        $newpassword  = $_GPC['password'];
         $member_id = Yii::$app->user->identity->member_id;
         if(empty($member_id)){
             return ResultHelper::json(401, 'member_id为空');
@@ -218,7 +218,7 @@ class UserController extends AController
         if(empty($member)){
             return ResultHelper::json(401, '用户不存在');
         }
-        $member->password_hash = Yii::$app->security->generatePasswordHash($model->newpassword);
+        $member->password_hash = Yii::$app->security->generatePasswordHash($newpassword);
         $member->generatePasswordResetToken();
         if ($member->save()) {
             Yii::$app->user->logout();
