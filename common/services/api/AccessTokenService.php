@@ -4,50 +4,48 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-08-25 17:14:01
+ * @Last Modified time: 2022-04-10 14:15:00
  */
-
 
 namespace common\services\api;
 
+use api\models\DdApiAccessToken;
+use api\models\DdMember;
+use common\helpers\ArrayHelper;
+use common\helpers\ErrorsHelper;
+use common\services\BaseService;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\UnprocessableEntityHttpException;
-use common\helpers\ArrayHelper;
-use common\services\BaseService;
-use api\models\DdMember;
-use api\models\DdApiAccessToken;
-use common\helpers\ErrorsHelper;
-use yii\web\UnauthorizedHttpException;
 
 /**
- * Class AccessTokenService
- * @package services\api
+ * Class AccessTokenService.
+ *
  * @author wangchunsheng <2192138785@qq.com>
  */
 class AccessTokenService extends BaseService
 {
     /**
-     * 是否加入缓存
+     * 是否加入缓存.
      *
      * @var bool
      */
     public $cache = true;
 
     /**
-     * 缓存过期时间
+     * 缓存过期时间.
      *
      * @var int
      */
     public $timeout;
 
     /**
-     * 获取token
+     * 获取token.
      *
-     * @param DdMember $member
-     * @param $group
      * @param int $cycle_index 重新获取次数
+     *
      * @return array
+     *
      * @throws \yii\base\Exception
      */
     public function getAccessToken(DdMember $member, $group_id, $cycle_index = 1)
@@ -56,25 +54,25 @@ class AccessTokenService extends BaseService
 
         $model->member_id = $member->id;
 
-        $model->group_id  = $group_id;
+        $model->group_id = $group_id;
 
         /* 是否到期，到期就重置 */
         if ($this->isPeriod($model->access_token) || empty($model->access_token)) {
             // 删除缓存
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-            $model->refresh_token = Yii::$app->security->generateRandomString() . '_' . time();
-            $model->access_token = Yii::$app->security->generateRandomString() . '_' . time();
+            $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+            $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
             $model->status = 1;
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
-                    $cycle_index++;
+                    ++$cycle_index;
+
                     return self::getAccessToken($member, $group_id, $cycle_index);
                 }
                 $errorshelper = new ErrorsHelper();
                 throw new UnprocessableEntityHttpException($errorshelper->getModelError($model));
             }
         }
-
 
         $result = [];
         $result['refresh_token'] = $model->refresh_token;
@@ -96,7 +94,9 @@ class AccessTokenService extends BaseService
      * 忘记密码.
      *
      * @param int|null post
+     *
      * @return string
+     *
      * @throws NotFoundHttpException
      */
     public function forgetpassword(DdMember $member, $mobile, $password)
@@ -105,6 +105,7 @@ class AccessTokenService extends BaseService
         $member->setPassword($password);
         $member->generateAuthKey();
         $member->generateEmailVerificationToken();
+
         return  $member->save(false);
     }
 
@@ -112,7 +113,9 @@ class AccessTokenService extends BaseService
      * 判断有效期.
      *
      * @param int|null post
+     *
      * @return 到期：true
+     *
      * @throws NotFoundHttpException
      */
     public static function isPeriod($token, $type = null)
@@ -135,7 +138,9 @@ class AccessTokenService extends BaseService
      * 修改accesstoken.
      *
      * @param int|null post
+     *
      * @return string
+     *
      * @throws NotFoundHttpException
      */
     public function RefreshToken($member_id, $group_id = 1)
@@ -143,7 +148,7 @@ class AccessTokenService extends BaseService
         $model = $this->findModel($member_id, $group_id);
 
         !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-        $model->access_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
         if ($model->save()) {
             return $model->access_token;
         } else {
@@ -151,11 +156,11 @@ class AccessTokenService extends BaseService
         }
     }
 
-
     /**
      * @param $token
      * @param $type
-     * @return array|mixed|null|ActiveRecord
+     *
+     * @return array|mixed|ActiveRecord|null
      */
     public function getTokenToCache($token, $type)
     {
@@ -173,7 +178,7 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * 禁用token
+     * 禁用token.
      *
      * @param $access_token
      */
@@ -183,6 +188,7 @@ class AccessTokenService extends BaseService
 
         if ($model = $this->findByAccessToken($access_token)) {
             $model->status = 1;
+
             return $model->save();
         }
 
@@ -190,10 +196,11 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * 获取token
+     * 获取token.
      *
      * @param $token
-     * @return array|null|ActiveRecord|AccessToken
+     *
+     * @return array|ActiveRecord|AccessToken|null
      */
     public function findByAccessToken($token)
     {
@@ -203,7 +210,20 @@ class AccessTokenService extends BaseService
     }
 
     /**
+     * 更新登录次数.
+     *
+     * @param $token
+     *
+     * @return array|ActiveRecord|AccessToken|null
+     */
+    public function upLoginNum($token)
+    {
+        return DdApiAccessToken::updateAllCounters(['login_num'=>1],['access_token' => $token]);
+    }
+
+    /**
      * @param $access_token
+     *
      * @return string
      */
     protected function getCacheKey($access_token)
@@ -212,19 +232,20 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * 返回模型
+     * 返回模型.
      *
      * @param $member_id
-     * @param $group
-     * @return array|AccessToken|null|ActiveRecord
+     *
+     * @return array|AccessToken|ActiveRecord|null
      */
     protected function findModel($member_id, $group_id)
     {
         if (empty(($model = DdApiAccessToken::find()->where([
             'member_id' => $member_id,
-            'group_id' => $group_id
+            'group_id' => $group_id,
         ])->one()))) {
             $model = new DdApiAccessToken();
+
             return $model->loadDefaultValues();
         }
 

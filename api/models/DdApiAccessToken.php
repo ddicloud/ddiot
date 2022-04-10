@@ -4,18 +4,18 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 16:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 14:21:55
+ * @Last Modified time: 2022-04-10 14:12:07
  */
 
 namespace api\models;
 
-use Yii;
 use common\models\DdMemberGroup;
 use common\models\enums\CodeStatus;
-use yii\web\UnauthorizedHttpException;
-use yii\web\IdentityInterface;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\filters\RateLimitInterface;
+use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * This is the model class for table "dd_api_access_token".
@@ -37,12 +37,12 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     const STATUS_ACTIVE = 0; //正常
 
     // 次数限制
-    public  $rateLimit;
+    public $rateLimit;
 
     // 时间范围
-    public  $timeLimit;
+    public $timeLimit;
 
-    public  $auth_key;
+    public $auth_key;
 
     /**
      * {@inheritdoc}
@@ -99,7 +99,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     public function rules()
     {
         return [
-            [['group_id', 'status', 'allowance', 'allowance_updated_at', 'create_time', 'updated_time'], 'integer'],
+            [['group_id', 'status', 'allowance', 'allowance_updated_at', 'create_time', 'updated_time', 'login_num'], 'integer'],
             [['refresh_token', 'access_token'], 'string', 'max' => 60],
             [['openid'], 'string', 'max' => 50],
             [['access_token'], 'unique'],
@@ -125,7 +125,6 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
 
             // 验证有效期
             if ($timestamp + $expire <= time()) {
-
                 throw new UnauthorizedHttpException('您的登录验证已经过期，请重新登录', CodeStatus::getValueByName('token失效'));
             }
         }

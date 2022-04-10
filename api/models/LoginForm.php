@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-10-27 14:36:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-22 01:53:00
+ * @Last Modified time: 2022-04-10 14:16:30
  */
  
 namespace api\models;
@@ -95,6 +95,8 @@ class LoginForm extends Model
             $service = Yii::$app->service;
             $service->namespace = 'api';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+            // 更新登录次数
+            $service->AccessTokenService->upLoginNum($userinfo['access_token']);
             return ArrayHelper::toArray($userinfo);
         } else {
             return false;
