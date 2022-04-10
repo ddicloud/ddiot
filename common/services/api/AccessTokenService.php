@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:15:00
+ * @Last Modified time: 2022-04-10 14:22:56
  */
 
 namespace common\services\api;
@@ -63,6 +63,7 @@ class AccessTokenService extends BaseService
             $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
             $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
             $model->status = 1;
+            $model->login_num = 0;
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
                     ++$cycle_index;
