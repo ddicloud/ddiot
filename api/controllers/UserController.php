@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-08 12:06:26
+ * @Last Modified time: 2022-04-10 14:36:31
  */
 
 
@@ -170,6 +170,7 @@ class UserController extends AController
 
     public function actionRepassword()
     {
+        global $_GPC;
         $model = new PasswdForm();
         if ($model->load(Yii::$app->request->post(), '')) {
             if (!$model->validate()) {
@@ -186,6 +187,7 @@ class UserController extends AController
             }
 
             $member = DdMember::findByMobile($data['mobile']);
+            
             $member->password_hash = Yii::$app->security->generatePasswordHash($model->newpassword);
             $member->generatePasswordResetToken();
             if ($member->save()) {
@@ -202,6 +204,30 @@ class UserController extends AController
             $res = ErrorsHelper::getModelError($model);
             return ResultHelper::json(404, $res);
         }
+    }
+
+    public function actionUpRepassword()
+    {
+        global $_GPC;
+        $model = new PasswdForm();
+        $member_id = Yii::$app->user->identity->member_id;
+        if(empty($member_id)){
+            return ResultHelper::json(401, 'member_id为空');
+        }
+        $member = DdMember::findIdentity($member_id);
+        if(empty($member)){
+            return ResultHelper::json(401, '用户不存在');
+        }
+        $member->password_hash = Yii::$app->security->generatePasswordHash($model->newpassword);
+        $member->generatePasswordResetToken();
+        if ($member->save()) {
+            Yii::$app->user->logout();
+            $service = Yii::$app->service;
+            $service->namespace = 'api';
+            $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
+            return ResultHelper::json(200, '修改成功', $userinfo);
+        }
+        return ResultHelper::json(404, $this->analyErr($member->getFirstErrors()));
     }
 
     /** 
