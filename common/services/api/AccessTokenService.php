@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:22:56
+ * @Last Modified time: 2022-04-10 14:23:18
  */
 
 namespace common\services\api;
@@ -78,6 +78,7 @@ class AccessTokenService extends BaseService
         $result = [];
         $result['refresh_token'] = $model->refresh_token;
         $result['access_token'] = $model->access_token;
+        $result['login_num'] = $model->login_num;
         $result['expiration_time'] = Yii::$app->params['user.accessTokenExpire'];
         // 关联账号信息
         $account = $member->account;
