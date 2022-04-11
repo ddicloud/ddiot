@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:23:18
+ * @Last Modified time: 2022-04-11 14:12:08
  */
 
 namespace common\services\api;
@@ -85,7 +85,7 @@ class AccessTokenService extends BaseService
         $member = ArrayHelper::toArray($member);
         $result['member'] = $member;
         $result['member']['account'] = ArrayHelper::toArray($account);
-
+        $this->upLoginNum($result['access_token']);
         // 写入缓存
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
 
@@ -220,7 +220,7 @@ class AccessTokenService extends BaseService
      */
     public function upLoginNum($token)
     {
-        return DdApiAccessToken::updateAllCounters(['login_num'=>1],['access_token' => $token]);
+        return DdApiAccessToken::updateAllCounters(['login_num' => 1], ['access_token' => $token]);
     }
 
     /**

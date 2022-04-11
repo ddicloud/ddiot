@@ -3,9 +3,9 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-10-27 14:36:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:18:47
+ * @Last Modified time: 2022-04-11 14:13:15
  */
- 
+
 namespace api\models;
 
 use Yii;
@@ -13,7 +13,7 @@ use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
 /**
- * Login form
+ * Login form.
  */
 class LoginForm extends Model
 {
@@ -23,9 +23,6 @@ class LoginForm extends Model
     public $rememberMe = true;
 
     private $_user;
-
-
-
 
     /**
      * {@inheritdoc}
@@ -71,7 +68,7 @@ class LoginForm extends Model
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @param array  $params    the additional name-value pairs given in the rule
      */
     public function validatePassword($attribute, $params)
     {
@@ -95,10 +92,7 @@ class LoginForm extends Model
             $service = Yii::$app->service;
             $service->namespace = 'api';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
-            // 更新登录次数
-            $service = Yii::$app->service;
-            $service->namespace = 'api';
-            $service->AccessTokenService->upLoginNum($userinfo['access_token']);
+
             return ArrayHelper::toArray($userinfo);
         } else {
             return false;
@@ -106,7 +100,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds user by [[username]].
      *
      * @return User|null
      */
@@ -115,6 +109,7 @@ class LoginForm extends Model
         if ($this->_user === null) {
             $this->_user = DdMember::findByUsername($this->username);
         }
+
         return $this->_user;
     }
 }
