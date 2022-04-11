@@ -4,29 +4,23 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:39:32
+ * @Last Modified time: 2022-04-11 14:47:38
  */
-
 
 namespace api\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use api\models\LoginForm;
-use common\models\base\AccessToken;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
+use api\models\LoginForm;
 use common\helpers\ErrorsHelper;
-use common\helpers\ResultHelper;
-use common\models\enums\PostStatus;
-use common\models\forms\PasswdForm;
-use api\controllers\AController;
 use common\helpers\ImageHelper;
+use common\helpers\ResultHelper;
 use common\models\DdMember as ModelsDdMember;
 use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
-use diandi\addons\models\form\Sms;
+use common\models\forms\PasswdForm;
+use Yii;
+use yii\web\NotFoundHttpException;
 
 class UserController extends AController
 {
@@ -42,30 +36,29 @@ class UserController extends AController
      *         description = "注册",
      *     ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="username",
      *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
+     *      description="用户名",
+     *      required=true,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="mobile",
      *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
+     *      description="手机号",
+     *      required=true,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="password",
      *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
+     *      description="密码",
+     *      required=true,
+     *    ),
      *
      * )
      */
-
     public function actionSignup()
     {
         $DdMember = new DdMember();
@@ -97,19 +90,19 @@ class UserController extends AController
      *         description = "登录",
      *     ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="username",
      *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
+     *      description="用户名",
+     *      required=true,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="password",
      *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
+     *      description="密码",
+     *      required=true,
+     *    ),
      *
      * )
      */
@@ -117,16 +110,14 @@ class UserController extends AController
     {
         global $_GPC;
         $model = new LoginForm();
-        if ($model->load($_GPC, '') && $model->login()) {
-            $userinfo = $model->login();
+        if ($model->load($_GPC, '') && $userinfo = $model->login()) {
             return ResultHelper::json(200, '登录成功', $userinfo);
         } else {
             $message = ErrorsHelper::getModelError($model);
+
             return ResultHelper::json('401', $message);
         }
     }
-
-
 
     /**
      * @SWG\Post(path="/user/repassword",
@@ -137,37 +128,36 @@ class UserController extends AController
      *         description = "重置密码",
      *     ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="mobile",
      *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
+     *      description="手机号",
+     *      required=true,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="code",
      *      type="string",
-     *      description="验证码",
-     *      required=false,
-     *    ),
+     *      description="验证码",
+     *      required=false,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name=" ",
      *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
+     *      description="密码",
+     *      required=true,
+     *    ),
      *     @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="password_reset_token",
      *      type="string",
-     *      description="修改密码token",
-     *      required=true,
-     *    ),
+     *      description="修改密码token",
+     *      required=true,
+     *    ),
      *
      * )
      */
-
     public function actionRepassword()
     {
         global $_GPC;
@@ -175,19 +165,20 @@ class UserController extends AController
         if ($model->load(Yii::$app->request->post(), '')) {
             if (!$model->validate()) {
                 $res = ErrorsHelper::getModelError($model);
+
                 return ResultHelper::json(404, $res);
             }
             /* @var $member \common\models\backend\Member */
             $data = Yii::$app->request->post();
             $mobile = $data['mobile'];
             $code = $data['code'];
-            $sendcode = Yii::$app->cache->get($mobile . '_code');
+            $sendcode = Yii::$app->cache->get($mobile.'_code');
             if ($code != $sendcode) {
                 return ResultHelper::json(401, '验证码错误');
             }
 
             $member = DdMember::findByMobile($data['mobile']);
-            
+
             $member->password_hash = Yii::$app->security->generatePasswordHash($model->newpassword);
             $member->generatePasswordResetToken();
             if ($member->save()) {
@@ -196,12 +187,15 @@ class UserController extends AController
                 $service->namespace = 'api';
                 $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
                 // 清除验证码
-                Yii::$app->cache->delete($mobile . '_code');
+                Yii::$app->cache->delete($mobile.'_code');
+
                 return ResultHelper::json(200, '修改成功', $userinfo);
             }
+
             return ResultHelper::json(404, $this->analyErr($member->getFirstErrors()));
         } else {
             $res = ErrorsHelper::getModelError($model);
+
             return ResultHelper::json(404, $res);
         }
     }
@@ -209,13 +203,13 @@ class UserController extends AController
     public function actionUpRepassword()
     {
         global $_GPC;
-        $newpassword  = $_GPC['password'];
+        $newpassword = $_GPC['password'];
         $member_id = Yii::$app->user->identity->member_id;
-        if(empty($member_id)){
+        if (empty($member_id)) {
             return ResultHelper::json(401, 'member_id为空');
         }
         $member = DdMember::findIdentity($member_id);
-        if(empty($member)){
+        if (empty($member)) {
             return ResultHelper::json(401, '用户不存在');
         }
         $member->password_hash = Yii::$app->security->generatePasswordHash($newpassword);
@@ -225,12 +219,14 @@ class UserController extends AController
             $service = Yii::$app->service;
             $service->namespace = 'api';
             $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
+
             return ResultHelper::json(200, '修改成功', $userinfo);
         }
+
         return ResultHelper::json(404, $this->analyErr($member->getFirstErrors()));
     }
 
-    /** 
+    /**
      * @SWG\Post(path="/user/userinfo",
      *     tags={"会员资料"},
      *     summary="获取会员资料",
@@ -274,6 +270,7 @@ class UserController extends AController
         $service = Yii::$app->service;
         $service->namespace = 'api';
         $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+
         return ResultHelper::json(200, '获取成功', ['userinfo' => $userinfo]);
     }
 
@@ -299,12 +296,12 @@ class UserController extends AController
      *      required=true,
      *    ),
      *    @SWG\Parameter(
-     *      in="formData",
+     *      in="formData",
      *      name="code",
      *      type="string",
-     *      description="验证码",
-     *      required=false,
-     *    ),
+     *      description="验证码",
+     *      required=false,
+     *    ),
      *     @SWG\Parameter(
      *      in="formData",
      *      name="nickName",
@@ -318,9 +315,9 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $code   = $_GPC['code'];
+        $code = $_GPC['code'];
         $mobile = $_GPC['mobile'];
-        $sendcode = Yii::$app->cache->get($mobile . '_code');
+        $sendcode = Yii::$app->cache->get($mobile.'_code');
 
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
@@ -334,7 +331,6 @@ class UserController extends AController
             return ResultHelper::json(200, '绑定手机号成功', []);
         }
     }
-
 
     /**
      * @SWG\Post(path="/user/edituserinfo",
@@ -389,20 +385,22 @@ class UserController extends AController
      */
     public function actionEdituserinfo()
     {
-
         $model = new EdituserinfoForm();
         if ($model->load(Yii::$app->request->post(), '')) {
             if (!$model->validate()) {
                 $res = ErrorsHelper::getModelError($model);
+
                 return ResultHelper::json(404, $res);
             }
-            $userinfo =  $model->edituserinfo();
+            $userinfo = $model->edituserinfo();
             if ($userinfo) {
                 return ResultHelper::json(200, '修改成功', $userinfo);
             }
+
             return ResultHelper::json(404, $this->analyErr($model->getFirstErrors()));
         } else {
             $res = ErrorsHelper::getModelError($model);
+
             return ResultHelper::json(404, $res);
         }
     }
@@ -421,14 +419,14 @@ class UserController extends AController
      *      type="integer",
      *      description="手机号",
      *      required=true,
-     *    ),   
+     *    ),
      *     @SWG\Parameter(
      *      in="formData",
      *      name="code",
      *      type="integer",
      *      description="验证码",
      *      required=true,
-     *    ),   
+     *    ),
      *     @SWG\Parameter(
      *      in="formData",
      *      name="password",
@@ -438,14 +436,13 @@ class UserController extends AController
      *    ),
      * )
      */
-
     public function actionForgetpass()
     {
         $data = Yii::$app->request->post();
         $mobile = $data['mobile'];
         $password = $data['password'];
         $code = $data['code'];
-        $sendcode = Yii::$app->cache->get($mobile . '_code');
+        $sendcode = Yii::$app->cache->get($mobile.'_code');
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
         }
@@ -453,7 +450,8 @@ class UserController extends AController
         $res = Yii::$app->service->apiAccessTokenService->forgetpassword($member, $mobile, $password);
         if ($res) {
             // 清除验证码
-            Yii::$app->cache->delete($mobile . '_code');
+            Yii::$app->cache->delete($mobile.'_code');
+
             return ResultHelper::json(200, '修改成功', []);
         } else {
             return ResultHelper::json(401, '修改失败', []);
@@ -469,12 +467,12 @@ class UserController extends AController
      *         description = "发送验证码",
      *     ),
      *     @SWG\Parameter(
-      *      in="formData",
+     *      in="formData",
      *      name="mobile",
      *      type="string",
-      *      description="手机号",
-      *      required=true,
-      *    ),
+     *      description="手机号",
+     *      required=true,
+     *    ),
      * )
      */
     public function actionSendcode()
@@ -482,13 +480,13 @@ class UserController extends AController
         global $_GPC;
         $type = $_GPC['type'];
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
-            return ResultHelper::json(401, "验证码请求不合法");
+            return ResultHelper::json(401, '验证码请求不合法');
         }
 
         $data = Yii::$app->request->post();
         $mobile = $data['mobile'];
         if (empty($mobile)) {
-            return ResultHelper::json(401, "手机号不能为空");
+            return ResultHelper::json(401, '手机号不能为空');
         }
 
         $where = [];
@@ -505,19 +503,18 @@ class UserController extends AController
         ])->asArray()->one();
 
         if ($member && $type == 'register') {
-            return ResultHelper::json(401, "手机号已经存在", []);
+            return ResultHelper::json(401, '手机号已经存在', []);
         }
 
-        $code   = random_int(1000, 9999);
-        Yii::$app->cache->set($mobile . '_code', $code);
+        $code = random_int(1000, 9999);
+        Yii::$app->cache->set($mobile.'_code', $code);
 
         $usage = '忘记密码验证';
 
         $res = Yii::$app->service->apiSmsService->send($mobile, $code, $usage);
-        return ResultHelper::json(200, "发送成功", $res);
+
+        return ResultHelper::json(200, '发送成功', $res);
     }
-
-
 
     /**
      * @SWG\Post(path="/user/refresh",
@@ -528,12 +525,12 @@ class UserController extends AController
      *         description = "重置令牌",
      *     ),
      *     @SWG\Parameter(
-      *      in="formData",
+     *      in="formData",
      *      name="refresh_token",
      *      type="string",
-      *      description="刷新token令牌",
-      *      required=true,
-      *    ),
+     *      description="刷新token令牌",
+     *      required=true,
+     *    ),
      * )
      */
     public function actionRefresh()
@@ -554,7 +551,7 @@ class UserController extends AController
 
         $access_token = $service->AccessTokenService->RefreshToken($user['member_id'], $user['group_id']);
 
-        return ResultHelper::json(200, "发送成功", ['access_token' => $access_token]);
+        return ResultHelper::json(200, '发送成功', ['access_token' => $access_token]);
     }
 
     /**
@@ -566,12 +563,12 @@ class UserController extends AController
      *         description = "重置令牌",
      *     ),
      *     @SWG\Parameter(
-      *      in="formData",
+     *      in="formData",
      *      name="refresh_token",
      *      type="string",
-      *      description="刷新token令牌",
-      *      required=true,
-      *    ),
+     *      description="刷新token令牌",
+     *      required=true,
+     *    ),
      * )
      */
     public function actionFeedback()
@@ -586,12 +583,11 @@ class UserController extends AController
         $data = [
             'name' => $name,
             'contact' => $contact,
-            'feedback' => $feedback
+            'feedback' => $feedback,
         ];
 
         if ($contacts->load($data, '') && $contacts->save()) {
-
-            return ResultHelper::json(200, "反馈成功", []);
+            return ResultHelper::json(200, '反馈成功', []);
         } else {
             $errors = ErrorsHelper::getModelError($contacts);
 
@@ -602,6 +598,7 @@ class UserController extends AController
     public function actionSmsconf()
     {
         $sms = Yii::$app->params['conf']['sms'];
-        return ResultHelper::json(200, "短信配置或者成功", ['is_login' => $sms['is_login']]);
+
+        return ResultHelper::json(200, '短信配置或者成功', ['is_login' => $sms['is_login']]);
     }
 }
