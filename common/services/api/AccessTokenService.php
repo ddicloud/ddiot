@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-11 14:23:06
+ * @Last Modified time: 2022-04-11 14:26:28
  */
 
 namespace common\services\api;
@@ -67,6 +67,7 @@ class AccessTokenService extends BaseService
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
                     ++$cycle_index;
+                    loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '更新登录次数cycle_index', $member);
 
                     return self::getAccessToken($member, $group_id, $cycle_index);
                 }
