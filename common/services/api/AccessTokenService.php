@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-11 14:43:44
+ * @Last Modified time: 2022-04-11 14:51:48
  */
 
 namespace common\services\api;
@@ -13,7 +13,6 @@ use api\models\DdApiAccessToken;
 use api\models\DdMember;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
-use common\helpers\loggingHelper;
 use common\services\BaseService;
 use Yii;
 use yii\db\ActiveRecord;
@@ -67,7 +66,6 @@ class AccessTokenService extends BaseService
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
                     ++$cycle_index;
-                    loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '更新登录次数cycle_index', $member);
 
                     return self::getAccessToken($member, $group_id, $cycle_index);
                 }
@@ -86,8 +84,6 @@ class AccessTokenService extends BaseService
         $member = ArrayHelper::toArray($member);
         $result['member'] = $member;
         $result['member']['account'] = ArrayHelper::toArray($account);
-        global $_GPC;
-        loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '更新登录次数', Yii::$app->request);
         $this->upLoginNum($result['access_token']);
         // 写入缓存
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
