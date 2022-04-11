@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-11 14:26:28
+ * @Last Modified time: 2022-04-11 14:33:01
  */
 
 namespace common\services\api;
@@ -86,7 +86,8 @@ class AccessTokenService extends BaseService
         $member = ArrayHelper::toArray($member);
         $result['member'] = $member;
         $result['member']['account'] = ArrayHelper::toArray($account);
-        loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '更新登录次数', $member);
+        global $_GPC;
+        loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '更新登录次数', $_GPC);
         $this->upLoginNum($result['access_token']);
         // 写入缓存
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
