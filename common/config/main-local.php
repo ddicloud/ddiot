@@ -3,9 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-04 00:08:01
+ * @Last Modified time: 2022-04-11 09:31:38
  */
-$db = require __DIR__.'/db.php';
+$db = [];
+$sqlServer = [];
+$mongodb = [];
+if (file_exists(__DIR__.'/db.php')) {
+    $db = require __DIR__.'/db.php';
+}
+
 if (file_exists(__DIR__.'/sqlServer.php')) {
     $sqlServer = require __DIR__.'/sqlServer.php';
 }
