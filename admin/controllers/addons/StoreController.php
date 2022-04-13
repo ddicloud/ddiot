@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-13 11:41:05
+ * @Last Modified time: 2022-04-13 11:43:46
  */
 
 namespace admin\controllers\addons;
@@ -251,7 +251,7 @@ class StoreController extends AController
         $bloc_id = $model->bloc_id;
         $store_id = $model->store_id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             $StoreLabelLink = $_GPC['StoreLabelLink'];
             $link->deleteAll([
                     'store_id' => $store_id,
