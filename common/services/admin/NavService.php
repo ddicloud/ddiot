@@ -4,21 +4,20 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-24 22:40:55
+ * @Last Modified time: 2022-04-15 11:54:51
  */
 
 namespace common\services\admin;
 
 use admin\models\auth\AuthRoute;
-use Yii;
-use common\services\BaseService;
 use common\helpers\ArrayHelper;
 use common\helpers\CacheHelper;
 use common\helpers\FileHelper;
+use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\components\MenuHelper;
 use diandi\admin\models\Menu;
-use diandi\admin\models\MenuTop;
+use Yii;
 
 /**
  * Class SmsService.
@@ -27,18 +26,18 @@ use diandi\admin\models\MenuTop;
  */
 class NavService extends BaseService
 {
-    public  static $module_names;
+    public static $module_names;
 
     public function getMenuTop($types)
     {
         global $_GPC;
-        // $lists[] = 'system'; 
+        // $lists[] = 'system';
 
         $lists = array_merge([
             0 => [
                 'title' => '系统',
-                'identifie' => 'system'
-            ]
+                'identifie' => 'system',
+            ],
         ], self::$module_names);
 
         foreach ($lists as $key => &$value) {
@@ -81,17 +80,15 @@ class NavService extends BaseService
         }
     }
 
-    // 
-
     public function allMenu($is_addons)
     {
         $module_names = AddonsUser::find()->where([
-            'user_id' => Yii::$app->user->id
+            'user_id' => Yii::$app->user->id,
         ])->andWhere(['!=', 'd.identifie', ''])->alias('a')->joinWith(['addons as d'])->select(['identifie', 'title'])->asArray()->all();
 
         self::$module_names = $module_names;
 
-        $key = 'backend_' . Yii::$app->user->id . '_' . 'initmenu_' . $is_addons;
+        $key = 'auth_'.Yii::$app->user->id.'_'.'initmenu_'.$is_addons;
 
         $module_name = array_column($module_names, 'identifie');
         $initmenu = Yii::$app->cache->get($key);
@@ -117,14 +114,13 @@ class NavService extends BaseService
                     $parent = $parent_id > 0 ? $parent_id : $menu['id'];
 
                     $menu_type = 'system';
-                    // $module_name = $menu['module_name'];
+                // $module_name = $menu['module_name'];
                     // $addonsdefault = "/{$module_name}/default/index";
                 } else {
                     $menu_type = $menu['module_name'];
                 }
 
                 $route = $menu['route'];
-
 
                 $return = [
                     'id' => $menu['id'],
@@ -138,10 +134,10 @@ class NavService extends BaseService
                         'title' => $menu['name'],
                         'icon' => $menu['icon'],
                         'affix' => false,
-                        'parent' => $parent_id ? $parent_id : $menu['id']
+                        'parent' => $parent_id ? $parent_id : $menu['id'],
                     ],
-                    'path' => $route ? $route : '/' . $menu['id'],
-                    'children' => $menu['children']
+                    'path' => $route ? $route : '/'.$menu['id'],
+                    'children' => $menu['children'],
                 ];
 
                 //处理我们的配置
@@ -164,7 +160,8 @@ class NavService extends BaseService
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
             $initmenuList = $this->menuChildRoute($initmenu);
             $cacheClass = new CacheHelper();
-            $cacheClass->set('backend_' . $module_name . 'initmenu_' . $is_addons, $initmenuList);
+            $cacheClass->set('auth_'.$module_name.'initmenu_'.$is_addons, $initmenuList);
+
             return $initmenuList;
         }
     }
@@ -183,15 +180,15 @@ class NavService extends BaseService
             $value['targetType'] = 'top-nav';
             if (isset($value['children'])) {
                 foreach ($value['children'] as $k => $child) {
-                    if ($num  == 0) {
+                    if ($num == 0) {
                         $child['is_show'] = 'show';
                     }
                     if (!empty($child['children'])) {
                         foreach ($child['children'] as $key => &$val) {
-                            if ($num  == 0) {
+                            if ($num == 0) {
                                 $val['is_show'] = 'show';
                             }
-                            $val['type']  = $child['type'];
+                            $val['type'] = $child['type'];
                         }
                     }
 
@@ -199,7 +196,7 @@ class NavService extends BaseService
                 }
                 unset($value['children'], $value['is_show'], $value['type']);
                 $top[] = $value;
-                $num++;
+                ++$num;
             } else {
                 unset($allMenus[$key]);
             }
@@ -212,21 +209,20 @@ class NavService extends BaseService
         return $menus;
     }
 
-
     public static function addonsMens($addons)
     {
-        $list =  Menu::find()->where(['module_name' => $addons])->asArray()->all();
+        $list = Menu::find()->where(['module_name' => $addons])->asArray()->all();
         $lists = ArrayHelper::itemsMerge($list, 0, 'id', 'parent', 'child', 3);
         //    去除id
         $menu = ArrayHelper::removeByKey($lists);
         $menus = ArrayHelper::removeByKey($menu, 'parent');
-        $text = '<?php return ' . var_export($menus, true) . ';';
-        $configFile =  Yii::getAlias('@addons/' . $addons . '/config');
+        $text = '<?php return '.var_export($menus, true).';';
+        $configFile = Yii::getAlias('@addons/'.$addons.'/config');
         if (!is_dir($configFile)) {
             FileHelper::mkdirs($configFile);
             @chmod($configFile, 0777);
         }
-        $file = Yii::getAlias('@addons/' . $addons . '/config/menu.php');
+        $file = Yii::getAlias('@addons/'.$addons.'/config/menu.php');
 
         if (false !== fopen($file, 'w+')) {
             file_put_contents($file, $text);
