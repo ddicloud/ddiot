@@ -3,9 +3,8 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-11 09:31:38
+ * @Last Modified time: 2022-04-15 13:19:35
  */
- 
 $db = [];
 $sqlServer = [];
 $mongodb = [];
@@ -25,7 +24,7 @@ $redis = require __DIR__.'/redis.php';
 return [
     'components' => [
         'db' => $db,
-        'sqlServer' => $sqlServer,
+        // 'sqlServer' => $sqlServer,
         // 'mongodb' => $mongodb,
          /* ------ 缓存 ------ **/
         'cache' => [
