@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-15 14:20:15
+ * @Last Modified time: 2022-04-15 14:33:52
  */
 
 namespace common\services\admin;
@@ -158,11 +158,9 @@ class NavService extends BaseService
             $user_id = Yii::$app->user->id;
             $initmenus = MenuHelper::getAssignedMenu($user_id, null, $callback, $where, 1);
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
-
             $initmenuList = $this->menuChildRoute($initmenu);
-
             $cacheClass = new CacheHelper();
-            $cacheClass->set($key, $initmenu);
+            $cacheClass->set($key, $initmenuList);
 
             return $initmenuList;
         }
