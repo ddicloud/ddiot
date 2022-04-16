@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-16 16:51:27
+ * @Last Modified time: 2022-04-16 16:54:42
  */
 
 namespace api\modules\wechat\controllers;
@@ -57,15 +57,17 @@ class QrcodeController extends AController
             FileHelper::mkdirs($directory);
         }
 
-        // 或
+        $filename = $baseInfo['fans']['openid'].$baseInfo['member_id'].'.png';
+
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
-            $filename = $response->saveAs($directory, $baseInfo['fans']['openid'].$baseInfo['member_id'].'.png');
+            $Res = $response->saveAs($directory, $filename);
         }
 
-        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['fans']['openid'].$baseInfo['member_id'].'.png');
+        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$filename);
 
         return ResultHelper::json(200, '获取成功', [
             'codePath' => $codePath,
+            'Res' => $Res,
             'filename' => $filename,
             'fans' => $baseInfo['fans'],
         ]);
