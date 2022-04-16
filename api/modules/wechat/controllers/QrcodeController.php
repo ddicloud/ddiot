@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-16 16:54:42
+ * @Last Modified time: 2022-04-16 17:00:16
  */
 
 namespace api\modules\wechat\controllers;
@@ -67,7 +67,7 @@ class QrcodeController extends AController
 
         return ResultHelper::json(200, '获取成功', [
             'codePath' => $codePath,
-            'Res' => $Res,
+            'response' => $response,
             'filename' => $filename,
             'fans' => $baseInfo['fans'],
         ]);
