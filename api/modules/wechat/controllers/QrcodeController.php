@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 15:12:02
+ * @Last Modified time: 2022-04-16 16:48:18
  */
 
 namespace api\modules\wechat\controllers;
@@ -30,7 +30,7 @@ class QrcodeController extends AController
     public function actionGetqrcode()
     {
         global $_GPC;
-        $path  = $_GPC['path'];
+        $path = $_GPC['path'];
         $width = $_GPC['width'];
 
         $module_name = $_GPC['module_name'];
@@ -44,25 +44,25 @@ class QrcodeController extends AController
         // 或者指定颜色
         $response = $app->app_code->getUnlimit($baseInfo['member_id'], [
             'page' => $path,
-            'width' => 600,
+            'width' => $width,
         ]);
 
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
 
-        $directory = Yii::getAlias('@frontend/web/attachment/wxappcode/' . $module_name . '/' . $bloc_id . '/' . $store_id);
+        $directory = Yii::getAlias('@frontend/web/attachment/wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id);
 
         // 或
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
-            $filename = $response->saveAs($directory, $baseInfo['fans']['openid'] . '.png');
+            $filename = $response->saveAs($directory, $baseInfo['fans']['openid'].$baseInfo['member_id'].'.png');
         }
 
-        $codePath = ImageHelper::tomedia('wxappcode/' . $module_name . '/' . $bloc_id . '/' . $store_id . '/' . $baseInfo['fans']['openid'] . '.png');
+        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['fans']['openid'].$baseInfo['member_id'].'.png');
 
         return ResultHelper::json(200, '获取成功', [
             'codePath' => $codePath,
             'filename' => $filename,
-            'fans'     => $baseInfo['fans']
+            'fans' => $baseInfo['fans'],
         ]);
     }
 }
