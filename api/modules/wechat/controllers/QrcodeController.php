@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-16 17:00:16
+ * @Last Modified time: 2022-04-19 14:06:02
  */
 
 namespace api\modules\wechat\controllers;
@@ -33,6 +33,7 @@ class QrcodeController extends AController
         global $_GPC;
         $path = $_GPC['path'];
         $width = $_GPC['width'];
+        $scene = $_GPC['scene'];
 
         $module_name = $_GPC['module_name'];
         if (!$module_name) {
@@ -43,7 +44,7 @@ class QrcodeController extends AController
         $app = Yii::$app->wechat->miniProgram;
 
         // 或者指定颜色
-        $response = $app->app_code->getUnlimit($baseInfo['member_id'], [
+        $response = $app->app_code->getUnlimit($scene, [
             'page' => $path,
             'width' => $width,
         ]);
