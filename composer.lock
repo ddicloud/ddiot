@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f34fc6ec14560ac227073113e538f662",
+    "content-hash": "fb8661f18815051a6992014b5777a41b",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4090,16 +4090,16 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "2.1.8",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
-                "reference": "ca3e8d46e4f5884626b1eb1161d8aa142e7e9728"
+                "reference": "bb47e1c4cfe2c9c2b66bde5e0f615ad30cd58ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/ca3e8d46e4f5884626b1eb1161d8aa142e7e9728",
-                "reference": "ca3e8d46e4f5884626b1eb1161d8aa142e7e9728",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/bb47e1c4cfe2c9c2b66bde5e0f615ad30cd58ccc",
+                "reference": "bb47e1c4cfe2c9c2b66bde5e0f615ad30cd58ccc",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4139,9 +4139,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.1.8"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.2.1"
             },
-            "time": "2022-04-01T13:47:26+00:00"
+            "time": "2022-04-19T07:17:59+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
