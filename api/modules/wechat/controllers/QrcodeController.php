@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-19 14:10:11
+ * @Last Modified time: 2022-04-19 14:11:33
  */
 
 namespace api\modules\wechat\controllers;
@@ -64,7 +64,7 @@ class QrcodeController extends AController
             $Res = $response->saveAs($directory, $filename);
         }
 
-        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$filename);
+        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['member_id'].'/'.$filename);
 
         return ResultHelper::json(200, '获取成功', [
             'codePath' => $codePath,
