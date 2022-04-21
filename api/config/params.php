@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 14:07:44
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 19:30:18
+ * @Last Modified time: 2022-04-21 17:55:53
  */
 
 return [
@@ -13,7 +13,7 @@ return [
     // token有效期是否验证 默认不验证
     'user.accessTokenValidity' => true,
     // token有效期 默认 2 小时
-    'user.accessTokenExpire' => 2 * 60 * 60,
+    'user.accessTokenExpire' => 12 * 60 * 60,
     // refresh token有效期是否验证 默认开启验证
     'user.refreshTokenValidity' => true,
     // refresh token有效期 默认30天
