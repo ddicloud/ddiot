@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-15 14:33:52
+ * @Last Modified time: 2022-04-22 10:51:33
  */
 
 namespace common\services\admin;
@@ -133,7 +133,7 @@ class NavService extends BaseService
                     'meta' => [
                         'title' => $menu['name'],
                         'icon' => $menu['icon'],
-                        'affix' => false,
+                        'affix' => ($menu['name'] === '工作台' && !empty($parent_id)) ? true : false,
                         'parent' => $parent_id ? $parent_id : $menu['id'],
                     ],
                     'path' => $route ? $route : '/'.$menu['id'],
