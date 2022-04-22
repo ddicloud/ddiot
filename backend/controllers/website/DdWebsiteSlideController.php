@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-15 23:26:36
+ * @Last Modified time: 2022-04-22 15:12:53
  */
 
 namespace backend\controllers\website;
 
+use addons\diandi_distribution\models\goods\DistributionGoodsBaseGoods;
 use backend\controllers\BaseController;
 use common\helpers\ErrorsHelper;
 use common\models\DdWebsiteSlide;
@@ -45,10 +46,12 @@ class DdWebsiteSlideController extends BaseController
      */
     public function actionIndex()
     {
+        $ss = DistributionGoodsBaseGoods::find()->findStore()->findBloc()->one();
+        print_r(DistributionGoodsBaseGoods::find()->findStore()->findBloc()->createCommand()->getRawSql());
+        die;
         $searchModel = new DdWebsiteSlideSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-      
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -58,51 +61,46 @@ class DdWebsiteSlideController extends BaseController
     public function actionXiufu()
     {
         global $_GPC;
-        if($_GPC['type']==1){
+        if ($_GPC['type'] == 1) {
             $AuthRoute = new AuthRoute();
             $list = AuthRoute::find()->alias('a')->leftJoin(AuthItem::tableName().' as c',
-                "a.route_name=c.name"
-            )->select(['a.id','c.id as item_id'])->asArray()->all();
-        
+                'a.route_name=c.name'
+            )->select(['a.id', 'c.id as item_id'])->asArray()->all();
+
             foreach ($list as $key => $value) {
                 $_AuthRoute = clone $AuthRoute;
                 $_AuthRoute->updateAll([
-                    'item_id'=>$value['item_id']
-                ],[
-                    'id'=>$value['id']
+                    'item_id' => $value['item_id'],
+                ], [
+                    'id' => $value['id'],
                 ]);
             }
-        }else{
-            $authItem  = new AuthItem(); 
+        } else {
+            $authItem = new AuthItem();
 
             $AuthRoute = AuthRoute::find()->asArray()->all();
-            
+
             foreach ($AuthRoute as $key => $value) {
                 $_authItem = clone $authItem;
                 $_authItem->setAttributes([
-                    'name'=>$value['route_name'],
-                    'is_sys'=>$value['is_sys'],
-                    'permission_type'=>0,
-                    'description'=>$value['description'],
-                    'parent_id'=>0,
-                    'permission_level'=>$value['route_type'],
-                    'data'=>$value['data'],
-                    'module_name'=>$value['module_name'],
+                    'name' => $value['route_name'],
+                    'is_sys' => $value['is_sys'],
+                    'permission_type' => 0,
+                    'description' => $value['description'],
+                    'parent_id' => 0,
+                    'permission_level' => $value['route_type'],
+                    'data' => $value['data'],
+                    'module_name' => $value['module_name'],
                 ]);
                 $_authItem->save();
                 $msg = ErrorsHelper::getModelError($_authItem);
-                if(!empty($msg)){
-                    echo "<pre>";
+                if (!empty($msg)) {
+                    echo '<pre>';
                     print_r($msg);
-                    echo "</pre>";
+                    echo '</pre>';
                 }
             }
         }
-       
-        
-
-       
-
     }
 
     /**
