@@ -3,12 +3,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-22 15:12:53
+ * @Last Modified time: 2022-04-22 15:17:03
  */
 
 namespace backend\controllers\website;
 
-use addons\diandi_distribution\models\goods\DistributionGoodsBaseGoods;
 use backend\controllers\BaseController;
 use common\helpers\ErrorsHelper;
 use common\models\DdWebsiteSlide;
@@ -46,9 +45,6 @@ class DdWebsiteSlideController extends BaseController
      */
     public function actionIndex()
     {
-        $ss = DistributionGoodsBaseGoods::find()->findStore()->findBloc()->one();
-        print_r(DistributionGoodsBaseGoods::find()->findStore()->findBloc()->createCommand()->getRawSql());
-        die;
         $searchModel = new DdWebsiteSlideSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
