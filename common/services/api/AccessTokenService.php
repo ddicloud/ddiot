@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-24 15:42:25
+ * @Last Modified time: 2022-04-24 15:59:28
  */
 
 namespace common\services\api;
@@ -86,8 +86,8 @@ class AccessTokenService extends BaseService
         $result['member']['account'] = ArrayHelper::toArray($account);
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
-        $keys = $member['openid'].'_userinfo';
-        Yii::$app->cache->delete($keys);
+        // $keys = $member['openid'].'_userinfo';
+        // Yii::$app->cache->delete($keys);
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $result, $this->timeout);
 
         return $result;
