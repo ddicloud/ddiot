@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-01 14:34:10
+ * @Last Modified time: 2022-04-24 14:26:16
  */
 
 namespace app\modules\officialaccount\components;
@@ -33,22 +33,22 @@ class Fans extends BaseObject
      */
     public function signup($users)
     {
-        $logPath = Yii::getAlias('@runtime/wechat/login/' . date('ymd') . '.log');
-        FileHelper::writeLog($logPath, '登录日志:用户信息sign' . json_encode($users));
+        $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
+        FileHelper::writeLog($logPath, '登录日志:用户信息sign'.json_encode($users));
 
         $openid = $users['openid'];
-        $nickname = $users['nickname'];
-        $keys = $openid . '_userinfo';
+        $nickname = $users['nickName'];
+        $keys = $openid.'_userinfo';
 
-        FileHelper::writeLog($logPath, '登录日志:用户信息openid' . json_encode($openid));
-        FileHelper::writeLog($logPath, '登录日志:用户信息缓存获取' . json_encode(Yii::$app->cache->get($keys)));
+        FileHelper::writeLog($logPath, '登录日志:用户信息openid'.json_encode($openid));
+        FileHelper::writeLog($logPath, '登录日志:用户信息缓存获取'.json_encode(Yii::$app->cache->get($keys)));
 
         if (Yii::$app->cache->get($keys)) { //如果有缓存数据则返回缓存数据，没有则从数据库取病存入缓存中
             // 获取缓存
             $res = Yii::$app->cache->get($keys);
             // 验证有效期
             $isPeriod = Yii::$app->service->apiAccessTokenService->isPeriod($res['access_token']);
-            FileHelper::writeLog($logPath, '登录日志:有缓存验证有效期' . json_encode($isPeriod));
+            FileHelper::writeLog($logPath, '登录日志:有缓存验证有效期'.json_encode($isPeriod));
 
             if (!$isPeriod) {
                 return Yii::$app->cache->get($keys);
@@ -60,7 +60,7 @@ class Fans extends BaseObject
 
         $fans = $this->fansByopenid($openid);
 
-        FileHelper::writeLog($logPath, '登录日志:校验openid是否存在' . json_encode($fans));
+        FileHelper::writeLog($logPath, '登录日志:校验openid是否存在'.json_encode($fans));
 
         if (!empty($fans)) {
             FileHelper::writeLog($logPath, '登录日志:有缓存');
@@ -68,38 +68,38 @@ class Fans extends BaseObject
             $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member, 1);
             $userinfo['fans'] = $fans;
             Yii::$app->cache->set($keys, $userinfo);
-            FileHelper::writeLog($logPath, '登录日志:有缓存数据' . json_encode($userinfo));
+            FileHelper::writeLog($logPath, '登录日志:有缓存数据'.json_encode($userinfo));
 
             return $userinfo;
         } else {
             $password = StringHelper::randomNum();
 
-            FileHelper::writeLog($logPath, '登录日志:昵称去除特殊字符' . json_encode($this->removeEmoji($nickname)));
+            FileHelper::writeLog($logPath, '登录日志:昵称去除特殊字符'.json_encode($this->removeEmoji($nickname)));
 
             $nickname = $this->removeEmoji($nickname);
 
             $nickname = $this->filterEmoji($nickname);
             // 去除斜杠后的数据
 
-            FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);
+            FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：'.$nickname);
 
             if (empty($nickname)) {
                 // 使用随机昵称
-                $strName  = StringHelper::getname();
+                $strName = StringHelper::getname();
                 $nickname = $strName[0];
             }
 
             $res = $DdMember->signup($nickname, '', $password);
 
-            FileHelper::writeLog($logPath, '登录日志:会员注册返回结果' . json_encode($res));
+            FileHelper::writeLog($logPath, '登录日志:会员注册返回结果'.json_encode($res));
 
             // 更新openid
             $member_id = $res['member']['member_id'];
-            FileHelper::writeLog($logPath, '登录日志:获取用户id' . json_encode($member_id));
+            FileHelper::writeLog($logPath, '登录日志:获取用户id'.json_encode($member_id));
 
             $DdMember->updateAll(['openid' => $openid], ['member_id' => $member_id]);
             DdApiAccessToken::updateAll(['openid' => $openid], ['member_id' => $member_id]);
-            FileHelper::writeLog($logPath, '登录日志:注册fans' . json_encode($member_id));
+            FileHelper::writeLog($logPath, '登录日志:注册fans'.json_encode($member_id));
 
             // 注册fans
             // 生成随机的加密键
@@ -118,22 +118,22 @@ class Fans extends BaseObject
                 'province' => $users['province'],
                 'secretKey' => $secretKey,
             ];
-            FileHelper::writeLog($logPath, '登录日志:组装fans' . json_encode($dataFans));
+            FileHelper::writeLog($logPath, '登录日志:组装fans'.json_encode($dataFans));
 
             // 加密fans的所有资料
             // $dataFans['fans_info'] = $this->encrypt($dataFans, $secretKey);
-            FileHelper::writeLog($logPath, '登录日志:组装fans001' . json_encode($dataFans));
+            FileHelper::writeLog($logPath, '登录日志:组装fans001'.json_encode($dataFans));
 
             $DdWechatFans = new DdWechatFans();
             if ($DdWechatFans->load($dataFans, '') && $DdWechatFans->save()) {
                 $res['fans'] = $dataFans;
-                FileHelper::writeLog($logPath, '登录日志:组装fans002' . json_encode($res));
+                FileHelper::writeLog($logPath, '登录日志:组装fans002'.json_encode($res));
                 Yii::$app->cache->set($keys, $res);
 
                 return $res;
             } else {
                 $errors = ErrorsHelper::getModelError($DdWechatFans);
-                FileHelper::writeLog($logPath, '登录日志：写入错误' . json_encode($errors));
+                FileHelper::writeLog($logPath, '登录日志：写入错误'.json_encode($errors));
 
                 return $errors;
             }
@@ -215,33 +215,34 @@ class Fans extends BaseObject
     }
 
     /**
-     * 验证token是否一致
+     * 验证token是否一致.
      *
      * @param string $signature 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数
-     * @param integer $timestamp 时间戳
-     * @param integer $nonce 随机数
+     * @param int    $timestamp 时间戳
+     * @param int    $nonce     随机数
+     *
      * @return bool
      */
     public static function verifyToken($signature, $timestamp, $nonce)
     {
-        $logPath = Yii::getAlias('@runtime/wechat/msg/' . date('ymd') . '.log');
+        $logPath = Yii::getAlias('@runtime/wechat/msg/'.date('ymd').'.log');
 
         $params = Yii::$app->params;
-        $wechat_token =  $params['wechatConfig']['token'];
-        FileHelper::writeLog($logPath, '配置获取：' . json_encode($params['wechatConfig']));
+        $wechat_token = $params['wechatConfig']['token'];
+        FileHelper::writeLog($logPath, '配置获取：'.json_encode($params['wechatConfig']));
         $token = $wechat_token ?? '';
         $tmpArr = [$token, $timestamp, $nonce];
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
         $tmpStr = sha1($tmpStr);
 
-        FileHelper::writeLog($logPath, '验证结果：' . json_encode([$tmpStr, $signature]));
+        FileHelper::writeLog($logPath, '验证结果：'.json_encode([$tmpStr, $signature]));
 
         return $tmpStr == $signature ? true : false;
     }
 
     /**
-     * 告诉微信已经成功了
+     * 告诉微信已经成功了.
      *
      * @return bool|string
      */
@@ -251,7 +252,7 @@ class Fans extends BaseObject
     }
 
     /**
-     * 告诉微信失败了
+     * 告诉微信失败了.
      *
      * @return bool|string
      */

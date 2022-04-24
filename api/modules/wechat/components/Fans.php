@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-06 13:23:58
+ * @Last Modified time: 2022-04-24 14:26:06
  */
 
 namespace app\modules\wechat\components;
@@ -39,7 +39,7 @@ class Fans extends BaseObject
         FileHelper::writeLog($logPath, '登录日志:用户信息sign'.json_encode($users));
 
         $openid = $users['openid'];
-        $nickname = $users['nickname'];
+        $nickname = $users['nickName'];
         $keys = $openid.'_userinfo';
         FileHelper::writeLog($logPath, '登录日志:用户信息openid'.json_encode($openid));
         FileHelper::writeLog($logPath, '登录日志:用户信息缓存获取'.json_encode(Yii::$app->cache->get($keys)));
