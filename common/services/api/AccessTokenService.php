@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-24 16:13:18
+ * @Last Modified time: 2022-04-25 15:12:06
  */
 
 namespace common\services\api;
@@ -56,11 +56,13 @@ class AccessTokenService extends BaseService
 
         $model->group_id = $group_id;
 
-        /* 是否到期，到期就重置 */
+        /* access-token 是否到期，到期就重置 */
         if ($this->isPeriod($model->access_token) || empty($model->access_token)) {
             // 删除缓存
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-            $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+            if (!$this->isPeriodRefToken($model->refresh_token)) {
+                $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+            }
             $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
             $model->status = 1;
             if (!$model->save()) {
@@ -113,7 +115,7 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * 判断有效期.
+     * 判断access-token有效期.
      *
      * @param int|null post
      *
@@ -127,6 +129,31 @@ class AccessTokenService extends BaseService
         if (Yii::$app->params['user.accessTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
             $expire = Yii::$app->params['user.accessTokenExpire'];
+            // 验证有效期
+            if ($timestamp + $expire <= time()) {
+                // 过期
+                return true;
+            }
+        }
+        // 未到期
+        return false;
+    }
+
+    /**
+     * 判断refresh_token有效期.
+     *
+     * @param int|null post
+     *
+     * @return 到期：true
+     *
+     * @throws NotFoundHttpException
+     */
+    public static function isPeriodRefToken($token, $type = null)
+    {
+        // 判断验证token有效性是否开启
+        if (Yii::$app->params['user.refreshTokenValidity'] === true) {
+            $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+            $expire = Yii::$app->params['user.refreshTokenExpire'];
             // 验证有效期
             if ($timestamp + $expire <= time()) {
                 // 过期
