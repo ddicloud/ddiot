@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-25 17:16:44
+ * @Last Modified time: 2022-04-25 17:22:05
  */
 
 namespace common\services\admin;
@@ -64,7 +64,7 @@ class AccessTokenService extends BaseService
         if ($this->isPeriod($model->access_token) || empty($model->access_token)) {
             // 删除缓存
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-            if (!$this->isPeriodRefToken($model->refresh_token) || $model->refresh_token) {
+            if (!$this->isPeriodRefToken($model->refresh_token) || empty($model->refresh_token)) {
                 $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
             }
             $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
