@@ -3,10 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-30 20:28:47
+ * @Last Modified time: 2022-04-25 14:10:50
  */
+$db = [];
 
-$db = require(__DIR__ . '/../../common/config/db.php');
+if (file_exists(__DIR__.'/../../common/config/db.php')) {
+    $db = require __DIR__.'/../../common/config/db.php';
+}
 
 $config = [
     'components' => [
@@ -26,8 +29,6 @@ $config = [
     'language' => 'zh-CN',
 ];
 
-
-
 if (YII_ENV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
@@ -39,7 +40,7 @@ if (YII_ENV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         'controllerNamespace' => 'backend\controllers\gii',
-        'viewPath'=>'@backend/views/gii',
+        'viewPath' => '@backend/views/gii',
         /*自定义*/
         'allowedIPs' => ['127.0.0.1'],
         'generators' => [
@@ -49,7 +50,7 @@ if (YII_ENV) {
                     'default' => '@frontend/web/backend/giitpl/addons/default',
                 ],
             ],
-            'adminapi'=>[
+            'adminapi' => [
                 'class' => 'addonstpl\adminapi\Generator',
                 'templates' => [
                     'default' => '@frontend/web/backend/giitpl/adminapi/default',
@@ -58,14 +59,14 @@ if (YII_ENV) {
             'model' => [
                 'class' => 'addonstpl\model\Generator',
                 'templates' => [
-                    'default' => '@frontend/web/backend/giitpl/model/default'
+                    'default' => '@frontend/web/backend/giitpl/model/default',
                 ],
             ],
             'crud' => [ //生成器名称
                 'class' => 'addonstpl\crud\Generator',
                 'templates' => [ //设置我们自己的模板
                     //模板名 => 模板路径
-                    'myCrud' => '@frontend/web/backend/giitpl/crud/default'
+                    'myCrud' => '@frontend/web/backend/giitpl/crud/default',
                 ],
             ],
             'module' => [
@@ -92,10 +93,8 @@ if (YII_ENV) {
                     'default' => '@frontend/web/backend/giitpl/extension/default',
                 ],
             ],
-
         ],
     ];
 }
-
 
 return $config;
