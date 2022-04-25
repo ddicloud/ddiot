@@ -63,6 +63,5 @@ addons/*
 runtime
 frontend/web/assets
 
-common/config/db.php
 common/config/sqlServer.php
 common/config/mongodb.php
