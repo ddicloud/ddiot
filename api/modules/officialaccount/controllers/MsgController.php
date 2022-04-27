@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 15:55:06
+ * @Last Modified time: 2022-04-27 15:58:17
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -144,6 +144,9 @@ class MsgController extends AController
         switch ($message['Event']) {
             // 关注事件
             case 'subscribe':
+                loggingHelper::writeLog('officialaccount','subscribe','关注事件',[
+                    'msg'=>$message
+                ]);
                 $FansService->follow($message['FromUserName']);
 
                 // 判断是否是二维码关注
