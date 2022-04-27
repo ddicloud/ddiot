@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 02:29:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-08 09:13:31
+ * @Last Modified time: 2022-04-27 15:43:53
  */
 
 
 namespace api\modules\officialaccount\models;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
@@ -32,6 +33,21 @@ use Yii;
  */
 class DdWechatFans extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+    
+    const FOLLOW_ON = 1;
+    const FOLLOW_OFF = -1;
+
+    /**
+     * 关注状态
+     *
+     * @var array
+     */
+    public static $followStatus = [
+        self::FOLLOW_ON  => '已关注',
+        self::FOLLOW_OFF => '未关注',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -47,10 +63,10 @@ class DdWechatFans extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'openid', 'nickname', 'fans_info'], 'required'],
-            [['user_id', 'update_time', 'create_time', 'gender','groupid'], 'integer'],
+            [['user_id', 'update_time', 'create_time', 'gender','groupid','follow'], 'integer'],
             [['fans_info'], 'string'],
-            [['avatarUrl', 'secretKey'], 'string', 'max' => 255],
-            [['openid', 'nickname'], 'string', 'max' => 50],
+            [['avatarUrl', 'secretKey','tag'], 'string', 'max' => 255],
+            [['openid', 'nickname','followtime'], 'string', 'max' => 50],
             [['unionid'], 'string', 'max' => 64],
             [['country', 'city', 'province'], 'string', 'max' => 100],
         ];
