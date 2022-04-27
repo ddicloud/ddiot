@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:02:29
+ * @Last Modified time: 2022-04-27 16:06:10
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -36,17 +36,15 @@ class MsgController extends AController
     public function actionIndex()
     {
         global $_GPC;
+        loggingHelper::writeLog('officialaccount','actionIndex','事件监听处理',[
+            'msg'=>$_GPC
+        ]);
         $request = Yii::$app->request;
-        $logPath = Yii::getAlias('@runtime/wechat/msg/'.date('ymd').'.log');
-
-        FileHelper::writeLog($logPath, '公众号激活验证');
         $app = Yii::$app->wechat->getApp();
-
         switch ($request->getMethod()) {
             // 激活公众号
             case 'GET':
                 if (Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce'))) {
-                    FileHelper::writeLog($logPath, '验证通过');
                     $response = $app->server->serve();
                     $response->send();
                 }
