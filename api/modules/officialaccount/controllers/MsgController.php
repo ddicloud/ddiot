@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:30:43
+ * @Last Modified time: 2022-04-27 17:31:55
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -134,7 +134,9 @@ class MsgController extends AController
         Yii::$app->params['msgHistory']['event'] = $message['Event'];
         $FansService = new FansService();
         $MessageService = new MessageService();
-
+        loggingHelper::writeLog('officialaccount','subscribe','事件开始',[
+            'message'=>$message
+        ]);
         switch ($message['Event']) {
             // 关注事件
             case 'subscribe':
