@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:11:00
+ * @Last Modified time: 2022-04-27 17:13:01
  */
 
 namespace api\modules\officialaccount\services;
@@ -29,6 +29,7 @@ class FansService extends BaseService
      */
     public function follow($openid)
     {
+        global $_GPC;
         // 获取用户信息
         $user = Yii::$app->wechat->app->user->get($openid);
         $user = ArrayHelper::toArray($user);
@@ -44,7 +45,8 @@ class FansService extends BaseService
         $fans = $this->findModel($openid);
         
         loggingHelper::writeLog('officialaccount', 'FansService', '更新关注事件', [
-            'fans' => $fans
+            'fans' => $fans,
+            '_GPC' => $_GPC
         ]);
         
         $fans->groupid = $user['groupid'];
