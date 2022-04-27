@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-24 14:26:16
+ * @Last Modified time: 2022-04-27 16:35:59
  */
 
 namespace app\modules\officialaccount\components;
@@ -15,6 +15,7 @@ use api\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
+use common\helpers\loggingHelper;
 use common\helpers\StringHelper;
 use function GuzzleHttp\json_decode;
 use Yii;
@@ -229,7 +230,8 @@ class Fans extends BaseObject
 
         $params = Yii::$app->params;
         $wechat_token = $params['wechatConfig']['token'];
-        FileHelper::writeLog($logPath, '配置获取：'.json_encode($params['wechatConfig']));
+        loggingHelper::writeLog('officialaccount','verifyToken','参数验证',$params);
+
         $token = $wechat_token ?? '';
         $tmpArr = [$token, $timestamp, $nonce];
         sort($tmpArr, SORT_STRING);
