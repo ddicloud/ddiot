@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 15:58:17
+ * @Last Modified time: 2022-04-27 16:02:29
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -41,21 +41,6 @@ class MsgController extends AController
 
         FileHelper::writeLog($logPath, '公众号激活验证');
         $app = Yii::$app->wechat->getApp();
-        FileHelper::writeLog($logPath, '开始验证');
-        FileHelper::writeLog($logPath, '验证参数：'.json_encode([
-            $request->get(),
-        ]));
-
-        if (Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce'))) {
-            FileHelper::writeLog($logPath, '验证通过');
-            $response = $app->server->serve();
-            $response->send();
-        }
-        throw new NotFoundHttpException('签名验证失败.');
-        exit();
-
-        $request = Yii::$app->request;
-
 
         switch ($request->getMethod()) {
             // 激活公众号
@@ -70,7 +55,6 @@ class MsgController extends AController
                 break;
             // 接收数据
             case 'POST':
-                $app = Yii::$app->wechat->getApp();
                 $app->server->push(function ($message) {
                     try {
                         $MessageService = new MessageService();
