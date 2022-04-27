@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:43:41
+ * @Last Modified time: 2022-04-27 17:22:31
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -144,12 +144,12 @@ class MsgController extends AController
                 $FansService->follow($message['FromUserName']);
 
                 // 判断是否是二维码关注
-                if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
-                    $message['Content'] = $qrResult;
-                    $MessageService->setMessage($message);
+                // if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
+                //     $message['Content'] = $qrResult;
+                //     $MessageService->setMessage($message);
 
-                    return $MessageService->text();
-                }
+                //     return $MessageService->text();
+                // }
 
                 return $MessageService->follow();
                 break;

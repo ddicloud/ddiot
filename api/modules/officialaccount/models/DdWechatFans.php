@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 02:29:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:52:42
+ * @Last Modified time: 2022-04-27 17:25:15
  */
 
 
@@ -55,8 +55,8 @@ class DdWechatFans extends \yii\db\ActiveRecord
             [['user_id', 'openid', 'nickname', 'fans_info'], 'required'],
             [['user_id', 'update_time', 'create_time', 'gender','groupid'], 'integer'],
             [['fans_info'], 'string'],
-            [['avatarUrl', 'secretKey'], 'string', 'max' => 255],
-            [['openid', 'nickname'], 'string', 'max' => 50],
+            [['avatarUrl', 'secretKey','tag'], 'string', 'max' => 255],
+            [['openid', 'nickname','followtime','unfollowtime'], 'string', 'max' => 50],
             [['unionid'], 'string', 'max' => 64],
             [['country', 'city', 'province'], 'string', 'max' => 100],
         ];
