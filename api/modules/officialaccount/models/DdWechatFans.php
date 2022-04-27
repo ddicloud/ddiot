@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 02:29:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-08 09:13:31
+ * @Last Modified time: 2022-04-27 16:45:06
  */
 
 
 namespace api\modules\officialaccount\models;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
@@ -32,6 +33,7 @@ use Yii;
  */
 class DdWechatFans extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
     /**
      * {@inheritdoc}
      */

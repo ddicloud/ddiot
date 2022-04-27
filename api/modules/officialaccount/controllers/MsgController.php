@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:32:46
+ * @Last Modified time: 2022-04-27 16:43:41
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -34,6 +34,7 @@ class MsgController extends AController
 
     /**
      * 只做微信公众号激活，不做其他消息处理.
+     * https://dev.hopesfire.com/api/officialaccount/msg/event?store_id=81&bloc_id=32
      */
     public function actionEvent()
     {
