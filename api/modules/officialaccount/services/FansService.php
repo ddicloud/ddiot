@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:51:01
+ * @Last Modified time: 2022-04-27 16:57:47
  */
 
 namespace api\modules\officialaccount\services;
@@ -41,9 +41,10 @@ class FansService extends BaseService
         $fans->unionid = $user['unionid'];
         $fans->followtime = date('Y-m-d H:i:s',$user['subscribe_time']);
         $fans->follow = DdWechatFans::FOLLOW_ON;
-        $fans->save();
-
-        Yii::$app->wechatService->fansStat->upFollowNum();
+        $Res = $fans->save();
+        loggingHelper::writeLog('officialaccount', 'FansService', '保存粉丝数据', [
+            'Res' => $Res,
+        ]);
     }
 
     /**
@@ -57,8 +58,6 @@ class FansService extends BaseService
             $fans->follow = DdWechatFans::FOLLOW_OFF;
             $fans->unfollowtime = time();
             $fans->save();
-
-            Yii::$app->wechatService->fansStat->upUnFollowNum();
         }
     }
 
