@@ -3,27 +3,27 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 15:56:31
+ * @Last Modified time: 2022-04-27 16:47:57
  */
-
 
 namespace api\modules\officialaccount\services;
 
-use Yii;
-use common\helpers\ArrayHelper;
-use common\services\BaseService;
-use addons\Wechat\common\models\Fans;
 use api\modules\officialaccount\models\DdWechatFans;
+use common\helpers\ArrayHelper;
+use common\helpers\loggingHelper;
+use common\services\BaseService;
+use Yii;
 
 /**
- * Class FansService
- * @package addons\Wechat\services
+ * Class FansService.
+ *
  * @author jianyan74 <751393839@qq.com>
  */
-class FansService   extends BaseService
+class FansService extends BaseService
 {
     /**
      * @param $openid
+     *
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
     public function follow($openid)
@@ -31,10 +31,13 @@ class FansService   extends BaseService
         // 获取用户信息
         $user = Yii::$app->wechat->app->user->get($openid);
         $user = ArrayHelper::toArray($user);
+        loggingHelper::writeLog('officialaccount', 'FansService', '粉丝数据', [
+            'user' => $user,
+        ]);
         $fans = $this->findModel($openid);
         $fans->attributes = $user;
-        $fans->group_id = $user['groupid'];
-        $fans->head_portrait = $user['avatarUrl'];
+        $fans->groupid = $user['groupid'];
+        $fans->avatarUrl = $user['avatarUrl'];
         $fans->followtime = $user['subscribe_time'];
         $fans->follow = DdWechatFans::FOLLOW_ON;
         $fans->save();
@@ -43,7 +46,7 @@ class FansService   extends BaseService
     }
 
     /**
-     * 取消关注
+     * 取消关注.
      *
      * @param $openid
      */
@@ -59,9 +62,10 @@ class FansService   extends BaseService
     }
 
     /**
-     * 同步关注的用户信息
+     * 同步关注的用户信息.
      *
      * @param $openid
+     *
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \yii\db\Exception
      */
@@ -89,9 +93,10 @@ class FansService   extends BaseService
     }
 
     /**
-     * 同步所有粉丝openid
+     * 同步所有粉丝openid.
      *
      * @return array
+     *
      * @throws \EasyWeChat\Kernel\Exceptions\HttpException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
@@ -109,7 +114,7 @@ class FansService   extends BaseService
         $fans_count = $fans_list['total'];
 
         $total_page = ceil($fans_count / 500);
-        for ($i = 0; $i < $total_page; $i++) {
+        for ($i = 0; $i < $total_page; ++$i) {
             $fans = array_slice($fans_list['data']['openid'], $i * 500, 500);
             // 系统内的粉丝
             $system_fans = $this->getListByOpenids($fans);
@@ -122,12 +127,12 @@ class FansService   extends BaseService
                         0,
                         $openid,
                         DdWechatFans::FOLLOW_ON,
-                        date('Y-m-d H:i:s',time()),
+                        date('Y-m-d H:i:s', time()),
                         '',
                         $_GPC['store_id'],
                         $_GPC['bloc_id'],
                         time(),
-                        time()
+                        time(),
                     ];
                 }
             }
@@ -141,7 +146,7 @@ class FansService   extends BaseService
                     'followtime',
                     'tag',
                     'store_id',
-                    'bloc_id'
+                    'bloc_id',
                 ];
                 Yii::$app->db->createCommand()->batchInsert(DdWechatFans::tableName(), $field, $add_fans)->execute();
             }
@@ -155,7 +160,8 @@ class FansService   extends BaseService
 
     /**
      * @param $fan_id
-     * @return array|null|\yii\db\ActiveRecord
+     *
+     * @return array|\yii\db\ActiveRecord|null
      */
     public function findByIdWithTag($fan_id)
     {
@@ -169,7 +175,8 @@ class FansService   extends BaseService
 
     /**
      * @param $openid
-     * @return array|null|\yii\db\ActiveRecord
+     *
+     * @return array|\yii\db\ActiveRecord|null
      */
     public function findByOpenId($openid)
     {
@@ -180,7 +187,6 @@ class FansService   extends BaseService
     }
 
     /**
-     * @param array $openids
      * @return array|\yii\db\ActiveRecord[]
      */
     public function getListByOpenids(array $openids)
@@ -195,6 +201,7 @@ class FansService   extends BaseService
 
     /**
      * @param int $page
+     *
      * @return array|\yii\db\ActiveRecord[]
      */
     public function getFollowListByPage($page = 0)
@@ -210,7 +217,7 @@ class FansService   extends BaseService
     }
 
     /**
-     * 获取关注的人数
+     * 获取关注的人数.
      *
      * @return int|string
      */
@@ -224,10 +231,11 @@ class FansService   extends BaseService
     }
 
     /**
-     * 获取用户信息
+     * 获取用户信息.
      *
      * @param $openid
-     * @return array|DdWechatFans|null|\yii\db\ActiveRecord
+     *
+     * @return array|DdWechatFans|\yii\db\ActiveRecord|null
      */
     protected function findModel($openid)
     {
