@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:22:31
+ * @Last Modified time: 2022-04-27 17:30:43
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -155,6 +155,9 @@ class MsgController extends AController
                 break;
             // 取消关注事件
             case 'unsubscribe':
+                loggingHelper::writeLog('officialaccount','subscribe','取消关注事件',[
+                    'FromUserName'=>$message['FromUserName']
+                ]);
                 $FansService->unFollow($message['FromUserName']);
 
                 return false;
