@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:19:44
+ * @Last Modified time: 2022-04-27 16:27:29
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -19,7 +19,7 @@ use yii\web\NotFoundHttpException;
 
 class MsgController extends AController
 {
-    protected $authOptional = ['*'];
+    protected $authOptional = ['event'];
 
     public $modelClass = 'api\modules\officialaccount\models\DdWechatFans';
 
