@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:16:42
+ * @Last Modified time: 2022-04-27 17:27:40
  */
 
 namespace api\modules\officialaccount\services;
@@ -73,7 +73,7 @@ class FansService extends BaseService
      */
     public function unFollow($openid)
     {
-        if ($fans = DdWechatFans::findOne(['openid' => $openid])) {
+        if ($fans = DdWechatFans::find()->where(['openid' => $openid])->findStore()->findBloc()->one()) {
             $fans->follow = DdWechatFans::FOLLOW_OFF;
             $fans->unfollowtime = time();
             $fans->save();
