@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:31:55
+ * @Last Modified time: 2022-04-27 17:37:31
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -166,12 +166,12 @@ class MsgController extends AController
                 break;
             // 二维码扫描事件
             case 'SCAN':
-                if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
-                    $message['Content'] = $qrResult;
-                    $MessageService->setMessage($message);
+                // if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
+                //     $message['Content'] = $qrResult;
+                //     $MessageService->setMessage($message);
 
-                    return $MessageService->text();
-                }
+                //     return $MessageService->text();
+                // }
                 break;
             // 上报地理位置事件
             case 'LOCATION':
