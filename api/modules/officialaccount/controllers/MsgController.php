@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:30:47
+ * @Last Modified time: 2022-04-27 16:32:46
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -50,8 +50,12 @@ class MsgController extends AController
             case 'GET':
                 $Res = Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce')); 
                 if ($Res) {
+                    loggingHelper::writeLog('officialaccount','actionIndex','签名验证成功',[
+                        'Res'=>$Res
+                    ]);
                     $response = $app->server->serve();
                     $response->send();
+                    exit;
                 }
                 loggingHelper::writeLog('officialaccount','actionIndex','签名验证失败',[
                     'Res'=>$Res
