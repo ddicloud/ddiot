@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:12:08
+ * @Last Modified time: 2022-04-27 16:17:24
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -28,7 +28,7 @@ class MsgController extends AController
      *
      * @var bool
      */
-    public $enableCsrfValidation = false;
+    // public $enableCsrfValidation = false;
 
     /**
      * 只做微信公众号激活，不做其他消息处理.
