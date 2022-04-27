@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:17:24
+ * @Last Modified time: 2022-04-27 16:19:44
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -19,9 +19,11 @@ use yii\web\NotFoundHttpException;
 
 class MsgController extends AController
 {
-    protected $authOptional = ['index'];
+    protected $authOptional = ['*'];
 
     public $modelClass = 'api\modules\officialaccount\models\DdWechatFans';
+
+    public $defaultAction = 'event';
 
     /**
      * 微信请求关闭CSRF验证
@@ -33,7 +35,7 @@ class MsgController extends AController
     /**
      * 只做微信公众号激活，不做其他消息处理.
      */
-    public function actionIndex()
+    public function actionEvent()
     {
         global $_GPC;
      
