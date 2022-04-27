@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-10 14:37:04
+ * @Last Modified time: 2022-04-27 16:13:21
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -315,7 +315,7 @@ return [
                     'controller' => ['officialaccount/msg'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS index' => 'index',
+                        'GET,OPTIONS,POST index' => 'index',
                     ],
                 ],
                 [
