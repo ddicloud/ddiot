@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 02:29:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:45:06
+ * @Last Modified time: 2022-04-27 16:52:42
  */
 
 
@@ -34,6 +34,10 @@ use Yii;
 class DdWechatFans extends \yii\db\ActiveRecord
 {
     use StoreTrait;
+
+    const FOLLOW_ON = 1;
+    const FOLLOW_OFF = -1;
+    
     /**
      * {@inheritdoc}
      */
