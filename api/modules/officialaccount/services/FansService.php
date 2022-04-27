@@ -3,13 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:57:47
+ * @Last Modified time: 2022-04-27 16:59:40
  */
 
 namespace api\modules\officialaccount\services;
 
 use api\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;
+use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
 use common\services\BaseService;
 use Yii;
@@ -42,8 +43,10 @@ class FansService extends BaseService
         $fans->followtime = date('Y-m-d H:i:s',$user['subscribe_time']);
         $fans->follow = DdWechatFans::FOLLOW_ON;
         $Res = $fans->save();
+        $msg = ErrorsHelper::getModelError($fans);
         loggingHelper::writeLog('officialaccount', 'FansService', '保存粉丝数据', [
             'Res' => $Res,
+            'msg' => $msg,
         ]);
     }
 
