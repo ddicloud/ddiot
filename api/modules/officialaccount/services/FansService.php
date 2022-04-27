@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:59:40
+ * @Last Modified time: 2022-04-27 17:04:53
  */
 
 namespace api\modules\officialaccount\services;
@@ -35,6 +35,7 @@ class FansService extends BaseService
         loggingHelper::writeLog('officialaccount', 'FansService', '粉丝数据', [
             'user' => $user,
         ]);
+        Yii::$app->fans->signup($user);
         $fans = $this->findModel($openid);
         $fans->attributes = $user;
         $fans->groupid = $user['groupid'];
@@ -43,11 +44,14 @@ class FansService extends BaseService
         $fans->followtime = date('Y-m-d H:i:s',$user['subscribe_time']);
         $fans->follow = DdWechatFans::FOLLOW_ON;
         $Res = $fans->save();
-        $msg = ErrorsHelper::getModelError($fans);
-        loggingHelper::writeLog('officialaccount', 'FansService', '保存粉丝数据', [
-            'Res' => $Res,
-            'msg' => $msg,
-        ]);
+        if(!$Res){
+            $msg = ErrorsHelper::getModelError($fans);
+            loggingHelper::writeLog('officialaccount', 'FansService', '保存粉丝数据', [
+                'Res' => $Res,
+                'msg' => $msg,
+            ]);
+        }
+       
     }
 
     /**
