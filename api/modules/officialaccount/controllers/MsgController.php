@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:27:29
+ * @Last Modified time: 2022-04-27 16:30:47
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -48,11 +48,14 @@ class MsgController extends AController
         switch ($request->getMethod()) {
             // 激活公众号
             case 'GET':
-                if (Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce'))) {
+                $Res = Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce')); 
+                if ($Res) {
                     $response = $app->server->serve();
                     $response->send();
                 }
-
+                loggingHelper::writeLog('officialaccount','actionIndex','签名验证失败',[
+                    'Res'=>$Res
+                ]);
                 throw new NotFoundHttpException('签名验证失败.');
                 break;
             // 接收数据
