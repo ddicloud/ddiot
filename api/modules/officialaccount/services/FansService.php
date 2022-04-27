@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 16:47:57
+ * @Last Modified time: 2022-04-27 16:51:01
  */
 
 namespace api\modules\officialaccount\services;
@@ -37,8 +37,9 @@ class FansService extends BaseService
         $fans = $this->findModel($openid);
         $fans->attributes = $user;
         $fans->groupid = $user['groupid'];
-        $fans->avatarUrl = $user['avatarUrl'];
-        $fans->followtime = $user['subscribe_time'];
+        $fans->avatarUrl = $user['headimgurl'];
+        $fans->unionid = $user['unionid'];
+        $fans->followtime = date('Y-m-d H:i:s',$user['subscribe_time']);
         $fans->follow = DdWechatFans::FOLLOW_ON;
         $fans->save();
 
