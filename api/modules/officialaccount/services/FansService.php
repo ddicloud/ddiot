@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:15:14
+ * @Last Modified time: 2022-04-27 17:16:42
  */
 
 namespace api\modules\officialaccount\services;
@@ -47,7 +47,7 @@ class FansService extends BaseService
         loggingHelper::writeLog('officialaccount', 'FansService', '更新关注事件', [
             'fans' => $fans,
             '_GPC' => $_GPC,
-            'sql' =>DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->createCommand()->getRowSql()
+            'sql' =>DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->createCommand()->getRawSql()
         ]);
         
         $fans->groupid = $user['groupid'];
