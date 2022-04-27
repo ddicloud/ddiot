@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:04:53
+ * @Last Modified time: 2022-04-27 17:06:57
  */
 
 namespace api\modules\officialaccount\services;
@@ -35,7 +35,10 @@ class FansService extends BaseService
         loggingHelper::writeLog('officialaccount', 'FansService', '粉丝数据', [
             'user' => $user,
         ]);
-        Yii::$app->fans->signup($user);
+        $Res = Yii::$app->fans->signup($user);
+        loggingHelper::writeLog('officialaccount', 'FansService', '粉丝数据注册后', [
+            'Res' => $Res,
+        ]);
         $fans = $this->findModel($openid);
         $fans->attributes = $user;
         $fans->groupid = $user['groupid'];
