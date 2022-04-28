@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:37:31
+ * @Last Modified time: 2022-04-28 22:16:53
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -12,7 +12,6 @@ use api\controllers\AController;
 use api\modules\officialaccount\services\FansService;
 use api\modules\officialaccount\services\MessageService;
 use app\modules\officialaccount\components\Fans;
-use common\helpers\FileHelper;
 use common\helpers\loggingHelper;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -34,32 +33,32 @@ class MsgController extends AController
 
     /**
      * 只做微信公众号激活，不做其他消息处理.
-     * https://dev.hopesfire.com/api/officialaccount/msg/event?store_id=81&bloc_id=32
+     * https://dev.hopesfire.com/api/officialaccount/msg/event?store_id=81&bloc_id=32.
      */
     public function actionEvent()
     {
         global $_GPC;
-     
+
         $request = Yii::$app->request;
         $app = Yii::$app->wechat->getApp();
-        loggingHelper::writeLog('officialaccount','actionIndex','事件监听处理',[
-            'msg'=>$_GPC,
-            'getMethod'=>$request->getMethod()
+        loggingHelper::writeLog('officialaccount', 'actionIndex', '事件监听处理', [
+            'msg' => $_GPC,
+            'getMethod' => $request->getMethod(),
         ]);
         switch ($request->getMethod()) {
             // 激活公众号
             case 'GET':
-                $Res = Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce')); 
+                $Res = Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce'));
                 if ($Res) {
-                    loggingHelper::writeLog('officialaccount','actionIndex','签名验证成功',[
-                        'Res'=>$Res
+                    loggingHelper::writeLog('officialaccount', 'actionIndex', '签名验证成功', [
+                        'Res' => $Res,
                     ]);
                     $response = $app->server->serve();
                     $response->send();
                     exit;
                 }
-                loggingHelper::writeLog('officialaccount','actionIndex','签名验证失败',[
-                    'Res'=>$Res
+                loggingHelper::writeLog('officialaccount', 'actionIndex', '签名验证失败', [
+                    'Res' => $Res,
                 ]);
                 throw new NotFoundHttpException('签名验证失败.');
                 break;
@@ -71,11 +70,11 @@ class MsgController extends AController
                         // 微信消息
                         $MessageService->setMessage($message); // 消息记录
 
-                        loggingHelper::writeLog('officialaccount','services','消息事件开始',[
-                            'msg'=>$message,
-                            'MsgType'=>$message['MsgType']
+                        loggingHelper::writeLog('officialaccount', 'services', '消息事件开始', [
+                            'msg' => $message,
+                            'MsgType' => $message['MsgType'],
                         ]);
-                        
+
                         switch ($message['MsgType']) {
                             case 'event': // '收到事件消息';
                                 $reply = $this->event($message);
@@ -88,16 +87,15 @@ class MsgController extends AController
                                 break;
                         }
 
-                        loggingHelper::writeLog('officialaccount','services','历史消息内容记录',[
-                            'msg'=>$MessageService->getMessage()
+                        loggingHelper::writeLog('officialaccount', 'services', '历史消息内容记录', [
+                            'msg' => $MessageService->getMessage(),
                         ]);
-
 
                         return $reply;
                     } catch (\Exception $e) {
                         // 记录行为日志
-                        loggingHelper::writeLog('officialaccount','services','记录行为日志',[
-                            'msg'=>$e->getMessage()
+                        loggingHelper::writeLog('officialaccount', 'services', '记录行为日志', [
+                            'msg' => $e->getMessage(),
                         ]);
 
                         if (YII_DEBUG) {
@@ -134,14 +132,14 @@ class MsgController extends AController
         Yii::$app->params['msgHistory']['event'] = $message['Event'];
         $FansService = new FansService();
         $MessageService = new MessageService();
-        loggingHelper::writeLog('officialaccount','subscribe','事件开始',[
-            'message'=>$message
+        loggingHelper::writeLog('officialaccount', 'subscribe', '事件开始', [
+            'message' => $message,
         ]);
         switch ($message['Event']) {
             // 关注事件
             case 'subscribe':
-                loggingHelper::writeLog('officialaccount','subscribe','关注事件',[
-                    'msg'=>$message
+                loggingHelper::writeLog('officialaccount', 'subscribe', '关注事件', [
+                    'msg' => $message,
                 ]);
                 $FansService->follow($message['FromUserName']);
 
@@ -153,12 +151,12 @@ class MsgController extends AController
                 //     return $MessageService->text();
                 // }
 
-                return $MessageService->follow();
+                // return $MessageService->follow();
                 break;
             // 取消关注事件
             case 'unsubscribe':
-                loggingHelper::writeLog('officialaccount','subscribe','取消关注事件',[
-                    'FromUserName'=>$message['FromUserName']
+                loggingHelper::writeLog('officialaccount', 'subscribe', '取消关注事件', [
+                    'FromUserName' => $message['FromUserName'],
                 ]);
                 $FansService->unFollow($message['FromUserName']);
 
