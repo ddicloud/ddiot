@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 14:20:27
+ * @Last Modified time: 2022-04-28 14:26:55
  */
 
 namespace api\controllers;
@@ -543,7 +543,7 @@ class UserController extends AController
             ->one();
 
         if (!$user) {
-            return ResultHelper::json(402, '令牌错误，找不到用户!');
+            return ResultHelper::json(403, '令牌错误，找不到用户!');
         }
 
         $service = Yii::$app->service;
