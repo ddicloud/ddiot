@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 14:26:55
+ * @Last Modified time: 2022-04-28 14:33:49
  */
 
 namespace api\controllers;
@@ -551,7 +551,7 @@ class UserController extends AController
 
         $access_token = $service->AccessTokenService->RefreshToken($user['member_id'], $user['group_id']);
 
-        $userinfo = $service->AccessTokenService->getAccessToken($user, 1);
+        $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($user, 1);
 
         return ResultHelper::json(200, '发送成功', $userinfo);
     }
