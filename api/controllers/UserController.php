@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-11 14:47:38
+ * @Last Modified time: 2022-04-28 14:20:27
  */
 
 namespace api\controllers;
@@ -20,7 +20,6 @@ use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
 use Yii;
-use yii\web\NotFoundHttpException;
 
 class UserController extends AController
 {
@@ -544,14 +543,17 @@ class UserController extends AController
             ->one();
 
         if (!$user) {
-            throw new NotFoundHttpException('令牌错误，找不到用户!');
+            return ResultHelper::json(402, '令牌错误，找不到用户!');
         }
+
         $service = Yii::$app->service;
         $service->namespace = 'api';
 
         $access_token = $service->AccessTokenService->RefreshToken($user['member_id'], $user['group_id']);
 
-        return ResultHelper::json(200, '发送成功', ['access_token' => $access_token]);
+        $userinfo = $service->AccessTokenService->getAccessToken($user, 1);
+
+        return ResultHelper::json(200, '发送成功', $userinfo);
     }
 
     /**
