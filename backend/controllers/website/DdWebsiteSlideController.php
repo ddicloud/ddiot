@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-22 15:17:03
+ * @Last Modified time: 2022-04-28 20:07:24
  */
 
 namespace backend\controllers\website;
 
+use addons\diandi_project\services\ShippingServer;
 use backend\controllers\BaseController;
 use common\helpers\ErrorsHelper;
 use common\models\DdWebsiteSlide;
@@ -45,6 +46,7 @@ class DdWebsiteSlideController extends BaseController
      */
     public function actionIndex()
     {
+        ShippingServer::upQueueSortCeshi();
         $searchModel = new DdWebsiteSlideSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
