@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 14:36:03
+ * @Last Modified time: 2022-04-28 15:06:06
  */
 
 namespace api\controllers;
@@ -546,10 +546,7 @@ class UserController extends AController
             return ResultHelper::json(403, '令牌错误，找不到用户!');
         }
 
-        $service = Yii::$app->service;
-        $service->namespace = 'api';
-
-        $access_token = $service->AccessTokenService->RefreshToken($user['member_id'], $user['group_id']);
+        $access_token = Yii::$app->service->apiAccessTokenService->RefreshToken($user['member_id'], $user['group_id']);
 
         // findIdentity
         $member = DdMember::findIdentity($user['member_id']);
