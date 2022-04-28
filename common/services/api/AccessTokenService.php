@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 14:58:53
+ * @Last Modified time: 2022-04-28 15:42:17
  */
 
 namespace common\services\api;
@@ -63,8 +63,9 @@ class AccessTokenService extends BaseService
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
             if (!$this->isPeriodRefToken($model->refresh_token) || empty($model->refresh_token)) {
                 loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '刷新refresh_token', [
+                    'model' => $model,
                     'time' => date('Y-m-d H:i:s'),
-                    'expire' => Yii::$app->params['user.accessTokenExpire'],
+                    'expire' => Yii::$app->params['user.refreshTokenExpire'],
                     'refresh_token' => $model->refresh_token,
                     'isPeriodRefToken' => $this->isPeriodRefToken($model->refresh_token),
                 ]);
