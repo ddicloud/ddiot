@@ -1,33 +1,38 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-04-27 15:31:25
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-04-28 14:03:56
+ */
 
 namespace api\modules\officialaccount\services;
 
-use Yii;
+use common\models\Qrcode;
 use common\services\BaseService;
-use addons\Wechat\common\models\Qrcode;
+use Yii;
 
 /**
- * Class QrcodeService
- * @package addons\Wechat\services
+ * Class QrcodeService.
+ *
  * @author jianyan74 <751393839@qq.com>
  */
-class QrcodeService  extends BaseService
+class QrcodeService extends BaseService
 {
     /**
-     * @param array $where
-     * @return array|null|\yii\db\ActiveRecord
+     * @return array|\yii\db\ActiveRecord|null
      */
     public function findByWhere(array $where = [])
     {
         return Qrcode::find()
             ->filterWhere($where)
-            ->andFilterWhere(['merchant_id' => $this->getMerchantId()])
+            ->findStore()
             ->orderBy('created_at desc')
             ->one();
     }
 
     /**
-     * 返回场景ID
+     * 返回场景ID.
      *
      * @return int|mixed
      */
@@ -35,16 +40,13 @@ class QrcodeService  extends BaseService
     {
         $qrCode = Qrcode::find()
             ->where(['model' => Qrcode::MODEL_TEM])
-            ->filterWhere(['merchant_id' => $this->getMerchantId()])
+            ->findStore()
             ->orderBy('created_at desc')
             ->one();
 
         return $qrCode ? $qrCode->scene_id + 1 : 10001;
     }
 
-    /**
-     * @param Qrcode $model
-     */
     public function syncCreate(Qrcode $model)
     {
         $qrcode = Yii::$app->wechat->app->qrcode;
@@ -60,6 +62,7 @@ class QrcodeService  extends BaseService
         $model->ticket = $result['ticket'];
         $model->type = 'scene';
         $model->url = $result['url']; // 二维码图片解析后的地址，开发者可根据该地址自行生成需要的二维码图片
+
         return $model;
     }
 }

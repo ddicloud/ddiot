@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-22 15:15:42
+ * @Last Modified time: 2022-04-28 14:03:40
  */
 
 namespace common\traits\ActiveQuery;
@@ -33,7 +33,7 @@ class CommonQuery extends ActiveQuery
 
     public function findStore()
     {
-        $this->andWhere(['store_id' => $this->store_id]);
+        $this->andWhere(['store_id' => $this->store_id, 'bloc_id' => $this->bloc_id]);
 
         return $this;
     }

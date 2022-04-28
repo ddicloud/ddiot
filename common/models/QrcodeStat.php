@@ -1,26 +1,37 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-02-21 10:06:15
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-04-28 14:05:00
+ */
 
 namespace common\models;
 
-use Yii;
+use common\traits\ActiveQuery\StoreTrait;
 
 /**
  * This is the model class for table "{{%qrcode_stat}}".
  *
- * @property int $id
- * @property int $store_id
- * @property int $bloc_id
- * @property int $qid
- * @property string $openid
- * @property int $type
- * @property int $qrcid
- * @property string $scene_str
- * @property string $name
- * @property int $create_time
+ * @property int      $id
+ * @property int      $store_id
+ * @property int      $bloc_id
+ * @property int      $qid
+ * @property string   $openid
+ * @property int      $type
+ * @property int      $qrcid
+ * @property string   $scene_str
+ * @property string   $name
+ * @property int      $create_time
  * @property int|null $update_time
  */
 class QrcodeStat extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
+    const TYPE_ATTENTION = 1;
+    const TYPE_SCAN = 2;
+
     /**
      * {@inheritdoc}
      */

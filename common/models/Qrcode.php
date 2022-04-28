@@ -1,32 +1,50 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-02-21 10:06:15
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-04-28 14:02:39
+ */
 
 namespace common\models;
 
-use Yii;
+use common\traits\ActiveQuery\StoreTrait;
 
 /**
  * This is the model class for table "{{%qrcode}}".
  *
- * @property int $id
- * @property int $store_id
+ * @property int      $id
+ * @property int      $store_id
  * @property int|null $bloc_id
- * @property string $type
- * @property int $extra
- * @property int $qrcid
- * @property string $scene_str
- * @property string $name
- * @property string $keyword
- * @property int $model
- * @property string $ticket
- * @property string $url
- * @property int $expire
- * @property int $subnum
+ * @property string   $type
+ * @property int      $extra
+ * @property int      $qrcid
+ * @property string   $scene_str
+ * @property string   $name
+ * @property string   $keyword
+ * @property int      $model
+ * @property string   $ticket
+ * @property string   $url
+ * @property int      $expire
+ * @property int      $subnum
  * @property int|null $update_time
- * @property int $create_time
- * @property int $status
+ * @property int      $create_time
+ * @property int      $status
  */
 class Qrcode extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
+    /**
+     * 临时.
+     */
+    const MODEL_TEM = 1;
+
+    /**
+     * 永久.
+     */
+    const MODEL_PERPETUAL = 2;
+
     /**
      * {@inheritdoc}
      */

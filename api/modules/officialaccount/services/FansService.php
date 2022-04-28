@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-27 15:31:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-27 17:34:19
+ * @Last Modified time: 2022-04-28 14:15:28
  */
 
 namespace api\modules\officialaccount\services;
@@ -43,27 +43,26 @@ class FansService extends BaseService
             'openid' => $openid,
         ]);
         $fans = $this->findModel($openid);
-        
+
         loggingHelper::writeLog('officialaccount', 'FansService', '更新关注事件', [
             'fans' => $fans,
             '_GPC' => $_GPC,
-            'sql' =>DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->createCommand()->getRawSql()
+            'sql' => DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->createCommand()->getRawSql(),
         ]);
-        
+
         $fans->groupid = $user['groupid'];
         $fans->avatarUrl = $user['headimgurl'];
         $fans->unionid = $user['unionid'];
-        $fans->followtime = date('Y-m-d H:i:s',$user['subscribe_time']);
+        $fans->followtime = date('Y-m-d H:i:s', $user['subscribe_time']);
         $fans->follow = DdWechatFans::FOLLOW_ON;
         $Res = $fans->save();
-        if(!$Res){
+        if (!$Res) {
             $msg = ErrorsHelper::getModelError($fans);
             loggingHelper::writeLog('officialaccount', 'FansService', '保存粉丝数据', [
                 'Res' => $Res,
                 'msg' => $msg,
             ]);
         }
-       
     }
 
     /**
@@ -75,39 +74,8 @@ class FansService extends BaseService
     {
         if ($fans = DdWechatFans::find()->where(['openid' => $openid])->findStore()->findBloc()->one()) {
             $fans->follow = DdWechatFans::FOLLOW_OFF;
-            $fans->unfollowtime = date('Y:m:d H:i:s',time());
+            $fans->unfollowtime = date('Y:m:d H:i:s', time());
             $fans->save();
-        }
-    }
-
-    /**
-     * 同步关注的用户信息.
-     *
-     * @param $openid
-     *
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
-     * @throws \yii\db\Exception
-     */
-    public function syncByOpenid($openid)
-    {
-        $app = Yii::$app->wechat->app;
-        $user = $app->user->get($openid);
-        if ($user['subscribe'] == DdWechatFans::FOLLOW_ON) {
-            $fans = $this->findModel($openid);
-            $fans->attributes = $user;
-            $fans->group_id = $user['groupid'];
-            $fans->head_portrait = $user['avatarUrl'];
-            $fans->followtime = $user['subscribe_time'];
-            $fans->follow = DdWechatFans::FOLLOW_ON;
-            $fans->save();
-
-            // 同步标签
-            $labelData = [];
-            foreach ($user['tagid_list'] as $tag) {
-                $labelData[] = [$fans->id, $tag, Yii::$app->services->merchant->getId()];
-            }
-
-            Yii::$app->wechatService->fansTagMap->add($fans->id, $labelData);
         }
     }
 
