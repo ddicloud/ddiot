@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-25 17:21:55
+ * @Last Modified time: 2022-04-28 14:58:53
  */
 
 namespace common\services\api;
@@ -13,6 +13,7 @@ use api\models\DdApiAccessToken;
 use api\models\DdMember;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
+use common\helpers\loggingHelper;
 use common\services\BaseService;
 use Yii;
 use yii\db\ActiveRecord;
@@ -61,6 +62,12 @@ class AccessTokenService extends BaseService
             // 删除缓存
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
             if (!$this->isPeriodRefToken($model->refresh_token) || empty($model->refresh_token)) {
+                loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '刷新refresh_token', [
+                    'time' => date('Y-m-d H:i:s'),
+                    'expire' => Yii::$app->params['user.accessTokenExpire'],
+                    'refresh_token' => $model->refresh_token,
+                    'isPeriodRefToken' => $this->isPeriodRefToken($model->refresh_token),
+                ]);
                 $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
             }
             $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
