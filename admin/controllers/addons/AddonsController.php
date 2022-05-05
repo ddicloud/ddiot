@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-10 16:01:23
+ * @Last Modified time: 2022-05-05 17:09:52
  */
 
 namespace admin\controllers\addons;
@@ -62,6 +62,24 @@ class AddonsController extends AController
             'dataProvider' => $dataProvider,
             'userId' => Yii::$app->user->id,
         ]);
+    }
+
+    public function actionChild()
+    {
+        global $_GPC;
+        $parent_mid = $_GPC['parent_mid'];
+        if (empty($parent_mid)) {
+            return ResultHelper::json(400, '父级应用parent_mid不能为空');
+        }
+        $AddonsUser = new AddonsUser();
+
+        // 根据用户获取应用权限
+        $module_names = $AddonsUser->find()->where([
+            'user_id' => Yii::$app->user->id,
+        ])->select(['module_name'])->column();
+        $list = DdAddons::find()->where(['identifie' => $module_names, 'parent_mid' => $parent_mid])->asArray()->all();
+
+        return ResultHelper::json(200, '获取成功', $list);
     }
 
     /**
