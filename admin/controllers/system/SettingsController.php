@@ -4,13 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 23:43:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 14:38:21
+ * @Last Modified time: 2022-05-05 15:04:59
  */
 
 namespace admin\controllers\system;
 
 use admin\actions\AdminSettingsAction;
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\forms\ClearCache;
 use common\widgets\ueditor\UEditorAction;
@@ -217,14 +218,14 @@ class SettingsController extends AController
     public function actionClearCache()
     {
         // $this->layout = "@backend/views/layouts/main-base";
-
         $model = new ClearCache();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             return ResultHelper::json(200, '清理成功');
         }
 
-        return ResultHelper::json(400, '清理失败');
+        $message = ErrorsHelper::getModelError($model);
+
+        return ResultHelper::json(400, $message);
     }
 
     public function actionSetCache()
