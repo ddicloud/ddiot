@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 11:01:57
+ * @Last Modified time: 2022-05-07 14:41:38
  */
 
 namespace common\services\admin;
@@ -268,9 +268,18 @@ class NavService extends BaseService
     public static function getPluginsMenuId()
     {
         // 查询所有的插件
-        $addon = DdAddons::find()->asArray()->all();
-        $addonsLevel = ArrayHelper::itemsMerge($addon, 0, 'mid', 'parent_mid', 'child');
-        $addonsIdentifie = ArrayHelper::arrayKey($addonsLevel, 'identifie');
+        $addon = DdAddons::find()->indexBy('mid')->asArray()->all();
+        foreach ($addon as $key => &$value) {
+            $parent_mids = explode(',', $value['parent_mid']);
+            foreach ($parent_mids as $k => $val) {
+                $addonOne = $addon[$val];
+                $addonOne['child'] = $value;
+                $addonsIdentifie[$addonOne['identifie']] = $addonOne;
+            }
+        }
+
+        // $addonsLevel = ArrayHelper::itemsMerge($addon, 0, 'mid', 'parent_mid', 'child');
+        // $addonsIdentifie = ArrayHelper::arrayKey($addonsLevel, 'identifie');
         $pluginsMenus = Menu::find()->where(['name' => '应用', 'parent' => 0])->andWhere(['!=', 'module_name', 'sys'])->indexBy('module_name')->asArray()->all();
         // 以子模块为键值输出父级的菜单ID
         $lists = [];

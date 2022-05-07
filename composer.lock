@@ -4090,16 +4090,16 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
-                "reference": "3b6fbf0c8b6a4e2c4f28761a23b74d6dcf96ee89"
+                "reference": "552c89613555fecb531d146461658c55ac516361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/3b6fbf0c8b6a4e2c4f28761a23b74d6dcf96ee89",
-                "reference": "3b6fbf0c8b6a4e2c4f28761a23b74d6dcf96ee89",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/552c89613555fecb531d146461658c55ac516361",
+                "reference": "552c89613555fecb531d146461658c55ac516361",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4139,9 +4139,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.3.3"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.3.4"
             },
-            "time": "2022-05-07T03:48:49+00:00"
+            "time": "2022-05-07T06:28:49+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
