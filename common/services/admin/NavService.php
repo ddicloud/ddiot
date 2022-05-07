@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 14:54:25
+ * @Last Modified time: 2022-05-07 15:39:47
  */
 
 namespace common\services\admin;
@@ -273,8 +273,8 @@ class NavService extends BaseService
             if (!empty($value['parent_mids'])) {
                 $parent_mids = explode(',', $value['parent_mids']);
                 foreach ($parent_mids as $k => $val) {
+                    $addon[$val]['child'][] = $value;
                     $addonOne = $addon[$val];
-                    $addonsIdentifie[$addonOne['identifie']]['child'][$k] = $value;
                     $addonsIdentifie[$addonOne['identifie']] = $addonOne;
                 }
             }
