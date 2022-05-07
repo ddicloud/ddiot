@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 11:19:23
+ * @Last Modified time: 2022-05-07 15:12:55
  */
 
 namespace admin\controllers\addons;
@@ -53,7 +53,7 @@ class AddonsController extends AController
 
         $searchModel = new DdAddonsSearch([
             'module_names' => $module_names,
-            'parent_mid' => 0,
+            'parent_mids' => 0,
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -78,7 +78,7 @@ class AddonsController extends AController
         $module_names = $AddonsUser->find()->where([
             'user_id' => Yii::$app->user->id,
         ])->select(['module_name'])->column();
-        $list = DdAddons::find()->where(['identifie' => $module_names, 'parent_mid' => $parent_mid])->asArray()->all();
+        $list = DdAddons::find()->where(['identifie' => $module_names])->andWhere("FIND_IN_SET($parent_mid,parent_mids)")->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $list);
     }
