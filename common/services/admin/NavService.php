@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-22 10:51:33
+ * @Last Modified time: 2022-05-07 10:43:48
  */
 
 namespace common\services\admin;
@@ -15,6 +15,7 @@ use common\helpers\CacheHelper;
 use common\helpers\FileHelper;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
+use diandi\addons\models\DdAddons;
 use diandi\admin\components\MenuHelper;
 use diandi\admin\models\Menu;
 use Yii;
@@ -93,12 +94,14 @@ class NavService extends BaseService
 
         $initmenu = Yii::$app->cache->get($key);
 
+        $pluginsMenus = self::getPluginsMenuId();
+
         if ($initmenu) {
             return $initmenu;
         } else {
             // 获取所有的路由
             $routeList = AuthRoute::find()->indexBy('id')->select(['id', 'route_name'])->asArray()->all();
-            $callback = function ($menu) use ($module_name, $routeList) {
+            $callback = function ($menu) use ($module_name, $routeList,$pluginsMenus) {
                 $route_name = !empty($routeList[$menu['route_id']]) ? $routeList[$menu['route_id']]['route_name'] : '';
                 // 解析地址路由参数
                 $data = json_decode($menu['data'], true);
@@ -121,6 +124,12 @@ class NavService extends BaseService
                 }
 
                 $route = $menu['route'];
+
+                // 校验是否存在子模块
+
+                if (!empty($pluginsMenus[$menu_type])) {
+                    $parent_id = $pluginsMenus[$menu_type];
+                }
 
                 $return = [
                     'id' => $menu['id'],
@@ -252,5 +261,25 @@ class NavService extends BaseService
         }
 
         return array_values($menus);
+    }
+
+    // 获取父级模块应用菜单的ID
+    public static function getPluginsMenuId()
+    {
+        // 查询所有的插件
+        $addon = DdAddons::find()->asArray()->all();
+        $addonsLevel = ArrayHelper::itemsMerge($addon, 0, 'mid', 'parent_mid', 'child');
+        $addonsIdentifie = ArrayHelper::arrayKey($addonsLevel, 'identifie');
+        $pluginsMenus = Menu::find()->where(['name' => '应用', 'parent' => 0])->andWhere(['!=', 'module_name', 'sys'])->indexBy('module_name')->asArray()->all();
+        // 以子模块为键值输出父级的菜单ID
+        $lists = [];
+        foreach ($pluginsMenus as $identifie => $value) {
+            if (key_exists('child', $addonsIdentifie[$identifie]) && !empty($addonsIdentifie[$identifie]['child'])) {
+                $key = $addonsIdentifie[$identifie]['child']['identifie'];
+                $lists[$key] = $value['id'];
+            }
+        }
+
+        return $lists;
     }
 }
