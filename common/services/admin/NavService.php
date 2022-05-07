@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 15:39:47
+ * @Last Modified time: 2022-05-07 19:03:57
  */
 
 namespace common\services\admin;
@@ -286,9 +286,11 @@ class NavService extends BaseService
         // 以子模块为键值输出父级的菜单ID
         $lists = [];
         foreach ($pluginsMenus as $identifie => $value) {
-            if (key_exists('child', $addonsIdentifie[$identifie]) && !empty($addonsIdentifie[$identifie]['child'])) {
-                foreach ($addonsIdentifie[$identifie]['child'] as $key => $val) {
-                    $lists[$val['identifie']] = $value['id'];
+            if (!empty($addonsIdentifie[$identifie])) {
+                if (key_exists('child', $addonsIdentifie[$identifie]) && !empty($addonsIdentifie[$identifie]['child'])) {
+                    foreach ($addonsIdentifie[$identifie]['child'] as $key => $val) {
+                        $lists[$val['identifie']] = $value['id'];
+                    }
                 }
             }
         }
