@@ -2,7 +2,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-10-30 10:40:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 17:12:45
+ * @Last Modified time: 2022-05-07 17:15:29
  */
 'use strict'
 const path = require('path')
@@ -33,7 +33,7 @@ module.exports = {
    */
   publicPath: '../frontend/web/pro-admin',
   outputDir: '../frontend/web/pro-admin',
-  indexPath: '../index.html',
+  indexPath: '../admin.html',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
