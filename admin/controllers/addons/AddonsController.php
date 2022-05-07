@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-05 17:09:52
+ * @Last Modified time: 2022-05-07 11:19:23
  */
 
 namespace admin\controllers\addons;
@@ -53,6 +53,7 @@ class AddonsController extends AController
 
         $searchModel = new DdAddonsSearch([
             'module_names' => $module_names,
+            'parent_mid' => 0,
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
