@@ -4090,7 +4090,7 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
@@ -4139,7 +4139,7 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.3.4"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.3.5"
             },
             "time": "2022-05-07T06:28:49+00:00"
         },
