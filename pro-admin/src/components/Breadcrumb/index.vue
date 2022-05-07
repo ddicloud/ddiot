@@ -52,7 +52,7 @@ export default {
       if (!name) {
         return false
       }
-      console.log('name.trim().toLocaleLowerCase()',name,name.trim().toLocaleLowerCase())
+      console.log('name.trim().toLocaleLowerCase()', name, name.trim().toLocaleLowerCase())
       return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
       // return (name.trim().toLocaleLowerCase() === '控制台' || name.trim().toLocaleLowerCase() === '客户端').toLocaleLowerCase()
     },

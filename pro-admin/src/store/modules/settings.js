@@ -43,7 +43,7 @@ const mutations = {
     state.Layout = Layout
   },
   SET_PLUGINS: (state, plugins) => {
-    console.log('plugins00',plugins);
+    console.log('plugins00', plugins)
     state.plugins = plugins
   }
 }
