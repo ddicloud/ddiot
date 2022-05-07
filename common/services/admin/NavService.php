@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 10:43:48
+ * @Last Modified time: 2022-05-07 10:48:35
  */
 
 namespace common\services\admin;
@@ -275,8 +275,9 @@ class NavService extends BaseService
         $lists = [];
         foreach ($pluginsMenus as $identifie => $value) {
             if (key_exists('child', $addonsIdentifie[$identifie]) && !empty($addonsIdentifie[$identifie]['child'])) {
-                $key = $addonsIdentifie[$identifie]['child']['identifie'];
-                $lists[$key] = $value['id'];
+                foreach ($addonsIdentifie[$identifie]['child'] as $key => $val) {
+                    $lists[$val['identifie']] = $value['id'];
+                }
             }
         }
 
