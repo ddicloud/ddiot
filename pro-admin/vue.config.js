@@ -2,7 +2,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-10-30 10:40:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 16:26:59
+ * @Last Modified time: 2022-05-07 17:12:45
  */
 'use strict'
 const path = require('path')
@@ -31,8 +31,8 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/pro-admin',
-  outputDir: 'dist/pro-admin',
+  publicPath: '../frontend/web/pro-admin',
+  outputDir: '../frontend/web/pro-admin',
   indexPath: '../index.html',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
