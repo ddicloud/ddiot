@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 10:48:35
+ * @Last Modified time: 2022-05-07 11:01:57
  */
 
 namespace common\services\admin;
@@ -126,9 +126,9 @@ class NavService extends BaseService
                 $route = $menu['route'];
 
                 // 校验是否存在子模块
-
+                $parent_menu_id = 0;
                 if (!empty($pluginsMenus[$menu_type])) {
-                    $parent_id = $pluginsMenus[$menu_type];
+                    $parent_menu_id = $pluginsMenus[$menu_type];
                 }
 
                 $return = [
@@ -140,6 +140,7 @@ class NavService extends BaseService
                     'level_type' => $menu['level_type'],
                     'type' => $menu_type,
                     'meta' => [
+                        'parent_menu_id' => $parent_menu_id,
                         'title' => $menu['name'],
                         'icon' => $menu['icon'],
                         'affix' => ($menu['name'] === '工作台' && !empty($parent_id)) ? true : false,
