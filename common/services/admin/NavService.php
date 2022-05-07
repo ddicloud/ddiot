@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 14:41:38
+ * @Last Modified time: 2022-05-07 14:54:25
  */
 
 namespace common\services\admin;
@@ -267,14 +267,16 @@ class NavService extends BaseService
     // 获取父级模块应用菜单的ID
     public static function getPluginsMenuId()
     {
-        // 查询所有的插件
         $addon = DdAddons::find()->indexBy('mid')->asArray()->all();
-        foreach ($addon as $key => &$value) {
-            $parent_mids = explode(',', $value['parent_mid']);
-            foreach ($parent_mids as $k => $val) {
-                $addonOne = $addon[$val];
-                $addonOne['child'] = $value;
-                $addonsIdentifie[$addonOne['identifie']] = $addonOne;
+        $addonsIdentifie = [];
+        foreach ($addon as $key => $value) {
+            if (!empty($value['parent_mids'])) {
+                $parent_mids = explode(',', $value['parent_mids']);
+                foreach ($parent_mids as $k => $val) {
+                    $addonOne = $addon[$val];
+                    $addonsIdentifie[$addonOne['identifie']]['child'][$k] = $value;
+                    $addonsIdentifie[$addonOne['identifie']] = $addonOne;
+                }
             }
         }
 
