@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-05 17:08:54
+ * @Last Modified time: 2022-05-12 16:43:34
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -291,6 +291,16 @@ return [
                         'POST,GET info' => 'info',
                         'POST create' => 'create',
                         'POST update' => 'update',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['addons/manage'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST install' => 'install',
+                        'POST uninstall' => 'uninstall',
+                        'POST auth' => 'auth'
                     ],
                 ],
                 [
