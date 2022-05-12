@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 15:12:55
+ * @Last Modified time: 2022-05-12 17:16:30
  */
 
 namespace admin\controllers\addons;
@@ -99,8 +99,8 @@ class AddonsController extends AController
                 'pageSize' => 15,
             ],
         ]);
-
-        return $this->render('uninstalled', [
+        
+        return ResultHelper::json(200, '获取成功', [
             'list' => $list,
             'provider' => $provider,
             'searchModel' => $searchModel,
