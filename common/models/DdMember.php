@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-02 00:50:23
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 11:58:19
+ * @Last Modified time: 2022-05-12 14:47:05
  */
 
 namespace common\models;
 
 use api\modules\officialaccount\models\DdWechatFans;
 use api\modules\wechat\models\DdWxappFans;
-use common\behaviors\SignUpBehavior;
+use common\behaviors\ServiceBehavior;
 use common\helpers\HashidsHelper;
 
 /**
@@ -106,7 +106,7 @@ class DdMember extends \yii\db\ActiveRecord
     {
         /*自动添加创建和修改时间*/
         return [
-            SignUpBehavior::className(),
+            ServiceBehavior::className(),
             [
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',

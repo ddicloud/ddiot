@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 13:54:29
+ * @Last Modified time: 2022-05-12 14:47:29
  */
 
 namespace api\models;
 
-use common\behaviors\SignUpBehavior;
+use common\behaviors\ServiceBehavior;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\HashidsHelper;
@@ -57,7 +57,7 @@ class DdMember extends ActiveRecord
     {
         /*自动添加创建和修改时间*/
         return [
-            SignUpBehavior::className(),
+            ServiceBehavior::className(),
             [
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',

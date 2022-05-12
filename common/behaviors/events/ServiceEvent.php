@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-12 14:38:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 14:40:25
+ * @Last Modified time: 2022-05-12 14:46:41
  */
 
 namespace common\behaviors\events;
@@ -14,7 +14,7 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class SignUpEvent extends Event
+class ServiceEvent extends Event
 {
     /**
      * 请求的业务插件.
