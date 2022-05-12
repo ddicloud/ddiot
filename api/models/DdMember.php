@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-08 19:08:07
+ * @Last Modified time: 2022-05-12 13:54:29
  */
 
 namespace api\models;
 
+use common\behaviors\SignUpBehavior;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\HashidsHelper;
@@ -56,6 +57,7 @@ class DdMember extends ActiveRecord
     {
         /*自动添加创建和修改时间*/
         return [
+            SignUpBehavior::className(),
             [
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',
@@ -65,7 +67,7 @@ class DdMember extends ActiveRecord
     }
 
     /**
-     * @param bool $insert
+     * @param bool  $insert
      * @param array $changedAttributes
      */
     public function afterSave($insert, $changedAttributes)
@@ -75,7 +77,6 @@ class DdMember extends ActiveRecord
         }
         parent::afterSave($insert, $changedAttributes);
     }
-
 
     /**
      * 关联api验证token.
@@ -104,10 +105,10 @@ class DdMember extends ActiveRecord
      */
     public function signup($username, $mobile, $password)
     {
-        $logPath = Yii::getAlias('@runtime/DdMember/signup/' . date('ymd') . '.log');
+        $logPath = Yii::getAlias('@runtime/DdMember/signup/'.date('ymd').'.log');
 
         if (!$this->validate()) {
-            FileHelper::writeLog($logPath, '登录日志:会员注册校验失败' . json_encode($this->validate()));
+            FileHelper::writeLog($logPath, '登录日志:会员注册校验失败'.json_encode($this->validate()));
 
             return $this->validate();
         }
@@ -125,14 +126,14 @@ class DdMember extends ActiveRecord
                 return ResultHelper::json(401, '手机号重复');
             }
         }
-        FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号' . json_encode($mobile));
+        FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号'.json_encode($mobile));
 
         $this->username = $username;
         $this->mobile = $mobile;
         $this->level = 1;
         $this->group_id = 1;
         $num = rand(1, 10);
-        $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
+        $this->avatarUrl = 'public/avatar'.$num.'.jpeg';
 
         $this->setPassword($password);
         $this->generateAuthKey();
@@ -143,11 +144,11 @@ class DdMember extends ActiveRecord
             // 更新用户邀请码
 
             $isHave = DdMemberAccount::find()->where(['member_id' => $member_id])->asArray()->one();
-            FileHelper::writeLog($logPath, '登录日志:获取用户ID' . json_encode([
+            FileHelper::writeLog($logPath, '登录日志:获取用户ID'.json_encode([
                 'member_id' => $member_id,
                 'member_ids' => $this->getId(),
                 'isHave' => $isHave,
-                'this' => $this
+                'this' => $this,
             ]));
 
             if (!empty($member_id) && empty($isHave)) {
@@ -156,7 +157,7 @@ class DdMember extends ActiveRecord
                 $DdMemberAccount->member_id = $member_id;
                 $DdMemberAccount->status = 1;
                 $DdMemberAccount->level = 1;
-                $DdMemberAccount->user_money    = 0;
+                $DdMemberAccount->user_money = 0;
                 $DdMemberAccount->accumulate_money = 0;
                 $DdMemberAccount->give_money = 0;
                 $DdMemberAccount->consume_money = 0;
@@ -172,9 +173,8 @@ class DdMember extends ActiveRecord
                 $DdMemberAccount->save();
 
                 $msg = ErrorsHelper::getModelError($DdMemberAccount);
-                FileHelper::writeLog($logPath, '登录日志:用户资产写入失败' . json_encode($msg));
+                FileHelper::writeLog($logPath, '登录日志:用户资产写入失败'.json_encode($msg));
             }
-
 
             /* 写入用户apitoken */
             $service = Yii::$app->service;
@@ -184,7 +184,7 @@ class DdMember extends ActiveRecord
             return $userinfo;
         } else {
             $msg = ErrorsHelper::getModelError($this);
-            FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
+            FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误'.json_encode($msg));
 
             return ResultHelper::json(401, $msg);
         }
@@ -222,7 +222,7 @@ class DdMember extends ActiveRecord
     public static function findByUsername($username)
     {
         return static::find()
-            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status =' . self::STATUS_ACTIVE])
+            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status ='.self::STATUS_ACTIVE])
             ->one();
     }
 
@@ -351,7 +351,7 @@ class DdMember extends ActiveRecord
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
     }
 
     /**
@@ -359,7 +359,7 @@ class DdMember extends ActiveRecord
      */
     public function generateEmailVerificationToken()
     {
-        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->verification_token = Yii::$app->security->generateRandomString().'_'.time();
     }
 
     /**
@@ -376,7 +376,7 @@ class DdMember extends ActiveRecord
     public function rules()
     {
         return [
-            [['gender', 'address_id', 'group_id','organization_id', 'create_time', 'update_time'], 'integer'],
+            [['gender', 'address_id', 'group_id', 'organization_id', 'create_time', 'update_time'], 'integer'],
             [['username', 'openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email'], 'string', 'max' => 255],
             [['country', 'province', 'city'], 'string', 'max' => 100],
             // ['username','unique']
