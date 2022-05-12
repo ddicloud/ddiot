@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 19:29:52
+ * @Last Modified time: 2022-05-12 19:43:21
  */
 
 namespace common\behaviors;
@@ -48,7 +48,7 @@ class ServiceBehavior extends Behavior
             'class' => $namespace.$serviceClassName,
         ]);
         $action = $event->action;
-        call_user_func_array([$service, $action], $event->params);
-        // $service->$action($event->params);
+
+        return  call_user_func_array([$service, $action], $event->params);
     }
 }
