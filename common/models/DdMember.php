@@ -3,15 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-02 00:50:23
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-27 03:29:50
+ * @Last Modified time: 2022-05-12 11:58:19
  */
 
 namespace common\models;
 
 use api\modules\officialaccount\models\DdWechatFans;
 use api\modules\wechat\models\DdWxappFans;
+use common\behaviors\SignUpBehavior;
 use common\helpers\HashidsHelper;
-use Yii;
 
 /**
  * This is the model class for table "{{%member}}".
@@ -106,6 +106,7 @@ class DdMember extends \yii\db\ActiveRecord
     {
         /*自动添加创建和修改时间*/
         return [
+            SignUpBehavior::className(),
             [
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',
@@ -114,8 +115,8 @@ class DdMember extends \yii\db\ActiveRecord
         ];
     }
 
-       /**
-     * @param bool $insert
+    /**
+     * @param bool  $insert
      * @param array $changedAttributes
      */
     public function afterSave($insert, $changedAttributes)
@@ -125,7 +126,6 @@ class DdMember extends \yii\db\ActiveRecord
         }
         parent::afterSave($insert, $changedAttributes);
     }
-
 
     public function getAccount()
     {
@@ -146,8 +146,6 @@ class DdMember extends \yii\db\ActiveRecord
     {
         return $this->hasOne(DdWechatFans::className(), ['user_id' => 'member_id']);
     }
-
-  
 
     /**
      * {@inheritdoc}
