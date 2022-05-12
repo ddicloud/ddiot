@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 18:34:39
+ * @Last Modified time: 2022-05-12 19:14:55
  */
 
 namespace common\behaviors;
@@ -40,10 +40,14 @@ class ServiceBehavior extends Behavior
             'owner' => $this->owner,
             'event' => $event,
         ]);
-        $service = Yii::$app->service;
-        $service->namespace = 'addons/'.$event->addons.'/services';
+
+        $namespace = 'addons/'.$event->addons.'/services/';
         $serviceClassName = $event->serviceClassName;
+
+        $service = Yii::createObject([
+            'class' => $namespace.$serviceClassName,
+        ]);
         $action = $event->action;
-        $service->$serviceClassName->$action($event->params);
+        $service->$action($event->params);
     }
 }

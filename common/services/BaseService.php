@@ -4,15 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-13 01:10:19
+ * @Last Modified time: 2022-05-12 19:00:12
  */
-
 
 namespace common\services;
 
 /**
  * 使用说明：
- * components 组件中添加如下配置
+ * components 组件中添加如下配置.
  *
  * 'service' => [
  *      'class' => 'common\services\BaseService'
@@ -45,7 +44,6 @@ namespace common\services;
  *      这也是该实现的不足，但已经够用；
  *      该值取决于当前文件BaseService的命名空间，进行命名空间转换时，只替换前缀，这里指common。
  */
-
 class BaseService
 {
     protected $namespace = __NAMESPACE__;
@@ -63,8 +61,8 @@ class BaseService
     }
 
     /**
-     *
      * @param [type] $serviceName
+     *
      * @return void
      */
     public function __get($serviceName = null)
@@ -72,11 +70,11 @@ class BaseService
         if ($serviceName ?? false) {
             return $this->get($serviceName);
         }
-        throw new \Exception('Service ' . $serviceName . ' Not Exists.');
+        throw new \Exception('Service '.$serviceName.' Not Exists.');
     }
 
     /**
-     * 参数自定义创建，可切换命名空间
+     * 参数自定义创建，可切换命名空间.
      *
      * @param [type] $serviceName
      * @param string $value
@@ -86,12 +84,14 @@ class BaseService
         if ($serviceName == 'namespace') {
             $this->serviceName = $value;
             $this->changeNamespace();
+
             return null;
         }
     }
 
     /**
      * @param [type] $serviceName
+     *
      * @return void
      */
     private function get($serviceName)
@@ -100,18 +100,19 @@ class BaseService
         $this->changeNamespace();
         $class = $this->combineClassName();
         $this->set($class);
+
         return $this->services[$class];
     }
 
     /**
-     *
      * @param [type] $class 存储到服务的id名称
+     *
      * @return void
      */
     private function set($class)
     {
         if (!class_exists($class)) {
-            throw new \Exception('Service ' . $class . ' Not Exists.');
+            throw new \Exception('Service '.$class.' Not Exists.');
         }
 
         if (!isset($this->services[$class])) {
@@ -122,7 +123,7 @@ class BaseService
     }
 
     /**
-     * 取得servcie前缀，以此判定命名空间
+     * 取得servcie前缀，以此判定命名空间.
      *
      * @return void
      */
@@ -137,11 +138,12 @@ class BaseService
             }
             $prefix .= $letter;
         }
+
         return $prefix;
     }
 
     /**
-     * 转换命名空间和servccie名称
+     * 转换命名空间和servccie名称.
      *
      * @return void
      */
@@ -150,22 +152,22 @@ class BaseService
         $prefix = $this->interceptPrefix();
 
         if (isset($prefix[0])) {
-            $arr    = explode('\\', $this->namespace);
+            $arr = explode('\\', $this->namespace);
 
             $arr[2] = $prefix;
-            $this->namespace   = implode('\\', $arr);
+            $this->namespace = implode('\\', $arr);
             //前缀转换后，重置serviceName
             $this->serviceName = substr($this->serviceName, strlen($prefix));
         }
     }
 
     /**
-     * 取得有效的className
+     * 取得有效的className.
      *
      * @return void
      */
     private function combineClassName()
     {
-        return $this->namespace . '\\' . $this->serviceName;
+        return $this->namespace.'\\'.$this->serviceName;
     }
 }
