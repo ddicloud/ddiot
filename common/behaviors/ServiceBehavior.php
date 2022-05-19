@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-15 11:39:46
+ * @Last Modified time: 2022-05-19 22:57:42
  */
 
 namespace common\behaviors;
@@ -60,7 +60,7 @@ class ServiceBehavior extends Behavior
         $action = $this->action;
         try {
             $Res = call_user_func_array([$service, $action], $this->params);
-
+            
             return $Res;
         } catch (\Exception $e) {
             throw $e;
