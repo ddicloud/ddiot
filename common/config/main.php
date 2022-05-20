@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 12:18:52
+ * @Last Modified time: 2022-05-20 22:53:42
  */
 
 return [
@@ -39,6 +39,8 @@ return [
         'queue',
     ],
     'components' => [
+        // 服务定位器
+        // 'ServiceLocator'=>'yii\di\ServiceLocator',
         /* ------ 微信业务组件 ------ **/
         'wechat' => [
             'class' => 'common\components\wechat\Wechat',

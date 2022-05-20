@@ -4,10 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 19:00:12
+ * @Last Modified time: 2022-05-20 21:58:10
  */
 
 namespace common\services;
+
+use common\components\events\Interfaces\GlobalInterface;
+use yii\base\Component;
 
 /**
  * 使用说明：
@@ -44,7 +47,7 @@ namespace common\services;
  *      这也是该实现的不足，但已经够用；
  *      该值取决于当前文件BaseService的命名空间，进行命名空间转换时，只替换前缀，这里指common。
  */
-class BaseService
+class BaseService  extends Component  implements GlobalInterface
 {
     protected $namespace = __NAMESPACE__;
 
@@ -170,4 +173,10 @@ class BaseService
     {
         return $this->namespace.'\\'.$this->serviceName;
     }
+
+    // public function __destruct(){
+    //     print_r($this);
+    //     echo 'destruct'; //对象销毁时输出
+    // }
+
 }
