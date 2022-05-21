@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-17 16:17:30
+ * @Last Modified time: 2022-05-21 10:43:21
  */
 
 namespace common\services\common;
@@ -451,7 +451,7 @@ class GlobalsService extends BaseService
                 $store['logopath'] = yii::getAlias('@attachment/'.$store['logo']);
                 $store['logo'] = ImageHelper::tomedia($store['logo']);
                 $extra = unserialize($store['extra']);
-                $extra = $extra ? $extra : [];
+                $extra =is_array($extra) ? $extra : [];
                 $info = array_merge($store, $extra);
             }
 
