@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 11:28:26
+ * @Last Modified time: 2022-05-21 11:34:32
  */
 
 namespace admin\controllers;
@@ -326,58 +326,31 @@ class StoreController extends AController
         $bloc_id = $model->bloc_id;
         $store_id = $model->store_id;
 
-        if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $StoreLabelLink = $_GPC['StoreLabelLink'];
-                $link->deleteAll([
-                    'store_id' => $store_id,
-                ]);
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            $StoreLabelLink = $_GPC['StoreLabelLink'];
+            $link->deleteAll([
+                'store_id' => $store_id,
+            ]);
 
-                if (!empty($StoreLabelLink['label_id'])) {
-                    foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
-                        $_link = clone  $link;
-                        $data = [
-                                'bloc_id' => $bloc_id,
-                                'store_id' => $store_id,
-                                'label_id' => $label_id,
-                            ];
-                        $_link->setAttributes($data);
-                        $_link->save();
-                    }
+            if (!empty($StoreLabelLink['label_id'])) {
+                foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
+                    $_link = clone  $link;
+                    $data = [
+                            'bloc_id' => $bloc_id,
+                            'store_id' => $store_id,
+                            'label_id' => $label_id,
+                        ];
+                    $_link->setAttributes($data);
+                    $_link->save();
                 }
-
-                return $this->redirect(['view', 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
-            } else {
-                $error = ErrorsHelper::getModelError($model);
-                Yii::$app->session->setFlash('error', $error);
-
-                return  $this->refresh();
             }
+
+            return ResultHelper::json(200, '修改成功');
+        } else {
+            $error = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $error);
         }
-
-        $modelcate = new StoreCategory();
-
-        $Helper = new LevelTplHelper([
-            'pid' => 'parent_id',
-            'cid' => 'category_id',
-            'title' => 'name',
-            'model' => $modelcate,
-            'id' => 'category_id',
-        ]);
-
-        $labels = StoreLabel::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
-        $store_id = $model->store_id;
-
-        $linkValue = $link->find()->where(['store_id' => $store_id])->select('label_id')->column();
-
-        return ResultHelper::json(200, '获取成功', [
-                'link' => $link,
-                'linkValue' => $linkValue,
-                'labels' => $labels,
-                'bloc_id' => $this->bloc_id,
-                'Helper' => $Helper,
-                'model' => $model,
-        ]);
     }
 
     /**
