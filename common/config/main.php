@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-20 22:53:42
+ * @Last Modified time: 2022-05-21 19:11:44
  */
 
 return [
@@ -57,8 +57,12 @@ return [
         ],
         /* ------ 队列设置 ------ **/
         'queue' => [
-            'class' => 'yii\queue\redis\Queue',
-            'redis' => 'redis', // 连接组件或它的配置
+            'class' => \yii\queue\db\Queue::class,
+            'db' => 'db', // DB 连接组件或它的配置
+            'tableName' => '{{%queue}}', // 表名
+            'mutex' => \yii\mutex\MysqlMutex::class, // Mutex that used to sync queries
+            // 'class' => 'yii\queue\redis\Queue',
+            // 'redis' => 'redis', // 连接组件或它的配置
             'channel' => 'queue', // Queue channel key
             'as log' => 'yii\queue\LogBehavior', // 日志
         ],
