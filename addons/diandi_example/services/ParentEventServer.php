@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-22 22:11:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 10:41:11
+ * @Last Modified time: 2022-05-21 11:13:49
  */
 
 namespace addons\diandi_example\services;
@@ -14,7 +14,7 @@ use common\helpers\loggingHelper;
 use common\services\BaseService;
 use Yii;
 
-class EventCeshiServer extends BaseService
+class ParentEventServer extends BaseService
 {
     const EVENT_LOCK_OPEN = 'diandi_im.ccce';
 
@@ -29,8 +29,13 @@ class EventCeshiServer extends BaseService
 
         $MessageEvent = new MessageEvent();
         //触发己的事件
-        $model->trigger(self::EVENT_LOCK_OPEN, $MessageEvent);
+        // $model->trigger(self::EVENT_LOCK_OPEN, $MessageEvent);
         // 移除己的事件
-        $model->off(self::EVENT_LOCK_OPEN);
+        // $model->off(self::EVENT_LOCK_OPEN);
+
+        // 全局事件处理
+        $model->trigger(self::EVENT_BEFORE_SERVER, $MessageEvent);
+
+        return ['data'=>'456'];
     }
 }

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 17:32:07
+ * @Last Modified time: 2022-05-21 11:28:26
  */
 
 namespace admin\controllers;
@@ -226,7 +226,6 @@ class StoreController extends AController
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $model['logo'] = ImageHelper::tomedia($model['logo']);
         $model['extra'] = unserialize($model['extra']);
 
         return ResultHelper::json(200, '获取成功', [
