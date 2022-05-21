@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:21:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-31 18:52:10
+ * @Last Modified time: 2022-05-21 16:36:11
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -25,6 +25,12 @@ return [
         ],
         'addons' => [
             'class' => 'diandi\addons\Module',
+        ],
+        'queuePanel' => [
+            'class' => \yii\debug\Module::class,
+            'panels' => [
+                'queue' => \yii\queue\debug\Panel::class,
+            ],
         ],
     ],
     'aliases' => [
