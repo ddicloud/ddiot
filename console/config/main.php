@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-23 20:21:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-31 18:52:20
+ * @Last Modified time: 2022-05-21 19:17:40
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -49,12 +49,16 @@ return [
         'session' => [
             'class' => 'yii\web\Session',
         ],
-        'queue' => [
-            'class' => 'yii\queue\redis\Queue',
-            'redis' => 'redis', // 连接组件或它的配置
-            'channel' => 'queue', // Queue channel key
-            'as log' => 'yii\queue\LogBehavior', // 日志
-        ],
+        // 'queue' => [
+        //     'class' => \yii\queue\db\Queue::class,
+        //     'db' => 'db', // DB 连接组件或它的配置
+        //     'tableName' => '{{%queue}}', // 表名
+        //     'mutex' => \yii\mutex\MysqlMutex::class, // Mutex that used to sync queries
+        //     // 'class' => 'yii\queue\redis\Queue',
+        //     // 'redis' => 'redis', // 连接组件或它的配置
+        //     'channel' => 'queue', // Queue channel key
+        //     'as log' => 'yii\queue\LogBehavior', // 日志
+        // ],
         'authManager' => [
             'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
             'defaultRoles' => ['基础权限组'], //默认角色
