@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-22 22:11:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 12:01:36
+ * @Last Modified time: 2022-05-22 12:16:22
  */
 
 namespace addons\diandi_example\services;
@@ -16,7 +16,7 @@ use Yii;
 
 class ParentEventServer extends BaseService
 {
-    const EVENT_LOCK_OPEN = 'diandi_im.ccce';
+    const EVENT_LOCK_OPEN = 'order.placed';
 
     public function ceshi($params)
     {
@@ -33,7 +33,6 @@ class ParentEventServer extends BaseService
         // 移除己的事件
         $model->off(self::EVENT_LOCK_OPEN);
 
-
-        return ['data'=>'456'];
+        return ['data' => '456'];
     }
 }
