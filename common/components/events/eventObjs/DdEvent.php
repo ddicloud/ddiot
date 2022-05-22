@@ -3,16 +3,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-20 21:28:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-22 13:15:20
+ * @Last Modified time: 2022-05-22 15:09:49
  */
 
 namespace common\components\events\eventObjs;
 
 use ErrorException;
-use Symfony\Contracts\EventDispatcher\Event as EventDispatcherEvent;
+use Symfony\Component\EventDispatcher\Event;
 use Yii;
 
-class DdEvent extends EventDispatcherEvent
+class DdEvent extends Event
 {
     public $_addons;
 
