@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-22 13:13:38
+ * @Last Modified time: 2022-05-22 15:50:29
  */
 
 namespace common\services;
 
-use common\components\events\Interfaces\DdInterface;
+use common\components\events\Interfaces\DdSubscriberInterface;
 use yii\base\Component;
 
 /**
@@ -47,7 +47,7 @@ use yii\base\Component;
  *      这也是该实现的不足，但已经够用；
  *      该值取决于当前文件BaseService的命名空间，进行命名空间转换时，只替换前缀，这里指common。
  */
-class BaseService extends Component implements DdInterface
+class BaseService extends Component implements DdSubscriberInterface
 {
     protected $namespace = __NAMESPACE__;
 
