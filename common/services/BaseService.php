@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-22 11:31:58
+ * @Last Modified time: 2022-05-22 11:38:39
  */
 
 namespace common\services;
@@ -71,7 +71,7 @@ class BaseService extends Component implements EventSubscriberInterface
      *
      * @since
      */
-    public $listeners = [];
+    public static $listeners = [];
 
     public function __construct()
     {
