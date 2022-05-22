@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-20 21:58:10
+ * @Last Modified time: 2022-05-22 11:31:58
  */
 
 namespace common\services;
 
-use common\components\events\Interfaces\GlobalInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use yii\base\Component;
 
 /**
@@ -47,7 +47,7 @@ use yii\base\Component;
  *      这也是该实现的不足，但已经够用；
  *      该值取决于当前文件BaseService的命名空间，进行命名空间转换时，只替换前缀，这里指common。
  */
-class BaseService  extends Component  implements GlobalInterface
+class BaseService extends Component implements EventSubscriberInterface
 {
     protected $namespace = __NAMESPACE__;
 
@@ -57,10 +57,34 @@ class BaseService  extends Component  implements GlobalInterface
 
     private $serviceLocator;
 
+    /**
+     * 监听的列表.
+     *
+     * @var array
+     * @date 2022-05-22
+     *
+     * @example
+     *
+     * OrderPlacedEvent::NAME => ['onStoreOrder', 0],
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public $listeners = [];
+
     public function __construct()
     {
         $this->serviceLocator = new \yii\di\ServiceLocator();
         $this->services = [];
+    }
+
+    public static function getSubscribedEvents()
+    {
+        // 返回被订阅的事件，以及它们的方法和属性
+        // foreach (self::$listeners as $name => $funcs) {
+        // }
+        return self::$listeners;
     }
 
     /**
@@ -178,5 +202,4 @@ class BaseService  extends Component  implements GlobalInterface
     //     print_r($this);
     //     echo 'destruct'; //对象销毁时输出
     // }
-
 }
