@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-22 15:50:29
+ * @Last Modified time: 2022-05-23 09:34:35
  */
 
 namespace common\services;
 
+use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
 use common\components\events\Interfaces\DdSubscriberInterface;
 use yii\base\Component;
 
@@ -77,6 +78,24 @@ class BaseService extends Component implements DdSubscriberInterface
     {
         $this->serviceLocator = new \yii\di\ServiceLocator();
         $this->services = [];
+    }
+
+    public function __call($method, $arguments)
+    {
+        // create an event named 'foo.method_is_not_found'
+        // 创建一个名为 'foo.method_is_not_found' 的事件
+        $event = new DdHandleUndefinedMethodEvent($this, $method, $arguments);
+        $this->dispatcher->dispatch('foo.method_is_not_found', $event);
+ 
+        // no listener was able to process the event? The method does not exist
+        // 没有监听能够处理此事件？ 那么该方法不存在
+        if (!$event->isProcessed()) {
+            throw new \Exception(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+        }
+ 
+        // return the listener returned value
+        // 返回“监听器所返回的值”
+        return $event->getReturnValue();
     }
 
     public static function getSubscribedEvents()
