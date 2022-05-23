@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:33:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 12:26:26
+ * @Last Modified time: 2022-05-23 12:28:51
  */
 namespace common\components\events;
 
@@ -11,7 +11,14 @@ namespace common\components\events;
 use Symfony\Component\EventDispatcher\Event;
 use common\components\events\eventObjs\DdEvent;
  
-class DdHandleUndefinedMethodEvent extends DdEvent
+/**
+ * 模块事件统一调度
+ * @date 2022-05-23
+ * @example
+ * @author Wang Chunsheng
+ * @since
+ */
+class DdHandleAddonsMethodEvent extends DdEvent
 {
     protected $subject;
     protected $method;

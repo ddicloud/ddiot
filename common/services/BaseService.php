@@ -4,13 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 12:12:48
+ * @Last Modified time: 2022-05-23 12:29:21
  */
 
 namespace common\services;
 
 use common\components\events\DdDispatcher;
-use common\components\events\DdHandleUndefinedMethodEvent;
+use common\components\events\DdHandleAddonsMethodEvent;
 use common\components\events\Interfaces\DdSubscriberInterface;
 use Yii;
 use yii\base\Component;
@@ -91,7 +91,7 @@ class BaseService extends Component implements DdSubscriberInterface
                 $serverObj = Yii::createObject([
                     'class'=> 'addons\\'.$serverObjname
                 ]);
-                $event = new DdHandleUndefinedMethodEvent($serverObj, $method, $arguments);
+                $event = new DdHandleAddonsMethodEvent($serverObj, $method, $arguments);
                 $dispatcher = new DdDispatcher();
                 echo '__call'.PHP_EOL;
                 // 返回“监听器所返回的值”
