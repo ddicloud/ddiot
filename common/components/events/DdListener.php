@@ -6,7 +6,7 @@ use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:39:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 09:45:13
+ * @Last Modified time: 2022-05-23 11:00:35
  */
 namespace common\components\events;
 
@@ -29,11 +29,11 @@ class DdListener
         // the bar method arguments
         // bar方法的参数
         $arguments = $event->getArguments();
- 
+        
         // ... do something / 做一些事
  
         // set the return value
         // 设置返回值
-        // $event->setReturnValue($someValue);
+        $event->setReturnValue([]);
     }
 }
