@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 18:27:08
+ * @Last Modified time: 2022-05-23 18:55:17
  */
 
 namespace app\modules\officialaccount\components;
@@ -141,12 +141,12 @@ class Fans extends BaseObject
 
     public function checkByopenid($openid)
     {
-        return  DdWechatFans::find()->where(['openid' => $openid])->one();
+        return  DdWechatFans::find()->where(['openid' => $openid])->asArray()->one();
     }
 
     public function fansByopenid($openid)
     {
-        return  DdWechatFans::find()->where(['openid' => $openid])->one();
+        return  DdWechatFans::find()->where(['openid' => $openid])->asArray()->one();
     }
 
     public function removeEmoji($nickname)
