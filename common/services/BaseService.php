@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 10:30:46
+ * @Last Modified time: 2022-05-23 10:47:44
  */
 
 namespace common\services;
@@ -85,26 +85,30 @@ class BaseService extends Component implements DdSubscriberInterface
     public function __call($methods, $arguments)
     {
         list($serverObjname,$method) = explode(':',$methods);
+        if(class_exists('addons\\'.$serverObjname)){
         // create an event named 'foo.method_is_not_found'
-        // 创建一个名为 'foo.method_is_not_found' 的事件
-        $serverObj = Yii::createObject([
-            'class'=> $serverObjname
-        ]);
+                // 创建一个名为 'foo.method_is_not_found' 的事件
+                $serverObj = Yii::createObject([
+                    'class'=> 'addons\\'.$serverObjname
+                ]);
+                
+                $event = new DdHandleUndefinedMethodEvent($serverObj, $method, $arguments);
+                $dispatcher = new DdDispatcher();
+                // 派遣事件
+                $dispatcher->dispatch('foo.method_is_not_found', $event);
         
-        $event = new DdHandleUndefinedMethodEvent($serverObj, $method, $arguments);
-        $dispatcher = new DdDispatcher();
-        // 派遣事件
-        $dispatcher->dispatch('foo.method_is_not_found', $event);
- 
-        // no listener was able to process the event? The method does not exist
-        // 没有监听能够处理此事件？ 那么该方法不存在
-        if (!$event->isProcessed()) {
-            throw new \Exception(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+                // no listener was able to process the event? The method does not exist
+                // 没有监听能够处理此事件？ 那么该方法不存在
+                if (!$event->isProcessed()) {
+                    throw new \Exception(sprintf('Call to undefined method %s::%s.', get_class($serverObj), $method));
+                }
+        
+                // return the listener returned value
+                // 返回“监听器所返回的值”
+                return $event->getReturnValue();
+        }else{
+            throw new \Exception(sprintf('Call to undefined class %s::%s.', 'addons\\'.$serverObjname, $method));
         }
- 
-        // return the listener returned value
-        // 返回“监听器所返回的值”
-        return $event->getReturnValue();
     }
 
     public static function getSubscribedEvents()
