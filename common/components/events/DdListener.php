@@ -6,7 +6,7 @@ use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:39:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 11:53:41
+ * @Last Modified time: 2022-05-23 12:33:54
  */
 namespace common\components\events;
 
@@ -14,7 +14,7 @@ use common\components\events\eventObjs\DdEvent;
 
 class DdListener
 {
-    public function onCall(DdHandleUndefinedMethodEvent $event)
+    public function onCall(DdHandleAddonsMethodEvent $event)
     {
         echo 'onCall'.PHP_EOL;
         // only respond to the calls to the 'bar' method
