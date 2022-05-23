@@ -6,14 +6,17 @@ use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:39:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 11:00:35
+ * @Last Modified time: 2022-05-23 11:53:41
  */
 namespace common\components\events;
+
+use common\components\events\eventObjs\DdEvent;
 
 class DdListener
 {
     public function onCall(DdHandleUndefinedMethodEvent $event)
     {
+        echo 'onCall'.PHP_EOL;
         // only respond to the calls to the 'bar' method
         // 只对 'bar'方法的调用 进行响应
         // if ('bar' != $event->getMethod()) {
@@ -25,6 +28,7 @@ class DdListener
         // the subject object (the foo instance)
         // 被操作对象（主题对象。foo实例）
         $foo = $event->getSubject();
+        // print_r($event);die;
  
         // the bar method arguments
         // bar方法的参数

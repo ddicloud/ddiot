@@ -3,14 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:33:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 09:41:00
+ * @Last Modified time: 2022-05-23 12:26:26
  */
 namespace common\components\events;
 
 
 use Symfony\Component\EventDispatcher\Event;
+use common\components\events\eventObjs\DdEvent;
  
-class DdHandleUndefinedMethodEvent extends Event
+class DdHandleUndefinedMethodEvent extends DdEvent
 {
     protected $subject;
     protected $method;
@@ -23,6 +24,7 @@ class DdHandleUndefinedMethodEvent extends Event
         $this->subject = $subject;
         $this->method = $method;
         $this->arguments = $arguments;
+        echo '调度开始'.PHP_EOL;
     }
  
     public function getSubject()
@@ -53,11 +55,18 @@ class DdHandleUndefinedMethodEvent extends Event
  
     public function getReturnValue()
     {
-        return $this->returnValue;
+        $action  = $this->getMethod();
+        $service = $this->getSubject();
+        // $this->getArguments()
+        // call_user_func();
+        $Res = call_user_func_array([$service, $action], [$this->getArguments()]);
+        return $Res;
     }
  
     public function isProcessed()
     {
         return $this->isProcessed;
     }
+
+   
 }
