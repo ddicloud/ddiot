@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 09:57:15
+ * @Last Modified time: 2022-05-23 10:30:46
  */
 
 namespace common\services;
@@ -12,6 +12,7 @@ namespace common\services;
 use common\components\events\DdDispatcher;
 use common\components\events\DdHandleUndefinedMethodEvent;
 use common\components\events\Interfaces\DdSubscriberInterface;
+use Yii;
 use yii\base\Component;
 
 /**
@@ -81,11 +82,16 @@ class BaseService extends Component implements DdSubscriberInterface
         $this->services = [];
     }
 
-    public function __call($method, $arguments)
+    public function __call($methods, $arguments)
     {
+        list($serverObjname,$method) = explode(':',$methods);
         // create an event named 'foo.method_is_not_found'
         // 创建一个名为 'foo.method_is_not_found' 的事件
-        $event = new DdHandleUndefinedMethodEvent($this, $method, $arguments);
+        $serverObj = Yii::createObject([
+            'class'=> $serverObjname
+        ]);
+        
+        $event = new DdHandleUndefinedMethodEvent($serverObj, $method, $arguments);
         $dispatcher = new DdDispatcher();
         // 派遣事件
         $dispatcher->dispatch('foo.method_is_not_found', $event);
