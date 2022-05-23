@@ -3,9 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:33:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 09:34:18
+ * @Last Modified time: 2022-05-23 09:41:00
  */
-namespace addons\diandi_doorlock\services\jobs;
+namespace common\components\events;
+
 
 use Symfony\Component\EventDispatcher\Event;
  

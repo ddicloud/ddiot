@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 09:34:35
+ * @Last Modified time: 2022-05-23 09:41:53
  */
 
 namespace common\services;
 
-use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
+use common\components\events\DdHandleUndefinedMethodEvent;
 use common\components\events\Interfaces\DdSubscriberInterface;
 use yii\base\Component;
 
