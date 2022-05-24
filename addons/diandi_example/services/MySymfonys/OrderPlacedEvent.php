@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-22 00:56:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:04:26
+ * @Last Modified time: 2022-05-24 11:43:20
  */
 
 namespace addons\diandi_example\services\MySymfonys;
@@ -30,6 +30,11 @@ class OrderPlacedEvent extends DdHandleAddonsMethodEvent
     {
         $this->order = $order;
         $this->cc = $cc;
+    }
+
+    public function setOrder()
+    {
+        return $this->order;
     }
 
     public function getOrder()

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-22 01:35:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:04:29
+ * @Last Modified time: 2022-05-24 11:31:13
  */
 
 namespace addons\diandi_example\services\MySymfonys;
@@ -25,6 +25,13 @@ use common\services\BaseService;
 class StoreSubscriber extends BaseService
 {
     public static $listeners = [
+        // 业务1 定义一个时间名称  dinadi_dis.order
+        // 'dinadi_dis.order' => [
+        //     ['查询商品信息', 1],
+        //     ['创建订单', 2],
+        //     ['支付订单', 3],
+        //     ['回调订单', 4],
+        // ],
         // 主模块的业务事件
         OrderPlacedEvent::EVENT_LOCK_OPEN => [
             ['diandi_example\services\ParentEventServer:ceshi', 1],

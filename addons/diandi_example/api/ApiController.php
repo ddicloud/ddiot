@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-02-21 10:06:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:21:36
+ * @Last Modified time: 2022-05-24 13:45:02
  */
 
 namespace addons\diandi_example\api;
@@ -14,9 +14,9 @@ use addons\diandi_example\services\MySymfonys\StoreSubscriber;
 use addons\diandi_example\services\ParentEventServer;
 use addons\diandi_shop\models\order\DdOrder;
 use api\controllers\AController;
+use common\components\events\DdDispatcher;
 use common\components\events\eventObjs\DdEvent;
 use common\helpers\ResultHelper;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Yii;
 
 class ApiController extends AController
@@ -94,14 +94,28 @@ class ApiController extends AController
         return ResultHelper::json(200, '请求成功', $res);
     }
 
+    /**
+     * 事件处理.
+     *
+     * @return void
+     * @date 2022-05-24
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
     public function actionEvent()
     {
         // 派遣器
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new DdDispatcher();
+
         // 监听器
         $listener = new AcmeListener();
-        // 连接到监听器
-        $dispatcher->addListener('order.nndd', [$listener, 'onFooAction']);
+
+        // 连接到监听器 一次派遣触发一次订阅，尽管订阅的是类，类一个事件包含多个方法，但是也是被派遣和订阅一次触发的
+        // $dispatcher->addListener(OrderPlacedEvent::NAME, [$listener, 'onFooAction']);
         $dispatcher->addListener('order.placed', function (DdEvent $event) {
             echo '在order.placed事件被派遣之后执行'.PHP_EOL;
             // print_r($event);
