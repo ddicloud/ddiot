@@ -3,13 +3,20 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-02-21 10:06:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:03:57
+ * @Last Modified time: 2022-05-24 11:17:12
  */
 
 namespace addons\diandi_example\api;
 
+use addons\diandi_example\services\MySymfonys\AcmeListener;
+use addons\diandi_example\services\MySymfonys\OrderPlacedEvent;
+use addons\diandi_example\services\MySymfonys\StoreSubscriber;
+use addons\diandi_example\services\ParentEventServer;
+use addons\diandi_shop\models\order\DdOrder;
 use api\controllers\AController;
+use common\components\events\eventObjs\DdEvent;
 use common\helpers\ResultHelper;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Yii;
 
 class ApiController extends AController
@@ -94,7 +101,7 @@ class ApiController extends AController
         $listener = new AcmeListener();
         // 连接到监听器
         $dispatcher->addListener('order.nndd', [$listener, 'onFooAction']);
-        $dispatcher->addListener('order.placed', function (Event $event) {
+        $dispatcher->addListener('order.placed', function (DdEvent $event) {
             echo '在order.placed事件被派遣之后执行'.PHP_EOL;
             // print_r($event);
             // will be executed when the foo.action event is dispatched
