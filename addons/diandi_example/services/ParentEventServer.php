@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-22 22:11:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 12:32:53
+ * @Last Modified time: 2022-05-24 13:55:05
  */
 
 namespace addons\diandi_example\services;
@@ -20,6 +20,7 @@ class ParentEventServer extends BaseService
     public function ceshi($params)
     {
         echo '父级第一个输出';
+        print_r()
        
         return ['data' => $params];
     }
