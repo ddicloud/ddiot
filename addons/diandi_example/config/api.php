@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-08 17:33:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:19:21
+ * @Last Modified time: 2022-05-24 11:19:40
  */
 
 return [
@@ -14,7 +14,7 @@ return [
         'pluralize' => false,
         'extraPatterns' => [
             'POST uptable' => 'uptable', //请求方式 请求方法，映射方法
-            'POST event' => 'event', //请求方式 请求方法，映射方法
+            'GET event' => 'event', //请求方式 请求方法，映射方法
         ],
     ],
 ];
