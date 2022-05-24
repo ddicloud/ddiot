@@ -3,18 +3,18 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-02-21 10:06:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 13:45:02
+ * @Last Modified time: 2022-05-24 13:47:05
  */
 
 namespace addons\diandi_example\api;
 
-use addons\diandi_example\services\MySymfonys\AcmeListener;
 use addons\diandi_example\services\MySymfonys\OrderPlacedEvent;
 use addons\diandi_example\services\MySymfonys\StoreSubscriber;
 use addons\diandi_example\services\ParentEventServer;
 use addons\diandi_shop\models\order\DdOrder;
 use api\controllers\AController;
 use common\components\events\DdDispatcher;
+use common\components\events\DdListener;
 use common\components\events\eventObjs\DdEvent;
 use common\helpers\ResultHelper;
 use Yii;
@@ -112,7 +112,7 @@ class ApiController extends AController
         $dispatcher = new DdDispatcher();
 
         // 监听器
-        $listener = new AcmeListener();
+        $listener = new DdListener();
 
         // 连接到监听器 一次派遣触发一次订阅，尽管订阅的是类，类一个事件包含多个方法，但是也是被派遣和订阅一次触发的
         // $dispatcher->addListener(OrderPlacedEvent::NAME, [$listener, 'onFooAction']);
