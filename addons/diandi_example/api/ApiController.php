@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-02-21 10:06:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 11:17:12
+ * @Last Modified time: 2022-05-24 11:21:36
  */
 
 namespace addons\diandi_example\api;
@@ -22,6 +22,7 @@ use Yii;
 class ApiController extends AController
 {
     public $modelClass = '';
+    protected $authOptional = ['*'];
 
     /**
      * @SWG\Post(path="/diandi_shop/address/add",
