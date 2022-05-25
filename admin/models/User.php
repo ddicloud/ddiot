@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 10:53:24
+ * @Last Modified time: 2022-05-25 18:33:43
  */
 
 namespace admin\models;
@@ -84,7 +84,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup($username, $mobile, $email, $password)
+    public function signup($username, $mobile, $email, $password, $company = '', $status = 0)
     {
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
 
@@ -119,7 +119,9 @@ class User extends ActiveRecord implements IdentityInterface
 
         $this->username = $username;
         $this->email = $email;
+        $this->company = $company;
         $this->mobile = $mobile;
+        $this->status = (int) $status;
 
         $this->setPassword($password);
         $this->generateAuthKey();
