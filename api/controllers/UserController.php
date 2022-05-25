@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 14:44:15
+ * @Last Modified time: 2022-05-24 18:20:52
  */
 
 namespace api\controllers;
@@ -557,17 +557,31 @@ class UserController extends AController
 
     /**
      * @SWG\Post(path="/user/feedback",
-     *     tags={"重置令牌"},
-     *     summary="重置令牌",
+     *     tags={"反馈问题"},
+     *     summary="反馈问题",
      *     @SWG\Response(
      *         response = 200,
-     *         description = "重置令牌",
+     *         description = "反馈问题",
      *     ),
      *     @SWG\Parameter(
      *      in="formData",
-     *      name="refresh_token",
+     *      name="name",
      *      type="string",
-     *      description="刷新token令牌",
+     *      description="姓名",
+     *      required=true,
+     *    ),
+     *     @SWG\Parameter(
+     *      in="formData",
+     *      name="contact",
+     *      type="string",
+     *      description="联系方式",
+     *      required=true,
+     *    ),
+     *     @SWG\Parameter(
+     *      in="formData",
+     *      name="feedback",
+     *      type="string",
+     *      description="反馈说明",
      *      required=true,
      *    ),
      * )

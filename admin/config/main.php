@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 17:14:49
+ * @Last Modified time: 2022-05-25 17:00:22
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -173,6 +173,8 @@ return [
                         'POST   delete/<id>' => 'delete',
                         'POST   activate/<id>' => 'activate',
                         'POST   upstatus' => 'upstatus',
+                        'POST create' => 'create',
+                        'POST update' => 'update',
                     ],
                 ],
                 [
@@ -301,7 +303,7 @@ return [
                     'extraPatterns' => [
                         'POST install' => 'install',
                         'POST uninstall' => 'uninstall',
-                        'POST auth' => 'auth'
+                        'POST auth' => 'auth',
                     ],
                 ],
                 [
