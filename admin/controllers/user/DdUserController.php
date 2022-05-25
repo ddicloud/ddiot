@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-03-26 15:16:13
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 17:03:35
+ * @Last Modified time: 2022-05-25 17:05:36
  */
 
 namespace admin\controllers\user;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdUser;
 use common\models\DdUserSearch;
@@ -82,13 +83,15 @@ class DdUserController extends AController
     {
         $model = new DdUser();
 
-        if ($model->load(Yii::$app->request->post(),'') && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        }
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '添加成功', [
+                'model' => $model,
+            ]);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+            return ResultHelper::json(400, $msg);
+        }
     }
 
     /**
@@ -105,13 +108,15 @@ class DdUserController extends AController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post(),'') && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        }
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+            return ResultHelper::json(400, $msg);
+        }
     }
 
     public function actionProfile($id)
