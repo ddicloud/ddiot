@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:35:32
+ * @Last Modified time: 2022-05-25 21:31:23
  */
 
 namespace admin\controllers;
@@ -22,6 +22,7 @@ use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\components\UserStatus;
+use diandi\admin\models\AuthAssignment;
 use diandi\admin\models\searchs\User as ModelsUser;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -315,9 +316,12 @@ class UserController extends AController
 
         $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
 
+        $roles = AuthAssignment::find()->where(['user_id' => $user_id])->select('item_name')->column();
+
         return ResultHelper::json(200, '获取成功', [
             'userinfo' => $userinfo,
             'Website' => $Website,
+            'roles' => $roles,
         ]);
     }
 
