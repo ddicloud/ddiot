@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-17 16:59:48
+ * @Last Modified time: 2022-05-25 18:14:20
  */
 
 namespace admin\controllers;
@@ -819,6 +819,52 @@ class UserController extends AController
             return ResultHelper::json(200, '修改成功');
         } else {
             return ResultHelper::json(401, '修改失败');
+        }
+    }
+
+    /**
+     * Creates a new DdUser model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new DdUser();
+
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '添加成功', [
+                'model' => $model,
+            ]);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $msg);
+        }
+    }
+
+    /**
+     * Updates an existing DdUser model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     *
+     * @param int $id
+     *
+     * @return mixed
+     *
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $msg);
         }
     }
 }
