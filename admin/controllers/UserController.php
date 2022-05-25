@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 21:33:13
+ * @Last Modified time: 2022-05-25 21:48:24
  */
 
 namespace admin\controllers;
@@ -317,11 +317,11 @@ class UserController extends AController
         $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
 
         $roles = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
+        $userinfo['roles'] = $roles;
 
         return ResultHelper::json(200, '获取成功', [
             'userinfo' => $userinfo,
             'Website' => $Website,
-            'roles' => $roles,
         ]);
     }
 
