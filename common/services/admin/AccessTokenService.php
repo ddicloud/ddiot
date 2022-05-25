@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 21:57:24
+ * @Last Modified time: 2022-05-25 22:01:56
  */
 
 namespace common\services\admin;
@@ -16,6 +16,7 @@ use common\helpers\ErrorsHelper;
 use common\models\UserBloc;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
+use diandi\addons\models\DdAddons;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\UnprocessableEntityHttpException;
@@ -95,6 +96,7 @@ class AccessTokenService extends BaseService
         } else {
             $result['addons'] = [
                 'module_name' => $module_name,
+                'module_info' => DdAddons::find()->where(['identifie' => $module_name])->asArray()->one(),
                 'store_id' => $store_id,
             ];
         }
