@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:14:20
+ * @Last Modified time: 2022-05-25 18:24:12
  */
 
 namespace admin\controllers;
@@ -17,7 +17,6 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use common\models\DdMember as ModelsDdMember;
-use common\models\DdUser;
 use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
@@ -30,6 +29,7 @@ use yii\web\NotFoundHttpException;
 class UserController extends AController
 {
     public $modelClass = 'admin\models\User';
+
     protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh'];
 
     /**
@@ -575,7 +575,7 @@ class UserController extends AController
         $where['store_id'] = yii::$app->params['store_id'];
 
         // 首先校验手机号是否重复
-        $user = DdUser::find()->where($where)->asArray()->one();
+        $user = User::find()->where($where)->asArray()->one();
 
         if (empty($user) && $type === 'forgetpass') {
             return ResultHelper::json(401, '手机号不存在', []);
@@ -822,15 +822,9 @@ class UserController extends AController
         }
     }
 
-    /**
-     * Creates a new DdUser model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     *
-     * @return mixed
-     */
     public function actionCreate()
     {
-        $model = new DdUser();
+        $model = new User();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             return ResultHelper::json(200, '添加成功', [
@@ -843,16 +837,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * Updates an existing DdUser model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
