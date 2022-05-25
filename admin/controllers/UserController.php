@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:29:07
+ * @Last Modified time: 2022-05-25 18:35:32
  */
 
 namespace admin\controllers;
@@ -847,14 +847,8 @@ class UserController extends AController
 
         $res = $model->signup($username, $mobile, $email, $password);
 
-        return ResultHelper::json(200, '添加成功', [
-            'res' => $res,
-        ]);
-
-        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-            return ResultHelper::json(200, '添加成功', [
-                'model' => $model,
-            ]);
+        if ($res) {
+            return ResultHelper::json(200, '添加成功', $res);
         } else {
             $msg = ErrorsHelper::getModelError($model);
 
