@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-03-26 15:16:13
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 17:05:36
+ * @Last Modified time: 2022-05-25 17:11:18
  */
 
 namespace admin\controllers\user;
@@ -14,7 +14,6 @@ use common\helpers\ResultHelper;
 use common\models\DdUser;
 use common\models\DdUserSearch;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -23,23 +22,6 @@ use yii\web\NotFoundHttpException;
 class DdUserController extends AController
 {
     public $modelClass = '';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        Yii::$app->params['plugins'] = 'member';
-
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all DdUser models.
