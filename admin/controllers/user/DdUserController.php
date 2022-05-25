@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-03-26 15:16:13
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:22:49
+ * @Last Modified time: 2022-05-25 17:03:35
  */
 
 namespace admin\controllers\user;
@@ -82,7 +82,7 @@ class DdUserController extends AController
     {
         $model = new DdUser();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(),'') && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
         }
 
@@ -105,7 +105,7 @@ class DdUserController extends AController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(),'') && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
         }
 
