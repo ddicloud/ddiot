@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:44:43
+ * @Last Modified time: 2022-05-25 18:47:05
  */
 
 namespace common\services;
@@ -93,7 +93,6 @@ class BaseService extends Component implements DdSubscriberInterface
                 ]);
             $event = new DdHandleAddonsMethodEvent($serverObj, $method, $arguments[0]);
             $dispatcher = new DdDispatcher();
-            echo '__call'.PHP_EOL;
             // 返回“监听器所返回的值”
             return $event->getReturnValue();
         } else {
