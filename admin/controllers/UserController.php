@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:24:12
+ * @Last Modified time: 2022-05-25 18:29:07
  */
 
 namespace admin\controllers;
@@ -824,7 +824,32 @@ class UserController extends AController
 
     public function actionCreate()
     {
+        global $_GPC;
+        $username = $_GPC['username'];
+        $mobile = $_GPC['mobile'];
+        $password = $_GPC['password'];
+        $email = $_GPC['email'];
+
+        if (empty($username)) {
+            return ResultHelper::json(401, '用户名不能为空', []);
+        }
+        if (empty($mobile)) {
+            return ResultHelper::json(401, '手机号不能为空', []);
+        }
+        if (empty($email)) {
+            return ResultHelper::json(401, '邮箱不能为空', []);
+        }
+        if (empty($password)) {
+            return ResultHelper::json(401, '密码不能为空', []);
+        }
+
         $model = new User();
+
+        $res = $model->signup($username, $mobile, $email, $password);
+
+        return ResultHelper::json(200, '添加成功', [
+            'res' => $res,
+        ]);
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             return ResultHelper::json(200, '添加成功', [
