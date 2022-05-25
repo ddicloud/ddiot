@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 03:27:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 12:29:21
+ * @Last Modified time: 2022-05-25 18:44:43
  */
 
 namespace common\services;
@@ -84,19 +84,19 @@ class BaseService extends Component implements DdSubscriberInterface
 
     public function __call($methods, $arguments)
     {
-        list($serverObjname,$method) = explode(':',$methods);
-        if(class_exists('addons\\'.$serverObjname)){
-        // create an event named 'foo.method_is_not_found'
-                // 创建一个名为 'foo.method_is_not_found' 的事件
-                $serverObj = Yii::createObject([
-                    'class'=> 'addons\\'.$serverObjname
+        list($serverObjname, $method) = explode(':', $methods);
+        if (class_exists('addons\\'.$serverObjname)) {
+            // create an event named 'foo.method_is_not_found'
+            // 创建一个名为 'foo.method_is_not_found' 的事件
+            $serverObj = Yii::createObject([
+                    'class' => 'addons\\'.$serverObjname,
                 ]);
-                $event = new DdHandleAddonsMethodEvent($serverObj, $method, $arguments);
-                $dispatcher = new DdDispatcher();
-                echo '__call'.PHP_EOL;
-                // 返回“监听器所返回的值”
-                return $event->getReturnValue();
-        }else{
+            $event = new DdHandleAddonsMethodEvent($serverObj, $method, $arguments[0]);
+            $dispatcher = new DdDispatcher();
+            echo '__call'.PHP_EOL;
+            // 返回“监听器所返回的值”
+            return $event->getReturnValue();
+        } else {
             throw new \Exception(sprintf('Call to undefined class %s::%s.', 'addons\\'.$serverObjname, $method));
         }
     }
