@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 19:11:44
+ * @Last Modified time: 2022-05-26 17:27:39
  */
 
 return [
@@ -25,7 +25,7 @@ return [
         '@Qiniu' => '@common/components/FileUpload/libs/Qiniu',
         '@TencentYoutuyun' => '@vendor/youtu/TencentYoutuyun',
         '@diandi' => '@vendor/yii-diandi',
-        '@addonstpl' => '@frontend/web/backend/giitpl',
+        '@addonstpl' => '@console/gii/giitpl',
     ],
     'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
     'modules' => [

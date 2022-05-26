@@ -4,11 +4,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-13 09:20:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-13 09:51:54
+ * @Last Modified time: 2022-05-26 17:39:50
  */
 
 use common\helpers\ImageHelper;
-use common\widgets\Alert;
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
@@ -143,7 +142,6 @@ AppAsset::register($this);
 			<?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]); ?>
-			<?= Alert::widget(); ?>
 			<?= $content; ?>
 
 			<!-- Footer
