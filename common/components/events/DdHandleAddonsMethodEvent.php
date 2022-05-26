@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:33:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:41:36
+ * @Last Modified time: 2022-05-26 09:47:29
  */
 
 namespace common\components\events;
@@ -35,6 +35,26 @@ class DdHandleAddonsMethodEvent extends DdEvent
         $this->method = $method;
         $this->arguments = $arguments;
         echo '调度开始'.PHP_EOL;
+    }
+
+    public function __set($property_name, $value)
+    {
+        $this->$property_name = $value;
+    }
+
+    public function __get($property_name)
+    {
+        return isset($this->$property_name) ? $this->$property_name : null;
+    }
+
+    private function __isset($property_name)
+    {
+        return isset($this->$property_name);
+    }
+
+    private function __unset($property_name)
+    {
+        unset($this->$property_name);
     }
 
     public function getSubject()
