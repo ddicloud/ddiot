@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 14:11:17
+ * @Last Modified time: 2022-05-26 14:12:44
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -64,11 +64,6 @@ return [
             'enableAutoLogin' => true,
             'enableSession' => true,
             'loginUrl' => null,
-        ],
-        // 接口权限控制
-        'authManager' => [
-            'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
-            'defaultRoles' => array('基础权限组'), //默认角色
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
