@@ -4,15 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-18 16:51:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 14:20:31
+ * @Last Modified time: 2022-05-26 14:54:49
  */
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=82.156.131.85;dbname=dev.hopes;port=3306',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=diandi14;port=3306',
     'tablePrefix' => 'dd_',
-    'username' => 'dev.hopes',
-    'password' => 'ceJ2ydXti5FjjMGb',
+    'username' => 'root',
+    'password' => 'root',
     'charset' => 'utf8',
     'attributes' => [
         PDO::ATTR_STRINGIFY_FETCHES => false,
