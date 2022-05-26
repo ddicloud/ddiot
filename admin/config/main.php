@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 14:23:30
+ * @Last Modified time: 2022-05-26 14:56:51
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -49,6 +49,7 @@ return [
             'user/login',
             'user/userinfo',
             'system/index/menus',
+            'addons/store/view/*',
             // 'gii/*', //允许访问的节点，可自行添加
             // 'admin/*', //允许所有人访问admin节点及其子节点
             'system/welcome/index',
