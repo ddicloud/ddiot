@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 15:56:02
+ * @Last Modified time: 2022-05-26 12:49:14
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -51,6 +51,21 @@ return [
         ],
     ],
     'as behaviors' => 'common\behaviors\ServiceBehavior',
+    'as access' => [
+        'class' => 'diandi\admin\components\AccessControl',
+        'allowActions' => [
+            'site/*', //允许访问的节点，可自行添加
+            // 'gii/*', //允许访问的节点，可自行添加
+            // 'admin/*', //允许所有人访问admin节点及其子节点
+            'system/welcome/index',
+            'system/index/info',
+            'system/settings/set-cache',
+            'system/settings/store',
+            'addons/addons/index',
+            'upload/upload',
+            'module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-api',
@@ -64,6 +79,11 @@ return [
             'enableAutoLogin' => true,
             'enableSession' => true,
             'loginUrl' => null,
+        ],
+        // 接口权限控制
+        'authManager' => [
+            'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
+            'defaultRoles' => array('基础权限组'), //默认角色
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
