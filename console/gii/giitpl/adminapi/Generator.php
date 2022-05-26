@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  &#60;2192138785@qq.com&#62;
  * @Date:   2020-04-29 19:56:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-05-26 14:16:16
+ * @Last Modified time: 2022-05-26 18:24:58
  */
  
 /**
@@ -63,7 +63,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName()
     {
-        return '后台管理接口增删改查控制器生成';
+        return '后台管理接口生成';
     }
 
     /**

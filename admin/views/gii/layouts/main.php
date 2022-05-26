@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-20 20:41:47
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-20 20:41:48
+ * @Last Modified time: 2022-05-26 18:27:54
  */
  
 
@@ -25,13 +25,30 @@ $asset = yii\gii\GiiAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        .bg-gii {
+            background-color: none;
+            border-bottom: 1px solid #343a40;
+        }
+        .nav-links{
+            width: 80px;
+            display: inline-flex;
+            color: #313131;
+    font-size: 16px;
+        }
+        .navbar{
+            position: relative;
+        }
+    </style>
 </head>
 <body>
     <div class="page-container">
         <?php $this->beginBody() ?>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark bg-gii">
             <div class="container">
-                <?php echo Html::a(Html::img($asset->baseUrl . '/logo.png'), ['default/index'], [
+                <?php echo Html::a(Html::img('https://www.hopesfire.com/template/xmyc_lt4/static//%E5%BA%97%E6%BB%B4logo-dz.png',[
+                    'height'=>'50'
+                ]), ['default/index'], [
                     'class' => ['navbar-brand']
                 ]); ?>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#gii-nav"
@@ -47,34 +64,22 @@ $asset = yii\gii\GiiAsset::register($this);
                             'itemOptions' => [
                                 'class' => ['nav-item']
                             ],
-                            'linkTemplate' => '<a class="nav-link" href="{url}">{label}</a>',
+                            'linkTemplate' => '<a class="nav-links" href="{url}" target="_block">{label}</a>',
                             'items' => [
-                                ['label' => 'Home', 'url' => ['default/index']],
-                                ['label' => 'Help', 'url' => 'http://www.yiiframework.com/doc-2.0/ext-gii-index.html'],
-                                ['label' => 'Application', 'url' => Yii::$app->homeUrl],
+                                ['label' => '官方网站', 'url' => 'https://www.dandicloud.com/'],
+                                ['label' => '开发社区', 'url' => 'https://www.hopesfire.com/'],
+                                ['label' => '开发手册', 'url' => 'http://doc.hopesfire.com/'],
                             ]
                     ]);
                     ?>
                 </div>
             </div>
         </nav>
-        <div class="container content-container">
+        <div class="container" style="margin-top: 20px;">
             <?= $content ?>
         </div>
         <div class="footer-fix"></div>
     </div>
-    <footer class="footer border-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <p>A Product of <a href="http://www.yiisoft.com/">Yii Software LLC</a></p>
-                </div>
-                <div class="col-6">
-                    <p class="text-right"><?= Yii::powered() ?></p>
-                </div>
-            </div>
-        </div>
-    </footer>
 <?php $this->endBody() ?>
 </body>
 </html>
