@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 17:16:30
+ * @Last Modified time: 2022-05-30 10:33:19
  */
 
 namespace admin\controllers\addons;
@@ -53,7 +53,7 @@ class AddonsController extends AController
 
         $searchModel = new DdAddonsSearch([
             'module_names' => $module_names,
-            'parent_mids' => 0,
+            // 'parent_mids' => 0,
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -99,7 +99,7 @@ class AddonsController extends AController
                 'pageSize' => 15,
             ],
         ]);
-        
+
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
             'provider' => $provider,
