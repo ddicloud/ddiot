@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-31 11:05:45
+ * @Last Modified time: 2022-05-31 11:56:08
  */
 
 namespace admin\controllers;
@@ -121,8 +121,8 @@ class AController extends ActiveController
             'class' => \common\behaviors\HttpRequstMethod::className(),
         ];
 
-        $behaviors['verbs'] = [
-            'class' => \yii\filters\VerbFilter::class,
+        $behaviors['verbFilter'] = [
+            'class' => \yii\filters\VerbFilter::className(),
             'actions' => [
                 'delete' => ['POST', 'DELETE'],
             ],
