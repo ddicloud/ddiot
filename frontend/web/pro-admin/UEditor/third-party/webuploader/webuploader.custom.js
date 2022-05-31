@@ -1,3 +1,9 @@
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-04-26 11:05:30
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-05-07 17:59:47
+ */
 /*! WebUploader 0.1.2 */
 
 

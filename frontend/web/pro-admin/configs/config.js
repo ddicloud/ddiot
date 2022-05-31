@@ -5,18 +5,18 @@
  * @Last Modified time: 2022-04-15 11:38:57
  */
 // 站点名称
-$siteName = '店滴云',
+$siteName = '农业认养',
 // 接口地址
-$apiUrl = 'https://dev.hopesfire.com/admin',
+$apiUrl = 'https://www.smtbly.cn/admin',
 // 基础地址
-$siteUrl = 'https://dev.hopesfire.com'
+$siteUrl = 'https://www.smtbly.cn'
 // 百度地图key
 $bmapAk =  'sY7GGnljSvLzM44mEwVtGozS'
 // unit 单商户模式，units多商户模式
 $modeType =  'units'
 // 集团ID
-$bloc_id = 28
+$bloc_id = 32
 // 商户id
-$store_id = 77
+$store_id = 1
 
 
