@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-31 11:56:08
+ * @Last Modified time: 2022-05-31 11:59:40
  */
 
 namespace admin\controllers;
@@ -119,13 +119,6 @@ class AController extends ActiveController
         // 添加默认的公司与商户参数
         $behaviors['request'] = [
             'class' => \common\behaviors\HttpRequstMethod::className(),
-        ];
-
-        $behaviors['verbFilter'] = [
-            'class' => \yii\filters\VerbFilter::className(),
-            'actions' => [
-                'delete' => ['POST', 'DELETE'],
-            ],
         ];
 
         return $behaviors;
