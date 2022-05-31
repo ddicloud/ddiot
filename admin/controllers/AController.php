@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 17:27:21
+ * @Last Modified time: 2022-05-31 11:05:45
  */
 
 namespace admin\controllers;
@@ -61,7 +61,7 @@ class AController extends ActiveController
     public $storeField = 'store_id';
 
     public $adminField = 'admin_id';
-    
+
     // 主要数据的模型
     public $modelClass = '';
 
@@ -119,6 +119,13 @@ class AController extends ActiveController
         // 添加默认的公司与商户参数
         $behaviors['request'] = [
             'class' => \common\behaviors\HttpRequstMethod::className(),
+        ];
+
+        $behaviors['verbs'] = [
+            'class' => \yii\filters\VerbFilter::class,
+            'actions' => [
+                'delete' => ['POST', 'DELETE'],
+            ],
         ];
 
         return $behaviors;
