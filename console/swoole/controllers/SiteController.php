@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:34:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-02 17:28:00
+ * @Last Modified time: 2022-06-02 18:01:20
  */
  
 /**
@@ -19,6 +19,7 @@ use swooleService\tasks\DemoTask;
 use Yii;
 use yii\db\Exception;
 use yii\web\Controller;
+use Swoole\Coroutine\Client;
 
 class SiteController extends Controller
 {
