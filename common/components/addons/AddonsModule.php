@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 17:46:11
+ * @Last Modified time: 2022-06-02 12:04:42
  */
 
 namespace common\components\addons;
@@ -193,6 +193,20 @@ class AddonsModule extends Module
         ];
 
         $config['params']['wechatConfig'] = array_merge($config['params']['wechatConfig'], $wechatConfig);
+        $Wxapp = $conf['wxapp'];
+
+        // 小程序初始化
+        // 小程序参数设置
+        $config['params']['wechatMiniProgramConfig'] = [
+            'app_id' => $Wxapp['AppId'],
+            'secret' => $Wxapp['AppSecret'],
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+            'log' => [
+                'level' => 'debug',
+                'file' => Yii::getAlias('@runtime/miniprogram'),
+            ],
+        ];
 
         $params = Yii::$app->params;
 
