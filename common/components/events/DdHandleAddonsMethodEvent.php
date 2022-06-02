@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:33:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 09:47:29
+ * @Last Modified time: 2022-06-02 10:09:21
  */
 
 namespace common\components\events;
@@ -47,12 +47,12 @@ class DdHandleAddonsMethodEvent extends DdEvent
         return isset($this->$property_name) ? $this->$property_name : null;
     }
 
-    private function __isset($property_name)
+    public function __isset($property_name)
     {
         return isset($this->$property_name);
     }
 
-    private function __unset($property_name)
+    public function __unset($property_name)
     {
         unset($this->$property_name);
     }
