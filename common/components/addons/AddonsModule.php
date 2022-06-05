@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 11:05:44
+ * @Last Modified time: 2022-06-05 11:10:56
  */
 
 namespace common\components\addons;
@@ -78,12 +78,15 @@ class AddonsModule extends Module
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/frontend.php');
                 break;
             case 'app-console':
-                $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/console');
+                $runtimePath = Yii::getAlias('@app/runtime/'.$module);
                 define('ADDONS_RUNTIME',$runtimePath);
-                FileHelper::mkdirs($runtimePath.'/swoole/baseserver.log');
-                FileHelper::mkdirs($runtimePath.'/swoole/baseserver.pid');
-                FileHelper::mkdirs($runtimePath.'/swoole/swoole.log');
-                FileHelper::mkdirs($runtimePath.'/swoole/swoole.log');
+                FileHelper::mkdirs($runtimePath.'/swoole');
+                $files = ['baseserver.log','baseserver.pid','swoole.log','swoole.log'];
+                foreach ($files as $key => $value) {
+                    if(!file_exists($runtimePath.'/'.$value)){
+                        file_put_contents($runtimePath.'/'.$value,'');
+                    }
+                }
                 break;
             default:
         }
