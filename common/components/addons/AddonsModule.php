@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 10:28:43
+ * @Last Modified time: 2022-06-05 11:05:44
  */
 
 namespace common\components\addons;
@@ -27,16 +27,6 @@ class AddonsModule extends Module
         $logPath = Yii::getAlias('@runtime/base/addons/'.date('ymd').'.log');
 
         $module = $this->id;
-        
-
-        if(Yii::$app->id != 'app-console'){
-            $cookies = Yii::$app->response->cookies;
-            // 添加一个cookie
-            $cookies->add(new \yii\web\Cookie([
-                'name' => 'language',
-                'value' => 'zh-CN',
-            ]));
-        }
 
       
 
@@ -68,13 +58,32 @@ class AddonsModule extends Module
             case 'app-backend':
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/backend.php');
                 Yii::$app->params['menu'] = $this->getMenus();
-
+                $cookies = Yii::$app->response->cookies;
+                // 添加一个cookie
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'language',
+                    'value' => 'zh-CN',
+                ]));
                 break;
             case 'app-api':
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $cookies = Yii::$app->response->cookies;
+                // 添加一个cookie
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'language',
+                    'value' => 'zh-CN',
+                ]));
                 break;
             case 'app-frontend':
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/frontend.php');
+                break;
+            case 'app-console':
+                $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/console');
+                define('ADDONS_RUNTIME',$runtimePath);
+                FileHelper::mkdirs($runtimePath.'/swoole/baseserver.log');
+                FileHelper::mkdirs($runtimePath.'/swoole/baseserver.pid');
+                FileHelper::mkdirs($runtimePath.'/swoole/swoole.log');
+                FileHelper::mkdirs($runtimePath.'/swoole/swoole.log');
                 break;
             default:
         }
