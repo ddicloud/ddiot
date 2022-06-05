@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:34:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-02 18:01:20
+ * @Last Modified time: 2022-06-05 09:05:12
  */
  
 /**
@@ -19,7 +19,7 @@ use swooleService\tasks\DemoTask;
 use Yii;
 use yii\db\Exception;
 use yii\web\Controller;
-use Swoole\Coroutine\Client;
+
 
 class SiteController extends Controller
 {
@@ -27,20 +27,6 @@ class SiteController extends Controller
     {
         Yii::$app->redis->hset('self::PREFIX_KEY', '$room_id', 4568);
 
-        $client = new Client(SWOOLE_SOCK_TCP);
-        if (!$client->connect('127.0.0.1', 9503, 0.5)) {
-            echo "connect failed. Error: {$client->errCode}\n";
-        }
-        $client->send("hello world\n");
-        echo $client->recv();
-        $client->close();
-        
-        Yii::$app->on('tcp_connect', function ($event) {
-            loggingHelper::writeLog('swooleService','SiteController','tcp_connect',[]);
-        });
-
-        
-        
         return [
             'name' => Yii::$app->name,
             'version' => Yii::$app->version
