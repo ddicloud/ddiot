@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 11:16:02
+ * @Last Modified time: 2022-06-05 11:17:50
  */
 
 namespace common\components\addons;
@@ -78,9 +78,9 @@ class AddonsModule extends Module
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/frontend.php');
                 break;
             case 'app-console':
-                $runtimePath = Yii::getAlias('@app/runtime/'.$module);
+                $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/swoole');
                 define('ADDONS_RUNTIME',$runtimePath);
-                FileHelper::mkdirs($runtimePath.'/swoole');
+                FileHelper::mkdirs($runtimePath);
                 if(is_dir($runtimePath)){
                     chmod($runtimePath, 0777);
                 }
