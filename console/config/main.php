@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-23 20:21:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-02 16:52:33
+ * @Last Modified time: 2022-06-05 10:27:14
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -34,6 +34,9 @@ return [
     'components' => [
         'request'=>[
             'class' => 'console\services\request',
+        ],
+        'response'=>[
+            'class' => 'console\services\response',
         ],
         'user' => [
             'class' => 'yii\web\User',
