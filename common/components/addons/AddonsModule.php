@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 11:10:56
+ * @Last Modified time: 2022-06-05 11:14:04
  */
 
 namespace common\components\addons;
@@ -85,6 +85,7 @@ class AddonsModule extends Module
                 foreach ($files as $key => $value) {
                     if(!file_exists($runtimePath.'/'.$value)){
                         file_put_contents($runtimePath.'/'.$value,'');
+                        chmod($runtimePath.'/'.$value, 0777);
                     }
                 }
                 break;
