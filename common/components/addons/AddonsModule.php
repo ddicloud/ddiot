@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 11:14:04
+ * @Last Modified time: 2022-06-05 11:16:02
  */
 
 namespace common\components\addons;
@@ -81,11 +81,14 @@ class AddonsModule extends Module
                 $runtimePath = Yii::getAlias('@app/runtime/'.$module);
                 define('ADDONS_RUNTIME',$runtimePath);
                 FileHelper::mkdirs($runtimePath.'/swoole');
+                if(is_dir($runtimePath)){
+                    chmod($runtimePath, 0777);
+                }
                 $files = ['baseserver.log','baseserver.pid','swoole.log','swoole.log'];
                 foreach ($files as $key => $value) {
                     if(!file_exists($runtimePath.'/'.$value)){
-                        file_put_contents($runtimePath.'/'.$value,'');
                         chmod($runtimePath.'/'.$value, 0777);
+                        file_put_contents($runtimePath.'/'.$value,'');
                     }
                 }
                 break;
