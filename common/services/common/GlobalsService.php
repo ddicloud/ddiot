@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 09:58:10
+ * @Last Modified time: 2022-06-06 10:20:22
  */
 
 namespace common\services\common;
@@ -214,14 +214,13 @@ class GlobalsService extends BaseService
      */
     public function getConf($bloc_id = 0)
     {
-        $logPath = Yii::getAlias('@app/runtime/config/getConf/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@api/runtime/config/getConf/'.date('ymd').'.log');
 
         $cacheKey = 'conf_'.$bloc_id;
-        // if (Yii::$app->cache->get($cacheKey)) {
-        //     Yii::$app->params['conf'] = Yii::$app->cache->get($cacheKey);
-
-        //     return Yii::$app->cache->get($cacheKey);
-        // }
+        if (Yii::$app->cache->get($cacheKey)) {
+            Yii::$app->params['conf'] = Yii::$app->cache->get($cacheKey);
+            return Yii::$app->cache->get($cacheKey);
+        }
 
         FileHelper::writeLog($logPath, '配置获取'.$bloc_id);
 
