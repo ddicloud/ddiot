@@ -29,8 +29,7 @@ class FileHelper extends BaseFileHelper
     {
         if (!file_exists($catalogue)) {
             self::mkdirs(dirname($catalogue));
-            $path = Yii::getAlias("@api/runtime/chmod/file.log");
-            file_put_contents($path,$catalogue);
+           
             mkdir($catalogue, 0777);
         }
 
