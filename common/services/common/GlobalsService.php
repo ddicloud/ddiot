@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 10:43:21
+ * @Last Modified time: 2022-06-06 09:58:10
  */
 
 namespace common\services\common;
@@ -214,7 +214,7 @@ class GlobalsService extends BaseService
      */
     public function getConf($bloc_id = 0)
     {
-        $logPath = Yii::getAlias('@runtime/config/getConf/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@app/runtime/config/getConf/'.date('ymd').'.log');
 
         $cacheKey = 'conf_'.$bloc_id;
         // if (Yii::$app->cache->get($cacheKey)) {
