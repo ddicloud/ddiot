@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-01 05:26:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-18 22:22:07
+ * @Last Modified time: 2022-06-06 09:46:35
  */
 
 
@@ -30,6 +30,7 @@ class FileHelper extends BaseFileHelper
         if (!file_exists($catalogue)) {
             self::mkdirs(dirname($catalogue));
             mkdir($catalogue, 0777);
+            @chmod($catalogue, 0777);
         }
 
         return true;
