@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-25 12:30:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 09:40:00
+ * @Last Modified time: 2022-06-06 10:49:13
  */
  
 namespace console\controllers;
@@ -26,7 +26,7 @@ class BaseController extends \yii\console\Controller
         Yii::$app->service->commonGlobalsService->initId($this->bloc_id, $this->store_id, $this->addons);
         Yii::$app->service->commonGlobalsService->getConf($this->bloc_id);
         $module = $this->addons;
-        $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/swoole');
+        $runtimePath = Yii::getAlias('@console/runtime/'.$module.'/swoole');
         define('SWOOLE_RUNTIME',$runtimePath);
         FileHelper::mkdirs($runtimePath);
         if(is_dir($runtimePath)){
