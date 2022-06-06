@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 01:06:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-07-01 16:19:37
+ * @Last Modified time: 2022-06-06 10:02:43
  */
 
 namespace common\services\common;
@@ -30,7 +30,7 @@ class StoreService extends BaseService
     {
         global $_GPC;
 
-        $logPath = Yii::getAlias('@runtime/StoreService/list/' . date('Y/md') . '.log');
+        $logPath = Yii::getAlias('@app/runtime/StoreService/list/' . date('Y/md') . '.log');
 
         FileHelper::writeLog($logPath, '经纬度计算距离参数' . json_encode([
             $longitude, $latitude,

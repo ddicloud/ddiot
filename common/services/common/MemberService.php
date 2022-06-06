@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-09 14:52:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 14:27:22
+ * @Last Modified time: 2022-06-06 10:02:31
  */
 
 namespace common\services\common;
@@ -69,7 +69,7 @@ class MemberService extends BaseService
             $store_id   = Yii::$app->params['global_store_id'];
         }
 
-        $logPath = Yii::getAlias('@runtime/MemberService/baseInfo/' . date('Y/md') . '.log');
+        $logPath = Yii::getAlias('@app/runtime/MemberService/baseInfo/' . date('Y/md') . '.log');
 
         FileHelper::writeLog($logPath, '模块内回调' . json_encode([
             'global_bloc_id' => Yii::$app->params['global_bloc_id'],
@@ -181,7 +181,7 @@ class MemberService extends BaseService
 
     public function updateAccount($member_id, $fields, $num, $is_global = false)
     {
-        $logPath = Yii::getAlias('@runtime/MemberService/updateAccount/' . date('Y/md') . '.log');
+        $logPath = Yii::getAlias('@app/runtime/MemberService/updateAccount/' . date('Y/md') . '.log');
 
         if (!$is_global) {
             $bloc_id    = Yii::$app->params['bloc_id'];

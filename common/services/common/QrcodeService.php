@@ -6,7 +6,7 @@ use common\services\BaseService;
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-13 01:18:13
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-11-13 01:18:32
+ * @Last Modified time: 2022-06-06 10:02:37
  */
 namespace common\services\common;
 
@@ -23,7 +23,7 @@ class QrcodeService extends BaseService
 // //     [url] => http://weixin.qq.com/q/02NacU4VSubPO1GSxj1p1k
     public static function createCode($type,$ticket,$scene_str,$url,$member_id,$expire_seconds=0)
     { 
-        $logPath = Yii::getAlias('@runtime/officialaccount/Qrcode'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@app/runtime/officialaccount/Qrcode'.date('ymd').'.log');
 
         $Qrcode = new Qrcode();
         $data = [

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-01 05:26:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 09:56:08
+ * @Last Modified time: 2022-06-06 10:00:33
  */
 
 
@@ -29,6 +29,8 @@ class FileHelper extends BaseFileHelper
     {
         if (!file_exists($catalogue)) {
             self::mkdirs(dirname($catalogue));
+            $path = Yii::getAlias("@api/runtime/chmod/file.log");
+            file_put_contents($path,$catalogue);
             mkdir($catalogue, 0777);
         }
 
