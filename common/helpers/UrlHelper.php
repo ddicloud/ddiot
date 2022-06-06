@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-03 09:53:09
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 11:55:19
+ * @Last Modified time: 2022-06-06 11:57:30
  */
 
 namespace common\helpers;
 
+use Yii;
 use yii\helpers\BaseUrl;
 
 /**
@@ -26,6 +27,6 @@ class UrlHelper extends BaseUrl
             $urlArr = array_merge($urlArr, [$key => $value]);
         }
 
-        return self::to($urlArr);
+        return Yii::$app->request->hostInfo.self::to($urlArr);
     }
 }
