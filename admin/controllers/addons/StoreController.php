@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 15:04:08
+ * @Last Modified time: 2022-06-09 15:07:23
  */
 
 namespace admin\controllers\addons;
@@ -146,7 +146,7 @@ class StoreController extends AController
 
         foreach ($detail['label'] as $key => $value) {
             if (!empty($lables[$value['label_id']])) {
-                $detail['label_link'][] = $lables[$value['label_id']]['name'];
+                $detail['label_link'][] = $lables[$value['label_id']]['id'];
             }
         }
 
