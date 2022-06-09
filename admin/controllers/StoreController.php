@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 11:34:32
+ * @Last Modified time: 2022-06-09 15:10:46
  */
 
 namespace admin\controllers;
@@ -41,11 +41,9 @@ class StoreController extends AController
         global $_GPC;
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
-
         if (!$store) {
             return ResultHelper::json(400, '商户或不存在，请检查配置参数', $store);
         }
-
         $bloc_id = $store['bloc_id'];
         $config = Yii::$app->service->commonGlobalsService->getConf($bloc_id);
         $store['config'] = $config;
