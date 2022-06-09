@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 12:23:07
+ * @Last Modified time: 2022-06-09 12:26:33
  */
 
 namespace admin\controllers\addons;
@@ -124,6 +124,7 @@ class StoreController extends AController
         $BlocStore = new BlocStore([
             'extras' => $this->extras,
         ]);
+        $lables = StoreLabel::find()->indexBy('id')->asArray()->all();
         $detail = $BlocStore::find()->where(['store_id' => $id])->with(['label'])->asArray()->one();
         $detail['logo'] = $detail['logo'];
         $detail['extra'] = unserialize($detail['extra']);
@@ -142,7 +143,11 @@ class StoreController extends AController
             'lat' => $detail['latitude'],
             'lng' => $detail['longitude'],
         ];
-        $detail['label_link'] = array_column($detail['label'], 'name');
+
+        foreach ($detail['label'] as $key => $value) {
+            $detail['label_link'][] = $lables[$value['label_id']]['name'];
+        }
+
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
         $url = '';
         switch ($storage) {
