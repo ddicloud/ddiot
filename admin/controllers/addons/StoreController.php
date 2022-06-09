@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 10:51:49
+ * @Last Modified time: 2022-06-09 10:55:03
  */
 
 namespace admin\controllers\addons;
@@ -133,8 +133,8 @@ class StoreController extends AController
             (int) $detail['province'], (int) $detail['city'], (int) $detail['county'],
         ];
         $detail['category'] = [
-            (int) $detail['category_pid'],
-            (int) $detail['category_id'],
+            $detail['category_pid'],
+            $detail['category_id'],
         ];
 
         $detail['address'] = [
