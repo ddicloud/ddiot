@@ -4,13 +4,15 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-28 21:57:15
+ * @Last Modified time: 2022-06-09 14:21:35
  */
 
 namespace common\services\api;
 
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
+use api\modules\officialaccount\models\DdWechatFans;
+use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
@@ -94,6 +96,10 @@ class AccessTokenService extends BaseService
         $member = ArrayHelper::toArray($member);
         $result['member'] = $member;
         $result['member']['account'] = ArrayHelper::toArray($account);
+        // 获取fans数据
+        $result['wechatFans'] = DdWechatFans::find()->where(['member_id' => $member['member_id']])->asArray()->one();
+        $result['wxappFans'] = DdWxappFans::find()->where(['member_id' => $member['member_id']])->asArray()->one();
+
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
         $keys = $member['openid'].'_userinfo';
