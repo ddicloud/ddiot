@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 10:20:00
+ * @Last Modified time: 2022-06-09 10:24:48
  */
 
 namespace admin\controllers\addons;
@@ -130,7 +130,13 @@ class StoreController extends AController
         $detail['extra'] = unserialize($detail['extra']);
         $detail['county'] = (int) $detail['county'];
         $detail['province'] = (int) $detail['province'];
-        $detail['city'] = (int) $detail['city'];
+        $detail['provinceCityDistrict'] = [
+            (int) $detail['province'], (int) $detail['city'], (int) $detail['county'],
+        ];
+        $detail['category'] = [
+            (int) $detail['category_pid'],
+            (int) $detail['category_id'],
+        ];
 
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
         $url = '';
