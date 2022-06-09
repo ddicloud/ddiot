@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 11:40:51
+ * @Last Modified time: 2022-06-09 11:50:23
  */
 
 namespace admin\controllers\addons;
@@ -124,7 +124,7 @@ class StoreController extends AController
         $BlocStore = new BlocStore([
             'extras' => $this->extras,
         ]);
-        $detail = $BlocStore::find()->where(['store_id' => $id])->asArray()->one();
+        $detail = $BlocStore::find()->where(['store_id' => $id])->with(['label'])->asArray()->one();
         $detail['logo'] = $detail['logo'];
         $detail['extra'] = unserialize($detail['extra']);
         $detail['county'] = (int) $detail['county'];
@@ -142,7 +142,7 @@ class StoreController extends AController
             'lat' => $detail['latitude'],
             'lng' => $detail['longitude'],
         ];
-
+        $detail['label_link'] = array_column($detail['label'], 'id');
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
         $url = '';
         switch ($storage) {
@@ -204,7 +204,7 @@ class StoreController extends AController
             ]);
 
             if ($model->load($data, '') && $model->save()) {
-                $StoreLabelLink = $_GPC['StoreLabelLink'];
+                $StoreLabelLink = $_GPC['label_link'];
 
                 if (!empty($StoreLabelLink['label_id'])) {
                     foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
@@ -267,7 +267,7 @@ class StoreController extends AController
         $store_id = $model->store_id;
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-            $StoreLabelLink = $_GPC['StoreLabelLink'];
+            $StoreLabelLink = $_GPC['label_link'];
             $link->deleteAll([
                     'store_id' => $store_id,
                 ]);
