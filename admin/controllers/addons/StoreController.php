@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 12:26:33
+ * @Last Modified time: 2022-06-09 15:01:53
  */
 
 namespace admin\controllers\addons;
@@ -145,7 +145,9 @@ class StoreController extends AController
         ];
 
         foreach ($detail['label'] as $key => $value) {
-            $detail['label_link'][] = $lables[$value['label_id']]['name'];
+            if (!empty($lables[$value['label_id']])) {
+                $detail['label_link'][] = $lables[$value['label_id']]['name'];
+            }
         }
 
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
