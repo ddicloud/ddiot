@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 10:24:48
+ * @Last Modified time: 2022-06-09 10:27:09
  */
 
 namespace admin\controllers\addons;
@@ -14,7 +14,6 @@ use admin\models\addons\models\Bloc;
 use admin\models\enums\StoreStatus;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
-use common\helpers\ImageHelper;
 use common\helpers\LevelTplHelper;
 use common\helpers\ResultHelper;
 use common\models\DdRegion;
@@ -126,7 +125,7 @@ class StoreController extends AController
             'extras' => $this->extras,
         ]);
         $detail = $BlocStore::find()->where(['store_id' => $id])->asArray()->one();
-        $detail['logo'] = ImageHelper::tomedia($detail['logo']);
+        $detail['logo'] = $detail['logo'];
         $detail['extra'] = unserialize($detail['extra']);
         $detail['county'] = (int) $detail['county'];
         $detail['province'] = (int) $detail['province'];
