@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 10:55:03
+ * @Last Modified time: 2022-06-09 11:40:51
  */
 
 namespace admin\controllers\addons;
@@ -291,6 +291,14 @@ class StoreController extends AController
 
             return ResultHelper::json(401, $error);
         }
+    }
+
+    public function actionStorelabel()
+    {
+        $label = new StoreLabel();
+        $lists = $label->find()->select(['name as text', 'id as value'])->asArray()->all();
+
+        return ResultHelper::json(200, '获取成功', $lists);
     }
 
     public function actionBlocs()
