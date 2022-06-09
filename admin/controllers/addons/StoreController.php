@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 15:01:53
+ * @Last Modified time: 2022-06-09 15:04:08
  */
 
 namespace admin\controllers\addons;
@@ -214,16 +214,18 @@ class StoreController extends AController
                 $StoreLabelLink = $_GPC['label_link'];
 
                 foreach ($StoreLabelLink as $key => $label_id) {
-                    $_link = clone  $link;
-                    $bloc_id = $model->bloc_id;
-                    $store_id = $model->store_id;
-                    $data = [
-                        'bloc_id' => $bloc_id,
-                        'store_id' => $store_id,
-                        'label_id' => $label_id,
-                    ];
-                    $_link->setAttributes($data);
-                    $_link->save();
+                    if (!empty($label_id) && is_numeric($label_id)) {
+                        $_link = clone  $link;
+                        $bloc_id = $model->bloc_id;
+                        $store_id = $model->store_id;
+                        $data = [
+                            'bloc_id' => $bloc_id,
+                            'store_id' => $store_id,
+                            'label_id' => $label_id,
+                        ];
+                        $_link->setAttributes($data);
+                        $_link->save();
+                    }
                 }
 
                 return $this->redirect(['view', 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
@@ -277,14 +279,16 @@ class StoreController extends AController
                     'store_id' => $store_id,
             ]);
             foreach ($StoreLabelLink as $key => $label_id) {
-                $_link = clone  $link;
-                $data = [
+                if (!empty($label_id) && is_numeric($label_id)) {
+                    $_link = clone  $link;
+                    $data = [
                         'bloc_id' => $bloc_id,
                         'store_id' => $store_id,
                         'label_id' => $label_id,
                     ];
-                $_link->setAttributes($data);
-                $_link->save();
+                    $_link->setAttributes($data);
+                    $_link->save();
+                }
             }
 
             return ResultHelper::json(200, '更新成功');
