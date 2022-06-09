@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 10:27:09
+ * @Last Modified time: 2022-06-09 10:51:49
  */
 
 namespace admin\controllers\addons;
@@ -135,6 +135,12 @@ class StoreController extends AController
         $detail['category'] = [
             (int) $detail['category_pid'],
             (int) $detail['category_id'],
+        ];
+
+        $detail['address'] = [
+            'address' => $detail['address'],
+            'lat' => $detail['latitude'],
+            'lng' => $detail['longitude'],
         ];
 
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
