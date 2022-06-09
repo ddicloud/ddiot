@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-13 11:43:46
+ * @Last Modified time: 2022-06-09 10:20:00
  */
 
 namespace admin\controllers\addons;
@@ -128,6 +128,10 @@ class StoreController extends AController
         $detail = $BlocStore::find()->where(['store_id' => $id])->asArray()->one();
         $detail['logo'] = ImageHelper::tomedia($detail['logo']);
         $detail['extra'] = unserialize($detail['extra']);
+        $detail['county'] = (int) $detail['county'];
+        $detail['province'] = (int) $detail['province'];
+        $detail['city'] = (int) $detail['city'];
+
         $storage = Yii::$app->params['conf']['oss']['remote_type'];
         $url = '';
         switch ($storage) {
