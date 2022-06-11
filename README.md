@@ -117,36 +117,28 @@ server {
         listen        80;
         server_name  www.ai.com;
         root   "*/firetech/frontend/web";
-       add_header Access-Control-Allow-Origin *;
-    add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
-    add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
 
-    location /api {
-                index index.php index.html;
-                if (!-e $request_filename)
-                {
-                    rewrite ^/api/(.*)$ /api/index.php last;
-                }
-                if (!-f $request_filename){
-                    set $rule_0 1$rule_0;
-                }
+        location /api {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/api/(.*)$ /api/index.php last;
             }
+            if (!-f $request_filename){
+                set $rule_0 1$rule_0;
+            }
+        }
 
-    location /backend {
-                index index.php index.html;
-                if (!-e $request_filename)
-                {
-                    rewrite ^/backend/(.*)$ /backend/index.php last;
-                }
+        location /admin {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/admin/(.*)$ /admin/index.php last;
             }
-
-    location /admin {
-                index index.php index.html;
-                if (!-e $request_filename)
-                {
-                    rewrite ^/admin/(.*)$ /admin/index.php last;
-                }
-            }
+        }
 }
 
 
