@@ -4,20 +4,20 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 14:28:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-07-17 18:19:36
+ * @Last Modified time: 2022-06-12 22:48:02
  */
 
 namespace common\services\backend;
 
-use Yii;
-use common\services\BaseService;
 use common\helpers\ArrayHelper;
 use common\helpers\CacheHelper;
 use common\helpers\FileHelper;
+use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\components\MenuHelper;
 use diandi\admin\models\Menu;
 use diandi\admin\models\MenuTop;
+use Yii;
 
 /**
  * Class SmsService.
@@ -26,12 +26,12 @@ use diandi\admin\models\MenuTop;
  */
 class NavService extends BaseService
 {
-    public  static $module_names;
+    public static $module_names;
 
     public function getMenuTop($types)
     {
         global $_GPC;
-        $keys = 'menu_top_' . Yii::$app->user->id;
+        $keys = 'menu_top_'.Yii::$app->user->id;
         $list = Yii::$app->cache->get($keys);
         if ($list) {
             return $list;
@@ -46,19 +46,17 @@ class NavService extends BaseService
         return [];
     }
 
-
     public function getLeftMenuTop()
     {
         global $_GPC;
 
-
-        // $lists[] = 'system'; 
+        // $lists[] = 'system';
 
         $lists = array_merge([
             0 => [
                 'title' => '系统',
-                'identifie' => 'system'
-            ]
+                'identifie' => 'system',
+            ],
         ], self::$module_names);
 
         foreach ($lists as $key => &$value) {
@@ -75,11 +73,10 @@ class NavService extends BaseService
     public function getMenu($location = '', $is_addons = false)
     {
         global $_GPC;
-        $Website   = Yii::$app->settings->getAllBySection('Website');
+        $Website = Yii::$app->settings->getAllBySection('Website');
 
         // menu_type 顶级分类0 左侧分类1
         if ($Website['menu_type'] == 1 && empty($_GPC['addons'])) {
-
             $allMenu = $this->allLeftMenu($is_addons);
             $menucate = $this->getLeftMenuTop();
         } else {
@@ -112,8 +109,7 @@ class NavService extends BaseService
     public function allMenu($is_addons)
     {
         $module_name = Yii::$app->params['addons'] ? Yii::$app->params['addons'] : 'system';
-        $key = 'backend_' . Yii::$app->user->id . '_' . $module_name . 'initmenu_' . $is_addons;
-
+        $key = 'backend_'.Yii::$app->user->id.'_'.$module_name.'initmenu_'.$is_addons;
 
         $initmenu = Yii::$app->cache->get($key);
         if ($initmenu) {
@@ -128,8 +124,8 @@ class NavService extends BaseService
                     $parent_id = intval($menu['parent']);
                     $parent = $parent_id > 0 ? $parent_id : $menu['id'];
 
-                    $menu_type = $menu['type'] . $parent;
-                    // $module_name = $menu['module_name'];
+                    $menu_type = $menu['type'].$parent;
+                // $module_name = $menu['module_name'];
                     // $addonsdefault = "/{$module_name}/default/index";
                 } else {
                     $menu_type = $menu['type'];
@@ -171,7 +167,6 @@ class NavService extends BaseService
                 return  $return;
             };
 
-
             $where = [];
 
             if (!$is_addons) {
@@ -184,24 +179,23 @@ class NavService extends BaseService
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
 
             $cacheClass = new CacheHelper();
-            $cacheClass->set('backend_' . $module_name . 'initmenu_' . $is_addons, $initmenu);
+            $cacheClass->set('backend_'.$module_name.'initmenu_'.$is_addons, $initmenu);
+
             return $initmenu;
         }
     }
 
-
-
     public function allLeftMenu($is_addons)
     {
-        $Website   = Yii::$app->settings->getAllBySection('Website');
+        $Website = Yii::$app->settings->getAllBySection('Website');
 
         $module_names = AddonsUser::find()->where([
-            'user_id' => Yii::$app->user->id
+            'user_id' => Yii::$app->user->id,
         ])->andWhere(['!=', 'd.identifie', ''])->alias('a')->joinWith(['addons as d'])->select(['identifie', 'title'])->asArray()->all();
 
         self::$module_names = $module_names;
 
-        $key = 'backend_' . Yii::$app->user->id . '_' . 'initmenu_' . $is_addons;
+        $key = 'backend_'.Yii::$app->user->id.'_'.'initmenu_'.$is_addons;
 
         $module_name = array_column($module_names, 'identifie');
         $initmenu = Yii::$app->cache->get($key);
@@ -218,7 +212,7 @@ class NavService extends BaseService
                     $parent = $parent_id > 0 ? $parent_id : $menu['id'];
 
                     $menu_type = 'system';
-                    // $module_name = $menu['module_name'];
+                // $module_name = $menu['module_name'];
                     // $addonsdefault = "/{$module_name}/default/index";
                 } else {
                     $menu_type = $menu['module_name'];
@@ -260,19 +254,16 @@ class NavService extends BaseService
                 return  $return;
             };
 
-
             $where = [];
 
-
             $where = ['or', ['is_sys' => 'system'], ['module_name' => $module_name]];
-
-
 
             $initmenus = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $callback, $where);
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
 
             $cacheClass = new CacheHelper();
-            $cacheClass->set('backend_' . $module_name . 'initmenu_' . $is_addons, $initmenu);
+            $cacheClass->set('backend_'.$module_name.'initmenu_'.$is_addons, $initmenu);
+
             return $initmenu;
         }
     }
@@ -291,15 +282,15 @@ class NavService extends BaseService
             $value['targetType'] = 'top-nav';
             if (isset($value['children'])) {
                 foreach ($value['children'] as $k => $child) {
-                    if ($num  == 0) {
+                    if ($num == 0) {
                         $child['is_show'] = 'show';
                     }
                     if (!empty($child['children'])) {
                         foreach ($child['children'] as $key => &$val) {
-                            if ($num  == 0) {
+                            if ($num == 0) {
                                 $val['is_show'] = 'show';
                             }
-                            $val['type']  = $child['type'];
+                            $val['type'] = $child['type'];
                         }
                     }
 
@@ -307,7 +298,7 @@ class NavService extends BaseService
                 }
                 unset($value['children'], $value['is_show'], $value['type']);
                 $top[] = $value;
-                $num++;
+                ++$num;
             } else {
                 unset($allMenus[$key]);
             }
@@ -320,26 +311,28 @@ class NavService extends BaseService
         return $menus;
     }
 
-
     public static function addonsMens($addons)
     {
-        $list =  Menu::find()->where(['module_name' => $addons])->asArray()->all();
+        $list = Menu::find()->where(['module_name' => $addons])->with(['ruoter'])->asArray()->all();
         $lists = ArrayHelper::itemsMerge($list, 0, 'id', 'parent', 'child', 3);
         //    去除id
         $menu = ArrayHelper::removeByKey($lists);
         $menus = ArrayHelper::removeByKey($menu, 'parent');
-        $text = '<?php return ' . var_export($menus, true) . ';';
-        $configFile =  Yii::getAlias('@addons/' . $addons . '/config');
+        $menus = ArrayHelper::removeByKey($menus, 'route_id');
+
+        $text = '<?php return '.var_export($menus, true).';';
+        $configFile = Yii::getAlias('@addons/'.$addons.'/config');
         if (!is_dir($configFile)) {
             FileHelper::mkdirs($configFile);
             @chmod($configFile, 0777);
         }
-        $file = Yii::getAlias('@addons/' . $addons . '/config/menu.php');
+        $file = Yii::getAlias('@addons/'.$addons.'/config/menu.php');
 
         if (false !== fopen($file, 'w+')) {
             file_put_contents($file, $text);
+            echo '菜单创建成功'.PHP_EOL;
         } else {
-            echo '创建失败';
+            echo '菜单创建失败'.PHP_EOL;
         }
 
         return   $menus;
