@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-24 11:41:15
+ * @Last Modified time: 2022-06-13 12:58:17
  */
 
 namespace admin\controllers\auth;
@@ -120,7 +120,6 @@ class AssignmentController extends AController
         unset($value);
         $all['store'] = $list;
         $alls = [];
-      
 
         $assigneds = $items['assigned'];
         // 用户的应用权限
@@ -140,16 +139,16 @@ class AssignmentController extends AController
             $assignedKey[] = $key;
             $assigned[$key] = array_keys($value);
         }
-     
+
         $keyDiff = array_diff($keyList, $assignedKey);
         foreach ($keyDiff as $key => $value) {
             $assigned[$value] = [];
         }
-    
+
         foreach ($all as $key => $value) {
             $alls[$key] = array_values($value);
         }
-        
+
         return ResultHelper::json(200, '获取成功', [
             'all' => $alls,
             'assigned' => $assigned,
@@ -329,6 +328,9 @@ class AssignmentController extends AController
             default:
               break;
           }
+
+        $key = 'auth_'.$id.'_'.'initmenu';
+        Yii::$app->cache->delete($key);
 
         return $this->actionView($id);
     }
