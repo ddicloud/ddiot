@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 10:59:14
+ * @Last Modified time: 2022-06-13 14:33:56
  */
 
 namespace console\services;
@@ -12,6 +12,7 @@ use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\services\admin\AccessTokenService;
 use common\services\BaseService;
+use diandi\admin\acmodels\AuthUserGroup;
 use Yii;
 use yii\helpers\Console;
 
@@ -249,8 +250,20 @@ EOF;
         $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
         $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
         $model->status = 1;
+        $model->save();
+        $user_id = Yii::$app->db->getLastInsertID();
+        // 查找权限
+        $AuthUserGroup = new AuthUserGroup();
+        $groups = AuthUserGroup::find()->where(['name' => '总管理员'])->asArray()->one();
 
-        return  $model->save();
+        $data = [
+            'group_id' => $groups['id'],
+            'item_id' => $groups['item_id'],
+            'item_name' => $groups['name'],
+            'user_id' => $user_id,
+        ];
+
+        return  $AuthUserGroup->load($data, '') && $AuthUserGroup->save();
     }
 
     /**
