@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-21 22:58:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-02 10:50:18
+ * @Last Modified time: 2022-06-13 11:24:14
  */
 
 namespace admin\models\forms;
@@ -125,7 +125,7 @@ class LoginForm extends Model
             if (empty($userInfo)) {
                 $info = User::findUser($this->mobile, $this->username);
                 if (!empty($info)) {
-                    $status_str = UserStatus::getLabel($info['status']);
+                    $status_str = UserStatus::getLabel($userInfo['status']);
 
                     return ResultHelper::json(400, '您的账户'.$status_str.'，请联系客服');
                 } else {
