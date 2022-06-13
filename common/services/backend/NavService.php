@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 14:28:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 10:25:26
+ * @Last Modified time: 2022-06-13 16:40:15
  */
 
 namespace common\services\backend;
@@ -333,7 +333,6 @@ class NavService extends BaseService
         $menu = ArrayHelper::removeByKey($lists);
         $menus = ArrayHelper::removeByKey($menu, 'parent');
         $menus = ArrayHelper::removeByKey($menus, 'route_id');
-
         $text = '<?php return '.var_export($menus, true).';';
 
         $configFile = Yii::getAlias('@addons/'.$addons.'/config');
