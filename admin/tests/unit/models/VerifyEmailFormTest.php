@@ -2,8 +2,8 @@
 
 namespace frontend\tests\unit\models;
 
+use admin\models\forms\VerifyEmailForm;
 use common\fixtures\UserFixture;
-use frontend\models\VerifyEmailForm;
 
 class VerifyEmailFormTest extends \Codeception\Test\Unit
 {
@@ -12,14 +12,13 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
      */
     protected $tester;
 
-
     public function _before()
     {
         $this->tester->haveFixtures([
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => codecept_data_dir() . 'user.php'
-            ]
+                'dataFile' => codecept_data_dir().'user.php',
+            ],
         ]);
     }
 

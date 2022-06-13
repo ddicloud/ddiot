@@ -4,22 +4,20 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:26:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-07 10:03:22
+ * @Last Modified time: 2022-06-13 17:19:42
  */
 
 namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
-use backend\controllers\BaseController;
 use Yii;
 
 /**
- * login controller for the `wechat` module
+ * login controller for the `wechat` module.
  */
 class SendmsgController extends AController
 {
     public $modelClass = '';
-
 
     /**
      * @SWG\Post(path="/wechat/sendmsg/send",
@@ -36,11 +34,9 @@ class SendmsgController extends AController
      *      required=true
      *  )
      * )
-     *
      */
     public function actionSend()
     {
-
         // 支付金额
         // {{amount1.DATA}}
 
@@ -66,13 +62,10 @@ class SendmsgController extends AController
                 ],
                 'date3' => [
                     'value' => 20200330,
-
                 ],
                 'thing4' => [
                     'value' => '买了什么东西',
-
-                ]
-
+                ],
             ],
         ];
         $miniProgram = Yii::$app->wechat->miniProgram;

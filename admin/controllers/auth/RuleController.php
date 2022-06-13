@@ -3,39 +3,37 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-05-17 15:15:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-05-18 14:47:19
+ * @Last Modified time: 2022-06-13 17:19:58
  */
- 
 
 namespace admin\controllers\auth;
 
 use admin\controllers\AController;
-use Yii;
+use diandi\admin\components\Configs;
+use diandi\admin\components\Helper;
 use diandi\admin\models\BizRule;
-use backend\controllers\BaseController;
 use diandi\admin\models\searchs\BizRule as BizRuleSearch;
+use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-use diandi\admin\components\Helper;
-use diandi\admin\components\Configs;
 
 /**
- * Description of RuleController
+ * Description of RuleController.
  *
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
+ *
  * @since 1.0
  */
 class RuleController extends AController
 {
     public $modelClass = '';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
-        Yii::$app->params['plugins']='shop';
+        Yii::$app->params['plugins'] = 'shop';
 
         return [
             'verbs' => [
@@ -49,6 +47,7 @@ class RuleController extends AController
 
     /**
      * Lists all AuthItem models.
+     *
      * @return mixed
      */
     public function actionIndex()
@@ -64,7 +63,9 @@ class RuleController extends AController
 
     /**
      * Displays a single AuthItem model.
-     * @param  string $id
+     *
+     * @param string $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -77,6 +78,7 @@ class RuleController extends AController
     /**
      * Creates a new AuthItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
      * @return mixed
      */
     public function actionCreate()
@@ -87,14 +89,16 @@ class RuleController extends AController
 
             return $this->redirect(['view', 'id' => $model->name]);
         } else {
-            return $this->render('create', ['model' => $model,]);
+            return $this->render('create', ['model' => $model]);
         }
     }
 
     /**
      * Updates an existing AuthItem model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param  string $id
+     *
+     * @param string $id
+     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -106,13 +110,15 @@ class RuleController extends AController
             return $this->redirect(['view', 'id' => $model->name]);
         }
 
-        return $this->render('update', ['model' => $model,]);
+        return $this->render('update', ['model' => $model]);
     }
 
     /**
      * Deletes an existing AuthItem model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param  string $id
+     *
+     * @param string $id
+     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -127,8 +133,11 @@ class RuleController extends AController
     /**
      * Finds the AuthItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param  string        $id
-     * @return AuthItem      the loaded model
+     *
+     * @param string $id
+     *
+     * @return AuthItem the loaded model
+     *
      * @throws HttpException if the model cannot be found
      */
     protected function findModel($id)

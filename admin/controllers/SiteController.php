@@ -4,21 +4,21 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-02 21:40:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 12:50:15
+ * @Last Modified time: 2022-06-13 17:22:19
  */
 
 namespace admin\controllers;
 
-use admin\models\form\PasswordResetRequestForm;
-use backend\models\forms\ResetPasswordForm;
-use backend\models\forms\SignupForm;
-use backend\models\forms\VerifyEmailForm;
+use admin\models\forms\LoginForm;
+use admin\models\forms\PasswordResetRequestForm as FormsPasswordResetRequestForm;
+use admin\models\forms\ResendVerificationEmailForm;
+use admin\models\forms\ResetPasswordForm;
+use admin\models\forms\SignupForm;
+use admin\models\forms\VerifyEmailForm;
 use common\helpers\ErrorsHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\DdUser;
-use admin\models\forms\LoginForm;
-use admin\models\forms\ResendVerificationEmailForm;
 use common\models\User;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
@@ -187,7 +187,7 @@ class SiteController extends AController
      */
     public function actionRequestPasswordReset()
     {
-        $model = new PasswordResetRequestForm();
+        $model = new FormsPasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', '发送成功，请查收您的邮箱');

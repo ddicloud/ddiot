@@ -3,10 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-02-21 10:06:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-23 12:46:51
+ * @Last Modified time: 2022-06-13 17:22:11
  */
 
-namespace frontend\models;
+namespace admin\models\forms;
 
 use admin\models\User;
 use yii\base\InvalidArgumentException;

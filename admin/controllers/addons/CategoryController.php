@@ -4,44 +4,38 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-10 14:33:04
+ * @Last Modified time: 2022-06-13 17:20:16
  */
-
 
 namespace admin\controllers\addons;
 
-use Yii;
-use diandi\addons\models\StoreCategory;
-use diandi\addons\models\searchs\StoreCategory as StoreCategorySearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\controllers\BaseController;
 use admin\controllers\AController;
 use common\helpers\ArrayHelper;
-use common\helpers\ResultHelper;
 use common\helpers\ErrorsHelper;
-
+use common\helpers\ResultHelper;
+use diandi\addons\models\searchs\StoreCategory as StoreCategorySearch;
+use diandi\addons\models\StoreCategory;
+use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * CategoryController implements the CRUD actions for StoreCategory model.
  */
 class CategoryController extends AController
 {
-    public $modelSearchName = "StoreCategorySearch";
+    public $modelSearchName = 'StoreCategorySearch';
 
     public $modelClass = '';
 
-
     /**
      * Lists all StoreCategory models.
+     *
      * @return mixed
      */
     public function actionIndex()
     {
         $searchModel = new StoreCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
 
         $dataProvider = ArrayHelper::objectToarray($dataProvider);
 
@@ -56,8 +50,6 @@ class CategoryController extends AController
         ]);
     }
 
-
-
     public function actionCategory()
     {
         $list = StoreCategory::find()->where(['parent_id' => 0])->select(['name as text', 'category_id as value'])->asArray()->all();
@@ -67,13 +59,15 @@ class CategoryController extends AController
 
     /**
      * Displays a single StoreCategory model.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-
         $view = $this->findModel($id);
 
         return ResultHelper::json(200, '获取成功', $view);
@@ -82,6 +76,7 @@ class CategoryController extends AController
     /**
      * Creates a new StoreCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
      * @return mixed
      */
     public function actionCreate()
@@ -92,10 +87,10 @@ class CategoryController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-
                 return ResultHelper::json(200, '创建成功', $model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
+
                 return ResultHelper::json(400, $msg);
             }
         }
@@ -104,23 +99,25 @@ class CategoryController extends AController
     /**
      * Updates an existing StoreCategory model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-
         if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-
                 return ResultHelper::json(200, '编辑成功', $model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
+
                 return ResultHelper::json(400, $msg);
             }
         }
@@ -129,8 +126,11 @@ class CategoryController extends AController
     /**
      * Deletes an existing StoreCategory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return mixed
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -143,8 +143,11 @@ class CategoryController extends AController
     /**
      * Finds the StoreCategory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     *
+     * @param int $id
+     *
      * @return StoreCategory the loaded model
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
