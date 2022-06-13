@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 14:28:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-12 22:48:02
+ * @Last Modified time: 2022-06-13 10:25:26
  */
 
 namespace common\services\backend;
@@ -313,7 +313,21 @@ class NavService extends BaseService
 
     public static function addonsMens($addons)
     {
-        $list = Menu::find()->where(['module_name' => $addons])->with(['ruoter'])->asArray()->all();
+        $list = Menu::find()->where(['module_name' => $addons])->with(['ruoter' => function ($query) {
+            return  $query->with(['item']);
+        }])->asArray()->all();
+
+        foreach ($list as $key => &$value) {
+            unset($value['ruoter']['id'],$value['ruoter']['created_at'],$value['ruoter']['updated_at']);
+            if (is_array($value['ruoter']) && !empty($value['ruoter'])) {
+                foreach ($value['ruoter'] as $k => $val) {
+                    if (!empty($value['ruoter']['item']) && is_array($value['ruoter']['item'])) {
+                        unset($value['ruoter']['item']['id'],$value['ruoter']['item']['created_at'],$value['ruoter']['item']['updated_at']);
+                    }
+                }
+            }
+        }
+
         $lists = ArrayHelper::itemsMerge($list, 0, 'id', 'parent', 'child', 3);
         //    去除id
         $menu = ArrayHelper::removeByKey($lists);
@@ -321,6 +335,7 @@ class NavService extends BaseService
         $menus = ArrayHelper::removeByKey($menus, 'route_id');
 
         $text = '<?php return '.var_export($menus, true).';';
+
         $configFile = Yii::getAlias('@addons/'.$addons.'/config');
         if (!is_dir($configFile)) {
             FileHelper::mkdirs($configFile);

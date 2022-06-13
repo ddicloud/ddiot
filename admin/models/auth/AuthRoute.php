@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-05-19 15:59:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-17 01:00:18
+ * @Last Modified time: 2022-06-13 10:08:47
  */
 
 namespace admin\models\auth;
 
-use diandi\addons\models\addonsStore;
 use diandi\addons\models\DdAddons;
+use diandi\admin\acmodels\AuthItem;
 
 /**
  * This is the model class for table "{{%auth_route}}".
@@ -44,7 +44,7 @@ class AuthRoute extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'is_sys', 'route_name'], 'required'],
-            [['is_sys', 'pid', 'route_type','item_id','created_at', 'updated_at'], 'integer'],
+            [['is_sys', 'pid', 'route_type', 'item_id', 'created_at', 'updated_at'], 'integer'],
             [['description', 'data'], 'string'],
             [['name', 'title', 'route_name'], 'string', 'max' => 255],
             [['module_name'], 'string', 'max' => 50],
@@ -69,7 +69,12 @@ class AuthRoute extends \yii\db\ActiveRecord
 
     public function getAddons()
     {
-        return $this->hasOne(DdAddons::className(),['identifie'=>'module_name']);
+        return $this->hasOne(DdAddons::className(), ['identifie' => 'module_name']);
+    }
+
+    public function getItem()
+    {
+        return $this->hasOne(AuthItem::className(), ['id' => 'item_id']);
     }
 
     /**
@@ -83,7 +88,7 @@ class AuthRoute extends \yii\db\ActiveRecord
             'is_sys' => 'Is_sys',
             'description' => 'Description',
             'title' => 'Title',
-            'item_id'=> 'Item_id',
+            'item_id' => 'Item_id',
             'pid' => 'Pid',
             'data' => 'Data',
             'route_type' => '路由类型',
