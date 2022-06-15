@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 11:31:18
+ * @Last Modified time: 2022-06-15 17:56:37
  */
 
 namespace common\components\addons;
@@ -27,8 +27,6 @@ class AddonsModule extends Module
         $logPath = Yii::getAlias('@runtime/base/addons/'.date('ymd').'.log');
 
         $module = $this->id;
-
-      
 
         $config = [];
         Yii::$app->params['bloc_id'] = Yii::$app->service->commonGlobalsService->getBloc_id();
@@ -79,15 +77,15 @@ class AddonsModule extends Module
                 break;
             case 'app-console':
                 $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/swoole');
-                define('SWOOLE_RUNTIME',$runtimePath);
+                define('SWOOLE_RUNTIME', $runtimePath);
                 FileHelper::mkdirs($runtimePath);
-                if(is_dir($runtimePath)){
+                if (is_dir($runtimePath)) {
                     @chmod($runtimePath, 0777);
                 }
-                $files = ['baseserver.log','baseserver.pid','swoole.log','swoole.log'];
+                $files = ['baseserver.log', 'baseserver.pid', 'swoole.log', 'swoole.log'];
                 foreach ($files as $key => $value) {
-                    if(!file_exists($runtimePath.'/'.$value)){
-                        file_put_contents($runtimePath.'/'.$value,'');
+                    if (!file_exists($runtimePath.'/'.$value)) {
+                        file_put_contents($runtimePath.'/'.$value, '');
                         @chmod($runtimePath.'/'.$value, 0777);
                     }
                 }
@@ -157,6 +155,8 @@ class AddonsModule extends Module
 
     public function initWechat()
     {
+        global $_GPC;
+        $store_id = $_GPC['store_id'];
         $config = require Yii::getAlias('@api/modules/officialaccount/config.php');
 
         $params = Yii::$app->params;
@@ -171,8 +171,8 @@ class AddonsModule extends Module
             'mch_id' => $Wechatpay['mch_id'],
             'key' => $Wechatpay['key'],  // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
-            'cert_path' => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-            'key_path' => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
+            'cert_path' => Yii::getAlias('@frontend/web/store/'.$store_id.'officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
+            'key_path' => Yii::getAlias('@frontend/web/store/'.$store_id.'officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
             'notify_url' => Yii::$app->request->hostInfo.'/api/wechat/basics/notify',
         ];
 
