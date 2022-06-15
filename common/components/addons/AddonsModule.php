@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-15 17:56:37
+ * @Last Modified time: 2022-06-15 17:59:46
  */
 
 namespace common\components\addons;
@@ -171,8 +171,8 @@ class AddonsModule extends Module
             'mch_id' => $Wechatpay['mch_id'],
             'key' => $Wechatpay['key'],  // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
-            'cert_path' => Yii::getAlias('@frontend/web/store/'.$store_id.'officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-            'key_path' => Yii::getAlias('@frontend/web/store/'.$store_id.'officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
+            'cert_path' => Yii::getAlias('@api/web/store/'.$store_id.'officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
+            'key_path' => Yii::getAlias('@api/web/store/'.$store_id.'officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
             'notify_url' => Yii::$app->request->hostInfo.'/api/wechat/basics/notify',
         ];
 
