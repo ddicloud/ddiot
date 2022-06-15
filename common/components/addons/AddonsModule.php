@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-15 18:01:20
+ * @Last Modified time: 2022-06-15 18:03:26
  */
 
 namespace common\components\addons;
@@ -167,7 +167,7 @@ class AddonsModule extends Module
 
         $pemPath = Yii::getAlias('@api/web/store/'.$store_id.'/officialaccount/cert');
 
-        if (is_dir($pemPath)) {
+        if (!is_dir($pemPath)) {
             FileHelper::mkdirs($pemPath);
         }
 
