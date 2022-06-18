@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "164aae10252defb3f87dbe35aac44cbc",
+    "content-hash": "0f71ea91c9b5389013120816ef123ad1",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4505,16 +4505,16 @@
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "2.96",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "b34939d0926cb4405b7fdc7718f59555101b5f0a"
+                "reference": "6e63b5649a51552e82591699d460d9320a240fe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/b34939d0926cb4405b7fdc7718f59555101b5f0a",
-                "reference": "b34939d0926cb4405b7fdc7718f59555101b5f0a",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/6e63b5649a51552e82591699d460d9320a240fe4",
+                "reference": "6e63b5649a51552e82591699d460d9320a240fe4",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4564,9 +4564,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/2.96"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.0"
             },
-            "time": "2022-06-13T10:22:51+00:00"
+            "time": "2022-06-18T02:20:35+00:00"
         },
         {
             "name": "yii-diandi/yii2-migration",

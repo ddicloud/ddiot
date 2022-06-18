@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-18 09:55:49
+ * @Last Modified time: 2022-06-18 10:23:35
  */
 
 namespace console\services;
@@ -12,8 +12,8 @@ use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\services\admin\AccessTokenService;
 use common\services\BaseService;
+use console\models\AuthAssignmentGroup;
 use console\models\AuthUserGroup;
-use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\helpers\Console;
 
