@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-17 20:07:00
+ * @Last Modified time: 2022-06-18 09:55:49
  */
 
 namespace console\services;
@@ -13,6 +13,7 @@ use admin\models\User;
 use common\services\admin\AccessTokenService;
 use common\services\BaseService;
 use console\models\AuthUserGroup;
+use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\helpers\Console;
 
@@ -262,8 +263,9 @@ EOF;
             'item_name' => $groups['name'],
             'user_id' => $user_id,
         ];
+        $AuthAssignmentGroup = new AuthAssignmentGroup();
 
-        return  $AuthUserGroup->load($data, '') && $AuthUserGroup->save();
+        return  $AuthAssignmentGroup->load($data, '') && $AuthUserGroup->save();
     }
 
     /**
