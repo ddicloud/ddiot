@@ -1,27 +1,22 @@
-# 欢迎使用店滴 cms
 
-店滴云，针对多商户业务开发的一套管理cms，支持多运营主体，单运营主体运营开发。cms基于世界上最好的语言php和yi开发，采用最新的vue开发技术作为中后台管理，多终端开发框架uniapp打造，旨在让开发更有趣味和成就感，希望可以助力更多的中小企业实现业绩增长，技术创新和持续发展。官方依赖于店滴云先后开发了疫情大数据监测，企业外呼，im客服，多商户分销，外卖点餐，政企党建等系统。
+# 欢迎使用店滴 cms(ddicms)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/img_convert/85a9247f501b3f30c6b2df9d8429ab66.png#pic_center)
+
+店滴云是针对多商户业务开发的一套管理cms，支持多运营主体，单运营主体运营开发。基于世界上最好的语言php和yii开发，深度集成swoole,满足需要http/tcp/mqtt等多种协议的业务场景，官方提供智能门锁，智能开关成熟的解决方案。采用最新的vue开发技术作为中后台管理，多终端开发框架uniapp打造，旨在让开发更有趣味和成就感，希望可以助力更多的中小企业实现业绩增长，技术创新和持续发展。官方依赖于店滴云先后开发了疫情大数据监测，企业外呼，im客服，多商户分销，外卖点餐，政企党建等系统。
+
 
 ## 官方地址
+[店滴云官网](https://www.dandicloud.com/)
+[官方开源库](https://toscode.gitee.com/wayfirer)
+[cms源码](https://toscode.gitee.com/wayfirer/diandicms)
+#### 开发者参与   
 
-##### 官方网址：[http://www.wayfirer.com/](http://www.wayfirer.com/ "http://www.wayfirer.com/")
+## qq群
 
-##### 接口地址：[http://www.wayfirer.com/index.php?r=doc](http://www.wayfirer.com/index.php?r=doc "http://www.wayfirer.com/index.php?r=doc")
+：823429313，点击可直接加入：[开发者交流群](https://jq.qq.com/?_wv=1027&k=4d2Rl2lc)
 
-##### 后台代码：[https://gitee.com/wayfirer/diandicms](https://gitee.com/wayfirer/diandicms "https://gitee.com/wayfirer/diandicms")
-
-##### pro中后台代码：[https://gitee.com/wayfirer/diandi-element-admin](https://gitee.com/wayfirer/diandi-element-admin "https://gitee.com/wayfirer/diandi-element-admin")
-
-##### 前台uniapp框架 [https://gitee.com/wayfirer/diandi-fireui](https://gitee.com/wayfirer/diandi-fireui "https://gitee.com/wayfirer/diandi-fireui") 
-
-
-#### 官方媒介   
-- 点击链接加入群聊【店滴AI应用开源系统】：https://jq.qq.com/?_wv=1027&k=4d2Rl2lc
-
-| qq群 ![enter image description here](https://images.gitee.com/uploads/images/2021/0324/215601_1a43562c_866769.png "qq_code.png")  | 微信公众号 ![enter image description here](https://images.gitee.com/uploads/images/2021/0324/215919_0429f2fb_866769.jpeg "wechat_code.jpg") |
-|---|---|
-|抖音 ![enter image description here](https://images.gitee.com/uploads/images/2021/0324/220613_f34d5210_866769.jpeg "dou_code.jpg")  | 企业微信![enter image description here](https://images.gitee.com/uploads/images/2021/0324/220531_f42a8098_866769.jpeg "qiye_code.jpg")  |
-
+## 微信公众号
+![在这里插入图片描述](https://img-blog.csdnimg.cn/img_convert/5f5edfd6d189547a6bb2927735ed6fbc.png#pic_center)
 # 特性
 - 使用稳定的 YII 框架，优化处理开发过程，开发体验如 tp 一样顺滑。
 - 支持多层权限管控，路由权限，数据权限，菜单权限，集团权限，商户权限，扩展功能权限随意搭配调度
@@ -32,10 +27,6 @@
 - 表单多样，除 yii 自身的表单组件，系统还对表单做了丰富，支持一句话配置万能表单
 - gii代码自动生成，包括扩展模块，数据库模型，检索模型，控制器和接口都可以自动生成
 - element-ui+uniapp+店滴cms，中后台，多端兼容，数据处理全部支持且开源
-
-
-
-
 
 # 环境准备：
 
@@ -48,7 +39,7 @@
 # 第一步：git 下载代码
 
 ```
-git clone https://gitee.com/wayfirer/diandicms.git
+git clone https://toscode.gitee.com/wayfirer/ddicms.git
 
 ```
 
