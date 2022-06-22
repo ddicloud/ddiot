@@ -1,6 +1,6 @@
 
 # 欢迎使用店滴 cms(ddicms)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/img_convert/85a9247f501b3f30c6b2df9d8429ab66.png#pic_center)
+![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F479ed84d544cfcb0f5a7e7be2f5f60c.jpg)
 
 店滴云是针对多商户业务开发的一套管理cms，支持多运营主体，单运营主体运营开发。基于世界上最好的语言php和yii开发，深度集成swoole,满足需要http/tcp/mqtt等多种协议的业务场景，官方提供智能门锁，智能开关成熟的解决方案。采用最新的vue开发技术作为中后台管理，多终端开发框架uniapp打造，旨在让开发更有趣味和成就感，希望可以助力更多的中小企业实现业绩增长，技术创新和持续发展。官方依赖于店滴云先后开发了疫情大数据监测，企业外呼，im客服，多商户分销，外卖点餐，政企党建等系统。
 
@@ -8,7 +8,7 @@
 ## 官方地址
 [店滴云官网](https://www.dandicloud.com/)
 [官方开源库](https://toscode.gitee.com/wayfirer)
-[cms源码](https://toscode.gitee.com/wayfirer/diandicms)
+[cms源码](https://toscode.gitee.com/wayfirer/ddicms)
 #### 开发者参与   
 
 ## qq群
@@ -16,7 +16,7 @@
 ：823429313，点击可直接加入：[开发者交流群](https://jq.qq.com/?_wv=1027&k=4d2Rl2lc)
 
 ## 微信公众号
-![在这里插入图片描述](https://img-blog.csdnimg.cn/img_convert/5f5edfd6d189547a6bb2927735ed6fbc.png#pic_center)
+![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F8edc20c70e46975e7520a8961414295.jpg)
 # 特性
 - 使用稳定的 YII 框架，优化处理开发过程，开发体验如 tp 一样顺滑。
 - 支持多层权限管控，路由权限，数据权限，菜单权限，集团权限，商户权限，扩展功能权限随意搭配调度
