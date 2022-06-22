@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-20 15:35:24
+ * @Last Modified time: 2022-06-22 17:49:50
  */
 
 namespace admin\controllers\addons;
@@ -15,6 +15,7 @@ use admin\models\enums\BlocStatus;
 use admin\models\enums\ReglevelStatus;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
+use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\BlocLevel;
@@ -95,6 +96,16 @@ class BlocController extends AController
         return ResultHelper::json(200, '获取成功', [
             'list' => $lists,
         ]);
+    }
+
+    public function actionStoreList()
+    {
+        $stores = BlocStore::find()->with(['bloc'])->asArray()->all();
+        foreach ($stores as $key => &$value) {
+            $value['logo'] = ImageHelper::tomedia($value['logo']);
+        }
+
+        return ResultHelper::json(200, '获取成功',$stores);
     }
 
     /**
