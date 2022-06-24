@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 18:05:33
+ * @Last Modified time: 2022-06-24 18:27:08
  */
 
 namespace admin\controllers;
@@ -900,6 +900,19 @@ class UserController extends AController
             'UserBloc'=>$UserBlocList 
         ]);
         
+    }
+
+    public function actionDefaultInfo()
+    {
+        global $_GPC;
+
+        $user_id = $_GPC['user_id'];
+        $addons_user_id =  AddonsUser::find()->where(['user_id'=>$user_id, 'is_default'=>1])->select('id')->scalar();
+        $store_user_id =  UserBloc::find()->where(['user_id'=>$user_id, 'is_default'=>1])->select('id')->scalar();
+        return ResultHelper::json(200, '获取成功',[
+            'addons_user_id'=>$addons_user_id,
+            'store_user_id'=>$store_user_id,
+        ]);
     }
 
     public function actionDefault()
