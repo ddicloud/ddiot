@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 15:58:44
+ * @Last Modified time: 2022-06-24 16:18:03
  */
 
 namespace admin\controllers;
@@ -878,8 +878,8 @@ class UserController extends AController
             }
         }
         return ResultHelper::json(200, '获取成功',[
-            'addons'=>$addons,
-            'UserBloc'=>$UserBloc
+            'addons'=>array_values($addons),
+            'UserBloc'=>array_values($UserBloc) 
         ]);
         
     }
