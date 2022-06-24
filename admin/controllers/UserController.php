@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 17:43:28
+ * @Last Modified time: 2022-06-24 17:44:59
  */
 
 namespace admin\controllers;
@@ -874,7 +874,7 @@ class UserController extends AController
             }else{
                 $addonsList[] = [
                     'id'=>$value['id'],
-                    'value'=>(string) $value['id'],
+                    'value'=>$value['id'],
                     'is_default'=>$value['is_default'],
                     'label'=>$value['addons']['title'],
                 ];
@@ -888,7 +888,7 @@ class UserController extends AController
                 unset($UserBloc[$key]);
             }else{
                 $UserBlocList[] = [
-                    'value'=>(string) $value['id'],
+                    'value'=>$value['id'],
                     'id'=>$value['id'],
                     'is_default'=>$value['is_default'],
                     'label'=>$value['store']['name'],
