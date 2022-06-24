@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 16:18:03
+ * @Last Modified time: 2022-06-24 16:44:39
  */
 
 namespace admin\controllers;
@@ -866,20 +866,34 @@ class UserController extends AController
         global $_GPC;
         $user_id = $_GPC['user_id'];
         $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->with(['addons'])->indexBy('module_name')->asArray()->all();
+        $addonsList = [];
+        
         foreach ($addons as $key => $value) {
             if(empty($value['addons'])){
                 unset($addons[$key]);
+            }else{
+                $addonsList[] = [
+                    'value'=>$value['id'],
+                    'label'=>$value['addons']['title'],
+                ];
             }
         }
+        
         $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
+        $UserBlocList = [];
         foreach ($UserBloc as $key => $value) {
             if(empty($value['store'])){
                 unset($UserBloc[$key]);
+            }else{
+                $UserBlocList[] = [
+                    'value'=>$value['id'],
+                    'label'=>$value['store']['name'],
+                ];
             }
         }
         return ResultHelper::json(200, '获取成功',[
-            'addons'=>array_values($addons),
-            'UserBloc'=>array_values($UserBloc) 
+            'addons'=>$addonsList,
+            'UserBloc'=>$UserBlocList 
         ]);
         
     }
