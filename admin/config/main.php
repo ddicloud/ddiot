@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-22 17:50:11
+ * @Last Modified time: 2022-06-24 15:15:31
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -178,6 +178,8 @@ return [
                         'POST   upstatus' => 'upstatus',
                         'POST create' => 'create',
                         'POST update' => 'update',
+                        'POST setinfo' => 'setinfo',
+                        'POST default' => 'default',
                     ],
                 ],
                 [

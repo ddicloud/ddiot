@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 21:48:24
+ * @Last Modified time: 2022-06-24 15:24:14
  */
 
 namespace admin\controllers;
@@ -20,6 +20,7 @@ use common\models\DdMember as ModelsDdMember;
 use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
+use common\models\UserBloc;
 use diandi\addons\models\AddonsUser;
 use diandi\admin\components\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
@@ -858,6 +859,60 @@ class UserController extends AController
 
             return ResultHelper::json(400, $msg);
         }
+    }
+
+    public function actionSetinfo()
+    {
+        global $_GPC;
+        $user_id = $_GPC['user_id'];
+        $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->asArray()->all();
+        $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->asArray()->all();
+        return ResultHelper::json(200, '获取成功',[
+            'addons'=>$addons,
+            'UserBloc'=>$UserBloc
+        ]);
+        
+    }
+
+    public function actionDefault()
+    {
+        global $_GPC;
+        $user_id = $_GPC['user_id'];
+        $store_user_id = $_GPC['store_user_id'];
+        $addons_user_id  = $_GPC['addons_user_id'];
+
+        if(empty($user_id)){
+            return ResultHelper::json(400, '用户ID不能为空');
+        }
+
+        
+        if(empty($addons_user_id)){
+            return ResultHelper::json(400, '请选择业务类型');
+        }else{
+            $addons = new AddonsUser();
+            $addons->updateAll([
+                'is_default'=>1,
+                'id'=>$addons_user_id
+            ],[
+                'user_id'=>$user_id,
+            ]);
+        }
+        
+        if(empty($store_user_id)){
+            return ResultHelper::json(400, '请选择商户');
+        }else{
+            $UserBloc = new UserBloc();
+        
+            $UserBloc->updateAll([
+                'is_default'=>1,
+                'id'=>$store_user_id
+            ],[
+                'user_id'=>$user_id,
+            ]);
+        }
+        
+        return ResultHelper::json(200, '设置成功');
+        
     }
 
     public function actionUpdate($id)
