@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 15:24:14
+ * @Last Modified time: 2022-06-24 15:34:09
  */
 
 namespace admin\controllers;
@@ -865,8 +865,8 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
-        $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->asArray()->all();
-        $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->asArray()->all();
+        $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->with(['addons'])->asArray()->all();
+        $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->with(['store'])->asArray()->all();
         return ResultHelper::json(200, '获取成功',[
             'addons'=>$addons,
             'UserBloc'=>$UserBloc
