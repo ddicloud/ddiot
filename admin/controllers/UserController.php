@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 15:49:39
+ * @Last Modified time: 2022-06-24 15:57:39
  */
 
 namespace admin\controllers;
@@ -901,6 +901,12 @@ class UserController extends AController
         }else{
             $addons = new AddonsUser();
             $addons->updateAll([
+                'is_default'=>0
+            ],[
+                'user_id'=>$user_id,
+            ]);
+
+            $addons->updateAll([
                 'is_default'=>1,
                 'id'=>$addons_user_id
             ],[
@@ -913,6 +919,12 @@ class UserController extends AController
         }else{
             $UserBloc = new UserBloc();
         
+            $UserBloc->updateAll([
+                'is_default'=>0
+            ],[
+                'user_id'=>$user_id,
+            ]);
+
             $UserBloc->updateAll([
                 'is_default'=>1,
                 'id'=>$store_user_id
