@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 15:48:22
+ * @Last Modified time: 2022-06-24 15:49:39
  */
 
 namespace admin\controllers;
@@ -865,13 +865,13 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
-        $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->with(['addons'])->asArray()->all();
+        $addons =  AddonsUser::find()->where(['user_id'=>$user_id])->with(['addons'])->indexBy('module_name')->asArray()->all();
         foreach ($addons as $key => $value) {
             if(empty($value['addons'])){
                 unset($addons[$key]);
             }
         }
-        $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->with(['store'])->asArray()->all();
+        $UserBloc =  UserBloc::find()->where(['user_id'=>$user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
         foreach ($UserBloc as $key => $value) {
             if(empty($value['store'])){
                 unset($UserBloc[$key]);
