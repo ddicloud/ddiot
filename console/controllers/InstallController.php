@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 11:13:10
+ * @Last Modified time: 2022-06-27 11:37:01
  */
 
 namespace console\controllers;
@@ -200,7 +200,7 @@ class InstallController extends \yii\console\Controller
 
         $installConfPath = yii::getAlias('@console/config/install.php');
         if(file_exists($installConfPath)){
-            FileHelper::file_delete($installConfPath);
+            @unlink($installConfPath);
         }
         Console::input('系统安装成功，配置你的nginx就可以访问了');
     }
