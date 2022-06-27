@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-18 10:23:35
+ * @Last Modified time: 2022-06-27 10:10:45
  */
 
 namespace console\services;
@@ -285,5 +285,20 @@ EOF;
         }
 
         return $model;
+    }
+
+    public static function getConf($key,$message)
+    {
+        $installConfPath = yii::getAlias('@console/config/install.php');
+        
+        if(file_exists($installConfPath)){
+            $installConf = require $installConfPath;
+        }
+
+        if(!empty($installConfPath[$key])){
+            return $installConfPath[$key];
+        }
+
+        return Console::input($message.':');
     }
 }

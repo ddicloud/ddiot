@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-11 17:02:22
+ * @Last Modified time: 2022-06-27 10:18:15
  */
 
 namespace console\controllers;
 
+use common\helpers\FileHelper;
 use console\services\InstallServer;
 use PDOException;
 use Yii;
@@ -23,7 +24,7 @@ class InstallController extends \yii\console\Controller
 {
     public function actionIndex()
     {
-        if (file_exists(yii::getAlias('@common/install.lock'))) {
+        if (file_exists(yii::getAlias('@console/data/install.lock'))) {
             Console::output('系统已安装，需要重新安装请删除文件：'.yii::getAlias('@common/install.lock'));
         }
 
@@ -34,14 +35,14 @@ class InstallController extends \yii\console\Controller
 
         $is_connect = false;
         do {
-            $host = Console::input('请输入host：');
+            $host = InstallServer::getConf('host','请输入host');
             // $formatName = Console::ansiFormat($host, [Console::FG_YELLOW]);
             // Console::output("你的host是：{$formatName}");
-            $port = Console::input('请输入数据库端口port：');
-            $dbname = Console::input('请输入dbname：');
-            $tablePrefix = Console::input('请输入数据库前缀tablePrefix：');
-            $username = Console::input('请输入数据库username：');
-            $password = Console::input('请输入数据库password：');
+            $port = InstallServer::getConf('port','请输入数据库端口port');
+            $dbname = InstallServer::getConf('dbname','请输入dbname');
+            $tablePrefix = InstallServer::getConf('tablePrefix','请输入数据库前缀tablePrefix');
+            $username = InstallServer::getConf('username','请输入数据库username');
+            $password = InstallServer::getConf('password','请输入数据库password');
             $confTable = Table::widget([
                 'headers' => ['host', 'port', 'dbname', 'tablePrefix', 'username', 'password'],
                 'rows' => [
@@ -107,12 +108,12 @@ class InstallController extends \yii\console\Controller
                 file_put_contents(yii::getAlias('@common/config/db.php'), $config);
                 Console::input('数据库配置成功，下一步初始化数据库');
             } else {
-                Console::input('数据库无法连接，请回车后重新配置');
+                Console::input('数据库无法连接，请重新配置');
             }
         } while (!$is_connect);
 
         // 初始数据库
-        $version = Console::input('请输入数据库脚本版本号：');
+        $version = InstallServer::getConf('version','请输入数据库脚本版本号');
 
         $bashPath = dirname(Yii::getAlias('@console'));
         $oldAPP = Yii::$app;
@@ -161,20 +162,17 @@ class InstallController extends \yii\console\Controller
         Console::input('数据库初始成功，下一步注册管理员');
         ob_start();
         ob_implicit_flush(false);
-        $username = Console::input('请输入管理员名称(字母不含特殊字符)：');
+        $username = InstallServer::getConf('username','请输入管理员名称(字母不含特殊字符)：');
 
-        $mobile = Console::input('请输入手机号：');
-        $email = Console::input('请输入邮箱：');
-        $password = Console::input('请输入密码：');
-        $repassword = Console::input('再次输入密码：');
+        $mobile = InstallServer::getConf('mobile','请输入手机号：');
+        $email = InstallServer::getConf('email','请输入邮箱：');
+        $password = InstallServer::getConf('password','请输入密码');
+        $repassword = InstallServer::getConf('password','再次输入密码');
 
-        if ($password === $repassword) {
-            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
-            if ($res) {
-                Console::input('管理员注册成功，下一步初始系统文件权限');
-            }
+        $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
+        if ($res) {
+            InstallServer::getConf('host','管理员注册成功，下一步初始系统文件权限');
         }
-
         // 设置文件权限
 
         // nginx配置
@@ -192,89 +190,12 @@ class InstallController extends \yii\console\Controller
             echo '目录'.$value.'权限设置成功'.PHP_EOL;
             sleep(1);
         }
-        touch(yii::getAlias('@common/install.lock'));
+        touch(yii::getAlias('@console/data/install.lock'));
+
+        $installConfPath = yii::getAlias('@console/config/install.php');
+        if(file_exists($installConfPath)){
+            FileHelper::file_delete($installConfPath);
+        }
         Console::input('系统安装成功，配置你的nginx就可以访问了');
-    }
-
-    public function actionSignUp()
-    {
-        // $post_log = ob_get_clean();
-        // Yii::info($post_log, 'fecshop_debug');
-        Console::input('数据库初始成功，下一步注册管理员');
-
-        $username = Console::input('请输入管理员名称(字母不含特殊字符)：');
-
-        $mobile = Console::input('请输入手机号：');
-        $email = Console::input('请输入邮箱：');
-        $password = Console::input('请输入密码：');
-        $repassword = Console::input('再次输入密码：');
-
-        if ($password === $repassword) {
-            $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
-            if ($res) {
-                Console::input('管理员注册成功，下一步初始系统文件权限');
-            }
-        }
-    }
-
-    public function actionIndexs()
-    {
-        /* 普通输出 */
-        Console::output('hello world!');
-
-        /* 前景色，背景色输出 */
-        $fg = Console::ansiFormat('前景色', [Console::FG_GREEN]);
-        $bg = Console::ansiFormat('背景色', [Console::BG_RED]);
-        Console::output("{$fg}{$bg}");
-
-        /* 同一变量设置前景色，背景色 */
-        /**
-         * 前景色 FG_BLACK / FG_RED / FG_GREEN / FG_YELLOW / FG_BLUE / FG_PURPLE / FG_CYAN / FG_GREY
-         * 背景色 BG_BLACK / BG_RED / BG_GREEN / BG_YELLOW / BG_BLUE / BG_PURPLE / BG_CYAN / BG_GREY.
-         */
-        $hello = Console::ansiFormat('Hello，Beijing!', [Console::FG_YELLOW, Console::BG_BLUE]);
-        Console::output($hello);
-
-        /* 变量输出字体正常，加粗，斜体，下划线，底色 */
-        Console::output(Console::ansiFormat('normal（正常）', [Console::NORMAL]));
-        Console::output(Console::ansiFormat('bold（加粗）', [Console::BOLD]));
-        Console::output(Console::ansiFormat('italic（斜体）', [Console::ITALIC]));
-        Console::output(Console::ansiFormat('underline（下划线）', [Console::UNDERLINE]));
-        Console::output(Console::ansiFormat('negative（底色）', [Console::NEGATIVE]));
-
-        /* 用户输入 */
-        $name = Console::input('请输入你的名字：');
-        $formatName = Console::ansiFormat($name, [Console::FG_YELLOW]);
-        Console::output("你的名字是：{$formatName}");
-
-        /* 用户选择1（select） */
-        $sex = Console::select('性别：', [1 => '男', 2 => '女']);
-        $formatSex = Console::ansiFormat($sex, [Console::FG_YELLOW]);
-        Console::output("你的性别是：{$formatSex}");
-
-        /* 用户选择2（yes or no） */
-        if (Console::confirm('Are you sure?')) {
-            Console::output('user input yes');
-        } else {
-            Console::output('user input no');
-        }
-
-        /* 用户输入3（验证） */
-        /*
-         *required 真假，是否必须填写
-         *default 默认值
-         *pattern 正则匹配
-         *validator 自定义验证函数
-         *error 错误信息
-         */
-        Console::prompt('请输入你的姓名:', ['required' => true, 'error' => '===>姓名必须输入']);
-
-        /* 进度条 */
-        Console::startProgress(0, 1000);
-        for ($n = 1; $n <= 1000; ++$n) {
-            usleep(1000);
-            Console::updateProgress($n, 1000);
-        }
-        Console::endProgress();
     }
 }
