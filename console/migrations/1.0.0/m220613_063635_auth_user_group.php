@@ -1,8 +1,15 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-06-27 09:53:06
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-06-27 09:53:29
+ */
+
 
 use yii\db\Migration;
 
-class m220613_063635_auth_user_group extends Migration
+class m220627_015306_auth_user_group extends Migration
 {
     public function up()
     {
@@ -23,7 +30,7 @@ class m220613_063635_auth_user_group extends Migration
             'created_at' => "int(11) NULL",
             'updated_at' => "int(11) NULL",
             'PRIMARY KEY (`id`,`name`)'
-        ], "ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台用户组'");
+        ], "ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台用户组'");
         
         /* 索引设置 */
         $this->createIndex('type','{{%auth_user_group}}','type',0);
@@ -31,6 +38,8 @@ class m220613_063635_auth_user_group extends Migration
         
         
         /* 表数据 */
+        $this->insert('{{%auth_user_group}}',['id'=>'551','item_id'=>'59','name'=>'基础权限组','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'created_at'=>'1588976797','updated_at'=>'1588837647']);
+        $this->insert('{{%auth_user_group}}',['id'=>'552','item_id'=>'60','name'=>'总管理员','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'created_at'=>'1588976797','updated_at'=>'1621841609']);
         
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
