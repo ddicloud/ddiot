@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:10:45
+ * @Last Modified time: 2022-06-27 10:37:26
  */
 
 namespace console\services;
@@ -295,8 +295,8 @@ EOF;
             $installConf = require $installConfPath;
         }
 
-        if(!empty($installConfPath[$key])){
-            return $installConfPath[$key];
+        if(!empty($installConf[$key])){
+            return $installConf[$key];
         }
 
         return Console::input($message.':');
