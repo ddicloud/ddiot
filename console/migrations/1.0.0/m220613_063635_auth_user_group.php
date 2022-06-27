@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-27 09:53:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 09:53:29
+ * @Last Modified time: 2022-06-27 11:06:21
  */
 
 
 use yii\db\Migration;
 
-class m220627_015306_auth_user_group extends Migration
+class m220613_063635_auth_user_group extends Migration
 {
     public function up()
     {
