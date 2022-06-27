@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-18 13:50:47
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-08-09 19:12:26
+ * @Last Modified time: 2022-06-27 20:17:20
  */
 
 
@@ -170,6 +170,42 @@ class SmsService extends BaseService
                 'error_msg' => '发送失败',
                 'error_data' => Json::encode($errorMessage),
             ]);
+
+            throw new UnprocessableEntityHttpException('短信发送失败');
+        }
+    }
+
+
+    /**
+     * 真实发送短信
+     *
+     * @param $mobile
+     * @param $code
+     * @param $usage
+     * @param int $member_id
+     * @throws UnprocessableEntityHttpException
+     */
+    public function sendContent($mobile, $data = [], $template)
+    {
+        try {
+            $easySms = new EasySms($this->config);
+            $result = $easySms->send($mobile, [
+                'template' => $template,
+                'data' => $data,
+            ]);
+            
+        } catch (NotFoundHttpException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage());
+        } catch (\Exception $e) {
+            $errorMessage = [];
+            $exceptions = $e->getMessage();
+            $gateways = $this->config['default']['gateways'];
+
+            foreach ($gateways as $gateway) {
+                if (isset($exceptions[$gateway])) {
+                    $errorMessage[$gateway] = $exceptions[$gateway]->getMessage();
+                }
+            }
 
             throw new UnprocessableEntityHttpException('短信发送失败');
         }
