@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:51:35
+ * @Last Modified time: 2022-06-27 11:04:32
  */
 
 namespace console\controllers;
@@ -140,8 +140,8 @@ class InstallController extends \yii\console\Controller
                     'class' => 'yii\db\Connection',
                     'dsn' => "mysql:host={$host};dbname={$dbname};port={$port}",
                     'tablePrefix' => "{$tablePrefix}",
-                    'username' => "{$username}",
-                    'password' => "{$password}",
+                    'username' => "{$dbusername}",
+                    'password' => "{$dbpassword}",
                     'charset' => 'utf8',
                     'attributes' => [
                         PDO::ATTR_STRINGIFY_FETCHES => false,
