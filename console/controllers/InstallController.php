@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:18:15
+ * @Last Modified time: 2022-06-27 10:40:45
  */
 
 namespace console\controllers;
@@ -190,6 +190,12 @@ class InstallController extends \yii\console\Controller
             echo '目录'.$value.'权限设置成功'.PHP_EOL;
             sleep(1);
         }
+        
+        $lockDir = yii::getAlias('@console/data');
+        if(!is_dir($lockDir)){
+            FileHelper::mkdirs($lockDir);
+        }
+
         touch(yii::getAlias('@console/data/install.lock'));
 
         $installConfPath = yii::getAlias('@console/config/install.php');
