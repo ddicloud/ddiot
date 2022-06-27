@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:43:32
+ * @Last Modified time: 2022-06-27 10:46:16
  */
 
 namespace console\controllers;
@@ -41,12 +41,12 @@ class InstallController extends \yii\console\Controller
             $port = InstallServer::getConf('port','请输入数据库端口port');
             $dbname = InstallServer::getConf('dbname','请输入dbname');
             $tablePrefix = InstallServer::getConf('tablePrefix','请输入数据库前缀tablePrefix');
-            $username = InstallServer::getConf('username','请输入数据库username');
-            $password = InstallServer::getConf('password','请输入数据库password');
+            $dbusername = InstallServer::getConf('dbusername','请输入数据库dbusername');
+            $dbpassword = InstallServer::getConf('dbpassword','请输入数据库dbpassword');
             $confTable = Table::widget([
                 'headers' => ['host', 'port', 'dbname', 'tablePrefix', 'username', 'password'],
                 'rows' => [
-                    [$host, $port, $dbname, $tablePrefix, $username, $password],
+                    [$host, $port, $dbname, $tablePrefix, $dbusername, $dbpassword],
                 ],
             ]);
 
