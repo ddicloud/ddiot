@@ -4,12 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-03 13:06:12
+ * @Last Modified time: 2022-06-27 14:45:05
  */
 
 namespace console\controllers;
 
-use common\services\backend\NavService;
+use common\services\admin\NavService;
 use Yii;
 use yii\console\Controller;
 
