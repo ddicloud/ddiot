@@ -1,8 +1,15 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-06-27 09:40:27
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-06-27 09:40:44
+ */
+
 
 use yii\db\Migration;
 
-class m220613_063636_upload_group extends Migration
+class m220627_014027_auth_user_group extends Migration
 {
     public function up()
     {
@@ -10,22 +17,29 @@ class m220613_063636_upload_group extends Migration
         $this->execute('SET foreign_key_checks = 0');
         
         /* 创建表 */
-        $this->createTable('{{%upload_group}}', [
-            'group_id' => "int(11) unsigned NOT NULL AUTO_INCREMENT",
-            'group_type' => "varchar(10) NOT NULL DEFAULT ''",
-            'group_name' => "varchar(30) NOT NULL DEFAULT ''",
-            'sort' => "int(11) unsigned NOT NULL DEFAULT '0'",
-            'wxapp_id' => "int(11) unsigned NOT NULL DEFAULT '0'",
-            'create_time' => "int(11) unsigned NOT NULL DEFAULT '0'",
-            'update_time' => "int(11) unsigned NOT NULL DEFAULT '0'",
-            'PRIMARY KEY (`group_id`)'
-        ], "ENGINE=InnoDB DEFAULT CHARSET=utf8");
+        $this->createTable('{{%auth_user_group}}', [
+            'id' => "int(11) NOT NULL AUTO_INCREMENT",
+            'item_id' => "int(11) NULL",
+            'name' => "varchar(64) NOT NULL COMMENT '用户组名称'",
+            'module_name' => "varchar(255) NULL",
+            'type' => "smallint(6) NOT NULL COMMENT '用户组类型0系统1商户'",
+            'is_sys' => "smallint(6) NULL COMMENT '0否1是'",
+            'description' => "text NULL COMMENT '用户组名称'",
+            'bloc_id' => "int(11) NULL COMMENT '公司'",
+            'store_id' => "int(11) NULL COMMENT '商户'",
+            'created_at' => "int(11) NULL",
+            'updated_at' => "int(11) NULL",
+            'PRIMARY KEY (`id`,`name`)'
+        ], "ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台用户组'");
         
         /* 索引设置 */
-        $this->createIndex('type_index','{{%upload_group}}','group_type',0);
+        $this->createIndex('type','{{%auth_user_group}}','type',0);
+        $this->createIndex('name','{{%auth_user_group}}','name',0);
         
         
         /* 表数据 */
+        $this->insert('{{%auth_user_group}}',['id'=>'551','item_id'=>'59','name'=>'基础权限组','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'created_at'=>'1588976797','updated_at'=>'1588837647']);
+        $this->insert('{{%auth_user_group}}',['id'=>'552','item_id'=>'60','name'=>'总管理员','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'created_at'=>'1588976797','updated_at'=>'1621841609']);
         
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
@@ -35,7 +49,7 @@ class m220613_063636_upload_group extends Migration
     {
         $this->execute('SET foreign_key_checks = 0');
         /* 删除表 */
-        $this->dropTable('{{%upload_group}}');
+        $this->dropTable('{{%auth_user_group}}');
         $this->execute('SET foreign_key_checks = 1;');
     }
 }
