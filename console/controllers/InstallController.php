@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 11:04:32
+ * @Last Modified time: 2022-06-27 11:13:10
  */
 
 namespace console\controllers;
@@ -26,6 +26,7 @@ class InstallController extends \yii\console\Controller
     {
         if (file_exists(yii::getAlias('@console/data/install.lock'))) {
             Console::output('系统已安装，需要重新安装请删除文件：'.yii::getAlias('@common/install.lock'));
+            return false;
         }
 
         // 第一步配置数据库
