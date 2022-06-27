@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:37:26
+ * @Last Modified time: 2022-06-27 11:15:22
  */
 
 namespace console\services;
@@ -254,7 +254,6 @@ EOF;
         $model->save();
         $user_id = Yii::$app->db->getLastInsertID();
         // 查找权限
-        $AuthUserGroup = new AuthUserGroup();
         $groups = AuthUserGroup::find()->where(['name' => '总管理员'])->asArray()->one();
 
         $data = [
@@ -265,7 +264,7 @@ EOF;
         ];
         $AuthAssignmentGroup = new AuthAssignmentGroup();
 
-        return  $AuthAssignmentGroup->load($data, '') && $AuthUserGroup->save();
+        return  $AuthAssignmentGroup->load($data, '') && $AuthAssignmentGroup->save();
     }
 
     /**
