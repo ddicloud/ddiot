@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 11:23:00
+ * @Last Modified time: 2022-06-27 11:43:43
  */
 
 namespace console\services;
@@ -261,6 +261,7 @@ EOF;
             'item_id' => $groups['item_id'],
             'item_name' => $groups['name'],
             'user_id' => $user_id,
+            'created_at'=>time()
         ];
         $AuthAssignmentGroup = new AuthAssignmentGroup();
 
