@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 11:37:01
+ * @Last Modified time: 2022-06-27 15:21:18
  */
 
 namespace console\controllers;
@@ -178,7 +178,7 @@ class InstallController extends \yii\console\Controller
         // nginx配置
         $baseDir = dirname(__FILE__).'/../../';
 
-        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/web/assets/', 'frontend/web/attachment', 'console/swoole/runtime/', 'admin/runtime/'];
+        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/web/assets/', 'frontend/web/attachment', 'console/swoole/runtime/', 'admin/runtime/','api/web/'];
 
         foreach ($dirs as $key => $value) {
             if (is_dir($baseDir.$value)) {
