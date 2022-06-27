@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-03-30 22:09:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 11:15:22
+ * @Last Modified time: 2022-06-27 11:23:00
  */
 
 namespace console\services;
@@ -252,7 +252,7 @@ EOF;
         $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
         $model->status = 1;
         $model->save();
-        $user_id = Yii::$app->db->getLastInsertID();
+        $user_id = $UserObj->id;
         // 查找权限
         $groups = AuthUserGroup::find()->where(['name' => '总管理员'])->asArray()->one();
 
