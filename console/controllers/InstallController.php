@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:40:45
+ * @Last Modified time: 2022-06-27 10:43:32
  */
 
 namespace console\controllers;
@@ -166,10 +166,9 @@ class InstallController extends \yii\console\Controller
 
         $mobile = InstallServer::getConf('mobile','请输入手机号：');
         $email = InstallServer::getConf('email','请输入邮箱：');
-        $password = InstallServer::getConf('password','请输入密码');
-        $repassword = InstallServer::getConf('password','再次输入密码');
+        $userpassword = InstallServer::getConf('userpassword','请输入密码');
 
-        $res = InstallServer::adminSignUp($username, $mobile, $email, $password);
+        $res = InstallServer::adminSignUp($username, $mobile, $email, $userpassword);
         if ($res) {
             InstallServer::getConf('host','管理员注册成功，下一步初始系统文件权限');
         }
