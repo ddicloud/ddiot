@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 10:46:16
+ * @Last Modified time: 2022-06-27 10:51:35
  */
 
 namespace console\controllers;
@@ -57,12 +57,12 @@ class InstallController extends \yii\console\Controller
             $config = str_replace([
                 '{db-host}', '{db-port}', '{db-dbname}', '{db-tablePrefix}', '{db-username}', '{db-password}',
             ], [
-                $host, $port, $dbname, $tablePrefix, $username, $password,
+                $host, $port, $dbname, $tablePrefix, $dbusername, $dbpassword,
             ], $config);
 
             $error = '';
             try {
-                $link = new PDO("mysql:host={$host};port={$port}", $username, $password); 	// dns可以没有dbname
+                $link = new PDO("mysql:host={$host};port={$port}", $dbusername, $dbpassword); 	// dns可以没有dbname
                 $link->exec('SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary');
                 $link->exec("SET sql_mode=''");
                 if ($link->errorCode() != '00000') {
