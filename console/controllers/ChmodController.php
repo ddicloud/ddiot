@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 15:24:35
+ * @Last Modified time: 2022-06-28 17:14:48
  */
 
 namespace console\controllers;
@@ -19,7 +19,7 @@ class ChmodController extends \yii\console\Controller
     {
         $baseDir = dirname(__FILE__).'/../../';
 
-        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/web/assets/', 'frontend/web/backend/assets', 'frontend/web/attachment', 'console/swoole/runtime/', 'admin/runtime/','api/web/store/'];
+        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/assets/', 'frontend/backend/assets', 'frontend/attachment', 'console/swoole/runtime/', 'admin/runtime/','api/web/store/'];
 
         foreach ($dirs as $key => $value) {
             if (is_dir($baseDir.$value)) {
