@@ -107,10 +107,10 @@ return [
 server {
         listen        80;
         server_name  www.ai.com;
-        root   "*/firetech/frontend/web";
-       add_header Access-Control-Allow-Origin *;
-    add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
-    add_header Access-Control-Allow-Methods GET,POST,OPTIONS,DELETE,PUT;
+        root   "*/firetech/frontend";
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS,DELETE,PUT;
 
         location /api {
             index index.php index.html;
@@ -141,8 +141,6 @@ server {
 - Yii：http://www.yiiframework.com
 
 - EasyWechat：https://www.easywechat.com
-
-- Bootstrap：http://getbootstrap.com
 
 - AdminLTE：https://adminlte.io
 

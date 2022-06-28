@@ -170,8 +170,6 @@ server {
 
 - EasyWechat：https://www.easywechat.com
 
-- Bootstrap：http://getbootstrap.com
-
 - AdminLTE：https://adminlte.io
 
 - Vue: https://vuejs.org/

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-26 17:47:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 18:05:15
+ * @Last Modified time: 2022-06-28 16:53:35
  */
 
 use yii\helpers\Html;
@@ -16,7 +16,7 @@ use yii\helpers\Html;
 $generators = Yii::$app->controller->module->generators;
 $activeGenerator = Yii::$app->controller->generator;
 ?>
-<?php $this->beginContent('@yii/gii/views/layouts/main.php'); ?>
+<?php $this->beginContent('@admin/views/gii/layouts/main.php'); ?>
 <div class="row">
     <div class="col-md-3 col-sm-4">
         <div class="list-group">

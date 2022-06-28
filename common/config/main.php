@@ -4,15 +4,15 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-28 15:24:35
+ * @Last Modified time: 2022-06-28 16:48:34
  */
 
 return [
     'name' => '店滴云CMS',
     'version' => '1.1.9',
     'aliases' => [
-        '@bower' => dirname(dirname(__DIR__)).'/frontend/web/resource/lib',
-        '@npm' => dirname(dirname(__DIR__)).'/frontend/web/node_modules',
+        '@bower' => dirname(dirname(__DIR__)).'/frontend/resource/lib',
+        '@npm' => dirname(dirname(__DIR__)).'/frontend/node_modules',
         // '@bower' => '@vendor/bower-asset',
         '@vue' => '@common/widgets/firevue',
         '@npm' => '@vendor/npm-asset',
