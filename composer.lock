@@ -4450,7 +4450,7 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "2.5.6",
+            "version": "2.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
@@ -4499,7 +4499,7 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.5.6"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.5.7"
             },
             "time": "2022-06-28T10:40:55+00:00"
         },
