@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-17 14:09:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-15 10:31:41
+ * @Last Modified time: 2022-06-28 18:04:51
  */
 
 namespace common\models\forms;
@@ -50,17 +50,6 @@ class ClearCache extends Model
             $status = Yii::$app->cache->flush();
             !$status && $this->addError('cache', '数据缓存清理失败');
         }
-
-        // if($this->template == true){
-        //    $path = Yii::getAlias('@frontend/web/backend/assets/');
-        //    $status = FileHelper::rmdirs($path);
-        //    if($status){
-        //         FileHelper::mkdirs($path);
-        //    }
-        //    !$status && $this->addError('cache', '模板缓存清理失败');
-
-        // }
-
         return $this->hasErrors() == false;
     }
 }

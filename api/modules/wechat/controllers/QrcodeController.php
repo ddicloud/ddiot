@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 08:54:26
+ * @Last Modified time: 2022-06-28 18:01:29
  */
 
 namespace api\modules\wechat\controllers;
@@ -52,7 +52,7 @@ class QrcodeController extends AController
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
 
-        $directory = Yii::getAlias('@frontend/web/attachment/wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['member_id']);
+        $directory = Yii::getAlias('@frontend/attachment/wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['member_id']);
 
         if (!is_dir($directory)) {
             FileHelper::mkdirs($directory);

@@ -129,7 +129,7 @@ server {
             error_page 507 /error/507.html;
             error_page 509 /error/509.html;
             error_page 510 /error/510.html;
-            include D:/www/firetech/frontend/web/nginx.htaccess;
+            include D:/www/firetech/frontend/nginx.htaccess;
             autoindex  off;
         }
         location ~ \.php(.*)$ {

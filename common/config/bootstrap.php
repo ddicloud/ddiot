@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-22 17:22:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-11 15:35:40
+ * @Last Modified time: 2022-06-28 18:01:37
  */
 
 Yii::setAlias('@common', dirname(__DIR__));
@@ -14,6 +14,6 @@ Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
 Yii::setAlias('@addons', dirname(dirname(__DIR__)) . '/addons');
-Yii::setAlias('@attachment', dirname(dirname(__DIR__)) . '/frontend/web/attachment');
+Yii::setAlias('@attachment', dirname(dirname(__DIR__)) . '/frontend/attachment');
 Yii::setAlias('@swooleService', dirname(dirname(__DIR__)) . '/console/swoole');
 Yii::setAlias('@vue', dirname(dirname(__DIR__)) . '/common/widgets/firevue');

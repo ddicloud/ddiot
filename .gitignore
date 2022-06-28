@@ -31,20 +31,20 @@ api/modules/wechat/log
 api/modules/wechat/log/
 api/runtime
 
-frontend/web/ErrorFiles
-frontend/web/ErrorFiles
-frontend/web/u.asp
-frontend/web/.uini
-frontend/web/u.php
-frontend/web/attachment/*
-frontend/web/u.asp
-frontend/web/u.phpstorm
-!frontend/web/attachment/public
-frontend/web/backend/upload
-frontend/web/backend/assets
-frontend/web/backend/runtime
-frontend/web/node_modules
-frontend/web/admin/assets
+frontend/ErrorFiles
+frontend/ErrorFiles
+frontend/u.asp
+frontend/.uini
+frontend/u.php
+frontend/attachment/*
+frontend/u.asp
+frontend/u.phpstorm
+!frontend/attachment/public
+frontend/backend/upload
+frontend/backend/assets
+frontend/backend/runtime
+frontend/node_modules
+frontend/admin/assets
 
 backend/runtime
 # ignore generated files
@@ -61,7 +61,7 @@ addons/*
 !addons/diandi_ai
 .svn
 runtime
-frontend/web/assets
+frontend/assets
 
 common/config/sqlServer.php
 common/config/mongodb.php

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-27 20:12:22
+ * @Last Modified time: 2022-06-28 18:01:10
  */
 
 namespace api\modules\wechat\controllers;
@@ -46,7 +46,7 @@ class QrcodeController extends AController
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
 
-        $directory = Yii::getAlias('@frontend/web/attachment/wxappcode/'.$module_name.'/'.$bloc_id.'/'.'/'.$store_id);
+        $directory = Yii::getAlias('@frontend/attachment/wxappcode/'.$module_name.'/'.$bloc_id.'/'.'/'.$store_id);
         // 或
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             $filename = $response->saveAs($directory, $baseInfo['fans']['openid'].'.png');

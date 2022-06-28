@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-06 20:10:46
+ * @Last Modified time: 2022-06-28 18:01:23
  */
 
 namespace common\components\FileUpload;
@@ -113,7 +113,7 @@ class Upload extends Model
     public static function upFile($model, $path = '', $is_chunk = 0, $chunk_partSize = 5, $chunk_partCount = 0, $chunk_partIndex = 0, $md5 = '', $chunk_md5 = '')
     {
         //文件上传存放的目录
-        $upload_path = Yii::getAlias('@frontend/web/attachment/');
+        $upload_path = Yii::getAlias('@frontend/attachment/');
         // 指定存放路径
         $path = $path ? $path.'/' : '';
         $file = UploadedFile::getInstanceByName('file');
@@ -240,7 +240,7 @@ class Upload extends Model
         // 本地文件做合并处理
         $LocalCor = new LocalCor($file_name, $file_size, $file_type);
 
-        $upload_path = Yii::getAlias('@frontend/web/attachment/'.date('Ym/d'));
+        $upload_path = Yii::getAlias('@frontend/attachment/'.date('Ym/d'));
 
         try {
             $baseFile = $LocalCor->mergeParts($file_parts, $upload_path);

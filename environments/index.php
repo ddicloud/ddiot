@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 20:44:37
+ * @Last Modified time: 2022-06-28 18:04:03
  */
 
 /**
@@ -43,7 +43,7 @@ return [
             'backend/web/assets',
             'console/runtime',
             'frontend/runtime',
-            'frontend/web/assets',
+            'frontend/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -62,7 +62,7 @@ return [
             'backend/web/assets',
             'console/runtime',
             'frontend/runtime',
-            'frontend/web/assets',
+            'frontend/assets',
         ],
         'setExecutable' => [
             'yii',
