@@ -1,4 +1,18 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-06-28 18:52:53
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-06-30 19:54:44
+ */
+<?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-06-28 18:52:53
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-06-30 19:54:44
+ */
+
 
 use yii\db\Migration;
 
