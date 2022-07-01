@@ -66,4 +66,3 @@ frontend/assets
 common/config/sqlServer.php
 common/config/mongodb.php
 pro-admin/node_modules
-common/config/db.php

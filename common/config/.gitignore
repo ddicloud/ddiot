@@ -2,4 +2,3 @@ codeception-local.php
 test-local.php
 sqlServer.php
 mongodb.php
-db.php
