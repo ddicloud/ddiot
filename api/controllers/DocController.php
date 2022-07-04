@@ -4,10 +4,10 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 00:28:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-13 10:14:04
+ * @Last Modified time: 2022-07-04 11:49:23
  */
 
-namespace frontend\controllers\pro;
+namespace api\controllers; 
 
 use Yii;
 use yii\helpers\Url;
@@ -17,7 +17,7 @@ use yii\web\Controller;
  * @SWG\Swagger(
  *     schemes={"https"},
  *     host="dev.hopesfire.com",
- *     basePath="/admin/",
+ *     basePath="/api/",
  *     produces={"application/json"},
  *     consumes={"application/x-www-form-urlencoded"},
  *     @SWG\Info(version="1.0", title="店滴接口文档",
@@ -52,12 +52,14 @@ use yii\web\Controller;
  *      name="access-token",
  *      type="string",
  *      in="header",
- *      required=true
+ *      required=false
  *   )
  * )
  */
 class DocController extends Controller
 {
+    // public $defaultRoute = 'Index';
+
     /**
      * {@inheritdoc}
      */
@@ -67,28 +69,42 @@ class DocController extends Controller
             'index' => [
                 'class' => 'yii2mod\swagger\SwaggerUIRenderer',
                 'restUrl' => [
-                    ['url' => Url::to(['pro/doc/json-inits']), 'name' => '基础接口'],
-                    ['url' => Url::to(['pro/doc/admin']), 'name' => '全局接口'],
+                    ['url' => Url::to(['api/doc/json-inits']), 'name' => '基础接口'],
+                    ['url' => Url::to(['api/doc/json-wechat']), 'name' => '小程序接口'],
+                    ['url' => Url::to(['api/doc/json-officialaccount']), 'name' => '公众号接口'],
+                ]
+            ],
+            // 小程序接口
+            'admin' => [
+                'class' => 'yii2mod\swagger\OpenAPIRenderer',
+                'scanDir' => [
+                    Yii::getAlias('@admin/controllers'),
                 ],
-                'view' => '@frontend/views/apidoc/index',
+                'cacheKey' => 'swagger-admin',
+            ],
+            // 小程序接口
+            'json-officialaccount' => [
+                'class' => 'yii2mod\swagger\OpenAPIRenderer',
+                'scanDir' => [
+                    Yii::getAlias('@api/modules/officialaccount/controllers'),
+                ],
+                'cacheKey' => 'swagger-wechat',
+            ],
+            // 小程序接口
+            'json-wechat' => [
+                'class' => 'yii2mod\swagger\OpenAPIRenderer',
+                'scanDir' => [
+                    Yii::getAlias('@api/modules/wechat/controllers'),
+                ],
+                'cacheKey' => 'swagger-wechat',
             ],
             /* 基础接口:登录注册、人脸识别 */
             'json-inits' => [
                 'class' => 'yii2mod\swagger\OpenAPIRenderer',
                 'scanDir' => [
-                    Yii::getAlias('@frontend/controllers/pro'),
-                    Yii::getAlias('@admin/controllers'),
+                    Yii::getAlias('@api/controllers'),
                 ],
                 'cacheKey' => 'swagger-inits',
-            ],
-            'admin' => [
-                'class' => 'yii2mod\swagger\OpenAPIRenderer',
-                'scanDir' => [
-                    Yii::getAlias('@frontend/controllers/pro'),
-                    Yii::getAlias('@admin/controllers'),
-                    // Yii::getAlias('@api/models/Definition'),
-                ],
-                'cacheKey' => 'swagger-admin',
             ],
         ];
     }

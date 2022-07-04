@@ -13,6 +13,14 @@
             }
         }
 
+ location /doc {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/doc/(.*)$ /doc/index.php last;
+            }
+        }
+
         location /admin {
             index index.php index.html;
             if (!-e $request_filename)
