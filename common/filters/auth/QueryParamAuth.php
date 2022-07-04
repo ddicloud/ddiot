@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-12-30 01:48:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-04 17:29:57
+ * @Last Modified time: 2022-07-04 17:31:30
  */
 
 namespace common\filters\auth;
@@ -30,6 +30,7 @@ class QueryParamAuth extends AuthQueryParamAuth
         $key = $this->tokenParam;
         $accessToken = Yii::$app->request->headers->get($key, '');
         if (empty($accessToken)) {
+            $key = str_replace('-', '_', $key);
             $accessToken = Yii::$app->request->get($key, '');
         }
         if (is_string($accessToken)) {
