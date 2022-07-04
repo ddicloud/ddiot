@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 00:28:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-04 11:52:45
+ * @Last Modified time: 2022-07-04 14:22:31
  */
 
 namespace api\controllers; 
@@ -56,8 +56,10 @@ use yii\web\Controller;
  *   )
  * )
  */
-class DocController extends Controller
+class DocController extends AController
 {
+    public $modelClass = '';
+
     // public $defaultRoute = 'Index';
 
     /**
