@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 00:28:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-04 11:49:23
+ * @Last Modified time: 2022-07-04 11:52:45
  */
 
 namespace api\controllers; 
@@ -86,6 +86,7 @@ class DocController extends Controller
             'json-officialaccount' => [
                 'class' => 'yii2mod\swagger\OpenAPIRenderer',
                 'scanDir' => [
+                    Yii::getAlias('@api/controllers'),
                     Yii::getAlias('@api/modules/officialaccount/controllers'),
                 ],
                 'cacheKey' => 'swagger-wechat',
@@ -94,6 +95,7 @@ class DocController extends Controller
             'json-wechat' => [
                 'class' => 'yii2mod\swagger\OpenAPIRenderer',
                 'scanDir' => [
+                    Yii::getAlias('@api/controllers'),
                     Yii::getAlias('@api/modules/wechat/controllers'),
                 ],
                 'cacheKey' => 'swagger-wechat',
