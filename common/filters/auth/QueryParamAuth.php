@@ -4,11 +4,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-12-30 01:48:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-20 11:16:40
+ * @Last Modified time: 2022-07-04 17:29:57
  */
 
 namespace common\filters\auth;
-
 
 use common\models\enums\CodeStatus;
 use Yii;
@@ -17,7 +16,6 @@ use yii\web\UnauthorizedHttpException;
 
 class QueryParamAuth extends AuthQueryParamAuth
 {
-
     /**
      * @var string the parameter name for passing the access token
      */
@@ -31,6 +29,9 @@ class QueryParamAuth extends AuthQueryParamAuth
         global $_GPC;
         $key = $this->tokenParam;
         $accessToken = Yii::$app->request->headers->get($key, '');
+        if (empty($accessToken)) {
+            $accessToken = Yii::$app->request->get($key, '');
+        }
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));
             if ($identity !== null) {
@@ -39,7 +40,8 @@ class QueryParamAuth extends AuthQueryParamAuth
         }
         if ($accessToken !== null) {
             $this->handleFailure($response);
-        }        
+        }
+
         return null;
     }
 
