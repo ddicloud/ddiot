@@ -3,10 +3,8 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-15 15:28:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-26 17:48:11
+ * @Last Modified time: 2022-07-07 17:02:53
  */
- 
-
 $config = [
     'components' => [
         'request' => [
@@ -14,7 +12,6 @@ $config = [
             'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUT',
         ],
     ],
-
 ];
 
 if (!YII_ENV_TEST) {
@@ -22,16 +19,16 @@ if (!YII_ENV_TEST) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
-        'allowedIPs'=>['*']
+        'allowedIPs' => ['127.0.0.1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // 'controllerNamespace' => 'backend\controllers\gii',
-        'viewPath'=>'@admin/views/gii',
+        'viewPath' => '@admin/views/gii',
         /*自定义*/
-        'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1'],
         'generators' => [
             'addons' => [
                 'class' => 'addonstpl\addons\Generator',
@@ -39,7 +36,7 @@ if (!YII_ENV_TEST) {
                     'default' => '@addonstpl/addons/default',
                 ],
             ],
-            'adminapi'=>[
+            'adminapi' => [
                 'class' => 'addonstpl\adminapi\Generator',
                 'templates' => [
                     'default' => '@addonstpl/adminapi/default',
@@ -48,14 +45,14 @@ if (!YII_ENV_TEST) {
             'model' => [
                 'class' => 'addonstpl\model\Generator',
                 'templates' => [
-                    'default' => '@addonstpl/model/default'
+                    'default' => '@addonstpl/model/default',
                 ],
             ],
             'crud' => [ //生成器名称
                 'class' => 'addonstpl\crud\Generator',
                 'templates' => [ //设置我们自己的模板
                     //模板名 => 模板路径
-                    'myCrud' => '@addonstpl/crud/default'
+                    'myCrud' => '@addonstpl/crud/default',
                 ],
             ],
             'module' => [
@@ -82,7 +79,6 @@ if (!YII_ENV_TEST) {
                     'default' => '@addonstpl/extension/default',
                 ],
             ],
-
         ],
     ];
 }

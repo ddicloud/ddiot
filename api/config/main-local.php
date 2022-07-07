@@ -3,10 +3,8 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-15 15:28:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-14 01:34:37
+ * @Last Modified time: 2022-07-07 17:02:22
  */
- 
-
 $config = [
     'components' => [
         'request' => [
@@ -14,7 +12,6 @@ $config = [
             'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUq',
         ],
     ],
-
 ];
 
 if (!YII_ENV_TEST) {
@@ -22,7 +19,7 @@ if (!YII_ENV_TEST) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
-        'allowedIPs'=>['*']
+        'allowedIPs' => ['127.0.0.1'],
     ];
 
     $config['bootstrap'][] = 'gii';
