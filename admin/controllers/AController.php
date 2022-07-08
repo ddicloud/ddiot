@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-08 09:12:44
+ * @Last Modified time: 2022-07-08 09:15:04
  */
 
 namespace admin\controllers;
@@ -23,49 +23,6 @@ use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
 use yii\web\NotFoundHttpException;
 
-/**
- * @SWG\Swagger(
- *     schemes={"https"},
- *     host="dev.hopesfire.com",
- *     basePath="/api/",
- *     produces={"application/json"},
- *     consumes={"application/x-www-form-urlencoded"},
- *     @SWG\Info(version="1.0", title="店滴云开发手册",
- *     description="店滴云开发手册",
- *     @SWG\Contact(
- *        name="王春生",
- *        email="2192138785@qq.com"
- *     )),
- *     @SWG\Parameter(
- *      in="header",
- *      name="store-id",
- *      type="string",
- *      description="商户ID",
- *      required=true,
- *    ),
- *     @SWG\Parameter(
- *      in="header",
- *      name="bloc-id",
- *      type="string",
- *      description="公司ID",
- *      required=true,
- *    ),
- *     @SWG\Parameter(
- *      in="header",
- *      name="refresh_token",
- *      type="string",
- *      description="刷新token令牌",
- *      required=true,
- *    ),
- *    @SWG\Parameter(
- *      description="用户access-token",
- *      name="access-token",
- *      type="string",
- *      in="header",
- *      required=false
- *   )
- * )
- */
 class AController extends ActiveController
 {
     private $actionStart = 0;
