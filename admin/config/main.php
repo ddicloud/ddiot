@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-24 18:27:32
+ * @Last Modified time: 2022-07-11 17:54:53
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -181,6 +181,15 @@ return [
                         'POST setinfo' => 'setinfo',
                         'POST default' => 'default',
                         'POST defaultinfo' => 'default-info',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['wechat'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET signup' => 'signup',
+                        'POST authurl' => 'auth-url',
                     ],
                 ],
                 [
