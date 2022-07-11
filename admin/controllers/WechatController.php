@@ -19,7 +19,7 @@ use Yii;
 class WechatController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['distance'];
+    protected $authOptional = ['*'];
 
     public function actionAuthUrl()
     {
