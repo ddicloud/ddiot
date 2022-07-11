@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-04 11:32:01
+ * @Last Modified time: 2022-07-11 18:07:54
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -161,7 +161,7 @@ return [
                         'GET admin' => 'admin',
                         'GET json-officialaccount' => 'json-officialaccount',
                         'GET json-wechat' => 'json-wechat',
-                        'GET json-inits' => 'json-inits'
+                        'GET json-inits' => 'json-inits',
                     ],
                 ],
                 [
@@ -330,6 +330,7 @@ return [
                     'extraPatterns' => [
                         'GET,OPTIONS,POST index' => 'index',
                         'GET,OPTIONS,POST event' => 'event',
+                        'GET,OPTIONS,POST open' => 'open',
                     ],
                 ],
                 [

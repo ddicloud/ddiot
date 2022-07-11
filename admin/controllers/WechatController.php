@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 17:46:29
+ * @Last Modified time: 2022-07-11 18:04:39
  */
 
 namespace admin\controllers;
@@ -53,5 +53,12 @@ class WechatController extends AController
         global $_GPC;
 
         loggingHelper::writeLog('WechatController', 'signup', '授权登录信息', $_GPC);
+    }
+
+    public function actionTick()
+    {
+        global $_GPC;
+
+        loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $_GPC);
     }
 }
