@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 18:39:43
+ * @Last Modified time: 2022-07-11 18:52:57
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -47,7 +47,8 @@ class MsgController extends AController
             'aes_key' => $config['aes_key'],
           ];
           loggingHelper::writeLog('officialaccount', 'actionOpen', '配置信息', [
-            'data' => $data
+            'data' => $data,
+            'config'=>$config
         ]);
         $openPlatform = Factory::openPlatform($data);
         $server = $openPlatform->server;
@@ -56,8 +57,8 @@ class MsgController extends AController
             'server'=> $server->serve(),
             'data' => $server
         ]);
-        
-        return $server->serve();
+        $response = $app->server->serve();
+        $response->send();
     }
 
     /**
