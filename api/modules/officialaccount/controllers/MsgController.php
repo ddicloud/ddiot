@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 18:07:33
+ * @Last Modified time: 2022-07-11 18:14:58
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -13,12 +13,13 @@ use api\modules\officialaccount\services\FansService;
 use api\modules\officialaccount\services\MessageService;
 use app\modules\officialaccount\components\Fans;
 use common\helpers\loggingHelper;
+use EasyWeChat\Factory;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 class MsgController extends AController
 {
-    protected $authOptional = ['event','open'];
+    protected $authOptional = ['event', 'open'];
 
     public $modelClass = 'api\modules\officialaccount\models\DdWechatFans';
 
@@ -33,6 +34,22 @@ class MsgController extends AController
             'msg' => $_GPC,
             'getMethod' => $request->getMethod(),
         ]);
+        
+        $configPath = Yii::getAlias('@admin\config\wechat.php');
+        $config = [];
+        if (file_exists($configPath)) {
+            $config = require_once $configPath;
+        }
+        $data = [
+            'app_id' => $config['app_id'],
+            'secret' => $config['secret'],
+            'token' => $config['token'],
+            'aes_key' => $config['aes_key'],
+          ];
+
+        $openPlatform = Factory::openPlatform($data);
+        $server = $openPlatform->server;
+        return $server->serve();
     }
 
     /**
