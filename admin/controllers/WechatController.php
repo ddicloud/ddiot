@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 18:04:39
+ * @Last Modified time: 2022-07-11 18:38:18
  */
 
 namespace admin\controllers;
@@ -24,7 +24,7 @@ class WechatController extends AController
     public function actionAuthUrl()
     {
         global $_GPC;
-        $configPath = Yii::getAlias('@admin\config\wechat.php');
+        $configPath = Yii::getAlias('@common/config/wechat.php');
         $config = [];
         if (file_exists($configPath)) {
             $config = require_once $configPath;

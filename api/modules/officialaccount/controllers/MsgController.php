@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-14 22:17:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 18:14:58
+ * @Last Modified time: 2022-07-11 18:39:43
  */
 
 namespace api\modules\officialaccount\controllers;
@@ -35,7 +35,7 @@ class MsgController extends AController
             'getMethod' => $request->getMethod(),
         ]);
         
-        $configPath = Yii::getAlias('@admin\config\wechat.php');
+        $configPath = Yii::getAlias('@common/config/wechat.php');
         $config = [];
         if (file_exists($configPath)) {
             $config = require_once $configPath;
@@ -46,9 +46,17 @@ class MsgController extends AController
             'token' => $config['token'],
             'aes_key' => $config['aes_key'],
           ];
-
+          loggingHelper::writeLog('officialaccount', 'actionOpen', '配置信息', [
+            'data' => $data
+        ]);
         $openPlatform = Factory::openPlatform($data);
         $server = $openPlatform->server;
+        
+        loggingHelper::writeLog('officialaccount', 'actionOpen', '服务数据', [
+            'server'=> $server->serve(),
+            'data' => $server
+        ]);
+        
         return $server->serve();
     }
 
