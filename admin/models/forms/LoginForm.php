@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-21 22:58:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 11:28:57
+ * @Last Modified time: 2022-07-12 10:09:31
  */
 
 namespace admin\models\forms;
@@ -112,7 +112,7 @@ class LoginForm extends Model
             $settings->invalidateCache();
             $info = $settings->getAllBySection('Website');
 
-            if ((int) $info['is_send_code'] === 1) {
+            if ((int) $info['is_send_code'] === 1 && $this->type === 2) {
                 if (empty($code)) {
                     return ResultHelper::json(401, '验证码不能为空');
                 }
