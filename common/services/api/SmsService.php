@@ -4,38 +4,33 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-18 13:50:47
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 20:17:20
+ * @Last Modified time: 2022-07-12 10:40:49
  */
-
 
 namespace common\services\api;
 
-use Yii;
-use yii\web\NotFoundHttpException;
-use yii\web\UnprocessableEntityHttpException;
-use yii\helpers\Json;
 use common\enums\StatusEnum;
 use common\helpers\EchantsHelper;
+use common\helpers\ErrorsHelper;
+use common\models\common\SmsLog;
+use common\models\DdAiSmsLog;
 use common\queues\SmsJob;
 use common\services\BaseService;
-use common\models\common\SmsLog;
-use common\helpers\ArrayHelper;
-use common\enums\MessageLevelEnum;
-use common\enums\SubscriptionActionEnum;
-use common\enums\SubscriptionReasonEnum;
-use common\helpers\ErrorsHelper;
-use common\models\DdAiSmsLog;
 use Overtrue\EasySms\EasySms;
+use Yii;
+use yii\helpers\Json;
+use yii\web\NotFoundHttpException;
+use yii\web\UnprocessableEntityHttpException;
 
 /**
- * Class SmsService
- * @package common\services\api
+ * Class SmsService.
+ *
  * @author chunchun <2192138785@qq.com>
  */
 class SmsService extends BaseService
 {
     /**
-     * 消息队列
+     * 消息队列.
      *
      * @var bool
      */
@@ -50,7 +45,7 @@ class SmsService extends BaseService
     {
         parent::__construct();
 
-        $sms  = Yii::$app->params['conf']['sms'];
+        $sms = Yii::$app->params['conf']['sms'];
 
         $this->config = [
             // HTTP 请求的超时时间（秒）
@@ -67,13 +62,13 @@ class SmsService extends BaseService
             // 可用的网关配置
             'gateways' => [
                 'errorlog' => [
-                    'file' => Yii::getAlias('runtime') . '/easy-sms.log',
+                    'file' => Yii::getAlias('runtime').'/easy-sms.log',
                 ],
                 'aliyun' => [
                     'access_key_id' => $sms['access_key_id'],
                     'access_key_secret' => $sms['access_key_secret'],
                     'sign_name' => $sms['sign_name'],
-                ]
+                ],
             ],
         ];
     }
@@ -85,11 +80,13 @@ class SmsService extends BaseService
      *       Yii::$app->services->sms->send($mobile, $code, $usage, $member_id)
      * ```
      *
-     * @param int $mobile 手机号码
-     * @param int $code 验证码
-     * @param string $usage 用途
-     * @param int $member_id 用户ID
+     * @param int    $mobile    手机号码
+     * @param int    $code      验证码
+     * @param string $usage     用途
+     * @param int    $member_id 用户ID
+     *
      * @return string|null
+     *
      * @throws UnprocessableEntityHttpException
      */
     public function send($mobile, $code, $usage, $member_id = 0)
@@ -101,7 +98,7 @@ class SmsService extends BaseService
                 'code' => $code,
                 'usage' => $usage,
                 'member_id' => $member_id,
-                'ip' => $ip
+                'ip' => $ip,
             ]));
 
             return $messageId;
@@ -117,11 +114,12 @@ class SmsService extends BaseService
      * @param $code
      * @param $usage
      * @param int $member_id
+     *
      * @throws UnprocessableEntityHttpException
      */
     public function realSend($mobile, $code, $usage, $member_id = 0, $ip = 0)
     {
-        $sms  = Yii::$app->params['conf']['sms'];
+        $sms = Yii::$app->params['conf']['sms'];
         $template = $sms['template_code'];
         try {
             // 校验发送是否频繁
@@ -175,14 +173,11 @@ class SmsService extends BaseService
         }
     }
 
-
     /**
      * 真实发送短信
      *
      * @param $mobile
-     * @param $code
-     * @param $usage
-     * @param int $member_id
+     *
      * @throws UnprocessableEntityHttpException
      */
     public function sendContent($mobile, $data = [], $template)
@@ -193,7 +188,6 @@ class SmsService extends BaseService
                 'template' => $template,
                 'data' => $data,
             ]);
-            
         } catch (NotFoundHttpException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         } catch (\Exception $e) {
@@ -207,12 +201,11 @@ class SmsService extends BaseService
                 }
             }
 
-            throw new UnprocessableEntityHttpException('短信发送失败');
+            throw new UnprocessableEntityHttpException('短信发送失败:'.implode(',', $errorMessage));
         }
     }
 
     /**
-     * @param $type
      * @return array
      */
     // public function stat($type)
@@ -239,6 +232,7 @@ class SmsService extends BaseService
 
     /**
      * @param $mobile
+     *
      * @return array|\yii\db\ActiveRecord|null
      */
     public function findByMobile($mobile)
@@ -252,13 +246,14 @@ class SmsService extends BaseService
 
     /**
      * @param array $data
+     *
      * @return DdAiSmsLog
      */
     protected function saveLog($data = [])
     {
         $log = new DdAiSmsLog();
 
-        if ($log->load($data, '') &&  $log->save()) {
+        if ($log->load($data, '') && $log->save()) {
             return $log;
         } else {
             $msg = ErrorsHelper::getModelError($log);

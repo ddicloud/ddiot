@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-12 10:31:38
+ * @Last Modified time: 2022-07-12 10:38:46
  */
 
 namespace common\services\admin;
@@ -291,6 +291,8 @@ class AccessTokenService extends BaseService
         ];
 
         $res = Yii::$app->service->apiSmsService->sendContent($mobile, $data = [], $config['template_code']);
+
+        return $res;
     }
 
     /**
