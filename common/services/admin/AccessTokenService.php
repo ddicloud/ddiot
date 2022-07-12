@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 22:01:56
+ * @Last Modified time: 2022-07-12 10:31:38
  */
 
 namespace common\services\admin;
@@ -260,6 +260,37 @@ class AccessTokenService extends BaseService
     {
         // 区分传统模式后台登录
         return $access_token.'_admin';
+    }
+
+    /**
+     * 注册和登录发送验证码
+     *
+     * @param [type] $mobile
+     * @param array  $data
+     *
+     * @return void
+     * @date 2022-07-12
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public function send($mobile, $data = [])
+    {
+        $settings = Yii::$app->settings;
+        $settings->invalidateCache();
+        $config = $settings->getAllBySection('Website');
+
+        Yii::$app->params['conf']['sms'] = [
+            'access_key_id' => $config['access_key_id'],
+            'access_key_secret' => $config['access_key_secret'],
+            'sign_name' => $config['sign_name'],
+            'template_code' => $config['template_code'],
+        ];
+
+        $res = Yii::$app->service->apiSmsService->sendContent($mobile, $data = [], $config['template_code']);
     }
 
     /**
