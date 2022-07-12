@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 18:33:43
+ * @Last Modified time: 2022-07-12 11:50:15
  */
 
 namespace admin\models;
@@ -176,7 +176,14 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findUser($mobile, $username)
     {
-        $user = static::find()->where(['or', ['username' => $username], ['mobile' => $mobile]])->one();
+        $query = static::find();
+        if (!empty($mobile)) {
+            $user = $query->where(['mobile' => $mobile])->one();
+        }
+
+        if (!empty($username)) {
+            $user = $query->where(['username' => $username])->one();
+        }
 
         return $user;
     }
