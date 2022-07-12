@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-18 13:50:47
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-12 10:40:49
+ * @Last Modified time: 2022-07-12 10:48:21
  */
 
 namespace common\services\api;
@@ -149,7 +149,7 @@ class SmsService extends BaseService
             throw new UnprocessableEntityHttpException($e->getMessage());
         } catch (\Exception $e) {
             $errorMessage = [];
-            $exceptions = $e->getMessage();
+            $exceptions = $e->getExceptions();
             $gateways = $this->config['default']['gateways'];
 
             foreach ($gateways as $gateway) {
@@ -192,7 +192,7 @@ class SmsService extends BaseService
             throw new UnprocessableEntityHttpException($e->getMessage());
         } catch (\Exception $e) {
             $errorMessage = [];
-            $exceptions = $e->getMessage();
+            $exceptions = $e->getExceptions();
             $gateways = $this->config['default']['gateways'];
 
             foreach ($gateways as $gateway) {
