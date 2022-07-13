@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 16:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 16:40:33
+ * @Last Modified time: 2022-07-13 16:42:28
  */
 
 namespace api\models;
@@ -91,6 +91,9 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     {
         Yii::$app->cache->set($this->getCacheKey('api_rate_allowance'), $allowance, $this->timeLimit);
         Yii::$app->cache->set($this->getCacheKey('api_rate_timestamp'), $timestamp, $this->timeLimit);
+        $this->allowance = $allowance;
+        $this->allowance_updated_at = $timestamp;
+        $this->save();
     }
 
     /**
