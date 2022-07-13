@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 14:22:42
+ * @Last Modified time: 2022-07-13 14:36:34
  */
 
 namespace common\services\api;
@@ -16,6 +16,7 @@ use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
+use common\helpers\StringHelper;
 use common\services\BaseService;
 use Yii;
 use yii\db\ActiveRecord;
@@ -71,9 +72,9 @@ class AccessTokenService extends BaseService
                     'refresh_token' => $model->refresh_token,
                     'isPeriodRefToken' => $this->isPeriodRefToken($model->refresh_token),
                 ]);
-                $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+                $model->refresh_token = StringHelper::uuid('md5').'_'.time();
             }
-            $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
+            $model->access_token = StringHelper::uuid('md5').'_'.time();
             $model->status = 1;
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
@@ -192,7 +193,7 @@ class AccessTokenService extends BaseService
         $model = $this->findModel($member_id, $group_id);
 
         !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-        $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
+        $model->access_token = StringHelper::uuid('md5').'_'.time();
         if ($model->save()) {
             return $model->access_token;
         } else {

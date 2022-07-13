@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-12 11:39:52
+ * @Last Modified time: 2022-07-13 14:36:42
  */
 
 namespace common\services\admin;
@@ -13,6 +13,7 @@ use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
+use common\helpers\StringHelper;
 use common\models\UserBloc;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
@@ -66,9 +67,9 @@ class AccessTokenService extends BaseService
             // 删除缓存
             !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
             if ($this->isPeriodRefToken($model->refresh_token) || empty($model->refresh_token)) {
-                $model->refresh_token = Yii::$app->security->generateRandomString().'_'.time();
+                $model->refresh_token = StringHelper::uuid('md5').'_'.time();
             }
-            $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
+            $model->access_token = StringHelper::uuid('md5').'_'.time();
             $model->status = 1;
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
@@ -190,7 +191,7 @@ class AccessTokenService extends BaseService
         $model = $this->findModel($user_id, $group_id);
 
         !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-        $model->access_token = Yii::$app->security->generateRandomString().'_'.time();
+        $model->access_token = StringHelper::uuid('md5').'_'.time();
         if ($model->save()) {
             return $model->access_token;
         } else {
