@@ -72,9 +72,9 @@ class AccessTokenService extends BaseService
                     'refresh_token' => $model->refresh_token,
                     'isPeriodRefToken' => $this->isPeriodRefToken($model->refresh_token),
                 ]);
-                $model->refresh_token = StringHelper::uuid('md5').'_'.time();
+                $model->refresh_token = StringHelper::uuid('uniqid').'_'.time();
             }
-            $model->access_token = StringHelper::uuid('md5').'_'.time();
+            $model->access_token = StringHelper::uuid('uniqid').'_'.time();
             $model->status = 1;
             if (!$model->save()) {
                 if ($cycle_index <= 3) {
@@ -199,7 +199,7 @@ class AccessTokenService extends BaseService
         $model = $this->findModel($member_id, $group_id);
 
         !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
-        $model->access_token = StringHelper::uuid('md5').'_'.time();
+        $model->access_token = StringHelper::uuid('uniqid').'_'.time();
         if ($model->save()) {
             return $model->access_token;
         } else {
