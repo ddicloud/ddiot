@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 15:17:48
+ * @Last Modified time: 2022-07-13 15:19:54
  */
 
 namespace common\services\api;
@@ -61,6 +61,7 @@ class AccessTokenService extends BaseService
         $model->group_id = $group_id;
 
         loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '获取开始', [
+            'member' => $member,
             'model' => $model,
             'time' => date('Y-m-d H:i:s'),
         ]);
