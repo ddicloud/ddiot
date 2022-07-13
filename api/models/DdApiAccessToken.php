@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 16:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 16:42:28
+ * @Last Modified time: 2022-07-13 17:17:17
  */
 
 namespace api\models;
 
+use common\helpers\ResultHelper;
 use common\models\DdMemberGroup;
 use common\models\enums\CodeStatus;
 use Yii;
@@ -128,7 +129,8 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
 
             // 验证有效期
             if ($timestamp + $expire <= time()) {
-                throw new UnauthorizedHttpException('您的登录验证已经过期，请重新登录', CodeStatus::getValueByName('token失效'));
+                return ResultHelper::json(CodeStatus::getValueByName('token失效'),'您的登录验证已经过期，请重新登录');
+                // throw new UnauthorizedHttpException('您的登录验证已经过期，请重新登录', CodeStatus::getValueByName('token失效'));
             }
         }
         $service = Yii::$app->service;
