@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 15:22:48
+ * @Last Modified time: 2022-07-13 15:33:59
  */
 
 namespace common\services\api;
@@ -152,9 +152,17 @@ class AccessTokenService extends BaseService
      */
     public static function isPeriod($token, $type = null)
     {
+        loggingHelper::writeLog('AccessTokenService', 'isPeriod', '重复获取', [
+            'token' => $token
+        ]);
+
         // 判断验证token有效性是否开启
         if (Yii::$app->params['user.accessTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+            
+            loggingHelper::writeLog('AccessTokenService', 'isPeriod', '时间分割', [
+                'timestamp' => $timestamp
+            ]);
             $expire = Yii::$app->params['user.accessTokenExpire'];
             // 验证有效期
             if ($timestamp + $expire <= time()) {
