@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 16:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 15:53:25
+ * @Last Modified time: 2022-07-13 15:54:57
  */
 
 namespace api\models;
@@ -72,17 +72,17 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     //     return [$this->rateLimit, 1]; // $rateLimit requests per second
     // }
 
-    // public function loadAllowance($request, $action)
-    // {
-    //     return [$this->allowance, $this->allowance_updated_at];
-    // }
+    public function loadAllowance($request, $action)
+    {
+        return [$this->allowance, $this->allowance_updated_at];
+    }
 
-    // public function saveAllowance($request, $action, $allowance, $timestamp)
-    // {
-    //     $this->allowance = $allowance;
-    //     $this->allowance_updated_at = $timestamp;
-    //     $this->save();
-    // }
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        $this->allowance = $allowance;
+        $this->allowance_updated_at = $timestamp;
+        $this->save();
+    }
 
     public function getRateLimit($request, $action)
     {
@@ -92,26 +92,26 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         return [$this->rateLimit, $this->timeLimit];
     }
 
-    public function loadAllowance($request, $action)
-    {
-        $allowance = Yii::$app->cache->get($this->getCacheKey('api_rate_allowance'));
-        $timestamp = Yii::$app->cache->get($this->getCacheKey('api_rate_timestamp'));
+    // public function loadAllowance($request, $action)
+    // {
+    //     $allowance = Yii::$app->cache->get($this->getCacheKey('api_rate_allowance'));
+    //     $timestamp = Yii::$app->cache->get($this->getCacheKey('api_rate_timestamp'));
 
-        if ($allowance === false) {
-            return [$this->timeLimit, time()];
-        }
+    //     if ($allowance === false) {
+    //         return [$this->timeLimit, time()];
+    //     }
 
-        return [$allowance, $timestamp];
-    }
+    //     return [$allowance, $timestamp];
+    // }
 
-    public function saveAllowance($request, $action, $allowance, $timestamp)
-    {
-        Yii::$app->cache->set($this->getCacheKey('api_rate_allowance'), $allowance, $this->timeLimit);
-        Yii::$app->cache->set($this->getCacheKey('api_rate_timestamp'), $timestamp, $this->timeLimit);
-        // $this->allowance = $allowance;
-        // $this->allowance_updated_at = $timestamp;
-        // $this->save();
-    }
+    // public function saveAllowance($request, $action, $allowance, $timestamp)
+    // {
+    //     Yii::$app->cache->set($this->getCacheKey('api_rate_allowance'), $allowance, $this->timeLimit);
+    //     Yii::$app->cache->set($this->getCacheKey('api_rate_timestamp'), $timestamp, $this->timeLimit);
+    //     // $this->allowance = $allowance;
+    //     // $this->allowance_updated_at = $timestamp;
+    //     // $this->save();
+    // }
 
     /**
      * {@inheritdoc}
