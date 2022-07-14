@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:20:16
+ * @Last Modified time: 2022-07-14 15:44:35
  */
 
 namespace admin\controllers\addons;
@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
  */
 class CategoryController extends AController
 {
-    public $modelSearchName = 'StoreCategorySearch';
+    public $modelSearchName = 'StoreCategory';
 
     public $modelClass = '';
 
