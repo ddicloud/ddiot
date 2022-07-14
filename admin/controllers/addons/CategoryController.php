@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-14 15:44:35
+ * @Last Modified time: 2022-07-14 16:49:17
  */
 
 namespace admin\controllers\addons;
@@ -52,7 +52,9 @@ class CategoryController extends AController
 
     public function actionCategory()
     {
-        $list = StoreCategory::find()->where(['parent_id' => 0])->select(['name as text', 'category_id as value'])->asArray()->all();
+        global $_GPC;
+        $bloc_id = $_GPC['bloc_id'];
+        $list = StoreCategory::find()->where(['parent_id' => 0, 'bloc_id' => $bloc_id])->select(['name as text', 'category_id as value'])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $list);
     }
