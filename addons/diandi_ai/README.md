@@ -110,7 +110,7 @@ return [
 server {
         listen        80;
         server_name  www.ai.com;
-        root   "D:/www/firetech/frontend/web";
+        root   "D:/www/firetech/frontend";
 			add_header Access-Control-Allow-Origin *;
 			add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
 			add_header Access-Control-Allow-Headers X-Requested-With;

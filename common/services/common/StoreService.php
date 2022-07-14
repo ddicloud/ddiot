@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-04 01:06:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 10:48:36
+ * @Last Modified time: 2022-07-14 10:54:41
  */
 
 namespace common\services\common;
@@ -153,8 +153,9 @@ class StoreService extends BaseService
     public static function getCate($parent_id)
     {
         global $_GPC;
-
+        $bloc_id = $_GPC['bloc_id'];
         $where = [];
+        $where['bloc_id'] = $bloc_id;
         if (!empty($parent_id) && is_numeric($parent_id)) {
             $where['parent_id'] = $parent_id;
         }
