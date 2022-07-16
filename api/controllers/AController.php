@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-03-18 09:04:34
+ * @Last Modified time: 2022-07-16 09:33:24
  */
 
 namespace api\controllers;
 
+use common\components\sign\Sign;
 use common\filters\auth\CompositeAuth;
 use common\filters\auth\HttpBasicAuth;
 use common\filters\auth\HttpBearerAuth;
@@ -39,13 +40,13 @@ class AController extends ActiveController
     protected $authOptional = [];
 
     /**
-     * 不用进行签名验证的方法
+     * 需要进行签名验证的方法 * 全部不需要，all全部需要，update指update需要
      * 例如： ['index', 'update', 'create', 'view', 'delete']
-     * 默认全部需要验证
+     * 默认全部不需要验证
      *
      * @var array
      */
-    protected $signOptional = [];
+    protected $signOptional = ['*'];
 
     protected $optionsAction = []; //需要options的方法
 
@@ -73,6 +74,13 @@ class AController extends ActiveController
             ],
             // 不进行认证判断方法
             'optional' => $this->authOptional,
+        ];
+
+        // 签名验证
+        $behaviors['sign'] = [
+            'class' => Sign::className(),
+            'key' => Sign::generateSecret(), // 密钥
+            'optional' => $this->signOptional,
         ];
 
         $urls = Yii::$app->settings->get('Weburl', 'urls');
