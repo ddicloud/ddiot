@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-21 16:38:22
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-07-18 16:30:32
  */
 
 namespace admin\controllers\system;
@@ -12,6 +13,7 @@ use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\form\App;
+use diandi\addons\models\form\Api;
 use common\models\forms\Weburl;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
@@ -34,7 +36,7 @@ use Yii;
 class ConfigController extends AController
 {
     public $modelClass = '';
-    
+
     public function actions()
     {
         global $_GPC;
@@ -42,7 +44,7 @@ class ConfigController extends AController
         $bloc = Bloc::findOne($bloc_id);
     }
 
-     /**
+    /**
      * @SWG\Post(path="/system/config/Weburl",
      *     tags={"系统配置"},
      *     summary="域名",
@@ -71,10 +73,9 @@ class ConfigController extends AController
         if (Yii::$app->request->isPost) {
             $Weburl = $_GPC['Weburl'];
             foreach ($Weburl as $key => $value) {
-                $settings->set('Weburl', $key, $value);            
+                $settings->set('Weburl', $key, $value);
             }
             return ResultHelper::json(200, '保存成功', []);
-            
         } else {
             $set = $settings->getAllBySection('Weburl');
 
@@ -478,6 +479,37 @@ class ConfigController extends AController
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
+            $Res = $model->saveConf($bloc_id);
+            if ($Res['code'] == 200) {
+                return ResultHelper::json(200, $Res['message'], []);
+            } else {
+                return ResultHelper::json(400, $Res['message'], []);
+            }
+        } else {
+            $model->getConf($bloc_id);
+            return ResultHelper::json(200, '获取成功', $model);
+        }
+    }
+
+    /**
+     * @SWG\Post(path="/system/config/api",
+     *     tags={"系统配置"},
+     *     summary="api",
+     *     @SWG\Response(response = 200, description = "api"),
+     *     @SWG\Parameter(ref="#/parameters/access-token"),
+     *     @SWG\Parameter(ref="#/parameters/bloc-id"),
+     *     @SWG\Parameter(ref="#/parameters/store-id"),
+     *     @SWG\Parameter(in="formData", name="app_id", type="string", description="APP ID", required=true)
+     *     @SWG\Parameter(in="formData", name="app_secret", type="string", description="APP SECRET", required=true)
+     * )
+     */
+    public function actionApi()
+    {
+        global $_GPC;
+        $model = new Api();
+        $bloc_id =  $_GPC['bloc_id'];
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post(), '');
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
                 return ResultHelper::json(200, $Res['message'], []);

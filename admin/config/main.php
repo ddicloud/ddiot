@@ -3,14 +3,14 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 17:54:53
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-07-18 15:50:23
  */
 $params = array_merge(
-    require __DIR__.'/../../common/config/params.php',
-    require __DIR__.'/../../common/config/params-local.php',
-    require __DIR__.'/params.php',
-    require __DIR__.'/params-local.php'
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -295,6 +295,7 @@ return [
                         'POST,GET app' => 'app',
                         'POST,GET map' => 'map',
                         'POST,GET oss' => 'oss',
+                        'POST,GET api' => 'api',
                     ],
                 ],
                 // 扩展模块

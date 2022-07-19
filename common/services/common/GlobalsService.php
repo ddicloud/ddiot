@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 10:20:22
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-07-18 17:09:33
  */
 
 namespace common\services\common;
@@ -29,6 +29,7 @@ use diandi\addons\models\BlocConfWechatpay;
 use diandi\addons\models\BlocConfWxapp;
 use diandi\addons\models\BlocLevel;
 use diandi\addons\models\BlocStore;
+use diandi\addons\models\form\Api;
 use diandi\addons\models\form\App;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
@@ -157,7 +158,7 @@ class GlobalsService extends BaseService
     // 全局设置商家id
     public function getbloc_id()
     {
-        $key = Yii::$app->user->identity->id.'globalBloc';
+        $key = Yii::$app->user->identity->id . 'globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
         if (isset($globalBloc['bloc_id']) && !empty($globalBloc['bloc_id']) && Yii::$app->id == 'app-backend') {
@@ -176,7 +177,7 @@ class GlobalsService extends BaseService
     // 全局获取子公司id
     public function getStore_id()
     {
-        $key = Yii::$app->user->identity->id.'globalBloc';
+        $key = Yii::$app->user->identity->id . 'globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
         if (isset($globalBloc['store_id']) && !empty($globalBloc['store_id']) && Yii::$app->id == 'app-backend') {
@@ -214,20 +215,20 @@ class GlobalsService extends BaseService
      */
     public function getConf($bloc_id = 0)
     {
-        $logPath = Yii::getAlias('@api/runtime/config/getConf/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@api/runtime/config/getConf/' . date('ymd') . '.log');
 
-        $cacheKey = 'conf_'.$bloc_id;
+        $cacheKey = 'conf_' . $bloc_id;
         if (Yii::$app->cache->get($cacheKey)) {
             Yii::$app->params['conf'] = Yii::$app->cache->get($cacheKey);
             return Yii::$app->cache->get($cacheKey);
         }
 
-        FileHelper::writeLog($logPath, '配置获取'.$bloc_id);
+        FileHelper::writeLog($logPath, '配置获取' . $bloc_id);
 
         // 配置优先级 自己--》集团--》系统默认
 
         $is_showall = [
-            'is_showall'=>true
+            'is_showall' => true
         ];
 
         $WechatpayConf = new Wechatpay($is_showall);
@@ -236,6 +237,7 @@ class GlobalsService extends BaseService
         $SmsConf = new Sms($is_showall);
         $BaiduConf = new Baidu($is_showall);
         $WechatConf = new Wechat($is_showall);
+        $apiConf = new Api($is_showall);
         $AppConf = new App($is_showall);
         $MicroappConf = new Microapp($is_showall);
         $OssConf = new Oss($is_showall);
@@ -268,12 +270,15 @@ class GlobalsService extends BaseService
             // oss配置
             $OssConf->getConf($bloc_id);
             $conf['oss'] = $OssConf;
+            // api签名验证
+            $apiConf->getConf($bloc_id);
+            $conf['api'] = $apiConf;
         }
 
         // 自己配置为空获取集团
         $Bloc = new Bloc();
         $global_bloc = $Bloc->find()->where(['status' => 1])->select(['bloc_id', 'store_id'])->one();
-        FileHelper::writeLog($logPath, '集团id'.$global_bloc['bloc_id']);
+        FileHelper::writeLog($logPath, '集团id' . $global_bloc['bloc_id']);
         $global_bloc_id = $global_bloc['bloc_id'];
 
         Yii::$app->params['global_bloc_id'] = $global_bloc['bloc_id'];
@@ -332,6 +337,12 @@ class GlobalsService extends BaseService
             $conf['oss'] = $OssConf;
         }
 
+        if (empty($conf['api'])) {
+            // api签名验证
+            $apiConf->getConf($global_bloc_id);
+            $conf['api'] = $apiConf;
+        }
+
         // 都为空就使用系统默认的
         if (empty($conf['baidu'])) {
             $conf['baidu'] = Yii::$app->settings->getAllBySection('Baidu');
@@ -372,6 +383,11 @@ class GlobalsService extends BaseService
             $conf['oss'] = Yii::$app->settings->getAllBySection('Oss');
         }
 
+        if (empty($conf['api'])) {
+            // api签名验证
+            $conf['api'] = Yii::$app->settings->getAllBySection('Api');
+        }
+
         $cacheClass = new CacheHelper();
         $cacheClass->set($cacheKey, $conf);
 
@@ -393,7 +409,7 @@ class GlobalsService extends BaseService
     public function getBlocByuserId($user_id)
     {
         $Bloc = new Bloc();
-        $key = $user_id.'_blocs';
+        $key = $user_id . '_blocs';
         if (Yii::$app->cache->get($key)) {
             Yii::$app->params['userBloc'] = Yii::$app->cache->get($key);
 
@@ -439,7 +455,7 @@ class GlobalsService extends BaseService
     public function getStoreDetail($store_id)
     {
         $cacheClass = new CacheHelper();
-        $key = 'StoreDetail_'.intval($store_id);
+        $key = 'StoreDetail_' . intval($store_id);
         if ($cacheClass->get($key)) {
             return Yii::$app->cache->get($key);
         } else {
@@ -447,10 +463,10 @@ class GlobalsService extends BaseService
             $store = $BlocStore->find()->where(['store_id' => $store_id])->with(['bloc'])->asArray()->one();
             $info = [];
             if ($store) {
-                $store['logopath'] = yii::getAlias('@attachment/'.$store['logo']);
+                $store['logopath'] = yii::getAlias('@attachment/' . $store['logo']);
                 $store['logo'] = ImageHelper::tomedia($store['logo']);
                 $extra = unserialize($store['extra']);
-                $extra =is_array($extra) ? $extra : [];
+                $extra = is_array($extra) ? $extra : [];
                 $info = array_merge($store, $extra);
             }
 
@@ -489,7 +505,7 @@ class GlobalsService extends BaseService
      */
     public function getMessage($bloc_id = 0)
     {
-        $cacheKey = 'message_'.$bloc_id;
+        $cacheKey = 'message_' . $bloc_id;
         if (Yii::$app->cache->get($cacheKey)) {
             Yii::$app->params['message'] = Yii::$app->cache->get($cacheKey);
 

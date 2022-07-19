@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-16 12:02:51
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-07-18 18:24:34
  */
 
 
@@ -18,9 +19,9 @@ class Sign extends ActionFilter
     /**
      * 明文key
      */
-    const APP_SECRET = 'navibar'; // 需和前端保持一致
+    public static $appSecret = 'navibar'; // 需和前端保持一致
 
-    const APP_ID = '123456'; // 需和前端保持一致
+    public static $appId = '123456'; // 需和前端保持一致
 
     const C_TIME_LOSE = 30 * 60; // 30分钟失效
 
@@ -43,8 +44,9 @@ class Sign extends ActionFilter
      * 根据key生成密钥 secret是由MD5(key+appid)生成 32位
      * @return string
      */
-    public static function generateSecret() {
-        $secret = md5(self::APP_SECRET . self::APP_ID, false);
+    public static function generateSecret()
+    {
+        $secret = md5(self::$appSecret . self::$appId, false);
         return $secret;
     }
 
@@ -53,13 +55,18 @@ class Sign extends ActionFilter
      * @param array $config
      * @throws SignException
      */
-    public function __construct(array $config = []) {
+    public function __construct(array $config = [])
+    {
+        $apiConf = Yii::$app->service->commonGlobalsService->getConf(Yii::$app->params['bloc_id'])['api'] ?? null;
+        $apiConf && self::$appId = $apiConf->app_id;
+        $apiConf && self::$appSecret = $apiConf->app_secret;
+
         parent::__construct($config);
         // in_array(\Yii::$app->params['server_name'], $this->needSignEnvironment
         // all代表全部需要，*代表全部不需要
-        if ((in_array('all',$this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*',$this->optional)) {
+        if ((in_array('all', $this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*', $this->optional)) {
             $this->validateSign(
-                ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(),\Yii::$app->request->post())
+                ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(), \Yii::$app->request->post())
             );
         }
     }
@@ -69,7 +76,8 @@ class Sign extends ActionFilter
      * @param $params
      * @throws SignException
      */
-    public function validateSign($params) {
+    public function validateSign($params)
+    {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
         if (!isset($params['sign']) || empty($params['sign'])) {
@@ -88,7 +96,7 @@ class Sign extends ActionFilter
         $forAllSign = $this->md5Sign($forAllString);
         // && (!$forMerSign && $forMerSign != $params['sign'])
         if ($params['sign'] != $forAllSign) {
-//            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            //            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
             throw new SignException(CodeConst::CODE_90005);
         }
     }
@@ -98,7 +106,8 @@ class Sign extends ActionFilter
      * @param $param
      * @return array 去掉空值与签名参数后的新签名参数组
      */
-    function paramFilter($param) {
+    function paramFilter($param)
+    {
         $paraFilter = $param;
         unset($paraFilter['sign']);  // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
@@ -114,7 +123,8 @@ class Sign extends ActionFilter
      * @param $preStr string 需要签名的字符串
      * @return string 签名结果
      */
-    function md5Sign($preStr) {
+    function md5Sign($preStr)
+    {
         // 生成sign  字符串和密钥拼接
         $str = $preStr . '&key=' . self::generateSecret();
         $sign = md5($str);
@@ -125,10 +135,10 @@ class Sign extends ActionFilter
      * 获取二级域名前缀
      * @return mixed
      */
-    static function getPrefixOfDomain() {
-        $url = "//" . $_SERVER ['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    static function getPrefixOfDomain()
+    {
+        $url = "//" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);
         return $match[1];
     }
-
 }
