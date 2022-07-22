@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-12 10:32:24
+ * @Last Modified time: 2022-07-22 17:58:22
  */
 
 namespace admin\controllers;
@@ -474,7 +474,7 @@ class UserController extends AController
      *    ),
      *     @SWG\Parameter(
      *      in="formData",
-     *      name="code",
+     *      name="sms_code",
      *      type="integer",
      *      description="验证码",
      *      required=true,
@@ -502,7 +502,7 @@ class UserController extends AController
         $mobile = $_GPC['mobile'];
         $password = $_GPC['password'];
         $repassword = $_GPC['repassword'];
-        $code = $_GPC['code'];
+        $code = $_GPC['sms_code'];
         $sendcode = Yii::$app->cache->get($mobile.'_code');
 
         $settings = Yii::$app->settings;
