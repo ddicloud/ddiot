@@ -43,7 +43,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "^6.2.1 || ^7.0",
+        "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/guzzle-services": "^1.1",
         "guzzlehttp/psr7": "^1.3.1 || ^2.0",
         "symfony/browser-kit": ">=2.7 <5.0",
