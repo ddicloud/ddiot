@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 19:31:08
+ * @Last Modified time: 2022-07-27 19:34:51
  */
 
 namespace admin\controllers;
@@ -575,9 +575,6 @@ class UserController extends AController
         $mobile = $_GPC['mobile'];
         $where = [];
         $where['mobile'] = $mobile;
-
-        $where['bloc_id'] = yii::$app->params['bloc_id'];
-        $where['store_id'] = yii::$app->params['store_id'];
 
         // 首先校验手机号是否重复
         $user = User::find()->where($where)->asArray()->one();
