@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-24 18:20:52
+ * @Last Modified time: 2022-07-27 18:54:59
  */
 
 namespace api\controllers;
@@ -76,7 +76,7 @@ class UserController extends AController
         }
 
         $res = $DdMember->signup($username, $mobile, $password);
-        
+
         return ResultHelper::json(200, '注册成功', $res);
     }
 
@@ -479,7 +479,7 @@ class UserController extends AController
         global $_GPC;
         $type = $_GPC['type'];
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
-            return ResultHelper::json(401, '验证码请求不合法');
+            return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
 
         $data = Yii::$app->request->post();
