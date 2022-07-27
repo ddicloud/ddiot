@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 14:36:42
+ * @Last Modified time: 2022-07-27 19:30:47
  */
 
 namespace common\services\admin;
@@ -14,6 +14,7 @@ use admin\models\User;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\StringHelper;
+use common\models\DdUser;
 use common\models\UserBloc;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
@@ -292,6 +293,15 @@ class AccessTokenService extends BaseService
         ];
 
         $res = Yii::$app->service->apiSmsService->sendContent($mobile, $data, $config['template_code']);
+
+        return $res;
+    }
+
+    // 修改用户基础信息
+    public static function editInfo($user_id, $fields = [])
+    {
+        $DdMember = new DdUser();
+        $res = $DdMember->updateAll($fields, ['user_id' => $user_id]);
 
         return $res;
     }

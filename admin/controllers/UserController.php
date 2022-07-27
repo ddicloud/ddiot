@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 19:22:45
+ * @Last Modified time: 2022-07-27 19:31:08
  */
 
 namespace admin\controllers;
@@ -377,7 +377,7 @@ class UserController extends AController
 
         $use_id = Yii::$app->user->identity->id;
         $fields['mobile'] = $mobile;
-        $res = Yii::$app->service->commonMemberService->editInfo($use_id, $fields);
+        $res = Yii::$app->service->adminAccessTokenService->editInfo($use_id, $fields);
 
         if ($res) {
             return ResultHelper::json(200, '绑定手机号成功', []);
