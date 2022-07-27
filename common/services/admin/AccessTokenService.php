@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 19:30:47
+ * @Last Modified time: 2022-07-27 19:31:51
  */
 
 namespace common\services\admin;
@@ -301,7 +301,7 @@ class AccessTokenService extends BaseService
     public static function editInfo($user_id, $fields = [])
     {
         $DdMember = new DdUser();
-        $res = $DdMember->updateAll($fields, ['user_id' => $user_id]);
+        $res = $DdMember->updateAll($fields, ['id' => $user_id]);
 
         return $res;
     }
