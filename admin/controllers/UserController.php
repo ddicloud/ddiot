@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 18:54:43
+ * @Last Modified time: 2022-07-27 19:22:45
  */
 
 namespace admin\controllers;
@@ -375,9 +375,9 @@ class UserController extends AController
             return ResultHelper::json(401, '验证码错误');
         }
 
-        $member_id = Yii::$app->user->identity->member_id;
+        $use_id = Yii::$app->user->identity->id;
         $fields['mobile'] = $mobile;
-        $res = Yii::$app->service->commonMemberService->editInfo($member_id, $fields);
+        $res = Yii::$app->service->commonMemberService->editInfo($use_id, $fields);
 
         if ($res) {
             return ResultHelper::json(200, '绑定手机号成功', []);
