@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 19:34:51
+ * @Last Modified time: 2022-07-28 09:01:49
  */
 
 namespace admin\controllers;
@@ -248,7 +248,7 @@ class UserController extends AController
             if ($member->save()) {
                 Yii::$app->user->logout();
                 $service = Yii::$app->service;
-                $service->namespace = 'api';
+                $service->namespace = 'admin';
                 $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
                 // 清除验证码
                 Yii::$app->cache->delete($mobile.'_code');
