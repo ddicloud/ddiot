@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-17 14:10:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 09:52:55
+ * @Last Modified time: 2022-07-28 10:02:33
  */
 
 namespace admin\models\forms;
 
+use admin\models\User;
 use common\models\DdUser;
 use Yii;
 use yii\base\Model;
@@ -50,7 +51,7 @@ class EdituserinfoForm extends Model
     public $email;
 
     /**
-     * @var dduser
+     * @var User
      */
     private $_user;
 
@@ -112,6 +113,7 @@ class EdituserinfoForm extends Model
         if ($this->validate()) {
             $userobj = $this->getUser();
             $userobj->load($this->attributes, '');
+
             if ($userobj->save()) {
                 $service = Yii::$app->service;
                 $service->namespace = 'admin';
@@ -127,14 +129,14 @@ class EdituserinfoForm extends Model
     /**
      * 获取用户信息.
      *
-     * @return DdUser|null
+     * @return User|null
      */
     protected function getUser()
     {
         if ($this->_user === null) {
-            /** @var DdUser $identity */
+            /** @var User $identity */
             $user_id = Yii::$app->user->identity->id;
-            $this->_user = DdUser::findOne($user_id);
+            $this->_user = User::findOne($user_id);
         }
 
         return $this->_user;
