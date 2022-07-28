@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 09:01:49
+ * @Last Modified time: 2022-07-28 09:46:39
  */
 
 namespace admin\controllers;
 
+use admin\models\forms\EdituserinfoForm;
 use admin\models\forms\LoginForm;
 use admin\models\User;
 use admin\services\UserService;
@@ -18,7 +19,6 @@ use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use common\models\DdMember as ModelsDdMember;
 use common\models\DdWebsiteContact;
-use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
 use common\models\UserBloc;
 use diandi\addons\models\AddonsUser;
