@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 19:31:51
+ * @Last Modified time: 2022-07-28 11:27:21
  */
 
 namespace common\services\admin;
@@ -13,6 +13,7 @@ use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
+use common\helpers\ImageHelper;
 use common\helpers\StringHelper;
 use common\models\DdUser;
 use common\models\UserBloc;
@@ -89,6 +90,7 @@ class AccessTokenService extends BaseService
         $result['expiration_time'] = Yii::$app->params['user.accessTokenExpire'];
         // 关联账号信息
         $user = ArrayHelper::toArray($member);
+        $user['avatar'] = ImageHelper::tomedia($user['avatar']);
         $result['user'] = $user;
         // 关联用户的默认模块和商户
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
