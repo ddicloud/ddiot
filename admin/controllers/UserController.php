@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 09:56:27
+ * @Last Modified time: 2022-07-28 11:40:38
  */
 
 namespace admin\controllers;
@@ -22,6 +22,7 @@ use common\models\DdWebsiteContact;
 use common\models\forms\PasswdForm;
 use common\models\UserBloc;
 use diandi\addons\models\AddonsUser;
+use diandi\addons\models\form\Api;
 use diandi\admin\components\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\searchs\User as ModelsUser;
@@ -967,5 +968,25 @@ class UserController extends AController
 
             return ResultHelper::json(400, $msg);
         }
+    }
+
+    public function actionConfig()
+    {
+        global $_GPC;
+
+        $user_id = Yii::$app->user->identity->user_id;
+        $UserBloc = UserBloc::find()->where(['user_id' => $user_id, 'is_default' => 1, 'status' => 1])->asArray()->one();
+        $Api = new Api();
+        $apiConf = $Api->getConf($UserBloc['bloc_id']);
+        $data = [
+            'baseUrl' => Yii::$app->request->getHostName(),
+            'bloc_id' => $UserBloc['bloc_id'],
+            'store_id' => $UserBloc['store_id'],
+            'siteUrl' => Yii::$app->request->getHostName(),
+            'app_id' => $apiConf['app_id'],
+            'app_secret' => $apiConf['app_secret'],
+        ];
+
+        return ResultHelper::json(200, '设置成功', $data);
     }
 }
