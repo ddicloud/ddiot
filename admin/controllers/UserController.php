@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 09:46:39
+ * @Last Modified time: 2022-07-28 09:56:27
  */
 
 namespace admin\controllers;
@@ -414,14 +414,7 @@ class UserController extends AController
      *    ),
      *     @SWG\Parameter(
      *      in="formData",
-     *      name="nickName",
-     *      type="string",
-     *      description="微信昵称",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="avatarUrl",
+     *      name="avatar",
      *      type="string",
      *      description="头像",
      *      required=true,
