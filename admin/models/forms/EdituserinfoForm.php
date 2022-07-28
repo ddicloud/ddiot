@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-17 14:10:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 09:46:20
+ * @Last Modified time: 2022-07-28 09:50:13
  */
 
 namespace admin\models\forms;
@@ -74,7 +74,7 @@ class EdituserinfoForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            $hasuser = DdMember::find()->where(['and', ['=', 'mobile', $this->mobile], ['!=', 'id', $user->id]])->select('id')->one();
+            $hasuser = DdUser::find()->where(['and', ['=', 'mobile', $this->mobile], ['!=', 'id', $user->id]])->select('id')->one();
             if ($hasuser) {
                 return   $this->addError($attribute, '手机号已经被占用');
             }
@@ -85,7 +85,7 @@ class EdituserinfoForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            $hasuser = DdMember::find()->where(['and', ['=', 'username', $this->username], ['!=', 'id', $user->id]])->select('id')->one();
+            $hasuser = DdUser::find()->where(['and', ['=', 'username', $this->username], ['!=', 'id', $user->id]])->select('id')->one();
             if ($hasuser) {
                 return   $this->addError($attribute, '用户名已经被占用');
             }
