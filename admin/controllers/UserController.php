@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 18:40:20
+ * @Last Modified time: 2022-07-29 18:43:50
  */
 
 namespace admin\controllers;
@@ -17,6 +17,7 @@ use api\models\DdApiAccessToken;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use common\models\ActionLog;
 use common\models\DdMember as ModelsDdMember;
 use common\models\DdWebsiteContact;
 use common\models\forms\PasswdForm;
@@ -986,5 +987,14 @@ class UserController extends AController
         ];
 
         return ResultHelper::json(200, '设置成功', $data);
+    }
+
+    public function actionLog()
+    {
+        global $_GPC;
+        $user_id = $_GPC['user_id'];
+        $list = ActionLog::find()->where(['user_id' => $user_id])->indexBy('logtime')->asArray()->all();
+
+        return ResultHelper::json(200, '获取成功', $list);
     }
 }
