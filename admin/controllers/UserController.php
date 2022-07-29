@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 18:43:50
+ * @Last Modified time: 2022-07-29 19:02:08
  */
 
 namespace admin\controllers;
@@ -993,8 +993,14 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
-        $list = ActionLog::find()->where(['user_id' => $user_id])->indexBy('logtime')->asArray()->all();
 
-        return ResultHelper::json(200, '获取成功', $list);
+        $list = ActionLog::find()->where(['user_id' => $user_id])->asArray()->all();
+        $lists = [];
+        foreach ($list as $key => $value) {
+            $time = date('Y-m-d', strtotime($value['logtime']));
+            $lists[$time][] = $value;
+        }
+
+        return ResultHelper::json(200, '获取成功', $lists);
     }
 }
