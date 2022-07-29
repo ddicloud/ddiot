@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 18:24:44
+ * @Last Modified time: 2022-07-29 18:35:28
  */
 
 namespace common\helpers;
@@ -60,7 +60,7 @@ class loggingHelper
         $ActionLog->load([
             'user_id' => $user_id,
             'operation' => $operation,
-            'logtime' => time(),
+            'logtime' => date('Y-m-d H:i:s', time()),
             'logip' => $logip,
         ], '');
 
