@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-21 22:58:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-12 10:09:31
+ * @Last Modified time: 2022-07-29 18:24:34
  */
 
 namespace admin\models\forms;
 
 use admin\models\User;
+use common\helpers\loggingHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
@@ -161,6 +162,8 @@ class LoginForm extends Model
             $service = Yii::$app->service;
             $service->namespace = 'admin';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+            // 登录日志记录
+            loggingHelper::actionLog(Yii::$app->user->identity->id, 'login', $last_login_ip);
 
             return ArrayHelper::toArray($userinfo);
         } else {

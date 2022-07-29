@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-13 11:55:58
+ * @Last Modified time: 2022-07-29 18:24:44
  */
 
 namespace common\helpers;
 
+use common\models\ActionLog;
 use Yii;
 
 class loggingHelper
@@ -51,5 +52,18 @@ class loggingHelper
         }
 
         return file_put_contents($basepath, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+    }
+
+    public static function actionLog($user_id, $operation, $logip)
+    {
+        $ActionLog = new ActionLog();
+        $ActionLog->load([
+            'user_id' => $user_id,
+            'operation' => $operation,
+            'logtime' => time(),
+            'logip' => $logip,
+        ], '');
+
+        return $ActionLog->save();
     }
 }
