@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-29 18:17:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 18:27:28
+ * @Last Modified time: 2022-07-29 18:38:06
  */
 
 namespace common\models;
@@ -33,10 +33,9 @@ class ActionLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['create_time', 'update_time'], 'safe'],
+            [['create_time', 'update_time', 'logtime'], 'safe'],
             [['user_id'], 'integer'],
             [['operation'], 'string', 'max' => 100],
-            [['logtime'], 'string', 'max' => 11],
             [['logip'], 'string', 'max' => 20],
         ];
     }
