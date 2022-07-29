@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-16 19:46:53
+ * @Last Modified time: 2022-07-29 15:22:26
  */
 
 namespace api\modules\wechat\controllers;
@@ -216,7 +216,7 @@ class BasicsController extends AController
             'fee_type' => 'CNY',
             'body' => StringHelper::msubstr($data['body'], 0, 10), // 内容
             'out_trade_no' => $data['out_trade_no'], // 订单号
-            'total_fee' => (int) $data['total_fee'] * 100,
+            'total_fee' => floatval($data['total_fee']) * 100,
             'trade_type' => $data['trade_type'], //支付类型
             'notify_url' => Yii::$app->params['wechatPaymentConfig']['notify_url'], // 回调地址
             // 'open_id' => 'okFAZ0-',  //JS支付必填
