@@ -163,7 +163,7 @@ class LoginForm extends Model
             $service->namespace = 'admin';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
             // 登录日志记录
-            loggingHelper::actionLog(Yii::$app->user->identity->id, 'login', $last_login_ip);
+            loggingHelper::actionLog(Yii::$app->user->identity->id, '账号登录', $last_login_ip);
 
             return ArrayHelper::toArray($userinfo);
         } else {
