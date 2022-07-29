@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 11:40:38
+ * @Last Modified time: 2022-07-29 18:40:20
  */
 
 namespace admin\controllers;
@@ -174,9 +174,7 @@ class UserController extends AController
         \YII::beginProfile('actionLogin');
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            $userinfo = $model->login();
-
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $userinfo = $model->login()) {
             return ResultHelper::json(200, '登录成功', $userinfo);
         } else {
             $message = ErrorsHelper::getModelError($model);
