@@ -1,4 +1,10 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-06-28 18:52:54
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-07-30 12:12:09
+ */
 
 use yii\db\Migration;
 
@@ -8,12 +14,12 @@ class m220628_105254_wxapp_fans extends Migration
     {
         /* 取消外键约束 */
         $this->execute('SET foreign_key_checks = 0');
-        
+
         /* 创建表 */
         $this->createTable('{{%wxapp_fans}}', [
             'fanid' => "int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '粉丝id'",
-            'bloc_id' => "int(11) NULL",
-            'store_id' => "int(11) NULL",
+            'bloc_id' => 'int(11) NULL',
+            'store_id' => 'int(11) NULL',
             'user_id' => "int(10) unsigned NOT NULL COMMENT '会员id'",
             'avatarUrl' => "varchar(255) NULL COMMENT '头像'",
             'openid' => "varchar(50) NOT NULL COMMENT 'OPENID'",
@@ -28,16 +34,15 @@ class m220628_105254_wxapp_fans extends Migration
             'city' => "varchar(30) NULL COMMENT '城市'",
             'province' => "varchar(30) NULL COMMENT '省份'",
             'secretKey' => "varchar(255) NULL COMMENT '加密键'",
-            'PRIMARY KEY (`fanid`)'
+            'PRIMARY KEY (`fanid`)',
         ], "ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='小程序粉丝表'");
-        
+
         /* 索引设置 */
-        $this->createIndex('uid','{{%wxapp_fans}}','user_id',0);
-        $this->createIndex('openid','{{%wxapp_fans}}','openid',0);
-        
-        
+        $this->createIndex('uid', '{{%wxapp_fans}}', 'user_id', 0);
+        $this->createIndex('openid', '{{%wxapp_fans}}', 'openid', 0);
+
         /* 表数据 */
-        
+
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
     }
@@ -50,4 +55,3 @@ class m220628_105254_wxapp_fans extends Migration
         $this->execute('SET foreign_key_checks = 1;');
     }
 }
-
