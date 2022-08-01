@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 21:04:20
+ * @Last Modified time: 2022-08-01 21:08:12
  */
 
 namespace admin\models;
@@ -16,6 +16,7 @@ use common\models\enums\UserStatus;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * User model.
@@ -32,7 +33,7 @@ use yii\db\ActiveRecord;
  * @property int    $updated_at
  * @property string $password             write-only password
  */
-class User extends ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = UserStatus::DELETE;
     const STATUS_INACTIVE = UserStatus::AUDIT;
