@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 16:58:48
+ * @Last Modified time: 2022-08-01 17:11:37
  */
 
 namespace admin\controllers\addons;
@@ -72,7 +72,7 @@ class BlocController extends AController
         if (!in_array($defaultRoles, $group)) {
             // 查找自己的数据
             $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
-            $where['store_id'] = $store_ids;
+            $where['s.store_id'] = $store_ids;
         }
 
         $list = Bloc::find()->alias('b')->joinWith('store as s')->filterWhere($where)->asArray()->all();
