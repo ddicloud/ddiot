@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-08 09:15:04
+ * @Last Modified time: 2022-08-01 20:46:48
  */
 
 namespace admin\controllers;
@@ -150,7 +150,7 @@ class AController extends ActiveController
             Yii::$app->i18n->translations['rbac-admin'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en',
-                'basePath' => '@diandi/admin/messages',
+                'basePath' => '@common/messages/zh-CN',
             ];
         }
 
