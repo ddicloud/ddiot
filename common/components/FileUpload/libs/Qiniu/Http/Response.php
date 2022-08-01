@@ -1,9 +1,15 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-02-21 10:06:15
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-08-01 20:31:53
+ */
 
 namespace Qiniu\Http;
 
 /**
- * HTTP response Object
+ * HTTP response Object.
  */
 final class Response
 {
@@ -15,7 +21,7 @@ final class Response
     public $duration;
 
     /** @var array Mapping of status codes to reason phrases */
-    private static $statusTexts = array(
+    private static $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -74,16 +80,16 @@ final class Response
         508 => 'Loop Detected',
         510 => 'Not Extended',
         511 => 'Network Authentication Required',
-    );
+    ];
 
     /**
-     * @param int $code 状态码
-     * @param double $duration 请求时长
-     * @param array $headers 响应头部
-     * @param string $body 响应内容
-     * @param string $error 错误描述
+     * @param int    $code     状态码
+     * @param float  $duration 请求时长
+     * @param array  $headers  响应头部
+     * @param string $body     响应内容
+     * @param string $error    错误描述
      */
-    public function __construct($code, $duration, array $headers = array(), $body = null, $error = null)
+    public function __construct($code, $duration, array $headers = [], $body = null, $error = null)
     {
         $this->statusCode = $code;
         $this->duration = $duration;
@@ -99,12 +105,13 @@ final class Response
             if ($code >= 400) {
                 $this->error = self::$statusTexts[$code];
             }
+
             return;
         }
         if (self::isJson($headers)) {
             try {
                 $jsonData = self::bodyJson($body);
-                if ($code >=400) {
+                if ($code >= 400) {
                     $this->error = $body;
                     if ($jsonData['error'] !== null) {
                         $this->error = $jsonData['error'];
@@ -117,9 +124,10 @@ final class Response
                     $this->error = $e->getMessage();
                 }
             }
-        } elseif ($code >=400) {
+        } elseif ($code >= 400) {
             $this->error = $body;
         }
+
         return;
     }
 
@@ -142,6 +150,7 @@ final class Response
         if ($via === null) {
             $via = $this->headers['Fw-Via'];
         }
+
         return $via;
     }
 
@@ -163,7 +172,7 @@ final class Response
     public function needRetry()
     {
         $code = $this->statusCode;
-        if ($code< 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
+        if ($code < 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
             return true;
         }
     }
