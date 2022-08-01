@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 17:11:37
+ * @Last Modified time: 2022-08-01 17:25:03
  */
 
 namespace admin\controllers\addons;
@@ -69,7 +69,7 @@ class BlocController extends AController
         $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
         $where = [];
-        if (!in_array($defaultRoles, $group)) {
+        if (!array_intersect($defaultRoles, $group)) {
             // 查找自己的数据
             $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
             $where['s.store_id'] = $store_ids;
@@ -107,7 +107,7 @@ class BlocController extends AController
         $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
         $where = [];
-        if (!in_array($defaultRoles, $group)) {
+        if (!array_intersect($defaultRoles, $group)) {
             // 查找自己的数据
             $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
             $where['store_id'] = $store_ids;
