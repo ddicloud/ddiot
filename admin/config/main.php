@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 20:15:19
+ * @Last Modified time: 2022-08-01 20:52:19
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -68,7 +68,7 @@ return [
             'identityClass' => 'admin\models\DdApiAccessToken',
             'enableAutoLogin' => true,
             'enableSession' => true,
-            'loginUrl' => '/dashboard',
+            'loginUrl' => null,
             'identityCookie' => ['name' => '_identity-admin', 'httpOnly' => true],
         ],
         'session' => [
