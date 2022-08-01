@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 16:50:48
+ * @Last Modified time: 2022-08-01 16:58:48
  */
 
 namespace admin\controllers\addons;
@@ -20,6 +20,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\BlocLevel;
 use diandi\addons\models\BlocStore;
+use diandi\addons\models\UserBloc;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -62,17 +63,16 @@ class BlocController extends AController
     {
         // 校验数据权限
         $user_id = Yii::$app->user->id;
-        $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->asArray()->all();
+        $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $where = [];
         $list = [];
         $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
-        $diff = array_intersect($defaultRoles, array_column($group, 'item_name'));
         $where = [];
-        if (empty($diff)) {
+        if (!in_array($defaultRoles, $group)) {
             // 查找自己的数据
-            $store_ids = array_column($group, 'store_id');
-            $where['s.store_id'] = $store_ids;
+            $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
+            $where['store_id'] = $store_ids;
         }
 
         $list = Bloc::find()->alias('b')->joinWith('store as s')->filterWhere($where)->asArray()->all();
@@ -101,16 +101,15 @@ class BlocController extends AController
     public function actionStoreList()
     {
         $user_id = Yii::$app->user->id;
-        $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->asArray()->all();
+        $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $where = [];
         $list = [];
         $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
-        $diff = array_intersect($defaultRoles, array_column($group, 'item_name'));
         $where = [];
-        if (empty($diff)) {
+        if (!in_array($defaultRoles, $group)) {
             // 查找自己的数据
-            $store_ids = array_column($group, 'store_id');
+            $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
             $where['store_id'] = $store_ids;
         }
 
