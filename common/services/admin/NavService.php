@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 14:44:50
+ * @Last Modified time: 2022-08-01 11:40:44
  */
 
 namespace common\services\admin;
@@ -105,8 +105,6 @@ class NavService extends BaseService
                 $route_name = !empty($routeList[$menu['route_id']]) ? $routeList[$menu['route_id']]['route_name'] : '';
                 // 解析地址路由参数
                 $data = json_decode($menu['data'], true);
-
-                $type = Yii::$app->params['plugins'];
 
                 $parent_id = intval($menu['parent']);
 

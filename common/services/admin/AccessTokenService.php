@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-28 11:27:21
+ * @Last Modified time: 2022-08-01 16:26:28
  */
 
 namespace common\services\admin;
@@ -92,12 +92,12 @@ class AccessTokenService extends BaseService
         $user = ArrayHelper::toArray($member);
         $user['avatar'] = ImageHelper::tomedia($user['avatar']);
         $result['user'] = $user;
+        $result['addons'] = false;
+
         // 关联用户的默认模块和商户
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
         $store_id = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
-        if (empty($module_name) && empty($store_id)) {
-            $result['addons'] = false;
-        } else {
+        if (!empty($module_name) && !empty($store_id)) {
             $result['addons'] = [
                 'module_name' => $module_name,
                 'module_info' => DdAddons::find()->where(['identifie' => $module_name])->asArray()->one(),
