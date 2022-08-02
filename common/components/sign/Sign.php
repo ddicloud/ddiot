@@ -3,20 +3,20 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-16 12:02:51
+ * @Last Modified time: 2022-08-02 16:09:54
  */
-
 
 namespace common\components\sign;
 
+use diandi\addons\models\form\Api;
+use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\ArrayHelper;
-use Yii;
 
 class Sign extends ActionFilter
 {
     /**
-     * 明文key
+     * 明文key.
      */
     const APP_SECRET = 'navibar'; // 需和前端保持一致
 
@@ -25,51 +25,61 @@ class Sign extends ActionFilter
     const C_TIME_LOSE = 30 * 60; // 30分钟失效
 
     /**
-     * var string key 密钥
+     * var string key 密钥.
      */
     public $key;
 
     /**
-     * var array optional 需要过滤的方法
+     * var array optional 需要过滤的方法.
      */
     public $optional = ['*'];
 
     /**
-     * 需要进行验签的环境
+     * 需要进行验签的环境.
      */
     private $needSignEnvironment = ['beta', 'production'];
 
     /**
-     * 根据key生成密钥 secret是由MD5(key+appid)生成 32位
+     * 根据key生成密钥 secret是由MD5(key+appid)生成 32位.
+     *
      * @return string
      */
-    public static function generateSecret() {
-        $secret = md5(self::APP_SECRET . self::APP_ID, false);
+    public static function generateSecret()
+    {
+        global $_GPC;
+        $apiConf = new Api();
+        $conf = $apiConf->getConf($_GPC['bloc_id']);
+        $secret = md5($conf['app_secret'].$conf['app_id'], false);
+
         return $secret;
     }
 
     /**
      * Sign constructor.
-     * @param array $config
+     *
      * @throws SignException
      */
-    public function __construct(array $config = []) {
+    public function __construct(array $config = [])
+    {
         parent::__construct($config);
         // in_array(\Yii::$app->params['server_name'], $this->needSignEnvironment
         // all代表全部需要，*代表全部不需要
-        if ((in_array('all',$this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*',$this->optional)) {
+        if ((in_array('all', $this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*', $this->optional)) {
             $this->validateSign(
-                ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(),\Yii::$app->request->post())
+                ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(), \Yii::$app->request->post())
             );
         }
     }
 
     /**
      * 签名验证
+     *
      * @param $params
+     *
      * @throws SignException
      */
-    public function validateSign($params) {
+    public function validateSign($params)
+    {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
         if (!isset($params['sign']) || empty($params['sign'])) {
@@ -94,41 +104,50 @@ class Sign extends ActionFilter
     }
 
     /**
-     * 除去数组中的空值和签名参数
+     * 除去数组中的空值和签名参数.
+     *
      * @param $param
+     *
      * @return array 去掉空值与签名参数后的新签名参数组
      */
-    function paramFilter($param) {
+    public function paramFilter($param)
+    {
         $paraFilter = $param;
         unset($paraFilter['sign']);  // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
         ksort($paraFilter); // 对数组根据键名升序排序
         reset($paraFilter);  // 函数将内部指针指向数组中的第一个元素，并输出
         $data = http_build_query($paraFilter);
+
         return $data;
     }
 
-
     /**
-     * 生成md5签名字符串
+     * 生成md5签名字符串.
+     *
      * @param $preStr string 需要签名的字符串
+     *
      * @return string 签名结果
      */
-    function md5Sign($preStr) {
+    public function md5Sign($preStr)
+    {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr . '&key=' . self::generateSecret();
+        $str = $preStr.'&key='.self::generateSecret();
         $sign = md5($str);
+
         return strtoupper($sign);  // 转成大写
     }
 
     /**
      * 获取二级域名前缀
+     *
      * @return mixed
      */
-    static function getPrefixOfDomain() {
-        $url = "//" . $_SERVER ['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    public static function getPrefixOfDomain()
+    {
+        $url = '//'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);
+
         return $match[1];
     }
-
 }

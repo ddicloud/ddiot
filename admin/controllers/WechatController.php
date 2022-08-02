@@ -9,7 +9,7 @@
 
 namespace admin\controllers;
 
-use api\controllers\AController;
+use admin\controllers\AController;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\helpers\UrlHelper;

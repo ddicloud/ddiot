@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-18 09:49:23
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 09:56:07
+ * @Last Modified time: 2022-08-02 15:37:02
  */
 
 namespace common\components\addons;
@@ -29,7 +29,7 @@ class AddonsUninstall extends Migration implements AddonWidget
             $module_root = Yii::getAlias('@addons');
             $xml = file_get_contents($module_root.'/'.$this->addons.'/manifest.xml');
             $addonsXml = addonsService::ext_module_manifest_parse($xml);
-            $version = $addonsXml['version'];
+            $version = $addonsXml['application']['version'];
             MigrateHelper::downByPath([
                 '@addons/'.$this->addons.'\\/migrations/'.$version,
             ]);

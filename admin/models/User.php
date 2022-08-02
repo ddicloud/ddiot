@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 21:08:12
+ * @Last Modified time: 2022-08-02 12:52:58
  */
 
 namespace admin\models;
@@ -53,6 +53,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['id'],'integer'],
             ['status', 'default', 'value' => UserStatus::AUDIT],
             ['status', 'in', 'range' => UserStatus::getConstantsByName()],
             [['username', 'email', 'avatar', 'company'], 'safe'],
@@ -263,7 +264,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return $this->getPrimaryKey();
+        return $this->id;
     }
 
     /**

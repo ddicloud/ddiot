@@ -8,7 +8,7 @@
 
 namespace api\modules\wechat\controllers;
 
-use api\controllers\AController;
+use admin\controllers\AController;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use Yii;

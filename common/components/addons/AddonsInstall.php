@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-09-16 14:45:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 09:57:10
+ * @Last Modified time: 2022-08-02 15:37:24
  */
 
 namespace common\components\addons;
@@ -30,10 +30,10 @@ class AddonsInstall extends Migration implements AddonWidget
             $module_root = Yii::getAlias('@addons');
             $xml = file_get_contents($module_root.'/'.$this->addons.'/manifest.xml');
             $addonsXml = addonsService::ext_module_manifest_parse($xml);
-            $version = $addonsXml['version'];
+            $version = $addonsXml['application']['version'];
             MigrateHelper::upByPath([
-          '@addons/'.$this->addons.'\\/migrations/'.$this->version,
-        ]);
+                '@addons/'.$this->addons.'\\/migrations/'.$version,
+            ]);
         }
     }
 }

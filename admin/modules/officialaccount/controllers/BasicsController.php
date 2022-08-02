@@ -9,7 +9,7 @@
 
 namespace api\modules\officialaccount\controllers;
 
-use api\controllers\AController;
+use admin\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

@@ -4,14 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-03 13:52:26
+ * @Last Modified time: 2022-08-02 12:51:02
  */
 
 
 namespace admin\controllers;
 
 use Yii;
-use api\controllers\AController;
+use admin\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
@@ -43,8 +43,7 @@ class MapController extends AController
      *      type="string",
      *      description="经度",
      *      required=true,
-     *    ),
-     *
+     *    )
      * )
      */
     public function actionDistance()
@@ -55,7 +54,7 @@ class MapController extends AController
         return ResultHelper::json(200, '获取成功', $data);
     }
 
-        /**
+    /**
      * @SWG\Get(path="/map/citylist",
      *     tags={"地图"},
      *     summary="根据经纬度获取省市区",
@@ -82,7 +81,6 @@ class MapController extends AController
      */
     public function actionCitylist()
     {
-        
         $region = new DdRegion();
         $regionVal = Yii::$app->cache->get('region');
         if($regionVal){

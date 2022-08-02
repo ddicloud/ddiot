@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 20:52:19
+ * @Last Modified time: 2022-08-02 14:24:05
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -43,7 +43,8 @@ return [
     'as access' => [
         'class' => 'diandi\admin\components\AccessControl',
         'allowActions' => [
-            'main/index.vue',
+            '*',
+            // 'map/citylist',
             'website/setting/info',
             'user/login',
             'user/userinfo',
@@ -123,6 +124,10 @@ return [
         ],
         'i18n' => [
             'translations' => [
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                ],
                 'yii2mod.settings' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',

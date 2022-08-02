@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-01 21:17:32
+ * @Last Modified time: 2022-08-02 12:43:48
  */
 
 namespace admin\controllers;
@@ -153,12 +153,6 @@ class AController extends ActiveController
                 'basePath' => '@diandi/admin/messages',
             ];
         }
-
-        Yii::$app->i18n->translations['yii'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'en',
-            'basePath' => '@common/messages',
-        ];
 
         return parent::beforeAction($action);
     }

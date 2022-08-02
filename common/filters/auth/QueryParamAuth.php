@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-12-30 01:48:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-04 17:31:30
+ * @Last Modified time: 2022-08-02 12:53:45
  */
 
 namespace common\filters\auth;
@@ -35,6 +35,7 @@ class QueryParamAuth extends AuthQueryParamAuth
         }
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));
+          
             if ($identity !== null) {
                 return $identity;
             }
