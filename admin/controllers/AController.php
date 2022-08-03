@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 11:01:38
+ * @Last Modified time: 2022-08-03 11:16:25
  */
 
 namespace admin\controllers;
@@ -120,6 +120,11 @@ class AController extends ActiveController
             'class' => \common\middlewares\AccessControl::className(),
             'allowActions' => [
                 'user/login', //登录
+                'user/signup',
+                'user/repassword',
+                'user/sendcode',
+                'user/forgetpass',
+                'user/refresh',
                 'user/userinfo', //用户信息
                 'map/citylist', //城市数据
                 'addons/bloc/*', //公司管理
