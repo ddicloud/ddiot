@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:50:48
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 10:38:00
+ * @Last Modified time: 2022-08-03 11:33:51
  */
 
 namespace common\middlewares;
@@ -141,7 +141,7 @@ class AccessControl extends \yii\base\ActionFilter
         foreach ($this->allowActions as $route) {
             if (substr($route, -1) === '*') {
                 $route = rtrim($route, '*');
-                if ($route === '' || strpos($id, $route) === 0) {
+                if ($route === '' || strpos($id, $route) === 0 || strpos($uniqueId, $route) === 0) {
                     return false;
                 }
             } else {
