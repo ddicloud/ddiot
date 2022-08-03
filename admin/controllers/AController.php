@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 12:43:48
+ * @Last Modified time: 2022-08-03 11:01:38
  */
 
 namespace admin\controllers;
@@ -114,6 +114,32 @@ class AController extends ActiveController
         // 添加默认的公司与商户参数
         $behaviors['request'] = [
             'class' => \common\behaviors\HttpRequstMethod::className(),
+        ];
+
+        $behaviors['access'] = [
+            'class' => \common\middlewares\AccessControl::className(),
+            'allowActions' => [
+                'user/login', //登录
+                'user/userinfo', //用户信息
+                'map/citylist', //城市数据
+                'addons/bloc/*', //公司管理
+                'addons/store/*', //商户管理
+                'addons/category/*', //商户分类
+                'addons/storelabel/*',
+                'addons/bloclevel/*', //公司等级数据
+                'addons/addons/*', //业务
+                'system/config/*', //系统配置
+                'member/dd-member/*', //会员
+                'member/organization/*', //组织机构
+                'website/setting/info', //系统默认信息
+                'system/index/menus', //系统菜单
+                'system/welcome/index',
+                'system/index/info',
+                'system/settings/set-cache',
+                'system/settings/store',
+                'system/settings/ueditor', //百度编辑器配置信息
+                'file/upload/*', //上传资源
+            ],
         ];
 
         return $behaviors;

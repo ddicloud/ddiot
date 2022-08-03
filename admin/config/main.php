@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 14:24:05
+ * @Last Modified time: 2022-08-03 10:12:23
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -40,26 +40,6 @@ return [
         ],
     ],
     'language' => 'zh-CN',
-    'as access' => [
-        'class' => 'diandi\admin\components\AccessControl',
-        'allowActions' => [
-            '*',
-            // 'map/citylist',
-            'website/setting/info',
-            'user/login',
-            'user/userinfo',
-            'system/index/menus',
-            'addons/store/view',
-            // 'gii/*', //允许访问的节点，可自行添加
-            'system/welcome/index',
-            'system/index/info',
-            'system/settings/set-cache',
-            'system/settings/store',
-            'addons/addons/index',
-            // 'upload/upload',
-            // 'module',
-        ],
-    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-admin',
