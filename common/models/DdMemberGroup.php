@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:54:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-08 15:02:45
+ * @Last Modified time: 2022-08-08 15:38:26
  */
 
 namespace common\models;
@@ -49,7 +49,8 @@ class DdMemberGroup extends \yii\db\ActiveRecord
             [['item_name', 'level'], 'required'],
             [['create_time', 'update_time', 'level', 'bloc_id', 'store_id'], 'integer'],
             [['item_name'], 'string', 'max' => 64],
-            [['item_name', 'level'], 'unique'],
+            [['level'], 'unique', 'targetAttribute' => ['level', 'store_id']],
+            [['item_name'], 'unique', 'targetAttribute' => ['item_name', 'store_id']],
         ];
     }
 
