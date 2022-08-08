@@ -3,17 +3,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-10-27 14:36:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:19:06
+ * @Last Modified time: 2022-08-08 14:53:43
  */
 
 namespace admin\controllers\member;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdMemberGroup;
 use common\models\searchs\DdMemberGroupSearch;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -22,21 +22,7 @@ use yii\web\NotFoundHttpException;
 class DdMemberGroupController extends AController
 {
     public $modelClass = '';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    public $modelSearchName = 'DdMemberGroupSearch';
 
     /**
      * Lists all DdMemberGroup models.
@@ -80,13 +66,17 @@ class DdMemberGroupController extends AController
     {
         $model = new DdMemberGroup();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->group_id]);
-        }
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+            if ($model->load($data, '') && $model->save()) {
+                return ResultHelper::json(200, '创建成功', $model);
+            } else {
+                $msg = ErrorsHelper::getModelError($model);
+
+                return ResultHelper::json(400, $msg);
+            }
+        }
     }
 
     /**
@@ -103,13 +93,17 @@ class DdMemberGroupController extends AController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->group_id]);
-        }
+        if (Yii::$app->request->isPut) {
+            $data = Yii::$app->request->post();
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+            if ($model->load($data, '') && $model->save()) {
+                return ResultHelper::json(200, '编辑成功', $model);
+            } else {
+                $msg = ErrorsHelper::getModelError($model);
+
+                return ResultHelper::json(400, $msg);
+            }
+        }
     }
 
     /**

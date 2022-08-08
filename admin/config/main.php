@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 10:12:23
+ * @Last Modified time: 2022-08-08 14:39:42
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -526,6 +526,18 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['member/organization'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'POST create' => 'create',
+                        'POST,PUT update/<id>' => 'update',
+                        'POST,GET,DELETE delete/<id>' => 'delete',
+                        'GET view/<id>' => 'view',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['member/dd-member-group'],
                     'pluralize' => false,
                     'extraPatterns' => [
                         'GET index' => 'index',
