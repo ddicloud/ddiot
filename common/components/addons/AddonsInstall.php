@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-09-16 14:45:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 15:37:24
+ * @Last Modified time: 2022-08-09 16:10:13
  */
 
 namespace common\components\addons;
@@ -32,7 +32,7 @@ class AddonsInstall extends Migration implements AddonWidget
             $addonsXml = addonsService::ext_module_manifest_parse($xml);
             $version = $addonsXml['application']['version'];
             MigrateHelper::upByPath([
-                '@addons/'.$this->addons.'\\/migrations/'.$version,
+                '@addons/'.$this->addons.'/migrations/'.$version,
             ]);
         }
     }
