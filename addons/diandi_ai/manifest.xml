@@ -1,0 +1,12 @@
+﻿<manifest xmlns="http://www.wayfirer.com/" versionCode="1.0">
+    <application>
+        <title><![CDATA[店滴AI]]></title>
+        <identifie><![CDATA[diandi_ai]]></identifie>
+        <version><![CDATA[1.0]]></version>
+        <type><![CDATA[base]]></type>
+        <ability><![CDATA[店滴ai]]></ability>
+        <description><![CDATA[人脸识别，OCR认证，人脸会员等]]></description>
+        <author><![CDATA[王春生]]></author>
+        <url><![CDATA[http://bbs.wayfirer.com/]]></url>
+    </application>
+</manifest>

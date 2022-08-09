@@ -59,6 +59,7 @@ common/widgets/firevue/node_modules
 
 addons/*
 !addons/diandi_ai
+!addons/diandi_website
 .svn
 runtime
 frontend/assets
