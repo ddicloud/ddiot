@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 13:44:45
+ * @Last Modified time: 2022-08-12 14:10:50
  */
 
 namespace common\components\swoole;
@@ -34,9 +34,9 @@ class TcpServerController extends BaseController implements SwooleServer
 
     public $addons;
 
-    public function init()
+    public function actions()
     {
-        parent::init();
+        parent::actions();
         $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole/base.php');
         if(file_exists($confPath)){
             $config = require $confPath;
