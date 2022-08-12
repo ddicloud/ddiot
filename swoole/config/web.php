@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-03 12:12:39
+ * @Last Modified time: 2022-08-12 15:51:04
  */
 
 
@@ -14,8 +14,8 @@ use diandi\swoole\web\Request;
 use diandi\swoole\web\Response;
 use yii\caching\FileCache;
 
-require(__DIR__ . '/../../../common/config/bootstrap.php');
-$db = require(__DIR__ . '/../../../common/config/db.php');
+require(__DIR__ . '/../../common/config/bootstrap.php');
+$db = require(__DIR__ . '/../../common/config/db.php');
 
 return [
     'id' => 'app-swoole',
