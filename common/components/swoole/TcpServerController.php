@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 14:12:59
+ * @Last Modified time: 2022-08-12 14:19:32
  */
 
 namespace common\components\swoole;
@@ -43,8 +43,12 @@ class TcpServerController extends BaseController implements SwooleServer
         if(file_exists($confPath)){
             $config = require $confPath;
             $this->config =  yii\helpers\ArrayHelper::merge(
-                require(__DIR__ . '/../../config/params.php'),
-                require(__DIR__ . '/../../config/params-local.php'),
+                [
+                    'params'=>[
+                        require(__DIR__ . '/../../config/params.php'),
+                        require(__DIR__ . '/../../config/params-local.php'),
+                    ]
+                ],
                 $config
             );
         }else{
