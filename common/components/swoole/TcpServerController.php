@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 14:10:50
+ * @Last Modified time: 2022-08-12 14:12:59
  */
 
 namespace common\components\swoole;
@@ -33,6 +33,8 @@ class TcpServerController extends BaseController implements SwooleServer
     public $server;
 
     public $addons;
+    
+    public $config;
 
     public function actions()
     {
