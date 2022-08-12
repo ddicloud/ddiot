@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 14:19:32
+ * @Last Modified time: 2022-08-12 14:31:22
  */
 
 namespace common\components\swoole;
@@ -39,15 +39,21 @@ class TcpServerController extends BaseController implements SwooleServer
     public function actions()
     {
         parent::actions();
-        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole/base.php');
+        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_tcp.php');
         if(file_exists($confPath)){
             $config = require $confPath;
-            $this->config =  yii\helpers\ArrayHelper::merge(
+            $BaseConfig =   yii\helpers\ArrayHelper::merge(
                 [
                     'params'=>[
                         require(__DIR__ . '/../../config/params.php'),
                         require(__DIR__ . '/../../config/params-local.php'),
                     ]
+                ],
+                require Yii::getAlias('@swooleService\config\web.php'),
+            );
+            $this->config =  yii\helpers\ArrayHelper::merge(
+                [
+                    'app' => $BaseConfig
                 ],
                 $config
             );
