@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 14:37:05
+ * @Last Modified time: 2022-08-12 14:48:32
  */
 
 namespace common\components\swoole;
@@ -44,10 +44,10 @@ class TcpServerController extends BaseController implements SwooleServer
             $config = require $confPath;
             $BaseConfig =   yii\helpers\ArrayHelper::merge(
                 [
-                    'params'=>[
+                    'params'=> yii\helpers\ArrayHelper::merge(
                         require(__DIR__ . '/../../config/params.php'),
                         require(__DIR__ . '/../../config/params-local.php'),
-                    ]
+                    )
                 ],
                 require Yii::getAlias('@swooleService/config/web.php'),
             );
@@ -58,7 +58,7 @@ class TcpServerController extends BaseController implements SwooleServer
                 $config
             );
         }else{
-             echo '配置文件不存在';  
+            throw new \Exception('配置文件不存在：'.$confPath);
         }
     }
 
