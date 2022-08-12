@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:26:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 15:46:21
+ * @Last Modified time: 2022-08-12 15:49:41
  */
 defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
 
@@ -22,8 +22,8 @@ $config = yii\helpers\ArrayHelper::merge(
     [
         'app'=>[
             'params'=> yii\helpers\ArrayHelper::merge(
-                require(__DIR__ . '/../config/params.php'),
-                require(__DIR__ . '/../config/params-local.php'),
+                require(__DIR__ . '/../common/config/params.php'),
+                require(__DIR__ . '/../common/config/params-local.php'),
             )
         ]
     ],
