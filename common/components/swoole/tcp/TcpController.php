@@ -3,10 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 14:48:32
+ * @Last Modified time: 2022-08-17 09:27:58
  */
 
-namespace common\components\swoole;
+namespace common\components\swoole\tcp;
 
 use addons\diandi_watches\console\servers\TcpServer;
 use common\interfaces\SwooleServer;
@@ -28,7 +28,7 @@ use Yii;
  * nohup php ./yii bracelet/run --bloc_id=1 --store_id=1 --addons=diandi_watches > /home/nohub/diandi_watches.log  2>&1 &
  * ps -ef|grep php|grep -v grep
  */
-class TcpServerController extends BaseController implements SwooleServer
+class TcpController extends BaseController implements SwooleServer
 {
     public $server;
 
