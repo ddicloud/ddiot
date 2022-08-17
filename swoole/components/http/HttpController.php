@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-17 09:36:17
+ * @Last Modified time: 2022-08-17 14:34:52
  */
 
-namespace common\components\swoole\tcp;
+namespace swoole\components\http;
 
 use addons\diandi_watches\console\servers\TcpServer;
-use common\interfaces\SwooleServer;
 use console\controllers\BaseController;
+use swoole\interfaces\SwooleServer;
 use Swoole\Runtime;
 use Yii;
 
@@ -28,7 +28,7 @@ use Yii;
  * nohup php ./yii bracelet/run --bloc_id=1 --store_id=1 --addons=diandi_watches > /home/nohub/diandi_watches.log  2>&1 &
  * ps -ef|grep php|grep -v grep
  */
-class TcpController extends BaseController implements SwooleServer
+class HttpController extends BaseController implements SwooleServer
 {
     public $server;
 
@@ -39,7 +39,7 @@ class TcpController extends BaseController implements SwooleServer
     public function actions()
     {
         parent::actions();
-        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_tcp.php');
+        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_http.php');
         if(file_exists($confPath)){
             $config = require $confPath;
             $BaseConfig =   yii\helpers\ArrayHelper::merge(
@@ -49,7 +49,7 @@ class TcpController extends BaseController implements SwooleServer
                         require(__DIR__ . '/../../../config/params-local.php'),
                     )
                 ],
-                require Yii::getAlias('@swooleService/config/web.php'),
+                require Yii::getAlias('@swooleService/config/server.php'),
             );
             $this->config =  yii\helpers\ArrayHelper::merge(
                 [
