@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-18 14:34:02
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 16:54:39
+ * @Last Modified time: 2022-08-18 17:27:00
  */
 
 namespace swooleService\interfaces;
@@ -25,12 +25,6 @@ trait InteractsWithSwooleTable
     {
         $this->currentTable = new Table();
         $this->registerTables($tables);
-        $this->onEvent('workerStart', function () {
-            $this->app->instance(Table::class, $this->currentTable);
-            foreach ($this->currentTable->getAll() as $name => $table) {
-                $this->app->instance("swoole.table.{$name}", $table);
-            }
-        });
     }
 
     /**
