@@ -55,6 +55,9 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-admin',
+            'class' => 'yii\redis\Session',
+            'keyPrefix' => 'session.',
+            'redis' => 'redis',
         ],
         /* ------ 微信业务组件 ------ **/
         'wechat' => [
