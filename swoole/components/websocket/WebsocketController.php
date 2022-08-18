@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 12:39:21
+ * @Last Modified time: 2022-08-18 13:30:22
  */
 
 namespace swooleService\components\websocket;
@@ -52,9 +52,7 @@ class WebsocketController extends BaseController implements SwooleServer
                 require Yii::getAlias('@swooleService/config/websocket.php'),
             );
             $this->config = yii\helpers\ArrayHelper::merge(
-                [
-                    'app' => $BaseConfig,
-                ],
+                $BaseConfig,
                 $config
             );
         } else {
