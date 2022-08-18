@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 13:30:42
+ * @Last Modified time: 2022-08-18 13:36:19
  */
 
 namespace swooleService\components\http;
@@ -44,10 +44,12 @@ class HttpController extends BaseController implements SwooleServer
             $config = require $confPath;
             $BaseConfig = yii\helpers\ArrayHelper::merge(
                 [
-                    'params' => yii\helpers\ArrayHelper::merge(
-                        require($CommonConfPath.'/params.php'),
-                        require($CommonConfPath.'/params-local.php'),
-                    ),
+                    'app' => [
+                        'params' => yii\helpers\ArrayHelper::merge(
+                            require($CommonConfPath.'/params.php'),
+                            require($CommonConfPath.'/params-local.php'),
+                        ),
+                    ],
                 ],
                 require Yii::getAlias('@swooleService/config/server.php'),
             );
