@@ -3,10 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-18 14:31:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 14:34:53
+ * @Last Modified time: 2022-08-18 16:54:19
  */
 
-namespace swoole\db;
+namespace swooleService\db;
 
 use Swoole\Table as SwooleTable;
 

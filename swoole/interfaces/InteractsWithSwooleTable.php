@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-18 14:34:02
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 14:56:07
+ * @Last Modified time: 2022-08-18 16:54:39
  */
 
 namespace swooleService\interfaces;
 
-use swoole\db\Table;
 use Swoole\Table as SwooleTable;
+use swooleService\db\Table;
 
 trait InteractsWithSwooleTable
 {
