@@ -233,6 +233,11 @@ class AddonsModule extends Module
                 'level' => 'debug',
                 'file' => Yii::getAlias('@runtime/miniprogram'),
             ],
+             //必须添加部分
+			'guzzle' => [ // 配置
+				'verify' => false,
+				'timeout' => 4.0,
+			],
         ];
 
         $params = Yii::$app->params;

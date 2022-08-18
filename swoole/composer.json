@@ -1,0 +1,10 @@
+{
+  "name": "ddicms/swoole",
+  "authors": [
+    {
+      "name": "chunchun",
+      "email": "2192138785@qq.com"
+    }
+  ],
+  "require": {}
+}

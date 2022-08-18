@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 13:51:57
+ * @Last Modified time: 2022-08-18 11:26:01
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -68,6 +68,9 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-api',
+            'class' => 'yii\redis\Session',
+            'keyPrefix' => 'session.',
+            'redis' => 'redis',
         ],
         /* ------ 微信业务组件 ------ **/
         'wechat' => [
