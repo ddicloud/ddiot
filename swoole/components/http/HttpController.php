@@ -3,12 +3,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-17 14:34:52
+ * @Last Modified time: 2022-08-18 11:59:53
  */
 
-namespace swoole\components\http;
+namespace swooleService\components\http;
 
-use addons\diandi_watches\console\servers\TcpServer;
 use console\controllers\BaseController;
 use swoole\interfaces\SwooleServer;
 use Swoole\Runtime;
@@ -33,35 +32,34 @@ class HttpController extends BaseController implements SwooleServer
     public $server;
 
     public $addons;
-    
+
     public $config;
 
     public function actions()
     {
         parent::actions();
         $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_http.php');
-        if(file_exists($confPath)){
+        if (file_exists($confPath)) {
             $config = require $confPath;
-            $BaseConfig =   yii\helpers\ArrayHelper::merge(
+            $BaseConfig = yii\helpers\ArrayHelper::merge(
                 [
-                    'params'=> yii\helpers\ArrayHelper::merge(
-                        require(__DIR__ . '/../../../config/params.php'),
-                        require(__DIR__ . '/../../../config/params-local.php'),
-                    )
+                    'params' => yii\helpers\ArrayHelper::merge(
+                        require(__DIR__.'/../../../config/params.php'),
+                        require(__DIR__.'/../../../config/params-local.php'),
+                    ),
                 ],
                 require Yii::getAlias('@swooleService/config/server.php'),
             );
-            $this->config =  yii\helpers\ArrayHelper::merge(
+            $this->config = yii\helpers\ArrayHelper::merge(
                 [
-                    'app' => $BaseConfig
+                    'app' => $BaseConfig,
                 ],
                 $config
             );
-        }else{
+        } else {
             throw new \Exception('配置文件不存在：'.$confPath);
         }
     }
-
 
     public function actionRun()
     {

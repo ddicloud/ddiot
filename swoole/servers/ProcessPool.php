@@ -3,10 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-14 15:06:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-14 15:06:38
+ * @Last Modified time: 2022-08-18 12:00:59
  */
 
-namespace console\swoole\servers;
+namespace swooleService\servers;
 
 class ProcessPool
 {
