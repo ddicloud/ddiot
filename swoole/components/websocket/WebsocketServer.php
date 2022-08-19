@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:34:26
+ * @Last Modified time: 2022-08-19 14:36:24
  */
 
 namespace swooleService\components\websocket;
@@ -127,6 +127,11 @@ class WebsocketServer extends ServerWebSocketServer
         $memberToken = $AccessTokenService->findByAccessToken($accessToken);
 
         $SwooleMember = SwooleMember::find()->where(['id' => $memberToken['swoole_member_id']])->one();
+
+        if(empty($SwooleMember)){
+            return false;
+        }
+
         $member = $AccessTokenService->getAccessToken($SwooleMember, 1);
 
         loggingHelper::writeLog('swooleService', 'checkAccess', '用户验证', [
