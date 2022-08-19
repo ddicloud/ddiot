@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-05 00:49:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 10:03:03
+ * @Last Modified time: 2022-08-19 11:35:03
  */
 
 namespace common\helpers;
@@ -57,7 +57,7 @@ class ResultHelper
         return $result;
     }
 
-    public static function socketJson($code = 404, $message = '未知错误', $data = [])
+    public static function socketJson($type, $code = 404, $message = '未知错误', $data = [])
     {
         if (!empty($data) && is_array($data)) {
             if (array_key_exists('code', $data)) {
@@ -69,7 +69,7 @@ class ResultHelper
             return static::api($code, $message, $data);
         }
 
-        return static::SocketBaseJson($code, $message, $data);
+        return static::SocketBaseJson($type, $code, $message, $data);
     }
 
     /**
@@ -101,12 +101,15 @@ class ResultHelper
      * @param string       $message 返回的报错信息
      * @param array|object $data    返回的数据结构
      */
-    protected static function SocketBaseJson($code, $message, $data)
+    protected static function SocketBaseJson($type, $code, $message, $data)
     {
         $result = [
-            'code' => (int) $code,
-            'message' => trim($message),
-            'data' => $data ? ArrayHelper::toArray($data) : [],
+            'type' => $type,
+            'data' => [
+                'code' => (int) $code,
+                'message' => trim($message),
+                'data' => $data ? ArrayHelper::toArray($data) : [],
+            ],
         ];
 
         return json_encode($result);
