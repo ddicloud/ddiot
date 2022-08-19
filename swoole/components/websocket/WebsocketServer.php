@@ -52,7 +52,6 @@ class WebsocketServer extends ServerWebSocketServer
          */
         $headers = $request->header;
         $cookie = $request->cookie;
-
         // if (如果不满足我某些自定义的需求条件，返回false，握手失败) {
         //    return false;
         // }
