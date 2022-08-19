@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-10-27 14:36:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:17:15
+ * @Last Modified time: 2022-08-19 17:31:47
  */
 
 namespace swooleService\models\forms;
 
 use swooleService\models\SwooleMember;
+use swooleService\servers\AccessTokenService;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
@@ -90,9 +91,8 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             $userobj = SwooleMember::findByUsername($this->username);
-            $service = Yii::$app->service;
-            $service->namespace = 'api';
-            $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+            $service = new  AccessTokenService();
+            $userinfo = $service->getAccessToken($userobj, 1);
 
             return ArrayHelper::toArray($userinfo);
         } else {
