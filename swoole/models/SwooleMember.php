@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:56:00
+ * @Last Modified time: 2022-08-19 16:58:40
  */
 
 namespace swooleService\models;
@@ -95,7 +95,7 @@ class SwooleMember extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['member_id', 'group_id', 'bloc_id', 'auth_key', 'password_hash'], 'required'],
+            [['group_id', 'bloc_id', 'auth_key', 'password_hash'], 'required'],
             [['member_id', 'group_id', 'level', 'store_id', 'bloc_id', 'gender', 'status', 'address_id', 'create_time', 'update_time', 'organization_id'], 'integer'],
             [['username'], 'string', 'max' => 30],
             [['mobile'], 'string', 'max' => 11],
@@ -147,7 +147,7 @@ class SwooleMember extends \yii\db\ActiveRecord
         /* 查看手机号是否重复 */
         if ($mobile) {
             $userinfo = $this->find()->where(['mobile' => $mobile])
-                ->andWhere(['<>', 'mobile', 0])->select('member_id')->one();
+                ->andWhere(['<>', 'mobile', 0])->select('id')->one();
             if (!empty($userinfo)) {
                 return ResultHelper::json(401, '手机号重复');
             }
@@ -196,7 +196,7 @@ class SwooleMember extends \yii\db\ActiveRecord
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['member_id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
