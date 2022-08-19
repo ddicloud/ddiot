@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:17:53
+ * @Last Modified time: 2022-08-19 14:45:49
  */
 
 namespace swooleService\servers;
@@ -57,7 +57,9 @@ class AccessTokenService extends BaseService
     {
         $model = $this->findModel($member->id, $group_id);
 
-        $model->member_id = $member->id;
+        $model->swoole_member_id = $member->id;
+        
+        $model->member_id = $member->member_id;
 
         $model->group_id = $group_id;
 

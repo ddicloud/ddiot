@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:36:24
+ * @Last Modified time: 2022-08-19 14:48:28
  */
 
 namespace swooleService\components\websocket;
@@ -130,18 +130,19 @@ class WebsocketServer extends ServerWebSocketServer
 
         if(empty($SwooleMember)){
             return false;
+        }else{
+            $member = $AccessTokenService->getAccessToken($SwooleMember, 1);
+            loggingHelper::writeLog('swooleService', 'checkAccess', '用户验证', [
+                'member' => $member,
+            ]);
+    
+            if (!empty($member)) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
-        $member = $AccessTokenService->getAccessToken($SwooleMember, 1);
-
-        loggingHelper::writeLog('swooleService', 'checkAccess', '用户验证', [
-            'member' => $member,
-        ]);
-
-        if (!empty($member)) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 }

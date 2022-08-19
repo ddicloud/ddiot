@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:19:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:33:05
+ * @Last Modified time: 2022-08-19 14:47:47
  */
 
 namespace swooleService\models;
@@ -46,6 +46,7 @@ class SwooleAccessToken extends \yii\db\ActiveRecord
             [['refresh_token', 'access_token'], 'string', 'max' => 60],
             [['openid'], 'string', 'max' => 50],
             [['access_token'], 'unique'],
+            [['swoole_member_id',''], 'unique'],
             [['refresh_token'], 'unique'],
         ];
     }
