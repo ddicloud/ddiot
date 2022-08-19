@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 17:05:09
+ * @Last Modified time: 2022-08-19 17:38:03
  */
 
 namespace swooleService\models;
@@ -207,10 +207,20 @@ class SwooleMember extends \yii\db\ActiveRecord
      * @return static|null
      */
     public static function findByUsername($username)
-    {
-        return static::find()
-            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status ='.self::STATUS_ACTIVE])
-            ->one();
+    { 
+        $user =static::find()
+        ->where(['and', ['username'=>$username], 'status ='.self::STATUS_ACTIVE])
+        ->one();
+        if(!empty($user)){
+            return $user;
+        } 
+
+        $user =static::find()
+        ->where(['and', ['mobile'=>$username], 'status ='.self::STATUS_ACTIVE])
+        ->one();
+
+        return $user;
+
     }
 
     /**

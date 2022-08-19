@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:19:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 15:57:22
+ * @Last Modified time: 2022-08-19 17:38:48
  */
 
 namespace swooleService\models;
@@ -42,7 +42,7 @@ class SwooleAccessToken extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['swoole_member_id', 'member_id','group_id', 'bloc_id', 'store_id', 'status', 'create_time', 'updated_time', 'login_num', 'allowance', 'allowance_updated_at'], 'integer'],
+            [['swoole_member_id','id','member_id','group_id', 'bloc_id', 'store_id', 'status', 'create_time', 'updated_time', 'login_num', 'allowance', 'allowance_updated_at'], 'integer'],
             [['refresh_token', 'access_token'], 'string', 'max' => 60],
             [['openid'], 'string', 'max' => 50],
             [['access_token'], 'unique'],
