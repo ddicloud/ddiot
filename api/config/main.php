@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 11:26:01
+ * @Last Modified time: 2022-08-19 16:20:11
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -193,6 +193,23 @@ return [
                         'POST,OPTIONS   bindmobile' => 'bindmobile',
                         'POST,OPTIONS   refresh' => 'refresh',
                         'GET,OPTIONS   smsconf' => 'smsconf',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['swoole'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST,OPTIONS   login' => 'login',
+                        'POST,OPTIONS   signup' => 'signup',
+                        'POST,OPTIONS   repassword' => 'repassword',
+                        'POST,OPTIONS   up-repassword' => 'up-repassword',
+                        'POST,OPTIONS   userinfo' => 'userinfo',
+                        'POST,OPTIONS   edituserinfo' => 'edituserinfo',
+                        'POST,OPTIONS   sendcode' => 'sendcode',
+                        'POST,OPTIONS   forgetpass' => 'forgetpass',
+                        'POST,OPTIONS   bindmobile' => 'bindmobile',
+                        'POST,OPTIONS   refresh' => 'refresh',
                     ],
                 ],
                 [

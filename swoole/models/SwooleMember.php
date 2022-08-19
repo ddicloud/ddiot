@@ -3,10 +3,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 13:41:47
+ * @Last Modified time: 2022-08-19 16:18:21
  */
 
 namespace swooleService\models;
+
+use common\helpers\ErrorsHelper;
+use common\helpers\loggingHelper;
+use common\helpers\ResultHelper;
+use swooleService\servers\AccessTokenService;
+use Yii;
 
 /**
  * This is the model class for table "{{%swoole_member}}".
@@ -71,6 +77,10 @@ namespace swooleService\models;
  */
 class SwooleMember extends \yii\db\ActiveRecord
 {
+    const STATUS_DELETED = 1; //删除
+    const STATUS_INACTIVE = 2; //拉黑
+    const STATUS_ACTIVE = 0; //正常
+    
     /**
      * {@inheritdoc}
      */
@@ -110,6 +120,243 @@ class SwooleMember extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+     /**
+     * Signs user up.
+     *
+     * @return bool whether the creating new account was successful and email was sent
+     */
+    public function signup($username, $mobile, $password)
+    {
+        
+        if (!$this->validate()) {
+            loggingHelper::writeLog('AccessTokenService', 'signup', '登录开始', [
+                'username'=> $username, 
+                'mobile'=> $mobile, 
+                'password'=> $password,
+                'validate'=> $this->validate(),
+            ]);
+            return $this->validate();
+        }
+
+        /* 查看用户名是否重复 */
+        // $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
+        // if (!empty($userinfo)) {
+        //     return ResultHelper::json(401, '用户名重复');
+        // }
+        /* 查看手机号是否重复 */
+        if ($mobile) {
+            $userinfo = $this->find()->where(['mobile' => $mobile])
+                ->andWhere(['<>', 'mobile', 0])->select('member_id')->one();
+            if (!empty($userinfo)) {
+                return ResultHelper::json(401, '手机号重复');
+            }
+        }
+
+        loggingHelper::writeLog('AccessTokenService', 'signup', '会员注册校验手机号');
+
+        $this->username = $username;
+        $this->mobile = $mobile;
+        $this->level = 1;
+        $this->group_id = 1;
+        $num = rand(1, 10);
+        $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
+
+        $this->setPassword($password);
+        $this->generateAuthKey();
+        $this->generateEmailVerificationToken();
+        $this->generatePasswordResetToken();
+        if ($this->save()) {
+            $service = new  AccessTokenService();
+            $userinfo = $service->AccessTokenService->getAccessToken($this, 1);
+            return $userinfo;
+        } else {
+            $msg = ErrorsHelper::getModelError($this);
+            loggingHelper::writeLog('AccessTokenService', 'signup', '会员数据写入失败：'.$msg);
+            return ResultHelper::json(401, $msg);
+        }
+    }
+
+     /**
+     * 生成accessToken字符串.
+     *
+     * @return string
+     *
+     * @throws \yii\base\Exception
+     */
+    public function generateAccessToken()
+    {
+        $this->access_token = Yii::$app->security->generateRandomString();
+
+        return $this->access_token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['member_id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Finds user by username.
+     *
+     * @param string $username
+     *
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::find()
+            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status ='.self::STATUS_ACTIVE])
+            ->one();
+    }
+
+    /**
+     * Finds user by password reset token.
+     *
+     * @return static|null
+     */
+    public static function findByMobile($mobile)
+    {
+        return static::findOne([
+            'mobile' => $mobile,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Finds user by password reset token.
+     *
+     * @param string $token password reset token
+     *
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Finds user by verification email token.
+     *
+     * @param string $token verify email token
+     *
+     * @return static|null
+     */
+    public static function findByVerificationToken($token)
+    {
+        return static::findOne([
+            'verification_token' => $token,
+            'status' => self::STATUS_INACTIVE,
+        ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid.
+     *
+     * @param string $token password reset token
+     *
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Validates password.
+     *
+     * @param string $password password to validate
+     *
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
+     * Generates password hash from password and sets it to the model.
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * Generates "remember me" authentication key.
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates new password reset token.
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
+    }
+
+    /**
+     * Generates new token for email verification.
+     */
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString().'_'.time();
+    }
+
+    /**
+     * Removes password reset token.
+     */
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
+
 
     /**
      * {@inheritdoc}
