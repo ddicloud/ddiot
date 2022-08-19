@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 17:02:21
+ * @Last Modified time: 2022-08-19 17:05:09
  */
 
 namespace swooleService\models;
@@ -168,7 +168,7 @@ class SwooleMember extends \yii\db\ActiveRecord
         $this->generatePasswordResetToken();
         if ($this->save()) {
             $service = new  AccessTokenService();
-            $userinfo = $service->AccessTokenService->getAccessToken($this, 1);
+            $userinfo = $service->getAccessToken($this, 1);
             return $userinfo;
         } else {
             $msg = ErrorsHelper::getModelError($this);
