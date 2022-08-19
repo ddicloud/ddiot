@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 17:00:42
+ * @Last Modified time: 2022-08-19 17:02:21
  */
 
 namespace swooleService\models;
@@ -95,8 +95,8 @@ class SwooleMember extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['group_id', 'bloc_id', 'auth_key', 'password_hash'], 'required'],
-            [['member_id', 'group_id', 'level', 'store_id', 'gender', 'status', 'address_id', 'create_time', 'update_time', 'organization_id'], 'integer'],
+            [['group_id', 'auth_key', 'password_hash'], 'required'],
+            [['member_id', 'bloc_id', 'group_id', 'level', 'store_id', 'gender', 'status', 'address_id', 'create_time', 'update_time', 'organization_id'], 'integer'],
             [['username'], 'string', 'max' => 30],
             [['mobile'], 'string', 'max' => 11],
             [['address', 'nickName', 'avatarUrl', 'verification_token', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
