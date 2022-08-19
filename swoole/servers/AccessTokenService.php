@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:45:49
+ * @Last Modified time: 2022-08-19 15:00:39
  */
 
 namespace swooleService\servers;
@@ -86,10 +86,12 @@ class AccessTokenService extends BaseService
             $model->access_token = StringHelper::uuid('sha1').'_'.time();
             $model->status = 1;
             if (!$model->save()) {
+                $msg = ErrorsHelper::getModelError($model);
                 if ($cycle_index <= 3) {
                     ++$cycle_index;
                     loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '重复获取', [
                         'model' => $model,
+                        'msg' => $msg,
                         'time' => date('Y-m-d H:i:s'),
                         'access_token' => $model->access_token,
                         'cycle_index' => $cycle_index,
