@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-05 00:49:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 09:58:39
+ * @Last Modified time: 2022-08-19 10:03:03
  */
 
 namespace common\helpers;
@@ -69,7 +69,7 @@ class ResultHelper
             return static::api($code, $message, $data);
         }
 
-        return static::baseJson($code, $message, $data);
+        return static::SocketBaseJson($code, $message, $data);
     }
 
     /**
