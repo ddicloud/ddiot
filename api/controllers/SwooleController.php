@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:19:43
+ * @Last Modified time: 2022-08-19 16:55:42
  */
 
 namespace api\controllers;
@@ -44,7 +44,12 @@ class SwooleController extends AController
 
         $res = $DdMember->signup($username, $mobile, $password);
 
-        return ResultHelper::json(200, '注册成功', $res);
+        if($res){
+         return ResultHelper::json(200, '注册成功', $res);
+            
+        }
+        
+        return ResultHelper::json(401, '注册失败');
     }
 
     

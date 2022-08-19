@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:41:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:18:21
+ * @Last Modified time: 2022-08-19 16:56:00
  */
 
 namespace swooleService\models;
@@ -129,15 +129,15 @@ class SwooleMember extends \yii\db\ActiveRecord
     public function signup($username, $mobile, $password)
     {
         
-        if (!$this->validate()) {
-            loggingHelper::writeLog('AccessTokenService', 'signup', '登录开始', [
-                'username'=> $username, 
-                'mobile'=> $mobile, 
-                'password'=> $password,
-                'validate'=> $this->validate(),
-            ]);
-            return $this->validate();
-        }
+        // if (!$this->validate()) {
+        //     loggingHelper::writeLog('AccessTokenService', 'signup', '登录开始', [
+        //         'username'=> $username, 
+        //         'mobile'=> $mobile, 
+        //         'password'=> $password,
+        //         'validate'=> $this->validate(),
+        //     ]);
+        //     return $this->validate();
+        // }
 
         /* 查看用户名是否重复 */
         // $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
@@ -357,6 +357,15 @@ class SwooleMember extends \yii\db\ActiveRecord
         $this->password_reset_token = null;
     }
 
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        // 去掉一些包含敏感信息的字段
+        unset($fields['auth_key'], $fields['password_hash'], $fields['verification_token']);
+
+        return $fields;
+    }
 
     /**
      * {@inheritdoc}
