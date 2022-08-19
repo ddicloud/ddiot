@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-05 00:49:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-21 23:15:20
+ * @Last Modified time: 2022-08-19 09:58:39
  */
 
 namespace common\helpers;
@@ -57,6 +57,21 @@ class ResultHelper
         return $result;
     }
 
+    public static function socketJson($code = 404, $message = '未知错误', $data = [])
+    {
+        if (!empty($data) && is_array($data)) {
+            if (array_key_exists('code', $data)) {
+                return $data;
+            }
+        }
+
+        if (in_array(Yii::$app->id, ['api', 'OAUTH2'])) {
+            return static::api($code, $message, $data);
+        }
+
+        return static::baseJson($code, $message, $data);
+    }
+
     /**
      * 返回json数据格式.
      *
@@ -77,6 +92,24 @@ class ResultHelper
         ];
 
         return $result;
+    }
+
+    /**
+     * 返回json字符串数据格式.
+     *
+     * @param int          $code    状态码
+     * @param string       $message 返回的报错信息
+     * @param array|object $data    返回的数据结构
+     */
+    protected static function SocketBaseJson($code, $message, $data)
+    {
+        $result = [
+            'code' => (int) $code,
+            'message' => trim($message),
+            'data' => $data ? ArrayHelper::toArray($data) : [],
+        ];
+
+        return json_encode($result);
     }
 
     /**
