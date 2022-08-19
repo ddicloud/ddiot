@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 14:48:28
+ * @Last Modified time: 2022-08-19 15:19:22
  */
 
 namespace swooleService\components\websocket;
@@ -87,14 +87,7 @@ class WebsocketServer extends ServerWebSocketServer
             return false;
         }
 
-        $accessToken = $request->get['access_token'];
-        if (!empty($token)) {
-            var_dump('accessToken 没有设置');
-
-            return false;
-        } else {
-            return $this->checkAccess($accessToken);
-        }
+      
 
         $key = base64_encode(sha1($request->header['sec-websocket-key'].'258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
         $headers = [
@@ -112,6 +105,17 @@ class WebsocketServer extends ServerWebSocketServer
         // 发送验证后的header
         foreach ($headers as $key => $val) {
             $response->header($key, $val);
+        }
+
+
+        $accessToken = $request->get['access_token'];
+        if (!empty($token)) {
+            var_dump('accessToken 没有设置');
+
+            return false;
+        } else {
+            $response->status(101);
+            return $this->checkAccess($accessToken);
         }
 
         // 接受握手 还需要101状态码以切换状态
