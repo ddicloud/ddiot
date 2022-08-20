@@ -3,13 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-25 12:30:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 15:58:54
+ * @Last Modified time: 2022-08-20 12:17:46
  */
  
 namespace console\controllers;
 
 use common\helpers\FileHelper;
+use diandi\addons\models\DdAddons;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class BaseController extends \yii\console\Controller
 {
@@ -26,6 +28,11 @@ class BaseController extends \yii\console\Controller
         Yii::$app->service->commonGlobalsService->initId($this->bloc_id, $this->store_id, $this->addons);
         Yii::$app->service->commonGlobalsService->getConf($this->bloc_id);
         $module = $this->addons;
+
+        $mid = DdAddons::find()->where(['identifie'=>$module])->select('mid')->scalar();
+        if(!$mid){
+            throw new NotFoundHttpException('当前插件没有安装.');            
+        }
         $runtimePath = Yii::getAlias('@swooleService/runtime/'.$module);
         define('SWOOLE_RUNTIME',$runtimePath);
         FileHelper::mkdirs($runtimePath);
