@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-18 13:36:14
+ * @Last Modified time: 2022-08-20 12:04:52
  */
 
 namespace swooleService\components\tcp;
@@ -52,7 +52,7 @@ class TcpController extends BaseController implements SwooleServer
                         ),
                     ],
                 ],
-                require Yii::getAlias('@swooleService/config/web.php'),
+                require Yii::getAlias('@swooleService/config/base.php'),
             );
             $this->config = yii\helpers\ArrayHelper::merge(
                 $BaseConfig,
