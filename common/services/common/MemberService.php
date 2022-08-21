@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-09 14:52:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 10:48:26
+ * @Last Modified time: 2022-08-21 20:49:53
  */
 
 namespace common\services\common;
@@ -144,7 +144,7 @@ class MemberService extends BaseService
     }
 
     // 获取所有的会员信息
-    public static function memberLists($where, $memberAlias, $joinModel, $joinfiled, $fields = [], $page, $pageSize = 20)
+    public static function memberLists($where, $memberAlias, $joinModel, $joinfiled, $fields = [], $page=1, $pageSize = 20)
     {
         $selectFs = [];
         foreach ($fields as $key => $value) {

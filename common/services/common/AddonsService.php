@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-25 02:36:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-25 10:19:14
+ * @Last Modified time: 2022-08-21 22:22:34
  */
  
 
@@ -20,7 +20,7 @@ class AddonsService extends BaseService
 
     public static function getAddonsInfo($identifie)
     {
-        $keys = $identifie.'info';
+        $keys = ['AddonsService',$identifie.'info'];
         if(Yii::$app->cache->get($keys)){
             return Yii::$app->cache->get($keys);
         }else{

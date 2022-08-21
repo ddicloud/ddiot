@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-15 13:19:35
+ * @Last Modified time: 2022-08-21 22:19:33
  */
 $db = [];
 $sqlServer = [];
@@ -28,7 +28,9 @@ return [
         // 'mongodb' => $mongodb,
          /* ------ 缓存 ------ **/
         'cache' => [
-            'class' => 'yii\redis\Cache',
+            // 'class' => 'yii\redis\Cache',
+            'class' => 'common\helpers\CacheHelper',
+            'defaultDuration'=>60*60*2 //默认缓存2个小时
         ],
         /* ------ REDIS ------ **/
         'redis' => $redis,

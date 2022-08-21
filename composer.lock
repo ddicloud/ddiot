@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2c934c7d93e5f3765c67f80d51e3ef4",
+    "content-hash": "9dcb5b29331b42b1705d460311665f6e",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4235,16 +4235,16 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "2.6.8",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
-                "reference": "f867122cbf5176e448443022437375287fd96309"
+                "reference": "34b78f8e8fca8ac1245f3c9fd3eec9c469938cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/f867122cbf5176e448443022437375287fd96309",
-                "reference": "f867122cbf5176e448443022437375287fd96309",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/34b78f8e8fca8ac1245f3c9fd3eec9c469938cf1",
+                "reference": "34b78f8e8fca8ac1245f3c9fd3eec9c469938cf1",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4284,9 +4284,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.6.8"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/2.7.0"
             },
-            "time": "2022-08-09T07:56:00+00:00"
+            "time": "2022-08-21T15:03:54+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
@@ -4465,16 +4465,16 @@
         },
         {
             "name": "yii-diandi/yii2-swoole",
-            "version": "2.2.1",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "5b7d63b89fcd69d87ad82c5221a122c9123205e8"
+                "reference": "eae598e5e69b447e2c3b6da6f981d9a846d91c0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/5b7d63b89fcd69d87ad82c5221a122c9123205e8",
-                "reference": "5b7d63b89fcd69d87ad82c5221a122c9123205e8",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/eae598e5e69b447e2c3b6da6f981d9a846d91c0b",
+                "reference": "eae598e5e69b447e2c3b6da6f981d9a846d91c0b",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4515,9 +4515,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.2.1"
+                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.2.4"
             },
-            "time": "2022-06-02T09:11:49+00:00"
+            "time": "2022-08-21T15:08:27+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
@@ -8079,5 +8079,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }
