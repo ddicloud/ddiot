@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 16:09:54
+ * @Last Modified time: 2022-08-22 14:15:53
  */
 
 namespace common\components\sign;
 
 use diandi\addons\models\form\Api;
+use swooleService\models\SwooleMember;
 use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\ArrayHelper;
@@ -48,8 +49,28 @@ class Sign extends ActionFilter
     {
         global $_GPC;
         $apiConf = new Api();
-        $conf = $apiConf->getConf($_GPC['bloc_id']);
-        $secret = md5($conf['app_secret'].$conf['app_id'], false);
+        $appId = Yii::$app->id;
+        switch ($appId) {
+            case 'app-api':
+                $apiConf->getConf($_GPC['bloc_id']);
+                break;
+            case 'app-swoole':
+                $swoole_member_id = Yii::$app->service->commonMemberService->getmember_id();
+                $apiConf->getConfBySwoole($swoole_member_id);
+                break;
+            case 'app-console':
+                $swoole_member_id = Yii::$app->user->identity->member_id;
+                $apiConf->getConfBySwoole($swoole_member_id);
+                break;
+            default:
+               $apiConf->getConf($_GPC['bloc_id']);
+            break;
+        }
+        if(empty($apiConf)){
+            throw new SignException(CodeConst::CODE_90000);
+        }
+
+        $secret = md5($apiConf['app_secret'].$apiConf['app_id'], false);
 
         return $secret;
     }

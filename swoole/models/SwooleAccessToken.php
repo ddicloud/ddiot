@@ -3,10 +3,18 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-19 13:19:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 17:38:48
+ * @Last Modified time: 2022-08-22 16:51:08
  */
 
 namespace swooleService\models;
+
+use common\helpers\ResultHelper;
+use common\models\enums\CodeStatus;
+use swooleService\servers\AccessTokenService;
+use Yii;
+use yii\filters\RateLimitInterface;
+use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * This is the model class for table "{{%swoole_access_token}}".
@@ -26,8 +34,12 @@ namespace swooleService\models;
  * @property int|null    $allowance
  * @property int|null    $allowance_updated_at
  */
-class SwooleAccessToken extends \yii\db\ActiveRecord
+class SwooleAccessToken extends \yii\db\ActiveRecord  implements IdentityInterface, RateLimitInterface
 {
+    const STATUS_DELETED = 1; //删除
+    const STATUS_INACTIVE = 2; //拉黑
+    const STATUS_ACTIVE = 0; //正常
+    
     /**
      * {@inheritdoc}
      */
@@ -65,6 +77,109 @@ class SwooleAccessToken extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+
+    public function getRateLimit($request, $action)
+    {
+        $this->rateLimit = Yii::$app->params['swoole']['rateLimit'];
+        $this->timeLimit = Yii::$app->params['swoole']['timeLimit'];
+
+        return [$this->rateLimit, $this->timeLimit];
+    }
+
+    public function loadAllowance($request, $action)
+    {
+        $allowance = Yii::$app->cache->get($this->getCacheKey('swoole_rate_allowance'));
+        $timestamp = Yii::$app->cache->get($this->getCacheKey('swoole_rate_timestamp'));
+
+        if ($allowance === false) {
+            return [$this->timeLimit, time()];
+        }
+
+        return [$allowance, $timestamp];
+    }
+
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        Yii::$app->cache->set($this->getCacheKey('swoole_rate_allowance'), $allowance, $this->timeLimit);
+        Yii::$app->cache->set($this->getCacheKey('swoole_rate_timestamp'), $timestamp, $this->timeLimit);
+        $this->allowance = $allowance;
+        $this->allowance_updated_at = $timestamp;
+        $this->save();
+    }
+
+     /**
+     * @param mixed $token
+     * @param null  $type
+     *
+     * @return array|mixed|ActiveRecord|\yii\web\IdentityInterface|null
+     *
+     * @throws UnauthorizedHttpException
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // 判断验证token有效性是否开启
+        if (Yii::$app->params['user.accessTokenValidity'] === true) {
+            $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+            $expire = Yii::$app->params['user.accessTokenExpire'];
+            // 验证有效期
+            if ($timestamp + $expire <= time()) {
+                throw new UnauthorizedHttpException('您的登录验证已经过期，请重新登录', CodeStatus::getValueByName('token失效'));
+            }
+        }
+        
+        $service = new AccessTokenService();
+        // 优化版本到缓存读取用户信息 注意需要开启服务层的cache
+        return $service->getTokenToCache($token, $type);
+    }
+
+    
+
+      /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['swoole_member_id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * @return int|string 当前用户ID
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * @return string 当前用户的（cookie）认证密钥
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @param string $authKey
+     *
+     * @return bool if auth key is valid for current user
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * @param $key
+     *
+     * @return array
+     */
+    public function getCacheKey($key)
+    {
+        return [__CLASS__, $this->getId(), $key];
+    }
+   
 
     /**
      * {@inheritdoc}

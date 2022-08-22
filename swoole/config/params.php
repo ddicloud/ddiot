@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-22 02:30:26
+ * @Last Modified time: 2022-08-22 01:32:28
  */
  
 
@@ -85,4 +85,5 @@ return [
         'rateLimit' =>300, //速率限制,
         'timeLimit' =>60
     ],
+    'global_bloc_id'=>0
 ];

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-15 18:03:26
+ * @Last Modified time: 2022-08-22 13:45:51
  */
 
 namespace common\components\addons;
@@ -52,6 +52,7 @@ class AddonsModule extends Module
         }
 
         $appId = Yii::$app->id;
+        $configPath = '';
         switch ($appId) {
             case 'app-backend':
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/backend.php');
@@ -64,6 +65,15 @@ class AddonsModule extends Module
                 ]));
                 break;
             case 'app-api':
+                $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $cookies = Yii::$app->response->cookies;
+                // 添加一个cookie
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'language',
+                    'value' => 'zh-CN',
+                ]));
+                break;
+            case 'app-swoole':
                 $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
@@ -91,6 +101,14 @@ class AddonsModule extends Module
                 }
                 break;
             default:
+                $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $cookies = Yii::$app->response->cookies;
+                // 添加一个cookie
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'language',
+                    'value' => 'zh-CN',
+                ]));
+            break;
         }
 
         if (file_exists($configPath)) {

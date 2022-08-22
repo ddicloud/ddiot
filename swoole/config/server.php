@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-21 02:47:30
+ * @Last Modified time: 2022-08-22 17:16:48
  */
 return [
     'host' => '0.0.0.0',
@@ -14,6 +14,7 @@ return [
     'options' => [
         'pid_file' => __DIR__ . '/../runtime/swoole.pid',
         'log_file' => __DIR__ . '/../runtime/swoole.log',
+        'http_parse_post'=>false,
         'debug_mode'=> 1,
         'user'=>'www',
         'group'=>'www',

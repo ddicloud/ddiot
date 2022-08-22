@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-09 14:52:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 20:49:53
+ * @Last Modified time: 2022-08-22 14:03:50
  */
 
 namespace common\services\common;
@@ -20,6 +20,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use common\queues\MailerJob;
 use common\services\BaseService;
+use swooleService\models\SwooleAccessToken;
 use yii\data\Pagination;
 
 use function PHPSTORM_META\map;
@@ -39,6 +40,9 @@ class MemberService extends BaseService
         } else if (Yii::$app->id == 'app-api') {
             $tokens = DdApiAccessToken::find()->where(['access_token' => $token])->asArray()->one();
             $this->member_id = $tokens['member_id'];
+        }else if (Yii::$app->id == 'app-swoole') {
+            $tokens = SwooleAccessToken::find()->where(['access_token' => $token])->asArray()->one();
+            $this->member_id = $tokens['swoole_member_id'];
         }
     }
 

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-12 15:51:04
+ * @Last Modified time: 2022-08-22 14:25:22
  */
 
 
@@ -43,7 +43,7 @@ return [
             'cookieValidationKey' => 'KHVLRGNziHXKUiHK'
         ],
         'user' => [
-            'identityClass' => 'api\models\DdApiAccessToken',
+            'identityClass' => 'swooleService\models\SwooleAccessToken',
             'enableAutoLogin' => true,
             'enableSession' => true,
             'loginUrl' => null,

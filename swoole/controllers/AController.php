@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-01 09:50:08
+ * @Last Modified time: 2022-08-22 16:28:12
  */
 
 namespace swooleService\controllers;
@@ -57,7 +57,7 @@ class AController extends ActiveController
     {
         /* 添加行为 */
         $behaviors = parent::behaviors();
-
+        
         // 速率限制
         $behaviors['rateLimiter'] = [
             'class' => RateLimiter::className(),
@@ -98,7 +98,6 @@ class AController extends ActiveController
             ],
         ];
 
-
         return $behaviors;
     }
 
@@ -109,8 +108,6 @@ class AController extends ActiveController
         Yii::$app->params['store_id']   = Yii::$app->service->commonGlobalsService->getStore_id();
         // 集团化参数赋值
         Yii::$app->service->commonGlobalsService->getGlobalBloc();
-
-
         return parent::beforeAction($action);
     }
 

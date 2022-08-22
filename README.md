@@ -130,6 +130,16 @@ server {
                 rewrite ^/admin/(.*)$ /admin/index.php last;
             }
         }
+
+        location / {
+            proxy_http_version 1.1;
+            proxy_set_header Connection "keep-alive";
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header SERVER_NAME $server_name;
+            if (!-e $request_filename) {
+                proxy_pass http://127.0.0.1:9501;
+            }
+        }
 }
 
 

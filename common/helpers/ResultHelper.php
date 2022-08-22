@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-05 00:49:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 11:35:03
+ * @Last Modified time: 2022-08-22 16:12:52
  */
 
 namespace common\helpers;
@@ -70,6 +70,26 @@ class ResultHelper
         }
 
         return static::SocketBaseJson($type, $code, $message, $data);
+    }
+
+    /**
+     * swoolehttp服务内容返回处理
+     * @return void
+     * @date 2022-08-22
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function httpJson($code = 404, $message = '未知错误', $data = [])
+    {
+        $content = static::baseJson($code, $message, $data);
+        if (Yii::$app->id === 'app-swoole') {
+            assert(Yii::$app->response->isWritable(), true);
+            Yii::$app->response->content = json_encode($content);
+            Yii::$app->response->send();
+        }
+        
+        return true;
     }
 
     /**
