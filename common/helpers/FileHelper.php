@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-01 05:26:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-06 10:00:33
+ * @Last Modified time: 2022-08-23 18:34:07
  */
 
 
@@ -199,8 +199,9 @@ class FileHelper extends BaseFileHelper
     }
 
 
-    public static function rmdirs($path, $clean = false)
+    public static function rmdirs($path,$rmEmpty=false, $clean = false)
     {
+        echo '目录1'.$path.PHP_EOL;
         if (!is_dir($path)) {
             return false;
         }
@@ -210,10 +211,20 @@ class FileHelper extends BaseFileHelper
             $i=0;
             while ($i <= $num) {
                 $file = $files[$i];
-                is_dir($file) ? self::rmdirs($file) : @unlink($file);
+                if($rmEmpty){
+                    $tree = self::file_lists($file);
+                    if(is_dir($file) && count($tree) >= 0){
+                        self::rmdirs($file);
+                    }else if(is_dir($file) && count($tree) === 0){
+                        @rmdir($file);
+                    }else{
+                        self::file_delete($file);
+                    }
+                }else{
+                    is_dir($file) ? self::rmdirs($file) : self::file_delete($file);
+                }
+                $i++;
             }
-            // foreach ($files as $file) {
-            // }
         }
 
         return $clean ? true : @rmdir($path);
@@ -238,7 +249,7 @@ class FileHelper extends BaseFileHelper
         }
 
         $file_extension = pathinfo($file, PATHINFO_EXTENSION);
-        if (in_array($file_extension, array('php', 'html', 'js', 'css', 'ttf', 'otf', 'eot', 'svg', 'woff'))) {
+        if (in_array($file_extension, array('php', 'html', 'js', 'css', 'ttf', 'otf', 'eot', 'svg', 'woff','pid','png','jpg','jpeg','lock','gitignore','yml','phar','md'))) {
             return false;
         }
         if (file_exists($file)) {
@@ -284,7 +295,6 @@ class FileHelper extends BaseFileHelper
                 continue;
             }
         }
-
         return $file_list;
     }
 
