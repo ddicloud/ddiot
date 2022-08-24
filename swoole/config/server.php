@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 17:16:48
+ * @Last Modified time: 2022-08-24 21:56:14
  */
 return [
     'host' => '0.0.0.0',
@@ -21,6 +21,6 @@ return [
         // 4.0 新增选项
         'worker_num' => 2,
         'daemonize' => 0,
-        'task_worker_num' => 10
+        'task_worker_num' => 4
     ]
 ];
