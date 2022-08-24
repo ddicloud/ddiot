@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-16 09:33:24
+ * @Last Modified time: 2022-08-24 20:06:33
  */
 
 namespace api\controllers;
@@ -46,18 +46,19 @@ class AController extends ActiveController
      *
      * @var array
      */
-    protected $signOptional = ['*'];
+    protected $signOptional =  ['*'];
 
     protected $optionsAction = []; //需要options的方法
 
     // 主要数据的模型
     public $modelClass = '';
 
+
     public function behaviors()
     {
         /* 添加行为 */
         $behaviors = parent::behaviors();
-
+        
         // 速率限制
         $behaviors['rateLimiter'] = [
             'class' => RateLimiter::className(),
@@ -73,16 +74,16 @@ class AController extends ActiveController
                 QueryParamAuth::className(),
             ],
             // 不进行认证判断方法
-            'optional' => $this->authOptional,
+            'optional' => Yii::$app->id === 'app-swoole'?['*']:$this->authOptional,
         ];
 
         // 签名验证
         $behaviors['sign'] = [
             'class' => Sign::className(),
             'key' => Sign::generateSecret(), // 密钥
-            'optional' => $this->signOptional,
+            'optional' => Yii::$app->id === 'app-swoole'?['all']:$this->signOptional,
         ];
-
+        
         $urls = Yii::$app->settings->get('Weburl', 'urls');
 
         // 跨域支持
