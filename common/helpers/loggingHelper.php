@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 18:35:28
+ * @Last Modified time: 2022-08-24 19:32:07
  */
 
 namespace common\helpers;
@@ -40,8 +40,8 @@ class loggingHelper
     {
         $appId = Yii::$app->id;
         list($app, $alia) = explode('-', $appId);
-
         $basepath = Yii::getAlias("@{$app}/runtime/".$moduleName.'/'.date('Y/m/d/').$path.'.log');
+
         self::mkdirs(dirname($basepath));
         @chmod($path, 0777);
         $time = date('m/d H:i:s');
@@ -53,6 +53,7 @@ class loggingHelper
 
         return file_put_contents($basepath, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
     }
+
 
     public static function actionLog($user_id, $operation, $logip)
     {
