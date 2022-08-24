@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9dcb5b29331b42b1705d460311665f6e",
+    "content-hash": "ce11a03c12530166ef70044191e97c89",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4465,16 +4465,16 @@
         },
         {
             "name": "yii-diandi/yii2-swoole",
-            "version": "2.2.9",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "74151c77b74a057ebf277deadd157bc2c41a9f17"
+                "reference": "bdc2febb095e386838da06d5dffc297fc0ef430c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/74151c77b74a057ebf277deadd157bc2c41a9f17",
-                "reference": "74151c77b74a057ebf277deadd157bc2c41a9f17",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/bdc2febb095e386838da06d5dffc297fc0ef430c",
+                "reference": "bdc2febb095e386838da06d5dffc297fc0ef430c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4515,9 +4515,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.2.9"
+                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.3.0"
             },
-            "time": "2022-08-23T07:02:11+00:00"
+            "time": "2022-08-24T13:44:08+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
