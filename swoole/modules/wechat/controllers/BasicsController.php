@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 10:15:38
+ * @Last Modified time: 2022-08-25 10:25:48
  */
 
 namespace swooleService\modules\wechat\controllers;
@@ -112,7 +112,6 @@ class BasicsController extends AController
     {
         global $_GPC;
         $users = Yii::$app->request->post();
-        return ResultHelper::json(200, '登录成功', []);
 
         $code = $users['code'];
 
