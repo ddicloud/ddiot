@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:34:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 13:37:12
+ * @Last Modified time: 2022-08-25 11:17:10
  */
 
 namespace swooleService\controllers;
@@ -18,13 +18,16 @@ use yii\web\Controller;
 
 class SiteController extends Controller
 {
+    public $modelClass = '';
+
     public function actionIndex()
     {
         Yii::$app->redis->hset('self::PREFIX_KEY', '$room_id', 4568);
-        
+        // print_r(Yii::$app->wechat);
         return [
             'name' => Yii::$app->name,
-            'version' => Yii::$app->version
+            'version' => Yii::$app->version,
+            'wechat' => Yii::$app->wechat
         ];
     }
 

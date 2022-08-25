@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 10:25:48
+ * @Last Modified time: 2022-08-25 11:16:00
  */
 
 namespace swooleService\modules\wechat\controllers;
@@ -18,6 +18,7 @@ use common\models\DdCorePaylog;
 use common\models\PayRefundLog;
 use Yii;
 use yii\helpers\Json;
+use yii\web\YiiAsset;
 
 /**
  * Default controller for the `wechat` module.
@@ -112,7 +113,7 @@ class BasicsController extends AController
     {
         global $_GPC;
         $users = Yii::$app->request->post();
-
+    
         $code = $users['code'];
 
         unset($users['code']);

@@ -4,11 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 10:23:44
+ * @Last Modified time: 2022-08-25 11:06:30
  */
 
 namespace swooleService\modules\wechat;
 
+use common\components\addons\AddonsModule;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
@@ -18,7 +19,7 @@ use yii\di\ServiceLocator;
 /**
  * 小程序接口
  */
-class module extends \yii\base\Module
+class module extends AddonsModule
 {
     /**
      * {@inheritdoc}

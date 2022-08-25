@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 09:40:35
+ * @Last Modified time: 2022-08-25 11:12:07
  */
 
 
@@ -59,6 +59,15 @@ return [
         'request' => [
             'class' => Request::class,
             'cookieValidationKey' => 'KHVLRGNziHXKUiHK'
+        ],
+        'wechat' => [
+            'class' => 'common\components\wechat\Wechat',
+            'userOptions' => [],  // 用户身份类参数
+            'sessionParam' => 'wechatUser', // 微信用户信息将存储在会话在这个密钥
+            'returnUrlParam' => '_wechatReturnUrl', // returnUrl 存储在会话中
+            'rebinds' => [ // 自定义服务模块
+                // 'cache' => 'common\components\Cache',
+            ],
         ],
         'user' => [
             'identityClass' => 'swooleService\models\SwooleAccessToken',
