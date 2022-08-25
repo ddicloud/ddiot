@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 11:16:00
+ * @Last Modified time: 2022-08-25 11:33:25
  */
 
 namespace swooleService\modules\wechat\controllers;
@@ -12,6 +12,7 @@ namespace swooleService\modules\wechat\controllers;
 use swooleService\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
+use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
@@ -112,22 +113,17 @@ class BasicsController extends AController
     public function actionSignup()
     {
         global $_GPC;
-        $users = Yii::$app->request->post();
-    
-        $code = $users['code'];
+        $code = $_GPC['code'];
 
-        unset($users['code']);
-        $logPath = Yii::getAlias('@runtime/wechat/signup/'.date('ymd').'.log');
-
-        FileHelper::writeLog($logPath, '登录日志：请求code的用户数据'.json_encode($users));
+        loggingHelper::writeLog('wechat','signup','授权登录参数',$_GPC);
 
         $miniProgram = Yii::$app->wechat->miniProgram;
         if (empty($users['openid'])) { // 当openid有值的时候为app登录
             $user = $miniProgram->auth->session($code);
-            FileHelper::writeLog($logPath, '登录日志：获取信息'.json_encode($user));
+            loggingHelper::writeLog('wechat','signup','用户数据',$user);
 
             if (key_exists('errcode', $user)) {
-                FileHelper::writeLog($logPath, '登录日志：请求错误信息'.json_encode($user));
+                loggingHelper::writeLog('wechat','signup','登录日志：请求错误信息',$user);
 
                 return ResultHelper::json(401, $user['errmsg'], []);
             }
@@ -136,7 +132,8 @@ class BasicsController extends AController
         }
         // 查询该openID是否存在
         $res = Yii::$app->fans->signup($users);
-        FileHelper::writeLog($logPath, '登录成功：'.json_encode($res));
+        loggingHelper::writeLog('wechat','signup','登录日志：请求错误信息',$res);
+        
 
         return ResultHelper::json(200, '登录成功', $res);
     }
