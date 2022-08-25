@@ -9,7 +9,7 @@
 
 namespace swooleService\modules\officialaccount\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use Yii;
 
 /**

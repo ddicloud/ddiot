@@ -10,7 +10,7 @@
 namespace swooleService\modules\officialaccount\controllers;
 
 use Yii;
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

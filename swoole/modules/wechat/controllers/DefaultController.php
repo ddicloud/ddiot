@@ -2,7 +2,7 @@
 
 namespace swooleService\modules\wechat\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 
 /**
 * Default controller for the `wechat` module

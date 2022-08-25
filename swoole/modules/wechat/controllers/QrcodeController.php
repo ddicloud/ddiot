@@ -9,7 +9,7 @@
 
 namespace swooleService\modules\wechat\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use common\helpers\FileHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;

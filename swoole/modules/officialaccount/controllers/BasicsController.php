@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 15:23:00
+ * @Last Modified time: 2022-08-25 09:52:49
  */
 
 namespace swooleService\modules\officialaccount\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

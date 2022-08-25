@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 15:22:26
+ * @Last Modified time: 2022-08-25 10:15:38
  */
 
 namespace swooleService\modules\wechat\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
@@ -112,6 +112,8 @@ class BasicsController extends AController
     {
         global $_GPC;
         $users = Yii::$app->request->post();
+        return ResultHelper::json(200, '登录成功', []);
+
         $code = $users['code'];
 
         unset($users['code']);

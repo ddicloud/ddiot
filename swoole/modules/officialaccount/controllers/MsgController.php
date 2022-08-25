@@ -8,7 +8,7 @@
 
 namespace swooleService\modules\officialaccount\controllers;
 
-use api\controllers\AController;
+use swooleService\controllers\AController;
 use api\modules\officialaccount\services\FansService;
 use api\modules\officialaccount\services\MessageService;
 use app\modules\officialaccount\components\Fans;
