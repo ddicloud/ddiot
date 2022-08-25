@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 17:23:24
+ * @Last Modified time: 2022-08-25 09:32:12
  */
 
 namespace swooleService\controllers;
@@ -19,7 +19,7 @@ use swooleService\models\SwooleAccessToken;
 use swooleService\models\SwooleMember;
 use Yii;
 
-class MemberController extends AController
+class UserController extends AController
 {
     public $modelClass = '';
     

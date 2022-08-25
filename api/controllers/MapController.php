@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-07-30 15:43:34
+ * @Last Modified time: 2022-08-24 22:02:27
  */
 
 
@@ -22,31 +22,7 @@ class MapController extends AController
     public $modelClass = '';
     protected $authOptional = ['distance', 'citylist'];
 
-    /**
-     * @SWG\Get(path="/map/distance",
-     *     tags={"地图"},
-     *     summary="根据经纬度获取省市区",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "根据经纬度获取省市区",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lat",
-     *      type="string",
-     *      description="纬度",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lng",
-     *      type="string",
-     *      description="经度",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
+   
     public function actionDistance()
     {
         $lng = Yii::$app->request->get('lng');
@@ -55,31 +31,7 @@ class MapController extends AController
         return ResultHelper::json(200, '获取成功', $data);
     }
 
-    /**
-     * @SWG\Get(path="/map/citylist",
-     *     tags={"地图"},
-     *     summary="根据经纬度获取省市区",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "根据经纬度获取省市区",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lat",
-     *      type="string",
-     *      description="纬度",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lng",
-     *      type="string",
-     *      description="经度",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
+  
     public function actionCitylist()
     {
 
