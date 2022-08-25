@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 12:00:07
+ * @Last Modified time: 2022-08-25 10:23:44
  */
 
 namespace swooleService\modules\wechat;
@@ -23,7 +23,7 @@ class module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'api\modules\wechat\controllers';
+    public $controllerNamespace = 'swooleService\modules\wechat\controllers';
 
     /**
      * {@inheritdoc}
