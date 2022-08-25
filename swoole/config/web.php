@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 14:25:22
+ * @Last Modified time: 2022-08-25 09:40:35
  */
 
 
@@ -32,7 +32,25 @@ return [
         '@swooleService' => dirname(__DIR__),
         '@diandi' => '@vendor/yii-diandi',
     ],
-    'modules' => [],
+    'modules' => [
+        'settings' => [
+            'class' => 'yii2mod\settings\Module',
+        ],
+        'v1' => [
+            'class' => 'api\modules\v1\Module',
+        ],
+        // 'diandi_shop' => [
+        //     'class' => 'api\modules\diandi_shop\module',
+        // ],
+        // 小程序
+        'wechat' => [
+            'class' => 'swooleService\modules\wechat\module',
+        ],
+        // 公众号
+        'officialaccount' => [
+            'class' => 'swooleService\modules\officialaccount\module',
+        ],
+    ],
     'components' => [
         'response' => [
             'class' => Response::class,

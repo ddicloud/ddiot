@@ -4,10 +4,10 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 09:33:19
+ * @Last Modified time: 2022-08-25 09:40:23
  */
 
-namespace app\modules\wechat\components;
+namespace swooleService\modules\wechat\components;
 
 use api\models\DdApiAccessToken;
 use swooleService\models\SwooleMember;
