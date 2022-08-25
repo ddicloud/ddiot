@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 13:45:51
+ * @Last Modified time: 2022-08-25 10:47:28
  */
 
 namespace common\components\addons;
@@ -130,7 +130,7 @@ class AddonsModule extends Module
             Yii::$app->setComponents($config['components']);
         }
 
-        if (in_array($appId, ['app-backend', 'app-api', 'app-frontend'])) {
+        if (in_array($appId, ['app-swoole', 'app-api', 'app-frontend'])) {
             // 初始化公众号配置信息
             $this->initWechat();
         }
