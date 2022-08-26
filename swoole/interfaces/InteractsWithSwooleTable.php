@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-18 14:34:02
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-26 14:35:15
+ * @Last Modified time: 2022-08-26 14:51:14
  */
 
 namespace swooleService\interfaces;
@@ -16,12 +16,12 @@ trait InteractsWithSwooleTable
     /**
      * @var Table
      */
-    public  $currentTable;
+    protected  $currentTable;
 
     /**
      * Register customized swoole tables.
      */
-    public  function prepareTables(array $tables)
+    protected  function prepareTables(array $tables)
     {
         $this->currentTable = new Table();
         $this->registerTables($tables);
@@ -30,7 +30,7 @@ trait InteractsWithSwooleTable
     /**
      * Register user-defined swoole tables.
      */
-    public  function registerTables(array $tables)
+    protected  function registerTables(array $tables)
     {
         foreach ($tables as $key => $value) {
             $table = new SwooleTable($value['size']);
