@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 12:41:18
+ * @Last Modified time: 2022-08-27 15:47:37
  */
 
 
@@ -99,11 +99,24 @@ return [
             'rules' => []
         ],
         'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            //'flushInterval' => 1,
             'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
+               [
+                  'class' => 'yii\log\FileTarget', //默认文件处理类
+                  'levels' => ['error', 'warning','info'],
+                  'exportInterval' => 1,
+                  'categories' => ['ddicms'],
+                  //'categories' => ['yii\*'],//$categories the message categories to filter by. If empty, it means all categories are allowed.
+                  'logVars' => ['*'], //记录最基本的 []赋值也可以
+                  //'logFile' => '@runtime/logs/order.log'.date('Ymd'),//用日期方式记录日志
+                  'except' => [
+                    'yii\web\HttpException:404',
+                    'yii\web\HttpException:403',
+                    'yii\web\HttpException:402',
+                    'yii\web\HttpException:401',
+                  ]
+               ],
             ],
         ],
         'service' => [
