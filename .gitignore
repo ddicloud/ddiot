@@ -58,7 +58,7 @@ frontend/node_modules
 frontend/admin/assets
 frontend/assets
 
-
+assets/*
 
 # 公共目录
 common/config/sqlServer.php
