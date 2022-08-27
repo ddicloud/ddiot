@@ -3,13 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 14:15:53
+ * @Last Modified time: 2022-08-27 09:53:14
  */
 
 namespace common\components\sign;
 
 use diandi\addons\models\form\Api;
-use swooleService\models\SwooleMember;
 use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\ArrayHelper;
@@ -52,7 +51,8 @@ class Sign extends ActionFilter
         $appId = Yii::$app->id;
         switch ($appId) {
             case 'app-api':
-                $apiConf->getConf($_GPC['bloc_id']);
+                $member_id = Yii::$app->user->identity->member_id;
+                $apiConf->getConfByMember($member_id);
                 break;
             case 'app-swoole':
                 $swoole_member_id = Yii::$app->service->commonMemberService->getmember_id();
@@ -63,14 +63,14 @@ class Sign extends ActionFilter
                 $apiConf->getConfBySwoole($swoole_member_id);
                 break;
             default:
-               $apiConf->getConf($_GPC['bloc_id']);
-            break;
+                $apiConf->getConf($_GPC['bloc_id']);
+                break;
         }
-        if(empty($apiConf)){
+        if (empty($apiConf)) {
             throw new SignException(CodeConst::CODE_90000);
         }
 
-        $secret = md5($apiConf['app_secret'].$apiConf['app_id'], false);
+        $secret = md5($apiConf['app_secret'] . $apiConf['app_id'], false);
 
         return $secret;
     }
@@ -115,7 +115,7 @@ class Sign extends ActionFilter
         }
 
         // 获取通用型的签名
-        $forAllString = $this->paramFilter($params);  // 参数处理
+        $forAllString = $this->paramFilter($params); // 参数处理
         $forAllSign = $this->md5Sign($forAllString);
         // && (!$forMerSign && $forMerSign != $params['sign'])
         if ($params['sign'] != $forAllSign) {
@@ -134,10 +134,10 @@ class Sign extends ActionFilter
     public function paramFilter($param)
     {
         $paraFilter = $param;
-        unset($paraFilter['sign']);  // 剔除sign本身
+        unset($paraFilter['sign']); // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
         ksort($paraFilter); // 对数组根据键名升序排序
-        reset($paraFilter);  // 函数将内部指针指向数组中的第一个元素，并输出
+        reset($paraFilter); // 函数将内部指针指向数组中的第一个元素，并输出
         $data = http_build_query($paraFilter);
 
         return $data;
@@ -153,10 +153,10 @@ class Sign extends ActionFilter
     public function md5Sign($preStr)
     {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr.'&key='.self::generateSecret();
+        $str = $preStr . '&key=' . self::generateSecret();
         $sign = md5($str);
 
-        return strtoupper($sign);  // 转成大写
+        return strtoupper($sign); // 转成大写
     }
 
     /**
@@ -166,7 +166,7 @@ class Sign extends ActionFilter
      */
     public static function getPrefixOfDomain()
     {
-        $url = '//'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+        $url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);
 
         return $match[1];

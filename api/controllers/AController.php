@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-24 21:04:39
+ * @Last Modified time: 2022-08-27 08:51:08
  */
 
 namespace api\controllers;
@@ -130,7 +130,7 @@ class AController extends ActiveController
             } catch (InvalidConfigException $e) {
             }
         } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && strpos($id, '--') === false && trim($id, '-') === $id) {
-            $methodName = 'action'.str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
+            $methodName = 'action' . str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
 
             if (method_exists($this, $methodName)) {
                 $method = new \ReflectionMethod($this, $methodName);
@@ -139,7 +139,7 @@ class AController extends ActiveController
                 }
             }
         } else {
-            $methodName = 'action'.ucwords($id);
+            $methodName = 'action' . ucwords($id);
             if (method_exists($this, $methodName)) {
                 $method = new \ReflectionMethod($this, $methodName);
                 if ($method->isPublic() && $method->getName() === $methodName) {
@@ -166,7 +166,7 @@ class AController extends ActiveController
         unset($actions['index'], $actions['update'], $actions['create'], $actions['delete'], $actions['view']);
         // 自定义数据indexDataProvider覆盖IndexAction中的prepareDataProvider()方法
         // $actions['index']['prepareDataProvider'] = [$this, 'indexDataProvider'];
-        //需要在使用的方法加上跨域请求   
+        //需要在使用的方法加上跨域请求
         // header('content-type:application/json;charset=utf8');
         // header('Access-Control-Allow-Origin:*');
         // header('Access-Control-Allow-Methods:POST');
@@ -277,4 +277,9 @@ class AController extends ActiveController
 
         throw new NotFoundHttpException('请求的数据失败.');
     }
+
+    // public function checkAccess($action, $model = null, $params = [])
+    // {
+    //     return false;
+    // }
 }
