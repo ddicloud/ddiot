@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 11:30:23
+ * @Last Modified time: 2022-08-27 16:04:59
  */
 
 namespace common\helpers;
@@ -44,17 +44,22 @@ class loggingHelper
 
         self::mkdirs(dirname($basepath));
         @chmod($path, 0777);
-        // $time = date('m/d H:i:s');
+        $time = date('m/d H:i:s');
         if (is_array($content) || !is_string($content)) {
             $contentTxt = json_encode($content);
         } elseif (is_string($content)) {
             $contentTxt = $content;
         }
-        Yii::$app->log->targets[0]->logFile = $basepath;
-        Yii::$app->log->targets[0]->maxFileSize = 2000;
-        Yii::$app->log->targets[0]->maxLogFiles = 10;
-        //在需要记录日志的地方先赋值log文件地址：
-        Yii::info($contentTxt,'ddicms');
+
+        if(!in_array($appId,['app-swoole'])){
+            Yii::$app->log->targets[0]->logFile = $basepath;
+            Yii::$app->log->targets[0]->maxFileSize = 2000;
+            Yii::$app->log->targets[0]->maxLogFiles = 10;
+            //在需要记录日志的地方先赋值log文件地址：
+            return Yii::info($contentTxt,'ddicms');
+        }else{
+            return file_put_contents($basepath, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+        }
     }
 
     public static function actionLog($user_id, $operation, $logip)
