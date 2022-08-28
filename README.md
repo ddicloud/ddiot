@@ -97,6 +97,19 @@ return [
 ];
 
 
+make distclean
+
+phpize && \
+./configure  --with-php-config=/www/server/php/74/bin/php-config  \
+--enable-openssl \
+--with-openssl-dir  \
+--enable-swoole-curl  \
+--enable-http2 && \
+make && sudo make install
+
+
+
+
 ```
 
 # Nginx 部署配置

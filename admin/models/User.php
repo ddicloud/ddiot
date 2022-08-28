@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 12:52:58
+ * @Last Modified time: 2022-08-28 08:17:22
  */
 
 namespace admin\models;
 
+use admin\services\UserService;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
@@ -130,7 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->generatePasswordResetToken();
         if ($this->save()) {
             $user_id = Yii::$app->db->getLastInsertID();
-
+            UserService::SignBindBloc($user_id);
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'admin';
