@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 19:52:46
+ * @Last Modified time: 2022-08-29 20:22:28
  */
 
 namespace common\helpers;
@@ -60,8 +60,9 @@ class loggingHelper
         }else{
             $fp = fopen($basepath, "a+");
             $filename =$basepath;
-            $w = \Swoole\Coroutine\System::writeFile($filename,  "\r\n".$time.'-'.$mark.':'.$contentTxt,FILE_APPEND);
-            return $w;
+            go(function() use($filename,  $time,$mark,$contentTxt) {
+                $w = \Swoole\Coroutine\System::writeFile($filename,  "\r\n".$time.'-'.$mark.':'.$contentTxt,FILE_APPEND);
+            });
         }
     }
 
