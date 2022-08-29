@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 16:04:59
+ * @Last Modified time: 2022-08-29 19:52:46
  */
 
 namespace common\helpers;
@@ -51,14 +51,17 @@ class loggingHelper
             $contentTxt = $content;
         }
 
-        if(!in_array($appId,['app-swoole'])){
+        if($appId != 'app-swoole'){
             Yii::$app->log->targets[0]->logFile = $basepath;
             Yii::$app->log->targets[0]->maxFileSize = 2000;
             Yii::$app->log->targets[0]->maxLogFiles = 10;
             //在需要记录日志的地方先赋值log文件地址：
             return Yii::info($contentTxt,'ddicms');
         }else{
-            return file_put_contents($basepath, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+            $fp = fopen($basepath, "a+");
+            $filename =$basepath;
+            $w = \Swoole\Coroutine\System::writeFile($filename,  "\r\n".$time.'-'.$mark.':'.$contentTxt,FILE_APPEND);
+            return $w;
         }
     }
 
