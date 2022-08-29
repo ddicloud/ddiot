@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 11:03:10
+ * @Last Modified time: 2022-08-29 13:46:25
  */
 
 namespace admin\controllers;
@@ -315,6 +315,11 @@ class UserController extends AController
         $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
 
         $Website = Yii::$app->settings->getAllBySection('Website');
+        unset( $Website['access_key_id'],
+        $Website['access_key_secret'],
+        $Website['sign_name'],
+        $Website['template_code'],
+        $Website['themcolor']);
         $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
         $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
 
@@ -322,10 +327,13 @@ class UserController extends AController
 
         $roles = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $userinfo['roles'] = $roles;
-
+        $Api = new Api();
+        $Api->getConf($userinfo['user']['bloc_id']);
         return ResultHelper::json(200, '获取成功', [
             'userinfo' => $userinfo,
             'Website' => $Website,
+            'apiConf' =>  $Api,
+            'apiurl'=>Yii::$app->request->hostInfo
         ]);
     }
 
