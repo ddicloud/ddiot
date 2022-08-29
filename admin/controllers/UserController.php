@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 19:02:08
+ * @Last Modified time: 2022-08-29 09:24:18
  */
 
 namespace admin\controllers;
@@ -28,6 +28,7 @@ use diandi\admin\components\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\searchs\User as ModelsUser;
 use Yii;
+use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
 
 class UserController extends AController
@@ -993,8 +994,22 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
+        $pageSize= 20;
+        $query = ActionLog::find()->where(['user_id' => $user_id]);
+        $count = $query->count();
+        // 使用总数来创建一个分页对象
+        $pagination = new Pagination([
+            'totalCount' => $count,
+            'pageSize' => $pageSize,
+            // 'page'=>$page-1
+            // 'pageParam'=>'page'
+        ]);
 
-        $list = ActionLog::find()->where(['user_id' => $user_id])->asArray()->all();
+        $list = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->asArray()
+            ->all();
+            
         $lists = [];
         foreach ($list as $key => $value) {
             $time = date('Y-m-d', strtotime($value['logtime']));
