@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 11:43:22
+ * @Last Modified time: 2022-08-29 13:07:23
  */
 
 namespace admin\models;
@@ -341,5 +341,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        // 去掉一些包含敏感信息的字段
+        unset($fields['auth_key'], $fields['password_hash'], $fields['verification_token']);
+
+        return $fields;
     }
 }
