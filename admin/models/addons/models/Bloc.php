@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-10 17:35:39
+ * @Last Modified time: 2022-08-29 11:01:16
  */
 
 
@@ -12,6 +12,7 @@ namespace admin\models\addons\models;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
+use common\helpers\HashidsHelper;
 use diandi\addons\models\Bloc as BlocModel;
 use yii\data\Pagination;
 
@@ -28,8 +29,20 @@ class Bloc extends BlocModel
     {
         return [
             [['bloc_id', 'pid', 'group_bloc_id', 'register_level', 'avg_price', 'status', 'is_group', 'store_id', 'level_num'], 'integer'],
-            [['business_name', 'category', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'sosomap_poi_uid', 'license_no', 'license_name', 'other_files', 'extra'], 'safe'],
+            [['business_name', 'category', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'sosomap_poi_uid', 'license_no','invitation_code', 'license_name', 'other_files', 'extra'], 'safe'],
         ];
+    }
+
+        /**
+     * @param bool  $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            empty($this->invitation_code) && Bloc::updateAll(['invitation_code' => HashidsHelper::encode($this->bloc_id)], ['bloc_id' => $this->bloc_id]);
+        }
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

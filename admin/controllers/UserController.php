@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 09:24:18
+ * @Last Modified time: 2022-08-29 11:03:10
  */
 
 namespace admin\controllers;
@@ -122,7 +122,9 @@ class UserController extends AController
         $username = $data['username'];
         $mobile = $data['mobile'];
         $email = $data['email'];
-        $password = $data['password'];
+        $password = $data['password'];        
+        $invitation_code = trim($data['invitation_code']);
+        
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
@@ -133,7 +135,7 @@ class UserController extends AController
             return ResultHelper::json(401, '密码不能为空', []);
         }
 
-        $res = $User->signup($username, $mobile, $email, $password);
+        $res = $User->signup($username, $mobile, $email, $password,$invitation_code);
 
         return ResultHelper::json(200, '注册成功', $res);
     }

@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 10:31:13
+ * @Last Modified time: 2022-08-29 11:43:22
  */
 
 namespace admin\models;
 
+use admin\models\addons\models\Bloc;
 use admin\services\UserService;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
@@ -58,7 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => UserStatus::AUDIT],
             ['status', 'in', 'range' => UserStatus::getConstantsByName()],
             [['username', 'email', 'avatar', 'company'], 'safe'],
-            ['group_bloc_id', 'default', 'value' => 0],
+            ['parent_bloc_id', 'default', 'value' => 0],
         ];
     }
 
@@ -87,7 +88,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup($username, $mobile, $email, $password, $company = '', $status = 0)
+    public function signup($username, $mobile, $email, $password,$invitation_code = '', $company = '', $status = 0)
     {
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
 
@@ -119,9 +120,12 @@ class User extends ActiveRecord implements IdentityInterface
             }
         }
         FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号'.json_encode($email));
-
+        if($invitation_code){
+            $parent_bloc_id = Bloc::find()->where(['invitation_code'=>$invitation_code])->select('bloc_id')->scalar();
+        }
         $this->username = $username;
         $this->email = $email;
+        $this->parent_bloc_id = (int) $parent_bloc_id;
         $this->company = $company;
         $this->mobile = $mobile;
         $this->status = (int) $status;

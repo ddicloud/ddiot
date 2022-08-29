@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 10:33:09
+ * @Last Modified time: 2022-08-29 11:44:56
  */
 
 namespace admin\services;
@@ -84,12 +84,13 @@ class UserService extends BaseService
         $transaction = Bloc::getDb()->beginTransaction();
 
         try {
-            $have_user = ModelsUser::find()->where(['id'=>$user_id])->asArray()->one();
+            $have_user = User::findOne($user_id);
             if(!empty($have_user)){
                 // 创建公司
                 $bloc = new Bloc();
-                $bloc->load([
+                $blocData = [
                     'business_name'=>'您的公司名称',
+                    'pid'=>(int) $have_user['parent_bloc_id'],
                     'is_group'=>0,
                     'province'=>0,
                     'city'=>0,
@@ -99,7 +100,8 @@ class UserService extends BaseService
                     'register_level'=>0,
                     'longitude'=>'',
                     'latitude'=>'',
-                ],'');
+                ];
+                $bloc->load($blocData,'');
                 // 绑定用户
                 if($bloc->save()){
                     $bloc_id = $bloc->bloc_id;
