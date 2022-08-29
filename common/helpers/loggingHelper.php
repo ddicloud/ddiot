@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 20:22:28
+ * @Last Modified time: 2022-08-29 21:10:36
  */
 
 namespace common\helpers;
@@ -58,7 +58,6 @@ class loggingHelper
             //在需要记录日志的地方先赋值log文件地址：
             return Yii::info($contentTxt,'ddicms');
         }else{
-            $fp = fopen($basepath, "a+");
             $filename =$basepath;
             go(function() use($filename,  $time,$mark,$contentTxt) {
                 $w = \Swoole\Coroutine\System::writeFile($filename,  "\r\n".$time.'-'.$mark.':'.$contentTxt,FILE_APPEND);
