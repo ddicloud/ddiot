@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-28 08:17:22
+ * @Last Modified time: 2022-08-29 10:31:13
  */
 
 namespace admin\models;
@@ -58,6 +58,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => UserStatus::AUDIT],
             ['status', 'in', 'range' => UserStatus::getConstantsByName()],
             [['username', 'email', 'avatar', 'company'], 'safe'],
+            ['group_bloc_id', 'default', 'value' => 0],
         ];
     }
 

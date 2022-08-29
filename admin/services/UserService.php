@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 10:01:50
+ * @Last Modified time: 2022-08-29 10:33:09
  */
 
 namespace admin\services;
@@ -114,6 +114,11 @@ class UserService extends BaseService
                     if(!$BlocUser->save()){
                         $msg = ErrorsHelper::getModelError($BlocUser);
                         ErrorsHelper::throwError(0,$msg);
+                    }else{
+                        // 更新用户bloc_id
+                        $userModel = User::findOne($user_id);
+                        $userModel->bloc_id=$bloc_id;
+                        $userModel->update();
                     } 
                 }else{
                     $msg = ErrorsHelper::getModelError($bloc);
