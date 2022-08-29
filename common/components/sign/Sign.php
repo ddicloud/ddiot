@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 09:53:14
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-08-29 10:50:15
  */
 
 namespace common\components\sign;
@@ -44,35 +45,15 @@ class Sign extends ActionFilter
      *
      * @return string
      */
-    public static function generateSecret()
+    public static function generateSecret($appId = null)
     {
         global $_GPC;
         $apiConf = new Api();
-        $appId = Yii::$app->id;
-        switch ($appId) {
-            case 'app-api':
-                $member_id = Yii::$app->user->identity->member_id;
-                $apiConf->getConfByMember($member_id);
-                break;
-            case 'app-swoole':
-                $swoole_member_id = Yii::$app->service->commonMemberService->getmember_id();
-                $apiConf->getConfBySwoole($swoole_member_id);
-                break;
-            case 'app-console':
-                $swoole_member_id = Yii::$app->user->identity->member_id;
-                $apiConf->getConfBySwoole($swoole_member_id);
-                break;
-            default:
-                $apiConf->getConf($_GPC['bloc_id']);
-                break;
-        }
+        $apiConf->getApiConf($appId ?: $_GPC['app_id']);
         if (empty($apiConf)) {
             throw new SignException(CodeConst::CODE_90000);
         }
-
-        $secret = md5($apiConf['app_secret'] . $apiConf['app_id'], false);
-
-        return $secret;
+        return $apiConf['app_secret'];
     }
 
     /**
@@ -99,7 +80,7 @@ class Sign extends ActionFilter
      *
      * @throws SignException
      */
-    public function validateSign($params)
+    public function validateSign($params, $appId = '')
     {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
@@ -115,12 +96,14 @@ class Sign extends ActionFilter
         }
 
         // 获取通用型的签名
-        $forAllString = $this->paramFilter($params); // 参数处理
-        $forAllSign = $this->md5Sign($forAllString);
+        $forAllString = $this->paramFilter($params);  // 参数处理
+        $forAllSign = $this->md5Sign($forAllString, $appId ?: ($params['app_id'] ?? ''));
         // && (!$forMerSign && $forMerSign != $params['sign'])
         if ($params['sign'] != $forAllSign) {
-//            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            // Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
             throw new SignException(CodeConst::CODE_90005);
+        } else {
+            return true;
         }
     }
 
@@ -150,10 +133,10 @@ class Sign extends ActionFilter
      *
      * @return string 签名结果
      */
-    public function md5Sign($preStr)
+    public function md5Sign($preStr, $appId = '')
     {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr . '&key=' . self::generateSecret();
+        $str = $preStr . '&key=' . self::generateSecret($appId);
         $sign = md5($str);
 
         return strtoupper($sign); // 转成大写
