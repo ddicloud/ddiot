@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-28 08:16:02
+ * @Last Modified time: 2022-08-29 10:01:50
  */
 
 namespace admin\services;
@@ -16,11 +16,13 @@ use admin\models\User;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
 use common\models\DdStoreUser;
+use common\models\DdUser;
 use common\services\BaseService;
 use diandi\addons\components\BlocUser;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\UserBloc;
 use diandi\admin\acmodels\AuthUserGroup;
+use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\User as ModelsUser;
 
 class UserService extends BaseService
@@ -29,12 +31,31 @@ class UserService extends BaseService
     {
         $where = [];
         $where['user_id'] = $user_id;
-        AuthUserGroup::findOne($where)->delete();
-        AddonsUser::findOne($where)->delete();
-        DdStoreUser::findOne($where)->delete();
-        User::findOne($user_id)->delete();
-        DdApiAccessToken::findOne($where)->delete();
-        UserBloc::findOne($where)->delete();
+        $AuthAssignmentGroup = AuthAssignmentGroup::findOne($where);
+        if($AuthAssignmentGroup){
+            $AuthAssignmentGroup->delete();
+        }
+        
+        $AddonsUser = AddonsUser::findOne($where);
+        if($AddonsUser){
+            $AddonsUser->delete();
+        }
+        
+        $User = User::findOne($user_id);
+        if($User){
+            $User->delete();
+        }
+        
+        $DdApiAccessToken = DdApiAccessToken::findOne($where);
+        if($DdApiAccessToken){
+            $DdApiAccessToken->delete();
+        }
+        
+        $UserBloc = UserBloc::findOne($where);
+        if($UserBloc){
+            $UserBloc->delete();
+        }
+        
     }
 
     public static function deleteFile()
@@ -68,13 +89,24 @@ class UserService extends BaseService
                 // 创建公司
                 $bloc = new Bloc();
                 $bloc->load([
-                    'business_name'=>''
+                    'business_name'=>'您的公司名称',
+                    'is_group'=>0,
+                    'province'=>0,
+                    'city'=>0,
+                    'district'=>0,
+                    'status'=>0,
+                    'address'=>'',
+                    'register_level'=>0,
+                    'longitude'=>'',
+                    'latitude'=>'',
                 ],'');
                 // 绑定用户
                 if($bloc->save()){
+                    $bloc_id = $bloc->bloc_id;
                     $BlocUser = new UserBloc();
                     $data = [
                         'user_id'=>$user_id,
+                        'bloc_id'=>$bloc_id,
                         'status'=>0,
                         'is_default'=>$is_default
                     ];
@@ -93,12 +125,14 @@ class UserService extends BaseService
             $transaction->commit();
         } catch (\Exception $e) {
             loggingHelper::writeLog('admin', 'SignBindBloc', 'Exception错误', $e);
-
+            // 删除用户
+            self::deleteUser($user_id);
             $transaction->rollBack();
             throw $e;
         } catch (\Throwable $e) {
             loggingHelper::writeLog('admin', 'SignBindBloc', 'Throwable错误', $e);
-
+            // 删除用户
+            self::deleteUser($user_id);
             $transaction->rollBack();
             throw $e;
         }
