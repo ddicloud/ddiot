@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-24 21:56:26
+ * @Last Modified time: 2022-08-29 22:01:53
  */
 return [
     'host' => '0.0.0.0',
@@ -12,10 +12,11 @@ return [
     'mode' => SWOOLE_PROCESS,
     'sockType' => SWOOLE_SOCK_TCP,
     'type' => 'ws',
-    'app' => require __DIR__.'/web.php',
+    'app' => require __DIR__ . '/web.php',
     'options' => [
-        'pid_file' => __DIR__.'/../runtime/websocket.pid',
-        'log_file' => __DIR__.'/../runtime/websocket.log',
+        'task_enable_coroutine' => true,
+        'pid_file' => __DIR__ . '/../runtime/websocket.pid',
+        'log_file' => __DIR__ . '/../runtime/websocket.log',
         'debug_mode' => 1,
         'user' => 'www',
         'group' => 'www',
