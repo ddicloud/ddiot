@@ -1,29 +1,31 @@
 <?php
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2022-08-30 18:16:03
+ * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 18:37:44
+ * @Last Modified time: 2022-08-30 19:09:08
  */
-
-declare (strict_types = 1);
-
-namespace Simps\DB;
+namespace swooleService\pool;
 
 use diandi\admin\BaseObject;
 use RuntimeException;
-use Swoole\Database\RedisConfig;
-use Swoole\Database\RedisPool as SwooleRedisPool;
+use Swoole\Database\PDOConfig;
+use Swoole\Database\PDOPool as SwoolePDOPool;
 
-class RedisPool extends BaseObject
+class PdoPool extends BaseObject
 {
-
+    /**
+     * @var array
+     */
     protected $_config = [
         'host' => 'localhost',
-        'port' => 6379,
-        'auth' => '',
-        'db_index' => 0,
-        'time_out' => 1,
+        'port' => 3306,
+        'database' => 'test',
+        'username' => 'root',
+        'password' => 'root',
+        'charset' => 'utf8mb4',
+        'unixSocket' => null,
+        'options' => [],
         'size' => 64,
     ];
 
@@ -36,13 +38,16 @@ class RedisPool extends BaseObject
     public function init()
     {
         if (empty($this->getPools())) {
-            $pools = new SwooleRedisPool(
-                (new RedisConfig())
+            $pools = new SwoolePDOPool(
+                (new PDOConfig())
                     ->withHost($this->config['host'])
                     ->withPort($this->config['port'])
-                    ->withAuth($this->config['auth'])
-                    ->withDbIndex($this->config['db_index'])
-                    ->withTimeout($this->config['time_out']),
+                    ->withUnixSocket($this->config['unixSocket'])
+                    ->withDbName($this->config['database'])
+                    ->withCharset($this->config['charset'])
+                    ->withUsername($this->config['username'])
+                    ->withPassword($this->config['password'])
+                    ->withOptions($this->config['options']),
                 $this->config['size']
             );
 
@@ -53,19 +58,18 @@ class RedisPool extends BaseObject
     public function getInstance()
     {
         $instance = $this->_instance;
-        $poolName = $this->getPoolName();
         $config = $this->getConfig();
-        if (empty($instance[$poolName])) {
+        if (empty($instance)) {
             if (empty($config)) {
-                throw new RuntimeException('redis config empty');
+                throw new RuntimeException('pdo config empty');
             }
             if (empty($config['size'])) {
-                throw new RuntimeException('the size of redis connection pools cannot be empty');
+                throw new RuntimeException('the size of database connection pools cannot be empty');
             }
-            $instance[$poolName] = new static($config);
+            $instance = new static($config);
         }
 
-        return $instance[$poolName];
+        return $instance;
     }
 
     public function setInstance($value)
@@ -103,6 +107,8 @@ class RedisPool extends BaseObject
         $this->_poolName = $value;
     }
 
+    private static $instance;
+
     public function getConnection()
     {
         return $this->_pools->get();
@@ -111,10 +117,5 @@ class RedisPool extends BaseObject
     public function close($connection = null)
     {
         $this->_pools->put($connection);
-    }
-
-    public function fill(): void
-    {
-        $this->_pools->fill();
     }
 }

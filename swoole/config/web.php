@@ -4,18 +4,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 15:47:37
+ * @Last Modified time: 2022-08-30 17:36:50
  */
-
-
 
 use diandi\swoole\web\ErrorHandler;
 use diandi\swoole\web\Request;
 use diandi\swoole\web\Response;
-use yii\caching\FileCache;
 
-require(__DIR__ . '/../../common/config/bootstrap.php');
-$db = require(__DIR__ . '/../../common/config/db.php');
+require __DIR__ . '/../../common/config/bootstrap.php';
+$db = require __DIR__ . '/../../common/config/db.php';
+$db['class'] = 'swooleService\db\Connection';
 
 return [
     'id' => 'app-swoole',
@@ -24,7 +22,7 @@ return [
     'language' => 'zh-CN',
     'bootstrap' => [
         'diandi\addons\loader',
-        'log'
+        'log',
     ],
     'controllerNamespace' => 'swooleService\controllers',
     'taskNamespace' => 'swooleService\tasks',
@@ -52,17 +50,28 @@ return [
         ],
     ],
     'components' => [
+        // 连接池配置
+        'connectionManager' => [
+            'poolConfig' => [
+                'mysql' => [
+                    //池容量
+                    'maxActive' => 10,
+                    //当链接数满时,重新获取的等待时间,秒为单位
+                    'waitTime' => 0.01,
+                ],
+            ],
+        ],
         'response' => [
             'class' => Response::class,
-            'format' => Response::FORMAT_JSON
+            'format' => Response::FORMAT_JSON,
         ],
         'request' => [
             'class' => Request::class,
-            'cookieValidationKey' => 'KHVLRGNziHXKUiHK'
+            'cookieValidationKey' => 'KHVLRGNziHXKUiHK',
         ],
         'wechat' => [
             'class' => 'common\components\wechat\Wechat',
-            'userOptions' => [],  // 用户身份类参数
+            'userOptions' => [], // 用户身份类参数
             'sessionParam' => 'wechatUser', // 微信用户信息将存储在会话在这个密钥
             'returnUrlParam' => '_wechatReturnUrl', // returnUrl 存储在会话中
             'rebinds' => [ // 自定义服务模块
@@ -96,45 +105,45 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => []
+            'rules' => [],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             //'flushInterval' => 1,
             'targets' => [
-               [
-                  'class' => 'yii\log\FileTarget', //默认文件处理类
-                  'levels' => ['error', 'warning','info'],
-                  'exportInterval' => 1,
-                  'categories' => ['ddicms'],
-                  //'categories' => ['yii\*'],//$categories the message categories to filter by. If empty, it means all categories are allowed.
-                  'logVars' => ['*'], //记录最基本的 []赋值也可以
-                  //'logFile' => '@runtime/logs/order.log'.date('Ymd'),//用日期方式记录日志
-                  'except' => [
-                    'yii\web\HttpException:404',
-                    'yii\web\HttpException:403',
-                    'yii\web\HttpException:402',
-                    'yii\web\HttpException:401',
-                  ]
-               ],
+                [
+                    'class' => 'yii\log\FileTarget', //默认文件处理类
+                    'levels' => ['error', 'warning', 'info'],
+                    'exportInterval' => 1,
+                    'categories' => ['ddicms'],
+                    //'categories' => ['yii\*'],//$categories the message categories to filter by. If empty, it means all categories are allowed.
+                    'logVars' => ['*'], //记录最基本的 []赋值也可以
+                    //'logFile' => '@runtime/logs/order.log'.date('Ymd'),//用日期方式记录日志
+                    'except' => [
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:403',
+                        'yii\web\HttpException:402',
+                        'yii\web\HttpException:401',
+                    ],
+                ],
             ],
         ],
         'service' => [
             'class' => 'common\services\BaseService',
         ],
         'errorHandler' => [
-            'class' => ErrorHandler::class
+            'class' => ErrorHandler::class,
         ],
         'db' => $db,
         'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => 'localhost',
             'port' => 6379,
-            'database' => 2
+            'database' => 2,
         ],
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],
     ],
-    'params' => require __DIR__ . '/params.php'
+    'params' => require __DIR__ . '/params.php',
 ];
