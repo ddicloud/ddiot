@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 22:54:36
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 23:46:36
+ * @Last Modified time: 2022-08-30 23:53:25
  */
 namespace swooleService\components;
 
@@ -101,7 +101,6 @@ class Command extends DbCommand
                 'size' => 64,
             ]);
             $pool = $PoolPdoPool->getPool();
-            print_r($pool);
             return $pool;
         }
         return false;
