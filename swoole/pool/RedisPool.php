@@ -3,19 +3,19 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 18:37:44
+ * @Last Modified time: 2022-08-30 21:36:31
  */
 
 declare (strict_types = 1);
 
 namespace Simps\DB;
 
-use diandi\admin\BaseObject;
 use RuntimeException;
 use Swoole\Database\RedisConfig;
 use Swoole\Database\RedisPool as SwooleRedisPool;
+use yii\base\Component;
 
-class RedisPool extends BaseObject
+class RedisPool extends Component
 {
 
     protected $_config = [

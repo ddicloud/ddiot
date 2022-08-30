@@ -3,38 +3,267 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 17:03:13
+ * @Last Modified time: 2022-08-30 21:36:17
  */
+
+declare (strict_types = 1);
 
 namespace swooleService\pool;
 
-class DbPool extends ConnectionPool
+use PDO;
+use RuntimeException;
+use swooleService\pool\PdoPool;
+use Swoole\Coroutine;
+use Swoole\Database\PDOProxy;
+use Swoole\Database\PDOStatementProxy;
+use Throwable;
+use yii\base\Component;
+
+class DbPool extends Component
 {
-    /**
-     * 数据库池,通过回调来创建链接
-     * @var callable
-     */
-    public $createHandle;
-    /**
-     * 重建链接的回调
-     * @var callable
-     */
-    public $reConnectHandle;
+    protected $pool;
 
-    public function createConnect()
+    /** @var PDO */
+    protected $pdo;
+
+    protected $_config;
+
+    private $in_transaction = false;
+
+    public function init()
     {
-        if ($this->createHandle instanceof \Closure) {
-            $conn = call_user_func($this->createHandle);
-            $this->reConnect($conn);
-            return $conn;
+        $PdoPool = new PdoPool();
+
+        if (!empty($this->_config)) {
+            $PdoPool->config = $this->_config;
+        }
+
+        $this->pool = $PdoPool->getInstance();
+
+    }
+
+    public function setConfig($value)
+    {
+        $this->_config = $value;
+    }
+
+    public function getPdo()
+    {
+        return $this->pdo;
+    }
+
+    public function getPool()
+    {
+        return $this->pool;
+    }
+
+    public function quote(string $string, int $parameter_type = PDO::PARAM_STR)
+    {
+        $this->realGetConn();
+        try {
+            $ret = $this->pdo->quote($string, $parameter_type);
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+        return $ret;
+    }
+
+    public function beginTransaction(): void
+    {
+        if ($this->in_transaction) { //嵌套事务
+            throw new RuntimeException('do not support nested transaction now');
+        }
+        $this->realGetConn();
+        try {
+            $this->pdo->beginTransaction();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+        $this->in_transaction = true;
+        Coroutine::defer(function () {
+            if ($this->in_transaction) {
+                $this->rollBack();
+            }
+        });
+    }
+
+    public function commit(): void
+    {
+        $this->in_transaction = false;
+        try {
+            $this->pdo->commit();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+        $this->release($this->pdo);
+    }
+
+    public function rollBack(): void
+    {
+        $this->in_transaction = false;
+
+        try {
+            $this->pdo->rollBack();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+    }
+
+    public function query(string $query, array $bindings = []): array
+    {
+        $this->realGetConn();
+        try {
+            $statement = $this->pdo->prepare($query);
+
+            $this->bindValues($statement, $bindings);
+
+            $statement->execute();
+
+            $ret = $statement->fetchAll();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+
+        return $ret;
+    }
+
+    public function fetch(string $query, array $bindings = [])
+    {
+        $records = $this->query($query, $bindings);
+
+        return array_shift($records);
+    }
+
+    public function execute(string $query, array $bindings = []): int
+    {
+        $this->realGetConn();
+        try {
+            $statement = $this->pdo->prepare($query);
+
+            $this->bindValues($statement, $bindings);
+
+            $statement->execute();
+
+            $ret = $statement->rowCount();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+
+        return $ret;
+    }
+
+    public function exec(string $sql): int
+    {
+        $this->realGetConn();
+        try {
+            $ret = $this->pdo->exec($sql);
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+
+        return $ret;
+    }
+
+    public function insert(string $query, array $bindings = []): int
+    {
+        $this->realGetConn();
+
+        try {
+            $statement = $this->pdo->prepare($query);
+
+            $this->bindValues($statement, $bindings);
+
+            $statement->execute();
+
+            $ret = (int) $this->pdo->lastInsertId();
+        } catch (Throwable $th) {
+            if (in_array($th->getCode(), PDOProxy::IO_ERRORS, true)) {
+                $this->release();
+            } else {
+                $this->release($this->pdo);
+            }
+            throw $th;
+        }
+
+        $this->release($this->pdo);
+
+        return $ret;
+    }
+
+    public function release($connection = null)
+    {
+        if ($connection === null) {
+            $this->in_transaction = false;
+        }
+
+        if (!$this->in_transaction) {
+            $this->pool->close($connection);
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function bindValues(PDOStatementProxy $statement, array $bindings): void
+    {
+        foreach ($bindings as $key => $value) {
+            $statement->bindValue(
+                is_string($key) ? $key : $key + 1,
+                $value,
+                is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+            );
         }
     }
 
-    public function reConnect($client)
+    private function realGetConn()
     {
-        if ($this->reConnectHandle instanceof \Closure) {
-            call_user_func($this->reConnectHandle, $client);
+        if (!$this->in_transaction) {
+            $this->pdo = $this->pool->getConnection();
         }
     }
-
 }

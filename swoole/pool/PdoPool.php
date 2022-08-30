@@ -3,16 +3,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 19:09:08
+ * @Last Modified time: 2022-08-30 21:50:16
  */
 namespace swooleService\pool;
 
-use diandi\admin\BaseObject;
+use PDO;
 use RuntimeException;
-use Swoole\Database\PDOConfig;
-use Swoole\Database\PDOPool as SwoolePDOPool;
+use Swoole\Database\MysqliConfig;
+use Swoole\Database\MysqliPool;
+use yii\base\Component;
 
-class PdoPool extends BaseObject
+class PdoPool extends Component
 {
     /**
      * @var array
@@ -33,13 +34,15 @@ class PdoPool extends BaseObject
 
     protected $_poolName;
 
-    private static $_instance = [];
+    protected $_instance;
+
+    public $connected = false;
 
     public function init()
     {
         if (empty($this->getPools())) {
-            $pools = new SwoolePDOPool(
-                (new PDOConfig())
+            $pools = new MysqliPool(
+                (new MysqliConfig())
                     ->withHost($this->config['host'])
                     ->withPort($this->config['port'])
                     ->withUnixSocket($this->config['unixSocket'])
@@ -66,7 +69,8 @@ class PdoPool extends BaseObject
             if (empty($config['size'])) {
                 throw new RuntimeException('the size of database connection pools cannot be empty');
             }
-            $instance = new static($config);
+
+            $instance = new static();
         }
 
         return $instance;
@@ -117,5 +121,15 @@ class PdoPool extends BaseObject
     public function close($connection = null)
     {
         $this->_pools->put($connection);
+    }
+
+    public function connect()
+    {
+
+    }
+
+    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, ...$fetch_mode_args)
+    {
+
     }
 }
