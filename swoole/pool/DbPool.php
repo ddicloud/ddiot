@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:22:23
+ * @Last Modified time: 2022-09-01 00:27:20
  */
 
 declare (strict_types = 1);
@@ -37,12 +37,8 @@ class DbPool
 
     public function init()
     {
-        $PdoPool = new PdoPool();
-
-        if (!empty($this->_config)) {
-            $PdoPool->config = $this->_config;
-        }
-
+        $config = $this->getConfig();
+        $PdoPool = new PdoPool($config);
         $this->pool = $PdoPool->getInstance();
 
     }
@@ -50,6 +46,11 @@ class DbPool
     public function setConfig($value)
     {
         $this->_config = $value;
+    }
+
+    public function getConfig()
+    {
+        return $this->_config;
     }
 
     public function getPdo()
