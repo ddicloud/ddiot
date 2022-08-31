@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 20:38:25
+ * @Last Modified time: 2022-08-31 20:45:53
  */
 
 namespace common\helpers;
@@ -39,9 +39,11 @@ class loggingHelper
     public static function writeLog($moduleName, $path, $mark, $content = [])
     {
         $appId = Yii::$app->id;
+
         if (YII_DEBUG) {
             list($app, $alia) = explode('-', $appId);
             $basepath = Yii::getAlias("@{$app}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
+
             self::mkdirs(dirname($basepath));
             @chmod($path, 0777);
             $time = date('m/d H:i:s');
@@ -51,11 +53,18 @@ class loggingHelper
                 $contentTxt = $content;
             }
 
-            Yii::$app->log->targets[0]->logFile = $basepath;
-            Yii::$app->log->targets[0]->maxFileSize = 2000;
-            Yii::$app->log->targets[0]->maxLogFiles = 10;
-            //在需要记录日志的地方先赋值log文件地址：
-            return Yii::info($contentTxt, 'ddicms');
+            if ($appId == 'app-swoole') {
+                $filename = $basepath;
+                go(function () use ($filename, $time, $mark, $contentTxt) {
+                    $w = \Swoole\Coroutine\System::writeFile($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt, FILE_APPEND);
+                });
+            } else {
+                Yii::$app->log->targets[0]->logFile = $basepath;
+                Yii::$app->log->targets[0]->maxFileSize = 2000;
+                Yii::$app->log->targets[0]->maxLogFiles = 10;
+                //在需要记录日志的地方先赋值log文件地址：
+                return Yii::info($contentTxt, 'ddicms');
+            }
         }
 
     }
