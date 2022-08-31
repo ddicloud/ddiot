@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 22:54:23
+ * @Last Modified time: 2022-08-31 23:16:39
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -13,7 +13,8 @@ use diandi\swoole\web\Response;
 
 require __DIR__ . '/../../common/config/bootstrap.php';
 $db = require __DIR__ . '/../../common/config/db.php';
-$db['commandClass'] = 'swooleService\components\Command';
+$db['class'] = 'swooleService\db\Connection';
+
 return [
     'id' => 'app-swoole',
     'name' => '店滴Swoole',

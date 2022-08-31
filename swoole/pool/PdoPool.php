@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 13:12:40
+ * @Last Modified time: 2022-08-31 23:54:01
  */
 namespace swooleService\pool;
 
@@ -44,7 +44,7 @@ class PdoPool extends Component
                 (new PDOConfig())
                     ->withHost($this->config['host'])
                     ->withPort($this->config['port'])
-                    // ->withUnixSocket($this->config['unixSocket'])
+                    ->withUnixSocket($this->config['unixSocket'])
                     ->withDbName($this->config['database'])
                     ->withCharset($this->config['charset'])
                     ->withUsername($this->config['username'])
@@ -52,7 +52,6 @@ class PdoPool extends Component
                     ->withOptions($this->config['options']),
                 $this->config['size']
             );
-
             $this->setPools($pools);
         }
     }
@@ -120,6 +119,23 @@ class PdoPool extends Component
     public function close($connection = null)
     {
         $this->_pools->put($connection);
+    }
+
+    public function doQuery($sql, $bingId)
+    {
+        $Connection = $this->getConnection();
+        return $Connection->prepare($sql, $bingId);
+    }
+
+    public function fetchAll($sql, $bingId)
+    {
+        var_dump(234532);
+        $Connection = $this->getConnection();
+        var_dump(9999);
+
+        $Res = $Connection->prepare($sql, $bingId);
+        $this->close($Connection);
+        return $Res;
     }
 
 }

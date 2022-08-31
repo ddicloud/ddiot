@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:47:56
+ * @Last Modified time: 2022-08-31 23:14:01
  */
 
 namespace swooleService\db\mysql;
@@ -12,7 +13,6 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use swooleService\pool\ResultData;
-use yii\helpers\ArrayHelper;
 
 /**
  *
@@ -21,7 +21,7 @@ use yii\helpers\ArrayHelper;
  * this so that instanceof check and type-hinting of existing code will work
  * seamlessly.
  */
-class PoolPDOStatement extends PDOStatement
+class PoolPDOStatement
 {
     protected $statement;
 
@@ -82,7 +82,6 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function execute($inputParams = [])
     {
         $bingID = $this->pdo->getBingId();
@@ -91,11 +90,12 @@ class PoolPDOStatement extends PDOStatement
             $this->_boundColumns = $inputParams;
         }
         if (!empty($this->_boundColumns)) {
+
             $this->prepareParamName();
             $this->_resultData = $pool->prepareAndExecute($this->statement, $this->_boundColumns, $bingID);
-            $this->pdo->setLastInsertId($this->_resultData->insert_id);
+            $pool->getConnection()->setLastInsertId($this->_resultData->insert_id);
         } else {
-            $this->_resultData = $pool->doQuery($this->statement, $bingID);
+            return $this->_resultData = $pool->doQuery($this->statement, $bingID);
         }
         if ($this->_resultData->result === false) {
             throw new PDOException($this->_resultData->error);
@@ -130,7 +130,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+
     public function fetch(
         $fetch_style = PDO::FETCH_BOTH,
         $cursor_orientation = PDO::FETCH_ORI_NEXT,
@@ -180,7 +180,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function bindParam(
         $parameter,
         &$variable,
@@ -207,7 +207,7 @@ class PoolPDOStatement extends PDOStatement
     /**
      * @inheritdoc
      */
-    #[\ReturnTypeWillChange]
+
     public function bindColumn(
         $column,
         &$param,
@@ -227,7 +227,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function bindValue(
         $parameter,
         $variable,
@@ -241,7 +241,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
+
     public function rowCount()
     {
         if (empty($this->_resultData)) {
@@ -275,7 +275,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+
     public function fetchAll(
         $fetch_style = PDO::FETCH_BOTH,
         $fetch_argument = null,
@@ -284,13 +284,16 @@ class PoolPDOStatement extends PDOStatement
         if (empty($this->_resultData) || empty($this->_resultData->result)) {
             return [];
         }
+        // return [];
         if ($fetch_style == PDO::FETCH_COLUMN) {
             $keys = array_keys($this->_resultData->result[0]);
-            $key = array_shift($keys);
             unset($keys);
-            return ArrayHelper::getColumn((array) $this->_resultData->result, $key);
+            $key = array_shift($keys);
+            return [];
         }
-        return $this->_resultData->result;
+        // return ArrayHelper::getColumn((array) $this->_resultData->result, $key);
+        return [];
+        // return $this->_resultData->result;
     }
 
     /**
@@ -301,7 +304,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+
     public function fetchObject($className = 'stdClass', $ctor_args = null)
     {
         throw new PDOException('is not implemented for PoolPDOStatement::fetchObject()');
@@ -317,7 +320,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return string
      */
-    #[\ReturnTypeWillChange]
+
     public function errorCode()
     {
         return $this->_resultData->errno;
@@ -328,7 +331,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
+
     public function errorInfo()
     {
         if ($this->_resultData->errno) {
@@ -350,7 +353,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function setAttribute($attribute, $value)
     {
         $this->options[$attribute] = $value;
@@ -377,7 +380,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
+
     public function columnCount()
     {
         if (empty($this->_resultData) || empty($this->_resultData->result)) {
@@ -387,7 +390,6 @@ class PoolPDOStatement extends PDOStatement
         return count(@$this->_resultData->result[0]);
     }
 
-    #[\ReturnTypeWillChange]
     public function getColumnMeta($column)
     {
         throw new PDOException('is not implemented for PoolPDOStatement::PDOException()');
@@ -403,7 +405,7 @@ class PoolPDOStatement extends PDOStatement
      * @internal param int $fetchType
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function setFetchMode(
         $mode,
         $colClassOrObj = null,
@@ -423,7 +425,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function nextRowset()
     {
         throw new PDOException('nextRowset() method is not implemented for PoolPDO_Statement');
@@ -434,7 +436,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function closeCursor()
     {
         unset($this->_resultData);
@@ -446,7 +448,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+
     public function debugDumpParams()
     {
         throw new PDOException('debugDumpParams() method is not implemented for PoolPDOStatement');

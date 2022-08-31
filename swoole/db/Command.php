@@ -3,11 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:28:23
+ * @Last Modified time: 2022-08-31 23:51:25
  */
 
 namespace swooleService\db;
 
+use common\helpers\StringHelper;
+use swooleService\pool\DbPool;
 use Yii;
 
 /**
@@ -69,6 +71,7 @@ class Command extends \yii\db\Command
             }
         }
         $token = $rawSql;
+        $result = null;
         try
         {
             Yii::beginProfile($token, 'yii\db\Command::query');
@@ -79,7 +82,8 @@ class Command extends \yii\db\Command
             Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
             Yii::endProfile($token, 'yii\db\Command::query');
-            throw $this->db->getSchema()->convertException($e, $rawSql);
+            var_dump($e->getMessage());
+            // throw $this->db->getSchema()->convertException($e, $rawSql);
         }
         if (isset($cache, $cacheKey, $info)) {
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
@@ -101,11 +105,30 @@ class Command extends \yii\db\Command
      */
     public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
-        if ($forRead || $forRead === null && $this->db->getSchema()->isReadQuery($sql)) {
-            $pdo = $this->db->getSlavePdo();
-        } else {
-            $pdo = $this->db->getMasterPdo();
+
+        $PoolPdoPool = new DbPool();
+        $config = require yii::getAlias("@common/config/db.php");
+        // mysql:host=127.0.0.1;dbname=20220628;port=3306
+        list($dri, $dsn) = explode(':', $config['dsn']);
+
+        $requestParam = StringHelper::parseAttr($dsn);
+        foreach ($requestParam as $key => $value) {
+            list($k, $v) = explode('=', $value);
+            $dsnArr[$k] = $v;
         }
-        return $pdo->doQuery($sql, $isExecute, $method, $fetchMode);
+
+        $PoolPdoPool->setConfig([
+            'host' => $dsnArr['host'],
+            'port' => $dsnArr['port'],
+            'database' => $dsnArr['dbname'],
+            'username' => $config['username'],
+            'password' => $config['password'],
+            'charset' => 'utf8mb4',
+            'unixSocket' => null,
+            'options' => [],
+            'size' => 64,
+        ]);
+        $pool = $PoolPdoPool->getPool();
+        return $pool->$method($sql, []);
     }
 }

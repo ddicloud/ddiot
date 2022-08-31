@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:30:52
+ * @Last Modified time: 2022-08-31 23:26:18
  */
 
 namespace swooleService\db;
@@ -21,8 +21,10 @@ use yii\base\NotSupportedException;
  */
 class Connection extends \yii\db\Connection
 {
-    //public $commandClass = 'swooleService\db\Command';
+    public $commandClass = 'swooleService\db\Command';
+
     public $pdoClass = 'swooleService\db\mysql\PoolPdo';
+
     public $enableSchemaCache = true;
 
     public $schemaMap = [
