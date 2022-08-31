@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 23:54:01
+ * @Last Modified time: 2022-09-01 00:08:07
  */
 namespace swooleService\pool;
 
@@ -129,10 +129,7 @@ class PdoPool extends Component
 
     public function fetchAll($sql, $bingId)
     {
-        var_dump(234532);
         $Connection = $this->getConnection();
-        var_dump(9999);
-
         $Res = $Connection->prepare($sql, $bingId);
         $this->close($Connection);
         return $Res;
