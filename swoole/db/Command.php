@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 23:51:25
+ * @Last Modified time: 2022-09-01 00:23:35
  */
 
 namespace swooleService\db;
@@ -82,7 +82,7 @@ class Command extends \yii\db\Command
             Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
             Yii::endProfile($token, 'yii\db\Command::query');
-            var_dump($e->getMessage());
+            echo $e->getMessage() . PHP_EOL;
             // throw $this->db->getSchema()->convertException($e, $rawSql);
         }
         if (isset($cache, $cacheKey, $info)) {
@@ -106,7 +106,6 @@ class Command extends \yii\db\Command
     public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
 
-        $PoolPdoPool = new DbPool();
         $config = require yii::getAlias("@common/config/db.php");
         // mysql:host=127.0.0.1;dbname=20220628;port=3306
         list($dri, $dsn) = explode(':', $config['dsn']);
@@ -116,8 +115,7 @@ class Command extends \yii\db\Command
             list($k, $v) = explode('=', $value);
             $dsnArr[$k] = $v;
         }
-
-        $PoolPdoPool->setConfig([
+        $PoolPdoPool = new DbPool([
             'host' => $dsnArr['host'],
             'port' => $dsnArr['port'],
             'database' => $dsnArr['dbname'],
@@ -128,6 +126,7 @@ class Command extends \yii\db\Command
             'options' => [],
             'size' => 64,
         ]);
+
         $pool = $PoolPdoPool->getPool();
         return $pool->$method($sql, []);
     }

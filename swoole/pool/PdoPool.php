@@ -3,16 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:08:07
+ * @Last Modified time: 2022-09-01 00:22:42
  */
 namespace swooleService\pool;
 
 use RuntimeException;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
-use yii\base\Component;
 
-class PdoPool extends Component
+class PdoPool
 {
     /**
      * @var array
@@ -36,6 +35,12 @@ class PdoPool extends Component
     protected $_instance;
 
     public $connected = false;
+
+    public function __construct($config)
+    {
+        $this->setConfig($config);
+        $this->init();
+    }
 
     public function init()
     {

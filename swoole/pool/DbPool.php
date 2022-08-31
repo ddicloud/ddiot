@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:36:17
+ * @Last Modified time: 2022-09-01 00:22:23
  */
 
 declare (strict_types = 1);
@@ -17,9 +17,8 @@ use Swoole\Coroutine;
 use Swoole\Database\PDOProxy;
 use Swoole\Database\PDOStatementProxy;
 use Throwable;
-use yii\base\Component;
 
-class DbPool extends Component
+class DbPool
 {
     protected $pool;
 
@@ -29,6 +28,12 @@ class DbPool extends Component
     protected $_config;
 
     private $in_transaction = false;
+
+    public function __construct($config)
+    {
+        $this->setConfig($config);
+        $this->init();
+    }
 
     public function init()
     {
