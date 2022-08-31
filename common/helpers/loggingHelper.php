@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 21:10:36
+ * @Last Modified time: 2022-08-31 13:54:48
  */
 
 namespace common\helpers;
@@ -39,30 +39,37 @@ class loggingHelper
     public static function writeLog($moduleName, $path, $mark, $content = [])
     {
         $appId = Yii::$app->id;
-        list($app, $alia) = explode('-', $appId);
-        $basepath = Yii::getAlias("@{$app}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
 
-        self::mkdirs(dirname($basepath));
-        @chmod($path, 0777);
-        $time = date('m/d H:i:s');
-        if (is_array($content) || !is_string($content)) {
-            $contentTxt = json_encode($content);
-        } elseif (is_string($content)) {
-            $contentTxt = $content;
+        $settings = Yii::$app->settings;
+        $settings->invalidateCache();
+        $develop_status = $settings->get('Website', 'develop_status');
+        if ((int) $develop_status === 1) {
+            list($app, $alia) = explode('-', $appId);
+            $basepath = Yii::getAlias("@{$app}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
+
+            self::mkdirs(dirname($basepath));
+            @chmod($path, 0777);
+            $time = date('m/d H:i:s');
+            if (is_array($content) || !is_string($content)) {
+                $contentTxt = json_encode($content);
+            } elseif (is_string($content)) {
+                $contentTxt = $content;
+            }
+
+            if ($appId != 'app-swoole') {
+                Yii::$app->log->targets[0]->logFile = $basepath;
+                Yii::$app->log->targets[0]->maxFileSize = 2000;
+                Yii::$app->log->targets[0]->maxLogFiles = 10;
+                //在需要记录日志的地方先赋值log文件地址：
+                return Yii::info($contentTxt, 'ddicms');
+            } else {
+                $filename = $basepath;
+                go(function () use ($filename, $time, $mark, $contentTxt) {
+                    $w = \Swoole\Coroutine\System::writeFile($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt, FILE_APPEND);
+                });
+            }
         }
 
-        if($appId != 'app-swoole'){
-            Yii::$app->log->targets[0]->logFile = $basepath;
-            Yii::$app->log->targets[0]->maxFileSize = 2000;
-            Yii::$app->log->targets[0]->maxLogFiles = 10;
-            //在需要记录日志的地方先赋值log文件地址：
-            return Yii::info($contentTxt,'ddicms');
-        }else{
-            $filename =$basepath;
-            go(function() use($filename,  $time,$mark,$contentTxt) {
-                $w = \Swoole\Coroutine\System::writeFile($filename,  "\r\n".$time.'-'.$mark.':'.$contentTxt,FILE_APPEND);
-            });
-        }
     }
 
     public static function actionLog($user_id, $operation, $logip)
