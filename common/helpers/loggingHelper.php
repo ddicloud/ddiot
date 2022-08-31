@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 13:54:48
+ * @Last Modified time: 2022-08-31 19:24:11
  */
 
 namespace common\helpers;
@@ -41,7 +41,6 @@ class loggingHelper
         $appId = Yii::$app->id;
 
         $settings = Yii::$app->settings;
-        $settings->invalidateCache();
         $develop_status = $settings->get('Website', 'develop_status');
         if ((int) $develop_status === 1) {
             list($app, $alia) = explode('-', $appId);
