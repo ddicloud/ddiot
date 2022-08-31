@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:22:42
+ * @Last Modified time: 2022-09-01 00:46:50
  */
 namespace swooleService\pool;
 
@@ -45,17 +45,18 @@ class PdoPool
     public function init()
     {
         if (empty($this->getPools())) {
+            $config = $this->getConfig();
             $pools = new SwoolePDOPool(
                 (new PDOConfig())
-                    ->withHost($this->config['host'])
-                    ->withPort($this->config['port'])
-                    ->withUnixSocket($this->config['unixSocket'])
-                    ->withDbName($this->config['database'])
-                    ->withCharset($this->config['charset'])
-                    ->withUsername($this->config['username'])
-                    ->withPassword($this->config['password'])
-                    ->withOptions($this->config['options']),
-                $this->config['size']
+                    ->withHost($config['host'])
+                    ->withPort($config['port'])
+                    ->withUnixSocket($config['unixSocket'])
+                    ->withDbName($config['database'])
+                    ->withCharset($config['charset'])
+                    ->withUsername($config['username'])
+                    ->withPassword($config['password'])
+                    ->withOptions($config['options']),
+                $config['size']
             );
             $this->setPools($pools);
         }
@@ -73,7 +74,7 @@ class PdoPool
                 throw new RuntimeException('the size of database connection pools cannot be empty');
             }
 
-            $instance = new static();
+            $instance = new static($config);
         }
 
         return $instance;
@@ -134,10 +135,23 @@ class PdoPool
 
     public function fetchAll($sql, $bingId)
     {
-        $Connection = $this->getConnection();
-        $Res = $Connection->prepare($sql, $bingId);
-        $this->close($Connection);
-        return $Res;
+        $pdo = $this->getConnection();
+        $statement = $pdo->prepare($sql);
+
+        if (!$statement) {
+            throw new RuntimeException('Prepare failed');
+        }
+        $a = mt_rand(1, 100);
+        $b = mt_rand(1, 100);
+        $result = $statement->execute([$a, $b]);
+        if (!$result) {
+            throw new RuntimeException('Execute failed');
+        }
+        $result = $statement->fetchAll();
+
+        $this->close($pdo);
+
+        return $result;
     }
 
 }
