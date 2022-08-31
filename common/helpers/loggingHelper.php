@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 20:45:53
+ * @Last Modified time: 2022-08-31 21:31:03
  */
 
 namespace common\helpers;
@@ -42,8 +42,7 @@ class loggingHelper
 
         if (YII_DEBUG) {
             list($app, $alia) = explode('-', $appId);
-            $basepath = Yii::getAlias("@{$app}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
-
+            $basepath = Yii::getAlias("@{$alia}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
             self::mkdirs(dirname($basepath));
             @chmod($path, 0777);
             $time = date('m/d H:i:s');
