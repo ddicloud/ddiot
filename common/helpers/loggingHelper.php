@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 19:52:19
+ * @Last Modified time: 2022-08-31 20:38:25
  */
 
 namespace common\helpers;
@@ -39,14 +39,9 @@ class loggingHelper
     public static function writeLog($moduleName, $path, $mark, $content = [])
     {
         $appId = Yii::$app->id;
-
-        $settings = Yii::$app->settings;
-        $settings->invalidateCache();
-        $develop_status = $settings->get('Website', 'develop_status');
-        if ((int) $develop_status === 1) {
+        if (YII_DEBUG) {
             list($app, $alia) = explode('-', $appId);
             $basepath = Yii::getAlias("@{$app}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
-
             self::mkdirs(dirname($basepath));
             @chmod($path, 0777);
             $time = date('m/d H:i:s');
