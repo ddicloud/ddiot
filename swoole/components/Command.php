@@ -3,12 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 22:54:36
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 23:53:25
+ * @Last Modified time: 2022-08-31 13:20:41
  */
 namespace swooleService\components;
 
-use common\helpers\StringHelper;
-use swooleService\pool\DbPool;
 use Yii;
 use yii\db\Command as DbCommand;
 
@@ -74,34 +72,35 @@ class Command extends DbCommand
         if (($e instanceof \yii\db\Exception) == true || ($offset_1 || $offset_2 || $offset_3)) {
             $this->retry = true;
             //将pdo设置从null
-            // $this->pdoStatement = null;
-            // $this->db->close();
-            // $this->db->open();
+            $this->pdoStatement = null;
+            $this->db->close();
+            $this->db->open();
+            return true;
+            // echo '数据库重新链接';
+            // $PoolPdoPool = new DbPool();
+            // $config = require yii::getAlias("@common/config/db.php");
+            // // mysql:host=127.0.0.1;dbname=20220628;port=3306
+            // list($dri, $dsn) = explode(':', $config['dsn']);
 
-            $PoolPdoPool = new DbPool();
-            $config = require yii::getAlias("@common/config/db.php");
-            // mysql:host=127.0.0.1;dbname=20220628;port=3306
-            list($dri, $dsn) = explode(':', $config['dsn']);
+            // $requestParam = StringHelper::parseAttr($dsn);
+            // foreach ($requestParam as $key => $value) {
+            //     list($k, $v) = explode('=', $value);
+            //     $dsnArr[$k] = $v;
+            // }
 
-            $requestParam = StringHelper::parseAttr($dsn);
-            foreach ($requestParam as $key => $value) {
-                list($k, $v) = explode('=', $value);
-                $dsnArr[$k] = $v;
-            }
-
-            $PoolPdoPool->setConfig([
-                'host' => $dsnArr['host'],
-                'port' => $dsnArr['port'],
-                'database' => $dsnArr['dbname'],
-                'username' => $config['username'],
-                'password' => $config['password'],
-                'charset' => 'utf8mb4',
-                'unixSocket' => null,
-                'options' => [],
-                'size' => 64,
-            ]);
-            $pool = $PoolPdoPool->getPool();
-            return $pool;
+            // $PoolPdoPool->setConfig([
+            //     'host' => $dsnArr['host'],
+            //     'port' => $dsnArr['port'],
+            //     'database' => $dsnArr['dbname'],
+            //     'username' => $config['username'],
+            //     'password' => $config['password'],
+            //     'charset' => 'utf8mb4',
+            //     'unixSocket' => null,
+            //     'options' => [],
+            //     'size' => 64,
+            // ]);
+            // $pool = $PoolPdoPool->getPool();
+            // return $pool;
         }
         return false;
     }

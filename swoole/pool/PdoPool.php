@@ -3,14 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:50:16
+ * @Last Modified time: 2022-08-31 13:12:40
  */
 namespace swooleService\pool;
 
-use PDO;
 use RuntimeException;
-use Swoole\Database\MysqliConfig;
-use Swoole\Database\MysqliPool;
+use Swoole\Database\PDOConfig;
+use Swoole\Database\PDOPool as SwoolePDOPool;
 use yii\base\Component;
 
 class PdoPool extends Component
@@ -41,11 +40,11 @@ class PdoPool extends Component
     public function init()
     {
         if (empty($this->getPools())) {
-            $pools = new MysqliPool(
-                (new MysqliConfig())
+            $pools = new SwoolePDOPool(
+                (new PDOConfig())
                     ->withHost($this->config['host'])
                     ->withPort($this->config['port'])
-                    ->withUnixSocket($this->config['unixSocket'])
+                    // ->withUnixSocket($this->config['unixSocket'])
                     ->withDbName($this->config['database'])
                     ->withCharset($this->config['charset'])
                     ->withUsername($this->config['username'])
@@ -123,13 +122,4 @@ class PdoPool extends Component
         $this->_pools->put($connection);
     }
 
-    public function connect()
-    {
-
-    }
-
-    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, ...$fetch_mode_args)
-    {
-
-    }
 }
