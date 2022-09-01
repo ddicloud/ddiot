@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:46:50
+ * @Last Modified time: 2022-09-01 11:52:27
  */
 namespace ddswoole\pool;
 
@@ -133,6 +133,28 @@ class PdoPool
         return $Connection->prepare($sql, $bingId);
     }
 
+
+    public function fetch($sql, $bingId)
+    {
+        $pdo = $this->getConnection();
+        $statement = $pdo->prepare($sql);
+
+        if (!$statement) {
+            throw new RuntimeException('Prepare failed');
+        }
+        $a = mt_rand(1, 100);
+        $b = mt_rand(1, 100);
+        $result = $statement->execute([$a, $b]);
+        if (!$result) {
+            throw new RuntimeException('Execute failed');
+        }
+        $result = $statement->fetch();
+
+        $this->close($pdo);
+
+        return $result;
+    }
+
     public function fetchAll($sql, $bingId)
     {
         $pdo = $this->getConnection();
@@ -152,6 +174,12 @@ class PdoPool
         $this->close($pdo);
 
         return $result;
+    }
+
+
+    public function escape($string)
+    {
+        return $string;
     }
 
 }
