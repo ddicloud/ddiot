@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 08:56:32
+ * @Last Modified time: 2022-09-01 23:44:38
  */
 
 namespace ddswoole\components\websocket;
@@ -16,6 +16,16 @@ use Yii;
 
 class WebsocketServer extends ServerWebSocketServer
 {
+    public $onWorkStartCallable;
+    private $application;
+
+    public function __construct($config, $callable) {
+        parent::__construct($config);
+        $this->onWorkStartCallable = $callable; 
+        $this->application = $config;
+    }
+
+
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
@@ -138,11 +148,13 @@ class WebsocketServer extends ServerWebSocketServer
     public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
     {
         // 重写yiidb
-        $db = require Yii::getAlias('@common/config/db.php');
-        $db['class'] = 'ddswoole\db\Connection';
-        Yii::$app->setComponents([
-            'db' => $db,
-        ]);
+        // $db = require Yii::getAlias('@common/config/db.php');
+        // $db['class'] = 'ddswoole\db\Connection';
+        // Yii::$app->setComponents([
+        //     'db' => $db,
+        // ]);
+        if($this->onWorkStartCallable)
+            call_user_func_array($this->onWorkStartCallable, [$this->application]);
     }
 
     public function checkAccess($accessToken)

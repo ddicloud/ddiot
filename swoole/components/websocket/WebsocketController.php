@@ -3,13 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 20:20:23
+ * @Last Modified time: 2022-09-01 23:40:01
  */
 
 namespace ddswoole\components\websocket;
 
 use console\controllers\BaseController;
 use ddswoole\interfaces\SwooleServer;
+use diandi\addons\Loader;
 use Swoole\Runtime;
 use Yii;
 
@@ -68,7 +69,8 @@ class WebsocketController extends BaseController implements SwooleServer
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
         $serverName = $this->server;
-        $server = new $serverName($this->config);
+        $Loader = new Loader();
+        $server = new $serverName($this->config, [$Loader, "bootstrap", [&$this->config]]);
         $server->start();
     }
 }

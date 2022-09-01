@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 19:01:20
+ * @Last Modified time: 2022-09-01 23:38:08
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -21,7 +21,7 @@ return [
     'basePath' => dirname(__DIR__),
     'language' => 'zh-CN',
     'bootstrap' => [
-        'diandi\addons\loader',
+        // 'diandi\addons\loader',
         'queue',
         'log',
     ],
