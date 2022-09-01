@@ -6,15 +6,15 @@
  * @Last Modified time: 2022-09-01 00:23:35
  */
 
-namespace swooleService\db;
+namespace ddswoole\db;
 
 use common\helpers\StringHelper;
-use swooleService\pool\DbPool;
+use ddswoole\pool\DbPool;
 use Yii;
 
 /**
  * Class Command
- * @package swooleService\db
+ * @package ddswoole\db
  */
 class Command extends \yii\db\Command
 {

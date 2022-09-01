@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-28 14:15:28
  */
 
-namespace swooleService\modules\officialaccount\services;
+namespace ddswoole\modules\officialaccount\services;
 
 use api\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;

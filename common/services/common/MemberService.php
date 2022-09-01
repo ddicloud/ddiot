@@ -20,7 +20,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use common\queues\MailerJob;
 use common\services\BaseService;
-use swooleService\models\SwooleAccessToken;
+use ddswoole\models\SwooleAccessToken;
 use yii\data\Pagination;
 
 use function PHPSTORM_META\map;

@@ -6,7 +6,7 @@
  * @Last Modified time: 2021-11-23 19:14:50
  */
 
-namespace swooleService\tasks;
+namespace ddswoole\tasks;
 
 use Yii;
 

@@ -7,10 +7,10 @@
  * @Last Modified time: 2021-09-14 15:22:37
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
 use Yii;
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

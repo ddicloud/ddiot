@@ -5,7 +5,7 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2022-08-31 13:20:41
  */
-namespace swooleService\components;
+namespace ddswoole\components;
 
 use Yii;
 use yii\db\Command as DbCommand;

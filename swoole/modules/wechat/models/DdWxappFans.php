@@ -8,7 +8,7 @@
  */
 
 
-namespace swooleService\modules\wechat\models;
+namespace ddswoole\modules\wechat\models;
 
 use Yii;
 

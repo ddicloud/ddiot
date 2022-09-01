@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-22 13:49:17
  */
 
-namespace swooleService\servers;
+namespace ddswoole\servers;
 
 use api\modules\officialaccount\models\DdWechatFans;
 use api\modules\wechat\models\DdWxappFans;
@@ -17,8 +17,8 @@ use common\helpers\loggingHelper;
 use common\helpers\StringHelper;
 use common\models\DdMember;
 use common\services\BaseService;
-use swooleService\models\SwooleAccessToken;
-use swooleService\models\SwooleMember;
+use ddswoole\models\SwooleAccessToken;
+use ddswoole\models\SwooleMember;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\UnprocessableEntityHttpException;

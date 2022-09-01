@@ -7,16 +7,16 @@
  * @Last Modified time: 2022-08-25 09:32:12
  */
 
-namespace swooleService\controllers;
+namespace ddswoole\controllers;
  
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
-use swooleService\models\forms\LoginForm;
-use swooleService\models\SwooleAccessToken;
-use swooleService\models\SwooleMember;
+use ddswoole\models\forms\LoginForm;
+use ddswoole\models\SwooleAccessToken;
+use ddswoole\models\SwooleMember;
 use Yii;
 
 class UserController extends AController

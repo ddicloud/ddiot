@@ -7,12 +7,12 @@
  * @Last Modified time: 2022-08-31 23:14:01
  */
 
-namespace swooleService\db\mysql;
+namespace ddswoole\db\mysql;
 
 use PDO;
 use PDOException;
 use PDOStatement;
-use swooleService\pool\ResultData;
+use ddswoole\pool\ResultData;
 
 /**
  *

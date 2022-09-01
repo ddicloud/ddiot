@@ -6,9 +6,9 @@
  * @Last Modified time: 2020-11-13 01:12:55
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use common\helpers\FileHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;

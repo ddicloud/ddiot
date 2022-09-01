@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-23 09:47:53
  */
 
-namespace swooleService\components\tcp;
+namespace ddswoole\components\tcp;
 
 use diandi\swoole\server\BaseServer;
 use diandi\swoole\server\UdpServer as ServerUdpServer;

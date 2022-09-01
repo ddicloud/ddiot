@@ -6,10 +6,10 @@
  * @Last Modified time: 2022-08-22 17:24:18
  */
 
-namespace swooleService\models\forms;
+namespace ddswoole\models\forms;
 
-use swooleService\models\SwooleMember;
-use swooleService\servers\AccessTokenService;
+use ddswoole\models\SwooleMember;
+use ddswoole\servers\AccessTokenService;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;

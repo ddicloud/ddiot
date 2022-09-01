@@ -6,10 +6,10 @@
  * @Last Modified time: 2022-08-31 19:26:10
  */
 
-namespace swooleService\components\websocket;
+namespace ddswoole\components\websocket;
 
 use console\controllers\BaseController;
-use swooleService\interfaces\SwooleServer;
+use ddswoole\interfaces\SwooleServer;
 use Swoole\Runtime;
 use Yii;
 
@@ -51,7 +51,7 @@ class WebsocketController extends BaseController implements SwooleServer
                         ),
                     ],
                 ],
-                require Yii::getAlias('@swooleService/config/websocket.php'),
+                require Yii::getAlias('@ddswoole/config/websocket.php'),
             );
             $this->config = yii\helpers\ArrayHelper::merge(
                 $BaseConfig,

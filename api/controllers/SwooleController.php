@@ -15,8 +15,8 @@ use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
-use swooleService\models\forms\LoginForm;
-use swooleService\models\SwooleMember;
+use ddswoole\models\forms\LoginForm;
+use ddswoole\models\SwooleMember;
 use Yii;
 
 class SwooleController extends AController

@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-28 14:14:19
  */
 
-namespace swooleService\modules\officialaccount\services;
+namespace ddswoole\modules\officialaccount\services;
 
 use common\services\BaseService;
 use EasyWeChat\Kernel\Messages\Text;

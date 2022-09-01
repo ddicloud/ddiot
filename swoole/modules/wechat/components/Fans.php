@@ -7,10 +7,10 @@
  * @Last Modified time: 2022-08-25 09:40:23
  */
 
-namespace swooleService\modules\wechat\components;
+namespace ddswoole\modules\wechat\components;
 
 use api\models\DdApiAccessToken;
-use swooleService\models\SwooleMember;
+use ddswoole\models\SwooleMember;
 use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;

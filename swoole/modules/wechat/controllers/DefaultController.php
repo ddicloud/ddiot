@@ -1,8 +1,8 @@
 <?php
 
-namespace swooleService\modules\wechat\controllers;
+namespace ddswoole\modules\wechat\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 
 /**
 * Default controller for the `wechat` module

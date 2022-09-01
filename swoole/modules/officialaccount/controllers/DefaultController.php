@@ -6,9 +6,9 @@
  * @Last Modified time: 2022-05-23 18:24:25
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 
 /**
  * Default controller for the `wechat` module.

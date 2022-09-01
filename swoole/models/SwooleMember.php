@@ -6,12 +6,12 @@
  * @Last Modified time: 2022-08-22 14:27:30
  */
 
-namespace swooleService\models;
+namespace ddswoole\models;
 
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
-use swooleService\servers\AccessTokenService;
+use ddswoole\servers\AccessTokenService;
 use Yii;
 
 /**

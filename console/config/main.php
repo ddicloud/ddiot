@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-23 20:21:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-05 10:27:14
+ * @Last Modified time: 2022-09-01 10:08:06
  */
 $params = array_merge(
-    require __DIR__.'/../../common/config/params.php',
-    require __DIR__.'/../../common/config/params-local.php',
-    require __DIR__.'/params.php',
-    require __DIR__.'/params-local.php'
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -26,16 +26,16 @@ return [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
         ],
-            /* ------ 数据库命令行备份 ------ **/
+        /* ------ 数据库命令行备份 ------ **/
         'migrate' => [
             'class' => 'diandi\migration\ConsoleController',
         ],
     ],
     'components' => [
-        'request'=>[
+        'request' => [
             'class' => 'console\services\request',
         ],
-        'response'=>[
+        'response' => [
             'class' => 'console\services\response',
         ],
         'user' => [
@@ -51,6 +51,9 @@ return [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+        ],
+        'service' => [
+            'class' => 'common\services\BaseService',
         ],
         'session' => [
             'class' => 'yii\web\Session',

@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-30 17:03:08
  */
 
-namespace swooleService\pool;
+namespace ddswoole\pool;
 
 use yii\base\Component;
 use yii\base\Exception;

@@ -6,31 +6,31 @@
  * @Last Modified time: 2022-08-31 23:26:18
  */
 
-namespace swooleService\db;
+namespace ddswoole\db;
 
-use swooleService\bootstrap\YiiWeb;
-use swooleService\db\mysql\Schema;
-use swooleService\web\Application;
+use ddswoole\bootstrap\YiiWeb;
+use ddswoole\db\mysql\Schema;
+use ddswoole\web\Application;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\NotSupportedException;
 
 /**
  * Class Connection
- * @package swooleService\db
+ * @package ddswoole\db
  */
 class Connection extends \yii\db\Connection
 {
-    public $commandClass = 'swooleService\db\Command';
+    public $commandClass = 'ddswoole\db\Command';
 
-    public $pdoClass = 'swooleService\db\mysql\PoolPdo';
+    public $pdoClass = 'ddswoole\db\mysql\PoolPdo';
 
     public $enableSchemaCache = true;
 
     public $schemaMap = [
         'pgsql' => 'yii\db\pgsql\Schema', // PostgreSQL
         'mysqli' => 'yii\db\mysql\Schema', // MySQL
-        'mysql' => 'swooleService\db\mysql\Schema', // MySQL
+        'mysql' => 'ddswoole\db\mysql\Schema', // MySQL
         'sqlite' => 'yii\db\sqlite\Schema', // sqlite 3
         'sqlite2' => 'yii\db\sqlite\Schema', // sqlite 2
         'sqlsrv' => 'yii\db\mssql\Schema', // newer MSSQL driver on MS Windows hosts

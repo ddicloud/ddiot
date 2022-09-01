@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-25 12:30:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 09:43:54
+ * @Last Modified time: 2022-09-01 10:20:09
  */
 
 namespace console\controllers;
@@ -34,7 +34,7 @@ class BaseController extends \yii\console\Controller
         if (!$mid) {
             throw new NotFoundHttpException('当前插件没有安装.');
         }
-        $runtimePath = Yii::getAlias('@swooleService/runtime/' . $module);
+        $runtimePath = Yii::getAlias('@ddswoole/runtime/' . $module);
         define('SWOOLE_RUNTIME', $runtimePath);
         FileHelper::mkdirs($runtimePath);
         if (is_dir($runtimePath)) {

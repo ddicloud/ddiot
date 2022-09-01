@@ -8,11 +8,11 @@
 
 declare (strict_types = 1);
 
-namespace swooleService\pool;
+namespace ddswoole\pool;
 
 use PDO;
 use RuntimeException;
-use swooleService\pool\PdoPool;
+use ddswoole\pool\PdoPool;
 use Swoole\Coroutine;
 use Swoole\Database\PDOProxy;
 use Swoole\Database\PDOStatementProxy;

@@ -6,10 +6,10 @@
  * @Last Modified time: 2022-08-31 19:25:59
  */
 
-namespace swooleService\components\tcp;
+namespace ddswoole\components\tcp;
 
 use console\controllers\BaseController;
-use swooleService\interfaces\SwooleServer;
+use ddswoole\interfaces\SwooleServer;
 use Swoole\Runtime;
 use Yii;
 
@@ -52,7 +52,7 @@ class TcpController extends BaseController implements SwooleServer
                         ),
                     ],
                 ],
-                require Yii::getAlias('@swooleService/config/base.php'),
+                require Yii::getAlias('@ddswoole/config/base.php'),
             );
             $this->config = yii\helpers\ArrayHelper::merge(
                 $BaseConfig,

@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-22 16:28:12
  */
 
-namespace swooleService\controllers;
+namespace ddswoole\controllers;
 
 
 use common\filters\auth\CompositeAuth;

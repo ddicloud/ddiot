@@ -5,7 +5,7 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2022-08-30 17:03:03
  */
-namespace swooleService\pool;
+namespace ddswoole\pool;
 
 use yii\base\Component;
 use yii\base\InvalidParamException;

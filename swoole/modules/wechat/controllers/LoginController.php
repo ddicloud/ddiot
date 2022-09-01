@@ -7,9 +7,9 @@
  * @Last Modified time: 2020-09-07 10:03:07
  */
 
-namespace swooleService\modules\wechat\controllers;
+namespace ddswoole\modules\wechat\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use Yii;
 
 /**

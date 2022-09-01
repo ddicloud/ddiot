@@ -6,14 +6,14 @@
  * @Last Modified time: 2022-08-30 21:28:33
  */
 
-namespace swooleService\db\mysql;
+namespace ddswoole\db\mysql;
 
-use swooleService\db\Connection;
+use ddswoole\db\Connection;
 use yii\di\Instance;
 
 /**
  * Class Schema
- * @package swooleService\db\mysql
+ * @package ddswoole\db\mysql
  */
 class Schema extends \yii\db\mysql\Schema
 {

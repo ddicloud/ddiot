@@ -6,7 +6,7 @@
  * @Last Modified time: 2021-01-20 11:57:10
  */
 
-namespace swooleService\tasks;
+namespace ddswoole\tasks;
 
 
 class DemoTask

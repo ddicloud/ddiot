@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 19:25:52
+ * @Last Modified time: 2022-09-01 10:16:35
  */
 
-namespace swooleService\components\http;
+namespace ddswoole\components\http;
 
 use console\controllers\BaseController;
-use swooleService\interfaces\SwooleServer;
+use ddswoole\interfaces\SwooleServer;
 use Swoole\Runtime;
 use Yii;
 
@@ -51,7 +51,7 @@ class HttpController extends BaseController implements SwooleServer
                         ),
                     ],
                 ],
-                require Yii::getAlias('@swooleService/config/server.php'),
+                require Yii::getAlias('@ddswoole/config/server.php'),
             );
             $this->config = yii\helpers\ArrayHelper::merge(
                 $BaseConfig,

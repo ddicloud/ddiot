@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-25 11:06:30
  */
 
-namespace swooleService\modules\wechat;
+namespace ddswoole\modules\wechat;
 
 use common\components\addons\AddonsModule;
 use common\helpers\FileHelper;
@@ -24,7 +24,7 @@ class module extends AddonsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'swooleService\modules\wechat\controllers';
+    public $controllerNamespace = 'ddswoole\modules\wechat\controllers';
 
     /**
      * {@inheritdoc}

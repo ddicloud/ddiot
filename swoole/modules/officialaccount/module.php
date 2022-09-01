@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-25 10:23:55
  */
 
-namespace swooleService\modules\officialaccount;
+namespace ddswoole\modules\officialaccount;
 
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
@@ -23,7 +23,7 @@ class module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'swooleService\modules\officialaccount\controllers';
+    public $controllerNamespace = 'ddswoole\modules\officialaccount\controllers';
 
     /**
      * {@inheritdoc}

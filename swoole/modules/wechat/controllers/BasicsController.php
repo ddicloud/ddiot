@@ -7,9 +7,9 @@
  * @Last Modified time: 2022-08-25 11:33:25
  */
 
-namespace swooleService\modules\wechat\controllers;
+namespace ddswoole\modules\wechat\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\loggingHelper;

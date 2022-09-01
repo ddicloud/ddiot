@@ -6,11 +6,11 @@
  * @Last Modified time: 2022-08-25 11:17:10
  */
 
-namespace swooleService\controllers;
+namespace ddswoole\controllers;
 
 use common\helpers\loggingHelper;
 use diandi\addons\models\Bloc;
-use swooleService\tasks\DemoTask;
+use ddswoole\tasks\DemoTask;
 use Yii;
 use yii\db\Exception;
 use yii\web\Controller;

@@ -5,9 +5,9 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2022-08-26 14:30:07
  */
-namespace swooleService\servers;
+namespace ddswoole\servers;
 
-use swooleService\interfaces\InteractsWithSwooleTable;
+use ddswoole\interfaces\InteractsWithSwooleTable;
 
  class SwTable
  {

@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-28 14:03:56
  */
 
-namespace swooleService\modules\officialaccount\services;
+namespace ddswoole\modules\officialaccount\services;
 
 use common\models\Qrcode;
 use common\services\BaseService;

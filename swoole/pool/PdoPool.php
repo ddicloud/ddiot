@@ -5,7 +5,7 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2022-09-01 00:46:50
  */
-namespace swooleService\pool;
+namespace ddswoole\pool;
 
 use RuntimeException;
 use Swoole\Database\PDOConfig;

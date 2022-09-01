@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-18 12:00:59
  */
 
-namespace swooleService\servers;
+namespace ddswoole\servers;
 
 class ProcessPool
 {

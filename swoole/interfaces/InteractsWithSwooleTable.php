@@ -6,10 +6,10 @@
  * @Last Modified time: 2022-08-26 14:51:14
  */
 
-namespace swooleService\interfaces;
+namespace ddswoole\interfaces;
 
 use Swoole\Table as SwooleTable;
-use swooleService\db\Table;
+use ddswoole\db\Table;
 
 trait InteractsWithSwooleTable
 {

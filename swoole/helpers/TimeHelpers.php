@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-23 15:13:28
  */
 
-namespace swooleService\helpers;
+namespace ddswoole\helpers;
 
 use diandi\swoole\timer\Timer;
 

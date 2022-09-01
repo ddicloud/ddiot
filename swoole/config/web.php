@@ -13,7 +13,7 @@ use diandi\swoole\web\Response;
 
 require __DIR__ . '/../../common/config/bootstrap.php';
 $db = require __DIR__ . '/../../common/config/db.php';
-$db['class'] = 'swooleService\db\Connection';
+$db['class'] = 'ddswoole\db\Connection';
 
 return [
     'id' => 'app-swoole',
@@ -24,10 +24,10 @@ return [
         'diandi\addons\loader',
         'log',
     ],
-    'controllerNamespace' => 'swooleService\controllers',
-    'taskNamespace' => 'swooleService\tasks',
+    'controllerNamespace' => 'ddswoole\controllers',
+    'taskNamespace' => 'ddswoole\tasks',
     'aliases' => [
-        '@swooleService' => dirname(__DIR__),
+        '@ddswoole' => dirname(__DIR__),
         '@diandi' => '@vendor/yii-diandi',
     ],
     'modules' => [
@@ -42,11 +42,11 @@ return [
         // ],
         // 小程序
         'wechat' => [
-            'class' => 'swooleService\modules\wechat\module',
+            'class' => 'ddswoole\modules\wechat\module',
         ],
         // 公众号
         'officialaccount' => [
-            'class' => 'swooleService\modules\officialaccount\module',
+            'class' => 'ddswoole\modules\officialaccount\module',
         ],
     ],
     'components' => [
@@ -79,7 +79,7 @@ return [
             ],
         ],
         'user' => [
-            'identityClass' => 'swooleService\models\SwooleAccessToken',
+            'identityClass' => 'ddswoole\models\SwooleAccessToken',
             'enableAutoLogin' => true,
             'enableSession' => true,
             'loginUrl' => null,

@@ -8,7 +8,7 @@
  */
 
 
-namespace swooleService\controllers;
+namespace ddswoole\controllers;
 
 use Yii;
 use common\components\FileUpload\Upload;

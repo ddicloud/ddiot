@@ -9,7 +9,7 @@ use common\services\BaseService;
  * @Last Modified time: 2022-08-19 16:11:03
  */
 
-namespace swooleService\servers;
+namespace ddswoole\servers;
 
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

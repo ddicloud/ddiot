@@ -8,7 +8,7 @@
  */
 
 
-namespace swooleService\modules\officialaccount\models;
+namespace ddswoole\modules\officialaccount\models;
 
 use common\traits\ActiveQuery\StoreTrait;
 use Yii;

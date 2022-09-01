@@ -6,11 +6,11 @@
  * @Last Modified time: 2022-08-24 21:30:22
  */
 
-namespace swooleService\models;
+namespace ddswoole\models;
 
 use common\helpers\ResultHelper;
 use common\models\enums\CodeStatus;
-use swooleService\servers\AccessTokenService;
+use ddswoole\servers\AccessTokenService;
 use Yii;
 use yii\filters\RateLimitInterface;
 use yii\web\IdentityInterface;

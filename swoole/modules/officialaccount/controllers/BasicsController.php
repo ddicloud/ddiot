@@ -7,9 +7,9 @@
  * @Last Modified time: 2022-08-25 09:52:49
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;

@@ -6,9 +6,9 @@
  * @Last Modified time: 2022-07-11 18:52:57
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use api\modules\officialaccount\services\FansService;
 use api\modules\officialaccount\services\MessageService;
 use app\modules\officialaccount\components\Fans;

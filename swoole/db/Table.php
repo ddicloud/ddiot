@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-18 16:54:19
  */
 
-namespace swooleService\db;
+namespace ddswoole\db;
 
 use Swoole\Table as SwooleTable;
 

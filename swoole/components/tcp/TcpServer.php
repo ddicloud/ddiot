@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-18 12:00:13
  */
 
-namespace swooleService\components\tcp;
+namespace ddswoole\components\tcp;
 
 use diandi\swoole\server\BaseServer;
 

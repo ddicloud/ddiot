@@ -6,19 +6,19 @@
  * @Last Modified time: 2022-09-01 08:56:32
  */
 
-namespace swooleService\components\websocket;
+namespace ddswoole\components\websocket;
 
 use common\helpers\loggingHelper;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
-use swooleService\models\SwooleMember;
-use swooleService\servers\AccessTokenService;
+use ddswoole\models\SwooleMember;
+use ddswoole\servers\AccessTokenService;
 use Yii;
 
 class WebsocketServer extends ServerWebSocketServer
 {
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        loggingHelper::writeLog('swooleService', 'onHandshake', '开始权限校验处理', [
+        loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
             'header' => $request->header,
         ]);
 
@@ -68,7 +68,7 @@ class WebsocketServer extends ServerWebSocketServer
     protected function secWebsocketAccept(\Swoole\Http\Request $request, \Swoole\Http\Response $response): bool
     {
         global $_GPC;
-        loggingHelper::writeLog('swooleService', 'onHandshake', '开始权限校验处理', [
+        loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
             '_GPC' => $_GPC,
             'get' => $request->get,
         ]);
@@ -139,7 +139,7 @@ class WebsocketServer extends ServerWebSocketServer
     {
         // 重写yiidb
         $db = require Yii::getAlias('@common/config/db.php');
-        $db['class'] = 'swooleService\db\Connection';
+        $db['class'] = 'ddswoole\db\Connection';
         Yii::$app->setComponents([
             'db' => $db,
         ]);
@@ -156,7 +156,7 @@ class WebsocketServer extends ServerWebSocketServer
             return false;
         } else {
             $member = $AccessTokenService->getAccessToken($SwooleMember, 1);
-            loggingHelper::writeLog('swooleService', 'checkAccess', '用户验证', [
+            loggingHelper::writeLog('ddswoole', 'checkAccess', '用户验证', [
                 'member' => $member,
             ]);
 

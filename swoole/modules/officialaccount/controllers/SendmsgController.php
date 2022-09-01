@@ -7,9 +7,9 @@
  * @Last Modified time: 2020-09-07 10:18:15
  */
 
-namespace swooleService\modules\officialaccount\controllers;
+namespace ddswoole\modules\officialaccount\controllers;
 
-use swooleService\controllers\AController;
+use ddswoole\controllers\AController;
 use backend\controllers\BaseController;
 use Yii;
 

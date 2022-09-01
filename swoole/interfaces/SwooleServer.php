@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-18 12:01:09
  */
 
-namespace swooleService\interfaces;
+namespace ddswoole\interfaces;
 
 /**
  * swoole服务
