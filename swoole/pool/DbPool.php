@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:34:04
+ * @Last Modified time: 2022-09-01 18:24:23
  */
 
 declare (strict_types = 1);
@@ -165,6 +165,12 @@ class DbPool
     }
 
     public function fetch(string $query, array $bindings = [])
+    {
+        $records = $this->query($query, $bindings);
+        return array_shift($records);
+    }
+
+    public function fetchAll(string $query, array $bindings = [])
     {
         $records = $this->query($query, $bindings);
 

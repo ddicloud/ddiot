@@ -3,13 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 15:25:01
+ * @Last Modified time: 2022-09-01 18:44:39
  */
 
 namespace ddswoole\db;
 
 use common\helpers\StringHelper;
 use ddswoole\pool\DbPool;
+use ddswoole\pool\PdoPool;
 use Yii;
 
 /**
@@ -82,8 +83,7 @@ class Command extends \yii\db\Command
             Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
             Yii::endProfile($token, 'yii\db\Command::query');
-            echo $e->getMessage() . PHP_EOL;
-            // throw $this->db->getSchema()->convertException($e, $rawSql);
+            throw $e;
         }
         if (isset($cache, $cacheKey, $info)) {
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
@@ -114,7 +114,8 @@ class Command extends \yii\db\Command
             list($k, $v) = explode('=', $value);
             $dsnArr[$k] = $v;
         }
-        $PoolPdoPool = new DbPool([
+        
+        $PoolPdoPool = new PdoPool([
             'host' => $dsnArr['host'],
             'port' => $dsnArr['port'],
             'database' => $dsnArr['dbname'],
@@ -125,8 +126,7 @@ class Command extends \yii\db\Command
             'options' => [],
             'size' => 64,
         ]);
-
-        $pool = $PoolPdoPool->getPool();
-        return $pool->$method($sql, []);
+        $Res = $PoolPdoPool->$method($sql,[]);
+        return $Res;
     }
 }
