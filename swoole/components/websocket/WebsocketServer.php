@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:02:47
+ * @Last Modified time: 2022-09-01 08:56:32
  */
 
 namespace swooleService\components\websocket;
@@ -12,6 +12,7 @@ use common\helpers\loggingHelper;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use swooleService\models\SwooleMember;
 use swooleService\servers\AccessTokenService;
+use Yii;
 
 class WebsocketServer extends ServerWebSocketServer
 {
@@ -87,9 +88,7 @@ class WebsocketServer extends ServerWebSocketServer
             return false;
         }
 
-      
-
-        $key = base64_encode(sha1($request->header['sec-websocket-key'].'258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
+        $key = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
         $headers = [
             'Upgrade' => 'websocket',
             'Connection' => 'Upgrade',
@@ -107,16 +106,15 @@ class WebsocketServer extends ServerWebSocketServer
             $response->header($key, $val);
         }
 
-
         $accessToken = $request->get['access_token'];
         if (!empty($token)) {
             var_dump('accessToken 没有设置');
             return false;
         } else {
-            if($this->checkAccess($accessToken)){
+            if ($this->checkAccess($accessToken)) {
                 $response->status(101);
                 return true;
-            }else{
+            } else {
                 var_dump('accessToken 校验失败');
                 return false;
             }
@@ -124,9 +122,27 @@ class WebsocketServer extends ServerWebSocketServer
 
         // 接受握手 还需要101状态码以切换状态
         $response->status(101);
-        var_dump('shake success at fd :'.$request->fd);
+        var_dump('shake success at fd :' . $request->fd);
 
         return true;
+    }
+
+    /**
+     * 工作进程启动时实例化框架.
+     *
+     * @param \Swoole\Http\Server $server
+     * @param int                 $workerId
+     *
+     * @throws InvalidConfigException
+     */
+    public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
+    {
+        // 重写yiidb
+        $db = require Yii::getAlias('@common/config/db.php');
+        $db['class'] = 'swooleService\db\Connection';
+        Yii::$app->setComponents([
+            'db' => $db,
+        ]);
     }
 
     public function checkAccess($accessToken)
@@ -136,14 +152,14 @@ class WebsocketServer extends ServerWebSocketServer
 
         $SwooleMember = SwooleMember::find()->where(['id' => $memberToken['swoole_member_id']])->one();
 
-        if(empty($SwooleMember)){
+        if (empty($SwooleMember)) {
             return false;
-        }else{
+        } else {
             $member = $AccessTokenService->getAccessToken($SwooleMember, 1);
             loggingHelper::writeLog('swooleService', 'checkAccess', '用户验证', [
                 'member' => $member,
             ]);
-    
+
             if (!empty($member)) {
                 return true;
             } else {
