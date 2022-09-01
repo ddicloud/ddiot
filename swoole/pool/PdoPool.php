@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 19:02:27
+ * @Last Modified time: 2022-09-01 19:29:41
  */
 namespace ddswoole\pool;
 
@@ -40,19 +40,17 @@ class PdoPool
     public $connected = false;
 
     public function __construct($config,$poolName='')
-    {
-         //一键协程化
-         Runtime::enableCoroutine();
-         //设置一个容量为1的通道
-         $chan = new Channel(1);
-         Coroutine::create(function () use ($chan,$config,$poolName){
-            $this->setConfig($config);
-             //执行mysql相关 操作
-             $return = $this->init();
-             $chan->push($this->getPools());
-         });
-         
-         return $chan->pop();
+    {   
+        //一键协程化
+        Runtime::enableCoroutine();
+        //设置一个容量为1的通道
+        $chan = new Channel(1);
+        Coroutine::create(function () use ($chan,$config,$poolName){
+        $this->setConfig($config);
+            //执行mysql相关 操作
+            $return = $this->init();
+            $chan->push($this->getPools());
+        });
     }
 
     public function init()
@@ -149,6 +147,12 @@ class PdoPool
 
     public function fetch($sql, $bingId)
     {
+        $channel = new Channel(1);
+        Coroutine::create(function () use ($channel) {
+            $data = $channel->pop(2.0);
+
+        });
+        
         $pdo = $this->getPools()->get();
         $statement = $pdo->prepare($sql);
         if (!$statement) {
@@ -189,6 +193,11 @@ class PdoPool
         return $result;
     }
 
+
+    public function fetchColumn($sql, $bingId)
+    {
+        # code...
+    }
 
     public function escape($string)
     {
