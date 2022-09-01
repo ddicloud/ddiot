@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 13:09:05
+ * @Last Modified time: 2022-09-01 09:28:08
  */
 
 namespace common\behaviors;
@@ -74,7 +74,7 @@ class SaveBehavior extends Behavior
         //     $store_id = Yii::$app->user->identity->store_id;
         // }
 
-        $admin_id = Yii::$app->user->identity && Yii::$app->user->identity->id?Yii::$app->user->identity->id:0;
+        $admin_id = Yii::$app->user->identity && Yii::$app->user->identity->id ? Yii::$app->user->identity->id : 0;
 
         $time = $this->time_type === 'init' ? time() : date('Y-m-d H:i:s', time());
 
@@ -83,9 +83,9 @@ class SaveBehavior extends Behavior
             $this->updatedAttribute => $time,
             $this->blocAttribute => (int) $bloc_id,
             $this->storeAttribute => (int) $store_id,
-            $this->blocPAttribute => $blocPid?(int) $blocPid['pid']:0,
+            $this->blocPAttribute => $blocPid ? (int) $blocPid['pid'] : 0,
             $this->adminAttribute => (int) $admin_id,
-            $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'],
+            $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
     }
 
