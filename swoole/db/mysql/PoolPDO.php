@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 11:51:45
+ * @Last Modified time: 2022-09-01 12:54:20
  */
 
 namespace ddswoole\db\mysql;
@@ -93,7 +93,6 @@ class PoolPDO
             'options' => [],
             'size' => 64,
         ]);
-
         $this->pool = $PoolPdoPool->getPool();
     }
 
@@ -224,6 +223,7 @@ class PoolPDO
         if ($parameter_type !== \PDO::PARAM_STR) {
             throw new PDOException('Only PDO::PARAM_STR is currently implemented for the $parameter_type of MysqlPoolPdo::quote()');
         }
+        
         return $this->pool->escape($string);
     }
 

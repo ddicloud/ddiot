@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 11:52:27
+ * @Last Modified time: 2022-09-01 12:54:05
  */
 namespace ddswoole\pool;
 
 use RuntimeException;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
-
+use Swoole\Coroutine;
 class PdoPool
 {
     /**
@@ -63,7 +63,7 @@ class PdoPool
     }
 
     public function getInstance()
-    {
+    { 
         $instance = $this->_instance;
         $config = $this->getConfig();
         if (empty($instance)) {
@@ -76,8 +76,8 @@ class PdoPool
 
             $instance = new static($config);
         }
-
         return $instance;
+        
     }
 
     public function setInstance($value)

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 19:26:10
+ * @Last Modified time: 2022-09-01 12:53:31
  */
 
 namespace ddswoole\components\websocket;
@@ -66,6 +66,7 @@ class WebsocketController extends BaseController implements SwooleServer
     {
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         Runtime::enableCoroutine(false);
+        \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]); 
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
         $serverName = $this->server;
