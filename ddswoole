@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Yii console bootstrap file.
+ */
+
+use diandi\swoole\web\Application;
+
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_ENV') or define('YII_ENV', 'dev');
+
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/yiisoft/yii2/Yii.php';
+require __DIR__ . '/common/config/bootstrap.php';
+require __DIR__ . '/swoole/config/bootstrap.php';
+
+$config = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/common/config/main.php',
+    require __DIR__ . '/common/config/main-local.php',
+    require __DIR__ . '/swoole/config/web.php'
+);
+
+$application = new Application($config);
+$exitCode = $application->run();
+exit($exitCode);

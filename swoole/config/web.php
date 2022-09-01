@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 15:58:23
+ * @Last Modified time: 2022-09-01 16:30:38
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -22,6 +22,7 @@ return [
     'language' => 'zh-CN',
     'bootstrap' => [
         'diandi\addons\loader',
+        'queue',
         'log',
     ],
     'controllerNamespace' => 'ddswoole\controllers',
@@ -52,6 +53,7 @@ return [
     'components' => [
         // 连接池配置
         'connectionManager' => [
+            'class'=>'ddswoole\pool\connectionManager',
             'poolConfig' => [
                 'mysql' => [
                     //池容量
@@ -79,6 +81,7 @@ return [
             ],
         ],
         'user' => [
+            'class'=>'ddswoole\models\SwooleMember',
             'identityClass' => 'ddswoole\models\SwooleAccessToken',
             'enableAutoLogin' => true,
             'enableSession' => true,
@@ -90,8 +93,12 @@ return [
         ],
         /* ------ 队列设置 ------ **/
         'queue' => [
-            'class' => 'yii\queue\redis\Queue',
-            'redis' => 'redis', // 连接组件或它的配置
+            'class' => \yii\queue\db\Queue::class,
+            'db' => 'db', // DB 连接组件或它的配置
+            'tableName' => '{{%queue}}', // 表名
+            'mutex' => \yii\mutex\MysqlMutex::class, // Mutex that used to sync queries
+            // 'class' => 'yii\queue\redis\Queue',
+            // 'redis' => 'redis', // 连接组件或它的配置
             'channel' => 'queue', // Queue channel key
             'as log' => 'yii\queue\LogBehavior', // 日志
         ],
