@@ -4,14 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:26:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 16:43:38
+ * @Last Modified time: 2022-09-01 20:16:28
  */
 defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
 
 use diandi\swoole\server\BaseServer;
 use Swoole\Runtime;
 
-Runtime::enableCoroutine(false);
+\Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]);
+
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
 

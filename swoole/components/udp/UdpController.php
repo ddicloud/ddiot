@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 19:26:04
+ * @Last Modified time: 2022-09-01 20:20:32
  */
 
 namespace ddswoole\components\tcp;
@@ -66,7 +66,6 @@ class UdpController extends BaseController implements SwooleServer
     public function actionRun()
     {
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
-        Runtime::enableCoroutine(false);
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
         $serverName = $this->server;
