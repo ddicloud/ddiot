@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 16:30:38
+ * @Last Modified time: 2022-09-01 19:01:20
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -81,7 +81,7 @@ return [
             ],
         ],
         'user' => [
-            'class'=>'ddswoole\models\SwooleMember',
+            'class' => 'yii\web\User',
             'identityClass' => 'ddswoole\models\SwooleAccessToken',
             'enableAutoLogin' => true,
             'enableSession' => true,

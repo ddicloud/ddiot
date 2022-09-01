@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 18:55:58
+ * @Last Modified time: 2022-09-01 19:02:27
  */
 namespace ddswoole\pool;
 
@@ -151,26 +151,21 @@ class PdoPool
     {
         $pdo = $this->getPools()->get();
         $statement = $pdo->prepare($sql);
-       var_dump(11);
         if (!$statement) {
             throw new RuntimeException('Prepare failed');
         }
-       var_dump(22);
-
+      
         $a = mt_rand(1, 100);
         $b = mt_rand(1, 100);
-       var_dump(33);
-
+      
         $result = $statement->execute([]);
-        var_dump(44);
         
         if (!$result) {
             throw new RuntimeException('Execute failed');
         }
+        
         $result = $statement->fetch();
-        var_dump($result);
         $this->close($pdo);
-
         return $result;
     }
 
