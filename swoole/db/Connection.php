@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 23:26:18
+ * @Last Modified time: 2022-09-01 12:03:57
  */
 
 namespace ddswoole\db;
@@ -23,7 +23,7 @@ class Connection extends \yii\db\Connection
 {
     public $commandClass = 'ddswoole\db\Command';
 
-    public $pdoClass = 'ddswoole\db\mysql\PoolPdo';
+    public $pdoClass = 'ddswoole\db\mysql\PoolPDO';
 
     public $enableSchemaCache = true;
 
