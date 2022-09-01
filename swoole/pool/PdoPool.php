@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 19:29:41
+ * @Last Modified time: 2022-09-01 21:19:29
  */
 namespace ddswoole\pool;
 
@@ -41,16 +41,10 @@ class PdoPool
 
     public function __construct($config,$poolName='')
     {   
-        //一键协程化
-        Runtime::enableCoroutine();
         //设置一个容量为1的通道
-        $chan = new Channel(1);
-        Coroutine::create(function () use ($chan,$config,$poolName){
         $this->setConfig($config);
-            //执行mysql相关 操作
-            $return = $this->init();
-            $chan->push($this->getPools());
-        });
+        //执行mysql相关 操作
+        $return = $this->init();
     }
 
     public function init()
@@ -173,24 +167,34 @@ class PdoPool
         return $result;
     }
 
-    public function fetchAll($sql, $bingId)
+    public function fetchAll($sql, $param = [],$toArray = false)
     {
-        $pdo = $this->getConnection();
-     
-        $statement = $pdo->prepare($sql);
-        if (!$statement) {
-            throw new RuntimeException('Prepare failed');
-        }
-        $a = mt_rand(1, 100);
-        $b = mt_rand(1, 100);
-        $result = $statement->execute([$a, $b]);
-        if (!$result) {
-            throw new RuntimeException('Execute failed');
-        }
-        $result = $statement->fetchAll();
-        $this->close($pdo);
-
-        return $result;
+        $pools = $this->getPools();
+        $channel = new Channel(1);
+        
+        $res = \go(function () use ($channel,$pools,$sql,$param,$toArray) {
+            echo "coro " . Coroutine::getcid() . " start\n";
+            $pdo = $pools->get();
+            $statement = $pdo->prepare($sql);
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+            
+            $result = $statement->execute($param);
+            if (!$result) {
+                throw new RuntimeException('Execute failed');
+            }
+            $result = $statement->fetchAll();
+            $this->close($pdo);
+            $channel->push($result);
+            $channel->pop(2.0);
+            if (!$toArray) return $result;
+            
+            $res1 = [];
+            foreach ($result as $k=>$v)
+                $res1[] = (array)$v;
+            return $res1;
+        });
     }
 
 
