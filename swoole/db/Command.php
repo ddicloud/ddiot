@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 00:23:35
+ * @Last Modified time: 2022-09-01 15:25:01
  */
 
 namespace ddswoole\db;
@@ -105,7 +105,6 @@ class Command extends \yii\db\Command
      */
     public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
-
         $config = require yii::getAlias("@common/config/db.php");
         // mysql:host=127.0.0.1;dbname=20220628;port=3306
         list($dri, $dsn) = explode(':', $config['dsn']);

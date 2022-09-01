@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-31 23:16:39
+ * @Last Modified time: 2022-09-01 15:58:23
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -16,7 +16,7 @@ $db = require __DIR__ . '/../../common/config/db.php';
 $db['class'] = 'ddswoole\db\Connection';
 
 return [
-    'id' => 'app-swoole',
+    'id' => 'app-ddswoole',
     'name' => '店滴Swoole',
     'basePath' => dirname(__DIR__),
     'language' => 'zh-CN',
