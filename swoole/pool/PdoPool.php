@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 10:04:01
+ * @Last Modified time: 2022-09-02 10:53:20
  */
 namespace ddswoole\pool;
 
@@ -15,6 +15,7 @@ use Swoole\Database\PDOPool as SwoolePDOPool;
 use Swoole\Coroutine;
 use Swoole\Runtime;
 use Swoole\Coroutine\Channel;
+use Yii;
 
 class PdoPool
 {
@@ -136,62 +137,95 @@ class PdoPool
 
     public function doQuery($sql, $bingId)
     {
+        var_dump(Yii::$app->db);
         $Connection = $this->getConnection();
         return $Connection->prepare($sql, $bingId);
     }
 
 
-    public function fetch($sql, $bingId)
+    public function fetch($sql, $param = [],$toArray = false)
     {
-        
-        $pdo = $this->getPools()->get();
-        $statement = $pdo->prepare($sql);
-        if (!$statement) {
-            throw new RuntimeException('Prepare failed');
-        }
-      
-        $a = mt_rand(1, 100);
-        $b = mt_rand(1, 100);
-      
-        $result = $statement->execute([]);
-        
-        if (!$result) {
-            throw new RuntimeException('Execute failed');
-        }
-        
-        $result = $statement->fetch();
-        $this->close($pdo);
-        return $result;
+        $pools = $this->getPools();
+        $res = \go(function () use ($pools,$sql,$param,$toArray) {
+            echo "coro " . Coroutine::getcid() . " start\n";
+              $pdo = $pools->get();
+              $statement = $pdo->prepare($sql);
+              if (!$statement) {
+                  throw new RuntimeException('Prepare failed');
+              }
+              
+              $result = $statement->execute($param);
+              if (!$result) {
+                  throw new RuntimeException('Execute failed');
+              }
+              $result = $statement->fetchAll();
+              $this->close($pdo);
+  
+              Context::setContextDataByKey('456',$result);
+              if (!$toArray) return $result;
+              
+              $res1 = [];
+              foreach ($result as $k=>$v)
+                  $res1[] = (array)$v;
+              return $res1;
+        });
     }
 
     public function fetchAll($sql, $param = [],$toArray = false)
     {
-        $pdo = $this->getPools();
-       
-        echo "coro1 " . Coroutine::getcid() . " start\n";
-        $pools = $pdo->get();
-        $statement = $pools->prepare($sql);
-        if (!$statement) {
-            throw new RuntimeException('Prepare failed');
-        }
-        
-        $result = $statement->execute($param);
-        if (!$result) {
-            throw new RuntimeException('Execute failed');
-        }
-        $result = $statement->fetchAll();
-        $this->close($pdo);
-        if (!$toArray) return $result;
-        $res1 = [];
-        foreach ($result as $k=>$v)
-            $res1[] = (array)$v;
-        return $res1;
+        $pools = $this->getPools();
+        $res = \go(function () use ($pools,$sql,$param,$toArray) {
+            echo "coro " . Coroutine::getcid() . " start\n";
+              $pdo = $pools->get();
+              $statement = $pdo->prepare($sql);
+              if (!$statement) {
+                  throw new RuntimeException('Prepare failed');
+              }
+              
+              $result = $statement->execute($param);
+              if (!$result) {
+                  throw new RuntimeException('Execute failed');
+              }
+              $result = $statement->fetchAll();
+              $this->close($pdo);
+  
+              Context::setContextDataByKey('456',$result);
+              if (!$toArray) return $result;
+              
+              $res1 = [];
+              foreach ($result as $k=>$v)
+                  $res1[] = (array)$v;
+              return $res1;
+        });
     }
 
 
-    public function fetchColumn($sql, $bingId)
+    public function fetchColumn($sql, $param = [],$toArray = false)
     {
-        # code...
+        $pools = $this->getPools();
+        $res = \go(function () use ($pools,$sql,$param,$toArray) {
+            echo "coro " . Coroutine::getcid() . " start\n";
+              $pdo = $pools->get();
+              $statement = $pdo->prepare($sql);
+              if (!$statement) {
+                  throw new RuntimeException('Prepare failed');
+              }
+              
+              $result = $statement->execute($param);
+              if (!$result) {
+                  throw new RuntimeException('Execute failed');
+              }
+              $result = $statement->fetchAll();
+              $this->close($pdo);
+  
+              Context::setContextDataByKey('456',$result);
+              if (!$toArray) return $result;
+              
+              $res1 = [];
+              foreach ($result as $k=>$v)
+                  $res1[] = (array)$v;
+              return $res1;
+        });
     }
 
     public function escape($string)
