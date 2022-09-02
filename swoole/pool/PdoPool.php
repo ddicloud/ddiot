@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 21:46:21
+ * @Last Modified time: 2022-09-02 09:03:36
  */
 namespace ddswoole\pool;
 
@@ -173,38 +173,31 @@ class PdoPool
     {
         $pools = $this->getPools();
         $channel = new Channel(1);
+      
+        echo "coro " . Coroutine::getcid() . " start\n";
+        $pdo = $pools->get();
+        $statement = $pdo->prepare($sql);
+        if (!$statement) {
+            throw new RuntimeException('Prepare failed');
+        }
+        
+        $result = $statement->execute($param);
+        if (!$result) {
+            throw new RuntimeException('Execute failed');
+        }
+        $result = $statement->fetchAll();
+        $this->close($pdo);
+        $channel->push($result);
+        $channel->pop(2.0);
+
+        Context::setContextDataByKey('456',$result);
+        if (!$toArray) return $result;
+        
+        $res1 = [];
+        foreach ($result as $k=>$v)
+            $res1[] = (array)$v;
+        return $res1;
        
-        CoroutineHelp::createChild(function() use($pools,$sql,$param,$toArray,$channel){
-            echo "coro " . Coroutine::getcid() . " start\n";
-            $pdo = $pools->get();
-            $statement = $pdo->prepare($sql);
-            if (!$statement) {
-                throw new RuntimeException('Prepare failed');
-            }
-            
-            $result = $statement->execute($param);
-            if (!$result) {
-                throw new RuntimeException('Execute failed');
-            }
-            $result = $statement->fetchAll();
-            $this->close($pdo);
-            $channel->push($result);
-            $channel->pop(2.0);
-
-            Context::setContextDataByKey('456',$result);
-            if (!$toArray) return $result;
-            
-            $res1 = [];
-            foreach ($result as $k=>$v)
-                $res1[] = (array)$v;
-            return $res1;
-        });
-
-        echo "coro " . Context::getcoroutine() . " start\n";
-        var_dump(Context::getContextDataByKey('456'));
-        $res = \go(function () use ($channel,$pools,$sql,$param,$toArray) {
-          
-        });
     }
 
 

@@ -3,27 +3,90 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 23:44:38
+ * @Last Modified time: 2022-09-02 09:02:16
  */
 
 namespace ddswoole\components\websocket;
 
 use common\helpers\loggingHelper;
+use ddswoole\bootstrap\Loader;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
+use diandi\swoole\web\Application;
 use Yii;
 
 class WebsocketServer extends ServerWebSocketServer
 {
     public $onWorkStartCallable;
+    
     private $application;
 
+    /**
+     * 重新实例化application
+     * @param [type] $config
+     * @param [type] $callable
+     * @date 2022-09-02
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
     public function __construct($config, $callable) {
         parent::__construct($config);
         $this->onWorkStartCallable = $callable; 
-        $this->application = $config;
+        $this->application = new Application($config['app']);
     }
+
+    /**
+     * 增加监听
+     * @return void
+     * @date 2022-09-02
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public function addlistenerPort()
+    {
+        
+    }
+
+    /**
+     * 扩展监听事件
+     * @return void
+     * @date 2022-09-02
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public function events()
+    {
+        $events = parent::events();
+        return $events;
+    }
+
+      /**
+     * 工作进程启动时实例化框架.
+     *
+     * @param \Swoole\Http\Server $server
+     * @param int                 $workerId
+     *
+     * @throws InvalidConfigException
+     */
+    public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
+    {
+        // 重写yiidb
+        // $db = require Yii::getAlias('@common/config/db.php');
+        // $db['class'] = 'ddswoole\db\Connection';
+        // Yii::$app->setComponents([
+        //     'db' => $db,
+        // ]);
+        var_dump('onWorkerStart');
+        // print_r($this->onWorkStartCallable);
+        var_dump(72112);
+        if($this->onWorkStartCallable)
+            call_user_func_array([$this->onWorkStartCallable,'bootstrap'], [$this->application]);
+    }
+
 
 
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
@@ -137,26 +200,7 @@ class WebsocketServer extends ServerWebSocketServer
         return true;
     }
 
-    /**
-     * 工作进程启动时实例化框架.
-     *
-     * @param \Swoole\Http\Server $server
-     * @param int                 $workerId
-     *
-     * @throws InvalidConfigException
-     */
-    public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
-    {
-        // 重写yiidb
-        // $db = require Yii::getAlias('@common/config/db.php');
-        // $db['class'] = 'ddswoole\db\Connection';
-        // Yii::$app->setComponents([
-        //     'db' => $db,
-        // ]);
-        if($this->onWorkStartCallable)
-            call_user_func_array($this->onWorkStartCallable, [$this->application]);
-    }
-
+  
     public function checkAccess($accessToken)
     {
         $AccessTokenService = new AccessTokenService();

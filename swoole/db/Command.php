@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 18:44:39
+ * @Last Modified time: 2022-09-02 00:19:53
  */
 
 namespace ddswoole\db;
@@ -19,6 +19,33 @@ use Yii;
  */
 class Command extends \yii\db\Command
 {
+    private $pool;
+
+    public function __construct()
+    {
+        $config = require yii::getAlias("@common/config/db.php");
+        // mysql:host=127.0.0.1;dbname=20220628;port=3306
+        list($dri, $dsn) = explode(':', $config['dsn']);
+
+        $requestParam = StringHelper::parseAttr($dsn);
+        foreach ($requestParam as $key => $value) {
+            list($k, $v) = explode('=', $value);
+            $dsnArr[$k] = $v;
+        }
+        
+        $this->pool = new PdoPool([
+            'host' => $dsnArr['host'],
+            'port' => $dsnArr['port'],
+            'database' => $dsnArr['dbname'],
+            'username' => $config['username'],
+            'password' => $config['password'],
+            'charset' => 'utf8mb4',
+            'unixSocket' => null,
+            'options' => [],
+            'size' => 64,
+        ]);
+    }
+    
     /**
      * @inheritdoc
      */
@@ -105,28 +132,7 @@ class Command extends \yii\db\Command
      */
     public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
-        $config = require yii::getAlias("@common/config/db.php");
-        // mysql:host=127.0.0.1;dbname=20220628;port=3306
-        list($dri, $dsn) = explode(':', $config['dsn']);
-
-        $requestParam = StringHelper::parseAttr($dsn);
-        foreach ($requestParam as $key => $value) {
-            list($k, $v) = explode('=', $value);
-            $dsnArr[$k] = $v;
-        }
-        
-        $PoolPdoPool = new PdoPool([
-            'host' => $dsnArr['host'],
-            'port' => $dsnArr['port'],
-            'database' => $dsnArr['dbname'],
-            'username' => $config['username'],
-            'password' => $config['password'],
-            'charset' => 'utf8mb4',
-            'unixSocket' => null,
-            'options' => [],
-            'size' => 64,
-        ]);
-        $Res = $PoolPdoPool->$method($sql,[]);
+        $Res = $this->pool->$method($sql,[]);
         return $Res;
     }
 }

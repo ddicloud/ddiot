@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 23:40:01
+ * @Last Modified time: 2022-09-02 09:02:27
  */
 
 namespace ddswoole\components\websocket;
 
 use console\controllers\BaseController;
+use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\SwooleServer;
-use diandi\addons\Loader;
 use Swoole\Runtime;
 use Yii;
 
@@ -64,13 +64,13 @@ class WebsocketController extends BaseController implements SwooleServer
     }
 
     public function actionRun()
-    {
+    {   
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
         $serverName = $this->server;
         $Loader = new Loader();
-        $server = new $serverName($this->config, [$Loader, "bootstrap", [&$this->config]]);
+        $server = new $serverName($this->config,$Loader);
         $server->start();
     }
 }
