@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 00:19:53
+ * @Last Modified time: 2022-09-02 11:38:08
  */
 
 namespace ddswoole\db;
@@ -74,7 +74,7 @@ class Command extends \yii\db\Command
     /**
      * @inheritdoc
      */
-    public function queryInternal($method, $fetchMode = null)
+    public function queryInternal($method, $fetchMode = [])
     {
         $rawSql = $this->getRawSql();
         Yii::info($rawSql, 'yii\db\Command::query');

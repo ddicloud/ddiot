@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-25 12:30:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 19:38:26
+ * @Last Modified time: 2022-09-02 11:57:13
  */
 
 namespace console\controllers;
@@ -29,10 +29,9 @@ class BaseController extends \yii\console\Controller
         Yii::$app->service->commonGlobalsService->initId($this->bloc_id, $this->store_id, $this->addons);
         Yii::$app->service->commonGlobalsService->getConf($this->bloc_id);
         $module = $this->addons;
-        
         $mid = DdAddons::find()->where(['identifie' => $module])->select('mid')->scalar();
         if (!$mid) {
-            throw new NotFoundHttpException('当前插件没有安装.');
+            throw new NotFoundHttpException("当前插件{$module}没有安装.");
         }
         $runtimePath = Yii::getAlias('@ddswoole/runtime/' . $module);
         define('SWOOLE_RUNTIME', $runtimePath);
