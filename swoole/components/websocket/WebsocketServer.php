@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 09:02:16
+ * @Last Modified time: 2022-09-02 10:01:59
  */
 
 namespace ddswoole\components\websocket;
@@ -74,15 +74,6 @@ class WebsocketServer extends ServerWebSocketServer
      */
     public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
     {
-        // 重写yiidb
-        // $db = require Yii::getAlias('@common/config/db.php');
-        // $db['class'] = 'ddswoole\db\Connection';
-        // Yii::$app->setComponents([
-        //     'db' => $db,
-        // ]);
-        var_dump('onWorkerStart');
-        // print_r($this->onWorkStartCallable);
-        var_dump(72112);
         if($this->onWorkStartCallable)
             call_user_func_array([$this->onWorkStartCallable,'bootstrap'], [$this->application]);
     }

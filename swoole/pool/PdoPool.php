@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 09:03:36
+ * @Last Modified time: 2022-09-02 10:04:01
  */
 namespace ddswoole\pool;
 
@@ -143,11 +143,6 @@ class PdoPool
 
     public function fetch($sql, $bingId)
     {
-        $channel = new Channel(1);
-        Coroutine::create(function () use ($channel) {
-            $data = $channel->pop(2.0);
-
-        });
         
         $pdo = $this->getPools()->get();
         $statement = $pdo->prepare($sql);
@@ -171,12 +166,11 @@ class PdoPool
 
     public function fetchAll($sql, $param = [],$toArray = false)
     {
-        $pools = $this->getPools();
-        $channel = new Channel(1);
-      
-        echo "coro " . Coroutine::getcid() . " start\n";
-        $pdo = $pools->get();
-        $statement = $pdo->prepare($sql);
+        $pdo = $this->getPools();
+       
+        echo "coro1 " . Coroutine::getcid() . " start\n";
+        $pools = $pdo->get();
+        $statement = $pools->prepare($sql);
         if (!$statement) {
             throw new RuntimeException('Prepare failed');
         }
@@ -187,17 +181,11 @@ class PdoPool
         }
         $result = $statement->fetchAll();
         $this->close($pdo);
-        $channel->push($result);
-        $channel->pop(2.0);
-
-        Context::setContextDataByKey('456',$result);
         if (!$toArray) return $result;
-        
         $res1 = [];
         foreach ($result as $k=>$v)
             $res1[] = (array)$v;
         return $res1;
-       
     }
 
 
