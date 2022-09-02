@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 21:15:48
+ * @Last Modified time: 2022-09-02 22:25:00
  */
 
 namespace ddswoole\components\websocket;
@@ -11,6 +11,7 @@ namespace ddswoole\components\websocket;
 use common\helpers\ArrayHelper;
 use common\helpers\loggingHelper;
 use ddswoole\bootstrap\Loader;
+use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use ddswoole\models\SwooleMember;
@@ -23,9 +24,13 @@ use Yii;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
 {
+    use InteractsWithSwooleTable;
+
     public $onWorkStartCallable;
     
     private $application;
+
+    private $config;
 
     /**
      * 重新实例化application
@@ -39,13 +44,16 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     public function __construct($config, $callable) {
         parent::__construct($config);
         $this->onWorkStartCallable = $callable; 
-        $this->application = new Application($config['app']);
+        $this->config = $config['app']; 
     }
 
 
     public function run()
     {
-        
+        $this->application = new Application($this->config);
+        if(!empty($this->tables) && is_array($this->tables)){
+            $this->prepareTables($this->tables);
+        }
     }
 
     /**
@@ -59,20 +67,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     public function addlistenerPort()
     {
         
-    }
-
-    /**
-     * 扩展监听事件
-     * @return void
-     * @date 2022-09-02
-     * @example
-     * @author Wang Chunsheng
-     * @since
-     */
-    public function events()
-    {
-        $events = parent::events();
-        return $events;
     }
 
       /**

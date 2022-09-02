@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 20:18:13
+ * @Last Modified time: 2022-09-02 22:28:59
  */
 
 namespace ddswoole\components\websocket;
@@ -74,44 +74,9 @@ class WebsocketController extends BaseController implements SwooleServer
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
-        go(function(){
-            $serverName = $this->server;
-            $Loader = new Loader();
-            $server = new $serverName($this->config,$Loader);
-            $server->run();
-        });
-       
-    }
-
-    public function actionRun1()
-    {
-        go(function () {
-            $server = new Server('127.0.0.1', 9505, false);
-            $server->handle('/websocket', function (Request $request, Response $ws) {
-                $ws->upgrade();
-                while (true) {
-                    $frame = $ws->recv();
-                    if ($frame === '') {
-                        $ws->close();
-                        break;
-                    } else if ($frame === false) {
-                        echo 'errorCode: ' . swoole_last_error() . "\n";
-                        $ws->close();
-                        break;
-                    } else {
-                        if ($frame->data == 'close' || get_class($frame) === CloseFrame::class) {
-                            $ws->close();
-                            break;
-                        }
-                        $ws->push("Hello {$frame->data}!");
-                        $ws->push("How are you, {$frame->data}?");
-                    }
-                }
-            });
-
-
-            $server->start();
-        });
-
+        $serverName = $this->server;
+        $Loader = new Loader();
+        $server = new $serverName($this->config,$Loader);
+        $server->run();
     }
 }
