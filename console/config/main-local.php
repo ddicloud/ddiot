@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-28 18:03:43
+ * @Last Modified time: 2022-09-02 19:53:59
  */
 $db = [];
 
@@ -21,7 +21,7 @@ $config = [
         /* ------ REDIS ------ **/
         'redis' => [
             'class' => 'yii\redis\Connection',
-            'hostname' => 'localhost',
+            'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 2,
         ],

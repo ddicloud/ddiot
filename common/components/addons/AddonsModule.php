@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 10:47:28
+ * @Last Modified time: 2022-09-02 19:11:55
  */
 
 namespace common\components\addons;
@@ -87,7 +87,7 @@ class AddonsModule extends Module
                 break;
             case 'app-console':
                 $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/swoole');
-                define('SWOOLE_RUNTIME', $runtimePath);
+                // define('SWOOLE_RUNTIME', $runtimePath);
                 FileHelper::mkdirs($runtimePath);
                 if (is_dir($runtimePath)) {
                     @chmod($runtimePath, 0777);

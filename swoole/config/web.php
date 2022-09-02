@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 13:06:55
+ * @Last Modified time: 2022-09-02 19:38:46
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -26,7 +26,12 @@ return [
         'log',
     ],
     'controllerNamespace' => 'ddswoole\controllers',
-    'taskNamespace' => 'ddswoole\tasks',
+    // 'taskNamespace' => 'ddswoole\tasks',
+    'controllerMap' => [
+        'site' => [
+            'class' => 'ddswoole\controllers\SiteController',
+        ],
+    ],
     'aliases' => [
         '@ddswoole' => dirname(__DIR__),
         '@diandi' => '@vendor/yii-diandi',

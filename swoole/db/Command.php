@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 11:38:08
+ * @Last Modified time: 2022-09-02 16:00:55
  */
 
 namespace ddswoole\db;
@@ -26,7 +26,6 @@ class Command extends \yii\db\Command
         $config = require yii::getAlias("@common/config/db.php");
         // mysql:host=127.0.0.1;dbname=20220628;port=3306
         list($dri, $dsn) = explode(':', $config['dsn']);
-
         $requestParam = StringHelper::parseAttr($dsn);
         foreach ($requestParam as $key => $value) {
             list($k, $v) = explode('=', $value);
