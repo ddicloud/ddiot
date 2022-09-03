@@ -3,20 +3,26 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+<<<<<<< HEAD
  * @Last Modified time: 2022-09-04 01:18:35
+=======
+<<<<<<< HEAD
+ * @Last Modified time: 2022-09-04 00:49:33
+=======
+ * @Last Modified time: 2022-09-04 00:36:36
+>>>>>>> 72ed4705af9061cbcdf1904b05c006ca959f303b
+>>>>>>> e0b9bdbab6e17011b56f36b4ea39b1d317bbfa71
  */
 
 namespace ddswoole\db;
 
 use common\helpers\StringHelper;
-use ddswoole\pool\DbPool;
 use ddswoole\pool\PdoPool;
 use ddswoole\servers\DebugService;
 use Yii;
 
 /**
- * Class Command
- * @package ddswoole\db
+ * Class Command.
  */
 class Command extends \yii\db\Command
 {
@@ -179,7 +185,7 @@ class Command extends \yii\db\Command
 
     public function __construct()
     {
-        $config = require yii::getAlias("@common/config/db.php");
+        $config = require yii::getAlias('@common/config/db.php');
         // mysql:host=127.0.0.1;dbname=20220628;port=3306
         list($dri, $dsn) = explode(':', $config['dsn']);
         $requestParam = StringHelper::parseAttr($dsn);
@@ -187,7 +193,7 @@ class Command extends \yii\db\Command
             list($k, $v) = explode('=', $value);
             $dsnArr[$k] = $v;
         }
-        
+
         $this->pool = new PdoPool([
             'host' => $dsnArr['host'],
             'port' => $dsnArr['port'],
@@ -200,9 +206,9 @@ class Command extends \yii\db\Command
             'size' => 64,
         ]);
     }
-    
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -213,12 +219,12 @@ class Command extends \yii\db\Command
             return 0;
         }
         $token = $rawSql;
-        try
-        {
+        try {
             Yii::beginProfile($token, __METHOD__);
             $n = $this->doQuery($rawSql, true, '');
             Yii::endProfile($token, __METHOD__);
             $this->refreshTableSchema();
+
             return $n;
         } catch (\Exception $e) {
             Yii::endProfile($token, __METHOD__);
@@ -228,7 +234,7 @@ class Command extends \yii\db\Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function queryInternal($method, $fetchMode = [])
     {
@@ -250,14 +256,14 @@ class Command extends \yii\db\Command
                 $result = $cache->get($cacheKey);
                 if (is_array($result) && isset($result[0])) {
                     Yii::trace('Query result served from cache', 'yii\db\Command::query');
+
                     return $result[0];
                 }
             }
         }
         $token = $rawSql;
         $result = null;
-        try
-        {
+        try {
             Yii::beginProfile($token, 'yii\db\Command::query');
             if ($fetchMode === null) {
                 $fetchMode = $this->fetchMode;
@@ -273,23 +279,32 @@ class Command extends \yii\db\Command
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
             Yii::trace('Saved query result in cache', 'yii\db\Command::query');
         }
+
         return $result;
     }
 
     /**
-     * Execute sql by mysql pool
+     * Execute sql by mysql pool.
+     *
      * @TODO support slave
      * @TODO support transaction
+     *
      * @param $sql
-     * @param bool $isExecute
+     * @param bool   $isExecute
      * @param string $method
-     * @param null $fetchMode
-     * @param null $forRead
+     * @param null   $fetchMode
+     * @param null   $forRead
+     *
      * @return mixed
      */
     public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
-        $Res = $this->pool->$method($sql,[]);
+        if ($method) {
+            $Res = $this->pool->$method($sql, []);
+        } else {
+            $Res = $this->pool->fetch($sql, []);
+        }
+
         return $Res;
     }
 }
