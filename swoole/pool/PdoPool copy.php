@@ -3,19 +3,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 13:59:08
+ * @Last Modified time: 2022-09-04 00:32:07
  */
+
 namespace ddswoole\pool;
 
 use diandi\swoole\coroutine\Context;
-use diandi\swoole\coroutine\CoroutineHelp;
 use RuntimeException;
+use Swoole\Coroutine;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
-use Swoole\Coroutine;
-use Swoole\Runtime;
-use Swoole\Coroutine\Channel;
-use Yii;
 
 class PdoPool
 {
@@ -42,8 +39,8 @@ class PdoPool
 
     public $connected = false;
 
-    public function __construct($config,$poolName='')
-    {   
+    public function __construct($config, $poolName = '')
+    {
         //设置一个容量为1的通道
         $this->setConfig($config);
         //执行mysql相关 操作
@@ -51,7 +48,7 @@ class PdoPool
     }
 
     public function init()
-    {   
+    {
         if (empty($this->getPools())) {
             $config = $this->getConfig();
             $pools = new SwoolePDOPool(
@@ -71,7 +68,7 @@ class PdoPool
     }
 
     public function getInstance()
-    { 
+    {
         $instance = $this->_instance;
         $config = $this->getConfig();
         if (empty($instance)) {
@@ -84,8 +81,8 @@ class PdoPool
 
             $instance = new static($config);
         }
+
         return $instance;
-        
     }
 
     public function setInstance($value)
@@ -137,85 +134,162 @@ class PdoPool
 
     public function doQuery($sql, $bingId)
     {
-        var_dump(Yii::$app->db);
         $Connection = $this->getConnection();
+
         return $Connection->prepare($sql, $bingId);
     }
 
-
-    public function fetch($sql, $param = [],$toArray = false)
+    public function query($sql, $param = [], $toArray = false)
     {
-        echo "查询结果 ". " start\n";
         $pools = $this->getPools();
-        echo "查询中1coro " . $sql . " start\n";
         $pdo = $pools->get();
         $statement = $pdo->prepare($sql);
-        echo "查询中1-2coro " . Coroutine::getcid() . " start\n";
         if (!$statement) {
             throw new RuntimeException('Prepare failed');
         }
-        echo "查询中2coro " . Coroutine::getcid() . " start\n";
-        
+
         $result = $statement->execute($param);
         if (!$result) {
             throw new RuntimeException('Execute failed');
         }
-        echo "查询中3coro " . Coroutine::getcid() . " start\n";
-        
+
         $result = $statement->fetchAll();
-        echo "查询中4coro " . Coroutine::getcid() . " start\n";
+        echo '查询中4coro '.Coroutine::getcid()." start\n";
         var_dump($result);
         $this->close($pdo);
-        
-        Context::setContextDataByKey('456',$result);
-          echo "查询结果 ". " start\n";
-        
-          var_dump($result);
-        if (!$toArray) return $result;
-        
+
+        Context::setContextDataByKey('456', $result);
+        echo '查询结果 '." start\n";
+
+        var_dump($result);
+        if (!$toArray) {
+            return $result;
+        }
+
         $res1 = [];
-        foreach ($result as $k=>$v)
-            $res1[] = (array)$v;
+        foreach ($result as $k => $v) {
+            $res1[] = (array) $v;
+        }
+
         return $res1;
         \go(function () use ($pools,$sql,$param,$toArray) {
-              echo "查询中1coro " . $sql . " start\n";
-              $pdo = $pools->get();
-              $statement = $pdo->prepare($sql);
-              echo "查询中1-2coro " . Coroutine::getcid() . " start\n";
-              if (!$statement) {
-                  throw new RuntimeException('Prepare failed');
-              }
-              echo "查询中2coro " . Coroutine::getcid() . " start\n";
-              
-              $result = $statement->execute($param);
-              if (!$result) {
-                  throw new RuntimeException('Execute failed');
-              }
-              echo "查询中3coro " . Coroutine::getcid() . " start\n";
-              
-              $result = $statement->fetchAll();
-              echo "查询中4coro " . Coroutine::getcid() . " start\n";
-              var_dump($result);
-              $this->close($pdo);
-              
-              Context::setContextDataByKey('456',$result);
-                echo "查询结果 ". " start\n";
-              
-                var_dump($result);
-              if (!$toArray) return $result;
-              
-              $res1 = [];
-              foreach ($result as $k=>$v)
-                  $res1[] = (array)$v;
-              return $res1;
+            echo '查询中1coro '.$sql." start\n";
+            $pdo = $pools->get();
+            $statement = $pdo->prepare($sql);
+            echo '查询中1-2coro '.Coroutine::getcid()." start\n";
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+            echo '查询中2coro '.Coroutine::getcid()." start\n";
+
+            $result = $statement->execute($param);
+            if (!$result) {
+                throw new RuntimeException('Execute failed');
+            }
+            echo '查询中3coro '.Coroutine::getcid()." start\n";
+
+            $result = $statement->fetchAll();
+            echo '查询中4coro '.Coroutine::getcid()." start\n";
+            var_dump($result);
+            $this->close($pdo);
+
+            Context::setContextDataByKey('456', $result);
+            echo '查询结果 '." start\n";
+
+            var_dump($result);
+            if (!$toArray) {
+                return $result;
+            }
+
+            $res1 = [];
+            foreach ($result as $k => $v) {
+                $res1[] = (array) $v;
+            }
+
+            return $res1;
         });
-        
     }
 
-    public function fetchAll($sql, $param = [],$toArray = false)
+    public function fetch($sql, $param = [], $toArray = false)
+    {
+        echo '查询结果 '." start\n";
+        $pools = $this->getPools();
+        echo '查询中1coro '.$sql." start\n";
+        $pdo = $pools->get();
+        $statement = $pdo->prepare($sql);
+        echo '查询中1-2coro '.Coroutine::getcid()." start\n";
+        if (!$statement) {
+            throw new RuntimeException('Prepare failed');
+        }
+        echo '查询中2coro '.Coroutine::getcid()." start\n";
+
+        $result = $statement->execute($param);
+        if (!$result) {
+            throw new RuntimeException('Execute failed');
+        }
+        echo '查询中3coro '.Coroutine::getcid()." start\n";
+
+        $result = $statement->fetchAll();
+        echo '查询中4coro '.Coroutine::getcid()." start\n";
+        var_dump($result);
+        $this->close($pdo);
+
+        Context::setContextDataByKey('456', $result);
+        echo '查询结果 '." start\n";
+
+        var_dump($result);
+        if (!$toArray) {
+            return $result;
+        }
+
+        $res1 = [];
+        foreach ($result as $k => $v) {
+            $res1[] = (array) $v;
+        }
+
+        return $res1;
+        \go(function () use ($pools,$sql,$param,$toArray) {
+            echo '查询中1coro '.$sql." start\n";
+            $pdo = $pools->get();
+            $statement = $pdo->prepare($sql);
+            echo '查询中1-2coro '.Coroutine::getcid()." start\n";
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+            echo '查询中2coro '.Coroutine::getcid()." start\n";
+
+            $result = $statement->execute($param);
+            if (!$result) {
+                throw new RuntimeException('Execute failed');
+            }
+            echo '查询中3coro '.Coroutine::getcid()." start\n";
+
+            $result = $statement->fetchAll();
+            echo '查询中4coro '.Coroutine::getcid()." start\n";
+            var_dump($result);
+            $this->close($pdo);
+
+            Context::setContextDataByKey('456', $result);
+            echo '查询结果 '." start\n";
+
+            var_dump($result);
+            if (!$toArray) {
+                return $result;
+            }
+
+            $res1 = [];
+            foreach ($result as $k => $v) {
+                $res1[] = (array) $v;
+            }
+
+            return $res1;
+        });
+    }
+
+    public function fetchAll($sql, $param = [], $toArray = false)
     {
         $pools = $this->getPools();
-        echo "fetchAll-coro " . Coroutine::getcid() . " start\n";
+        echo 'fetchAll-coro '.Coroutine::getcid()." start\n";
         $pdo = $pools->get();
         echo '准备查询';
 
@@ -224,76 +298,87 @@ class PdoPool
         if (!$statement) {
             throw new RuntimeException('Prepare failed');
         }
-        
+
         $result = $statement->execute($param);
-        
+
         if (!$result) {
             throw new RuntimeException('Execute failed');
         }
         $result = $statement->fetchAll();
         $this->close($pdo);
-        Context::setContextDataByKey('456',$result);
-        if (!$toArray) return $result;
-        
-        $res1 = [];
-        foreach ($result as $k=>$v)
-            $res1[] = (array)$v;
-        return $res1;
-        
-        \go(function () use ($pools,$sql,$param,$toArray) {
-              echo "fetchAll-coro " . Coroutine::getcid() . " start\n";
-              $pdo = $pools->get();
-              echo '准备查询';
+        Context::setContextDataByKey('456', $result);
+        if (!$toArray) {
+            return $result;
+        }
 
-              $statement = $pdo->prepare($sql);
-              echo '结果';
-              if (!$statement) {
-                  throw new RuntimeException('Prepare failed');
-              }
-              
-              $result = $statement->execute($param);
-              
-              if (!$result) {
-                  throw new RuntimeException('Execute failed');
-              }
-              $result = $statement->fetchAll();
-              $this->close($pdo);
-              Context::setContextDataByKey('456',$result);
-              if (!$toArray) return $result;
-              
-              $res1 = [];
-              foreach ($result as $k=>$v)
-                  $res1[] = (array)$v;
-              return $res1;
+        $res1 = [];
+        foreach ($result as $k => $v) {
+            $res1[] = (array) $v;
+        }
+
+        return $res1;
+
+        \go(function () use ($pools,$sql,$param,$toArray) {
+            echo 'fetchAll-coro '.Coroutine::getcid()." start\n";
+            $pdo = $pools->get();
+            echo '准备查询';
+
+            $statement = $pdo->prepare($sql);
+            echo '结果';
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+
+            $result = $statement->execute($param);
+
+            if (!$result) {
+                throw new RuntimeException('Execute failed');
+            }
+            $result = $statement->fetchAll();
+            $this->close($pdo);
+            Context::setContextDataByKey('456', $result);
+            if (!$toArray) {
+                return $result;
+            }
+
+            $res1 = [];
+            foreach ($result as $k => $v) {
+                $res1[] = (array) $v;
+            }
+
+            return $res1;
         });
     }
 
-
-    public function fetchColumn($sql, $param = [],$toArray = false)
+    public function fetchColumn($sql, $param = [], $toArray = false)
     {
         $pools = $this->getPools();
         $res = \go(function () use ($pools,$sql,$param,$toArray) {
-            echo "coro " . Coroutine::getcid() . " start\n";
-              $pdo = $pools->get();
-              $statement = $pdo->prepare($sql);
-              if (!$statement) {
-                  throw new RuntimeException('Prepare failed');
-              }
-              
-              $result = $statement->execute($param);
-              if (!$result) {
-                  throw new RuntimeException('Execute failed');
-              }
-              $result = $statement->fetchAll();
-              $this->close($pdo);
-  
-              Context::setContextDataByKey('456',$result);
-              if (!$toArray) return $result;
-              
-              $res1 = [];
-              foreach ($result as $k=>$v)
-                  $res1[] = (array)$v;
-              return $res1;
+            echo 'coro '.Coroutine::getcid()." start\n";
+            $pdo = $pools->get();
+            $statement = $pdo->prepare($sql);
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+
+            $result = $statement->execute($param);
+            if (!$result) {
+                throw new RuntimeException('Execute failed');
+            }
+            $result = $statement->fetchAll();
+            $this->close($pdo);
+
+            Context::setContextDataByKey('456', $result);
+            if (!$toArray) {
+                return $result;
+            }
+
+            $res1 = [];
+            foreach ($result as $k => $v) {
+                $res1[] = (array) $v;
+            }
+
+            return $res1;
         });
     }
 
@@ -301,5 +386,4 @@ class PdoPool
     {
         return $string;
     }
-
 }
