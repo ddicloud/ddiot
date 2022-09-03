@@ -4,7 +4,7 @@
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
 <<<<<<< HEAD
- * @Last Modified time: 2022-09-04 00:30:39
+ * @Last Modified time: 2022-09-04 00:49:33
 =======
  * @Last Modified time: 2022-09-04 00:36:36
 >>>>>>> 72ed4705af9061cbcdf1904b05c006ca959f303b
@@ -143,7 +143,7 @@ class Command extends \yii\db\Command
         if ($method) {
             $Res = $this->pool->$method($sql, []);
         } else {
-            $Res = $this->pool->query($sql, []);
+            $Res = $this->pool->fetch($sql, []);
         }
 
         return $Res;
