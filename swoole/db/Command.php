@@ -3,13 +3,18 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+<<<<<<< HEAD
  * @Last Modified time: 2022-09-04 00:30:39
+=======
+ * @Last Modified time: 2022-09-04 00:36:36
+>>>>>>> 72ed4705af9061cbcdf1904b05c006ca959f303b
  */
 
 namespace ddswoole\db;
 
 use common\helpers\StringHelper;
 use ddswoole\pool\PdoPool;
+use ddswoole\servers\DebugService;
 use Yii;
 
 /**
@@ -64,6 +69,7 @@ class Command extends \yii\db\Command
             return $n;
         } catch (\Exception $e) {
             Yii::endProfile($token, __METHOD__);
+            DebugService::backtrace();
             throw $this->db->getSchema()->convertException($e, $rawSql);
         }
     }
@@ -106,6 +112,7 @@ class Command extends \yii\db\Command
             $result = $this->doQuery($rawSql, false, $method, $fetchMode);
             Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
+            DebugService::backtrace();
             Yii::endProfile($token, 'yii\db\Command::query');
             throw $e;
         }
