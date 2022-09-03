@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 21:46:01
+ * @Last Modified time: 2022-09-03 08:17:42
  */
 
 namespace ddswoole\interfaces;
@@ -21,7 +21,7 @@ interface SocketServer
     
     public function handles(Request $request, Response $ws);
 
-    public function addlistenerPort();
+    public function addlistenerPort($channel);
 
     /**
      * 响应消息处理
@@ -32,6 +32,6 @@ interface SocketServer
      * @author Wang Chunsheng
      * @since
      */
-    public function messageReturn(Request $request, Response $ws,$message);
+    public function messageReturn(Request $request, Response $ws,$message,$channel);
 
 }
