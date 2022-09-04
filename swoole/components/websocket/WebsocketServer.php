@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-04 02:55:12
+ * @Last Modified time: 2022-09-04 09:03:57
  */
 
 namespace ddswoole\components\websocket;
@@ -16,7 +16,6 @@ use ddswoole\servers\AccessTokenService;
 use diandi\swoole\web\Application;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
-use Swoole\Http\Response;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
 {
@@ -56,10 +55,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
-    }
-
-    public function handles(Request $request, Response $ws)
-    {
     }
 
     /**
