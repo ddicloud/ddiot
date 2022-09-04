@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-04 09:03:57
+ * @Last Modified time: 2022-09-05 00:01:35
  */
 
 namespace ddswoole\components\websocket;
@@ -71,6 +71,25 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
      */
     public function addlistenerPort($channel)
     {
+    }
+
+    /**
+     * 上下文初始化.
+     *
+     * @param [type] $type
+     *
+     * @return void
+     * @date 2022-09-05
+     *
+     * @example
+     *
+     * @author Li Jinfang
+     *
+     * @since
+     */
+    public function ContextInit($type)
+    {
+        // code...
     }
 
     /**
