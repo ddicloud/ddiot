@@ -3,11 +3,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-04 00:35:05
+ * @Last Modified time: 2022-09-04 21:37:59
  */
+
 namespace ddswoole\pool;
 
-use diandi\swoole\coroutine\Context;
 use RuntimeException;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
@@ -79,8 +79,8 @@ class PdoPool
 
             $instance = new static($config);
         }
-        return $instance;
 
+        return $instance;
     }
 
     public function setInstance($value)
@@ -127,15 +127,15 @@ class PdoPool
 
     public function close($connection = null)
     {
-        $this->_pools->put($connection);
+        $this->_pools->put($this->getConnection());
     }
 
     public function doQuery($sql, $bingId)
     {
         $Connection = $this->getConnection();
+
         return $Connection->prepare($sql, $bingId);
     }
-
 
     public function query($sql, $param = [], $toArray = false)
     {
@@ -247,8 +247,6 @@ class PdoPool
         }
         $result = $statement->fetchAll();
         $this->close($pdo);
-
-        Context::setContextDataByKey('456', $result);
         if (!$toArray) {
             return $result;
         }
@@ -259,12 +257,10 @@ class PdoPool
         }
 
         return $res1;
-
     }
 
     public function escape($string)
     {
         return $string;
     }
-
 }
