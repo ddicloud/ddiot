@@ -3,24 +3,19 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-03 08:01:21
+ * @Last Modified time: 2022-09-04 09:03:57
  */
 
 namespace ddswoole\components\websocket;
 
-use common\helpers\ArrayHelper;
 use common\helpers\loggingHelper;
-use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
-use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
 use diandi\swoole\web\Application;
+use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
-use Swoole\Http\Response;
-use Yii;
-
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
 {
@@ -28,50 +23,57 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
     public $onWorkStartCallable;
 
-   
-    
     private $application;
 
     private $config;
 
+    public $channelNum = 20;
+
     /**
-     * 重新实例化application
+     * 重新实例化application.
+     *
      * @param [type] $config
      * @param [type] $callable
      * @date 2022-09-02
+     *
      * @example
+     *
      * @author Wang Chunsheng
+     *
      * @since
      */
-    public function __construct($config, $callable) {
+    public function __construct($config, $callable)
+    {
         parent::__construct($config);
-        $this->onWorkStartCallable = $callable; 
-        $this->config = $config['app']; 
+        $this->onWorkStartCallable = $callable;
+        $this->config = $config['app'];
     }
-
 
     public function run()
     {
         $this->application = new Application($this->config);
-        if(!empty($this->tables) && is_array($this->tables)){
+        if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
     }
 
     /**
-     * 增加监听
+     * 增加监听.
+     *
      * @return void
      * @date 2022-09-02
+     *
      * @example
+     *
      * @author Wang Chunsheng
+     *
      * @since
      */
     public function addlistenerPort($channel)
     {
-        
     }
 
-      /**
+    /**
      * 工作进程启动时实例化框架.
      *
      * @param \Swoole\Http\Server $server
@@ -81,13 +83,11 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
      */
     public function onWorkerStart(\Swoole\WebSocket\Server $server, $workerId)
     {
-        if($this->onWorkStartCallable){
-            call_user_func_array([$this->onWorkStartCallable,'bootstrap'], [$this->application]);
+        if ($this->onWorkStartCallable) {
+            call_user_func_array([$this->onWorkStartCallable, 'bootstrap'], [$this->application]);
             // $this->onWorkStartCallable = null;
         }
     }
-
-
 
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
@@ -161,7 +161,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             return false;
         }
 
-        $key = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
+        $key = base64_encode(sha1($request->header['sec-websocket-key'].'258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
         $headers = [
             'Upgrade' => 'websocket',
             'Connection' => 'Upgrade',
@@ -182,25 +182,27 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         $accessToken = $request->get['access_token'];
         if (!empty($token)) {
             var_dump('accessToken 没有设置');
+
             return false;
         } else {
             if ($this->checkAccess($accessToken)) {
                 $response->status(101);
+
                 return true;
             } else {
                 var_dump('accessToken 校验失败');
+
                 return false;
             }
         }
 
         // 接受握手 还需要101状态码以切换状态
         $response->status(101);
-        var_dump('shake success at fd :' . $request->fd);
+        var_dump('shake success at fd :'.$request->fd);
 
         return true;
     }
 
-  
     public function checkAccess($accessToken)
     {
         $AccessTokenService = new AccessTokenService();
