@@ -3,12 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 17:10:59
+ * @Last Modified time: 2022-09-05 17:19:02
  */
 
 namespace ddswoole\db\mysql;
- 
 
+use common\helpers\StringHelper;
 use PDOException;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
@@ -164,8 +164,29 @@ class PoolPDO
             $config = $cm->poolConfig['mysql'] ?? [];
             $dbPool = new DbPool($config);
 //            $config = $this->config;
-            $dbPool->createHandle = function () use ($config) {
-                $client = new PdoPool($config);
+
+            $config = require yii::getAlias('@common/config/db.php');
+            // mysql:host=127.0.0.1;dbname=20220628;port=3306
+            list($dri, $dsn) = explode(':', $config['dsn']);
+            $requestParam = StringHelper::parseAttr($dsn);
+            foreach ($requestParam as $key => $value) {
+                list($k, $v) = explode('=', $value);
+                $dsnArr[$k] = $v;
+            }
+
+
+            $dbPool->createHandle = function () use ($dsnArr,$config) {
+                $client = new PdoPool([
+                    'host' => $dsnArr['host'],
+                    'port' => $dsnArr['port'],
+                    'database' => $dsnArr['dbname'],
+                    'username' => $config['username'],
+                    'password' => $config['password'],
+                    'charset' => 'utf8mb4',
+                    'unixSocket' => null,
+                    'options' => [],
+                    'size' => 64,
+                ]);
                 \Yii::trace('create new mysql connection', __METHOD__);
                 return $client;
             };
