@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 18:59:23
+ * @Last Modified time: 2022-09-05 20:45:42
  */
 namespace ddswoole\db;
 
@@ -46,9 +46,9 @@ class Command extends \yii\db\Command
     {
         if ($sql !== $this->_sql) {
             $this->cancel();
-            $this->_sql              = $this->db->quoteSql($sql);
-            $this->_pendingParams    = [];
-            $this->params            = [];
+            $this->_sql = $this->db->quoteSql($sql);
+            $this->_pendingParams = [];
+            $this->params = [];
             $this->_refreshTableName = null;
         }
         return $this;
@@ -136,7 +136,7 @@ class Command extends \yii\db\Command
             $dataType = $this->db->getSchema()->getPdoType($value);
         }
         $this->_pendingParams[$name] = [$value, $dataType];
-        $this->params[$name]         = $value;
+        $this->params[$name] = $value;
         return $this;
     }
     /**
@@ -159,11 +159,11 @@ class Command extends \yii\db\Command
         foreach ($values as $name => $value) {
             if (is_array($value)) {
                 $this->_pendingParams[$name] = $value;
-                $this->params[$name]         = $value[0];
+                $this->params[$name] = $value[0];
             } else {
-                $type                        = $schema->getPdoType($value);
+                $type = $schema->getPdoType($value);
                 $this->_pendingParams[$name] = [$value, $type];
-                $this->params[$name]         = $value;
+                $this->params[$name] = $value;
             }
         }
         return $this;
@@ -225,7 +225,7 @@ class Command extends \yii\db\Command
                 $this->errorCount++;
                 return $this->prepare($forRead);
             }
-            $message   = $e->getMessage() . "\nFailed to prepare SQL: $sql";
+            $message = $e->getMessage() . "\nFailed to prepare SQL: $sql";
             $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
             throw new Exception($message, $errorInfo, (int) $e->getCode(), $e);
         }
@@ -233,15 +233,15 @@ class Command extends \yii\db\Command
 
     public function queryInternal($method, $fetchMode = null, $reconnect = 0)
     {
-        $rawSql       = $this->getRawSql();
-        $oldMethod    = $method;
+        $rawSql = $this->getRawSql();
+        $oldMethod = $method;
         $oldFetchMode = $fetchMode;
         Yii::info($rawSql, 'yii\db\Command::query');
         if ($method !== '') {
             $info = $this->db->getQueryCacheInfo($this->queryCacheDuration, $this->queryCacheDependency);
             if (is_array($info)) {
                 /* @var $cache \yii\caching\Cache */
-                $cache    = $info[0];
+                $cache = $info[0];
                 $cacheKey = [
                     __CLASS__,
                     $method,
