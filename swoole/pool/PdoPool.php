@@ -3,17 +3,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 19:03:57
+ * @Last Modified time: 2022-09-05 21:55:15
  */
 
 namespace ddswoole\pool;
 
-use common\helpers\loggingHelper;
+use Exception;
 use RuntimeException;
-use Swoole\Database\PDOConfig;
-use Swoole\Database\PDOPool as SwoolePDOPool;
+use Swoole\Coroutine\MySQL;
+use yii\base\Component;
 
-class PdoPool
+class PdoPool extends Component
 {
     /**
      * @var array
@@ -38,37 +38,70 @@ class PdoPool
 
     public $connected = false;
 
-    public function __construct($config, $poolName = '')
-    {
-        //设置一个容量为1的通道
-        $this->setConfig($config);
-        //执行mysql相关 操作
-        $return = $this->init();
-    }
-
     public function init()
     {
-        loggingHelper::writeLog('PdoPool','init','连接池初始化',[
-            'getPools'=>$this->getPools()
-        ]);
-        if (empty($this->getPools())) {
-            $config = $this->getConfig();
-            $pools = new SwoolePDOPool(
-                (new PDOConfig())
-                    ->withHost($config['host'])
-                    ->withPort($config['port'])
-                    ->withUnixSocket($config['unixSocket'])
-                    ->withDbName($config['database'])
-                    ->withCharset($config['charset'])
-                    ->withUsername($config['username'])
-                    ->withPassword($config['password'])
-                    ->withOptions($config['options']),
-                $config['size']
-            );
-            $this->setPools($pools);
+        $this->mysqlConfig = array_merge($this->defaultMysqlConfig, $this->mysqlConfig);
+        $this->poolQueue = new \SplQueue();
+        for ($i = 0; $i < $this->minSize; $i++) {
+            $conenct = $this->openOneConnect();
+            $this->releaseConnect($conenct);
         }
+        parent::init();
     }
 
+    protected function openOneConnect()
+    {
+        $swoole_mysql = new MySQL();
+        $swoole_mysql->connect($this->mysqlConfig);
+        if ($swoole_mysql->connected === false) {
+            throw new Exception($swoole_mysql->connect_error, [], $swoole_mysql->connect_errno);
+        }
+        $this->resources[(string) $swoole_mysql->sock] = $swoole_mysql;
+        return $swoole_mysql;
+    }
+
+    protected function releaseConnect(MySQL $connect)
+    {
+        if (!$connect) {
+            return;
+        }
+        if (!$connect->connected) {
+            $this->close($connect);
+            return;
+        }
+        $this->poolQueue->enqueue($connect);
+    }
+
+    // public function __construct($config, $poolName = '')
+    // {
+    //     //设置一个容量为1的通道
+    //     $this->setConfig($config);
+    //     //执行mysql相关 操作
+    //     $return = $this->init();
+    // }
+
+    // public function init()
+    // {
+    //     loggingHelper::writeLog('PdoPool', 'init', '连接池初始化', [
+    //         'getPools' => $this->getPools(),
+    //     ]);
+    //     if (empty($this->getPools())) {
+    //         $config = $this->getConfig();
+    //         $pools = new SwoolePDOPool(
+    //             (new PDOConfig())
+    //                 ->withHost($config['host'])
+    //                 ->withPort($config['port'])
+    //                 ->withUnixSocket($config['unixSocket'])
+    //                 ->withDbName($config['database'])
+    //                 ->withCharset($config['charset'])
+    //                 ->withUsername($config['username'])
+    //                 ->withPassword($config['password'])
+    //                 ->withOptions($config['options']),
+    //             $config['size']
+    //         );
+    //         $this->setPools($pools);
+    //     }
+    // }
 
     public function getInstance()
     {

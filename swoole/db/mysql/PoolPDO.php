@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 21:34:23
+ * @Last Modified time: 2022-09-05 21:35:40
  */
 
 namespace ddswoole\db\mysql;
@@ -54,7 +54,7 @@ class PoolPDO
     /**
      * @var string
      */
-    public $poolClass = 'swooleService\pool\DbPool';
+    public $poolClass = 'ddswoole\pool\DbPool';
 
     protected $_lastInsertId = 0;
 
