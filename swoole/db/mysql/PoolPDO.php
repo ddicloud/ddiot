@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 17:19:02
+ * @Last Modified time: 2022-09-05 17:24:19
  */
 
 namespace ddswoole\db\mysql;
@@ -98,26 +98,11 @@ class PoolPDO
         if (!empty($options[static::POOL_TIMEOUT])) {
             $parsedDsn[static::POOL_TIMEOUT] = $options[static::POOL_TIMEOUT];
         }
-
         unset($parsedDsn['dbname'], $options[static::POOL_TIMEOUT]);
-
         $options['mysqlConfig'] = $parsedDsn;
         $options['class'] = !empty($options['class']) ? $options['class'] : $this->poolClass;
-
         $this->options = $options;
-
-        $PoolPdoPool = new DbPool([
-            'host' => $options['mysqlConfig']['host'],
-            'port' => $options['mysqlConfig']['port'],
-            'database' => $options['mysqlConfig']['database'],
-            'username' => $options['mysqlConfig']['user'],
-            'password' => $options['mysqlConfig']['password'],
-            'charset' => 'utf8mb4',
-            'unixSocket' => null,
-            'options' => [],
-            'size' => 64,
-        ]);
-        $this->pool = $PoolPdoPool->getPool();
+        $this->poolKey = $this->buildPoolKey();
     }
 
     /**
