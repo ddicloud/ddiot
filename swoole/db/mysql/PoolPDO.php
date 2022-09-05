@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 22:01:31
+ * @Last Modified time: 2022-09-05 22:04:54
  */
 
 namespace ddswoole\db\mysql;
@@ -329,7 +329,7 @@ class PoolPDO
             throw new PDOException('Only PDO::PARAM_STR is currently implemented for the $parameter_type of MysqlPoolPdo::quote()');
         }
 
-        return $this->pool->escape($string);
+        return "'" . str_replace("'", "''", $string) . "'";
     }
 
     /**
