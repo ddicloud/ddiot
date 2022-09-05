@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 15:51:46
+ * @Last Modified time: 2022-09-05 15:56:18
  */
 namespace ddswoole\db;
 
@@ -275,17 +275,9 @@ class Command extends \yii\db\Command
             }
             YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
-            if ($this->isConnectionError($e) && $this->errorCount < $this->maxErrorTimes) {
-                $this->cancel();
-                $this->db->close();
-                $this->db->open();
-                $this->_pendingParams = $bakPendingParams;
-                $this->errorCount++;
-                return $this->queryInternal($oldMethod, $oldFetchMode);
-            }
-            YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
             DebugService::backtrace();
-            throw $this->db->getSchema()->convertException($e, $rawSql);
+            Yii::endProfile($token, 'yii\db\Command::query');
+            throw $e;
         }
         if (isset($cache, $cacheKey, $info)) {
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
