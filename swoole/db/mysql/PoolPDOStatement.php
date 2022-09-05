@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 16:21:11
+ * @Last Modified time: 2022-09-05 16:24:05
  */
 
 namespace ddswoole\db\mysql;
@@ -76,22 +76,7 @@ class PoolPDOStatement extends \PDOStatement
         unset($this->_resultData, $this->_boundColumns, $this->statement);
     }
 
-    public function execute($input_parameters = null)
-    {
-        try {
-            $client = $this->pdo->getClient();
-            $this->data = $client->query($this->getRawSql());
-            $this->affected_rows = $client->affected_rows;
-            if ($this->data === false && $client->error != null) {
-                throw new \PDOException($client->error,$client->errno);
-            }
-        } finally {
-            if (!$this->pdo->inTransaction()) {
-                $this->pdo->releaseConnect();
-            }
-        }
-        return is_array($this->data);
-    }
+    
 
     
     public function setQueryString($queryString)
