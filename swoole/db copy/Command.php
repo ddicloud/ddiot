@@ -3,17 +3,24 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 15:28:18
+ * @Last Modified time: 2022-09-05 15:27:44
  */
+
+
 namespace ddswoole\db;
 
-
+use common\helpers\StringHelper;
+use ddswoole\pool\PdoPool;
+use ddswoole\servers\DebugService;
 use Yii;
-use yii\base\Exception;
-use yii\db\DataReader;
 
+/**
+ * Class Command.
+ */
 class Command extends \yii\db\Command
 {
+    private $pool;
+
     /**
      * @var array pending parameters to be bound to the current PDO statement.
      */
@@ -168,80 +175,69 @@ class Command extends \yii\db\Command
         }
         return $this;
     }
+
+    public function __construct()
+    {
+        $config = require yii::getAlias('@common/config/db.php');
+        // mysql:host=127.0.0.1;dbname=20220628;port=3306
+        list($dri, $dsn) = explode(':', $config['dsn']);
+        $requestParam = StringHelper::parseAttr($dsn);
+        foreach ($requestParam as $key => $value) {
+            list($k, $v) = explode('=', $value);
+            $dsnArr[$k] = $v;
+        }
+
+        $this->pool = new PdoPool([
+            'host' => $dsnArr['host'],
+            'port' => $dsnArr['port'],
+            'database' => $dsnArr['dbname'],
+            'username' => $config['username'],
+            'password' => $config['password'],
+            'charset' => 'utf8mb4',
+            'unixSocket' => null,
+            'options' => [],
+            'size' => 64,
+        ]);
+    }
+
     /**
-     * 检查指定的异常是否为可以重连的错误类型
-     *
-     * @param \Exception $exception
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isConnectionError($exception)
+    public function execute()
     {
-        if ($exception instanceof \PDOException) {
-            $errorInfo = $this->pdoStatement->errorInfo();
-            if ($errorInfo[1] == 70100 || $errorInfo[1] == 2006 || $errorInfo[1] == 2013) {
-                return true;
-            }
-        }
-        $message = $exception->getMessage();
-        if (strpos($message, 'Error while sending QUERY packet.') !== false) {
-            return true;
-        }
-        // Error reading result set's header
-        if (strpos($message, 'Error reading result set\'s header') !== false) {
-            return true;
-        }
-        // MySQL server has gone away
-        if (strpos($message, 'MySQL server has gone away') !== false) {
-            return true;
-        }
-        return false;
-    }
-
-    public function prepare($forRead = null)
-    {
-        if ($this->pdoStatement) {
-            $this->bindPendingParams();
-            return false;
-        }
         $sql = $this->getSql();
-        if ($this->db->getTransaction()) {
-            // master is in a transaction. use the same connection.
-            $forRead = false;
+        $rawSql = $this->getRawSql();
+        Yii::info($rawSql, __METHOD__);
+        if ($sql == '') {
+            return 0;
         }
-        if ($forRead || $forRead === null && $this->db->getSchema()->isReadQuery($sql)) {
-            $pdo = $this->db->getSlavePdo();
-        } else {
-            $pdo = $this->db->getMasterPdo();
-        }
+        $token = $rawSql;
         try {
-            $this->pdoStatement = $pdo->prepare($sql);
-            $this->bindPendingParams();
-            return true;
-        } catch (\Throwable $e) {
-            if ($this->isConnectionError($e) && $this->errorCount < $this->maxErrorTimes) {
-                $this->cancel();
-                $this->db->close();
-                $this->db->open();
-                $this->errorCount++;
-                return $this->prepare($forRead);
-            }
-            $message   = $e->getMessage() . "\nFailed to prepare SQL: $sql";
-            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
-            throw new Exception($message, $errorInfo, (int) $e->getCode(), $e);
+            Yii::beginProfile($token, __METHOD__);
+            $n = $this->doQuery($rawSql, true, '');
+            Yii::endProfile($token, __METHOD__);
+            $this->refreshTableSchema();
+
+            return $n;
+        } catch (\Exception $e) {
+            Yii::endProfile($token, __METHOD__);
+            DebugService::backtrace();
+            throw $this->db->getSchema()->convertException($e, $rawSql);
         }
     }
 
-    public function queryInternal($method, $fetchMode = null, $reconnect = 0)
+    /**
+     * {@inheritdoc}
+     */
+    public function queryInternal($method, $fetchMode = [])
     {
-        $rawSql       = $this->getRawSql();
-        $oldMethod    = $method;
-        $oldFetchMode = $fetchMode;
+        $rawSql = $this->getRawSql();
         Yii::info($rawSql, 'yii\db\Command::query');
         if ($method !== '') {
             $info = $this->db->getQueryCacheInfo($this->queryCacheDuration, $this->queryCacheDependency);
             if (is_array($info)) {
                 /* @var $cache \yii\caching\Cache */
-                $cache    = $info[0];
+                $cache = $info[0];
                 $cacheKey = [
                     __CLASS__,
                     $method,
@@ -253,97 +249,55 @@ class Command extends \yii\db\Command
                 $result = $cache->get($cacheKey);
                 if (is_array($result) && isset($result[0])) {
                     Yii::trace('Query result served from cache', 'yii\db\Command::query');
+
                     return $result[0];
                 }
             }
         }
-        $bakPendingParams = $this->_pendingParams;
-        $this->prepare(true);
         $token = $rawSql;
+        $result = null;
         try {
-            YII_DEBUG && Yii::beginProfile($token, 'yii\db\Command::query');
-            // @link https://bugs.php.net/bug.php?id=74401
-            $this->pdoStatement->execute();
-            if ($method === '') {
-                $result = new DataReader($this);
-            } else {
-                if ($fetchMode === null) {
-                    $fetchMode = $this->fetchMode;
-                }
-                $result = $this->pdoStatement->$method($fetchMode);
-                $this->pdoStatement->closeCursor();
+            Yii::beginProfile($token, 'yii\db\Command::query');
+            if ($fetchMode === null) {
+                $fetchMode = $this->fetchMode;
             }
-            YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
+            $result = $this->doQuery($rawSql, false, $method, $fetchMode);
+            Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
-            if ($this->isConnectionError($e) && $this->errorCount < $this->maxErrorTimes) {
-                $this->cancel();
-                $this->db->close();
-                $this->db->open();
-                $this->_pendingParams = $bakPendingParams;
-                $this->errorCount++;
-                return $this->queryInternal($oldMethod, $oldFetchMode);
-            }
-            YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
-            throw $this->db->getSchema()->convertException($e, $rawSql);
+            DebugService::backtrace();
+            Yii::endProfile($token, 'yii\db\Command::query');
+            throw $e;
         }
         if (isset($cache, $cacheKey, $info)) {
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
             Yii::trace('Saved query result in cache', 'yii\db\Command::query');
         }
+
         return $result;
     }
 
-    public function execute()
-    {
-        $sql = $this->getSql();
-        $rawSql = $this->getRawSql();
-        Yii::info($rawSql, __METHOD__);
-        if ($sql == '') {
-            return 0;
-        }
-        $bakPendingParams = $this->_pendingParams;
-        $this->prepare(false);
-        $token = $rawSql;
-        try {
-            YII_DEBUG && Yii::beginProfile($token, __METHOD__);
-            // @link https://bugs.php.net/bug.php?id=74401
-            $this->pdoStatement->execute();
-            $n = $this->pdoStatement->rowCount();
-            YII_DEBUG && Yii::endProfile($token, __METHOD__);
-            $this->refreshTableSchema();
-            return $n;
-        } catch (\Throwable $e) {
-            if ($this->isConnectionError($e) && $this->errorCount < $this->maxErrorTimes) {
-                $this->cancel();
-                $this->db->close();
-                $this->db->open();
-                $this->_pendingParams = $bakPendingParams;
-                $this->errorCount++;
-                return $this->execute();
-            }
-            YII_DEBUG && Yii::endProfile($token, __METHOD__);
-            throw $this->db->getSchema()->convertException($e, $rawSql);
-        }
-    }
     /**
-     * Marks a specified table schema to be refreshed after command execution.
-     * @param string $name name of the table, which schema should be refreshed.
-     * @return $this this command instance
-     * @since 2.0.6
+     * Execute sql by mysql pool.
+     *
+     * @TODO support slave
+     * @TODO support transaction
+     *
+     * @param $sql
+     * @param bool   $isExecute
+     * @param string $method
+     * @param null   $fetchMode
+     * @param null   $forRead
+     *
+     * @return mixed
      */
-    protected function requireTableSchemaRefresh($name)
+    public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
     {
-        $this->_refreshTableName = $name;
-        return $this;
-    }
-    /**
-     * Refreshes table schema, which was marked by [[requireTableSchemaRefresh()]]
-     * @since 2.0.6
-     */
-    protected function refreshTableSchema()
-    {
-        if ($this->_refreshTableName !== null) {
-            $this->db->getSchema()->refreshTableSchema($this->_refreshTableName);
+        if ($method) {
+            $Res = $this->pool->$method($sql, []);
+        } else {
+            $Res = $this->pool->fetch($sql, []);
         }
+
+        return $Res;
     }
 }
