@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 16:42:35
+ * @Last Modified time: 2022-09-05 16:47:05
  */
 
 namespace ddswoole\db\mysql;
@@ -15,6 +15,7 @@ use ddswoole\pool\MysqlPool;
 use ddswoole\pool\PdoPool;
 use Yii;
 use yii\helpers\ArrayHelper;
+use Swoole\Coroutine\Mysql;
 
 class PoolPDO
 {
