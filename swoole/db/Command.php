@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 20:59:44
+ * @Last Modified time: 2022-09-05 21:26:14
  */
 namespace ddswoole\db;
 
@@ -264,7 +264,7 @@ class Command extends \yii\db\Command
             YII_DEBUG && Yii::beginProfile($token, 'yii\db\Command::query');
             // @link https://bugs.php.net/bug.php?id=74401
             $this->pdoStatement->setQueryString($rawSql);
-            $this->pdoStatement->execute();
+            $this->pdoStatement->execute($bakPendingParams);
             if ($method === '') {
                 $result = new DataReader($this);
             } else {

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 21:05:32
+ * @Last Modified time: 2022-09-05 21:23:18
  */
 
 namespace ddswoole\db\mysql;
@@ -108,7 +108,7 @@ class PoolPDO
 
     /**
      * 获取数据库连接
-     * @return void
+     * @return object
      * @date 2022-09-05
      * @example
      * @author Wang Chunsheng
