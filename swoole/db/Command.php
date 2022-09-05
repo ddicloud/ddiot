@@ -3,11 +3,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 15:28:18
+ * @Last Modified time: 2022-09-05 15:51:46
  */
 namespace ddswoole\db;
 
-
+use ddswoole\servers\DebugService;
 use Yii;
 use yii\base\Exception;
 use yii\db\DataReader;
@@ -284,6 +284,7 @@ class Command extends \yii\db\Command
                 return $this->queryInternal($oldMethod, $oldFetchMode);
             }
             YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
+            DebugService::backtrace();
             throw $this->db->getSchema()->convertException($e, $rawSql);
         }
         if (isset($cache, $cacheKey, $info)) {
