@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 11:06:32
+ * @Last Modified time: 2022-09-05 11:09:30
  */
 
 namespace ddswoole\components\websocket;
 
 use common\helpers\loggingHelper;
+use common\helpers\ResultHelper;
 use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
 use ddswoole\models\SwooleMember;
@@ -96,7 +97,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     {
         if ($message['type'] === 'HEARTBEAT') {
             // 心跳
-            $ws->push($this->socketJson(200, 'HEARTBEAT', '心跳成功'));
+            $ws->push(ResultHelper::socketJson('HEARTBEAT', 200, '心跳成功'));
 
             return false;
         }
