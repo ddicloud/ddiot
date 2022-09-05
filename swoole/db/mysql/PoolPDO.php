@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 21:23:18
+ * @Last Modified time: 2022-09-05 21:34:23
  */
 
 namespace ddswoole\db\mysql;
@@ -104,6 +104,8 @@ class PoolPDO
         $options['class'] = !empty($options['class']) ? $options['class'] : $this->poolClass;
         $this->options = $options;
         $this->poolKey = $this->buildPoolKey();
+
+        $this->pool = Yii::createObject($options);
     }
 
     /**
