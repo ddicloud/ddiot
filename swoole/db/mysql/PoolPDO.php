@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 15:13:59
+ * @Last Modified time: 2022-09-05 16:42:35
  */
 
 namespace ddswoole\db\mysql;
@@ -12,6 +12,7 @@ namespace ddswoole\db\mysql;
 use PDOException;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
+use ddswoole\pool\PdoPool;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -160,7 +161,7 @@ class PoolPDO
         $cm = \Yii::$app->getConnectionManager();
         if (!$cm->hasPool($this->poolKey)) {
             $pc = $cm->poolConfig['mysql'] ?? [];
-            $dbPool = new DbPool($pc);
+            $dbPool = new PdoPool($pc);
 //            $config = $this->config;
             $dbPool->createHandle = function () {
                 $client = new Mysql();
