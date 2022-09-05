@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 10:45:23
+ * @Last Modified time: 2022-09-05 11:06:32
  */
 
 namespace ddswoole\components\websocket;
@@ -90,6 +90,17 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     public function ContextInit($type)
     {
         // code...
+    }
+
+    public function heartbeat($ws, $message)
+    {
+        if ($message['type'] === 'HEARTBEAT') {
+            // 心跳
+            $ws->push($this->socketJson(200, 'HEARTBEAT', '心跳成功'));
+
+            return false;
+        }
+        return true;
     }
 
     /**
