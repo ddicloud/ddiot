@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 14:14:32
+ * @Last Modified time: 2022-09-05 14:48:01
  */
 
 namespace ddswoole\pool;
 
+use common\helpers\loggingHelper;
 use RuntimeException;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
@@ -47,6 +48,9 @@ class PdoPool
 
     public function init()
     {
+        loggingHelper::writeLog('PdoPool','init','连接池初始化',[
+            'getPools'=>$this->getPools()
+        ]);
         if (empty($this->getPools())) {
             $config = $this->getConfig();
             $pools = new SwoolePDOPool(
