@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 20:37:38
+ * @Last Modified time: 2022-09-05 21:05:32
  */
 
 namespace ddswoole\db\mysql;
@@ -123,7 +123,7 @@ class PoolPDO
         //     $this->client->connect($this->config);
         //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
         // }
-        return $this->client->getPools();
+        return $this->client->getPools()->get();
     }
 
     /**
@@ -326,7 +326,7 @@ class PoolPDO
         return $this->_bingId;
     }
 
-     /**
+    /**
      * @return bool
      */
     public function inTransaction()
