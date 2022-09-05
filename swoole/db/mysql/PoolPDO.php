@@ -3,19 +3,19 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 18:13:38
+ * @Last Modified time: 2022-09-05 20:37:38
  */
 
 namespace ddswoole\db\mysql;
 
 use common\helpers\StringHelper;
-use PDOException;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
 use ddswoole\pool\PdoPool;
+use PDOException;
+use Swoole\Coroutine\Mysql;
 use Yii;
 use yii\helpers\ArrayHelper;
-use Swoole\Coroutine\Mysql;
 
 class PoolPDO
 {
@@ -71,7 +71,7 @@ class PoolPDO
 
     protected $_bingId = null;
 
-        /**
+    /**
      * @var bool 是否在事务中
      */
     private $inTransaction;
@@ -85,6 +85,7 @@ class PoolPDO
      */
     public function __construct($dsn, $username, $password, $options)
     {
+        $this->dsn = $dsn;
         $parsedDsn = static::parseDsn($dsn, ['host', 'port', 'dbname', 'charset']);
 
         if (!empty($parsedDsn['unix_socket'])) {
@@ -125,7 +126,6 @@ class PoolPDO
         return $this->client->getPools();
     }
 
-
     /**
      * 释放链接
      */
@@ -159,8 +159,7 @@ class PoolPDO
                 $dsnArr[$k] = $v;
             }
 
-
-            $dbPool->createHandle = function () use ($dsnArr,$config) {
+            $dbPool->createHandle = function () use ($dsnArr, $config) {
                 $client = new PdoPool([
                     'host' => $dsnArr['host'],
                     'port' => $dsnArr['port'],
@@ -229,7 +228,7 @@ class PoolPDO
     {
         if (empty($data->result)) {
             return false;
-        } elseif ($fetchMode == PDO::FETCH_CLASS) {
+        } elseif ($fetchMode == \PDO::FETCH_CLASS) {
             throw new PDOException('PDO::FETCH_CLASS is not support');
         }
         return $data->result[0];
@@ -246,7 +245,7 @@ class PoolPDO
         if (empty($data->result)) {
             return [];
         }
-        if ($fetchMode == PDO::FETCH_COLUMN) {
+        if ($fetchMode == \PDO::FETCH_COLUMN) {
             $keys = array_keys($data->result[0]);
             $key = array_shift($keys);
             return ArrayHelper::getColumn($data->result, $key);
@@ -272,7 +271,7 @@ class PoolPDO
      * @param null $name
      * @return int
      */
-    
+
     public function lastInsertId($name = null)
     {
         return $this->_lastInsertId;
@@ -287,7 +286,7 @@ class PoolPDO
      * @param int $attribute
      * @return mixed|null
      */
-    
+
     public function getAttribute($attribute)
     {
         if (isset($this->options[$attribute])) {
@@ -315,7 +314,7 @@ class PoolPDO
         if ($parameter_type !== \PDO::PARAM_STR) {
             throw new PDOException('Only PDO::PARAM_STR is currently implemented for the $parameter_type of MysqlPoolPdo::quote()');
         }
-        
+
         return $this->pool->escape($string);
     }
 
@@ -343,7 +342,7 @@ class PoolPDO
         $this->_bingId = $sock;
         return $this->_isTransaction = true;
     }
-    
+
     /**
      * Returns true if the current process is in a transaction
      *
@@ -369,7 +368,7 @@ class PoolPDO
         $this->_isTransaction = false;
         return $ret;
     }
-    
+
     /**
      * Rolls back a transaction
      *
