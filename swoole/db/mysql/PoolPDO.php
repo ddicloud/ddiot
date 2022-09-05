@@ -326,6 +326,14 @@ class PoolPDO
         return $this->_bingId;
     }
 
+     /**
+     * @return bool
+     */
+    public function inTransaction()
+    {
+        return $this->inTransaction;
+    }
+
     /**
      * @inheritdoc
      */

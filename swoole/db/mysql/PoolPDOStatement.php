@@ -4,16 +4,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 16:28:51
+ * @Last Modified time: 2022-09-05 21:02:18
  */
 
 namespace ddswoole\db\mysql;
 
 use common\helpers\ArrayHelper;
+use ddswoole\pool\ResultData;
 use PDO;
 use PDOException;
 use PDOStatement;
-use ddswoole\pool\ResultData;
 
 /**
  *
@@ -76,9 +76,6 @@ class PoolPDOStatement extends \PDOStatement
         unset($this->_resultData, $this->_boundColumns, $this->statement);
     }
 
-    
-
-    
     public function setQueryString($queryString)
     {
         $this->sql = $queryString;
@@ -96,7 +93,7 @@ class PoolPDOStatement extends \PDOStatement
             $this->data = $client->query($this->getRawSql());
             $this->affected_rows = $client->affected_rows;
             if ($this->data === false && $client->error != null) {
-                throw new \PDOException($client->error,$client->errno);
+                throw new \PDOException($client->error, $client->errno);
             }
         } finally {
             if (!$this->pdo->inTransaction()) {
@@ -114,7 +111,7 @@ class PoolPDOStatement extends \PDOStatement
      */
     public function rowCount()
     {
-        if (is_array($this->data)){
+        if (is_array($this->data)) {
             return count($this->data);
         }
         return $this->affected_rows;
@@ -205,6 +202,6 @@ class PoolPDOStatement extends \PDOStatement
             return null;
         }
         $data = $this->data[++$this->_index];
-        return current(array_slice($data,$column_number,1));
+        return current(array_slice($data, $column_number, 1));
     }
 }
