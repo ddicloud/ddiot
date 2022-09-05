@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 15:56:18
+ * @Last Modified time: 2022-09-05 18:44:27
  */
 namespace ddswoole\db;
 
@@ -231,17 +231,18 @@ class Command extends \yii\db\Command
         }
     }
 
-    public function queryInternal($method, $fetchMode = null, $reconnect = 0)
+        /**
+     * {@inheritdoc}
+     */
+    public function queryInternal($method, $fetchMode = [])
     {
-        $rawSql       = $this->getRawSql();
-        $oldMethod    = $method;
-        $oldFetchMode = $fetchMode;
+        $rawSql = $this->getRawSql();
         Yii::info($rawSql, 'yii\db\Command::query');
         if ($method !== '') {
             $info = $this->db->getQueryCacheInfo($this->queryCacheDuration, $this->queryCacheDependency);
             if (is_array($info)) {
                 /* @var $cache \yii\caching\Cache */
-                $cache    = $info[0];
+                $cache = $info[0];
                 $cacheKey = [
                     __CLASS__,
                     $method,
@@ -253,27 +254,20 @@ class Command extends \yii\db\Command
                 $result = $cache->get($cacheKey);
                 if (is_array($result) && isset($result[0])) {
                     Yii::trace('Query result served from cache', 'yii\db\Command::query');
+
                     return $result[0];
                 }
             }
         }
-        $bakPendingParams = $this->_pendingParams;
-        $this->prepare(true);
         $token = $rawSql;
+        $result = null;
         try {
-            YII_DEBUG && Yii::beginProfile($token, 'yii\db\Command::query');
-            // @link https://bugs.php.net/bug.php?id=74401
-            $this->pdoStatement->execute();
-            if ($method === '') {
-                $result = new DataReader($this);
-            } else {
-                if ($fetchMode === null) {
-                    $fetchMode = $this->fetchMode;
-                }
-                $result = $this->pdoStatement->$method($fetchMode);
-                $this->pdoStatement->closeCursor();
+            Yii::beginProfile($token, 'yii\db\Command::query');
+            if ($fetchMode === null) {
+                $fetchMode = $this->fetchMode;
             }
-            YII_DEBUG && Yii::endProfile($token, 'yii\db\Command::query');
+            $result = $this->doQuery($rawSql, false, $method, $fetchMode);
+            Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Throwable $e) {
             DebugService::backtrace();
             Yii::endProfile($token, 'yii\db\Command::query');
@@ -283,6 +277,7 @@ class Command extends \yii\db\Command
             $cache->set($cacheKey, [$result], $info[1], $info[2]);
             Yii::trace('Saved query result in cache', 'yii\db\Command::query');
         }
+
         return $result;
     }
 
@@ -338,5 +333,31 @@ class Command extends \yii\db\Command
         if ($this->_refreshTableName !== null) {
             $this->db->getSchema()->refreshTableSchema($this->_refreshTableName);
         }
+    }
+
+
+      /**
+     * Execute sql by mysql pool.
+     *
+     * @TODO support slave
+     * @TODO support transaction
+     *
+     * @param $sql
+     * @param bool   $isExecute
+     * @param string $method
+     * @param null   $fetchMode
+     * @param null   $forRead
+     *
+     * @return mixed
+     */
+    public function doQuery($sql, $isExecute = false, $method = 'fetch', $fetchMode = null, $forRead = null)
+    {
+        if ($method) {
+            $Res = $this->pdoStatement->$method($sql, []);
+        } else {
+            $Res = $this->pdoStatement->fetch($sql, []);
+        }
+
+        return $Res;
     }
 }

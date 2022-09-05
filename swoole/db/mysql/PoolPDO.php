@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 17:24:19
+ * @Last Modified time: 2022-09-05 18:13:38
  */
 
 namespace ddswoole\db\mysql;
@@ -118,11 +118,11 @@ class PoolPDO
         if ($this->client === null) {
             $this->client = $this->getConnectionFromPool();
         }
-        if ($this->client->connected == false) {
-            $this->client->connect($this->config);
-            //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
-        }
-        return $this->client;
+        // if ($this->client->connected == false) {
+        //     $this->client->connect($this->config);
+        //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
+        // }
+        return $this->client->getPools();
     }
 
 
