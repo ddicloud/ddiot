@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-04 21:37:59
+ * @Last Modified time: 2022-09-05 14:14:32
  */
 
 namespace ddswoole\pool;
@@ -127,7 +127,7 @@ class PdoPool
 
     public function close($connection = null)
     {
-        $this->_pools->put($this->getConnection());
+        $this->_pools->put($connection);
     }
 
     public function doQuery($sql, $bingId)
