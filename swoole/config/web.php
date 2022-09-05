@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 16:29:18
+ * @Last Modified time: 2022-09-05 16:35:45
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -65,6 +65,16 @@ return [
                     'maxActive' => 10,
                     //当链接数满时,重新获取的等待时间,秒为单位
                     'waitTime' => 0.01,
+                    'host' =>'127.0.0.1',
+                    'port' =>3306,
+                    'unixSocket' =>null,
+                    'charset' =>'utf8',
+                    'database' =>'root',
+                    'username' =>$db['username'],
+                    'password' =>$db['password'],
+                    'options' =>[
+
+                    ]
                 ],
             ],
         ],
