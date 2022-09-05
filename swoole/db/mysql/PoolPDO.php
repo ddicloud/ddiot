@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 16:47:05
+ * @Last Modified time: 2022-09-05 17:10:59
  */
 
 namespace ddswoole\db\mysql;
@@ -161,11 +161,11 @@ class PoolPDO
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
         if (!$cm->hasPool($this->poolKey)) {
-            $pc = $cm->poolConfig['mysql'] ?? [];
-            $dbPool = new PdoPool($pc);
+            $config = $cm->poolConfig['mysql'] ?? [];
+            $dbPool = new DbPool($config);
 //            $config = $this->config;
-            $dbPool->createHandle = function () {
-                $client = new Mysql();
+            $dbPool->createHandle = function () use ($config) {
+                $client = new PdoPool($config);
                 \Yii::trace('create new mysql connection', __METHOD__);
                 return $client;
             };
