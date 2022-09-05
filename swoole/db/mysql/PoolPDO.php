@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 21:35:40
+ * @Last Modified time: 2022-09-05 22:01:31
  */
 
 namespace ddswoole\db\mysql;
@@ -105,7 +105,19 @@ class PoolPDO
         $this->options = $options;
         $this->poolKey = $this->buildPoolKey();
 
-        $this->pool = Yii::createObject($options);
+        $this->pool = $this->getPool();
+    }
+
+    public function getPool()
+    {
+        if ($this->client === null) {
+            $this->client = $this->getConnectionFromPool();
+        }
+        // if ($this->client->connected == false) {
+        //     $this->client->connect($this->config);
+        //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
+        // }
+        return $this->client->getPools();
     }
 
     /**
