@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 00:01:35
+ * @Last Modified time: 2022-09-05 10:45:23
  */
 
 namespace ddswoole\components\websocket;
@@ -13,8 +13,8 @@ use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
-use diandi\swoole\web\Application;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
+use diandi\swoole\web\Application;
 use Swoole\Http\Request;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
@@ -69,7 +69,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
      *
      * @since
      */
-    public function addlistenerPort($channel)
+    public function addlistenerPort($channelListener)
     {
     }
 
@@ -180,7 +180,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             return false;
         }
 
-        $key = base64_encode(sha1($request->header['sec-websocket-key'].'258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
+        $key = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
         $headers = [
             'Upgrade' => 'websocket',
             'Connection' => 'Upgrade',
@@ -217,7 +217,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         // 接受握手 还需要101状态码以切换状态
         $response->status(101);
-        var_dump('shake success at fd :'.$request->fd);
+        var_dump('shake success at fd :' . $request->fd);
 
         return true;
     }

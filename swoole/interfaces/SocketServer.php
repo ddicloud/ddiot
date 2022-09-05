@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 00:00:43
+ * @Last Modified time: 2022-09-05 11:03:58
  */
 
 namespace ddswoole\interfaces;
@@ -19,6 +19,18 @@ use Swoole\Http\Response;
 interface SocketServer
 {
     public function addlistenerPort($channel);
+
+    /**
+     * 心跳处理
+     * @param [type] $ws
+     * @param [type] $message
+     * @return void
+     * @date 2022-09-05
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public function heartbeat($ws, $message);
 
     /**
      * 响应消息处理.
