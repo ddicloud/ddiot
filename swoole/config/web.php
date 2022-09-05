@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 09:19:44
+ * @Last Modified time: 2022-09-05 09:22:52
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -56,10 +56,6 @@ return [
         ],
     ],
     'components' => [
-        'context' => [
-            'class' => 'diandi\swoole\coroutine\Context',
-
-        ],
         // 连接池配置
         'connectionManager' => [
             'class' => 'ddswoole\pool\connectionManager',
