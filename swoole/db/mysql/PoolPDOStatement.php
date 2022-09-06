@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 11:24:40
+ * @Last Modified time: 2022-09-06 11:28:49
  */
 
 namespace ddswoole\db\mysql;
@@ -22,7 +22,7 @@ use PDOStatement;
  * this so that instanceof check and type-hinting of existing code will work
  * seamlessly.
  */
-class PoolPDOStatement
+class PoolPDOStatement extends PDOStatement
 {
     protected $statement;
 

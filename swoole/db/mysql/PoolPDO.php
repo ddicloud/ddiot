@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 22:04:54
+ * @Last Modified time: 2022-09-06 12:27:24
  */
 
 namespace ddswoole\db\mysql;
@@ -75,7 +75,12 @@ class PoolPDO
      * @var bool 是否在事务中
      */
     private $inTransaction;
+    
+    // 保存使用
+    private $columns = ['defef','ertert'];
 
+
+    
     /**
      * MysqlPoolPdo constructor.
      * @param $dsn
