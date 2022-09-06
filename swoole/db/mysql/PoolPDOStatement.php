@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 16:57:20
+ * @Last Modified time: 2022-09-06 16:58:58
  */
 
 declare(strict_types=1);
@@ -106,7 +106,10 @@ class PoolPDOStatement extends PDOStatement
         try {
             $client = $this->pdo->getClient();
             $statement = $client->prepare('SHOW FULL COLUMNS FROM `dd_diandi_watches_device`');
-            $result = $statement->execute([]);
+            
+            if(!empty($input_parameters) && is_array($input_parameters)){
+                $result = $statement->execute([]);
+            }
             if (!$statement) {
                 throw new RuntimeException('Prepare failed');
             }
