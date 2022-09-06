@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 14:02:26
+ * @Last Modified time: 2022-09-06 18:20:46
  */
 
 namespace common\services\common;
@@ -71,7 +71,7 @@ class GlobalsService extends BaseService
     {
         $Bloc = new Bloc();
         $global_bloc = $Bloc->find()->alias('b')->where(['b.bloc_id' => $this->bloc_id])->select(['global.bloc_id', 'global.store_id'])->innerJoinWith('global')->asArray()->one();
-        
+      
         if (!empty($global_bloc)) {
             // 获取集团数据
             $this->global_bloc_id = $global_bloc['bloc_id'];

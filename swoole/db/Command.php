@@ -2,8 +2,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-06 18:29:18
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-09-06 18:55:41
  */
 namespace ddswoole\db;
 
@@ -262,6 +262,7 @@ class Command extends \yii\db\Command
         $token = $rawSql;
         try {
             YII_DEBUG && Yii::beginProfile($token, 'yii\db\Command::query');
+            $this->pdoStatement->setQueryString($rawSql);
             // @link https://bugs.php.net/bug.php?id=74401
             $this->pdoStatement->execute();
             if ($method === '') {
