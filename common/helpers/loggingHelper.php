@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 18:09:12
+ * @Last Modified time: 2022-09-06 18:59:17
  */
 
 namespace common\helpers;
@@ -46,8 +46,10 @@ class loggingHelper
             self::mkdirs(dirname($basepath));
             @chmod($path, 0777);
             $time = date('m/d H:i:s');
-            // 加入内存使用情况            
-            $memory = memory_get_usage();
+            // 加入内存使用情况     
+            $memoryInit = memory_get_usage()/1024/1024;
+
+            $memory = StringHelper::currency_format($memoryInit,2).'mb';
 
             if (is_array($content) || !is_string($content)) {
                 $content['memory'] = $memory;
