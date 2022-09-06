@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 16:58:58
+ * @Last Modified time: 2022-09-06 17:11:16
  */
 
 declare(strict_types=1);
@@ -67,6 +67,10 @@ class PoolPDOStatement extends PDOStatement
     private $_index = 0;
 
     private $data = [];
+    
+    private $sql = '';
+
+    
 
     /**
      * PoolPDOStatement constructor.
@@ -101,18 +105,16 @@ class PoolPDOStatement extends PDOStatement
     }
 
     #[\ReturnTypeWillChange]
-    public function execute($input_parameters = null)
+    public function execute($input_parameters = [])
     {
         try {
             $client = $this->pdo->getClient();
-            $statement = $client->prepare('SHOW FULL COLUMNS FROM `dd_diandi_watches_device`');
-            
-            if(!empty($input_parameters) && is_array($input_parameters)){
-                $result = $statement->execute([]);
-            }
+            $statement = $client->prepare($this->getRawSql());
+            $result = $statement->execute($input_parameters);
             if (!$statement) {
                 throw new RuntimeException('Prepare failed');
             }
+            
             $result = $statement->fetchAll();
             $this->data = $result;
             // $this->affected_rows = $client->affected_rows;
