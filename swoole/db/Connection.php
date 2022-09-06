@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 12:03:57
+ * @Last Modified time: 2022-09-06 13:09:34
  */
 
 namespace ddswoole\db;
@@ -96,6 +96,14 @@ class Connection extends \yii\db\Connection
                 throw new NotSupportedException("Connection does not support reading schema information for '$driver' DBMS.");
             }
         }
+
+        if ($this->_schema !== null) {
+            return $this->_schema;
+        }
+
+        throw new NotSupportedException("Connection does not support reading schema information for '$driver' DBMS.");
+
+
     }
 
     /**

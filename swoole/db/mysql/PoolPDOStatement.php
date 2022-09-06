@@ -4,16 +4,27 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 11:28:49
+ * @Last Modified time: 2022-09-06 16:57:20
  */
 
+declare(strict_types=1);
+
 namespace ddswoole\db\mysql;
+
+
 
 use common\helpers\ArrayHelper;
 use ddswoole\pool\ResultData;
 use PDO;
 use PDOException;
 use PDOStatement;
+use RuntimeException;
+use Swoole\Coroutine;
+use Swoole\Database\PDOConfig;
+use Swoole\Database\PDOPool;
+use Swoole\Runtime;
+
+
 
 /**
  *
@@ -94,8 +105,14 @@ class PoolPDOStatement extends PDOStatement
     {
         try {
             $client = $this->pdo->getClient();
-            $this->data = $client->query($this->getRawSql(), $input_parameters ?? []);
-            $this->affected_rows = $client->affected_rows;
+            $statement = $client->prepare('SHOW FULL COLUMNS FROM `dd_diandi_watches_device`');
+            $result = $statement->execute([]);
+            if (!$statement) {
+                throw new RuntimeException('Prepare failed');
+            }
+            $result = $statement->fetchAll();
+            $this->data = $result;
+            // $this->affected_rows = $client->affected_rows;
             if ($this->data === false && $client->error != null) {
                 throw new \PDOException($client->error, $client->errno);
             }
@@ -182,15 +199,16 @@ class PoolPDOStatement extends PDOStatement
     #[\ReturnTypeWillChange]
     public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
+        
         if (empty($this->data)) {
             return false;
         }
         return $this->data[++$this->_index] ?? false;
     }
 
-    #[\ReturnTypeWillChange]
     // PDOStatement::fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args)
-    public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $fetch_argument = null, $ctor_args = [])
+    #[\ReturnTypeWillChange]
+    public function fetchAll($fetch_style = PDO::FETCH_DEFAULT, ...$ctor_args)
     {
         if (empty($this->data)) {
             return [];

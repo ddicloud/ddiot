@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 07:30:04
+ * @Last Modified time: 2022-09-06 16:26:53
  */
 
 namespace ddswoole\pool;
@@ -53,7 +53,7 @@ class PdoPool
                 (new PDOConfig())
                     ->withHost($config['host'])
                     ->withPort($config['port'])
-                    ->withUnixSocket($config['unixSocket'])
+                    // ->withUnixSocket($config['unixSocket'])
                     ->withDbName($config['database'])
                     ->withCharset($config['charset'])
                     ->withUsername($config['username'])

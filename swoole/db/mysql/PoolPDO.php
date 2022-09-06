@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 12:27:24
+ * @Last Modified time: 2022-09-06 16:34:12
  */
 
 namespace ddswoole\db\mysql;
@@ -16,6 +16,7 @@ use PDOException;
 use Swoole\Coroutine\Mysql;
 use Yii;
 use yii\helpers\ArrayHelper;
+use Swoole\Database\PDOConfig;
 
 class PoolPDO
 {
@@ -134,7 +135,7 @@ class PoolPDO
      * @since
      */
     public function getClient()
-    {
+    {   
         if ($this->client === null) {
             $this->client = $this->getConnectionFromPool();
         }
@@ -187,8 +188,10 @@ class PoolPDO
                     'password' => $config['password'],
                     'charset' => 'utf8mb4',
                     'unixSocket' => null,
-                    'options' => [],
-                    'size' => 64,
+                    'options' => [
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION //开启异常模式
+                    ],
+                    'size' => 100,
                 ]);
                 \Yii::trace('create new mysql connection', __METHOD__);
                 return $client;

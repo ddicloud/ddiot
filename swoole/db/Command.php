@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 21:26:14
+ * @Last Modified time: 2022-09-06 16:32:37
  */
 namespace ddswoole\db;
 
@@ -168,6 +168,7 @@ class Command extends \yii\db\Command
         }
         return $this;
     }
+    
     /**
      * 检查指定的异常是否为可以重连的错误类型
      *
@@ -262,8 +263,9 @@ class Command extends \yii\db\Command
         $token = $rawSql;
         try {
             YII_DEBUG && Yii::beginProfile($token, 'yii\db\Command::query');
-            // @link https://bugs.php.net/bug.php?id=74401
+            
             $this->pdoStatement->setQueryString($rawSql);
+            // @link https://bugs.php.net/bug.php?id=74401
             $this->pdoStatement->execute($bakPendingParams);
             if ($method === '') {
                 $result = new DataReader($this);

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-04 00:12:17
+ * @Last Modified time: 2022-09-06 15:31:31
  */
 
 namespace ddswoole\servers;
@@ -16,7 +16,9 @@ class DebugService extends BaseService
     {
         $array = debug_backtrace();
         foreach ($array as $row) {
-            var_dump($row['file'].':'.$row['line'].'行,调用方法:'.$row['function']);
+            if(isset($row['file'])){
+                var_dump($row['file'].':'.$row['line'].'行,调用方法:'.$row['function']);
+            }
         }
     }
 }
