@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 20:20:39
+ * @Last Modified time: 2022-09-07 00:33:19
  */
 
 namespace ddswoole\components\tcp;
 
 use console\controllers\BaseController;
+use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\SwooleServer;
 use Swoole\Runtime;
 use Yii;
@@ -68,8 +69,12 @@ class TcpController extends BaseController implements SwooleServer
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
+        // $serverName = $this->server;
+        // $server = new $serverName($this->config);
+        // $server->start();
         $serverName = $this->server;
-        $server = new $serverName($this->config);
-        $server->start();
+        $Loader = new Loader();
+        $server = new $serverName($this->config,$Loader);
+        $server->run();
     }
 }
