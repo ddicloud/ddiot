@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 19:10:54
+ * @Last Modified time: 2022-09-06 19:15:48
  */
 
 namespace common\helpers;
@@ -60,7 +60,8 @@ class loggingHelper
 
             if (\co::getuid() != -1) {
                 $filename = $basepath;
-                $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
+                file_put_contents($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt.PHP_EOL,FILE_APPEND);
+                // $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
             } else {
                 Yii::$app->log->targets[0]->logFile = $basepath;
                 Yii::$app->log->targets[0]->maxFileSize = 2000;
