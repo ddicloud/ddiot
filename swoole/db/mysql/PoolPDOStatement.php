@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 17:11:16
+ * @Last Modified time: 2022-09-06 17:22:26
  */
 
 declare(strict_types=1);
@@ -213,7 +213,7 @@ class PoolPDOStatement extends PDOStatement
 
     // PDOStatement::fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args)
     #[\ReturnTypeWillChange]
-    public function fetchAll($fetch_style = PDO::FETCH_DEFAULT, ...$ctor_args)
+    public function fetchAll($fetch_style = PDO::FETCH_COLUMN,$class_name =null ,$ctor_args = null)
     {
         if (empty($this->data)) {
             return [];
