@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 17:47:46
+ * @Last Modified time: 2022-09-06 18:02:15
  */
 
 declare(strict_types=1);
@@ -236,12 +236,8 @@ class PoolPDOStatement extends PDOStatement
         if (empty($this->data)) {
             return null;
         }
-        // 判断sql语句是否存在EXISTS
-        if(StringHelper::strExists($this->getRawSql(),'EXISTS')){
-            return Yii::$app->db->createCommand($this->getRawSql())->queryOne();
-        }
-        
-        $data = $this->data[++$this->_index];
+        // $data = $this->data[++$this->_index];
+        $data = $this->data[$this->_index];
         return current(array_slice($data, $column_number, 1));
     }
 }
