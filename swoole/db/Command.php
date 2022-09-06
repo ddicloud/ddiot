@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 17:17:04
+ * @Last Modified time: 2022-09-06 17:53:17
  */
 namespace ddswoole\db;
 
@@ -302,6 +302,7 @@ class Command extends \yii\db\Command
         try {
             YII_DEBUG && Yii::beginProfile($token, __METHOD__);
             // @link https://bugs.php.net/bug.php?id=74401
+            $this->pdoStatement->setQueryString($rawSql);
             $this->pdoStatement->execute();
             $n = $this->pdoStatement->rowCount();
             YII_DEBUG && Yii::endProfile($token, __METHOD__);
