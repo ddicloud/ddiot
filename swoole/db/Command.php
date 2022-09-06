@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 17:16:23
+ * @Last Modified time: 2022-09-06 17:17:04
  */
 namespace ddswoole\db;
 
@@ -226,9 +226,8 @@ class Command extends \yii\db\Command
                 $this->errorCount++;
                 return $this->prepare($forRead);
             }
-            $message = $e->getMessage() . "\nFailed to prepare SQL: $sql";
-            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
-            throw new Exception($message,(int) $e->getCode(), $errorInfo);
+            DebugService::backtrace();
+            throw $e;
         }
     }
 
