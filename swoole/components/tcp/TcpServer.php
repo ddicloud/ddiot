@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-07 00:39:02
+ * @Last Modified time: 2022-09-07 08:52:21
  */
 
 namespace ddswoole\components\tcp;
@@ -12,7 +12,6 @@ use ddswoole\interfaces\InteractsWithSwooleTable;
 use diandi\swoole\tcp\server\TcpServer as ServerTcpServer;
 use diandi\swoole\web\Application;
 use Swoole\Coroutine\Server\Connection;
-
 
 class TcpServer extends ServerTcpServer
 {
@@ -27,10 +26,9 @@ class TcpServer extends ServerTcpServer
 
     public $pools;
 
-
     public $ProcessNum = 1;
-    
-     /**
+
+    /**
      * 重新实例化application.
      *
      * @param [type] $config
@@ -50,16 +48,17 @@ class TcpServer extends ServerTcpServer
         $this->config = $config['app'];
     }
 
-
     public function run()
     {
         $this->application = new Application($this->config);
         if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
+
+        parent::run();
     }
 
-      /**
+    /**
      * 上下文初始化.
      *
      * @param [type] $type
@@ -78,12 +77,10 @@ class TcpServer extends ServerTcpServer
         // code...
     }
 
-
-    
     // 系统校验后自己处理
     public function messageReturn(Connection $conn)
     {
 
     }
-    
+
 }
