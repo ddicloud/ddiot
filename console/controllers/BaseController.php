@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-25 12:30:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 13:34:53
+ * @Last Modified time: 2022-09-07 12:52:18
  */
 
 namespace console\controllers;
@@ -30,10 +30,9 @@ class BaseController extends \yii\console\Controller
         Yii::$app->service->commonGlobalsService->getConf($this->bloc_id);
         $module = $this->addons;
         $mid = DdAddons::find()->where(['identifie' => $module])->select('mid')->scalar();
-        var_dump($mid);
-        // if (!$mid) {
-        //     throw new NotFoundHttpException("当前插件{$module}没有安装.");
-        // }
+        if (!$mid) {
+            throw new NotFoundHttpException("当前插件{$module}没有安装.");
+        }
         $runtimePath = Yii::getAlias('@ddswoole/runtime/' . $module);
         define('SWOOLE_RUNTIME', $runtimePath);
         FileHelper::mkdirs($runtimePath);
