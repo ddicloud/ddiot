@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d70d53e52d34e891ee8ddbf8bcfeba96",
+    "content-hash": "bd901c93c458ee921147b649081705a0",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4465,16 +4465,16 @@
         },
         {
             "name": "yii-diandi/yii2-swoole",
-            "version": "2.5.9",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "dc0e95de2cc1d918a94d1729f2305c92e5040f53"
+                "reference": "e432be5349cafc4d53f5f8186f81c76551b64c94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/dc0e95de2cc1d918a94d1729f2305c92e5040f53",
-                "reference": "dc0e95de2cc1d918a94d1729f2305c92e5040f53",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/e432be5349cafc4d53f5f8186f81c76551b64c94",
+                "reference": "e432be5349cafc4d53f5f8186f81c76551b64c94",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4507,6 +4507,9 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "description": "run yii2 in swoole coroutine mode",
             "keywords": [
                 "coroutine",
@@ -4515,9 +4518,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.5.9"
+                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.6.1"
             },
-            "time": "2022-09-07T01:53:13+00:00"
+            "time": "2022-09-07T03:12:08+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
