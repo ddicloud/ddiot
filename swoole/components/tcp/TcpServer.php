@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-07 08:52:21
+ * @Last Modified time: 2022-09-07 09:48:36
  */
 
 namespace ddswoole\components\tcp;
@@ -54,8 +54,7 @@ class TcpServer extends ServerTcpServer
         if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
-
-        parent::run();
+        $this->poolStart();
     }
 
     /**
