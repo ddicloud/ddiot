@@ -4465,16 +4465,16 @@
         },
         {
             "name": "yii-diandi/yii2-swoole",
-            "version": "2.6.2",
+            "version": "2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "208844efa3e3fa8037527dce817b19dd6b78a1c7"
+                "reference": "529e8d43e5eb7ccec7a0a2cfefa56f7c668c17be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/208844efa3e3fa8037527dce817b19dd6b78a1c7",
-                "reference": "208844efa3e3fa8037527dce817b19dd6b78a1c7",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/529e8d43e5eb7ccec7a0a2cfefa56f7c668c17be",
+                "reference": "529e8d43e5eb7ccec7a0a2cfefa56f7c668c17be",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4510,7 +4510,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "run yii2 in swoole coroutine mode",
+            "description": "run yii2 in swoole coroutine mode，基于店滴云开源框架的swoole扩展",
             "keywords": [
                 "coroutine",
                 "swoole",
@@ -4518,9 +4518,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.6.2"
+                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.6.4"
             },
-            "time": "2022-09-07T03:24:09+00:00"
+            "time": "2022-09-07T04:45:53+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
