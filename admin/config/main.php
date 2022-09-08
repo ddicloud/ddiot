@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-07 18:10:40
+ * @Last Modified time: 2022-09-08 16:43:40
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -178,8 +178,10 @@ return [
                     'controller' => ['wechat'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET signup' => 'signup',
+                        'POST signup' => 'signup',
                         'POST authurl' => 'auth-url',
+                        'POST bind' => 'bind',
+                        'POST unbind' => 'unbind',
                     ],
                 ],
                 [

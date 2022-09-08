@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-11 18:38:18
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-09-08 17:05:00
  */
 
 namespace admin\controllers;
@@ -14,12 +14,13 @@ use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\helpers\UrlHelper;
 use EasyWeChat\Factory;
+use admin\models\User;
 use Yii;
 
 class WechatController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['*'];
+    protected $authOptional = ['signup'];
 
     public function actionAuthUrl()
     {
@@ -34,7 +35,7 @@ class WechatController extends AController
             'secret' => $config['secret'],
             'token' => $config['token'],
             'aes_key' => $config['aes_key'],
-          ];
+        ];
 
         $openPlatform = Factory::openPlatform($data);
 
@@ -50,9 +51,41 @@ class WechatController extends AController
 
     public function actionSignup()
     {
-        global $_GPC;
-
-        loggingHelper::writeLog('WechatController', 'signup', '授权登录信息', $_GPC);
+        $code = Yii::$app->request->post('code');
+        if ($code) {
+            $configPath = Yii::getAlias('@common/config/wechat.php');
+            $config = [];
+            if (file_exists($configPath)) {
+                $config = require_once $configPath;
+            }
+            try {
+                Yii::$app->params['wechatConfig'] = $config;
+                $app = Yii::$app->wechat->app;
+                $oauth = $app->oauth;
+                $user = $oauth->user();
+            } catch (\Exception $e) {
+                return ResultHelper::json(400, $e->getMessage());
+            }
+            if ($user->id) {
+                $adminUser = User::find()->where(['open_id' => $user->id])->one();
+                if ($adminUser) {
+                    $service = Yii::$app->service;
+                    $service->namespace = 'admin';
+                    $userinfo = $service->AccessTokenService->getAccessToken($adminUser, 1);
+                    return ResultHelper::json(200, '登录成功！', $userinfo);
+                } else {
+                    $adminUser = new User();
+                    $maxId = User::find()->max('id');
+                    $adminUser->open_id = $user->id;
+                    $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1) . '@cn.com', '123465', '');
+                    return ResultHelper::json(200, '注册成功', $res);
+                }
+            } else {
+                ResultHelper::json(400, '获取微信用户失败！');
+            }
+        } else {
+            ResultHelper::json(400, 'CODE 是必须的！');
+        }
     }
 
     public function actionTick()
@@ -60,5 +93,59 @@ class WechatController extends AController
         global $_GPC;
 
         loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $_GPC);
+    }
+
+    public function actionBind()
+    {
+        $code = Yii::$app->request->post('code');
+        if ($code) {
+            $configPath = Yii::getAlias('@common/config/wechat.php');
+            $config = [];
+            if (file_exists($configPath)) {
+                $config = require_once $configPath;
+            }
+            try {
+                Yii::$app->params['wechatConfig'] = $config;
+                $app = Yii::$app->wechat->app;
+                $oauth = $app->oauth;
+                $user = $oauth->user();
+            } catch (\Exception $e) {
+                return ResultHelper::json(400, $e->getMessage());
+            }
+            if ($user->id) {
+                $adminUser = User::find()->where(['open_id' => $user->id])->one();
+                if ($adminUser) {
+                    return ResultHelper::json(400, '当前微信已绑定用户！');
+                } else {
+                    $adminUser = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
+                    if ($adminUser) {
+                        $adminUser->open_id = $user->id;
+                        if ($adminUser->save(false)) {
+                            return ResultHelper::json(200, '绑定成功！');
+                        }
+                    }
+                    ResultHelper::json(400, '绑定失败！');
+                }
+            } else {
+                ResultHelper::json(400, '获取微信用户失败！');
+            }
+        } else {
+            ResultHelper::json(400, 'CODE 是必须的！');
+        }
+    }
+
+    public function actionUnbind()
+    {
+        $adminUser = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
+        if ($adminUser) {
+            $adminUser->open_id = null;
+            if ($adminUser->save(false)) {
+                return ResultHelper::json(200, '解除绑定成功！');
+            } else {
+                return ResultHelper::json(400, '解除绑定失败！');
+            }
+        } else {
+            return ResultHelper::json(400, '无效的用户信息！');
+        }
     }
 }
