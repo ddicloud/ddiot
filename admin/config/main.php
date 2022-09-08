@@ -3,14 +3,14 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-08 14:39:42
+ * @Last Modified by:   Radish minradish@163.com
+ * @Last Modified time: 2022-09-08 16:43:40
  */
 $params = array_merge(
-    require __DIR__.'/../../common/config/params.php',
-    require __DIR__.'/../../common/config/params-local.php',
-    require __DIR__.'/params.php',
-    require __DIR__.'/params-local.php'
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -178,8 +178,10 @@ return [
                     'controller' => ['wechat'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET signup' => 'signup',
+                        'POST signup' => 'signup',
                         'POST authurl' => 'auth-url',
+                        'POST bind' => 'bind',
+                        'POST unbind' => 'unbind',
                     ],
                 ],
                 [
@@ -495,6 +497,7 @@ return [
                         'POST,PUT update/<id>' => 'update',
                         'POST,GET,DELETE delete/<id>' => 'delete',
                         'GET view/<id>' => 'view',
+                        'POST addons-create' => 'addons-create',
                     ],
                 ],
                 // 商户标签
