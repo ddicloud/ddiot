@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-08 17:05:00
+ * @Last Modified time: 2022-09-09 14:29:41
  */
 
 namespace admin\controllers;
@@ -77,6 +77,7 @@ class WechatController extends AController
                     $adminUser = new User();
                     $maxId = User::find()->max('id');
                     $adminUser->open_id = $user->id;
+                    $adminUser->union_id = $user->getOriginal()['unionid'] ?? null;
                     $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1) . '@cn.com', '123465', '');
                     return ResultHelper::json(200, '注册成功', $res);
                 }
@@ -120,6 +121,7 @@ class WechatController extends AController
                     $adminUser = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
                     if ($adminUser) {
                         $adminUser->open_id = $user->id;
+                        $adminUser->union_id = $user->getOriginal()['unionid'] ?? null;
                         if ($adminUser->save(false)) {
                             return ResultHelper::json(200, '绑定成功！');
                         }
@@ -139,6 +141,7 @@ class WechatController extends AController
         $adminUser = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
         if ($adminUser) {
             $adminUser->open_id = null;
+            $adminUser->union_id = null;
             if ($adminUser->save(false)) {
                 return ResultHelper::json(200, '解除绑定成功！');
             } else {
