@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 16:55:04
+ * @Last Modified time: 2022-09-09 18:25:44
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -228,7 +228,6 @@ return [
                         'POST ceshi' => 'ceshi',
                         'POST logout' => 'logout',
                         'POST xiufu' => 'xiufu',
-                        'POST relations' => 'relations',
                     ],
                 ],
                 [

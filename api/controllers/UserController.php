@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-27 18:54:59
+ * @Last Modified time: 2022-09-09 18:26:12
  */
 
 namespace api\controllers;
@@ -24,7 +24,7 @@ use Yii;
 class UserController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf'];
+    protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
 
     /**
      * @SWG\Post(path="/user/signup",
@@ -615,5 +615,18 @@ class UserController extends AController
         $sms = Yii::$app->params['conf']['sms'];
 
         return ResultHelper::json(200, '短信配置或者成功', ['is_login' => $sms['is_login']]);
+    }
+
+    public function actionRelations()
+    {
+        $model = new DdWebsiteContact();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            if ($model->load($data, '') && $model->save()) {
+                return ResultHelper::json(200, '留言成功');
+            } else {
+                return ResultHelper::json(400, '留言失败');
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-19 16:20:11
+ * @Last Modified time: 2022-09-09 18:26:49
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -151,7 +151,7 @@ return [
                     // 如果你的 controller 本身是复数名称 UsersController ，此参数没用，url 地址必须是 users
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS index' => 'index',
+                        'GET index' => 'index',
                     ],
                 ],
                 // 文档
@@ -172,8 +172,8 @@ return [
                     'controller' => ['map'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS distance' => 'distance',
-                        'GET,OPTIONS citylist' => 'citylist',
+                        'GET distance' => 'distance',
+                        'GET citylist' => 'citylist',
                     ],
                 ],
                 [
@@ -181,18 +181,19 @@ return [
                     'controller' => ['user'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS   login' => 'login',
-                        'POST,OPTIONS   signup' => 'signup',
-                        'POST,OPTIONS   repassword' => 'repassword',
-                        'POST,OPTIONS   up-repassword' => 'up-repassword',
-                        'POST,OPTIONS   userinfo' => 'userinfo',
-                        'POST,OPTIONS   edituserinfo' => 'edituserinfo',
-                        'POST,OPTIONS   sendcode' => 'sendcode',
-                        'POST,OPTIONS   forgetpass' => 'forgetpass',
-                        'POST,OPTIONS   feedback' => 'feedback',
-                        'POST,OPTIONS   bindmobile' => 'bindmobile',
-                        'POST,OPTIONS   refresh' => 'refresh',
-                        'GET,OPTIONS   smsconf' => 'smsconf',
+                        'POST   login' => 'login',
+                        'POST   signup' => 'signup',
+                        'POST   repassword' => 'repassword',
+                        'POST   up-repassword' => 'up-repassword',
+                        'POST   userinfo' => 'userinfo',
+                        'POST   edituserinfo' => 'edituserinfo',
+                        'POST   sendcode' => 'sendcode',
+                        'POST   forgetpass' => 'forgetpass',
+                        'POST   feedback' => 'feedback',
+                        'POST   bindmobile' => 'bindmobile',
+                        'POST   refresh' => 'refresh',
+                        'GET   smsconf' => 'smsconf',
+                        'POST   relations' => 'relations',
                     ],
                 ],
                 [
@@ -200,16 +201,16 @@ return [
                     'controller' => ['swoole'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS   login' => 'login',
-                        'POST,OPTIONS   signup' => 'signup',
-                        'POST,OPTIONS   repassword' => 'repassword',
-                        'POST,OPTIONS   up-repassword' => 'up-repassword',
-                        'POST,OPTIONS   userinfo' => 'userinfo',
-                        'POST,OPTIONS   edituserinfo' => 'edituserinfo',
-                        'POST,OPTIONS   sendcode' => 'sendcode',
-                        'POST,OPTIONS   forgetpass' => 'forgetpass',
-                        'POST,OPTIONS   bindmobile' => 'bindmobile',
-                        'POST,OPTIONS   refresh' => 'refresh',
+                        'POST   login' => 'login',
+                        'POST   signup' => 'signup',
+                        'POST   repassword' => 'repassword',
+                        'POST   up-repassword' => 'up-repassword',
+                        'POST   userinfo' => 'userinfo',
+                        'POST   edituserinfo' => 'edituserinfo',
+                        'POST   sendcode' => 'sendcode',
+                        'POST   forgetpass' => 'forgetpass',
+                        'POST   bindmobile' => 'bindmobile',
+                        'POST   refresh' => 'refresh',
                     ],
                 ],
                 [
@@ -217,8 +218,8 @@ return [
                     'controller' => ['addons'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS index' => 'index',
-                        'POST,OPTIONS   diandishop' => 'diandi-shop',
+                        'GET index' => 'index',
+                        'POST   diandishop' => 'diandi-shop',
                     ],
                 ],
                 // 基础接口
@@ -227,7 +228,7 @@ return [
                     'controller' => ['upload'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS   images' => 'images',
+                        'POST   images' => 'images',
                         'POST  baseimg' => 'baseimg',
                     ],
                 ],
@@ -236,10 +237,10 @@ return [
                     'controller' => ['store'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS info' => 'info',
-                        'GET,OPTIONS cate' => 'cate',
-                        'GET,OPTIONS list' => 'list',
-                        'POST,OPTIONS detailinfo' => 'detailinfo',
+                        'GET info' => 'info',
+                        'GET cate' => 'cate',
+                        'GET list' => 'list',
+                        'POST detailinfo' => 'detailinfo',
                     ],
                 ],
                 [
@@ -247,7 +248,7 @@ return [
                     'controller' => ['address'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  lists' => 'lists',
+                        'POST  lists' => 'lists',
                     ],
                 ],
                 [
@@ -265,7 +266,7 @@ return [
                     'controller' => ['v1/category'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  list' => 'list',
+                        'POST  list' => 'list',
                     ],
                 ],
                 [
@@ -273,7 +274,7 @@ return [
                     'controller' => ['v1/ceshi'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS ccc' => 'ccc',
+                        'GET ccc' => 'ccc',
                     ],
                 ],
                 [
@@ -281,7 +282,7 @@ return [
                     'controller' => ['v1/goods'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  ccc' => 'ccc',
+                        'POST  ccc' => 'ccc',
                     ],
                 ],
                 [
@@ -289,7 +290,7 @@ return [
                     'controller' => ['v1/index'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  ccc' => 'ccc',
+                        'POST  ccc' => 'ccc',
                     ],
                 ],
                 // 小程序接口
@@ -298,10 +299,10 @@ return [
                     'controller' => ['wechat/basics'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,HEAD,OPTIONS signup' => 'signup',
-                        'POST,HEAD,OPTIONS payparameters' => 'payparameters',
-                        'POST,HEAD,GET,OPTIONS,PUT refundednotify' => 'refundednotify',
-                        'POST,HEAD,GET,OPTIONS,PUT notify' => 'notify',
+                        'POST,HEAD signup' => 'signup',
+                        'POST,HEAD payparameters' => 'payparameters',
+                        'POST,HEAD,GET,PUT refundednotify' => 'refundednotify',
+                        'POST,HEAD,GET,PUT notify' => 'notify',
                     ],
                 ],
                 [
@@ -309,7 +310,7 @@ return [
                     'controller' => ['wechat/sendmsg'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,HEAD,OPTIONS send' => 'send',
+                        'POST,HEAD send' => 'send',
                     ],
                 ],
                 [
@@ -317,7 +318,7 @@ return [
                     'controller' => ['wechat/qrcode'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  getqrcode' => 'getqrcode',
+                        'POST  getqrcode' => 'getqrcode',
                     ],
                 ],
                 // 公众号接口
@@ -326,12 +327,12 @@ return [
                     'controller' => ['officialaccount/basics'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,HEAD,OPTIONS signup' => 'signup',
-                        'GET,POST,HEAD,OPTIONS auth' => 'auth',
-                        'GET,POST,HEAD,OPTIONS userinfo' => 'userinfo',
-                        'POST,HEAD,OPTIONS payparameters' => 'payparameters',
-                        'POST,HEAD,OPTIONS payappparameters' => 'payappparameters',
-                        'POST,HEAD,GET,OPTIONS,PUT notify' => 'notify',
+                        'POST,HEAD signup' => 'signup',
+                        'GET,POST,HEAD auth' => 'auth',
+                        'GET,POST,HEAD userinfo' => 'userinfo',
+                        'POST,HEAD payparameters' => 'payparameters',
+                        'POST,HEAD payappparameters' => 'payappparameters',
+                        'POST,HEAD,GET,PUT notify' => 'notify',
                     ],
                 ],
                 // 激活公众号开发模式
@@ -340,9 +341,9 @@ return [
                     'controller' => ['officialaccount/msg'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET,OPTIONS,POST index' => 'index',
-                        'GET,OPTIONS,POST event' => 'event',
-                        'GET,OPTIONS,POST open' => 'open',
+                        'GET,POST index' => 'index',
+                        'GET,POST event' => 'event',
+                        'GET,POST open' => 'open',
                     ],
                 ],
                 [
@@ -350,7 +351,7 @@ return [
                     'controller' => ['officialaccount/jssdk'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,OPTIONS  config' => 'config',
+                        'POST  config' => 'config',
                     ],
                 ],
                 [
@@ -358,7 +359,7 @@ return [
                     'controller' => ['officialaccount/qrcode'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST,GET,OPTIONS getqrcode' => 'qrcode',
+                        'POST,GET getqrcode' => 'qrcode',
                     ],
                 ],
             ],

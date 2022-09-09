@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-02 21:40:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 16:47:51
+ * @Last Modified time: 2022-09-09 18:25:29
  */
 
 namespace admin\controllers;
@@ -19,7 +19,6 @@ use common\helpers\ErrorsHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\DdUser;
-use common\models\DdWebsiteContact;
 use common\models\User;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
@@ -281,19 +280,6 @@ class SiteController extends AController
                 ], [
                     'id' => $value['id'],
                 ]);
-            }
-        }
-    }
-
-    public function actionRelations()
-    {
-        $model = new DdWebsiteContact();
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '留言成功');
-            } else {
-                return ResultHelper::json(400, '留言失败');
             }
         }
     }
