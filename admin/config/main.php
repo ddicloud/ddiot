@@ -3,14 +3,14 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-08 16:43:40
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-09-09 16:55:04
  */
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require __DIR__.'/../../common/config/params.php',
+    require __DIR__.'/../../common/config/params-local.php',
+    require __DIR__.'/params.php',
+    require __DIR__.'/params-local.php'
 );
 
 return [
@@ -228,6 +228,7 @@ return [
                         'POST ceshi' => 'ceshi',
                         'POST logout' => 'logout',
                         'POST xiufu' => 'xiufu',
+                        'POST relations' => 'relations',
                     ],
                 ],
                 [

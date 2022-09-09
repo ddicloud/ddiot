@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-02 21:40:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:22:19
+ * @Last Modified time: 2022-09-09 16:47:51
  */
 
 namespace admin\controllers;
@@ -19,6 +19,7 @@ use common\helpers\ErrorsHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\DdUser;
+use common\models\DdWebsiteContact;
 use common\models\User;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
@@ -34,7 +35,7 @@ class SiteController extends AController
 {
     public $modelClass = '';
 
-    protected $authOptional = ['login', 'logout', 'error', 'signup', 'request-password-reset', 'setpassword'];
+    protected $authOptional = ['login', 'logout', 'error', 'signup', 'request-password-reset', 'setpassword', 'relations'];
 
     /**
      * Displays homepage.
@@ -46,23 +47,6 @@ class SiteController extends AController
         return ResultHelper::json(200, '获取成功');
     }
 
-    /**
-     * @SWG\Post(path="/site/login",
-     *     tags={"登录与注册"},
-     *     summary="登录",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "登录",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -102,23 +86,6 @@ class SiteController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/site/logout",
-     *     tags={"登录与注册"},
-     *     summary="退出",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "退出",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionLogout()
     {
         DdUser::updateAll([
@@ -132,23 +99,6 @@ class SiteController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/site/signup",
-     *     tags={"登录与注册"},
-     *     summary="注册",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "注册",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionSignup()
     {
         global $_GPC;
@@ -168,23 +118,6 @@ class SiteController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/site/request-password-reset",
-     *     tags={"登录与注册"},
-     *     summary="邮箱重置密码",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "重置密码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionRequestPasswordReset()
     {
         $model = new FormsPasswordResetRequestForm();
@@ -201,23 +134,6 @@ class SiteController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/site/setpassword",
-     *     tags={"登录与注册"},
-     *     summary="后台设置密码",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "后台修改密码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionSetpassword($token)
     {
         $this->layout = '@backend/views/layouts/main-login';
@@ -247,23 +163,6 @@ class SiteController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/site/reset-password",
-     *     tags={"登录与注册"},
-     *     summary="后台重置密码",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "后台重置密码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionResetPassword($token)
     {
         $this->layout = '@backend/views/layouts/main';
@@ -292,23 +191,6 @@ class SiteController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/site/verify-email",
-     *     tags={"登录与注册"},
-     *     summary="验证邮箱",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "验证邮箱",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionVerifyEmail($token)
     {
         try {
@@ -329,11 +211,6 @@ class SiteController extends AController
         return $this->goHome();
     }
 
-    /**
-     * Resend verification email.
-     *
-     * @return mixed
-     */
     public function actionResendVerificationEmail()
     {
         $model = new ResendVerificationEmailForm();
@@ -351,26 +228,6 @@ class SiteController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/site/xiufu",
-     *     tags={"swg文档"},
-     *     summary="数据修复",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "swg文档"
-     *     ),
-     *     @SWG\Parameter(ref="#/parameters/access-token"),
-     *     @SWG\Parameter(ref="#/parameters/bloc-id"),
-     *     @SWG\Parameter(ref="#/parameters/store-id"),
-     *     @SWG\Parameter(
-     *     in="formData",
-     *     name="type",
-     *     type="string",
-     *     description="页面标识",
-     *     required=true,
-     *   ),
-     * )
-     */
     public function actionXiufu()
     {
         global $_GPC;
@@ -424,6 +281,19 @@ class SiteController extends AController
                 ], [
                     'id' => $value['id'],
                 ]);
+            }
+        }
+    }
+
+    public function actionRelations()
+    {
+        $model = new DdWebsiteContact();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            if ($model->load($data, '') && $model->save()) {
+                return ResultHelper::json(200, '留言成功');
+            } else {
+                return ResultHelper::json(400, '留言失败');
             }
         }
     }
