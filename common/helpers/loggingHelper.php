@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-08 10:07:52
+ * @Last Modified time: 2022-09-10 06:12:10
  */
 
 namespace common\helpers;
@@ -42,16 +42,16 @@ class loggingHelper
 
         if (YII_DEBUG) {
             list($app, $alia) = explode('-', $appId);
-            $basepath = Yii::getAlias("@{$alia}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
+            $basepath = Yii::getAlias("@{$alia}/runtime/".$moduleName.'/'.date('Y/m/d/').$path.'.log');
             self::mkdirs(dirname($basepath));
             @chmod($path, 0777);
             $time = date('m/d H:i:s');
-            // 加入内存使用情况     
-            $memoryInit = memory_get_usage()/1024/1024;
+            // 加入内存使用情况
+            $memoryInit = memory_get_usage() / 1024 / 1024;
 
-            $memory = StringHelper::currency_format($memoryInit,2).'mb';
+            $memory = StringHelper::currency_format($memoryInit, 2).'mb';
 
-            if (is_array($content) || !is_string($content)) {
+            if (is_array($content)) {
                 $content['memory'] = $memory;
                 $contentTxt = json_encode($content);
             } elseif (is_string($content)) {
@@ -60,8 +60,8 @@ class loggingHelper
 
             if (\co::getuid() != -1) {
                 $filename = $basepath;
-                file_put_contents($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt,FILE_APPEND);
-                // $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
+                file_put_contents($filename, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+            // $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
             } else {
                 Yii::$app->log->targets[0]->logFile = $basepath;
                 Yii::$app->log->targets[0]->maxFileSize = 2000;
