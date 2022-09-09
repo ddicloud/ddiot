@@ -13,7 +13,7 @@ if (in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
 } else {
     defined('YII_ENV_DEV') or define('YII_ENV_DEV',false);
     //生产环境prod的入口文件代码
-    defined('YII_DEBUG') or define('YII_DEBUG', false);
+    defined('YII_DEBUG') or define('YII_DEBUG', true);
     defined('YII_ENV') or define('YII_ENV', 'prod');
 }
 
