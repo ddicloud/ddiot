@@ -1,0 +1,59 @@
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-04-19 09:37:20
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-05-05 11:17:38
+ */
+// base color
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// sidebar
+$menuText:#ffffff;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+$subMenuActiveBg:#41b584; // https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#20222a;
+// $menuHover:#263445;
+$menuHover:#41b584;
+
+$subMenuBg:#1f2d3d;
+$subMenuHover:#41b584;
+
+$sideBarWidth: 240px;
+// 分栏右侧
+$sideRightWidth: 140px;
+
+// 分栏导航颜色
+$leftmenuText:#37414b;
+$leftmenuActiveText:#409EFF;
+
+$leftmenuBg:#ececec;
+// $menuHover:#263445;
+$leftmenuHover:#41b584;
+
+$leftsubMenuBg:#1f2d3d;
+$leftsubMenuHover:#41b584;
+$leftsubMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+$leftsubMenuActiveBg:#41b584; // https://github.com/ElemeFE/element/issues/12951
+
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}
