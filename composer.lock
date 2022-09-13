@@ -4465,16 +4465,16 @@
         },
         {
             "name": "yii-diandi/yii2-swoole",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "c7efeb4604dba52fa5dbcf6f8a1e05ef4489f0ca"
+                "reference": "8d67421189f2084a5b45d05e1a423e3f1d89ed7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/c7efeb4604dba52fa5dbcf6f8a1e05ef4489f0ca",
-                "reference": "c7efeb4604dba52fa5dbcf6f8a1e05ef4489f0ca",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/8d67421189f2084a5b45d05e1a423e3f1d89ed7d",
+                "reference": "8d67421189f2084a5b45d05e1a423e3f1d89ed7d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4518,9 +4518,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.7.0"
+                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.7.1"
             },
-            "time": "2022-09-13T12:16:29+00:00"
+            "time": "2022-09-13T12:31:33+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
