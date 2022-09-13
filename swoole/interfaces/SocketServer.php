@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-13 20:44:40
+ * @Last Modified time: 2022-09-13 20:49:38
  */
 
 namespace ddswoole\interfaces;
@@ -62,5 +62,5 @@ interface SocketServer
      */
     public function ContextInit($type);
 
-    public function checkUpgrade(Request $request, Response $ws)
+    public function checkUpgrade(Request $request, Response $ws);
 }
