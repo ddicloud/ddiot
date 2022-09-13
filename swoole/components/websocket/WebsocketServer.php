@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-05 11:09:30
+ * @Last Modified time: 2022-09-13 20:47:50
  */
 
 namespace ddswoole\components\websocket;
@@ -120,27 +120,32 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         }
     }
 
-    public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
+    public function checkUpgrade(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
+    {
+        $ws->upgrade();
+    }
+
+    public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
     {
         loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
             'header' => $request->header,
         ]);
 
         /* 此处自定义握手规则 返回 false 时中止握手 */
-        if (!$this->customHandShake($request, $response)) {
-            $response->end();
+        if (!$this->customHandShake($request, $ws)) {
+            $ws->end();
 
             return false;
         }
 
         /* 此处是  RFC规范中的WebSocket握手验证过程 必须执行 否则无法正确握手 */
-        if ($this->secWebsocketAccept($request, $response)) {
-            $response->end();
+        if ($this->secWebsocketAccept($request, $ws)) {
+            $ws->end();
 
             return true;
         }
 
-        $response->end();
+        $ws->end();
 
         return false;
     }
@@ -148,7 +153,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     /**
      * @return bool
      */
-    protected function customHandShake(\Swoole\Http\Request $request, \Swoole\Http\Response $response): bool
+    protected function customHandShake(\Swoole\Http\Request $request, \Swoole\Http\Response $ws): bool
     {
         /**
          * 这里可以通过 http request 获取到相应的数据
@@ -169,7 +174,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
      *
      * @return bool
      */
-    protected function secWebsocketAccept(\Swoole\Http\Request $request, \Swoole\Http\Response $response): bool
+    protected function secWebsocketAccept(\Swoole\Http\Request $request, \Swoole\Http\Response $ws): bool
     {
         global $_GPC;
         loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
@@ -207,7 +212,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         // 发送验证后的header
         foreach ($headers as $key => $val) {
-            $response->header($key, $val);
+            $ws->header($key, $val);
         }
 
         $accessToken = $request->get['access_token'];
@@ -217,7 +222,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             return false;
         } else {
             if ($this->checkAccess($accessToken)) {
-                $response->status(101);
+                $ws->status(101);
 
                 return true;
             } else {
@@ -228,7 +233,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         }
 
         // 接受握手 还需要101状态码以切换状态
-        $response->status(101);
+        $ws->status(101);
         var_dump('shake success at fd :' . $request->fd);
 
         return true;
