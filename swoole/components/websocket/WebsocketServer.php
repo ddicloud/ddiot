@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 17:18:06
+ * @Last Modified time: 2022-09-14 17:39:12
  */
 
 namespace ddswoole\components\websocket;
@@ -161,10 +161,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
     {
-        loggingHelper::writeLog('ddswoole', 'onHandshake', '开始权限校验处理', [
-            'header' => $request->header,
-        ]);
-
         /* 此处自定义握手规则 返回 false 时中止握手 */
         if (!$this->customHandShake($request, $ws)) {
             return false;
