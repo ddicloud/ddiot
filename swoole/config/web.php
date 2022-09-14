@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 15:15:15
+ * @Last Modified time: 2022-09-14 19:15:34
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -67,6 +67,9 @@ return [
                     'waitTime' => 5,
                 ],
             ],
+        ],
+        'context' => [
+            'class' => Context::class,
         ],
         'response' => [
             'class' => Response::class,
