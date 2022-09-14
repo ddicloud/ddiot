@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 19:15:34
+ * @Last Modified time: 2022-09-14 19:23:49
  */
 
 use diandi\swoole\web\ErrorHandler;
 use diandi\swoole\web\Request;
 use diandi\swoole\web\Response;
+use diandi\swoole\websocket\Context;
 
 require __DIR__.'/../../common/config/bootstrap.php';
 $db = require __DIR__.'/../../common/config/db.php';
