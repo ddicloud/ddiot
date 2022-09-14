@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 17:39:12
+ * @Last Modified time: 2022-09-14 17:57:48
  */
 
 namespace ddswoole\components\websocket;
@@ -228,10 +228,13 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         if (isset($request->header['sec-websocket-protocol'])) {
             $headers['Sec-WebSocket-Protocol'] = $request->header['sec-websocket-protocol'];
         }
-
         // 发送验证后的header
-        foreach ($headers as $key => $val) {
-            $ws->header($key, $val);
+        $ws->header = $headers;
+
+        if (empty($request->server['query_string'])) {
+            DebugService::consoleWrite('请检查websocket地址是否正确');
+
+            return false;
         }
 
         $options = $this->getRoute($request->server['query_string']);
@@ -242,8 +245,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             return false;
         } else {
             if ($this->checkAccess($accessToken)) {
-                $ws->status(101);
-
                 return true;
             } else {
                 DebugService::consoleWrite('accessToken 校验失败');
