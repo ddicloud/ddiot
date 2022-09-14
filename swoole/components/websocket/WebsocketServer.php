@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 15:28:37
+ * @Last Modified time: 2022-09-14 16:01:57
  */
 
 namespace ddswoole\components\websocket;
@@ -238,7 +238,9 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             $ws->header($key, $val);
         }
 
-        $accessToken = $request->get['access_token'];
+        $options = $this->getRoute($request->server['request_uri']);
+
+        $accessToken = $options['access_token'];
         if (!empty($token)) {
             var_dump('accessToken 没有设置');
 
@@ -285,5 +287,28 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         }
 
         return true;
+    }
+
+    /**
+     * 解析路由参数.
+     *
+     * @param [type] $request_uri
+     *
+     * @return void
+     * @date 2022-09-14
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public function getRoute($request_uri)
+    {
+        $str = mb_substr($request_uri, stripos($request_uri, '?') + 1);
+
+        parse_str($str, $arr);
+
+        return  $arr;
     }
 }
