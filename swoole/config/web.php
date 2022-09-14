@@ -4,15 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 15:48:19
+ * @Last Modified time: 2022-09-14 15:15:15
  */
 
 use diandi\swoole\web\ErrorHandler;
 use diandi\swoole\web\Request;
 use diandi\swoole\web\Response;
 
-require __DIR__ . '/../../common/config/bootstrap.php';
-$db = require __DIR__ . '/../../common/config/db.php';
+require __DIR__.'/../../common/config/bootstrap.php';
+$db = require __DIR__.'/../../common/config/db.php';
 $db['class'] = 'ddswoole\db\Connection';
 
 return [
@@ -62,9 +62,9 @@ return [
             'poolConfig' => [
                 'mysql' => [
                      //池容量
-                    'maxActive'=>10,
+                    'maxActive' => 10,
                     //当链接数满时,重新获取的等待时间,秒为单位
-                    'waitTime'=> 5                   
+                    'waitTime' => 5,
                 ],
             ],
         ],
@@ -157,5 +157,5 @@ return [
             'class' => 'yii\redis\Cache',
         ],
     ],
-    'params' => require __DIR__ . '/params.php',
+    'params' => require __DIR__.'/params.php',
 ];

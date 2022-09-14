@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-13 20:53:07
+ * @Last Modified time: 2022-09-14 15:28:37
  */
 
 namespace ddswoole\components\websocket;
@@ -14,9 +14,13 @@ use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
-use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use diandi\swoole\web\Application;
+use diandi\swoole\websocket\Context;
+use diandi\swoole\websocket\events\webSocketEvent;
+use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
+use Yii;
+use yii\base\Event;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
 {
@@ -56,6 +60,22 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
+        // 注入上下文
+        Yii::$app->setComponents([
+            'context' => [
+                'class' => Context::class,
+            ],
+        ]);
+
+        // 全局事件触发
+        $this->onEvent();
+    }
+
+    public function onEvent()
+    {
+        Event::on(webSocketEvent::className(), self::EVENT_WEBSOCKET_BEFORE, function ($event) {
+            var_dump($event->cid);  // 显示 "null"
+        });
     }
 
     /**
@@ -101,6 +121,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
             return false;
         }
+
         return true;
     }
 
@@ -122,7 +143,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
     public function checkUpgrade(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
     {
-        if($this->onHandshake($request,$ws)){
+        if ($this->onHandshake($request, $ws)) {
             $ws->upgrade();
         }
     }
@@ -199,7 +220,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             return false;
         }
 
-        $key = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
+        $key = base64_encode(sha1($request->header['sec-websocket-key'].'258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
         $headers = [
             'Upgrade' => 'websocket',
             'Connection' => 'Upgrade',
@@ -236,7 +257,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         // 接受握手 还需要101状态码以切换状态
         $ws->status(101);
-        var_dump('shake success at fd :' . $request->fd);
+        var_dump('shake success at fd :'.$request->fd);
 
         return true;
     }
