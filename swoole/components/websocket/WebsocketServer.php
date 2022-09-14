@@ -3,25 +3,25 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 20:57:12
+ * @Last Modified time: 2022-09-15 07:50:32
  */
 
 namespace ddswoole\components\websocket;
 
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
-use ddswoole\interfaces\InteractsWithSwooleTable;
-use ddswoole\interfaces\SocketServer;
+use ddswoole\interfaces\servers\SocketInterfaceServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
 use ddswoole\servers\DebugService;
+use ddswoole\traits\InteractsWithSwooleTable;
 use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
 use Yii;
 
-class WebsocketServer extends ServerWebSocketServer implements SocketServer
+class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceServer
 {
     use InteractsWithSwooleTable;
 

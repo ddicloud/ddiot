@@ -3,25 +3,25 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-18 14:34:02
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-26 14:51:14
+ * @Last Modified time: 2022-09-15 07:27:10
  */
 
-namespace ddswoole\interfaces;
+namespace ddswoole\traits;
 
-use Swoole\Table as SwooleTable;
 use ddswoole\db\Table;
+use Swoole\Table as SwooleTable;
 
 trait InteractsWithSwooleTable
 {
     /**
      * @var Table
      */
-    protected  $currentTable;
+    protected $currentTable;
 
     /**
      * Register customized swoole tables.
      */
-    protected  function prepareTables(array $tables)
+    protected function prepareTables(array $tables)
     {
         $this->currentTable = new Table();
         $this->registerTables($tables);
@@ -30,7 +30,7 @@ trait InteractsWithSwooleTable
     /**
      * Register user-defined swoole tables.
      */
-    protected  function registerTables(array $tables)
+    protected function registerTables(array $tables)
     {
         foreach ($tables as $key => $value) {
             $table = new SwooleTable($value['size']);

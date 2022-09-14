@@ -3,19 +3,18 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-07 11:27:34
+ * @Last Modified time: 2022-09-15 07:49:31
  */
 
 namespace ddswoole\components\tcp;
 
-use ddswoole\interfaces\InteractsWithSwooleTable;
+use ddswoole\traits\InteractsWithSwooleTable;
 use diandi\swoole\tcp\server\TcpServer as ServerTcpServer;
 use diandi\swoole\web\Application;
 use Swoole\Coroutine\Server\Connection;
 
 class TcpServer extends ServerTcpServer
 {
-
     use InteractsWithSwooleTable;
 
     public $onWorkStartCallable;
@@ -76,7 +75,5 @@ class TcpServer extends ServerTcpServer
     // 系统校验后自己处理
     public function messageReturn(Connection $conn)
     {
-
     }
-
 }

@@ -3,10 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-13 20:49:38
+ * @Last Modified time: 2022-09-15 07:46:33
  */
 
-namespace ddswoole\interfaces;
+namespace ddswoole\interfaces\servers;
 
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -16,18 +16,23 @@ use Swoole\Http\Response;
  *
  * Interface AddonWidget
  */
-interface SocketServer
+interface SocketInterfaceServer extends BaseInterfaceServer
 {
     public function addlistenerPort($channel);
 
     /**
-     * 心跳处理
+     * 心跳处理.
+     *
      * @param [type] $ws
      * @param [type] $message
+     *
      * @return void
      * @date 2022-09-05
+     *
      * @example
+     *
      * @author Wang Chunsheng
+     *
      * @since
      */
     public function heartbeat($ws, $message);
