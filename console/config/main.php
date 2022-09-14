@@ -3,13 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-23 20:21:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 10:08:06
+ * @Last Modified time: 2022-09-14 19:47:38
  */
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require __DIR__.'/../../common/config/params.php',
+    require __DIR__.'/../../common/config/params-local.php',
+    require __DIR__.'/params.php',
+    require __DIR__.'/params-local.php'
 );
 
 return [
@@ -57,6 +57,9 @@ return [
         ],
         'session' => [
             'class' => 'yii\web\Session',
+        ],
+        'context' => [
+            'class' => 'diandi\swoole\websocket\Context',
         ],
         'authManager' => [
             'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
