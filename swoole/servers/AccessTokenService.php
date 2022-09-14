@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 13:49:17
+ * @Last Modified time: 2022-09-14 16:16:12
  */
 
 namespace ddswoole\servers;
@@ -57,10 +57,10 @@ class AccessTokenService extends BaseService
     {
         $model = $this->findModel($member->id, $group_id);
 
-        $model->id =  SwooleAccessToken::find()->where(['swoole_member_id'=> $member->id])->select('id')->scalar();
-        
+        $model->id = SwooleAccessToken::find()->where(['swoole_member_id' => $member->id])->select('id')->scalar();
+
         $model->swoole_member_id = $member->id;
-        
+
         $model->member_id = $member->member_id;
 
         $model->group_id = $group_id;
@@ -88,7 +88,7 @@ class AccessTokenService extends BaseService
             $model->access_token = StringHelper::uuid('sha1').'_'.time();
             $model->status = 1;
             loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '准备写入', [
-                'model' => $model->getAttributes()
+                'model' => $model->getAttributes(),
             ]);
             if (!$model->save()) {
                 $msg = ErrorsHelper::getModelError($model);
@@ -229,7 +229,6 @@ class AccessTokenService extends BaseService
 
     /**
      * @param $token
-     * @param $type
      *
      * @return array|mixed|ActiveRecord|null
      */

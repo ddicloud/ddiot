@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 16:05:53
+ * @Last Modified time: 2022-09-14 16:37:52
  */
 
 namespace ddswoole\components\websocket;
@@ -142,11 +142,21 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         }
     }
 
+    /**
+     * 握手校验处理，返回true表示成功
+     *
+     * @return void
+     * @date 2022-09-14
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
     public function checkUpgrade(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
     {
-        if ($this->onHandshake($request, $ws)) {
-            $ws->upgrade();
-        }
+        return $this->onHandshake($request, $ws);
     }
 
     public function onHandshake(\Swoole\Http\Request $request, \Swoole\Http\Response $ws)
@@ -254,7 +264,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         }
 
         // 接受握手 还需要101状态码以切换状态
-        $ws->status(101);
+        // $ws->status(101);
         DebugService::consoleWrite('shake success at fd :'.$request->fd);
 
         return true;
