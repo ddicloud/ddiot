@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 14:49:34
+ * @Last Modified time: 2022-09-14 16:03:29
  */
 
 namespace ddswoole\servers;
@@ -37,7 +37,7 @@ class DebugService extends BaseService
      *
      * @since
      */
-    public static function consoleWrite($remark, $content)
+    public static function consoleWrite($remark, $content = '')
     {
         if (is_array($content)) {
             $content = json_encode($content);

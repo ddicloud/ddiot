@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 16:01:57
+ * @Last Modified time: 2022-09-14 16:03:47
  */
 
 namespace ddswoole\components\websocket;
@@ -14,6 +14,7 @@ use ddswoole\interfaces\InteractsWithSwooleTable;
 use ddswoole\interfaces\SocketServer;
 use ddswoole\models\SwooleMember;
 use ddswoole\servers\AccessTokenService;
+use ddswoole\servers\DebugService;
 use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
 use diandi\swoole\websocket\events\webSocketEvent;
@@ -207,7 +208,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
         // ws rfc 规范中约定的验证过程
         if (!isset($request->header['sec-websocket-key'])) {
             // 需要 Sec-WebSocket-Key 如果没有拒绝握手
-            var_dump('shake fai1 3');
+            DebugService::consoleWrite('shake fai1 3');
 
             return false;
         }
@@ -215,7 +216,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             || 16 !== strlen(base64_decode($request->header['sec-websocket-key']))
         ) {
             //不接受握手
-            var_dump('shake fai1 4');
+            DebugService::consoleWrite('shake fai1 4');
 
             return false;
         }
@@ -242,7 +243,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         $accessToken = $options['access_token'];
         if (!empty($token)) {
-            var_dump('accessToken 没有设置');
+            DebugService::consoleWrite('accessToken 没有设置');
 
             return false;
         } else {
@@ -251,7 +252,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
                 return true;
             } else {
-                var_dump('accessToken 校验失败');
+                DebugService::consoleWrite('accessToken 校验失败');
 
                 return false;
             }
@@ -259,7 +260,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         // 接受握手 还需要101状态码以切换状态
         $ws->status(101);
-        var_dump('shake success at fd :'.$request->fd);
+        DebugService::consoleWrite('shake success at fd :'.$request->fd);
 
         return true;
     }
