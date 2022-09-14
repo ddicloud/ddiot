@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 17:57:48
+ * @Last Modified time: 2022-09-14 18:13:32
  */
 
 namespace ddswoole\components\websocket;
@@ -17,11 +17,9 @@ use ddswoole\servers\AccessTokenService;
 use ddswoole\servers\DebugService;
 use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
-use diandi\swoole\websocket\events\webSocketEvent;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
 use Yii;
-use yii\base\Event;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketServer
 {
@@ -67,16 +65,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
                 'class' => Context::class,
             ],
         ]);
-
-        // 全局事件触发
-        $this->onEvent();
-    }
-
-    public function onEvent()
-    {
-        Event::on(webSocketEvent::className(), self::EVENT_WEBSOCKET_BEFORE, function ($event) {
-            var_dump($event->cid);  // 显示 "null"
-        });
     }
 
     /**
