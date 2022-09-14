@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 16:37:52
+ * @Last Modified time: 2022-09-14 17:18:06
  */
 
 namespace ddswoole\components\websocket;
@@ -167,19 +167,13 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
 
         /* 此处自定义握手规则 返回 false 时中止握手 */
         if (!$this->customHandShake($request, $ws)) {
-            $ws->end();
-
             return false;
         }
 
         /* 此处是  RFC规范中的WebSocket握手验证过程 必须执行 否则无法正确握手 */
         if ($this->secWebsocketAccept($request, $ws)) {
-            $ws->end();
-
             return true;
         }
-
-        $ws->end();
 
         return false;
     }
@@ -244,8 +238,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
             $ws->header($key, $val);
         }
 
-        $options = $this->getRoute($request->server['request_uri']);
-
+        $options = $this->getRoute($request->server['query_string']);
         $accessToken = $options['access_token'];
         if (empty($accessToken)) {
             DebugService::consoleWrite('accessToken 没有设置');
@@ -298,8 +291,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
     /**
      * 解析路由参数.
      *
-     * @param [type] $request_uri
-     *
      * @return void
      * @date 2022-09-14
      *
@@ -309,11 +300,9 @@ class WebsocketServer extends ServerWebSocketServer implements SocketServer
      *
      * @since
      */
-    public function getRoute($request_uri)
+    public function getRoute($query_string)
     {
-        $str = mb_substr($request_uri, stripos($request_uri, '?') + 1);
-
-        parse_str($str, $arr);
+        parse_str($query_string, $arr);
 
         return  $arr;
     }
