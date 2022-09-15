@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 09:20:12
+ * @Last Modified time: 2022-09-15 09:26:09
  */
 
 namespace ddswoole\components\websocket;
@@ -59,7 +59,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      *
      * @since
      */
-    public function __construct($config, $callable, $context)
+    public function __construct($config, $callable, Context $context)
     {
         parent::__construct($config);
         $this->onWorkStartCallable = $callable;
