@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 09:09:20
+ * @Last Modified time: 2022-09-15 09:10:32
  */
 
 namespace ddswoole\components\websocket;
 
 use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
-use ddswoole\interfaces\servers\SwooleInterfaceController;
+use ddswoole\interfaces\controllers\SwooleInterfaceController;
 use diandi\swoole\websocket\Context;
 use function Swoole\Coroutine\run;
 use Yii;
