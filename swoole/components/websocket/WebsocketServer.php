@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 07:50:32
+ * @Last Modified time: 2022-09-15 08:04:00
  */
 
 namespace ddswoole\components\websocket;
@@ -16,10 +16,8 @@ use ddswoole\servers\AccessTokenService;
 use ddswoole\servers\DebugService;
 use ddswoole\traits\InteractsWithSwooleTable;
 use diandi\swoole\web\Application;
-use diandi\swoole\websocket\Context;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
-use Yii;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceServer
 {
@@ -34,6 +32,20 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
     public $channelNum = 20;
 
     /**
+     * 上下文.
+     *
+     * @var [type]
+     * @date 2022-09-15
+     *
+     * @example
+     *
+     * @author wang chunSheng
+     *
+     * @since
+     */
+    public $context;
+
+    /**
      * 重新实例化application.
      *
      * @param [type] $config
@@ -46,11 +58,12 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      *
      * @since
      */
-    public function __construct($config, $callable)
+    public function __construct($config, $callable, $context)
     {
         parent::__construct($config);
         $this->onWorkStartCallable = $callable;
         $this->config = $config['app'];
+        $this->context = $context;
     }
 
     public function run()
@@ -122,8 +135,6 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
             call_user_func_array([$this->onWorkStartCallable, 'bootstrap'], [$this->application]);
             // $this->onWorkStartCallable = null;
         }
-
-        Yii::$context = new Context();
     }
 
     /**

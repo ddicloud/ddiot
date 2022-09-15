@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-03 23:32:40
+ * @Last Modified time: 2022-09-15 08:03:39
  */
 
 namespace ddswoole\components\websocket;
@@ -11,14 +11,9 @@ namespace ddswoole\components\websocket;
 use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\SwooleServer;
-use Swoole\Runtime;
-use Yii;
-use Swoole\Http\Request;
-use Swoole\Http\Response;
-use Swoole\WebSocket\CloseFrame;
-use Swoole\Coroutine\Http\Server;
+use diandi\swoole\websocket\Context;
 use function Swoole\Coroutine\run;
-
+use Yii;
 
 /**
  * Undocumented class.
@@ -45,7 +40,7 @@ class WebsocketController extends BaseController implements SwooleServer
     public function actions()
     {
         parent::actions();
-        $confPath = Yii::getAlias('@addons/' . $this->addons . '/config/swoole_websocket.php');
+        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_websocket.php');
         $CommonConfPath = Yii::getAlias('@common/config');
         if (file_exists($confPath)) {
             $config = require $confPath;
@@ -53,8 +48,8 @@ class WebsocketController extends BaseController implements SwooleServer
                 [
                     'app' => [
                         'params' => yii\helpers\ArrayHelper::merge(
-                            require ($CommonConfPath . '/params.php'),
-                            require ($CommonConfPath . '/params-local.php'),
+                            require($CommonConfPath.'/params.php'),
+                            require($CommonConfPath.'/params-local.php'),
                         ),
                     ],
                 ],
@@ -65,18 +60,19 @@ class WebsocketController extends BaseController implements SwooleServer
                 $config
             );
         } else {
-            throw new \Exception('配置文件不存在：' . $confPath);
+            throw new \Exception('配置文件不存在：'.$confPath);
         }
     }
 
     public function actionRun()
-    {   
+    {
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
         $serverName = $this->server;
         $Loader = new Loader();
-        $server = new $serverName($this->config,$Loader);
+        $context = new Context();
+        $server = new $serverName($this->config, $Loader, $context);
         $server->run();
     }
 }
