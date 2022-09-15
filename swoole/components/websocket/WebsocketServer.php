@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 09:26:09
+ * @Last Modified time: 2022-09-15 09:44:53
  */
 
 namespace ddswoole\components\websocket;
@@ -61,10 +61,10 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      */
     public function __construct($config, $callable, Context $context)
     {
-        parent::__construct($config);
         $this->onWorkStartCallable = $callable;
         $this->config = $config['app'];
         $this->context = $context;
+        parent::__construct($config);
     }
 
     public function run()
