@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 08:04:00
+ * @Last Modified time: 2022-09-15 09:20:12
  */
 
 namespace ddswoole\components\websocket;
@@ -16,6 +16,7 @@ use ddswoole\servers\AccessTokenService;
 use ddswoole\servers\DebugService;
 use ddswoole\traits\InteractsWithSwooleTable;
 use diandi\swoole\web\Application;
+use diandi\swoole\websocket\Context;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
 
@@ -135,6 +136,8 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
             call_user_func_array([$this->onWorkStartCallable, 'bootstrap'], [$this->application]);
             // $this->onWorkStartCallable = null;
         }
+        // $this->context->setContextDataByKey(Context::COROUTINE_CONTAINER, new Container());
+        $this->context->setContextDataByKey(Context::COROUTINE_APP, $this->application);
     }
 
     /**
