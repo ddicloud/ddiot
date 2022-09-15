@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 07:46:37
+ * @Last Modified time: 2022-09-15 09:09:11
  */
 
 namespace ddswoole\interfaces\servers;
@@ -13,7 +13,7 @@ namespace ddswoole\interfaces\servers;
  *
  * Interface AddonWidget
  */
-interface SwooleInterfaceServer extends BaseInterfaceServer
+interface SwooleInterfaceController
 {
     /**
      * 服务默认入口.

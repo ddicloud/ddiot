@@ -3,14 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 08:03:39
+ * @Last Modified time: 2022-09-15 09:09:20
  */
 
 namespace ddswoole\components\websocket;
 
 use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
-use ddswoole\interfaces\SwooleServer;
+use ddswoole\interfaces\servers\SwooleInterfaceController;
 use diandi\swoole\websocket\Context;
 use function Swoole\Coroutine\run;
 use Yii;
@@ -29,7 +29,7 @@ use Yii;
  * nohup php ./yii bracelet/run --bloc_id=1 --store_id=1 --addons=diandi_watches > /home/nohub/diandi_watches.log  2>&1 &
  * ps -ef|grep php|grep -v grep
  */
-class WebsocketController extends BaseController implements SwooleServer
+class WebsocketController extends BaseController implements SwooleInterfaceController
 {
     public $server;
 
