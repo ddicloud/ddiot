@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-16 10:01:04
+ * @Last Modified time: 2022-09-16 10:24:23
  */
 
 namespace ddswoole\servers;
@@ -44,7 +44,7 @@ class DebugService extends BaseService
         }
         $memoryInit = memory_get_usage() / 1024 / 1024;
         $time = date('H:i:s', time());
-        echo "#time[$time]#[$remark]#$content#内存消耗:[$memoryInit]MB".PHP_EOL;
+        echo "#$time#[$remark]#$content#内存消耗:[$memoryInit]MB".PHP_EOL;
     }
 
     /**
@@ -65,6 +65,6 @@ class DebugService extends BaseService
     {
         $memoryInit = memory_get_usage() / 1024 / 1024;
         $time = date('H:i:s', time());
-        echo "#time[$time]#[$remark]#----------------内存消耗:[$memoryInit]MB-------------------------".PHP_EOL;
+        echo "#$time#[$remark]#----------------内存消耗:[$memoryInit]MB-------------------------".PHP_EOL;
     }
 }
