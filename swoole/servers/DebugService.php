@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-14 16:03:29
+ * @Last Modified time: 2022-09-16 09:36:51
  */
 
 namespace ddswoole\servers;
@@ -42,7 +42,8 @@ class DebugService extends BaseService
         if (is_array($content)) {
             $content = json_encode($content);
         }
-        echo "#[$remark]#$content".PHP_EOL;
+        $memoryInit = memory_get_usage() / 1024 / 1024;
+        echo "#[$remark]#$content#内存消耗:[$memoryInit]MB".PHP_EOL;
     }
 
     /**
