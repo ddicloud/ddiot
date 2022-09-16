@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-16 09:36:51
+ * @Last Modified time: 2022-09-16 09:38:23
  */
 
 namespace ddswoole\servers;
@@ -62,6 +62,7 @@ class DebugService extends BaseService
      */
     public static function consoleCrosswise($remark)
     {
-        echo "#[$remark]#-----------------------------------------".PHP_EOL;
+        $memoryInit = memory_get_usage() / 1024 / 1024;
+        echo "#[$remark]#----------------内存消耗:[$memoryInit]MB-------------------------".PHP_EOL;
     }
 }
