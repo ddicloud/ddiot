@@ -4,13 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 10:30:43
+ * @Last Modified time: 2022-09-17 12:54:34
  */
 
 namespace common\behaviors;
 
 use admin\models\addons\models\Bloc as ModelsBloc;
-use diandi\addons\models\Bloc;
 use Yii;
 use yii\base\Behavior;
 use yii\db\BaseActiveRecord;
@@ -47,7 +46,6 @@ class SaveBehavior extends Behavior
     public function init()
     {
         global $_GPC;
-        $Res = Yii::$app->service->commonGlobalsService->getGlobalBloc();
 
         if (empty($this->attributes)) {
             $this->attributes = [
