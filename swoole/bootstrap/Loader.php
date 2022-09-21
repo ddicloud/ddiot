@@ -3,13 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-02 07:33:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 13:30:48
+ * @Last Modified time: 2022-09-21 16:47:00
  */
 
 namespace ddswoole\bootstrap;
 
 use diandi\addons\Loader as AddonsLoader;
-use Yii;
 
 class Loader extends AddonsLoader
 {
@@ -18,5 +17,3 @@ class Loader extends AddonsLoader
         parent::bootstrap($application);
     }
 }
-
-?>
