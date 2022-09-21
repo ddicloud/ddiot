@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 16:34:12
+ * @Last Modified time: 2022-09-22 00:22:55
  */
 
 namespace ddswoole\db\mysql;
@@ -16,12 +16,11 @@ use PDOException;
 use Swoole\Coroutine\Mysql;
 use Yii;
 use yii\helpers\ArrayHelper;
-use Swoole\Database\PDOConfig;
 
 class PoolPDO
 {
     /**
-     * attributes`s key for MysqlPool
+     * attributes`s key for MysqlPool.
      */
     const POOL_CLASS = 'class';
     const POOL_TIMEOUT = 'timeout';
@@ -41,11 +40,15 @@ class PoolPDO
     private $client;
 
     /**
-     * 连接池key
+     * 连接池key.
+     *
      * @var [type]
      * @date 2022-09-05
+     *
      * @example
+     *
      * @author Wang Chunsheng
+     *
      * @since
      */
     private $poolKey;
@@ -64,7 +67,7 @@ class PoolPDO
     private $methodSupport = ['fetch', 'fetchAll', 'fetchColumn'];
 
     /**
-     * Whether currently in a transaction
+     * Whether currently in a transaction.
      *
      * @var bool
      */
@@ -76,14 +79,13 @@ class PoolPDO
      * @var bool 是否在事务中
      */
     private $inTransaction;
-    
+
     // 保存使用
-    private $columns = ['defef','ertert'];
+    private $columns = ['defef', 'ertert'];
 
-
-    
     /**
      * MysqlPoolPdo constructor.
+     *
      * @param $dsn
      * @param $username
      * @param $password
@@ -119,23 +121,28 @@ class PoolPDO
         if ($this->client === null) {
             $this->client = $this->getConnectionFromPool();
         }
-        // if ($this->client->connected == false) {
-        //     $this->client->connect($this->config);
-        //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
-        // }
+        if (!$this->client->connected) {
+            $this->client->connect($this->config);
+            //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
+        }
+
         return $this->client->getPools();
     }
 
     /**
-     * 获取数据库连接
+     * 获取数据库连接.
+     *
      * @return object
      * @date 2022-09-05
+     *
      * @example
+     *
      * @author Wang Chunsheng
+     *
      * @since
      */
     public function getClient()
-    {   
+    {
         if ($this->client === null) {
             $this->client = $this->getConnectionFromPool();
         }
@@ -147,7 +154,7 @@ class PoolPDO
     }
 
     /**
-     * 释放链接
+     * 释放链接.
      */
     public function releaseConnect()
     {
@@ -158,8 +165,9 @@ class PoolPDO
     }
 
     /**
-     * 从链接池中获取一个链接
-     * @return null|object
+     * 从链接池中获取一个链接.
+     *
+     * @return object|null
      */
     protected function getConnectionFromPool()
     {
@@ -189,15 +197,17 @@ class PoolPDO
                     'charset' => 'utf8mb4',
                     'unixSocket' => null,
                     'options' => [
-                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION //开启异常模式
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //开启异常模式
                     ],
                     'size' => 100,
                 ]);
                 \Yii::trace('create new mysql connection', __METHOD__);
+
                 return $client;
             };
             $cm->addPool($this->poolKey, $dbPool);
         }
+
         return $cm->get($this->poolKey);
     }
 
@@ -206,12 +216,10 @@ class PoolPDO
         if (!$this->poolKey) {
             $this->poolKey = md5($this->dsn);
         }
+
         return $this->poolKey;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function prepare($statement, $driver_options = null)
     {
         return new PoolPDOStatement($statement, $this, $driver_options);
@@ -222,6 +230,7 @@ class PoolPDO
      * @param bool $isExecute
      * @param $method
      * @param $fetchMode
+     *
      * @return int
      */
     public function doQuery($sql, $method, $fetchMode, $isExecute = false)
@@ -237,13 +246,16 @@ class PoolPDO
         if (!in_array($method, $this->methodSupport)) {
             throw new PDOException("$method is not support");
         }
+
         return $this->{$method}($data, $fetchMode);
     }
 
     /**
      * @param $data
      * @param $fetchMode
+     *
      * @deprecated it instead by PDOStatement
+     *
      * @return bool
      */
     protected function fetch($data, $fetchMode)
@@ -253,13 +265,16 @@ class PoolPDO
         } elseif ($fetchMode == \PDO::FETCH_CLASS) {
             throw new PDOException('PDO::FETCH_CLASS is not support');
         }
+
         return $data->result[0];
     }
 
     /**
      * @param $data
      * @param $fetchMode
+     *
      * @deprecated it instead by PDOStatement
+     *
      * @return array
      */
     protected function fetchAll($data, $fetchMode)
@@ -270,15 +285,19 @@ class PoolPDO
         if ($fetchMode == \PDO::FETCH_COLUMN) {
             $keys = array_keys($data->result[0]);
             $key = array_shift($keys);
+
             return ArrayHelper::getColumn($data->result, $key);
         }
+
         return $data->result;
     }
 
     /**
      * @param $data
      * @param $fetchMode
+     *
      * @deprecated it instead by PDOStatement
+     *
      * @return mixed|null
      */
     protected function fetchColumn($data, $fetchMode)
@@ -286,14 +305,15 @@ class PoolPDO
         if (empty($data->result[0])) {
             return null;
         }
+
         return array_shift($data->result[0]);
     }
 
     /**
      * @param null $name
+     *
      * @return int
      */
-
     public function lastInsertId($name = null)
     {
         return $this->_lastInsertId;
@@ -306,38 +326,38 @@ class PoolPDO
 
     /**
      * @param int $attribute
+     *
      * @return mixed|null
      */
-
     public function getAttribute($attribute)
     {
         if (isset($this->options[$attribute])) {
             return $this->options[$attribute];
         }
+
         return null;
     }
 
     /**
-     * @param int $attribute
+     * @param int   $attribute
      * @param mixed $value
+     *
      * @return bool
      */
     public function setAttribute($attribute, $value)
     {
         $this->options[$attribute] = $value;
+
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function quote($string, $parameter_type = \PDO::PARAM_STR)
     {
         if ($parameter_type !== \PDO::PARAM_STR) {
             throw new PDOException('Only PDO::PARAM_STR is currently implemented for the $parameter_type of MysqlPoolPdo::quote()');
         }
 
-        return "'" . str_replace("'", "''", $string) . "'";
+        return "'".str_replace("'", "''", $string)."'";
     }
 
     /**
@@ -356,9 +376,6 @@ class PoolPDO
         return $this->inTransaction;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function beginTransaction()
     {
         if ($this->isTransaction()) {
@@ -370,11 +387,12 @@ class PoolPDO
         }
         Yii::$app->on('afterRequest', [$this, 'onError']);
         $this->_bingId = $sock;
+
         return $this->_isTransaction = true;
     }
 
     /**
-     * Returns true if the current process is in a transaction
+     * Returns true if the current process is in a transaction.
      *
      * @return bool
      */
@@ -384,7 +402,7 @@ class PoolPDO
     }
 
     /**
-     * Commits all statements issued during a transaction and ends the transaction
+     * Commits all statements issued during a transaction and ends the transaction.
      *
      * @return bool
      */
@@ -396,11 +414,12 @@ class PoolPDO
         $ret = $this->pool->commit($this->_bingId);
         $this->_bingId = null;
         $this->_isTransaction = false;
+
         return $ret;
     }
 
     /**
-     * Rolls back a transaction
+     * Rolls back a transaction.
      *
      * @return bool
      */
@@ -412,6 +431,7 @@ class PoolPDO
         $ret = $this->pool->rollBack($this->_bingId);
         $this->_bingId = null;
         $this->_isTransaction = false;
+
         return $ret;
     }
 
@@ -424,16 +444,16 @@ class PoolPDO
     }
 
     /**
-     * Parses a DSN string according to the rules in the PHP manual
+     * Parses a DSN string according to the rules in the PHP manual.
      *
      * See also the PDO_User::parseDSN method in pecl/pdo_user. This method
      * mimics the functionality provided by that method.
      *
      * @param string $dsn
-     * @param array  $params
      *
      * @return array
-     * @link http://www.php.net/manual/en/pdo.construct.php
+     *
+     * @see http://www.php.net/manual/en/pdo.construct.php
      */
     public static function parseDsn($dsn, array $params)
     {
@@ -443,7 +463,7 @@ class PoolPDO
             if ($driver == 'uri') {
                 throw new PDOException('dsn by uri is not support');
             } else {
-                $returnParams = array();
+                $returnParams = [];
                 foreach (explode(';', $vars) as $var) {
                     $param = explode('=', $var,
                         2); //limiting explode to 2 to enable full connection strings
@@ -451,6 +471,7 @@ class PoolPDO
                         $returnParams[$param[0]] = $param[1];
                     }
                 }
+
                 return $returnParams;
             }
         } else {
@@ -459,11 +480,12 @@ class PoolPDO
                 return self::parseDsn(self::iniGet("pdo.dsn.{$dsn}"), $params);
             }
         }
-        return array();
+
+        return [];
     }
 
     /**
-     * Wraps ini_get()
+     * Wraps ini_get().
      *
      * This is primarily done so that we can easily stub this method in a
      * unit test.
