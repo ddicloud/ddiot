@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-21 14:16:02
+ * @Last Modified time: 2022-09-21 19:23:09
  */
 
 namespace ddswoole\components\websocket;
@@ -47,7 +47,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
     public $context;
 
     /**
-     * 重新实例化application.
+     * 重新实例化application.完成各种类的注入.
      *
      * @param [type] $config
      * @param [type] $callable
@@ -67,12 +67,29 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
         parent::__construct($config);
     }
 
-    public function run()
+    public function init()
     {
         $this->application = new Application($this->config);
         if (!empty($this->tables) && is_array($this->tables)) {
             $this->prepareTables($this->tables);
         }
+    }
+
+    /**
+     * 运行入口.
+     *
+     * @return void
+     * @date 2022-09-21
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public function run()
+    {
+        parent::run();
     }
 
     /**
