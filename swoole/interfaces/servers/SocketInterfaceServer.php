@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-11 00:34:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-19 19:44:09
+ * @Last Modified time: 2022-09-21 09:10:43
  */
 
 namespace ddswoole\interfaces\servers;
@@ -55,15 +55,27 @@ interface SocketInterfaceServer extends BaseInterfaceServer
      * 上下文处理.
      *
      * @return void
-     * @date 2022-09-05
+     * @date 2022-09-21
      *
      * @example
      *
-     * @author Li Jinfang
+     * @author Wang Chunsheng
      *
      * @since
      */
     public function ContextInit();
 
+    /**
+     * 握手校验.
+     *
+     * @return void
+     * @date 2022-09-20
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
     public function checkUpgrade(Request $request, Response $ws);
 }

@@ -18,7 +18,11 @@ $config = yii\helpers\ArrayHelper::merge(
     // require __DIR__ . '/swoole/config/web.php'
 );
 
-run(function () use ($config) {
+\Swoole\Runtime::enableCoroutine(SWOOLE_HOOK_ALL);
+$result = run(function () use ($config) {
     $application = new yii\console\Application($config);
     $exitCode = $application->run();
 });
+\Swoole\Runtime::enableCoroutine(false);
+
+return $result;
