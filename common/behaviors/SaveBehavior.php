@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-17 12:54:34
+ * @Last Modified time: 2022-09-22 20:18:44
  */
 
 namespace common\behaviors;
@@ -119,5 +119,13 @@ class SaveBehavior extends Behavior
     protected function getValue($attribute)
     {
         return $this->_map[$attribute];
+    }
+
+    /**
+     * 声明一个析构方法.
+     */
+    public function __destruct()
+    {
+        echo '资源释放'.PHP_EOL;
     }
 }
