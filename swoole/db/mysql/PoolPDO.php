@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-22 00:25:55
+ * @Last Modified time: 2022-09-24 10:54:10
  */
 
 namespace ddswoole\db\mysql;
@@ -174,8 +174,8 @@ class PoolPDO
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
         if (!$cm->hasPool($this->poolKey)) {
-            $config = $cm->poolConfig['mysql'] ?? [];
-            $dbPool = new DbPool($config);
+            $ManagerConfig = $cm->poolConfig['mysql'] ?? [];
+            $dbPool = new DbPool($ManagerConfig);
 //            $config = $this->config;
 
             $config = require yii::getAlias('@common/config/db.php');

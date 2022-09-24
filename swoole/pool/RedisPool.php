@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:28:38
+ * @Last Modified time: 2022-09-24 10:44:26
  */
 
 namespace ddswoole\pool;
 
+use RuntimeException;
 use Swoole\Coroutine\Redis;
 use Swoole\Database\RedisConfig;
 use Swoole\Database\RedisPool as DatabaseRedisPool;
@@ -16,36 +17,101 @@ use yii\db\Exception;
 
 class RedisPool extends Component
 {
-    public $hostname = '127.0.0.1';
+    /**
+     * @var array
+     */
+    protected $_config = [
+        'hostname' => 'localhost',
+        'port' => 3306,
+        'database' => 1,
+        'timeout' => 1000,
+        'maxSize' => 500,
+        'minSize' => 10,
+        'sleep' => 0.01,
+        'maxSleepTimes' => 10,
+        'count' => 10,
+    ];
 
-    public $port = 6379;
+    public $_pools;
 
-    public $timeout = 1000;
+    protected $_poolName;
 
-    public $password;
+    protected $_instance;
 
-    public $database;
-
-    public $maxSize = 500;
-
-    public $minSize = 10;
-
-    public $sleep = 0.01;
-
-    public $maxSleepTimes = 10;
-
-    protected $count = 0;
+    public $connected = false;
 
     /**
      * @var \SplQueue
      */
     protected $poolQueue;
 
+    public function __construct($config, $poolName = '')
+    {
+        //设置一个容量为1的通道
+        $this->setConfig($config);
+        //执行mysql相关 操作
+        $return = $this->init();
+    }
+
     public function init()
     {
         parent::init();
-        $this->poolQueue = new \SplQueue();
-        $conenct = $this->getConnect();
+        if (empty($this->getPools())) {
+            $config = $this->getConfig();
+            $pools = new DatabaseRedisPool((new RedisConfig())
+                ->withHost($config['hostname'])
+                ->withPort($config['port'])
+                ->withAuth('')
+                ->withDbIndex($config['database'])
+                ->withTimeout(1)
+            );
+            $this->setPools($pools);
+        }
+    }
+
+    public function getInstance()
+    {
+        $instance = $this->_instance;
+        $config = $this->getConfig();
+        if (empty($instance)) {
+            if (empty($config)) {
+                throw new RuntimeException('pdo config empty');
+            }
+            if (empty($config['size'])) {
+                throw new RuntimeException('the size of database connection pools cannot be empty');
+            }
+
+            $instance = new static($config);
+        }
+
+        return $instance;
+    }
+
+    public function setInstance($value)
+    {
+        $this->_instance = $value;
+    }
+
+    public function getPoolName()
+    {
+        return $this->_poolName;
+    }
+
+    public function setPoolName($value)
+    {
+        $this->_poolName = $value;
+    }
+
+    private static $instance;
+
+    public function getConnection()
+    {
+        return $this->_pools->get();
+    }
+
+    public function close($connection = null)
+    {
+        $this->_pools->put($connection);
     }
 
     protected function openOneConnect()
@@ -66,33 +132,24 @@ class RedisPool extends Component
         return $connect;
     }
 
-    protected function getConnect($sleepTime = 0)
+    public function getPools()
     {
-        $connect = null;
-        $pool = new DatabaseRedisPool((new RedisConfig())
-            ->withHost($this->hostname)
-            ->withPort($this->port)
-            ->withAuth('')
-            ->withDbIndex($this->database)
-            ->withTimeout(1)
-        );
-        $connect = $pool->get();
+        return $this->_pools;
+    }
 
-        return $connect;
-        // if ($this->poolQueue->count()) {
-        //     $connect = $this->poolQueue->dequeue();
-        // } elseif ($this->count < $this->maxSize) {
-        //     $connect = $this->openOneConnect();
-        // } elseif ($sleepTime < $this->maxSleepTimes) {
-        //     \Swoole\Coroutine::sleep($this->sleep);
-        //     ++$sleepTime;
-        //     $connect = $this->getConnect($sleepTime);
-        // }
-        // if ($connect === null) {
-        //     throw new Exception('mysqlPool is fulled', [], 1099);
-        // }
+    public function setPools($value)
+    {
+        $this->_pools = $value;
+    }
 
-        // return $connect;
+    public function getConfig()
+    {
+        return $this->_config;
+    }
+
+    public function setConfig($value)
+    {
+        $this->_config = $value;
     }
 
     protected function releaseConnect(Redis $connect)

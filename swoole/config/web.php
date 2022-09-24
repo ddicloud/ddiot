@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:06:21
+ * @Last Modified time: 2022-09-24 10:53:16
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -68,6 +68,12 @@ return [
                     //当链接数满时,重新获取的等待时间,秒为单位
                     'waitTime' => 5,
                 ],
+                'redis' => [
+                    //池容量
+                   'maxActive' => 10,
+                   //当链接数满时,重新获取的等待时间,秒为单位
+                   'waitTime' => 5,
+               ],
             ],
         ],
         'response' => [
