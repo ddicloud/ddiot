@@ -1,200 +1,185 @@
 <?php
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2022-09-24 09:42:16
+ * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 11:46:11
+ * @Last Modified time: 2022-09-24 12:01:03
  */
 
 namespace ddswoole\cache\redis;
 
 use ddswoole\pool\DbPool;
-use ddswoole\pool\RedisPool;
-use Yii;
+use Swoole\Coroutine\Redis;
+use yii\base\Exception;
 
 class Connection extends \yii\redis\Connection
 {
-    public $hostname = '127.0.0.1';
-
-    public $port = 6379;
-
-    public $connectionTimeout;
-
-    public $password;
-
-    public $database;
-
-    public $maxSize = 500;
-
-    public $minSize = 10;
-
-    public $sleep = 0.01;
-
-    public $maxSleepTimes = 10;
-
-    public $redisPoolClass = 'ddswoole\pool\RedisPool';
+    /**
+     * @var string redis pool key
+     */
+    public $poolKey;
+    /**
+     * @var Redis
+     */
+    private $_socket;
+    /**
+     * @var DbPool
+     */
+    private $pool;
+    /**
+     * @var array https://wiki.swoole.com/wiki/page/590.html
+     */
+    const NotSupportCMD = ['SCAN', 'OBJECT', 'SORT', 'MIGRATE', 'HSCAN', 'SSCAN', 'ZSCAN'];
 
     /**
-     * @var RedisPool
+     * Returns a value indicating whether the DB connection is established.
+     *
+     * @return bool whether the DB connection is established
      */
-    private $_redisPool;
-
-    private $poolKey;
-
-    private $client = null;
-
     public function getIsActive()
     {
-        return true;
+        return $this->_socket !== null;
     }
 
+    /**
+     * Establishes a DB connection.
+     * It does nothing if a DB connection has already been established.
+     *
+     * @throws Exception if connection fails
+     */
     public function open()
     {
-        $config = [
-            'class' => $this->redisPoolClass,
-            'hostname' => $this->hostname,
-            'port' => $this->port,
-            'timeout' => $this->connectionTimeout,
-            'password' => $this->password,
-            'database' => $this->database,
-            'maxSize' => $this->maxSize,
-            'minSize' => $this->minSize,
-            'sleep' => $this->sleep,
-            'maxSleepTimes' => $this->maxSleepTimes,
-        ];
-
-        try {
-            $this->_redisPool = $this->getPool();
-        } catch (\Throwable $throwable) {
-            $connection = ($this->hostname.':'.$this->port).', database='.$this->database;
-            Yii::error("Failed to open redis DB connection ($connection): {$throwable->getMessage()}", __CLASS__);
-            throw $throwable;
+        if ($this->_socket !== null) {
+            return;
         }
-        $this->trigger(self::EVENT_AFTER_OPEN);
-    }
-
-    public function __call($name, $params)
-    {
-        $redisCommand = strtoupper($name);
-        if (in_array($redisCommand, $this->redisCommands)) {
-            return $this->executeCommand($redisCommand, $params);
-        } else {
-            return parent::__call($name, $params);
-        }
-    }
-
-    public function getPool()
-    {
-        if ($this->client === null) {
-            $this->client = $this->getConnectionFromPool();
-        }
-        // if (!$this->client->connected) {
-        //     $this->client->connect($this->config);
-        //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
-        // }
-
-        return $this->client->getPools();
+        $connection = ($this->unixSocket ?: $this->hostname.':'.$this->port).', database='.$this->database;
+        \Yii::trace('Opening redis DB connection: '.$connection, __METHOD__);
+        $this->_socket = $this->getConnectionFormPool();
+        $this->initConnection();
     }
 
     /**
-     * 获取数据库连接.
+     * Executes a redis command.
+     * For a list of available commands and their parameters see http://redis.io/commands.
      *
-     * @return object
-     * @date 2022-09-05
+     * @param string $name   the name of the command
+     * @param array  $params list of parameters for the command
      *
-     * @example
+     * @return array|bool|string|null Dependent on the executed command this method
+     *                                will return different data types:
      *
-     * @author Wang Chunsheng
+     * - `true` for commands that return "status reply" with the message `'OK'` or `'PONG'`.
+     * - `string` for commands that return "status reply" that does not have the message `OK` (since version 2.0.1).
+     * - `string` for commands that return "integer reply"
+     *   as the value is in the range of a signed 64 bit integer.
+     * - `string` or `null` for commands that return "bulk reply".
+     * - `array` for commands that return "Multi-bulk replies".
      *
-     * @since
+     * See [redis protocol description](http://redis.io/topics/protocol)
+     * for details on the mentioned reply types.
+     * @trows Exception for commands that return [error reply](http://redis.io/topics/protocol#error-reply).
      */
-    public function getClient()
+    public function executeCommand($name, $params = [], $reconnect = 0)
     {
-        if ($this->client === null) {
-            $this->client = $this->getConnectionFromPool();
+        if (in_array($name, self::NotSupportCMD)) {
+            throw new Exception('Swoole Coroutine Redis does no support Redis command : '.$name);
         }
-        // if ($this->client->connected == false) {
-        //     $this->client->connect($this->config);
-        //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
-        // }
-        return $this->client->getPools()->get();
+        $this->open();
+        // backup the params for try again when execute fail
+        try {
+            \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
+            $ret = $this->_socket->$name(...$params);
+            if ($this->_socket->errCode) {
+                throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
+            }
+
+            return $ret;
+        } finally {
+            $this->releaseConnect();
+        }
     }
 
     /**
-     * 释放链接.
+     * Closes the currently active DB connection.
+     * It does nothing if the connection is already closed.
      */
     public function releaseConnect()
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        $cm->releaseConnection($this->poolKey, $this->client);
-        $this->client = null;
+        $cm->releaseConnection($this->poolKey, $this->_socket);
+        $this->_socket = null;
     }
 
     /**
-     * 从链接池中获取一个链接.
-     *
-     * @return object|null
+     * @return Redis
      */
-    protected function getConnectionFromPool()
+    protected function getConnectionFormPool()
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        if (!$cm->hasPool($this->poolKey)) {
-            $ManagerConfig = $cm->poolConfig['redis'] ?? [];
-            $dbPool = new DbPool($ManagerConfig);
-//            $config = $this->config;
+        $poolKey = $this->buildPoolKey();
+        $this->pool = $cm->getPool($poolKey);
+        if (!$this->pool) {
+            // connect_timeout && time in  4.2.10
+            $config = [
+                'hostname' => $this->hostname,
+                'port' => $this->port,
+                'database' => $this->database,
+                'connect_timeout' => $this->connectionTimeout ? $this->connectionTimeout : ini_get('default_socket_timeout'),
+//                'timeout' => $this->dataTimeout ? $this->dataTimeout : -1,//-1 is swoole default
+                'password' => $this->password,
+            ];
+            if ($this->dataTimeout) {
+                $config['timeout'] = $this->dataTimeout;
+            }
 
-            $config = require yii::getAlias('@common/config/redis.php');
-
-            // 'class' => 'yii\redis\Connection',
-            // 'hostname' => 'localhost',
-            // 'port' => 6379,
-            // 'database' => 2,
-
+            $pc = $cm->poolConfig['redis'] ?? [];
+            $dbPool = new DbPool($pc);
             $dbPool->createHandle = function () use ($config) {
-                $client = new RedisPool([
-                    'hostname' => $config['hostname'],
-                    'port' => $config['port'],
-                    'database' => $config['database'],
-                    'timeout' => 1000,
-                    'maxSize' => 500,
-                    'minSize' => 10,
-                    'sleep' => 0.01,
-                    'maxSleepTimes' => 10,
-                    'count' => 10,
-                ]);
-                \Yii::trace('create new mysql connection', __METHOD__);
+                $client = new Redis($config);
 
                 return $client;
             };
-            $cm->addPool($this->poolKey, $dbPool);
+
+            $dbPool->reConnectHandle = function (Redis $client) use ($config) {
+                $connection = $config['hostname'].':'.$config['port'].', database='.$config['database'];
+                $isConnected = $client->connect(
+                    $config['hostname'],
+                    $config['port']
+                );
+                if (!$isConnected) {
+                    \Yii::error("Failed to open redis DB connection ($connection): {$client->errCode} - {$client->errMsg}");
+                    $message = YII_DEBUG ? "Failed to open redis DB connection ($connection): {$client->errCode} - {$client->errMsg}" : 'Failed to open DB connection.';
+                    throw new \Exception($message, (int) $client->errCode);
+                }
+                if ($config['password'] !== null) {
+                    \Yii::debug('Executing Redis Command: AUTH');
+                    if ($client->auth($config['password']) === false) {
+                        throw new \Exception('incorrect password for redis', $client->errCode);
+                    }
+                }
+                if ($config['database'] !== null) {
+                    \Yii::debug("Executing Redis Command: SELECT {$config['database']}");
+                    if ($client->select($config['database']) === false) {
+                        throw new \Exception("incorrect database index:{$config['database']} in redis", $client->errCode);
+                    }
+                }
+            };
+            $this->pool = $dbPool;
+            $cm->addPool($poolKey, $dbPool);
         }
 
-        return $cm->get($this->poolKey);
+        return $this->pool->getConnect();
     }
 
     protected function buildPoolKey()
     {
         if (!$this->poolKey) {
-            $this->poolKey = md5($this->dsn);
+            $connection = $this->hostname.':'.$this->port.', database='.$this->database;
+            $this->poolKey = md5($connection);
         }
 
         return $this->poolKey;
-    }
-
-    public function executeCommand($name, $params = [])
-    {
-        $this->open();
-        print_r($this->_redisPool);
-        $data = $this->_redisPool->constructor->executeCommand($name, ...$params);
-        if ($data->errCode !== 0) {
-            $message = ($this->hostname.':'.$this->port).', database='.$this->database.', command: '.$name.', errorMsg:'.$data->errMsg.', data:'.json_encode($params);
-            Yii::error($message);
-
-            return null;
-        }
-
-        return $data->result;
     }
 }
