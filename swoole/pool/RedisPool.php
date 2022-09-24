@@ -3,12 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 21:36:31
+ * @Last Modified time: 2022-09-24 09:45:23
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
-namespace Simps\DB;
+namespace ddswoole\pool;
 
 use RuntimeException;
 use Swoole\Database\RedisConfig;
@@ -17,7 +17,6 @@ use yii\base\Component;
 
 class RedisPool extends Component
 {
-
     protected $_config = [
         'host' => 'localhost',
         'port' => 6379,
