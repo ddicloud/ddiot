@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 09:42:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 11:43:27
+ * @Last Modified time: 2022-09-24 11:44:41
  */
 
 namespace ddswoole\cache\redis;
@@ -186,7 +186,7 @@ class Connection extends \yii\redis\Connection
     public function executeCommand($name, $params = [])
     {
         $this->open();
-        print_r([$name, $params]);
+        print_r($this->_redisPool);
         $data = $this->_redisPool->executeCommand($name, ...$params);
         if ($data->errCode !== 0) {
             $message = ($this->hostname.':'.$this->port).', database='.$this->database.', command: '.$name.', errorMsg:'.$data->errMsg.', data:'.json_encode($params);
