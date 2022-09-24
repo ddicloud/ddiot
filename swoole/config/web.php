@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:53:16
+ * @Last Modified time: 2022-09-24 19:24:59
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -157,7 +157,7 @@ return [
         'db' => $db,
         'redis' => [
             // 'class' => 'yii\redis\Connection',
-            'class' => 'ddswoole\cache\redis\Connection',
+            'class' => 'ddswoole\cache\redis\cm\Connection',
             'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 2,
