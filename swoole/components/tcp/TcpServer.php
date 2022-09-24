@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-15 07:49:31
+ * @Last Modified time: 2022-09-24 14:00:45
  */
 
 namespace ddswoole\components\tcp;
 
 use ddswoole\traits\InteractsWithSwooleTable;
+use diandi\swoole\coroutine\Context;
 use diandi\swoole\tcp\server\TcpServer as ServerTcpServer;
 use diandi\swoole\web\Application;
 use Swoole\Coroutine\Server\Connection;
@@ -25,6 +26,22 @@ class TcpServer extends ServerTcpServer
 
     public $ssl = false;
 
+    public $channelNum = 20;
+
+    /**
+     * 上下文.
+     *
+     * @var [type]
+     * @date 2022-09-15
+     *
+     * @example
+     *
+     * @author wang chunSheng
+     *
+     * @since
+     */
+    public $context;
+
     /**
      * 重新实例化application.
      *
@@ -38,10 +55,11 @@ class TcpServer extends ServerTcpServer
      *
      * @since
      */
-    public function __construct($config, $callable)
+    public function __construct($config, $callable, Context $context)
     {
         parent::__construct($config);
         $this->onWorkStartCallable = $callable;
+        $this->context = $context;
         $this->config = $config['app'];
     }
 
