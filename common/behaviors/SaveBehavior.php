@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-22 20:18:44
+ * @Last Modified time: 2022-09-24 18:39:32
  */
 
 namespace common\behaviors;
@@ -126,6 +126,5 @@ class SaveBehavior extends Behavior
      */
     public function __destruct()
     {
-        echo '资源释放'.PHP_EOL;
     }
 }
