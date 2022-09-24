@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 13:59:24
+ * @Last Modified time: 2022-09-24 14:01:47
  */
 
 namespace ddswoole\components\tcp;
@@ -11,6 +11,7 @@ namespace ddswoole\components\tcp;
 use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\controllers\SwooleInterfaceController;
+use diandi\swoole\coroutine\Context;
 use Yii;
 
 /**
@@ -73,7 +74,9 @@ class TcpController extends BaseController implements SwooleInterfaceController
         // $server->start();
         $serverName = $this->server;
         $Loader = new Loader();
-        $server = new $serverName($this->config, $Loader);
+        $context = new Context();
+
+        $server = new $serverName($this->config, $Loader, $context);
         $server->run();
     }
 }
