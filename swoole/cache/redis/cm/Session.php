@@ -3,12 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 11:58:09
+ * @Last Modified time: 2022-09-24 14:04:54
  */
 
 namespace ddswoole\cache\redis\cm;
 
-use tsingsun\swoole\web\SessionTrait;
+use ddswoole\cache\session\SessionTrait;
 use Yii;
 use yii\base\InvalidConfigException;
 
