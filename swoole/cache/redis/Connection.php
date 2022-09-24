@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 09:42:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 09:45:38
+ * @Last Modified time: 2022-09-24 10:07:33
  */
 
 namespace ddswoole\cache\redis;
@@ -31,7 +31,7 @@ class Connection extends \yii\redis\Connection
 
     public $maxSleepTimes = 10;
 
-    public $redisPoolClass = 'deepziyu\yii\swoole\pool\RedisPool';
+    public $redisPoolClass = 'ddswoole\pool\RedisPool';
 
     /**
      * @var RedisPool
