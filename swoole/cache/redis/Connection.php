@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 09:42:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:57:16
+ * @Last Modified time: 2022-09-24 10:58:40
  */
 
 namespace ddswoole\cache\redis;
@@ -40,6 +40,8 @@ class Connection extends \yii\redis\Connection
     private $_redisPool;
 
     private $poolKey;
+
+    private $client = null;
 
     public function getIsActive()
     {
