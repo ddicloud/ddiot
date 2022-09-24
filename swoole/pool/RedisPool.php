@@ -3,12 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:12:06
+ * @Last Modified time: 2022-09-24 10:21:56
  */
 
 namespace ddswoole\pool;
 
 use Swoole\Coroutine\Redis;
+use Swoole\Database\RedisConfig;
+use Swoole\Database\RedisPool as DatabaseRedisPool;
 use yii\base\Component;
 use yii\db\Exception;
 
@@ -70,20 +72,30 @@ class RedisPool extends Component
     protected function getConnect($sleepTime = 0)
     {
         $connect = null;
-        if ($this->poolQueue->count()) {
-            $connect = $this->poolQueue->dequeue();
-        } elseif ($this->count < $this->maxSize) {
-            $connect = $this->openOneConnect();
-        } elseif ($sleepTime < $this->maxSleepTimes) {
-            \Swoole\Coroutine::sleep($this->sleep);
-            ++$sleepTime;
-            $connect = $this->getConnect($sleepTime);
-        }
-        if ($connect === null) {
-            throw new Exception('mysqlPool is fulled', [], 1099);
-        }
+        $pool = new DatabaseRedisPool((new RedisConfig())
+            ->withHost($this->hostname)
+            ->withPort($this->port)
+            ->withAuth('')
+            ->withDbIndex($this->database)
+            ->withTimeout(1)
+        );
+        $connect = $pool->get();
 
         return $connect;
+        // if ($this->poolQueue->count()) {
+        //     $connect = $this->poolQueue->dequeue();
+        // } elseif ($this->count < $this->maxSize) {
+        //     $connect = $this->openOneConnect();
+        // } elseif ($sleepTime < $this->maxSleepTimes) {
+        //     \Swoole\Coroutine::sleep($this->sleep);
+        //     ++$sleepTime;
+        //     $connect = $this->getConnect($sleepTime);
+        // }
+        // if ($connect === null) {
+        //     throw new Exception('mysqlPool is fulled', [], 1099);
+        // }
+
+        // return $connect;
     }
 
     protected function releaseConnect(Redis $connect)
