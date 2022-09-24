@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:21:56
+ * @Last Modified time: 2022-09-24 10:23:44
  */
 
 namespace ddswoole\pool;
@@ -45,10 +45,7 @@ class RedisPool extends Component
     {
         parent::init();
         $this->poolQueue = new \SplQueue();
-        for ($i = 0; $i < $this->minSize; ++$i) {
-            $conenct = $this->getConnect();
-            $this->releaseConnect($conenct);
-        }
+        $conenct = $this->getConnect();
     }
 
     protected function openOneConnect()
