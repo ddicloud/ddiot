@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 19:49:07
+ * @Last Modified time: 2022-09-26 19:51:05
  */
 
 namespace common\behaviors;
@@ -131,5 +131,7 @@ class SaveBehavior extends Behavior
      */
     public function __destruct()
     {
+        global $_GPC;
+        unset($_GPC);
     }
 }
