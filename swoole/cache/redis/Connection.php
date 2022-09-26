@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 09:47:56
+ * @Last Modified time: 2022-09-26 09:58:57
  */
 
 namespace ddswoole\cache\redis;
 
 use ddswoole\pool\DbPool;
+use ddswoole\pool\RedisPool;
 use Swoole\Coroutine\Redis;
 use yii\base\Exception;
 
@@ -90,7 +91,7 @@ class Connection extends \yii\redis\Connection
             \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
             print_r($this->_socket);
             print_r([$name, $params]);
-            $ret = $this->_socket->get()->{$name}(...$params);
+            $ret = $this->_socket->{$name}(...$params);
             if ($this->_socket->errCode) {
                 throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
             }
@@ -139,7 +140,18 @@ class Connection extends \yii\redis\Connection
             $pc = $cm->poolConfig['redis'] ?? [];
             $dbPool = new DbPool($pc);
             $dbPool->createHandle = function () use ($config) {
-                $client = new Redis($config);
+                $client = new RedisPool([
+                    'hostname' => $config['hostname'],
+                    'port' => $config['port'],
+                    'database' => $config['database'],
+                    'timeout' => 1000,
+                    'maxSize' => 500,
+                    'minSize' => 10,
+                    'sleep' => 0.01,
+                    'maxSleepTimes' => 10,
+                    'count' => 10,
+                ]);
+                \Yii::trace('create new mysql connection', __METHOD__);
 
                 return $client;
             };
