@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 16:10:07
+ * @Last Modified time: 2022-09-26 18:14:28
  */
 
 namespace ddswoole\cache\redis;
@@ -86,12 +86,19 @@ class Connection extends \yii\redis\Connection
         // backup the params for try again when execute fail
         try {
             \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
-            $ret = $this->_socket->{$name}(...$params);
-            if ($this->_socket->errCode) {
-                throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
-            }
+            if (in_array($name, $this->redisCommands)) {
+                $command = array_merge(explode(' ', $name), $params);
+                $ret = call_user_func_array([$this->_socket->getConnection(), 'rawCommand'], $command);
+                // if (!$ret) {
+                //     // throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
+                //     throw new Exception("Redis error:  \nRedis command was: ".$name);
+                // }
+                return $ret;
+            } else {
+                $ret = $this->_socket->{$name}(...$params);
 
-            return $ret;
+                return $ret;
+            }
         } finally {
             $this->releaseConnect();
         }
@@ -118,6 +125,7 @@ class Connection extends \yii\redis\Connection
         $cm = \Yii::$app->getConnectionManager();
         $poolKey = $this->buildPoolKey();
         $this->pool = $cm->getPool($poolKey);
+
         if (!$this->pool) {
             // connect_timeout && time in  4.2.10
             $config = [
@@ -147,7 +155,9 @@ class Connection extends \yii\redis\Connection
             $cm->addPool($poolKey, $dbPool);
         }
 
-        return $this->pool->getConnect();
+        return $cm->get($this->poolKey);
+
+        // return $this->pool->getConnect()->getConnection();
     }
 
     protected function buildPoolKey()
