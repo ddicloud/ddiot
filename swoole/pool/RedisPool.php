@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:12:33
+ * @Last Modified time: 2022-09-26 10:13:39
  */
 
 namespace ddswoole\pool;
@@ -76,7 +76,7 @@ class RedisPool extends Component
             if (empty($config)) {
                 throw new RuntimeException('pdo config empty');
             }
-            if (empty($config['maxSize'])) {
+            if (empty($config['size'])) {
                 throw new RuntimeException('the size of database connection pools cannot be empty');
             }
 
