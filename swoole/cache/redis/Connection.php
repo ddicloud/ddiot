@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:02:05
+ * @Last Modified time: 2022-09-26 10:04:46
  */
 
 namespace ddswoole\cache\redis;
@@ -11,7 +11,6 @@ namespace ddswoole\cache\redis;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\RedisPool;
 use Swoole\Coroutine\Redis;
-use Swoole\Database\RedisPool as DatabaseRedisPool;
 use yii\base\Exception;
 
 class Connection extends \yii\redis\Connection
@@ -156,36 +155,11 @@ class Connection extends \yii\redis\Connection
 
                 return $client;
             };
-
-            // $dbPool->reConnectHandle = function (DatabaseRedisPool $client) use ($config) {
-            //     $connection = $config['hostname'].':'.$config['port'].', database='.$config['database'];
-            //     $isConnected = $client->connect(
-            //         $config['hostname'],
-            //         $config['port']
-            //     );
-            //     if (!$isConnected) {
-            //         \Yii::error("Failed to open redis DB connection ($connection): {$client->errCode} - {$client->errMsg}");
-            //         $message = YII_DEBUG ? "Failed to open redis DB connection ($connection): {$client->errCode} - {$client->errMsg}" : 'Failed to open DB connection.';
-            //         throw new \Exception($message, (int) $client->errCode);
-            //     }
-            //     if ($config['password'] !== null) {
-            //         \Yii::debug('Executing Redis Command: AUTH');
-            //         if ($client->auth($config['password']) === false) {
-            //             throw new \Exception('incorrect password for redis', $client->errCode);
-            //         }
-            //     }
-            //     if ($config['database'] !== null) {
-            //         \Yii::debug("Executing Redis Command: SELECT {$config['database']}");
-            //         if ($client->select($config['database']) === false) {
-            //             throw new \Exception("incorrect database index:{$config['database']} in redis", $client->errCode);
-            //         }
-            //     }
-            // };
             $this->pool = $dbPool;
             $cm->addPool($poolKey, $dbPool);
         }
 
-        return $this->pool->getConnect();
+        return $this->pool->getConnect()->get();
     }
 
     protected function buildPoolKey()
