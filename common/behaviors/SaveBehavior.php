@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 18:39:32
+ * @Last Modified time: 2022-09-26 19:49:07
  */
 
 namespace common\behaviors;
@@ -54,12 +54,17 @@ class SaveBehavior extends Behavior
             ];
         }
 
-        if (!$this->is_bloc) {
-            $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
-            $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
+        if (\Co::getCid() > 0) {
+            $bloc_id = Yii::$app->params['bloc_id'];
+            $store_id = Yii::$app->params['store_id'];
         } else {
-            $bloc_id = Yii::$app->params['global_bloc_id'];
-            $store_id = Yii::$app->params['global_store_id'];
+            if (!$this->is_bloc) {
+                $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
+                $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
+            } else {
+                $bloc_id = Yii::$app->params['global_bloc_id'];
+                $store_id = Yii::$app->params['global_store_id'];
+            }
         }
 
         // 后台用户使用
