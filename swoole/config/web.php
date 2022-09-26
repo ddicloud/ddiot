@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 11:21:48
+ * @Last Modified time: 2022-09-26 15:29:21
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -162,6 +162,7 @@ return [
             'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 2,
+            'forceClusterMode' => true,
         ],
         'cache' => [
             'class' => 'yii\redis\Cache',
