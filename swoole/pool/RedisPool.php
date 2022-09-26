@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:13:39
+ * @Last Modified time: 2022-09-26 10:21:47
  */
 
 namespace ddswoole\pool;
@@ -171,7 +171,7 @@ class RedisPool extends Component
     {
         $connect = null;
         try {
-            $connect = $this->getConnect();
+            $connect = $this->getConnection();
             print_r([$redisCommand, $params]);
             $res = $connect->{$redisCommand}(...$params);
             $resultData = new RedisResultData([
