@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 15:13:56
+ * @Last Modified time: 2022-09-26 15:39:49
  */
 
 namespace ddswoole\cache\redis;
@@ -12,6 +12,7 @@ use ddswoole\pool\DbPool;
 use ddswoole\pool\RedisPool;
 use Swoole\Coroutine\Redis;
 use yii\base\Exception;
+use yii\redis\SocketException;
 
 class Connection extends \yii\redis\Connection
 {
@@ -85,14 +86,52 @@ class Connection extends \yii\redis\Connection
         $this->open();
         // backup the params for try again when execute fail
         try {
-            \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
-            print_r($this->_socket->getPools());
-            $ret = $this->_socket->getPools()->get()->{$name}(...$params);
-            if ($this->_socket->errCode) {
-                throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
+            $params = array_merge(explode(' ', $name), $params);
+            $command = '*'.count($params)."\r\n";
+            foreach ($params as $arg) {
+                $command .= '$'.mb_strlen($arg, '8bit')."\r\n".$arg."\r\n";
             }
 
-            return $ret;
+            \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
+            if ($this->retries > 0) {
+                $tries = $this->retries;
+                while ($tries-- > 0) {
+                    try {
+                        return $this->sendRawCommand($command, $params);
+                    } catch (SocketException $e) {
+                        \Yii::error($e, __METHOD__);
+                        // backup retries, fail on commands that fail inside here
+                        $retries = $this->retries;
+                        $this->retries = 0;
+                        $this->close();
+                        if ($this->retryInterval > 0) {
+                            usleep($this->retryInterval);
+                        }
+                        try {
+                            $this->open();
+                        } catch (SocketException $exception) {
+                            // Fail to run initial commands, skip current try
+                            \Yii::error($exception, __METHOD__);
+                            $this->close();
+                        } catch (Exception $exception) {
+                            $this->close();
+                        }
+
+                        $this->retries = $retries;
+                    }
+                }
+            }
+
+            return $this->sendRawCommand($command, $params);
+
+            // \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
+            // print_r($this->_socket->getPools());
+            // $ret = $this->_socket->getPools()->get()->{$name}(...$params);
+            // if ($this->_socket->errCode) {
+            //     throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
+            // }
+
+            // return $ret;
         } finally {
             $this->releaseConnect();
         }
