@@ -3,17 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:47:52
+ * @Last Modified time: 2022-09-26 12:30:05
  */
 
 namespace ddswoole\pool;
 
 use RuntimeException;
-use Swoole\Coroutine\Redis;
 use Swoole\Database\RedisConfig;
 use Swoole\Database\RedisPool as DatabaseRedisPool;
 use yii\base\Component;
-use yii\db\Exception;
 
 class RedisPool extends Component
 {
@@ -25,29 +23,22 @@ class RedisPool extends Component
         'port' => 3306,
         'database' => 1,
         'timeout' => 1000,
-        'size' => 500,
-        'sleep' => 0.01,
-        'maxSleepTimes' => 10,
-        'count' => 10,
+        'password' => '',
+        'size' => 100,
     ];
 
     public $_pools;
 
     protected $_poolName;
 
-    protected $_instance;
-
-    public $connected = false;
-
-    /**
-     * @var \SplQueue
-     */
-    protected $poolQueue;
+    protected $_instance = [];
 
     public function __construct($config, $poolName = '')
     {
         //设置一个容量为1的通道
+        $config = array_replace_recursive($this->config, $config);
         $this->setConfig($config);
+        $this->setPoolName($poolName);
         //执行mysql相关 操作
         $return = $this->init();
     }
@@ -62,17 +53,18 @@ class RedisPool extends Component
                 ->withPort($config['port'])
                 ->withAuth('')
                 ->withDbIndex($config['database'])
-                ->withTimeout(1)
+                ->withTimeout(1),
+                $this->config['size']
             );
             $this->setPools($pools);
         }
     }
 
-    public function getInstance()
+    public function getInstance($poolName)
     {
         $instance = $this->_instance;
         $config = $this->getConfig();
-        if (empty($instance)) {
+        if (empty($instance[$poolName])) {
             if (empty($config)) {
                 throw new RuntimeException('pdo config empty');
             }
@@ -80,10 +72,10 @@ class RedisPool extends Component
                 throw new RuntimeException('the size of database connection pools cannot be empty');
             }
 
-            $instance = new static($config);
+            $this->_instance[$poolName] = new static($config);
         }
 
-        return $instance;
+        return  $this->_instance[$poolName];
     }
 
     public function setInstance($value)
@@ -113,22 +105,9 @@ class RedisPool extends Component
         $this->_pools->put($connection);
     }
 
-    protected function openOneConnect()
+    public function fill(): void
     {
-        $connect = new Redis();
-        $isS = $connect->connect($this->hostname, $this->port, $this->timeout);
-        if ($isS === false) {
-            throw new Exception($connect->errMsg, [], $connect->errCode);
-        }
-        if ($this->password && false === $connect->auth($this->password)) {
-            throw new Exception('error password for redis', [], 500);
-        }
-        if ($this->database !== null && false === $connect->select($this->database)) {
-            throw new Exception('error when select database for redis', [], 500);
-        }
-        ++$this->count;
-
-        return $connect;
+        $this->pools->fill();
     }
 
     public function getPools()
@@ -149,42 +128,5 @@ class RedisPool extends Component
     public function setConfig($value)
     {
         $this->_config = $value;
-    }
-
-    protected function releaseConnect(Redis $connect)
-    {
-        if (empty($connect)) {
-            return;
-        }
-        $this->poolQueue->enqueue($connect);
-    }
-
-    /**
-     * @param $redisCommand
-     * @param array $params
-     *
-     * @return RedisResultData
-     *
-     * @throws \Exception
-     */
-    public function executeCommand($redisCommand, ...$params)
-    {
-        $connect = null;
-        try {
-            $connect = $this->getPools();
-            print_r([$connect, $redisCommand, $params]);
-            $res = $connect->{$redisCommand}(...$params);
-            $resultData = new RedisResultData([
-                'result' => $res,
-                'errCode' => $connect->errCode,
-                'errMsg' => $connect->errMsg,
-            ]);
-
-            return $resultData;
-        } catch (\Exception $exception) {
-            throw $exception;
-        } finally {
-            $this->releaseConnect($connect);
-        }
     }
 }

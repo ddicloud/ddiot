@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:45:32
+ * @Last Modified time: 2022-09-26 12:31:46
  */
 
 namespace ddswoole\cache\redis;
@@ -124,29 +124,24 @@ class Connection extends \yii\redis\Connection
         if (!$this->pool) {
             // connect_timeout && time in  4.2.10
             $config = [
+                'size' => 100,
                 'hostname' => $this->hostname,
                 'port' => $this->port,
                 'database' => $this->database,
-                'connect_timeout' => $this->connectionTimeout ? $this->connectionTimeout : ini_get('default_socket_timeout'),
-//                'timeout' => $this->dataTimeout ? $this->dataTimeout : -1,//-1 is swoole default
+                'timeout' => $this->dataTimeout ? $this->dataTimeout : -1, //-1 is swoole default
                 'password' => $this->password,
             ];
-            if ($this->dataTimeout) {
-                $config['timeout'] = $this->dataTimeout;
-            }
-
+            print_r($config);
             $pc = $cm->poolConfig['redis'] ?? [];
             $dbPool = new DbPool($pc);
             $dbPool->createHandle = function () use ($config) {
                 $client = new RedisPool([
                     'hostname' => $config['hostname'],
                     'port' => $config['port'],
+                    'password' => $config['password'],
                     'database' => $config['database'],
-                    'timeout' => 1000,
-                    'size' => 500,
-                    'sleep' => 0.01,
-                    'maxSleepTimes' => 10,
-                    'count' => 10,
+                    'timeout' => $config['timeout'],
+                    'size' => $config['size'],
                 ]);
                 \Yii::trace('create new mysql connection', __METHOD__);
 
