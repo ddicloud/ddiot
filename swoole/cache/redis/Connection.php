@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 12:31:46
+ * @Last Modified time: 2022-09-26 14:21:51
  */
 
 namespace ddswoole\cache\redis;
@@ -151,7 +151,7 @@ class Connection extends \yii\redis\Connection
             $cm->addPool($poolKey, $dbPool);
         }
 
-        return $this->pool->getConnect()->getInstance();
+        return $this->pool->getConnect();
     }
 
     protected function buildPoolKey()
