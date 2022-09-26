@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 15:02:05
+ * @Last Modified time: 2022-09-26 15:10:36
  */
 
 namespace ddswoole\cache\redis;
@@ -87,7 +87,7 @@ class Connection extends \yii\redis\Connection
         try {
             \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
             print_r($this->_socket->getPools());
-            $ret = $this->_socket->getPools()->{$name}(...$params);
+            $ret = $this->_socket->getPools()->get()->{$name}(...$params);
             if ($this->_socket->errCode) {
                 throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
             }
@@ -129,7 +129,6 @@ class Connection extends \yii\redis\Connection
                 'timeout' => $this->dataTimeout ? $this->dataTimeout : -1, //-1 is swoole default
                 'password' => $this->password,
             ];
-            print_r($config);
             $pc = $cm->poolConfig['redis'] ?? [];
             $dbPool = new DbPool($pc);
             $dbPool->createHandle = function () use ($config) {
