@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 16:08:47
+ * @Last Modified time: 2022-09-26 16:10:07
  */
 
 namespace ddswoole\cache\redis;
@@ -11,7 +11,6 @@ namespace ddswoole\cache\redis;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\RedisPool;
 use Swoole\Coroutine\Redis;
-use Yii;
 use yii\base\Exception;
 
 class Connection extends \yii\redis\Connection
@@ -84,8 +83,6 @@ class Connection extends \yii\redis\Connection
             throw new Exception('Swoole Coroutine Redis does no support Redis command : '.$name);
         }
         $this->open();
-        Yii::$app->cache->set('4554', 1);
-        var_dump(Yii::$app->cache->get('4554'));
         // backup the params for try again when execute fail
         try {
             \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
