@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 14:23:13
+ * @Last Modified time: 2022-09-26 14:27:08
  */
 
 namespace ddswoole\cache\redis;
@@ -63,9 +63,6 @@ class Connection extends \yii\redis\Connection
      * Executes a redis command.
      * For a list of available commands and their parameters see http://redis.io/commands.
      *
-     * @param string $name   the name of the command
-     * @param array  $params list of parameters for the command
-     *
      * @return array|bool|string|null Dependent on the executed command this method
      *                                will return different data types:
      *
@@ -80,25 +77,25 @@ class Connection extends \yii\redis\Connection
      * for details on the mentioned reply types.
      * @trows Exception for commands that return [error reply](http://redis.io/topics/protocol#error-reply).
      */
-    public function executeCommand($name, $params = [], $reconnect = 0)
-    {
-        if (in_array($name, self::NotSupportCMD)) {
-            throw new Exception('Swoole Coroutine Redis does no support Redis command : '.$name);
-        }
-        $this->open();
-        // backup the params for try again when execute fail
-        try {
-            \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
-            $ret = $this->_socket->{$name}(...$params);
-            if ($this->_socket->errCode) {
-                throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
-            }
+    // public function executeCommand($name, $params = [], $reconnect = 0)
+    // {
+    //     if (in_array($name, self::NotSupportCMD)) {
+    //         throw new Exception('Swoole Coroutine Redis does no support Redis command : '.$name);
+    //     }
+    //     $this->open();
+    //     // backup the params for try again when execute fail
+    //     try {
+    //         \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
+    //         $ret = $this->_socket->{$name}(...$params);
+    //         if ($this->_socket->errCode) {
+    //             throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
+    //         }
 
-            return $ret;
-        } finally {
-            $this->releaseConnect();
-        }
-    }
+    //         return $ret;
+    //     } finally {
+    //         $this->releaseConnect();
+    //     }
+    // }
 
     /**
      * Closes the currently active DB connection.
