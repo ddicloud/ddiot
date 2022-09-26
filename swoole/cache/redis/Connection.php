@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 10:10:30
+ * @Last Modified time: 2022-09-26 10:12:47
  */
 
 namespace ddswoole\cache\redis;
@@ -145,8 +145,7 @@ class Connection extends \yii\redis\Connection
                     'port' => $config['port'],
                     'database' => $config['database'],
                     'timeout' => 1000,
-                    'maxSize' => 500,
-                    'minSize' => 10,
+                    'size' => 500,
                     'sleep' => 0.01,
                     'maxSleepTimes' => 10,
                     'count' => 10,
