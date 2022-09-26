@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 09:19:46
+ * @Last Modified time: 2022-09-26 09:20:37
  */
 
 namespace ddswoole\cache\redis;
@@ -88,7 +88,7 @@ class Connection extends \yii\redis\Connection
         // backup the params for try again when execute fail
         try {
             \Yii::trace("Executing Redis Command: {$name}", __METHOD__);
-            var_dump($this->_socket->socket);
+            print_r($this->_socket->socket);
             $ret = $this->_socket->$name(...$params);
             if ($this->_socket->errCode) {
                 throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
