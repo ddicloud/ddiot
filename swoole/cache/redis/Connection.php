@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 15:39:49
+ * @Last Modified time: 2022-09-26 15:40:51
  */
 
 namespace ddswoole\cache\redis;
@@ -97,6 +97,8 @@ class Connection extends \yii\redis\Connection
                 $tries = $this->retries;
                 while ($tries-- > 0) {
                     try {
+                        print_r([$command, $params]);
+
                         return $this->sendRawCommand($command, $params);
                     } catch (SocketException $e) {
                         \Yii::error($e, __METHOD__);
