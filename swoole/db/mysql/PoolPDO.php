@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:12:30
+ * @Last Modified time: 2022-09-27 19:33:01
  */
 
 namespace ddswoole\db\mysql;
@@ -159,19 +159,13 @@ class PoolPDO
      */
     public function releaseConnect()
     {
-        print_r($this->client);
-        DebugService::consoleWrite('释放连接0',[
-            'getClient'=>$this->getClient()
-        ]);
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
         $cm->releaseConnection($this->poolKey, $this->client);
-        $pool =  $this->getConnectionFromPool();
+        // 释放连接
+        $pool = $cm->get($this->poolKey);
         $pool->close($this->client);
         $this->client = null;
-        DebugService::consoleWrite('释放连接1',[
-            'getClient'=>$this->getClient()
-        ]);
     }
 
     /**
