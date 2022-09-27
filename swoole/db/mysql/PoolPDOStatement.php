@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 18:59:09
+ * @Last Modified time: 2022-09-27 19:00:28
  */
 
 declare(strict_types=1);
@@ -113,9 +113,6 @@ class PoolPDOStatement extends PDOStatement
                 throw new \PDOException($client->error, $client->errno);
             }
         } finally {
-            DebugService::consoleWrite('释放连接',[
-                'inTransaction'=>$this->pdo->inTransaction()
-            ]);
             if (!$this->pdo->inTransaction()) {
                 $this->pdo->releaseConnect();
             }

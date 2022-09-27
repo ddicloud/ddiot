@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 18:53:12
+ * @Last Modified time: 2022-09-27 19:01:32
  */
 
 namespace ddswoole\db\mysql;
@@ -12,6 +12,7 @@ use common\helpers\StringHelper;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
 use ddswoole\pool\PdoPool;
+use ddswoole\servers\DebugService;
 use PDOException;
 use Swoole\Coroutine\Mysql;
 use Yii;
@@ -78,7 +79,7 @@ class PoolPDO
     /**
      * @var bool 是否在事务中
      */
-    private $inTransaction;
+    private $inTransaction = false;
 
     // 保存使用
     private $columns = ['defef', 'ertert'];
@@ -158,10 +159,16 @@ class PoolPDO
      */
     public function releaseConnect()
     {
+        DebugService::consoleWrite('释放连接0',[
+            'getClient'=>$this->getClient()
+        ]);
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
         $cm->releaseConnection($this->poolKey, $this->client);
         $this->client = null;
+        DebugService::consoleWrite('释放连接1',[
+            'getClient'=>$this->getClient()
+        ]);
     }
 
     /**
