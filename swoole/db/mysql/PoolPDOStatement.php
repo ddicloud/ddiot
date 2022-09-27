@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 14:58:39
+ * @Last Modified time: 2022-09-27 15:06:34
  */
 
 declare(strict_types=1);
@@ -105,7 +105,6 @@ class PoolPDOStatement extends PDOStatement
             if (!$statement) {
                 throw new RuntimeException('Prepare failed');
             }
-
             $result = $statement->fetchAll();
             $this->data = $result;
             // $this->affected_rows = $client->affected_rows;
@@ -241,7 +240,7 @@ class PoolPDOStatement extends PDOStatement
         }
         // $data = $this->data[++$this->_index];
         $data = $this->data[$this->_index];
-
+        
         return current(array_slice($data, $column_number, 1));
     }
 }
