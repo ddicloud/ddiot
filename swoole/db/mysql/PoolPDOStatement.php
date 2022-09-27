@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 12:20:46
+ * @Last Modified time: 2022-09-27 14:45:10
  */
 
 declare(strict_types=1);
@@ -201,35 +201,18 @@ class PoolPDOStatement extends PDOStatement
      * @return bool|mixed
      */
     //[\ReturnTypeWillChange]
-    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0):mixed
     {
         if (empty($this->data)) {
             return false;
         }
-
+        
         return $this->data[$this->_index] ?? false;
     }
 
-   
-    // PDOStatement::fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args): array
-    //[\ReturnTypeWillChange]
-    public function fetchAlls($fetch_style = PDO::FETCH_COLUMN, $ctor_args = null): array
-    {
-        if (empty($this->data)) {
-            return [];
-        }
-        if ($fetch_style == PDO::FETCH_COLUMN) {
-            $key = key($this->data[0]);
-
-            return ArrayHelper::getColumn($this->data, $key);
-        }
-
-        return $this->data;
-    }
 
     //[\ReturnTypeWillChange]
     public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
-    // public function fetchAll($fetch_style = PDO::FETCH_COLUMN,$ctor_args): mixed
     {
         if (empty($this->data)) {
             return [];

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 18:20:46
+ * @Last Modified time: 2022-09-27 14:22:19
  */
 
 namespace common\services\common;
@@ -210,7 +210,6 @@ class GlobalsService extends BaseService
      */
     public function getConf($bloc_id = 0)
     {
-        $logPath = Yii::getAlias('@api/runtime/config/getConf/' . date('ymd') . '.log');
 
         $cacheKey = 'common.conf_' . $bloc_id;
         if (Yii::$app->cache->get($cacheKey)) {
@@ -218,7 +217,6 @@ class GlobalsService extends BaseService
             return Yii::$app->cache->get($cacheKey);
         }
 
-        FileHelper::writeLog($logPath, '配置获取' . $bloc_id);
 
         // 配置优先级 自己--》集团--》系统默认
 
@@ -269,7 +267,6 @@ class GlobalsService extends BaseService
         // 自己配置为空获取集团
         $Bloc = new Bloc();
         $global_bloc = $Bloc->find()->where(['status' => 1])->select(['bloc_id', 'store_id'])->one();
-        FileHelper::writeLog($logPath, '集团id' . $global_bloc['bloc_id']);
         $global_bloc_id = $global_bloc['bloc_id'];
 
         Yii::$app->params['global_bloc_id'] = $global_bloc['bloc_id'];
