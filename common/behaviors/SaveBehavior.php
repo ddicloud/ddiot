@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 15:30:51
+ * @Last Modified time: 2022-09-27 17:16:47
  */
 
 namespace common\behaviors;
 
 use admin\models\addons\models\Bloc as ModelsBloc;
+use ddswoole\servers\DebugService;
 use Yii;
 use yii\base\Behavior;
 use yii\db\BaseActiveRecord;
@@ -53,26 +54,25 @@ class SaveBehavior extends Behavior
                 BaseActiveRecord::EVENT_BEFORE_UPDATE => [$this->updatedAttribute, $this->blocAttribute, $this->storeAttribute, $this->blocPAttribute, $this->adminAttribute], // 在更新之前更新updated字段
             ];
         }
-
-        if (\Co::getCid() > 0) {
+        
+        
+        if (!$this->is_bloc) {
             $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
             $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
         } else {
-            if (!$this->is_bloc) {
-                $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
-                $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
-            } else {
-                $bloc_id = Yii::$app->params['global_bloc_id'];
-                $store_id = Yii::$app->params['global_store_id'];
-            }
+            $bloc_id = Yii::$app->params['global_bloc_id'];
+            $store_id = Yii::$app->params['global_store_id'];
         }
+        DebugService::consoleWrite('行为-内存测试1');
 
         // 后台用户使用
         if (!empty($_GPC['bloc_id']) && $_GPC['bloc_id'] != $bloc_id) {
             $bloc_id = $_GPC['bloc_id'];
         }
+        DebugService::consoleWrite('行为-内存测试2');
 
         $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select('pid')->scalar();
+        DebugService::consoleWrite('行为-内存测试3');
         
         // if (Yii::$app->user->identity->store_id) {
         //     $store_id = Yii::$app->user->identity->store_id;

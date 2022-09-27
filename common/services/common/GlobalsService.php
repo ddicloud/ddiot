@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 14:22:19
+ * @Last Modified time: 2022-09-27 16:57:25
  */
 
 namespace common\services\common;
@@ -41,6 +41,7 @@ class GlobalsService extends BaseService
 {
     // 公司id
     private $bloc_id = 1;
+    
     // 子公司id
     private $store_id = 1;
 
@@ -50,7 +51,7 @@ class GlobalsService extends BaseService
     // 集团主营商户
     private $global_store_id = 1;
 
-    //模块表示
+    //模块标识
     private $addons = 'system';
 
     public function initId($bloc_id, $store_id, $addons)

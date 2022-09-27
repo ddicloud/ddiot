@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-04 00:11:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-16 10:24:23
+ * @Last Modified time: 2022-09-27 17:16:29
  */
 
 namespace ddswoole\servers;
@@ -14,10 +14,12 @@ class DebugService extends BaseService
 {
     public static function backtrace()
     {
-        $array = debug_backtrace();
-        foreach ($array as $row) {
-            if (isset($row['file'])) {
-                var_dump($row['file'].':'.$row['line'].'行,调用方法:'.$row['function']);
+        if (self::isCoroutine()) {
+            $array = debug_backtrace();
+            foreach ($array as $row) {
+                if (isset($row['file'])) {
+                    var_dump($row['file'].':'.$row['line'].'行,调用方法:'.$row['function']);
+                }
             }
         }
     }
@@ -39,12 +41,14 @@ class DebugService extends BaseService
      */
     public static function consoleWrite($remark, $content = '')
     {
-        if (is_array($content)) {
-            $content = json_encode($content);
+        if (self::isCoroutine()) {
+            if (is_array($content)) {
+                $content = json_encode($content);
+            }
+            $memoryInit = memory_get_usage() / 1024 / 1024;
+            $time = date('H:i:s', time());
+            echo "#$time#[$remark]#$content#内存消耗:[$memoryInit]MB".PHP_EOL;
         }
-        $memoryInit = memory_get_usage() / 1024 / 1024;
-        $time = date('H:i:s', time());
-        echo "#$time#[$remark]#$content#内存消耗:[$memoryInit]MB".PHP_EOL;
     }
 
     /**
@@ -63,8 +67,17 @@ class DebugService extends BaseService
      */
     public static function consoleCrosswise($remark)
     {
-        $memoryInit = memory_get_usage() / 1024 / 1024;
-        $time = date('H:i:s', time());
-        echo "#$time#[$remark]#----------------内存消耗:[$memoryInit]MB-------------------------".PHP_EOL;
+        if (self::isCoroutine()) {
+            $memoryInit = memory_get_usage() / 1024 / 1024;
+            $time = date('H:i:s', time());
+            echo "#$time#[$remark]#----------------内存消耗:[$memoryInit]MB-------------------------".PHP_EOL;
+        }
+    }
+
+    public static function isCoroutine()
+    {
+        $cid = \Swoole\Coroutine::getCid();
+
+        return $cid > 0 ? true : false;
     }
 }
