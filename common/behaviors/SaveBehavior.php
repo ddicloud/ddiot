@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 15:15:40
+ * @Last Modified time: 2022-09-27 15:29:09
  */
 
 namespace common\behaviors;
@@ -72,7 +72,7 @@ class SaveBehavior extends Behavior
             $bloc_id = $_GPC['bloc_id'];
         }
 
-        $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select(['pid'])->one();
+        $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select(['pid'])->cache()->one();
         
         // if (Yii::$app->user->identity->store_id) {
         //     $store_id = Yii::$app->user->identity->store_id;
