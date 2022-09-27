@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 18:40:47
+ * @Last Modified time: 2022-09-27 18:59:09
  */
 
 declare(strict_types=1);
@@ -13,6 +13,7 @@ namespace ddswoole\db\mysql;
 
 use common\helpers\ArrayHelper;
 use ddswoole\pool\ResultData;
+use ddswoole\servers\DebugService;
 use PDO;
 use PDOStatement;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -100,7 +101,6 @@ class PoolPDOStatement extends PDOStatement
     {
         try {
             $client = $this->pdo->getClient();
-            var_dump($client);
             $statement = $client->prepare($this->getRawSql());
             $result = $statement->execute($input_parameters);
             if (!$statement) {
@@ -108,12 +108,14 @@ class PoolPDOStatement extends PDOStatement
             }
             $result = $statement->fetchAll();
             $this->data = $result;
-            // $client->close($client);
             // $this->affected_rows = $client->affected_rows;
             if ($this->data === false && $client->error != null) {
                 throw new \PDOException($client->error, $client->errno);
             }
         } finally {
+            DebugService::consoleWrite('释放连接',[
+                'inTransaction'=>$this->pdo->inTransaction()
+            ]);
             if (!$this->pdo->inTransaction()) {
                 $this->pdo->releaseConnect();
             }
