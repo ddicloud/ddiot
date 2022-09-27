@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:14:36
+ * @Last Modified time: 2022-09-27 19:39:07
  */
 
 namespace ddswoole\pool;
@@ -75,10 +75,18 @@ abstract class ConnectionPool extends Component
      */
     public function release($connect)
     {
+        DebugService::consoleWrite('从连接池释放连接开始',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
         if ($this->queue->count() < $this->maxActive) {
             $this->queue->push($connect);
             $this->currentCount--;
         }
+        DebugService::consoleWrite('从连接池释放连接结束',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
     }
 
     abstract public function createConnect();
