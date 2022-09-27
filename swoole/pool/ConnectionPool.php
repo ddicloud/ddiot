@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-30 17:03:08
+ * @Last Modified time: 2022-09-27 19:14:36
  */
 
 namespace ddswoole\pool;
 
+use ddswoole\servers\DebugService;
 use yii\base\Component;
 use yii\base\Exception;
 
@@ -46,6 +47,10 @@ abstract class ConnectionPool extends Component
             $this->queue = new \SplQueue();
         }
         $connect = null;
+        DebugService::consoleWrite('从连接池拿连接',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
         if (!$this->queue->isEmpty()) {
             $connect = $this->queue->shift();
         } elseif ($this->currentCount < $this->maxActive) {
