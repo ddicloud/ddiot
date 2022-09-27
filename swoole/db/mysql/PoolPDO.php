@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:01:32
+ * @Last Modified time: 2022-09-27 19:02:43
  */
 
 namespace ddswoole\db\mysql;
@@ -159,6 +159,7 @@ class PoolPDO
      */
     public function releaseConnect()
     {
+        print_r($this->getClient());
         DebugService::consoleWrite('释放连接0',[
             'getClient'=>$this->getClient()
         ]);
