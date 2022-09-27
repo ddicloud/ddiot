@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:49:39
+ * @Last Modified time: 2022-09-27 20:06:59
  */
 
 namespace ddswoole\pool;
@@ -47,12 +47,16 @@ abstract class ConnectionPool extends Component
             $this->queue = new \SplQueue();
         }
         $connect = null;
-     
+        DebugService::consoleWrite('从连接池拿连接',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
         if (!$this->queue->isEmpty()) {
             $connect = $this->queue->shift();
         } elseif ($this->currentCount < $this->maxActive) {
             $this->currentCount++;
             $connect = $this->createConnect();
+
         } elseif ($retry < 3) {
             //重试3次
             \Swoole\Coroutine::sleep($this->waitTime);
@@ -73,6 +77,10 @@ abstract class ConnectionPool extends Component
      */
     public function release($connect)
     {
+        DebugService::consoleWrite('从连接池释放连接开始',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
         $currentCount = $this->currentCount;
         if ($this->queue->count() < $this->maxActive) {
             $this->queue->push($connect);
@@ -80,6 +88,10 @@ abstract class ConnectionPool extends Component
         }
         
         $this->currentCount = $currentCount;
+        DebugService::consoleWrite('从连接池释放连接结束',[
+            'currentCount'=>$this->currentCount,
+            'maxActive'=>$this->maxActive,
+        ]);
     }
 
     abstract public function createConnect();
