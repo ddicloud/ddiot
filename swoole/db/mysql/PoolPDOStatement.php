@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 11:49:33
+ * @Last Modified time: 2022-09-27 12:20:46
  */
 
 declare(strict_types=1);
@@ -201,7 +201,7 @@ class PoolPDOStatement extends PDOStatement
      * @return bool|mixed
      */
     //[\ReturnTypeWillChange]
-    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0):mixed
+    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
         if (empty($this->data)) {
             return false;
