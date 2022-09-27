@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 20:06:59
+ * @Last Modified time: 2022-09-27 22:34:25
  */
 
 namespace ddswoole\pool;
@@ -54,7 +54,6 @@ abstract class ConnectionPool extends Component
         if (!$this->queue->isEmpty()) {
             $connect = $this->queue->shift();
         } elseif ($this->currentCount < $this->maxActive) {
-            $this->currentCount++;
             $connect = $this->createConnect();
 
         } elseif ($retry < 3) {
@@ -63,10 +62,12 @@ abstract class ConnectionPool extends Component
             $connect = $this->getConnect(++$retry);
         }
 
+
         if ($connect === null) {
             throw new Exception('connection pool is full');
         }
       
+        $this->currentCount++;
         return $connect;
     }
 
