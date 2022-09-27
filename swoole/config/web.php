@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:02:53
+ * @Last Modified time: 2022-09-27 19:50:00
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -64,7 +64,7 @@ return [
             'poolConfig' => [
                 'mysql' => [
                      //池容量
-                    'maxActive' => 10,
+                    'maxActive' => 500,
                     //当链接数满时,重新获取的等待时间,秒为单位
                     'waitTime' => 5,
                 ],
