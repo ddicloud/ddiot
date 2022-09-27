@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-24 10:54:10
+ * @Last Modified time: 2022-09-27 15:13:16
  */
 
 namespace ddswoole\db\mysql;
@@ -305,7 +305,6 @@ class PoolPDO
         if (empty($data->result[0])) {
             return null;
         }
-
         return array_shift($data->result[0]);
     }
 
