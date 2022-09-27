@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 14:50:21
+ * @Last Modified time: 2022-09-27 14:56:33
  */
 
 declare(strict_types=1);
@@ -87,7 +87,7 @@ class PoolPDOStatement extends PDOStatement
         $this->sql = $queryString;
     }
 
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR): bool
     {
         $this->params[$parameter] = $value;
@@ -95,7 +95,7 @@ class PoolPDOStatement extends PDOStatement
         return true;
     }
 
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function execute($input_parameters = []): bool
     {
         try {
@@ -129,7 +129,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return int the number of rows.
      */
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function rowCount()
     {
         if (is_array($this->data)) {
@@ -139,13 +139,13 @@ class PoolPDOStatement extends PDOStatement
         return $this->affected_rows;
     }
 
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function closeCursor(): bool
     {
         return true;
     }
 
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function bindParam($parameter, &$variable, $data_type = PDO::PARAM_STR, $length = null, $driver_options = null): bool
     {
         $PDOStatement = new PDOStatement();
@@ -201,7 +201,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool|mixed
      */
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
         if (empty($this->data)) {
@@ -212,8 +212,9 @@ class PoolPDOStatement extends PDOStatement
     }
 
 
-    //[\ReturnTypeWillChange]
-    public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
+    #[\ReturnTypeWillChange]
+    public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
+    // public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
     {
         if (empty($this->data)) {
             return [];
@@ -232,7 +233,7 @@ class PoolPDOStatement extends PDOStatement
      *
      * @return bool|mixed
      */
-    //[\ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function fetchColumn($column_number = 0)
     {
         if (empty($this->data)) {
