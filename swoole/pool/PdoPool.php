@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:12:00
+ * @Last Modified time: 2022-09-28 09:14:45
  */
 
 namespace ddswoole\pool;
@@ -35,7 +35,7 @@ class PdoPool
 
     protected $_instance;
 
-    public $connected = false;
+    public $_connected = false;
 
     public function __construct($config, $poolName = '')
     {
@@ -62,7 +62,10 @@ class PdoPool
                     ->withOptions($config['options']),
                 $config['size']
             );
-            $this->setPools($pools);
+            if($pools){
+                $this->setConnected(true);  
+                $this->setPools($pools);
+            }
         }
     }
 
@@ -97,6 +100,16 @@ class PdoPool
     public function setPools($value)
     {
         $this->_pools = $value;
+    }
+
+    public function getConnected()
+    {
+        return $this->_connected;
+    }
+
+    public function setConnected($value)
+    {
+        $this->_connected = $value;
     }
 
     public function getConfig()
