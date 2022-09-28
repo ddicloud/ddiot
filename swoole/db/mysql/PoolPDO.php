@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:24:56
+ * @Last Modified time: 2022-09-28 09:27:46
  */
 
 namespace ddswoole\db\mysql;
@@ -162,7 +162,6 @@ class PoolPDO
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
         $cm->releaseConnection($this->poolKey, $this->client);
-        print_r($this->client);
         $this->client = null;
     }
 
