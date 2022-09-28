@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:42:06
+ * @Last Modified time: 2022-09-28 09:42:40
  */
 
 namespace ddswoole\cache\redis;
@@ -138,7 +138,7 @@ class Connection extends \yii\redis\Connection
             ];
             $pc = $cm->poolConfig['redis'] ?? [];
             $dbPool = new DbPool($pc);
-            $dbPool->createHandle = function () use ($config) {
+            $dbPool->createHandle = function () use ($config,$poolKey) {
                 $client = new RedisPool([
                     'hostname' => $config['hostname'],
                     'port' => $config['port'],
