@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:06:39
+ * @Last Modified time: 2022-09-28 09:10:18
  */
 
 namespace ddswoole\pool;
@@ -88,7 +88,7 @@ abstract class ConnectionPool extends Component
      */
     public function release($connect)
     {
-        print_r($connect);
+        print_r($connect->);
          // 释放连接
         //  $pool = $this->getConnectionFromPool();
         //  $pool->close($this->client);
