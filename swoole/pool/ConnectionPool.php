@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:02:49
+ * @Last Modified time: 2022-09-28 09:06:39
  */
 
 namespace ddswoole\pool;
@@ -88,21 +88,26 @@ abstract class ConnectionPool extends Component
      */
     public function release($connect)
     {
-        DebugService::consoleWrite('从连接池释放连接开始',[
-            'currentCount'=>$this->currentCount,
-            'maxActive'=>$this->maxActive,
-        ]);
-        $currentCount = $this->currentCount;
-        if ($this->queue->count() < $this->maxActive) {
-            $this->queue->push($connect);
-            $currentCount--;
-        }
+        print_r($connect);
+         // 释放连接
+        //  $pool = $this->getConnectionFromPool();
+        //  $pool->close($this->client);
         
-        $this->currentCount = $currentCount;
-        DebugService::consoleWrite('从连接池释放连接结束',[
-            'currentCount'=>$this->currentCount,
-            'maxActive'=>$this->maxActive,
-        ]);
+        // DebugService::consoleWrite('从连接池释放连接开始',[
+        //     'currentCount'=>$this->currentCount,
+        //     'maxActive'=>$this->maxActive,
+        // ]);
+        // $currentCount = $this->currentCount;
+        // if ($this->queue->count() < $this->maxActive) {
+        //     $this->queue->push($connect);
+        //     $currentCount--;
+        // }
+        
+        // $this->currentCount = $currentCount;
+        // DebugService::consoleWrite('从连接池释放连接结束',[
+        //     'currentCount'=>$this->currentCount,
+        //     'maxActive'=>$this->maxActive,
+        // ]);
     }
 
     abstract public function createConnect();
