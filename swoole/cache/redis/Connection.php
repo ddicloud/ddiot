@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 18:14:28
+ * @Last Modified time: 2022-09-28 09:42:06
  */
 
 namespace ddswoole\cache\redis;
@@ -146,7 +146,7 @@ class Connection extends \yii\redis\Connection
                     'database' => $config['database'],
                     'timeout' => $config['timeout'],
                     'size' => $config['size'],
-                ]);
+                ],$poolKey);
                 \Yii::trace('create new mysql connection', __METHOD__);
 
                 return $client;
