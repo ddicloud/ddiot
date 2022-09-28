@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:05:44
+ * @Last Modified time: 2022-09-28 09:17:45
  */
 
 namespace ddswoole\db\mysql;
@@ -201,7 +201,7 @@ class PoolPDO
                         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //开启异常模式
                     ],
                     'size' => $ManagerConfig['maxActive'],
-                ]);
+                ],$this->poolKey);
                 \Yii::trace('create new mysql connection', __METHOD__);
 
                 return $client;
