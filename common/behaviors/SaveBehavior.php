@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 17:16:47
+ * @Last Modified time: 2022-09-28 09:55:05
  */
 
 namespace common\behaviors;
@@ -91,6 +91,7 @@ class SaveBehavior extends Behavior
             $this->adminAttribute => (int) $admin_id,
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
+        unset($time,$bloc_id,$store_id,$admin_id,$blocPid,$_GPC);
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
