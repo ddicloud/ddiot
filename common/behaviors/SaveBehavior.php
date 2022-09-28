@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:55:05
+ * @Last Modified time: 2022-09-28 09:58:30
  */
 
 namespace common\behaviors;
@@ -47,7 +47,7 @@ class SaveBehavior extends Behavior
     public function init()
     {
         global $_GPC;
-
+        DebugService::consoleWrite('行为-内存测试0');
         if (empty($this->attributes)) {
             $this->attributes = [
                 BaseActiveRecord::EVENT_BEFORE_INSERT => [$this->createdAttribute, $this->updatedAttribute, $this->blocAttribute, $this->storeAttribute, $this->blocPAttribute, $this->adminAttribute, $this->globalBlocAttribute], //准备数据 在插入之前更新created和updated两个字段
@@ -92,6 +92,8 @@ class SaveBehavior extends Behavior
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
         unset($time,$bloc_id,$store_id,$admin_id,$blocPid,$_GPC);
+        DebugService::consoleWrite('行为-内存测试4');
+
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
