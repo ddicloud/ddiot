@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 10:02:15
+ * @Last Modified time: 2022-09-28 10:47:15
  */
 
 namespace common\behaviors;
@@ -47,7 +47,7 @@ class SaveBehavior extends Behavior
     public function init()
     {
         global $_GPC;
-        DebugService::consoleWrite('行为-内存测试0');
+        // DebugService::consoleWrite('行为-内存测试0');
         if (empty($this->attributes)) {
             $this->attributes = [
                 BaseActiveRecord::EVENT_BEFORE_INSERT => [$this->createdAttribute, $this->updatedAttribute, $this->blocAttribute, $this->storeAttribute, $this->blocPAttribute, $this->adminAttribute, $this->globalBlocAttribute], //准备数据 在插入之前更新created和updated两个字段
@@ -63,16 +63,16 @@ class SaveBehavior extends Behavior
             $bloc_id = Yii::$app->params['global_bloc_id'];
             $store_id = Yii::$app->params['global_store_id'];
         }
-        DebugService::consoleWrite('行为-内存测试1');
+        // DebugService::consoleWrite('行为-内存测试1');
 
         // 后台用户使用
         if (!empty($_GPC['bloc_id']) && $_GPC['bloc_id'] != $bloc_id) {
             $bloc_id = $_GPC['bloc_id'];
         }
-        DebugService::consoleWrite('行为-内存测试2');
+        // DebugService::consoleWrite('行为-内存测试2');
 
         $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select('pid')->scalar();
-        DebugService::consoleWrite('行为-内存测试3');
+        // DebugService::consoleWrite('行为-内存测试3');
         
         // if (Yii::$app->user->identity->store_id) {
         //     $store_id = Yii::$app->user->identity->store_id;
@@ -92,7 +92,7 @@ class SaveBehavior extends Behavior
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
         unset($time,$bloc_id,$store_id,$admin_id,$blocPid,$_GPC);
-        DebugService::consoleWrite('行为-内存测试4');
+        // DebugService::consoleWrite('行为-内存测试4');
 
     }
 
