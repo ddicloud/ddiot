@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 16:26:53
+ * @Last Modified time: 2022-09-28 09:12:00
  */
 
 namespace ddswoole\pool;
@@ -41,6 +41,7 @@ class PdoPool
     {
         //设置一个容量为1的通道
         $this->setConfig($config);
+        $this->setPoolName($poolName);
         //执行mysql相关 操作
         $return = $this->init();
     }
