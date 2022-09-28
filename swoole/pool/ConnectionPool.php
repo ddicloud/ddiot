@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:35:18
+ * @Last Modified time: 2022-09-28 09:47:54
  */
 
 namespace ddswoole\pool;
@@ -47,10 +47,7 @@ abstract class ConnectionPool extends Component
         //     $this->queue = new \SplQueue();
         // }
         $connect = null;
-        DebugService::consoleWrite('从连接池拿连接',[
-            'currentCount'=>$this->currentCount,
-            'maxActive'=>$this->maxActive,
-        ]);
+       
 
         $connect = $this->createConnect();
         if(!$connect){
@@ -60,7 +57,10 @@ abstract class ConnectionPool extends Component
                 $a++;
             }
         }
-       
+        DebugService::consoleWrite('从连接池拿连接',[
+            'connect'=>$connect,
+            'a'=>$a,
+        ]);
 
         // if (!$this->queue->isEmpty()) {
         //     $connect = $this->queue->shift();
