@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-10 06:12:10
+ * @Last Modified time: 2022-09-29 09:34:59
  */
 
 namespace common\helpers;
@@ -40,36 +40,35 @@ class loggingHelper
     {
         $appId = Yii::$app->id;
 
-        if (YII_DEBUG) {
-            list($app, $alia) = explode('-', $appId);
-            $basepath = Yii::getAlias("@{$alia}/runtime/".$moduleName.'/'.date('Y/m/d/').$path.'.log');
-            self::mkdirs(dirname($basepath));
-            @chmod($path, 0777);
-            $time = date('m/d H:i:s');
-            // 加入内存使用情况
-            $memoryInit = memory_get_usage() / 1024 / 1024;
+        list($app, $alia) = explode('-', $appId);
+        $basepath = Yii::getAlias("@{$alia}/runtime/".$moduleName.'/'.date('Y/m/d/').$path.'.log');
+        self::mkdirs(dirname($basepath));
+        @chmod($path, 0777);
+        $time = date('m/d H:i:s');
+        // 加入内存使用情况
+        $memoryInit = memory_get_usage() / 1024 / 1024;
 
-            $memory = StringHelper::currency_format($memoryInit, 2).'mb';
+        $memory = StringHelper::currency_format($memoryInit, 2).'mb';
 
-            if (is_array($content)) {
-                $content['memory'] = $memory;
-                $contentTxt = json_encode($content);
-            } elseif (is_string($content)) {
-                $contentTxt = $content.'//memory:'.$memory;
-            }
-
-            if (\co::getuid() != -1) {
-                $filename = $basepath;
-                file_put_contents($filename, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
-            // $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
-            } else {
-                Yii::$app->log->targets[0]->logFile = $basepath;
-                Yii::$app->log->targets[0]->maxFileSize = 2000;
-                Yii::$app->log->targets[0]->maxLogFiles = 10;
-                //在需要记录日志的地方先赋值log文件地址：
-                return Yii::info($contentTxt, 'ddicms');
-            }
+        if (is_array($content)) {
+            $content['memory'] = $memory;
+            $contentTxt = json_encode($content);
+        } elseif (is_string($content)) {
+            $contentTxt = $content.'//memory:'.$memory;
         }
+
+        if (\Co::getuid() >0) {
+            $filename = $basepath;
+            file_put_contents($filename, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+        // $w = \Swoole\Coroutine\System::fwrite($filename, "\r\n" . $time . '-' . $mark . ':' . $contentTxt);
+        } else {
+            Yii::$app->log->targets[0]->logFile = $basepath;
+            Yii::$app->log->targets[0]->maxFileSize = 2000;
+            Yii::$app->log->targets[0]->maxLogFiles = 10;
+            //在需要记录日志的地方先赋值log文件地址：
+            return Yii::info($contentTxt, 'ddicms');
+        }
+        
     }
 
     public static function actionLog($user_id, $operation, $logip)
