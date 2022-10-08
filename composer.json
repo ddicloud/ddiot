@@ -54,7 +54,7 @@
         "phpunit/phpunit": "~6.5.5",
         "yiisoft/yii2-gii": "^2.1",
         "codeception/verify": "~1.0.0",
-        "codeception/base": "^2.5.6"
+        "codeception/base": "^3.1"
     },
     "config": {
         "process-timeout": 1800,
