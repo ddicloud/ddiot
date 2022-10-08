@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-08 16:01:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 16:14:28
+ * @Last Modified time: 2022-10-08 16:17:09
  */
 namespace ddswoole\db\mysql;
 
@@ -16,9 +16,7 @@ use common\helpers\ArrayHelper;
 if (version_compare(PHP_VERSION, '8.0', '>')) {
     trait fetchAll{
         #[\ReturnTypeWillChange]
-        // public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
         public function  fetchAll(int $fetch_style = \PDO::FETCH_DEFAULT, mixed ...$args): array
-        // public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
         {
             if (empty($this->data)) {
                 return [];
