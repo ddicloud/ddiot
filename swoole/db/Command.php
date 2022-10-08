@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:04:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-06 18:55:41
+ * @Last Modified time: 2022-10-08 16:10:18
  */
 namespace ddswoole\db;
 
@@ -271,6 +271,8 @@ class Command extends \yii\db\Command
                 if ($fetchMode === null) {
                     $fetchMode = $this->fetchMode;
                 }
+
+               
                 $result = $this->pdoStatement->$method($fetchMode);
                 $this->pdoStatement->closeCursor();
             }

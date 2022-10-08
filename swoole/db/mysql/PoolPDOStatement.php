@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 19:00:28
+ * @Last Modified time: 2022-10-08 16:09:41
  */
 
 declare(strict_types=1);
@@ -26,6 +26,8 @@ use RuntimeException;
  */
 class PoolPDOStatement extends PDOStatement
 {
+    use fetchAll;
+    
     protected $statement;
 
     /**
@@ -211,21 +213,26 @@ class PoolPDOStatement extends PDOStatement
         return $this->data[$this->_index] ?? false;
     }
 
-    #[\ReturnTypeWillChange]
+   
+    // #[\ReturnTypeWillChange]
+    // // public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
     // public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
-    public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
-    {
-        if (empty($this->data)) {
-            return [];
-        }
-        if ($fetch_style == PDO::FETCH_COLUMN) {
-            $key = key($this->data[0]);
+    // // public function fetchAll($fetch_style = PDO::FETCH_COLUMN, $class_name = null, $ctor_args = null): array
+    // {
+    //     DebugService::backtrace();
+    //     if (empty($this->data)) {
+    //         return [];
+    //     }
+    //     if ($fetch_style == PDO::FETCH_COLUMN) {
+    //         $key = key($this->data[0]);
 
-            return ArrayHelper::getColumn($this->data, $key);
-        }
+    //         return ArrayHelper::getColumn($this->data, $key);
+    //     }
 
-        return $this->data;
-    }
+    //     return $this->data;
+    // }
+
+  
 
     /**
      * @param int $column_number
