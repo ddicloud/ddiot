@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-21 19:24:19
+ * @Last Modified time: 2022-10-08 18:47:38
  */
 
 namespace ddswoole\components\websocket;
@@ -73,5 +73,33 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
         $server = new $serverName($this->config, $Loader, $context);
 
         return  $server->run();
+    }
+
+    public function actionClose()
+    {
+        $pidFile = $this->config['options']['pid_file'];       
+        $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
+        if (!empty($masterPid)) {
+            posix_kill($masterPid, SIGTERM);
+            if (PHP_OS == 'Darwin') {
+                //mac下.发送信号量无法触发shutdown.
+                unlink($pidFile);
+            }
+        } else {
+            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGTERM.'.PHP_EOL);
+        }
+    }
+
+    
+    public function actionReload()
+    { 
+        $pidFile = $this->config['options']['pid_file'];       
+        $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
+        if (!empty($masterPid)) {
+            posix_kill($masterPid, SIGUSR1); // reload all worker
+            //                posix_kill($masterPid, SIGUSR2); // reload all task
+        } else {
+            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGUSR1.'.PHP_EOL);
+        }
     }
 }
