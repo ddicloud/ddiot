@@ -4,11 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:26:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 18:34:32
+ * @Last Modified time: 2022-10-08 19:28:15
  */
 
+use diandi\swoole\web\Application;
 use diandi\swoole\web\server\WebServer;
 use Swoole\Runtime;
+
+use function Swoole\Coroutine\run;
+
 \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]);
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', getenv('PHP_ENV') === 'development' ? 'dev' : 'prod');
@@ -27,6 +31,12 @@ $config = yii\helpers\ArrayHelper::merge(
     ],
     require __DIR__ . '/swoole/config/server.php'
 );
-// $config = require __DIR__ . '/config/server.php';
-$server = new WebServer($config);
-$server->run();
+
+\Swoole\Runtime::enableCoroutine(SWOOLE_HOOK_ALL);
+$result = run(function () use ($config) {
+    $server = new WebServer($config);
+    $server->run();
+});
+\Swoole\Runtime::enableCoroutine(false);
+
+return $result;

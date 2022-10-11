@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 18:47:38
+ * @Last Modified time: 2022-10-08 18:52:33
  */
 
 namespace ddswoole\components\websocket;
@@ -79,6 +79,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
     {
         $pidFile = $this->config['options']['pid_file'];       
         $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
+        var_dump($masterPid);
         if (!empty($masterPid)) {
             posix_kill($masterPid, SIGTERM);
             if (PHP_OS == 'Darwin') {

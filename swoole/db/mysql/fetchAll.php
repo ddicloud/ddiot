@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-08 16:01:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 16:17:09
+ * @Last Modified time: 2022-10-08 20:07:34
  */
 namespace ddswoole\db\mysql;
 
@@ -12,7 +12,6 @@ use common\helpers\ArrayHelper;
 /**
  * 兼容不同版本的fetchAll
  */
-
 if (version_compare(PHP_VERSION, '8.0', '>')) {
     trait fetchAll{
         #[\ReturnTypeWillChange]
