@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 21:25:29
+ * @Last Modified time: 2022-10-12 21:28:20
  */
 
 namespace ddswoole\components\websocket;
@@ -19,6 +19,7 @@ use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
 use diandi\swoole\websocket\server\WebSocketServer as ServerWebSocketServer;
 use Swoole\Http\Request;
+use Swoole\Process\Pool;
 
 class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceServer
 {
@@ -46,7 +47,7 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      */
     public $context;
 
-    public $Manager;
+    public $pool;
 
     /**
      * 重新实例化application.完成各种类的注入.
@@ -61,12 +62,12 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      *
      * @since
      */
-    public function __construct($config, $callable, Context $context, $Manager)
+    public function __construct($config, $callable, Context $context, Pool $pool)
     {
         $this->onWorkStartCallable = $callable;
         $this->config = $config['app'];
         $this->context = $context;
-        $this->Manager = $Manager;
+        $this->pool = $pool;
         parent::__construct($config);
     }
 
