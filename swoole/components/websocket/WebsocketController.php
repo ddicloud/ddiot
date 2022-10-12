@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 21:16:42
+ * @Last Modified time: 2022-10-12 21:24:45
  */
 
 namespace ddswoole\components\websocket;
@@ -76,7 +76,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
                 //让每个OnWorkerStart回调都自动创建一个协程
                 $Loader = new Loader();
                 $context = new Context();
-                $server = new $serverName($this->config, $Loader, $context);
+                $server = new $serverName($this->config, $Loader, $context, $pm);
 
                 return  $server->run();
             });
