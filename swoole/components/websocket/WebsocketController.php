@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 18:52:10
+ * @Last Modified time: 2022-10-12 19:33:39
  */
 
 namespace ddswoole\components\websocket;
@@ -13,6 +13,8 @@ use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\controllers\SwooleInterfaceController;
 use diandi\swoole\websocket\Context;
 use function Swoole\Coroutine\run;
+use Swoole\Process\Manager;
+use Swoole\Process\Pool;
 use Yii;
 
 /**
@@ -71,9 +73,17 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
         $Loader = new Loader();
         $context = new Context();
         $server = new $serverName($this->config, $Loader, $context);
-        run(function () use ($server) {
-            return  $server->run();
+        $pm = new Manager();
+
+        $pm->add(function (Pool $pool, int $workerId) {
+            var_dump($workerId);
         });
+        $pm->add(function (Pool $pool, int $workerId) use ($server) {
+            run(function () use ($server) {
+                return  $server->run();
+            });
+        });
+        $pm->start();
     }
 
     public function actionClose()
