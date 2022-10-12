@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 18:52:33
+ * @Last Modified time: 2022-10-12 18:52:10
  */
 
 namespace ddswoole\components\websocket;
@@ -71,13 +71,14 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
         $Loader = new Loader();
         $context = new Context();
         $server = new $serverName($this->config, $Loader, $context);
-
-        return  $server->run();
+        run(function () use ($server) {
+            return  $server->run();
+        });
     }
 
     public function actionClose()
     {
-        $pidFile = $this->config['options']['pid_file'];       
+        $pidFile = $this->config['options']['pid_file'];
         $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
         var_dump($masterPid);
         if (!empty($masterPid)) {
@@ -91,10 +92,9 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
         }
     }
 
-    
     public function actionReload()
-    { 
-        $pidFile = $this->config['options']['pid_file'];       
+    {
+        $pidFile = $this->config['options']['pid_file'];
         $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
         if (!empty($masterPid)) {
             posix_kill($masterPid, SIGUSR1); // reload all worker

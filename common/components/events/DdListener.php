@@ -1,16 +1,13 @@
 <?php
 
-use addons\diandi_doorlock\services\jobs\DdHandleUndefinedMethodEvent;
-
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-05-23 09:39:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-23 12:33:54
+ * @Last Modified time: 2022-10-12 18:53:09
  */
-namespace common\components\events;
 
-use common\components\events\eventObjs\DdEvent;
+namespace common\components\events;
 
 class DdListener
 {
@@ -24,18 +21,18 @@ class DdListener
         //     // 允许另一个监听接管这个未知方法
         //     return;
         // }
- 
+
         // the subject object (the foo instance)
         // 被操作对象（主题对象。foo实例）
         $foo = $event->getSubject();
         // print_r($event);die;
- 
+
         // the bar method arguments
         // bar方法的参数
         $arguments = $event->getArguments();
-        
+
         // ... do something / 做一些事
- 
+
         // set the return value
         // 设置返回值
         $event->setReturnValue([]);
