@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 21:13:59
+ * @Last Modified time: 2022-10-12 21:16:42
  */
 
 namespace ddswoole\components\websocket;
@@ -80,10 +80,6 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
 
                 return  $server->run();
             });
-        });
-
-        $pm->add(function (Pool $pool, int $workerId) {
-            echo $workerId.PHP_EOL;
         });
 
         $pm->start();
