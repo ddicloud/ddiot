@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 21:28:20
+ * @Last Modified time: 2022-10-13 15:26:13
  */
 
 namespace ddswoole\components\websocket;
@@ -49,6 +49,8 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
 
     public $pool;
 
+    public $workerId;
+
     /**
      * 重新实例化application.完成各种类的注入.
      *
@@ -62,12 +64,13 @@ class WebsocketServer extends ServerWebSocketServer implements SocketInterfaceSe
      *
      * @since
      */
-    public function __construct($config, $callable, Context $context, Pool $pool)
+    public function __construct($config, $callable, Context $context, Pool $pool, $workerId)
     {
         $this->onWorkStartCallable = $callable;
         $this->config = $config['app'];
         $this->context = $context;
         $this->pool = $pool;
+        $this->workerId = $workerId;
         parent::__construct($config);
     }
 

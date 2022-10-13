@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-12 21:27:44
+ * @Last Modified time: 2022-10-13 15:30:15
  */
 
 namespace ddswoole\components\websocket;
@@ -11,9 +11,9 @@ namespace ddswoole\components\websocket;
 use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\controllers\SwooleInterfaceController;
+use ddswoole\process\Manager;
 use diandi\swoole\websocket\Context;
 use function Swoole\Coroutine\run;
-use Swoole\Process\Manager;
 use Swoole\Process\Pool;
 use Yii;
 
@@ -70,17 +70,29 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
     {
         defined('COROUTINE_ENV') or define('COROUTINE_ENV', true);
         $serverName = $this->server;
-        $pm = new Manager();
-        $proc1 = $pm->add(function (Pool $pool, int $workerId) use ($serverName) {
-            run(function () use ($serverName,$pool) {
-                //让每个OnWorkerStart回调都自动创建一个协程
-                $Loader = new Loader();
-                $context = new Context();
-                $server = new $serverName($this->config, $Loader, $context, $pool);
+        $listens[] = [
+            'host' => '127.0.0.1',
+            'port' => 9000,
+        ];
 
-                return  $server->run();
-            });
-        });
+        $pm = new Manager(SWOOLE_IPC_UNIXSOCK, $listens, 1);
+        $pm->add(function (Pool $pool, int $workerId) use ($serverName) {
+            //让每个OnWorkerStart回调都自动创建一个协程
+            $Loader = new Loader();
+            $context = new Context();
+            $server = new $serverName($this->config, $Loader, $context, $pool, $workerId);
+
+            return  $server->run();
+        }, 'start', 1);
+
+        $pm->add(function (Pool $pool, int $workerId) use ($serverName) {
+            $process = $pool->getProcess(0);
+            $socket = $process->exportSocket();
+            while (true) {
+                echo $socket->recv();
+                echo "proc1 stop\n";
+            }
+        }, 'start');
 
         $pm->start();
     }
