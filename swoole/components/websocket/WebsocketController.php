@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-13 15:30:15
+ * @Last Modified time: 2022-10-13 15:33:24
  */
 
 namespace ddswoole\components\websocket;
@@ -89,10 +89,9 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             $process = $pool->getProcess(0);
             $socket = $process->exportSocket();
             while (true) {
-                echo $socket->recv();
-                echo "proc1 stop\n";
+                echo '进程消息：'.$socket->recv();
             }
-        }, 'start');
+        }, 'start', 1);
 
         $pm->start();
     }
