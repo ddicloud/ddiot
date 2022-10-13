@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-13 15:33:24
+ * @Last Modified time: 2022-10-13 15:39:53
  */
 
 namespace ddswoole\components\websocket;
@@ -90,6 +90,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             $socket = $process->exportSocket();
             while (true) {
                 echo '进程消息：'.$socket->recv();
+                $socket->send('开个玩笑而已么');
             }
         }, 'start', 1);
 
