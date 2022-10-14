@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-13 15:39:53
+ * @Last Modified time: 2022-10-14 12:46:38
  */
 
 namespace ddswoole\components\websocket;
@@ -12,7 +12,9 @@ use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\controllers\SwooleInterfaceController;
 use ddswoole\process\Manager;
+use ddswoole\process\WorkServer;
 use diandi\swoole\websocket\Context;
+use Swoole\Coroutine;
 use function Swoole\Coroutine\run;
 use Swoole\Process\Pool;
 use Yii;
@@ -85,11 +87,37 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             return  $server->run();
         }, 'start', 1);
 
+        $pm->add(function (Pool $pool, string $data) {
+            echo 'we';
+            var_dump($data);
+        }, 'message');
+
+        // $pm->add(function (Pool $pool, int $workerId) {
+        //     $socket = new Coroutine\Socket(AF_INET, SOCK_STREAM, 0);
+        //     $socket->bind('127.0.0.1', 9504);
+        //     $socket->listen(128);
+        //     while (true) {
+        //         echo "Accept0: \n";
+        //         print_r($socket);
+        //         $client = $socket->accept();
+        //         if ($client === false) {
+        //             var_dump($socket->errCode);
+        //         } else {
+        //             echo "Accept1: \n";
+        //             $client->send('11223344');
+        //             print_r($client);
+        //         }
+        //     }
+        // }, 'start', 1);
+
         $pm->add(function (Pool $pool, int $workerId) use ($serverName) {
+            // $workServer = new WorkServer();
             $process = $pool->getProcess(0);
+            // $workServer->addProcess($process);
+            // return $workServer->start();
             $socket = $process->exportSocket();
             while (true) {
-                echo '进程消息：'.$socket->recv();
+                echo '进程消息1：'.$socket->recv();
                 $socket->send('开个玩笑而已么');
             }
         }, 'start', 1);

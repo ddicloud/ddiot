@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-20 20:30:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-13 15:21:36
+ * @Last Modified time: 2022-10-13 18:26:26
  */
 
 declare(strict_types=1);
@@ -122,14 +122,15 @@ class Manager extends Component
     {
         // 使用非 0 设置时，必须设置 onMessage 回调，onWorkerStart 变更为可选。
         if ($this->ipcType > 0) {
-            $this->pool->on(Constant::EVENT_MESSAGE, function (Pool $pool, string $data) {
+            $workerId = 0;
+            $this->pool->on(Constant::EVENT_MESSAGE, function (Pool $pool, string $data) use($workerId) {
                 echo 'onMessage:'.$data;
-                // [$func, $enableCoroutine] = $this->messageFuncMap[$workerId];
-                // if ($enableCoroutine) {
-                //     run($func, $pool, $workerId);
-                // } else {
-                //     $func($pool, $workerId);
-                // }
+                [$func, $enableCoroutine] = $this->messageFuncMap[$workerId];
+                if ($enableCoroutine) {
+                    run($func, $pool, $workerId);
+                } else {
+                    $func($pool, $workerId);
+                }
             });
         }
     }
