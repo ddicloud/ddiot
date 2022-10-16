@@ -4,12 +4,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-20 03:20:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-13 18:35:52
+ * @Last Modified time: 2022-10-16 18:30:27
  */
-namespace ddswoole\process;
 
+namespace ddswoole\servers;
 
-use diandi\swoole\web\Application;
 use Throwable;
 use Yii;
 use yii\base\Component;
@@ -17,11 +16,11 @@ use yii\base\InvalidConfigException;
 use yii\web\ErrorHandler;
 
 /**
- * WorkServer.
+ * BaseServer.
  *
- * Class WebSocketServer
+ * Class BaseServerServer
  */
-class WorkServer extends Component
+class BaseServer extends Component
 {
     /**
      * @var string 监听主机
@@ -44,7 +43,6 @@ class WorkServer extends Component
 
     public $process;
 
-    
     public $connections;
 
     /**
@@ -62,7 +60,6 @@ class WorkServer extends Component
         'log_file' => '',
         'log_level' => 0,
     ];
-    
 
     /**
      * @var \Swoole\Server swoole server实例
@@ -77,27 +74,7 @@ class WorkServer extends Component
     public function init()
     {
         parent::init();
-
-        if (!$this->server instanceof \Swoole\Server) {
-            $this->server = new \Swoole\Server($this->host, $this->port, $this->mode, $this->sockType);
-
-            // 您可以混合使用UDP/TCP，同时监听内网和外网端口，多端口监听参考 addlistener小节。
-            // $this->server->addlistener("0.0.0.0", 9501, SWOOLE_SOCK_UDP); // 添加 TCP
-            // 添加 Web Socket
-            // $this->server->listen("0.0.0.0",$this->port,$this->sockType); // UDP
-            // $this->server->addlistener("/var/run/myserv.sock", 0, SWOOLE_UNIX_STREAM); //UnixSocket Stream
-            //  $this->server->addlistener("127.0.0.1", 9503, SWOOLE_SOCK_TCP | SWOOLE_SSL); //TCP + SSL
-
-            $this->server->set($this->options);
-        }
-
-        foreach ($this->events() as $event => $callback) {
-            if (method_exists($this, 'on'.$event)) {
-                $this->server->on($event, $callback);
-            }
-        }
     }
-
 
     /**
      * 事件监听.
@@ -138,13 +115,27 @@ class WorkServer extends Component
      *
      * @return bool
      */
-    public function start()
+    public function run()
     {
-        go(function()
-        {
-            return $this->server->start();
-            
-        });
+        if (!$this->server instanceof \Swoole\Server) {
+            $this->server = new \Swoole\Server($this->host, $this->port, $this->mode, $this->sockType);
+
+            // 您可以混合使用UDP/TCP，同时监听内网和外网端口，多端口监听参考 addlistener小节。
+            // $this->server->addlistener("0.0.0.0", 9501, SWOOLE_SOCK_UDP); // 添加 TCP
+            // 添加 Web Socket
+            // $this->server->listen("0.0.0.0",$this->port,$this->sockType); // UDP
+            // $this->server->addlistener("/var/run/myserv.sock", 0, SWOOLE_UNIX_STREAM); //UnixSocket Stream
+            //  $this->server->addlistener("127.0.0.1", 9503, SWOOLE_SOCK_TCP | SWOOLE_SSL); //TCP + SSL
+
+            $this->server->set($this->options);
+        }
+        foreach ($this->events() as $event => $callback) {
+            if (method_exists($this, 'on'.$event)) {
+                $this->server->on($event, $callback);
+            }
+        }
+
+        return $this->server->start();
     }
 
     /**
@@ -165,9 +156,6 @@ class WorkServer extends Component
     public function onWorkerStart(\Swoole\Server $server, $workerId)
     {
         global $argv;
-        if (function_exists('opcache_reset')) {
-            opcache_reset();
-        }
         try {
             Yii::$app->set('server', $server);
             if ($workerId >= $this->options['worker_num']) {
@@ -177,7 +165,7 @@ class WorkServer extends Component
             }
         } catch (\Exception $e) {
             print_r('start yii error:'.ErrorHandler::convertExceptionToString($e).PHP_EOL);
-            // $this->server->shutdown();
+            $this->server->shutdown();
         }
     }
 
@@ -213,14 +201,11 @@ class WorkServer extends Component
 
     public function onReceive(\Swoole\Server $server, int $fd, int $reactorId, string $data)
     {
-        $socket = $this->process->exportSocket();
-        $socket->send($data);
         // echo '[#'.$this->worker_id."]\tClient[$fd]: $data\n";
     }
 
     public function onPacket(\Swoole\Server $server, string $data, array $clientInfo)
     {
-       
         echo "[#onPacket]\tClient[$clientInfo]: $data\n";
     }
 
@@ -274,12 +259,11 @@ class WorkServer extends Component
         echo "client {$fd} closed".PHP_EOL;
     }
 
-    
     public function addProcess($process)
     {
         $this->process = $process;
         $this->server->addProcess($process);
-    } 
+    }
 
     /**
      * 处理异步任务
