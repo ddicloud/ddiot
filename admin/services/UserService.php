@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 11:12:46
+ * @Last Modified time: 2022-10-18 11:18:33
  */
 
 namespace admin\services;
@@ -72,6 +72,7 @@ class UserService extends BaseService
     public static function initGroup($user_id)
     {
         $defaultRoles = Yii::$app->authManager['defaultRoles'];
+        var_dump($defaultRoles);
         $default_group_id = AuthUserGroup::find()->where(['name' => trim($defaultRoles)])->select('id')->scalar();
         $model = new Assignment([
             'id' => $user_id,
