@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 10:59:16
+ * @Last Modified time: 2022-10-18 11:12:46
  */
 
 namespace admin\services;
@@ -18,6 +18,7 @@ use common\models\enums\UserStatus;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\UserBloc;
+use diandi\admin\acmodels\AuthUserGroup;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
@@ -70,9 +71,8 @@ class UserService extends BaseService
 
     public static function initGroup($user_id)
     {
-        $default_group_id = 59;
-        $AuthManager = Yii::$app->getAuthManager();
-        print_r($AuthManager);
+        $defaultRoles = Yii::$app->authManager['defaultRoles'];
+        $default_group_id = AuthUserGroup::find()->where(['name' => trim($defaultRoles)])->select('id')->scalar();
         $model = new Assignment([
             'id' => $user_id,
             'is_sys' => 3,
