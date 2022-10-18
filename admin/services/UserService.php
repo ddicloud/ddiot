@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 11:27:19
+ * @Last Modified time: 2022-10-18 11:29:02
  */
 
 namespace admin\services;
@@ -73,9 +73,7 @@ class UserService extends BaseService
     {
         $authManager = Yii::$app->getAuthManager();
         $defaultRoles = $authManager->defaultRoles;
-        $default_group_ids = AuthUserGroup::find()->where(['name' => $defaultRoles])->select('id')->column();
-        print_r($defaultRoles);
-        print_r($default_group_ids);
+        $default_group_ids = AuthUserGroup::find()->where(['name' => $defaultRoles])->select('item_id')->column();
         $model = new Assignment([
             'id' => $user_id,
             'is_sys' => 3,
