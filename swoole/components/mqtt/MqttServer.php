@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-16 18:45:29
+ * @Last Modified time: 2022-10-16 19:52:47
  */
 
 namespace ddswoole\components\mqtt;
 
 use ddswoole\servers\BaseServer;
+use ddswoole\servers\DebugService;
 use ddswoole\traits\InteractsWithSwooleTable;
 use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
@@ -164,6 +165,8 @@ class MqttServer extends BaseServer
             // debug
             //        Common::printf($data);
             $data = V5::unpack($data);
+            DebugService::consoleCrosswise('收到响应', $data['type']);
+            print_r($data);
             if (is_array($data) && isset($data['type'])) {
                 switch ($data['type']) {
                     case Types::CONNECT:
@@ -205,7 +208,6 @@ class MqttServer extends BaseServer
                         break;
                     case Types::PUBLISH:
                         // Send to subscribers
-                        var_dump($server->connections);
                         foreach ($server->connections as $sub_fd) {
                             if ($sub_fd != $fd) {
                                 $server->send(

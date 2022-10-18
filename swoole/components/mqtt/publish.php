@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-16 12:41:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-16 13:11:25
+ * @Last Modified time: 2022-10-16 19:26:06
  */
 
 /**
@@ -15,7 +15,7 @@
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
-include __DIR__.'/../bootstrap.php';
+include __DIR__.'/bootstrap.php';
 
 use Simps\MQTT\Client;
 use Swoole\Coroutine;

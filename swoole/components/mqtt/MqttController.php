@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-16 16:38:42
+ * @Last Modified time: 2022-10-16 19:18:06
  */
 
 namespace ddswoole\components\mqtt;
@@ -79,7 +79,6 @@ class MqttController extends BaseController implements SwooleInterfaceController
     {
         $pidFile = $this->config['options']['pid_file'];
         $masterPid = file_exists($pidFile) ? file_get_contents($pidFile) : null;
-        var_dump($masterPid);
         if (!empty($masterPid)) {
             posix_kill($masterPid, SIGTERM);
             if (PHP_OS == 'Darwin') {
