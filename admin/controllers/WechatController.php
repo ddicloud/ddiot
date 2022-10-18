@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-09 14:29:41
+ * @Last Modified by:   Radish <minradish@163.com>
+ * @Last Modified time: 2022-10-18 09:19:26
  */
 
 namespace admin\controllers;
@@ -78,7 +78,7 @@ class WechatController extends AController
                     $maxId = User::find()->max('id');
                     $adminUser->open_id = $user->id;
                     $adminUser->union_id = $user->getOriginal()['unionid'] ?? null;
-                    $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1) . '@cn.com', '123465', '');
+                    $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1) . '@cn.com', '123465', '', '', 1);
                     return ResultHelper::json(200, '注册成功', $res);
                 }
             } else {
