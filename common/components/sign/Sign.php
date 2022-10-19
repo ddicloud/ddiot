@@ -3,8 +3,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-19 14:57:13
+ * @Last Modified by:   Radish <minradish@163.com>
+ * @Last Modified time: 2022-10-19 18:46:28
  */
 
 namespace common\components\sign;
@@ -55,8 +55,8 @@ class Sign extends ActionFilter
             throw new SignException(CodeConst::CODE_90000);
         }
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
-           'app_secret' => $apiConf['app_secret'],
-           'app_id' => $appId ?: $_GPC['app_id'],
+            'app_secret' => $apiConf['app_secret'],
+            'app_id' => $appId ?: $_GPC['app_id'],
         ]);
 
         return $apiConf['app_secret'];
@@ -74,7 +74,8 @@ class Sign extends ActionFilter
         // all代表全部需要，*代表全部不需要
         if ((in_array('all', $this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*', $this->optional)) {
             $this->validateSign(
-                ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(), \Yii::$app->request->post())
+                // ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(), \Yii::$app->request->post())
+                \Yii::$app->request->post()
             );
         }
     }
@@ -142,7 +143,7 @@ class Sign extends ActionFilter
     public function md5Sign($preStr, $appId = '')
     {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr.'&key='.self::generateSecret($appId);
+        $str = $preStr . '&key=' . self::generateSecret($appId);
         loggingHelper::writeLog('sign', 'md5Sign', '签名前数据', $str);
         $sign = md5($str);
         loggingHelper::writeLog('sign', 'md5Sign', '签名后数据', strtoupper($sign));
@@ -157,7 +158,7 @@ class Sign extends ActionFilter
      */
     public static function getPrefixOfDomain()
     {
-        $url = '//'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+        $url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);
 
         return $match[1];
