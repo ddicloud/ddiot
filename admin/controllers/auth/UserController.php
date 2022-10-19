@@ -4,18 +4,18 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-12 13:39:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-10-31 13:02:58
+ * @Last Modified time: 2022-10-18 17:30:12
  */
 
 namespace admin\controllers\auth;
 
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
+use diandi\addons\models\AddonsUser;
+use diandi\addons\models\Bloc;
 use diandi\addons\models\DdAddons;
 use diandi\admin\components\UserStatus;
-use diandi\addons\models\AddonsUser;
 use diandi\admin\models\Assignment;
-use diandi\addons\models\Bloc;
 use diandi\admin\models\form\ChangePassword;
 use diandi\admin\models\form\Login;
 use diandi\admin\models\form\PasswordResetRequest;
@@ -168,8 +168,6 @@ class UserController extends AController
             $Bloc = Bloc::find()->where(['bloc_id' => $model->bloc_id])->select(['business_name'])->one();
             // $ResetPassword = new  ResetPassword($model->password_reset_token);
 
-
-
             return $this->render('update', [
                 'model' => $model,
                 'assign' => $assign,
@@ -189,14 +187,12 @@ class UserController extends AController
         $title = $user->username;
 
         if (!ResetPassword::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+            $user->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
         }
 
         $token = $user->password_reset_token;
 
-
         if (Yii::$app->request->isPost) {
-
             try {
                 $user = new ResetPassword($token);
             } catch (InvalidParamException $e) {
@@ -204,19 +200,17 @@ class UserController extends AController
             }
 
             if ($user->load(Yii::$app->getRequest()->post()) && $user->validate() && $user->resetPassword()) {
-
                 Yii::$app->session->setFlash('success', '密码修改成功');
 
-                return $this->redirect(array('update', 'id' => $id));
+                return $this->redirect(['update', 'id' => $id]);
             }
         }
-
 
         if (!$user->save()) {
             // 修改密码
             Yii::$app->session->setFlash('success', '重置验证失败');
 
-            return $this->redirect(array('index'));
+            return $this->redirect(['index']);
         }
 
         try {
@@ -224,7 +218,6 @@ class UserController extends AController
         } catch (InvalidParamException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-
 
         return $this->render('password', [
             'ResetPassword' => $ResetPassword,
@@ -243,10 +236,11 @@ class UserController extends AController
     public function actionView($id)
     {
         $AddonsUser = new AddonsUser([
-            'user_id' => $id
+            'user_id' => $id,
         ]);
         $opts = $AddonsUser->getItems();
         $animateIcon = '';
+
         return $this->render('view', [
             'animateIcon' => $animateIcon,
             'model' => $this->findModel($id),
@@ -438,7 +432,6 @@ class UserController extends AController
         if ($user->status == UserStatus::INACTIVE) {
             $user->status = UserStatus::ACTIVE;
             if ($user->save()) {
-
                 Yii::$app->session->setFlash('success', '用户审核成功');
             } else {
                 $errors = $user->firstErrors;

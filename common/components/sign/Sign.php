@@ -3,8 +3,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-08-29 10:50:15
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-10-19 14:14:28
  */
 
 namespace common\components\sign;
@@ -53,6 +53,7 @@ class Sign extends ActionFilter
         if (empty($apiConf)) {
             throw new SignException(CodeConst::CODE_90000);
         }
+
         return $apiConf['app_secret'];
     }
 
@@ -136,7 +137,8 @@ class Sign extends ActionFilter
     public function md5Sign($preStr, $appId = '')
     {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr . '&key=' . self::generateSecret($appId);
+        $str = $preStr.'&key='.self::generateSecret($appId);
+        var_dump($str);
         $sign = md5($str);
 
         return strtoupper($sign); // 转成大写
@@ -149,7 +151,7 @@ class Sign extends ActionFilter
      */
     public static function getPrefixOfDomain()
     {
-        $url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+        $url = '//'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);
 
         return $match[1];

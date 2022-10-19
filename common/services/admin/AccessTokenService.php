@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 11:53:16
+ * @Last Modified time: 2022-10-18 17:29:30
  */
 
 namespace common\services\admin;
@@ -48,12 +48,17 @@ class AccessTokenService extends BaseService
     /**
      * 获取token.
      *
-     * @param DdMember $member
-     * @param int      $cycle_index 重新获取次数
+     * @param [type] $group_id
+     * @param int    $cycle_index
      *
-     * @return array
+     * @return void
+     * @date 2022-10-18
      *
-     * @throws \yii\base\Exception
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
      */
     public function getAccessToken(User $member, $group_id, $cycle_index = 1)
     {
