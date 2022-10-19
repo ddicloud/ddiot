@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-19 14:15:33
+ * @Last Modified time: 2022-10-19 14:57:13
  */
 
 namespace common\components\sign;
 
+use common\helpers\loggingHelper;
 use diandi\addons\models\form\Api;
 use Yii;
 use yii\base\ActionFilter;
@@ -53,6 +54,10 @@ class Sign extends ActionFilter
         if (empty($apiConf)) {
             throw new SignException(CodeConst::CODE_90000);
         }
+        loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
+           'app_secret' => $apiConf['app_secret'],
+           'app_id' => $appId ?: $_GPC['app_id'],
+        ]);
 
         return $apiConf['app_secret'];
     }
@@ -138,7 +143,9 @@ class Sign extends ActionFilter
     {
         // 生成sign  字符串和密钥拼接
         $str = $preStr.'&key='.self::generateSecret($appId);
+        loggingHelper::writeLog('sign', 'md5Sign', '签名前数据', $str);
         $sign = md5($str);
+        loggingHelper::writeLog('sign', 'md5Sign', '签名后数据', strtoupper($sign));
 
         return strtoupper($sign); // 转成大写
     }
