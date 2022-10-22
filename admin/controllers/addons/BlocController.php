@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-23 01:10:11
+ * @Last Modified time: 2022-10-23 01:17:48
  */
 
 namespace admin\controllers\addons;
@@ -114,7 +114,11 @@ class BlocController extends AController
 
         $stores = BlocStore::find()->where($where)->with(['bloc', 'addons'])->asArray()->all();
         foreach ($stores as $key => &$value) {
+            $value['identifie'] = $value['addons'] ? $value['addons']['addons']['identifie'] : '';
             $value['logo'] = ImageHelper::tomedia($value['logo']);
+            if (empty($value['addons'])) {
+                unset($stores[$key]);
+            }
         }
 
         return ResultHelper::json(200, '获取成功', $stores);
