@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 13:46:25
+ * @Last Modified time: 2022-10-22 10:45:00
  */
 
 namespace admin\controllers;
@@ -27,6 +27,7 @@ use diandi\addons\models\form\Api;
 use diandi\admin\components\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\searchs\User as ModelsUser;
+use diandi\admin\models\User as AdminModelsUser;
 use Yii;
 use yii\data\Pagination;
 use yii\web\NotFoundHttpException;
@@ -122,9 +123,9 @@ class UserController extends AController
         $username = $data['username'];
         $mobile = $data['mobile'];
         $email = $data['email'];
-        $password = $data['password'];        
+        $password = $data['password'];
         $invitation_code = trim($data['invitation_code']);
-        
+
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
@@ -135,7 +136,7 @@ class UserController extends AController
             return ResultHelper::json(401, '密码不能为空', []);
         }
 
-        $res = $User->signup($username, $mobile, $email, $password,$invitation_code);
+        $res = $User->signup($username, $mobile, $email, $password, $invitation_code);
 
         return ResultHelper::json(200, '注册成功', $res);
     }
@@ -315,7 +316,7 @@ class UserController extends AController
         $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
 
         $Website = Yii::$app->settings->getAllBySection('Website');
-        unset( $Website['access_key_id'],
+        unset($Website['access_key_id'],
         $Website['access_key_secret'],
         $Website['sign_name'],
         $Website['template_code'],
@@ -329,11 +330,12 @@ class UserController extends AController
         $userinfo['roles'] = $roles;
         $Api = new Api();
         $Api->getConf($userinfo['user']['bloc_id']);
+
         return ResultHelper::json(200, '获取成功', [
             'userinfo' => $userinfo,
             'Website' => $Website,
-            'apiConf' =>  $Api,
-            'apiurl'=>Yii::$app->request->hostInfo
+            'apiConf' => $Api,
+            'apiurl' => Yii::$app->request->hostInfo,
         ]);
     }
 
@@ -960,6 +962,12 @@ class UserController extends AController
                 'user_id' => $user_id,
                 'id' => $store_user_id,
             ]);
+            // 更新用户表中的商户与公司
+            $bloc_users = $UserBloc->find()->where(['id' => $store_user_id])->asArray()->one();
+            $AdminModelsUser = AdminModelsUser::findOne($user_id);
+            $AdminModelsUser->bloc_id = $bloc_users['bloc_id'];
+            $AdminModelsUser->store_id = $bloc_users['store_id'];
+            $AdminModelsUser->save();
         }
 
         return ResultHelper::json(200, '设置成功');
@@ -1004,7 +1012,7 @@ class UserController extends AController
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
-        $pageSize= 20;
+        $pageSize = 20;
         $query = ActionLog::find()->where(['user_id' => $user_id]);
         $count = $query->count();
         // 使用总数来创建一个分页对象
@@ -1019,7 +1027,7 @@ class UserController extends AController
             ->limit($pagination->limit)
             ->asArray()
             ->all();
-            
+
         $lists = [];
         foreach ($list as $key => $value) {
             $time = date('Y-m-d', strtotime($value['logtime']));
