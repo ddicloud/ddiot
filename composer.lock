@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80ae52eddfce605b78107aadd2bfc708",
+    "content-hash": "34c3714db38284a2730675d52f7cd909",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4438,23 +4438,17 @@
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.0.0",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "6e63b5649a51552e82591699d460d9320a240fe4"
+                "reference": "58a24c74496794c16e36ba2f9108b0761b89ee09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/6e63b5649a51552e82591699d460d9320a240fe4",
-                "reference": "6e63b5649a51552e82591699d460d9320a240fe4",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/58a24c74496794c16e36ba2f9108b0761b89ee09",
+                "reference": "58a24c74496794c16e36ba2f9108b0761b89ee09",
+                "shasum": ""
             },
             "require": {
                 "yiisoft/yii2": "~2.0.7"
@@ -4497,9 +4491,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.0"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.2"
             },
-            "time": "2022-06-18T02:20:35+00:00"
+            "time": "2022-10-22T04:09:59+00:00"
         },
         {
             "name": "yii-diandi/yii2-migration",
@@ -8230,5 +8224,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

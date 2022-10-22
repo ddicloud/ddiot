@@ -80,14 +80,14 @@
         "bower-asset/jquery-ui":">=1.12.1",
         "bower-asset/swagger-ui":">=3.0.0"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
-        },
+    "repositories": [        
         {
             "type": "composer",
             "url": "https://asset-packagist.cn"
+        },
+        {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
         }
     ]
 }

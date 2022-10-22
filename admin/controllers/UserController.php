@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-22 10:45:00
+ * @Last Modified time: 2022-10-22 12:04:10
  */
 
 namespace admin\controllers;
@@ -964,10 +964,12 @@ class UserController extends AController
             ]);
             // 更新用户表中的商户与公司
             $bloc_users = $UserBloc->find()->where(['id' => $store_user_id])->asArray()->one();
-            $AdminModelsUser = AdminModelsUser::findOne($user_id);
+            $AdminModelsUser = AdminModelsUser::findOne(['id' => $user_id]);
+
+            $AdminModelsUser->status = $AdminModelsUser['status'];
             $AdminModelsUser->bloc_id = $bloc_users['bloc_id'];
             $AdminModelsUser->store_id = $bloc_users['store_id'];
-            $AdminModelsUser->save();
+            $AdminModelsUser->update();
         }
 
         return ResultHelper::json(200, '设置成功');
