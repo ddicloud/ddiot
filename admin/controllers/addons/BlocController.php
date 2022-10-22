@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-23 01:17:48
+ * @Last Modified time: 2022-10-23 01:19:11
  */
 
 namespace admin\controllers\addons;
@@ -121,7 +121,7 @@ class BlocController extends AController
             }
         }
 
-        return ResultHelper::json(200, '获取成功', $stores);
+        return ResultHelper::json(200, '获取成功', array_values($stores));
     }
 
     /**
