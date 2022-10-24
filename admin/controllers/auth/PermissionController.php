@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-24 17:52:34
+ * @Last Modified time: 2022-10-24 18:07:10
  */
 
 namespace admin\controllers\auth;
@@ -123,6 +123,7 @@ class PermissionController extends AController
 
     public function actionLevels()
     {
+        global $_GPC;
         $DdAddons = new DdAddons();
         $addons = [];
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
