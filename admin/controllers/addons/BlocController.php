@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-24 10:32:06
+ * @Last Modified time: 2022-10-24 11:13:23
  */
 
 namespace admin\controllers\addons;
@@ -114,7 +114,7 @@ class BlocController extends AController
 
         $stores = BlocStore::find()->where($where)->with(['bloc', 'addons'])->asArray()->all();
         foreach ($stores as $key => &$value) {
-            $value['create_time'] = date('Y-m-d', $value['create_time']);
+            $value['create_time'] = date('Y-m-d', $value['create_time'] ? $value['create_time'] : time());
             $value['identifie'] = $value['addons'] ? $value['addons']['addons']['identifie'] : '';
             $value['logo'] = ImageHelper::tomedia($value['logo']);
             if (empty($value['addons'])) {
