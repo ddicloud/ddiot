@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-24 18:07:10
+ * @Last Modified time: 2022-10-24 18:10:38
  */
 
 namespace admin\controllers\auth;
@@ -134,7 +134,7 @@ class PermissionController extends AController
             $where['is_sys'] = (int) $_GPC['is_sys'];
         }
         // 权限只能是2级，不能是三级
-        $parentMent = AuthItemModel::find()->where(['permission_type' => 1, 'parent_id' => 0])->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
+        $parentMent = AuthItemModel::find()->where($where)->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
 
         foreach ($parentMent as $key => &$value) {
             if ($value['is_sys'] == 1) {
