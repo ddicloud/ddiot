@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-24 17:12:18
+ * @Last Modified time: 2022-10-24 17:26:37
  */
 
 namespace admin\controllers\auth;
@@ -128,7 +128,12 @@ class PermissionController extends AController
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
         $addons['sys'] = '系统';
 
-        $parentMent = AuthItemModel::find()->where(['permission_type' => 1])->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
+        $where = [];
+        if (isset($_GPC['is_sys'])) {
+            $where['is_sys'] = (int) $_GPC['is_sys'];
+        }
+
+        $parentMent = AuthItemModel::find()->where(['permission_type' => 1])->filterWhere($where)->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
 
         foreach ($parentMent as $key => &$value) {
             if ($value['is_sys'] == 1) {
