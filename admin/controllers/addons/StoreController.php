@@ -3,8 +3,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-09-08 11:23:55
+ * @Last Modified by:   Radish <minradish@163.com>
+ * @Last Modified time: 2022-10-25 15:27:58
  */
 
 namespace admin\controllers\addons;
@@ -466,7 +466,6 @@ class StoreController extends AController
                             }
                         }
                     }
-                    return $this->redirect(['view', 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     throw new HttpException(400, $e->getMessage());
