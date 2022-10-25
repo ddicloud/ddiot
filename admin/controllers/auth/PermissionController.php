@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-24 18:10:38
+ * @Last Modified time: 2022-10-25 17:04:49
  */
 
 namespace admin\controllers\auth;
@@ -101,6 +101,10 @@ class PermissionController extends AController
         }
 
         $list = HelpersArrayHelper::itemsMerge($parentMent, 0, 'id', 'parent_id', 'children');
+
+        if (!empty($parentMent) && empty($list)) {
+            $list = $parentMent;
+        }
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
