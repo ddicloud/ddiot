@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-25 17:04:49
+ * @Last Modified time: 2022-10-25 17:30:15
  */
 
 namespace admin\controllers\auth;
@@ -282,12 +282,8 @@ class PermissionController extends AController
     public function actionUpdateitem()
     {
         global $_GPC;
-
         $id = $_GPC['id'];
-
         $model = $this->findModel($id);
-        $module_name = $this->module_name;
-
         if (yii::$app->request->isPost) {
             $data = yii::$app->request->post();
 
