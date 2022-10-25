@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 16:42:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-10-27 17:29:30
+ * @Last Modified time: 2022-10-25 17:23:24
  */
 
 namespace admin\controllers\auth;
@@ -63,6 +63,9 @@ class MenuController extends AController
         }
 
         $list = HelpersArrayHelper::itemsMerge($parentMent, 0, 'id', 'parent', 'children');
+        if (!empty($parentMent) && empty($list)) {
+            $list = $parentMent;
+        }
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
