@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 18:28:11
+ * @Last Modified time: 2022-10-26 18:46:49
  */
 
 namespace admin\services;
@@ -221,7 +221,7 @@ class UserService extends BaseService
             'permission_type' => 1,
             'is_sys' => 0,
             ])->select('id')->column();
-
+        loggingHelper::writeLog('StoreService', 'createStore', '初始权限数据', $items);
         $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
         $user = $class::findIdentity($user_id);
         // 获取原先的权限集
@@ -321,6 +321,12 @@ class UserService extends BaseService
 
         // 增加权限
         $add_ids = array_diff($authItems, $assigned_ids);
+        loggingHelper::writeLog('StoreService', 'createStore', '需要授权的数据', [
+            'add_ids' => $add_ids,
+            'authItems' => $authItems,
+            'assigned_ids' => $assigned_ids,
+        ]);
+
         if ($add_ids) {
             $model->assign([
                 'permission' => array_values($add_ids),
