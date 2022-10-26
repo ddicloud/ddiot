@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 12:02:53
+ * @Last Modified time: 2022-10-26 18:33:26
  */
 
 namespace common\services\admin;
@@ -90,7 +90,7 @@ class NavService extends BaseService
         self::$module_names = $module_names;
 
         $module_name = array_column($module_names, 'identifie');
-        $key = 'auth_'.Yii::$app->user->id.'_'.'initmenu'.time();
+        $key = 'auth_'.Yii::$app->user->id.'_'.'initmenu';
 
         $initmenu = Yii::$app->cache->get($key);
 
