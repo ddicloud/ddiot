@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:40:48
+ * @Last Modified time: 2022-10-26 18:28:11
  */
 
 namespace admin\services;
@@ -14,6 +14,7 @@ use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
+use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
@@ -202,6 +203,13 @@ class UserService extends BaseService
      */
     public static function AssignmentPermissionByUid($user_id, $addons_identifie)
     {
+        if (!$user_id) {
+            return ResultHelper::serverJson(1, 'user_id 不能为空');
+        }
+
+        if (!$addons_identifie) {
+            return ResultHelper::serverJson(1, 'addons_identifie 不能为空');
+        }
         loggingHelper::writeLog('StoreService', 'createStore', 'AssignmentPermissionByUid', [
             'user_id' => $user_id,
             'addons_identifie' => $addons_identifie,
@@ -212,7 +220,8 @@ class UserService extends BaseService
             'parent_id' => 0,
             'permission_type' => 1,
             'is_sys' => 0,
-            ])->select('id')->asArray()->all();
+            ])->select('id')->column();
+
         $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
         $user = $class::findIdentity($user_id);
         // 获取原先的权限集
@@ -312,16 +321,11 @@ class UserService extends BaseService
 
         // 增加权限
         $add_ids = array_diff($authItems, $assigned_ids);
-
-        $model->assign([
-            'permission' => array_values($add_ids),
-        ]);
-
-        // 删除权限
-        $delete_ids = array_diff($assigned_ids, $authItems);
-        $model->revoke([
-            'permission' => array_values($delete_ids),
-        ]);
+        if ($add_ids) {
+            $model->assign([
+                'permission' => array_values($add_ids),
+            ]);
+        }
 
         $key = 'auth_'.$user_id.'_'.'initmenu';
         Yii::$app->cache->delete($key);

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:36:46
+ * @Last Modified time: 2022-10-26 18:01:26
  */
 
 namespace admin\services;
@@ -109,7 +109,7 @@ class StoreService extends BaseService
                 }
                 $user_id = Yii::$app->user->identity->user_id;
                 // 初始权限
-                UserService::AssignmentPermissionByUid($user_id, '');
+                UserService::AssignmentPermissionByUid($user_id, $addons);
 
                 $tempData = [
                         'user_id' => Yii::$app->user->id,
