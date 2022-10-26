@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:04:50
+ * @Last Modified time: 2022-10-26 16:06:42
  */
 
 namespace admin\controllers\addons;
@@ -366,6 +366,6 @@ class StoreController extends AController
         global $_GPC;
         $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);
 
-        return ResultHelper::json(200, '获取成功', $store);
+        return ResultHelper::json(200, '创建成功', $store);
     }
 }
