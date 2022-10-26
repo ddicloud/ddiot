@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:39:53
+ * @Last Modified time: 2022-10-26 16:56:47
  */
 
 namespace admin\controllers\addons;
@@ -17,7 +17,6 @@ use diandi\addons\models\DdAddons;
 use diandi\addons\models\searchs\DdAddons as DdAddonsSearch;
 use diandi\addons\services\addonsService;
 use Yii;
-use yii\data\ArrayDataProvider;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -88,23 +87,12 @@ class AddonsController extends AController
      */
     public function actionUninstalled()
     {
-        $list = addonsService::unAddons();
-
-        $searchModel = new DdAddonsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $provider = new ArrayDataProvider([
-            'allModels' => $list,
-            'pagination' => [
-                'pageSize' => 15,
-            ],
-        ]);
+        global $_GPC;
+        $title = $_GPC['title'];
+        $list = addonsService::unAddons($title);
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
-            'provider' => $provider,
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
         ]);
     }
 
