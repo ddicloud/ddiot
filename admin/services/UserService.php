@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:38:05
+ * @Last Modified time: 2022-10-26 16:40:48
  */
 
 namespace admin\services;
@@ -275,6 +275,11 @@ class UserService extends BaseService
         // 增加查看插件的权限
         $add_ids = array_diff($authItems, $assigned_ids);
         $addList = DdAddons::find()->where(['mid' => $add_ids])->asArray()->all();
+
+        loggingHelper::writeLog('StoreService', 'createStore', 'AssignmentPermissionByUid', [
+            'user_id' => $user_id,
+            'addons_identifie' => $addons_identifie,
+        ]);
         foreach ($addList as $key => $value) {
             $_AddonsUser = clone $AddonsUser;
             $data = [
