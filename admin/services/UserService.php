@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 15:38:40
+ * @Last Modified time: 2022-10-26 16:38:05
  */
 
 namespace admin\services;
@@ -202,6 +202,11 @@ class UserService extends BaseService
      */
     public static function AssignmentPermissionByUid($user_id, $addons_identifie)
     {
+        loggingHelper::writeLog('StoreService', 'createStore', 'AssignmentPermissionByUid', [
+            'user_id' => $user_id,
+            'addons_identifie' => $addons_identifie,
+        ]);
+
         $items['permission'] = AuthItem::find()->where([
             'module_name' => $addons_identifie,
             'parent_id' => 0,

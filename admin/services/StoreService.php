@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 15:55:52
+ * @Last Modified time: 2022-10-26 16:36:46
  */
 
 namespace admin\services;
@@ -40,6 +40,12 @@ class StoreService extends BaseService
      */
     public static function createStore($data, $mid, $extras = [])
     {
+        loggingHelper::writeLog('StoreService', 'createStore', '创建初始数据', [
+           'data' => $data,
+            'mid' => $mid,
+            'extras' => $extras,
+        ]);
+
         $model = new BlocStore([
             'extras' => $extras,
         ]);
@@ -50,11 +56,14 @@ class StoreService extends BaseService
                 'lat' => $data['latitude'],
             ]);
         $addons = DdAddons::find()->where(['mid' => $mid ?? 0])->select('identifie')->scalar();
+        loggingHelper::writeLog('StoreService', 'createStore', '模块', $addons);
         if (!$addons) {
             throw new HttpException(400, '无效的应用模块ID!');
         }
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($data, '') && $model->save()) {
+            loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
+
             try {
                 $StoreLabelLink = $data['StoreLabelLink'];
                 if (!empty($StoreLabelLink['label_id'])) {
@@ -77,6 +86,8 @@ class StoreService extends BaseService
                         'module_name' => $addons,
                         'user_id' => Yii::$app->user->identity->user_id,
                     ])->one();
+                loggingHelper::writeLog('StoreService', 'createStore', 'addonsUser', $addonsUser);
+
                 if (!$addonsUser) {
                     $addonsUser = new AddonsUser();
                     $addonsUser->module_name = $addons;
