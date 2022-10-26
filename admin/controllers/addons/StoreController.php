@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 15:53:28
+ * @Last Modified time: 2022-10-26 16:04:50
  */
 
 namespace admin\controllers\addons;
@@ -361,7 +361,7 @@ class StoreController extends AController
         throw new NotFoundHttpException('请检查数据是否存在');
     }
 
-    public function actionAddonsCreate()
+    public function actionStoreCreate()
     {
         global $_GPC;
         $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);

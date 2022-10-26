@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 18:25:44
+ * @Last Modified time: 2022-10-26 16:05:27
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -497,7 +497,7 @@ return [
                         'POST,PUT update/<id>' => 'update',
                         'POST,GET,DELETE delete/<id>' => 'delete',
                         'GET view/<id>' => 'view',
-                        'POST addons-create' => 'addons-create',
+                        'POST store-create' => 'store-create',
                     ],
                 ],
                 // 商户标签
