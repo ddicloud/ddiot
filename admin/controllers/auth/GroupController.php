@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 11:32:37
+ * @Last Modified time: 2022-10-26 14:09:38
  */
 
 namespace admin\controllers\auth;
@@ -470,7 +470,7 @@ class GroupController extends AController
                 $data['is_sys'] = 1;
             }
 
-            if ($model->load($data, '') && $model->update()) {
+            if ($model->load($data, '') && $model->save()) {
                 if ($old_parent != $_GPC['name']) {
                     AuthItemChild::updateAll([
                         'parent' => $_GPC['name'],
