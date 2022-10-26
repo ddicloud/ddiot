@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 18:01:26
+ * @Last Modified time: 2022-10-26 18:52:57
  */
 
 namespace admin\services;
@@ -85,7 +85,8 @@ class StoreService extends BaseService
                 $addonsUser = AddonsUser::find()->andWhere([
                         'module_name' => $addons,
                         'user_id' => Yii::$app->user->identity->user_id,
-                    ])->one();
+                        'store_id' => $model->store_id,
+                ])->one();
                 loggingHelper::writeLog('StoreService', 'createStore', 'addonsUser', $addonsUser);
 
                 if (!$addonsUser) {
