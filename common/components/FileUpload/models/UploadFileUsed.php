@@ -3,24 +3,19 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-21 22:02:36
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-01 16:45:33
+ * @Last Modified time: 2022-10-26 16:17:25
  */
- 
 
 namespace common\components\FileUpload\models;
-
-
-use Yii;
 
 /**
  * This is the model class for table "dd_upload_file_used".
  *
- * @property int $used_id 用户id
- * @property int $file_id 文件id
- * @property int $bloc_id 公司id
- * @property int|null $store_id 商户id
- * @property int $create_time 创建时间
- *
+ * @property int        $used_id     用户id
+ * @property int        $file_id     文件id
+ * @property int        $bloc_id     公司id
+ * @property int|null   $store_id    商户id
+ * @property int        $create_time 创建时间
  * @property UploadFile $file
  */
 class UploadFileUsed extends \yii\db\ActiveRecord
@@ -30,7 +25,7 @@ class UploadFileUsed extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%upload_file_user}}';
+        return '{{%user_upload_file}}';
     }
 
     /**
