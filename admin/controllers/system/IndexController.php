@@ -4,18 +4,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:30
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-15 13:20:48
+ * @Last Modified time: 2022-10-26 19:01:15
  */
 
 namespace admin\controllers\system;
 
 use admin\controllers\AController;
-use common\helpers\ImageHelper;
+use admin\services\UserService;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\models\DdRegion;
-use diandi\addons\models\AddonsUser;
-use diandi\admin\models\UserGroup;
 use Yii;
 use yii\web\Response;
 
@@ -51,39 +49,9 @@ class IndexController extends AController
     {
         global $_GPC;
 
-        // 初始化菜单
-        $is_addons = Yii::$app->params['is_addons'];
+        $list = UserService::getUserMenus();
 
-        $AllNav = Yii::$app->service->adminNavService->getMenu('', $is_addons);
-        $leftMenu = $AllNav['left'];
-
-        $AddonsUser = new AddonsUser();
-        $module_names = $AddonsUser->find()->where([
-            'user_id' => Yii::$app->user->identity->user_id,
-        ])->with(['addons'])->asArray()->all();
-
-        foreach ($module_names as $key => &$value) {
-            if (empty($value['addons'])) {
-                unset($module_names[$key]);
-            }
-        }
-
-        $moduleAll = $module_names ? $module_names : [];
-
-        $Website = Yii::$app->settings->getAllBySection('Website');
-        $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
-        $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
-
-        $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
-
-        $Roles = UserGroup::find()->select('name')->column();
-
-        return ResultHelper::json(200, '获取成功', [
-            'left' => $AllNav['left'],
-            'top' => $AllNav['top'],
-            'Roles' => $Roles,
-            'moduleAll' => $moduleAll,
-        ]);
+        return ResultHelper::json(200, '获取成功', $list);
     }
 
     public function creAteVue($menus)

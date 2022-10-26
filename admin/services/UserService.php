@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 18:46:49
+ * @Last Modified time: 2022-10-26 19:00:31
  */
 
 namespace admin\services;
@@ -13,6 +13,7 @@ use admin\models\addons\models\Bloc;
 use admin\models\DdApiAccessToken;
 use admin\models\User;
 use common\helpers\ErrorsHelper;
+use common\helpers\ImageHelper;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
@@ -24,10 +25,48 @@ use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthUserGroup;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\AuthAssignmentGroup;
+use diandi\admin\models\UserGroup;
 use Yii;
 
 class UserService extends BaseService
 {
+    public static function getUserMenus()
+    {
+        // 初始化菜单
+        $is_addons = Yii::$app->params['is_addons'];
+
+        $AllNav = Yii::$app->service->adminNavService->getMenu('', $is_addons);
+        $leftMenu = $AllNav['left'];
+
+        $AddonsUser = new AddonsUser();
+        $module_names = $AddonsUser->find()->where([
+             'user_id' => Yii::$app->user->identity->user_id,
+         ])->with(['addons'])->asArray()->all();
+
+        foreach ($module_names as $key => &$value) {
+            if (empty($value['addons'])) {
+                unset($module_names[$key]);
+            }
+        }
+
+        $moduleAll = $module_names ? $module_names : [];
+
+        $Website = Yii::$app->settings->getAllBySection('Website');
+        $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
+        $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
+
+        $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
+
+        $Roles = UserGroup::find()->select('name')->column();
+
+        return [
+            'left' => $AllNav['left'],
+            'top' => $AllNav['top'],
+            'Roles' => $Roles,
+            'moduleAll' => $moduleAll,
+        ];
+    }
+
     public static function deleteUser($user_id)
     {
         $where = [];

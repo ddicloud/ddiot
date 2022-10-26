@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:06:42
+ * @Last Modified time: 2022-10-26 19:01:59
  */
 
 namespace admin\controllers\addons;
@@ -13,6 +13,7 @@ use admin\controllers\AController;
 use admin\models\addons\models\Bloc;
 use admin\models\enums\StoreStatus;
 use admin\services\StoreService;
+use admin\services\UserService;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\LevelTplHelper;
@@ -365,7 +366,10 @@ class StoreController extends AController
     {
         global $_GPC;
         $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);
+        // 创建成功，重新返回用户权限数据
+        $list = UserService::getUserMenus();
+        $list['store'] = $store;
 
-        return ResultHelper::json(200, '创建成功', $store);
+        return ResultHelper::json(200, '创建成功', $list);
     }
 }
