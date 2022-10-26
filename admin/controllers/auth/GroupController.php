@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-19 02:58:22
+ * @Last Modified time: 2022-10-26 11:32:37
  */
 
 namespace admin\controllers\auth;
@@ -73,7 +73,7 @@ class GroupController extends AController
         $manager = Configs::authManager();
 
         $list = $manager->getAuths($model->item_id, 3);
-        $all   = [];
+        $all = [];
         $assigneds = $availables = [];
         $assigned = $list['assigned'];
 
@@ -84,13 +84,13 @@ class GroupController extends AController
             foreach ($value as $k => &$val) {
                 $val['key'] = $val['id'];
                 $val['label'] = $val['name'];
-                if($key == 'role' && $val['id'] == $id){
+                if ($key == 'role' && $val['id'] == $id) {
                     unset($value[$k]);
                 }
             }
             $all[$key] = array_values($value);
         }
-        
+
         foreach ($available as $key => $value) {
             $value = ArrayHelper::toArray($value);
             foreach ($value as $k => &$val) {
@@ -165,7 +165,7 @@ class GroupController extends AController
                 ]);
                 $route = new ModelsRoute($item);
                 $route->removeChildren([
-                    'route'=>$remove_ids
+                    'route' => $remove_ids,
                 ]);
             }
 
@@ -191,7 +191,7 @@ class GroupController extends AController
                 ]);
                 $route = new ModelsRoute($item);
                 $route->addChildren([
-                    'route'=>$add_ids
+                    'route' => $add_ids,
                 ], 2);
             }
 
@@ -216,7 +216,7 @@ class GroupController extends AController
                 ]);
                 $permission = new AuthItem($item);
                 $permission->removeChildren([
-                    'permission'=>$remove_ids
+                    'permission' => $remove_ids,
                 ]);
             }
 
@@ -242,7 +242,7 @@ class GroupController extends AController
                 ]);
                 $permission = new AuthItem($item);
                 $permission->addChildren([
-                    'permission'=>$add_ids
+                    'permission' => $add_ids,
                 ], 2);
             }
 
@@ -252,13 +252,13 @@ class GroupController extends AController
             $group = UserGroup::findOne($id);
             $group->item_id = $group->id;
             $model = new UserGroup($group);
-           
+
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 2,
                 ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
-                $model->removeChildren(['group'=>$remove_ids]);
+                $model->removeChildren(['group' => $remove_ids]);
             }
 
             $have_ids = AuthItemChild::find()->where([
@@ -269,7 +269,7 @@ class GroupController extends AController
             $add_ids = array_diff($list, $have_ids);
 
             if (!empty($add_ids)) {
-                $model->addChildren(['group'=>$add_ids]);
+                $model->addChildren(['group' => $add_ids]);
             }
 
             return ResultHelper::json(200, '操作成功');
@@ -470,7 +470,7 @@ class GroupController extends AController
                 $data['is_sys'] = 1;
             }
 
-            if ($model->load($data, '') && $model->save()) {
+            if ($model->load($data, '') && $model->update()) {
                 if ($old_parent != $_GPC['name']) {
                     AuthItemChild::updateAll([
                         'parent' => $_GPC['name'],
@@ -534,7 +534,6 @@ class GroupController extends AController
     protected function findModel($id)
     {
         if (($model = UserGroup::findOne($id)) !== null) {
-            
             return new UserGroup($model);
         }
 
