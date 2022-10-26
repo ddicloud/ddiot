@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 11:29:02
+ * @Last Modified time: 2022-10-26 15:38:40
  */
 
 namespace admin\services;
@@ -17,7 +17,9 @@ use common\helpers\loggingHelper;
 use common\models\enums\UserStatus;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
+use diandi\addons\models\DdAddons;
 use diandi\addons\models\UserBloc;
+use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthUserGroup;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\AuthAssignmentGroup;
@@ -67,6 +69,28 @@ class UserService extends BaseService
         $user->status = $list[$type];
 
         return  $user->update();
+    }
+
+    /**
+     * 用户注册完成后需要做的事情汇总.
+     *
+     * @param [type] $user_id
+     *
+     * @return void
+     * @date 2022-10-26
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public static function initUserAuth($user_id)
+    {
+        // 初始权限组
+        self::initGroup($user_id);
+        // 创建公司
+        self::SignBindBloc($user_id);
     }
 
     public static function initGroup($user_id)
@@ -162,5 +186,134 @@ class UserService extends BaseService
             $transaction->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * 给创建用户授权整个应用的权限.
+     *
+     * @return void
+     * @date 2022-10-26
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public static function AssignmentPermissionByUid($user_id, $addons_identifie)
+    {
+        $items['permission'] = AuthItem::find()->where([
+            'module_name' => $addons_identifie,
+            'parent_id' => 0,
+            'permission_type' => 1,
+            'is_sys' => 0,
+            ])->select('id')->asArray()->all();
+        $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
+        $user = $class::findIdentity($user_id);
+        // 获取原先的权限集
+        $model = new Assignment([
+            'id' => $user_id,
+            'type' => 1, //0 系统，1模块
+            ], $user);
+        $itemsModel = $model->getItems(3); //3代表获取所有
+        $all = $itemsModel['all'];
+        // 所有应用
+        $all['addons'] = DdAddons::find()->asArray()->all();
+        $addons_mids = array_column($all['addons'], 'mid');
+        // 所有商户
+        $list = Bloc::find()->with(['store'])->asArray()->all();
+        foreach ($list as $key => &$value) {
+            $value['label'] = $value['business_name'];
+            $value['id'] = $value['bloc_id'];
+            $store = $value['store'];
+            if (!empty($value['store'])) {
+                foreach ($store as $k => &$val) {
+                    $val['label'] = $val['name'];
+                    $val['id'] = $val['store_id'];
+                    $store_ids[] = $val['store_id'];
+                }
+                $value['children'] = $store;
+                $lists[] = $value;
+            } else {
+                unset($list[$key]);
+            }
+        }
+        $assigneds = $itemsModel['assigned'];
+        // 用户的应用权限
+        $AddonsUser = new AddonsUser();
+        $assigneds['addons'] = $AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $user_id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
+
+        // 商户权限
+        $UserBloc = new UserBloc();
+        $assigneds['store'] = $UserBloc::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $user_id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
+
+        $keyList = [
+            'addons',
+            'permission',
+            'store',
+        ];
+
+        $assignedKey = [];
+        foreach ($assigneds as $key => $value) {
+            $assignedKey[] = $key;
+            $assigned[$key] = array_keys($value);
+        }
+
+        $keyDiff = array_diff($keyList, $assignedKey);
+        foreach ($keyDiff as $key => $value) {
+            $assigned[$value] = [];
+        }
+
+        $assigned_ids = $assigned['permission'];
+        $authItems = $items ? $items['permission'] : [];
+
+        // 增加查看插件的权限
+        $add_ids = array_diff($authItems, $assigned_ids);
+        $addList = DdAddons::find()->where(['mid' => $add_ids])->asArray()->all();
+        foreach ($addList as $key => $value) {
+            $_AddonsUser = clone $AddonsUser;
+            $data = [
+                 'user_id' => $user_id,
+                 'is_default' => 0,
+                 'type' => 1,
+                 'module_name' => $value['identifie'],
+                 'status' => 0,
+             ];
+            $_AddonsUser->setAttributes($data);
+            if (!$_AddonsUser->save()) {
+                $msg = ErrorsHelper::getModelError($_AddonsUser);
+                throw new \Exception($msg);
+            }
+        }
+
+        // 删除权限
+        $delete_ids = array_diff($assigned_ids, $authItems);
+        $deleteList = DdAddons::find()->where(['mid' => $delete_ids])->select('identifie')->column();
+        $AddonsUser::deleteAll([
+             'user_id' => $user_id,
+             'module_name' => $deleteList,
+         ]);
+
+        // 授权插件的权限
+        $model = new Assignment([
+            'id' => $user_id,
+            'is_sys' => 3,
+            ]);
+
+        // 增加权限
+        $add_ids = array_diff($authItems, $assigned_ids);
+
+        $model->assign([
+            'permission' => array_values($add_ids),
+        ]);
+
+        // 删除权限
+        $delete_ids = array_diff($assigned_ids, $authItems);
+        $model->revoke([
+            'permission' => array_values($delete_ids),
+        ]);
+
+        $key = 'auth_'.$user_id.'_'.'initmenu';
+        Yii::$app->cache->delete($key);
     }
 }

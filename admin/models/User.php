@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 10:44:09
+ * @Last Modified time: 2022-10-26 15:37:37
  */
 
 namespace admin\models;
@@ -136,10 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->generatePasswordResetToken();
         if ($this->save()) {
             $user_id = Yii::$app->db->getLastInsertID();
-            // 初始权限组
-            UserService::initGroup($user_id);
-            // 创建公司
-            UserService::SignBindBloc($user_id);
+            UserService::initUserAuth($user_id);
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'admin';

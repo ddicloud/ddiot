@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 12:58:17
+ * @Last Modified time: 2022-10-26 15:08:22
  */
 
 namespace admin\controllers\auth;
@@ -93,7 +93,6 @@ class AssignmentController extends AController
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
         $items = $model->getItems(3);
         $all = $items['all'];
         // 所有应用

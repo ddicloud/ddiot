@@ -3,8 +3,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
- * @Last Modified by:   Radish <minradish@163.com>
- * @Last Modified time: 2022-10-25 15:27:58
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-10-26 15:53:28
  */
 
 namespace admin\controllers\addons;
@@ -12,15 +12,11 @@ namespace admin\controllers\addons;
 use admin\controllers\AController;
 use admin\models\addons\models\Bloc;
 use admin\models\enums\StoreStatus;
+use admin\services\StoreService;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
-use common\helpers\loggingHelper;
 use common\helpers\LevelTplHelper;
 use common\helpers\ResultHelper;
-use admin\models\User;
-use diandi\addons\models\AddonsUser;
-use diandi\addons\models\UserBloc;
-use diandi\addons\models\DdAddons;
 use common\models\DdRegion;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\BlocStoreSearch;
@@ -28,7 +24,6 @@ use diandi\addons\models\searchs\StoreCategory;
 use diandi\addons\models\StoreLabel;
 use diandi\addons\models\StoreLabelLink;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
@@ -162,7 +157,7 @@ class StoreController extends AController
                 break;
         }
         $detail['config'] = [
-            'attachmentUrl' => $url . '/attachment',
+            'attachmentUrl' => $url.'/attachment',
         ];
 
         return ResultHelper::json(200, '获取成功', $detail);
@@ -368,123 +363,9 @@ class StoreController extends AController
 
     public function actionAddonsCreate()
     {
-        return $this->_tempAddonsCreate();
-    }
-
-    private function _tempAddonsCreate()
-    {
         global $_GPC;
-        $model = new BlocStore([
-            'extras' => $this->extras,
-        ]);
-        $modelcate = new StoreCategory();
-        $Helper = new LevelTplHelper([
-            'pid' => 'parent_id',
-            'cid' => 'category_id',
-            'title' => 'name',
-            'model' => $modelcate,
-            'id' => 'category_id',
-        ]);
-        $link = new StoreLabelLink();
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            $data['lng_lat'] = json_encode([
-                'lng' => $data['longitude'],
-                'lat' => $data['latitude'],
-            ]);
-            $addons = DdAddons::find()->where(['mid' => $data['mid'] ?? 0])->one();
-            if (!$addons) {
-                throw new HttpException(400, '无效的应用模块ID!');
-            }
-            // $data['BlocStore']['lng_lat'] = implode(',',$data['BlocStore']['lng_lat']);
-            $transaction = Yii::$app->db->beginTransaction();
-            if ($model->load($data, '') && $model->save()) {
-                // dd(Yii::$app->user->getIdentity());
-                try {
-                    $StoreLabelLink = $_GPC['StoreLabelLink'];
-                    if (!empty($StoreLabelLink['label_id'])) {
-                        foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
-                            $_link = clone  $link;
-                            $bloc_id = $model->bloc_id;
-                            $store_id = $model->store_id;
-                            $data = [
-                                'bloc_id' => $bloc_id,
-                                'store_id' => $store_id,
-                                'label_id' => $label_id,
-                            ];
-                            $_link->setAttributes($data);
-                            if (!$_link->save()) {
-                                throw new \Exception("保存标签数据失败!");
-                            }
-                        }
-                    }
-                    $addonsUser = AddonsUser::find()->andWhere([
-                        'module_name' => $addons->getAttribute('identifie'),
-                        'user_id' => Yii::$app->user->identity->user_id,
-                    ])->one();
-                    if (!$addonsUser) {
-                        $addonsUser = new AddonsUser();
-                        $addonsUser->module_name = $addons->getAttribute('identifie');
-                        $addonsUser->user_id = Yii::$app->user->identity->user_id;
-                        $addonsUser->store_id = $model->store_id;
-                        $addonsUser->type = 1;
-                        $addonsUser->status = 1;
-                        $addonsUser->is_default = AddonsUser::find()->andWhere(['user_id' => Yii::$app->user->id])->andWhere('is_default = 1')->exists() ? 0 : 1;
-                        if (!$addonsUser->save()) {
-                            throw new \Exception("保存用户模块数据失败!");
-                        }
-                    }
-                    $user = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
-                    if ($user->store_id == 0) {
-                        $user->store_id = $model->store_id;
-                        if (!$user->save(false)) {
-                            throw new \Exception("保存用户数据失败!");
-                        }
-                    }
-                    $transaction->commit();
-                    $tempData = [
-                        'user_id' => Yii::$app->user->id,
-                        'bloc_id' => $model->bloc_id,
-                        'store_id' => $model->store_id,
-                        'is_default' => 1,
-                        'status' => 1,
-                    ];
-                    $userBlocBool = UserBloc::find()->where($tempData)->exists();
-                    if (!$userBlocBool) {
-                        unset($tempData['is_default']);
-                        $userBloc = UserBloc::find()->andWhere($tempData)->one();
-                        if ($userBloc) {
-                            $userBloc->is_default = 1;
-                            if (!$userBloc->save(false)) {
-                                loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
-                            }
-                        } else {
-                            $userBloc = new UserBloc();
-                            $tempData['is_default'] = 1;
-                            if (!($userBloc->load($tempData, '') && $userBloc->save())) {
-                                loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
-                            }
-                        }
-                    }
-                } catch (\Exception $e) {
-                    $transaction->rollBack();
-                    throw new HttpException(400, $e->getMessage());
-                }
-            } else {
-                $transaction->rollBack();
-                $msg = ErrorsHelper::getModelError($model);
-                throw new HttpException(400, $msg);
-            }
-        }
-        $labels = StoreLabel::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
-        $linkValue = [];
-        return ResultHelper::json(200, '获取成功', [
-            'link' => $link,
-            'linkValue' => $linkValue,
-            'labels' => $labels,
-            'model' => $model,
-            'Helper' => $Helper,
-            'bloc_id' => $this->bloc_id,
-        ]);
+        $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);
+
+        return ResultHelper::json(200, '获取成功', $store);
     }
 }
