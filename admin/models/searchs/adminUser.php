@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-22 23:06:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 14:09:58
+ * @Last Modified time: 2022-10-27 14:15:17
  */
 
 namespace admin\models\searchs;
@@ -62,7 +62,7 @@ class adminUser extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'store_id' => $this->store_id,
-            'bloc_id' => $this->bloc_id,
+            // 'bloc_id' => $this->bloc_id,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
