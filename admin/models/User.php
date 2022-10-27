@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 11:05:09
+ * @Last Modified time: 2022-10-27 11:13:15
  */
 
 namespace admin\models;
@@ -90,6 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function signup($username, $mobile, $email, $password, $invitation_code = '', $company = '', $status = 0)
     {
+        global $_GPC;
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
 
         if (!$this->validate()) {
@@ -128,6 +129,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->parent_bloc_id = (int) $parent_bloc_id;
         $this->company = $company;
         $this->mobile = $mobile;
+        if (!empty($_GPC['backend_store_id'])) {
+            $this->store_id = $_GPC['backend_store_id'];
+            $this->bloc_id = $_GPC['backend_bloc_id'];
+        }
         $this->status = (int) $status;
 
         $this->setPassword($password);
