@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:05:27
+ * @Last Modified time: 2022-10-27 10:41:11
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -161,7 +161,7 @@ return [
                         'POST,OPTIONS   refresh' => 'refresh',
                         'POST   addons' => 'addons',
                         'GET   userlist' => 'userlist',
-                        'POST   delete/<id>' => 'delete',
+                        'DELETE   delete/<id>' => 'delete',
                         'POST   activate/<id>' => 'activate',
                         'POST   upstatus' => 'upstatus',
                         'POST create' => 'create',
