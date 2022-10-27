@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 11:13:15
+ * @Last Modified time: 2022-10-27 14:32:19
  */
 
 namespace admin\models;
@@ -85,10 +85,11 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Signs user up.
+     * source_type: 0主动注册1后台添加.
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup($username, $mobile, $email, $password, $invitation_code = '', $company = '', $status = 0)
+    public function signup($username, $mobile, $email, $password, $status = 0, $invitation_code = '', $source_type = 0, $company = '')
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
@@ -129,9 +130,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->parent_bloc_id = (int) $parent_bloc_id;
         $this->company = $company;
         $this->mobile = $mobile;
-        if (!empty($_GPC['backend_store_id'])) {
-            $this->store_id = $_GPC['backend_store_id'];
-            $this->bloc_id = $_GPC['backend_bloc_id'];
+        if ((int) $_GPC['source_type'] === 1) {
+            $this->store_id = $_GPC['store_id'];
+            $this->bloc_id = $_GPC['bloc_id'];
         }
         $this->status = (int) $status;
 
@@ -141,7 +142,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->generatePasswordResetToken();
         if ($this->save()) {
             $user_id = Yii::$app->db->getLastInsertID();
-            UserService::initUserAuth($user_id);
+            // 只有没有该参数才是正常的注册，否则是后台直接添加的用户
+            if ((int) $_GPC['source_type'] === 0) {
+                UserService::initUserAuth($user_id);
+            }
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'admin';

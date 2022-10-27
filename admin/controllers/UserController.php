@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-22 12:04:10
+ * @Last Modified time: 2022-10-27 14:28:37
  */
 
 namespace admin\controllers;
@@ -136,7 +136,7 @@ class UserController extends AController
             return ResultHelper::json(401, '密码不能为空', []);
         }
 
-        $res = $User->signup($username, $mobile, $email, $password, $invitation_code);
+        $res = $User->signup($username, $mobile, $email, $password, 1, $invitation_code);
 
         return ResultHelper::json(200, '注册成功', $res);
     }

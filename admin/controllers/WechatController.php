@@ -3,18 +3,17 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
- * @Last Modified by:   Radish <minradish@163.com>
- * @Last Modified time: 2022-10-18 09:19:26
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-10-27 14:27:02
  */
 
 namespace admin\controllers;
 
-use admin\controllers\AController;
+use admin\models\User;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\helpers\UrlHelper;
 use EasyWeChat\Factory;
-use admin\models\User;
 use Yii;
 
 class WechatController extends AController
@@ -72,13 +71,15 @@ class WechatController extends AController
                     $service = Yii::$app->service;
                     $service->namespace = 'admin';
                     $userinfo = $service->AccessTokenService->getAccessToken($adminUser, 1);
+
                     return ResultHelper::json(200, '登录成功！', $userinfo);
                 } else {
                     $adminUser = new User();
                     $maxId = User::find()->max('id');
                     $adminUser->open_id = $user->id;
                     $adminUser->union_id = $user->getOriginal()['unionid'] ?? null;
-                    $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1) . '@cn.com', '123465', '', '', 1);
+                    $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1).'@cn.com', '123465', 1);
+
                     return ResultHelper::json(200, '注册成功', $res);
                 }
             } else {
