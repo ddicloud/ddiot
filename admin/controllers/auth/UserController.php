@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-12 13:39:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 17:30:12
+ * @Last Modified time: 2022-10-27 10:20:45
  */
 
 namespace admin\controllers\auth;
@@ -26,7 +26,6 @@ use diandi\admin\models\User;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\UserException;
-use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\mail\BaseMailer;
 use yii\web\BadRequestHttpException;
@@ -49,23 +48,6 @@ class UserController extends AController
     {
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->type = $this->module_name == 'sys' ? 0 : 1;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'logout' => ['post'],
-                    'activate' => ['post'],
-                ],
-            ],
-        ];
     }
 
     /**
