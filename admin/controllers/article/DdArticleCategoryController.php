@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-29 03:13:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:18:13
+ * @Last Modified time: 2022-10-28 17:01:01
  */
 
 namespace admin\controllers\article;
@@ -24,6 +24,8 @@ use yii\web\Response;
 class DdArticleCategoryController extends AController
 {
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}

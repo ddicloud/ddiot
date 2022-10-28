@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-16 22:24:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:17:45
+ * @Last Modified time: 2022-10-28 17:00:53
  */
 
 namespace admin\controllers\addons;
@@ -21,6 +21,8 @@ use yii\web\NotFoundHttpException;
 class WxappController extends AController
 {
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}

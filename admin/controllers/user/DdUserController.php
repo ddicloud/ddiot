@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-03-26 15:16:13
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-25 17:11:18
+ * @Last Modified time: 2022-10-28 17:01:48
  */
 
 namespace admin\controllers\user;
@@ -22,6 +22,8 @@ use yii\web\NotFoundHttpException;
 class DdUserController extends AController
 {
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * Lists all DdUser models.

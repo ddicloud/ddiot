@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:19:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-21 18:40:54
+ * @Last Modified time: 2022-10-28 17:01:22
  */
 
 namespace admin\controllers\file;
@@ -21,6 +21,8 @@ class UploadController extends AController
     public $modelClass = '';
 
     public $enableCsrfValidation = false;
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}
@@ -110,7 +112,7 @@ class UploadController extends AController
      */
     public function actionFile()
     {
-        global $_GPC;  
+        global $_GPC;
 
         try {
             $Upload = new Upload();

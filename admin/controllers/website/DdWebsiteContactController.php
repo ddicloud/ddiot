@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-21 23:05:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:19:52
+ * @Last Modified time: 2022-10-28 17:01:50
  */
 
 namespace admin\controllers\website;
@@ -22,6 +22,8 @@ use yii\web\NotFoundHttpException;
 class DdWebsiteContactController extends AController
 {
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}

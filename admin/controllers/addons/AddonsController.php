@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:56:47
+ * @Last Modified time: 2022-10-28 16:59:53
  */
 
 namespace admin\controllers\addons;
@@ -25,6 +25,8 @@ use yii\web\NotFoundHttpException;
 class AddonsController extends AController
 {
     public $modelClass = 'DdAddons';
+
+    public $searchLevel = 0;
 
     public function actionInfo()
     {

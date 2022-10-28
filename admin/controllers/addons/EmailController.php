@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-16 23:19:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:26:58
+ * @Last Modified time: 2022-10-28 17:00:26
  */
 
 namespace admin\controllers\addons;
@@ -21,6 +21,8 @@ use yii\web\NotFoundHttpException;
 class EmailController extends AController
 {
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}

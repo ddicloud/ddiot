@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:43:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:17:38
+ * @Last Modified time: 2022-10-28 17:00:48
  */
 
 namespace admin\controllers\addons;
@@ -30,6 +30,8 @@ class UserBlocController extends AController
     public $modelClass = '';
 
     public $bloc_id;
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}
