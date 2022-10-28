@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-25 16:58:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 11:37:38
+ * @Last Modified time: 2022-10-28 12:06:39
  */
 
 namespace common\components\ueditor;
@@ -41,11 +41,12 @@ class UEditorAction extends Action
 
     public function run()
     {
-        if (Yii::$app->request->get('callback', false)) {
-            Yii::$app->response->format = Response::FORMAT_JSONP;
-        } else {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-        }
+        // if (Yii::$app->request->get('callback', false)) {
+        //     Yii::$app->response->format = Response::FORMAT_JSONP;
+        // } else {
+        //     Yii::$app->response->format = Response::FORMAT_JSON;
+        // }
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
         return $this->handleAction();
     }
@@ -97,7 +98,7 @@ class UEditorAction extends Action
         }
         /* 输出结果 */
 
-        return $result;
+        return  $result;
     }
 
     /**
