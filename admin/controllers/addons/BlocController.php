@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 22:01:40
+ * @Last Modified time: 2022-10-28 11:53:19
  */
 
 namespace admin\controllers\addons;
@@ -117,9 +117,9 @@ class BlocController extends AController
             $value['create_time'] = date('Y-m-d', $value['create_time'] ? $value['create_time'] : time());
             $value['identifie'] = $value['addons'] ? $value['addons']['addons']['identifie'] : '';
             $value['logo'] = ImageHelper::tomedia($value['logo']);
-            if (empty($value['addons'])) {
-                unset($stores[$key]);
-            }
+            // if (empty($value['addons'])) {
+            //     unset($stores[$key]);
+            // }
         }
 
         return ResultHelper::json(200, '获取成功', array_values($stores));
