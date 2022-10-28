@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-10-31 13:35:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:20:08
+ * @Last Modified time: 2022-10-28 16:46:16
  */
 
 namespace admin\controllers\auth;
@@ -25,6 +25,8 @@ class AdminUserController extends AController
     public $modelSearchName = 'adminUser';
 
     public $modelClass = '';
+    
+    public $searchLevel = 0;
 
     /**
      * Lists all User models.
