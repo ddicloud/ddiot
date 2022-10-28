@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-25 17:30:15
+ * @Last Modified time: 2022-10-28 16:46:39
  */
 
 namespace admin\controllers\auth;
@@ -45,6 +45,8 @@ class PermissionController extends AController
     public $module_name;
 
     public $parent_type = 0; //0:系统,1模块
+
+    public $searchLevel = 0;
 
     public function actions()
     {

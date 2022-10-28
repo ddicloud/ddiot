@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-23 21:02:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-08 16:22:39
+ * @Last Modified time: 2022-10-28 16:51:14
  */
 
 namespace admin\controllers\system;
@@ -25,6 +25,7 @@ class DatabaseController extends AController
 {
     public $modelClass = '';
 
+    public $searchLevel = 0;
     /**
      * 存储路径.
      *

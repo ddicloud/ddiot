@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 15:08:22
+ * @Last Modified time: 2022-10-28 16:46:23
  */
 
 namespace admin\controllers\auth;
@@ -42,6 +42,8 @@ class AssignmentController extends AController
     public $type;
 
     public $module_name;
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-09 15:10:46
+ * @Last Modified time: 2022-10-28 16:47:33
  */
 
 namespace admin\controllers;
@@ -35,6 +35,8 @@ class StoreController extends AController
     public $bloc_id;
 
     public $extras = [];
+
+    public $searchLevel = 0;
 
     public function actionInfo()
     {

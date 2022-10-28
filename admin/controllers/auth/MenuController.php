@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 16:42:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-25 17:23:24
+ * @Last Modified time: 2022-10-28 16:46:32
  */
 
 namespace admin\controllers\auth;
@@ -33,6 +33,8 @@ class MenuController extends AController
     public $modelClass = '';
 
     public $modelSearchName = 'Menu';
+
+    public $searchLevel = 0;
 
     /**
      * Lists all Menu models.

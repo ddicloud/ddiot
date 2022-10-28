@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 10:56:59
+ * @Last Modified time: 2022-10-28 15:38:39
  */
 
 namespace admin\controllers;
@@ -50,9 +50,9 @@ class AController extends ActiveController
     protected $optionsAction = []; //需要options的方法
 
     /**
-     * 是否根据公司ID检索.
+     * 数据分离等级. 0不检索商户与公司，1只检索公司，2检索公司和商户.
      *
-     * @var bool
+     * @var int
      * @date 2022-10-28
      *
      * @example
@@ -61,34 +61,21 @@ class AController extends ActiveController
      *
      * @since
      */
-    public $blocSearch = true;
+    public $searchLevel = 2;
 
-    /**
-     * 是否根据商户ID检索.
-     *
-     * @var bool
-     * @date 2022-10-28
-     *
-     * @example
-     *
-     * @author Wang Chunsheng
-     *
-     * @since
-     */
-    public $storeSearch = true;
-
-    // 根据公司检索字段
+    // 根据公司检索字段,不参与检索设置为false
     public $blocField = 'bloc_id';
 
-    // 根据商户检索字段
+    // 根据商户检索字段,不参与检索设置为false
     public $storeField = 'store_id';
 
+    // 根据商户检索字段,不参与检索设置为false
     public $adminField = 'admin_id';
 
     // 主要数据的模型
     public $modelClass = '';
 
-    // 检索的模型名称，区分大小写，注意是原来的类名称，不能是as后的
+    // 检索的模型名称，区分大小写，注意是原来的类名称，不能是as后的，
     public $modelSearchName = '';
 
     public function behaviors()

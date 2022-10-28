@@ -3,16 +3,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-21 16:38:22
+ * @Last Modified time: 2022-10-28 16:51:08
  */
 
 namespace admin\controllers\system;
 
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
+use common\models\forms\Weburl;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\form\App;
-use common\models\forms\Weburl;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
 use diandi\addons\models\form\Map;
@@ -34,7 +34,9 @@ use Yii;
 class ConfigController extends AController
 {
     public $modelClass = '';
-    
+
+    public $searchLevel = 0;
+
     public function actions()
     {
         global $_GPC;
@@ -42,7 +44,7 @@ class ConfigController extends AController
         $bloc = Bloc::findOne($bloc_id);
     }
 
-     /**
+    /**
      * @SWG\Post(path="/system/config/Weburl",
      *     tags={"系统配置"},
      *     summary="域名",
@@ -71,17 +73,16 @@ class ConfigController extends AController
         if (Yii::$app->request->isPost) {
             $Weburl = $_GPC['Weburl'];
             foreach ($Weburl as $key => $value) {
-                $settings->set('Weburl', $key, $value);            
+                $settings->set('Weburl', $key, $value);
             }
+
             return ResultHelper::json(200, '保存成功', []);
-            
         } else {
             $set = $settings->getAllBySection('Weburl');
 
             return ResultHelper::json(200, '获取成功', $set);
         }
     }
-
 
     /**
      * @SWG\Post(path="/system/config/baidu",
@@ -118,6 +119,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -147,7 +149,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechatpay();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -159,6 +161,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -188,7 +191,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Sms();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -200,6 +203,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -229,7 +233,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Email();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -241,6 +245,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -270,7 +275,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wxapp();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -282,6 +287,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -311,7 +317,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechat();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -323,6 +329,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -352,7 +359,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Microapp();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -364,6 +371,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -393,7 +401,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new App();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -405,6 +413,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -434,7 +443,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Map();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -446,6 +455,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }
@@ -474,7 +484,7 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Oss();
-        $bloc_id =  $_GPC['bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -486,6 +496,7 @@ class ConfigController extends AController
             }
         } else {
             $model->getConf($bloc_id);
+
             return ResultHelper::json(200, '获取成功', $model);
         }
     }

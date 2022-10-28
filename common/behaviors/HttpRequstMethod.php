@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 10:41:44
+ * @Last Modified time: 2022-10-28 16:42:41
  */
 
 namespace common\behaviors;
@@ -70,16 +70,44 @@ class HttpRequstMethod extends Behavior
 
         $whereInit = [];
         $where = [];
-        if ($this->owner->blocField) {
-            $whereInit[$this->owner->blocField] = $this->bloc_id;
-        }
-
-        if ($this->owner->storeField) {
-            $whereInit[$this->owner->storeField] = $this->store_id;
-        }
 
         if ($this->owner->adminField) {
             $whereInit[$this->owner->adminField] = $this->admin_id;
+        }
+
+        // 0不检索商户与公司，1只检索公司，2检索公司和商户.
+        switch ($this->owner->searchLevel) {
+            case 0:
+                $queryParams = Yii::$app->request->queryParams;
+
+                return $queryParams;
+
+                break;
+            case 1:
+
+                if (!$this->owner->modelSearchName) {
+                    throw new NotFoundHttpException('控制器必须设置`modelSearchName`属性', 400);
+                }
+
+                if ($this->owner->blocField) {
+                    $whereInit[$this->owner->blocField] = $this->bloc_id;
+                }
+
+                break;
+            case 2:
+                if (!$this->owner->modelSearchName) {
+                    throw new NotFoundHttpException('控制器必须设置`modelSearchName`属性', 400);
+                }
+
+                if ($this->owner->blocField) {
+                    $whereInit[$this->owner->blocField] = $this->bloc_id;
+                }
+
+                if ($this->owner->storeField) {
+                    $whereInit[$this->owner->storeField] = $this->store_id;
+                }
+
+                break;
         }
 
         //集团可以看所有数据
@@ -97,7 +125,7 @@ class HttpRequstMethod extends Behavior
         //     }
         // }
 
-        if ($this->owner->modelSearchName && !empty($whereInit)) {
+        if (!empty($whereInit)) {
             if (key_exists($this->owner->modelSearchName, Yii::$app->request->queryParams)) {
                 $whereInit = array_merge($whereInit, Yii::$app->request->queryParams[$this->owner->modelSearchName]);
             }

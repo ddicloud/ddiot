@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:20:02
+ * @Last Modified time: 2022-10-28 16:46:35
  */
 
 namespace admin\controllers\auth;
@@ -25,6 +25,8 @@ class MenutopController extends AController
     public $modelSearchName = 'MenuTopSearch';
 
     public $modelClass = '';
+
+    public $searchLevel = 0;
 
     /**
      * Lists all MenuTop models.

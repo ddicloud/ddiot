@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 23:43:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-14 19:51:52
+ * @Last Modified time: 2022-10-28 16:49:44
  */
 
 namespace admin\controllers\website;
@@ -20,6 +20,8 @@ class SettingController extends AController
 {
     public $modelClass = '';
     protected $authOptional = ['info'];
+
+    public $searchLevel = 0;
 
     /**
      * {@inheritdoc}
@@ -48,20 +50,20 @@ class SettingController extends AController
         global $_GPC;
         $settings = Yii::$app->settings;
         foreach ($_GPC['Website'] as $key => $value) {
-            $settings->set('Website', $key , $value);            
-        } 
+            $settings->set('Website', $key, $value);
+        }
 
         $info = $settings->getAllBySection('Website');
 
-        return ResultHelper::json(200,'设置成功',$info);
-
+        return ResultHelper::json(200, '设置成功', $info);
     }
 
     public function actionInfo()
-    {           
+    {
         $settings = Yii::$app->settings;
-        $settings->invalidateCache(); 
+        $settings->invalidateCache();
         $info = $settings->getAllBySection('Website');
-        return ResultHelper::json(200,'获取成功',$info);
+
+        return ResultHelper::json(200, '获取成功', $info);
     }
 }

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 23:43:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 11:39:02
+ * @Last Modified time: 2022-10-28 16:47:14
  */
 
 namespace admin\controllers\system;
@@ -25,6 +25,8 @@ class SettingsController extends AController
     public $modelClass = '';
 
     public $enableCsrfValidation = false;
+
+    public $searchLevel = 0;
 
     /**
      * @SWG\Post(path="/system/settings/conf",

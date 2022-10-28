@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:30
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 19:01:15
+ * @Last Modified time: 2022-10-28 16:45:44
  */
 
 namespace admin\controllers\system;
@@ -22,6 +22,9 @@ class IndexController extends AController
     public $modelClass = ' ';
 
     public $enableCsrfValidation = false;
+
+    public $searchLevel = 0;
+
     // public $layout = false;
 
     public function actionIndex()

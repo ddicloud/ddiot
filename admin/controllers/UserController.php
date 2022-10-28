@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 14:28:37
+ * @Last Modified time: 2022-10-28 16:45:00
  */
 
 namespace admin\controllers;
@@ -37,6 +37,8 @@ class UserController extends AController
     public $modelClass = 'admin\models\User';
 
     protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh'];
+
+    public $searchLevel = 0;
 
     /**
      * @SWG\Post(path="/user/userlist",

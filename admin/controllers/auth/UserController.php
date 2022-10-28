@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-12 13:39:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 10:20:45
+ * @Last Modified time: 2022-10-28 16:46:56
  */
 
 namespace admin\controllers\auth;
@@ -42,7 +42,10 @@ class UserController extends AController
     private $_oldMailPath;
 
     public $module_name;
+
     public $type;
+
+    public $searchLevel = 0;
 
     public function actions()
     {

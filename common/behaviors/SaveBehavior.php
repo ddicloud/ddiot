@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-11 14:31:11
+ * @Last Modified time: 2022-10-28 14:34:05
  */
 
 namespace common\behaviors;
@@ -42,6 +42,8 @@ class SaveBehavior extends Behavior
 
     public $time_type = 'init'; //默认为init,可以设置为datetime
 
+    public $value;
+
     private $_map;
 
     public function init()
@@ -54,8 +56,7 @@ class SaveBehavior extends Behavior
                 BaseActiveRecord::EVENT_BEFORE_UPDATE => [$this->updatedAttribute, $this->blocAttribute, $this->storeAttribute, $this->blocPAttribute, $this->adminAttribute], // 在更新之前更新updated字段
             ];
         }
-        
-        
+
         if (!$this->is_bloc) {
             $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
             $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
@@ -73,7 +74,7 @@ class SaveBehavior extends Behavior
 
         $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select('pid')->scalar();
         // DebugService::consoleWrite('行为-内存测试3');
-        
+
         // if (Yii::$app->user->identity->store_id) {
         //     $store_id = Yii::$app->user->identity->store_id;
         // }
@@ -81,6 +82,10 @@ class SaveBehavior extends Behavior
         $admin_id = Yii::$app->user->identity && Yii::$app->user->identity->id ? Yii::$app->user->identity->id : 0;
 
         $time = $this->time_type === 'init' ? time() : date('Y-m-d H:i:s', time());
+
+        if ($this->value) {
+            $time = $this->value;
+        }
 
         $this->_map = [
             $this->createdAttribute => $time, //在这里你可以随意格式化
@@ -93,7 +98,6 @@ class SaveBehavior extends Behavior
         ];
         unset($time,$bloc_id,$store_id,$admin_id,$blocPid,$_GPC);
         // DebugService::consoleWrite('行为-内存测试4');
-
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
