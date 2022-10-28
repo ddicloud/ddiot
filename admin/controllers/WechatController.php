@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 14:27:02
+ * @Last Modified time: 2022-10-28 20:38:06
  */
 
 namespace admin\controllers;
@@ -20,6 +20,7 @@ class WechatController extends AController
 {
     public $modelClass = '';
     protected $authOptional = ['signup'];
+    public $searchLevel = 0;
 
     public function actionAuthUrl()
     {
