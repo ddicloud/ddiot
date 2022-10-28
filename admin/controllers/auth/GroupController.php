@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:43:23
+ * @Last Modified time: 2022-10-28 19:07:32
  */
 
 namespace admin\controllers\auth;
@@ -13,6 +13,7 @@ use admin\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
+use diandi\addons\models\BlocStore;
 use diandi\admin\acmodels\AuthItem as AcmodelsAuthItem;
 use diandi\admin\acmodels\AuthItemChild;
 use diandi\admin\components\Configs;
@@ -33,18 +34,6 @@ class GroupController extends AController
     public $modelClass = 'UserGroup';
 
     public $searchLevel = 0;
-
-    // public $modelSearchName = 'UserGroupSearch';
-
-    public $is_sys;
-
-    public $module_name;
-
-    public function actions()
-    {
-        $this->module_name = Yii::$app->request->get('module_name', 'sys');
-        $this->is_sys = $this->module_name == 'sys' ? 0 : 1;
-    }
 
     /**
      * Lists all UserGroup models.
@@ -161,7 +150,6 @@ class GroupController extends AController
                     'name' => $model['name'],
                     'title' => '',
                     'item_id' => $id,
-                    'module_name' => $model['module_name'],
                     'is_sys' => $model['is_sys'],
                     'child_type' => 0,
                     'description' => $model['description'],
@@ -187,7 +175,6 @@ class GroupController extends AController
                     'name' => $model['name'],
                     'item_id' => $id,
                     'title' => '',
-                    'module_name' => $model['module_name'],
                     'is_sys' => $model['is_sys'],
                     'child_type' => 0,
                     'description' => $model['description'],
@@ -210,7 +197,6 @@ class GroupController extends AController
             if (!empty($remove_ids)) {
                 $item = new Item([
                     'name' => $model['name'],
-                    'module_name' => $model['module_name'],
                     'is_sys' => $model['is_sys'],
                     'parent_id' => $id,
                     'item_id' => $id,
@@ -237,7 +223,6 @@ class GroupController extends AController
                     'id' => $id,
                     'item_id' => $id,
                     'name' => $model['name'],
-                    'module_name' => $model['module_name'],
                     'is_sys' => $model['is_sys'],
                     'parent_id' => null,
                     'child_type' => 1,
@@ -308,7 +293,6 @@ class GroupController extends AController
                 'id' => $id,
                 'item_id' => $id,
                 'name' => $model['name'],
-                'module_name' => $model['module_name'],
                 'is_sys' => $model['is_sys'],
                 'parent_id' => null,
                 'child_type' => 1,
@@ -327,7 +311,6 @@ class GroupController extends AController
                 'name' => $model['name'],
                 'item_id' => $model['item_id'],
                 'title' => '',
-                'module_name' => $model['module_name'],
                 'is_sys' => $model['is_sys'],
                 'child_type' => 0,
                 'description' => $model['description'],
@@ -340,7 +323,7 @@ class GroupController extends AController
 
         Yii::$app->getResponse()->format = 'json';
 
-        $items = $manager->getAuths($model['name'], $this->is_sys);
+        $items = $manager->getAuths($model['name'], 3);
 
         return array_merge($items, ['success' => $success]);
     }
@@ -367,7 +350,6 @@ class GroupController extends AController
         if ($items['permission']) {
             $item = new Item([
                 'name' => $model['name'],
-                'module_name' => $model['module_name'],
                 'is_sys' => $model['is_sys'],
                 'parent_id' => null,
                 'child_type' => 1,
@@ -384,7 +366,6 @@ class GroupController extends AController
             $item = new Route([
                 'name' => $model['name'],
                 'title' => '',
-                'module_name' => $model['module_name'],
                 'is_sys' => $model['is_sys'],
                 'child_type' => 0,
                 'description' => $model['description'],
@@ -415,12 +396,7 @@ class GroupController extends AController
 
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-            if ($data['module_name'] == 'sys' || empty($data['module_name'])) {
-                $data['is_sys'] = 0;
-            } else {
-                $data['is_sys'] = 1;
-            }
-
+            $data['bloc_id'] = $data['store_id'] ? BlocStore::find()->where(['store_id' => $data['store_id']])->select('bloc_id')->scalar() : 0;
             if ($model->load($data, '') && $model->save()) {
                 // 给item同步添加数据
                 $AcmodelsAuthItem = new AcmodelsAuthItem();
@@ -430,7 +406,6 @@ class GroupController extends AController
                         'is_sys' => $model->is_sys,
                         'parent_id' => 0,
                         'permission_level' => 0,
-                        'module_name' => $model->module_name,
                     ];
 
                 if ($AcmodelsAuthItem->load($items, '') && $AcmodelsAuthItem->save()) {
@@ -469,11 +444,8 @@ class GroupController extends AController
 
         if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
-            if ($data['module_name'] == 'sys' || empty($data['module_name'])) {
-                $data['is_sys'] = 0;
-            } else {
-                $data['is_sys'] = 1;
-            }
+
+            $data['bloc_id'] = $data['store_id'] ? BlocStore::find()->where(['store_id' => $data['store_id']])->select('bloc_id')->scalar() : 0;
 
             if ($model->load($data, '') && $model->save()) {
                 if ($old_parent != $_GPC['name']) {
@@ -493,7 +465,6 @@ class GroupController extends AController
                     'is_sys' => $model->is_sys,
                     'parent_id' => 0,
                     'permission_level' => 0,
-                    'module_name' => $model->module_name,
                 ];
 
                 $AcmodelsAuthItem->updateAll($items, [

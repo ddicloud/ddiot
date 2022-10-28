@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-22 23:06:50
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 21:34:46
+ * @Last Modified time: 2022-10-28 20:08:02
  */
 
 namespace admin\models\searchs;
@@ -18,14 +18,16 @@ use yii\data\Pagination;
  */
 class adminUser extends User
 {
+    public $group_id;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'store_id', 'bloc_id', 'status', 'created_at', 'updated_at', 'last_time', 'is_login'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'avatar', 'last_login_ip'], 'safe'],
+            [['id', 'store_id', 'bloc_id', 'status'], 'integer'],
+            [['username', 'email', 'mobile', 'group_id'], 'safe'],
         ];
     }
 
@@ -48,7 +50,7 @@ class adminUser extends User
     public function search($params)
     {
         global $_GPC;
-        $query = User::find();
+        $query = User::find()->joinWith('userGroup as userGroup');
 
         $this->load($params);
 
@@ -61,24 +63,14 @@ class adminUser extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            // 'store_id' => $this->store_id,
-            // 'bloc_id' => $this->bloc_id,
+            'store_id' => $this->store_id,
+            'bloc_id' => $this->bloc_id,
             'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'last_time' => $this->last_time,
             'is_login' => $this->is_login,
+            'userGroup.group_id' => $this->group_id,
         ]);
-
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'verification_token', $this->verification_token])
-            ->andFilterWhere(['like', 'avatar', $this->avatar])
-            ->andFilterWhere(['like', 'last_login_ip', $this->last_login_ip]);
-
+            ->andFilterWhere(['like', 'email', $this->email]);
         $count = $query->count();
         $pageSize = $_GPC['pageSize'];
         $page = $_GPC['page'];

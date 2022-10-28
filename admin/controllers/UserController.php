@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:45:00
+ * @Last Modified time: 2022-10-28 19:13:16
  */
 
 namespace admin\controllers;
@@ -40,38 +40,6 @@ class UserController extends AController
 
     public $searchLevel = 0;
 
-    /**
-     * @SWG\Post(path="/user/userlist",
-     *     tags={"管理员列表"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "管理员列表",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="username",
-     *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
     public function actionUserlist()
     {
         $searchModel = new ModelsUser([
@@ -86,38 +54,6 @@ class UserController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/user/signup",
-     *     tags={"登录与注册"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "注册",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="username",
-     *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
     public function actionSignup()
     {
         $User = new User();
@@ -143,37 +79,6 @@ class UserController extends AController
         return ResultHelper::json(200, '注册成功', $res);
     }
 
-    /**
-     * @SWG\Post(path="/user/login",
-     *     tags={"登录与注册"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "登录",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="username",
-     *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="type",
-     *      type="integer",
-     *      description="登录方式1：账户登录2手机登录",
-     *      required=true,
-     *    )
-     * )
-     */
     public function actionLogin()
     {
         global $_GPC;
@@ -191,45 +96,6 @@ class UserController extends AController
         \YII::endProfile('actionLogin');
     }
 
-    /**
-     * @SWG\Post(path="/user/repassword",
-     *     tags={"密码设置"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "重置密码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="code",
-     *      type="string",
-     *      description="验证码",
-     *      required=false,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name=" ",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password_reset_token",
-     *      type="string",
-     *      description="修改密码token",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
     public function actionRepassword()
     {
         $model = new PasswdForm();
@@ -270,28 +136,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/userinfo",
-     *     tags={"会员资料"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "会员资料",
-     *     ),
-     *     @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="header",
-     *      required=true
-     *    ),
-     *    @SWG\Parameter(
-     *      name="mobile",
-     *      type="integer",
-     *      in="formData",
-     *      required=false
-     *    )
-     * )
-     */
     public function actionUserinfo()
     {
         global $_GPC;
@@ -341,43 +185,6 @@ class UserController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/user/bindmobile",
-     *     tags={"会员资料"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "绑定手机号",
-     *     ),
-     *     @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="header",
-     *      required=true
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="integer",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      in="formData",
-     *      name="code",
-     *      type="string",
-     *      description="验证码",
-     *      required=false,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="nickName",
-     *      type="string",
-     *      description="微信昵称",
-     *      required=true,
-     *    )
-     * )
-     */
     public function actionBindmobile()
     {
         global $_GPC;
@@ -399,50 +206,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/edituserinfo",
-     *     tags={"会员资料"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "修改资料",
-     *     ),
-     *     @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="header",
-     *      required=true
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="username",
-     *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="integer",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="avatar",
-     *      type="string",
-     *      description="头像",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="gender",
-     *      type="string",
-     *      description="性别",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionEdituserinfo()
     {
         $model = new EdituserinfoForm();
@@ -465,44 +228,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/forgetpass",
-     *     tags={"密码设置"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "忘记密码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="integer",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="sms_code",
-     *      type="integer",
-     *      description="验证码",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="repassword",
-     *      type="string",
-     *      description="确认密码",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionForgetpass()
     {
         global $_GPC;
@@ -556,23 +281,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/sendcode",
-     *     tags={"发送验证码"},
-     *     summary="发送验证码",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "发送验证码",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionSendcode()
     {
         global $_GPC;
@@ -609,23 +317,6 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', $res);
     }
 
-    /**
-     * @SWG\Post(path="/user/refresh",
-     *     tags={"重置令牌"},
-     *     summary="重置令牌",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "重置令牌",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionRefresh()
     {
         global $_GPC;
@@ -647,23 +338,6 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', ['access_token' => $access_token]);
     }
 
-    /**
-     * @SWG\Post(path="/user/feedback",
-     *     tags={"重置令牌"},
-     *     summary="重置令牌",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "重置令牌",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionFeedback()
     {
         global $_GPC;
@@ -688,23 +362,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/addons",
-     *     tags={"用户授权应用"},
-     *     summary="应用",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "应用",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="access_token",
-     *      type="string",
-     *      description="用户token",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionAddons()
     {
         global $_GPC;
@@ -720,23 +377,6 @@ class UserController extends AController
         ]);
     }
 
-    /**
-     * @SWG\Post(path="/user/delete",
-     *     tags={"删除管理员"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "应用",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="access_token",
-     *      type="string",
-     *      description="用户token",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionDelete($id)
     {
         UserService::deleteUser($id);
@@ -744,23 +384,6 @@ class UserController extends AController
         return ResultHelper::json(200, '删除成功');
     }
 
-    /**
-     * @SWG\Post(path="/user/activate",
-     *     tags={"审核管理员"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "应用",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="access_token",
-     *      type="string",
-     *      description="用户token",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionActivate($id)
     {
         /* @var $user User */
@@ -777,37 +400,6 @@ class UserController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/user/upstatus",
-     *     tags={"修改管理员状态"},
-     *     summary="管理员",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "应用",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="access_token",
-     *      type="string",
-     *      description="用户token",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="user_id",
-     *      type="number",
-     *      description="用户ID",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="type",
-     *      type="string",
-     *      description="状态类型",
-     *      required=true,
-     *    ),
-     * )
-     */
     public function actionUpstatus()
     {
         global $_GPC;

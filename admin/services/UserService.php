@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 19:00:31
+ * @Last Modified time: 2022-10-28 19:22:39
  */
 
 namespace admin\services;
@@ -16,10 +16,13 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
+use common\models\ActionLog;
 use common\models\enums\UserStatus;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
+use diandi\addons\models\BlocStore;
 use diandi\addons\models\DdAddons;
+use diandi\addons\models\StoreLabelLink;
 use diandi\addons\models\UserBloc;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthUserGroup;
@@ -71,33 +74,54 @@ class UserService extends BaseService
     {
         $where = [];
         $where['user_id'] = $user_id;
-        $AuthAssignmentGroup = AuthAssignmentGroup::findOne($where);
-        if ($AuthAssignmentGroup) {
-            $AuthAssignmentGroup->delete();
-        }
-
-        $AddonsUser = AddonsUser::findOne($where);
-        if ($AddonsUser) {
-            $AddonsUser->delete();
-        }
-
         $User = User::findOne($user_id);
+
+        AuthAssignmentGroup::deleteAll($where);
+        AddonsUser::deleteAll($where);
+        DdApiAccessToken::deleteAll($where);
+        UserBloc::deleteAll($where);
+        ActionLog::deleteAll($where);
+        self::deleteUserStore($User['store_id']);
+        self::deleteFile($user_id);
+
         if ($User) {
             $User->delete();
         }
-
-        $DdApiAccessToken = DdApiAccessToken::findOne($where);
-        if ($DdApiAccessToken) {
-            $DdApiAccessToken->delete();
-        }
-
-        $UserBloc = UserBloc::findOne($where);
-        if ($UserBloc) {
-            $UserBloc->delete();
-        }
     }
 
-    public static function deleteFile()
+    /**
+     * 删除商户.
+     *
+     * @return void
+     * @date 2022-10-28
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public static function deleteUserStore($store_id)
+    {
+        BlocStore::deleteAll(['store_id' => $store_id]);
+        StoreLabelLink::deleteAll(['store_id' => $store_id]);
+    }
+
+    /**
+     * 删除资源文件.
+     *
+     * @param [type] $user_id
+     *
+     * @return void
+     * @date 2022-10-28
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public static function deleteFile($user_id)
     {
         // dd_upload_file_user
     }

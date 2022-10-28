@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-02 21:40:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 18:25:29
+ * @Last Modified time: 2022-10-28 20:27:56
  */
 
 namespace admin\controllers;
@@ -35,6 +35,7 @@ class SiteController extends AController
     public $modelClass = '';
 
     protected $authOptional = ['login', 'logout', 'error', 'signup', 'request-password-reset', 'setpassword', 'relations'];
+    public $searchLevel = 0;
 
     /**
      * Displays homepage.

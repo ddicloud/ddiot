@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 14:32:19
+ * @Last Modified time: 2022-10-28 20:04:02
  */
 
 namespace admin\models;
@@ -15,6 +15,7 @@ use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
+use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -81,6 +82,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public function getUserGroup()
+    {
+        return $this->hasOne(AuthAssignmentGroup::className(), ['user_id' => 'id']);
     }
 
     /**

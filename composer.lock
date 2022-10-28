@@ -4432,16 +4432,16 @@
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.0.8",
+            "version": "3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "c13c3bf0929eaf0c15806c4a98fa179e907b0640"
+                "reference": "7a6336031696385e5cdd99deb8622f603ba03f2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/c13c3bf0929eaf0c15806c4a98fa179e907b0640",
-                "reference": "c13c3bf0929eaf0c15806c4a98fa179e907b0640",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/7a6336031696385e5cdd99deb8622f603ba03f2c",
+                "reference": "7a6336031696385e5cdd99deb8622f603ba03f2c",
                 "shasum": ""
             },
             "require": {
@@ -4485,9 +4485,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.8"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.9"
             },
-            "time": "2022-10-26T06:17:18+00:00"
+            "time": "2022-10-28T12:28:41+00:00"
         },
         {
             "name": "yii-diandi/yii2-migration",
