@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 14:20:44
+ * @Last Modified time: 2022-10-28 10:36:33
  */
 
 namespace admin\controllers\auth;
@@ -31,6 +31,8 @@ use yii\web\NotFoundHttpException;
 class GroupController extends AController
 {
     public $modelClass = 'UserGroupSearch';
+
+    public $modelSearchName = 'UserGroupSearch';
 
     public $is_sys;
 

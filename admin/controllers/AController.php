@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-18 06:48:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-03 11:17:10
+ * @Last Modified time: 2022-10-28 10:56:59
  */
 
 namespace admin\controllers;
@@ -49,10 +49,38 @@ class AController extends ActiveController
 
     protected $optionsAction = []; //需要options的方法
 
-    // 是否根据公司检索
+    /**
+     * 是否根据公司ID检索.
+     *
+     * @var bool
+     * @date 2022-10-28
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public $blocSearch = true;
+
+    /**
+     * 是否根据商户ID检索.
+     *
+     * @var bool
+     * @date 2022-10-28
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
+    public $storeSearch = true;
+
+    // 根据公司检索字段
     public $blocField = 'bloc_id';
 
-    // 是否根据商户检索
+    // 根据商户检索字段
     public $storeField = 'store_id';
 
     public $adminField = 'admin_id';
@@ -60,10 +88,7 @@ class AController extends ActiveController
     // 主要数据的模型
     public $modelClass = '';
 
-    // 主要数据的模型
-    public $modelName = '';
-
-    // 检索的模型名称，区分大小写
+    // 检索的模型名称，区分大小写，注意是原来的类名称，不能是as后的
     public $modelSearchName = '';
 
     public function behaviors()

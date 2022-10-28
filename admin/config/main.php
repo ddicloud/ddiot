@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 10:41:11
+ * @Last Modified time: 2022-10-28 11:24:34
  */
 $params = array_merge(
     require __DIR__.'/../../common/config/params.php',
@@ -266,7 +266,7 @@ return [
                     'extraPatterns' => [
                         'POST set-cache' => 'set-cache',
                         'POST clear-cache' => 'clear-cache',
-                        'GET,POST,PUT ueditor' => 'ueditor',
+                        'GET,POST ueditor' => 'ueditor',
                         'GET store' => 'store',
                         'POST conf' => 'conf',
                     ],

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-20 01:45:24
+ * @Last Modified time: 2022-10-28 10:41:44
  */
 
 namespace common\behaviors;
@@ -103,7 +103,6 @@ class HttpRequstMethod extends Behavior
             }
 
             $whereGpc = is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
-
             $where[$this->owner->modelSearchName] = array_merge($whereInit, $whereGpc);
         }
 

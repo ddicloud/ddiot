@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-12-30 01:48:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 16:47:02
+ * @Last Modified time: 2022-10-28 11:28:13
  */
 
 namespace common\filters\auth;
@@ -27,11 +27,10 @@ class QueryParamAuth extends AuthQueryParamAuth
     public function authenticate($user, $request, $response)
     {
         global $_GPC;
-        
+
         $key = $this->tokenParam;
         $accessToken = Yii::$app->request->headers->get($key, '');
         if (empty($accessToken)) {
-            $key = str_replace('-', '_', $key);
             $accessToken = Yii::$app->request->get($key, '');
         }
         if (is_string($accessToken)) {
@@ -40,10 +39,11 @@ class QueryParamAuth extends AuthQueryParamAuth
                 return $identity;
             }
         }
-        
+
         if (!empty($accessToken)) {
             $this->handleFailure($response);
         }
+
         return null;
     }
 
@@ -53,7 +53,7 @@ class QueryParamAuth extends AuthQueryParamAuth
     public function handleFailure($response)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        
+
         throw new UnauthorizedHttpException('用户token验证失败', CodeStatus::getValueByName('token失效'));
     }
 }

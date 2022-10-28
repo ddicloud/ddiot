@@ -4,19 +4,18 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 23:43:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-05 15:04:59
+ * @Last Modified time: 2022-10-28 11:39:02
  */
 
 namespace admin\controllers\system;
 
 use admin\actions\AdminSettingsAction;
 use admin\controllers\AController;
+use common\components\ueditor\UEditorAction;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\forms\ClearCache;
-use common\widgets\ueditor\UEditorAction;
 use Yii;
-use yii\filters\VerbFilter;
 
 /**
  * Undocumented class.
@@ -26,21 +25,6 @@ class SettingsController extends AController
     public $modelClass = '';
 
     public $enableCsrfValidation = false;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'them' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * @SWG\Post(path="/system/settings/conf",
@@ -245,7 +229,7 @@ class SettingsController extends AController
 
     public function actionStore()
     {
-        return $this->render('store');
+        return ResultHelper::json(200, '切换失败', []);
     }
 
     public function actionThem()
