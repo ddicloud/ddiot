@@ -3,9 +3,9 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-18 17:50:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 19:58:51
+ * @Last Modified time: 2022-11-05 20:09:33
  */
-namespace admin\controllers\message;
+namespace admin\controllers\messages;
 
 use admin\controllers\AController;
 use admin\models\message\HubMessages;
