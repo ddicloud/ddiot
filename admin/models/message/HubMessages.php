@@ -4,7 +4,7 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 20:16:26
+ * @Last Modified time: 2022-11-05 20:29:43
  */
 
 namespace admin\models\message;
@@ -14,7 +14,7 @@ use common\models\DdUser;
 use Yii;
 
 /**
- * This is the model class for table "dd_diandi_hub_messages".
+ * This is the model class for table "dd_messages".
  *
  * @property int $id ID
  * @property int $bloc_id 企业ID
@@ -130,16 +130,16 @@ class HubMessages extends \yii\db\ActiveRecord
         SELECT
             count( 1 ) as num
         FROM
-            `dd_diandi_hub_messages`
-            LEFT JOIN ( SELECT * FROM `dd_diandi_hub_messages_read` WHERE admin_id = {$adminId} ) AS b ON b.message_id = dd_diandi_hub_messages.id
+            `dd_messages`
+            LEFT JOIN ( SELECT * FROM `dd_messages_read` WHERE admin_id = {$adminId} ) AS b ON b.message_id = dd_messages.id
         WHERE
-            ( dd_diandi_hub_messages.admin_ids = '' OR find_in_set( {$adminId}, dd_diandi_hub_messages.admin_ids ) )
+            ( dd_messages.admin_ids = '' OR find_in_set( {$adminId}, dd_messages.admin_ids ) )
             AND
             b.id IS NULL
             AND
-            dd_diandi_hub_messages.bloc_id = {$blocId}
+            dd_messages.bloc_id = {$blocId}
             AND
-            dd_diandi_hub_messages.store_id = {$storeId}
+            dd_messages.store_id = {$storeId}
 SQL;
         $count = Yii::$app->getDb()->createCommand($sql)->queryOne();
         $count = $count['num'] ?? 0;
