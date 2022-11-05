@@ -4,7 +4,7 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 19:57:54
+ * @Last Modified time: 2022-11-05 20:16:30
  */
 namespace admin\models\message;
 
@@ -28,7 +28,7 @@ class HubMessagesCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dd_messages_category}}';
+        return '{{%messages_category}}';
     }
 
     /**
