@@ -1,4 +1,10 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-11-05 18:16:37
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-11-05 19:11:10
+ */
 
 use yii\db\Migration;
 
@@ -8,7 +14,7 @@ class m221105_101637_user extends Migration
     {
         /* 取消外键约束 */
         $this->execute('SET foreign_key_checks = 0');
-        
+
         /* 创建表 */
         $this->createTable('{{%user}}', [
             'id' => "int(11) NOT NULL AUTO_INCREMENT",
@@ -32,19 +38,18 @@ class m221105_101637_user extends Migration
             'last_login_ip' => "varchar(50) NULL",
             'open_id' => "varchar(90) NULL COMMENT '微信OPEN ID'",
             'union_id' => "varchar(90) NULL COMMENT '微信unionid'",
-            'PRIMARY KEY (`id`)'
+            'PRIMARY KEY (`id`)',
         ], "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
-        
+
         /* 索引设置 */
-        $this->createIndex('username','{{%user}}','username',1);
-        $this->createIndex('email','{{%user}}','email',1);
-        $this->createIndex('password_reset_token','{{%user}}','password_reset_token',1);
-        $this->createIndex('UNIQUE_OPEN_ID','{{%user}}','open_id',1);
-        $this->createIndex('UNIQUE_UNION_ID','{{%user}}','union_id',1);
-        
-        
+        $this->createIndex('username', '{{%user}}', 'username', 1);
+        $this->createIndex('email', '{{%user}}', 'email', 1);
+        $this->createIndex('password_reset_token', '{{%user}}', 'password_reset_token', 1);
+        $this->createIndex('UNIQUE_OPEN_ID', '{{%user}}', 'open_id', 1);
+        $this->createIndex('UNIQUE_UNION_ID', '{{%user}}', 'union_id', 1);
+
         /* 表数据 */
-        
+
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
     }
@@ -57,4 +62,3 @@ class m221105_101637_user extends Migration
         $this->execute('SET foreign_key_checks = 1;');
     }
 }
-
