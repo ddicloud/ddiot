@@ -4,7 +4,7 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 20:29:43
+ * @Last Modified time: 2022-11-05 20:35:53
  */
 
 namespace admin\models\message;
@@ -53,7 +53,7 @@ class HubMessages extends \yii\db\ActiveRecord
             [['admin_ids'], 'string', 'max' => 450],
             ['admin_ids', 'checkAdminIds'],
             [['publish_at'], 'date', 'format' => 'php:Y-m-d H:i:s'],
-            ['category_id', 'exist', 'targetClass' => 'addons\diandi_hub\models\HubMessagesCategory', 'targetAttribute' => 'id', 'message' => '指定分类不存在！'],
+            ['category_id', 'exist', 'targetClass' => 'admin\models\message\HubMessagesCategory', 'targetAttribute' => 'id', 'message' => '指定分类不存在！'],
         ];
     }
 
