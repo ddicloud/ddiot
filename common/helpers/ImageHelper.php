@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-01 15:32:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-12 09:25:03
+ * @Last Modified time: 2022-11-05 18:26:52
  */
 
 namespace common\helpers;
@@ -30,9 +30,8 @@ class ImageHelper
      *
      * @return string
      */
-    public static function default($imgSrc, $defaultImgSre = '/resources/img/error.png')
-    {
-        return !empty($imgSrc) ? $imgSrc : Yii::getAlias('@web').$defaultImgSre;
+    function default($imgSrc, $defaultImgSre = '/resources/img/error.png') {
+        return !empty($imgSrc) ? $imgSrc : Yii::getAlias('@web') . $defaultImgSre;
     }
 
     /**
@@ -42,7 +41,7 @@ class ImageHelper
      */
     public static function defaultHeaderPortrait($imgSrc, $defaultImgSre = '/resources/img/profile_small.jpg')
     {
-        return !empty($imgSrc) ? $imgSrc : Yii::getAlias('@web').$defaultImgSre;
+        return !empty($imgSrc) ? $imgSrc : Yii::getAlias('@web') . $defaultImgSre;
     }
 
     /**
@@ -133,51 +132,51 @@ class ImageHelper
         $url = '';
         // 根据上传记录判断上传类型
         $storage = UploadFile::find()->where(['file_url' => $image])->select('storage')->scalar();
-
+        $hostInfo = Yii::$app->request->hostInfo || '';
         switch ($storage) {
             case 'locai':
-                $url = Yii::$app->request->hostInfo;
+                $url = $hostInfo;
                 break;
             case 'alioss':
                 $url = Yii::$app->params['conf']['oss']['Aliyunoss_url'];
-            break;
+                break;
             case 'qiniu':
                 $url = Yii::$app->params['conf']['oss']['Qiniuoss_url'];
-            break;
+                break;
             case 'cos':
                 $url = Yii::$app->params['conf']['oss']['Tengxunoss_url'];
-            break;
+                break;
             default:
-                $url = Yii::$app->request->hostInfo;
-            break;
+                $url = $hostInfo;
+                break;
         }
 
-        return $url?$url:Yii::$app->request->hostInfo;
+        return $url ? $url : $hostInfo;
     }
 
     public static function tomedia($image, $type = 'default.jpg')
     {
         $hostUrl = self::getMediaUrl($image);
-        $default = '/resource/images/public/'.$type;
+        $default = '/resource/images/public/' . $type;
         if (is_array($image)) {
             foreach ($image as $key => &$value) {
                 if ('//' == substr($value, 0, 2)) {
-                    $value = 'http:'.$value;
+                    $value = 'http:' . $value;
                 } elseif (('http://' == substr($value, 0, 7)) || ('https://' == substr($value, 0, 8))) {
                     $value = $value;
                 } else {
-                    $value = $value ? $hostUrl.'/attachment/'.$value : $hostUrl.$default;
+                    $value = $value ? $hostUrl . '/attachment/' . $value : $hostUrl . $default;
                 }
             }
         } else {
             if ('//' == substr($image, 0, 2)) {
-                return 'http:'.$image;
+                return 'http:' . $image;
             }
             if (('http://' == substr($image, 0, 7)) || ('https://' == substr($image, 0, 8))) {
                 return $image;
             }
 
-            $image = $image ? $hostUrl.'/attachment/'.$image : $hostUrl.$default;
+            $image = $image ? $hostUrl . '/attachment/' . $image : $hostUrl . $default;
         }
 
         return $image;
@@ -224,7 +223,7 @@ class ImageHelper
             $msg = ErrorsHelper::getModelError($UploadFile);
             loggingHelper::writeLog('ImageHelper', 'uploadDb', '错误记录', $msg);
 
-            return  $msg;
+            return $msg;
         }
     }
 }
