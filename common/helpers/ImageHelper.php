@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-01 15:32:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 18:55:31
+ * @Last Modified time: 2022-11-05 19:08:50
  */
 
 namespace common\helpers;
@@ -12,6 +12,7 @@ namespace common\helpers;
 use common\components\FileUpload\models\DdUploadFileUsed;
 use common\components\FileUpload\models\UploadFile;
 use Yii;
+use yii\console\Request;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
@@ -134,16 +135,10 @@ class ImageHelper
         $storage = UploadFile::find()->where(['file_url' => $image])->select('storage')->scalar();
         $appId = Yii::$app->id;
 
-        switch ($appId) {
-            case 'app-swoole':
-                $hostInfo = '';
-                break;
-            case 'app-console':
-                $hostInfo = '';
-                break;
-            default:
-                $hostInfo = Yii::$app->request->hostInfo || '';
-                break;
+        if (Yii::$app->request instanceof Request) {
+            $hostInfo = '';
+        } else {
+            $hostInfo = Yii::$app->request->hostInfo;
         }
 
         switch ($storage) {
