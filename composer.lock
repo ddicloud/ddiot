@@ -4900,16 +4900,16 @@
         },
         {
             "name": "yii-diandi/yii2-rpc",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-rpc.git",
-                "reference": "2043d62f26f9529659826db5d68e4998cdc235eb"
+                "reference": "fa257815f3a564995ec772da5e079ab2a8f6b5ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-rpc/zipball/2043d62f26f9529659826db5d68e4998cdc235eb",
-                "reference": "2043d62f26f9529659826db5d68e4998cdc235eb",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-rpc/zipball/fa257815f3a564995ec772da5e079ab2a8f6b5ee",
+                "reference": "fa257815f3a564995ec772da5e079ab2a8f6b5ee",
                 "shasum": ""
             },
             "require": {
@@ -4945,9 +4945,9 @@
             "description": "基于swoole的rpc库",
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-rpc/issues",
-                "source": "https://github.com/yii-diandi/yii2-rpc/tree/1.0.2"
+                "source": "https://github.com/yii-diandi/yii2-rpc/tree/1.0.3"
             },
-            "time": "2022-11-05T04:01:14+00:00"
+            "time": "2022-11-05T04:09:45+00:00"
         },
         {
             "name": "yii-diandi/yii2-swoole",
