@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-01 15:32:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 18:26:52
+ * @Last Modified time: 2022-11-05 18:39:06
  */
 
 namespace common\helpers;
@@ -132,7 +132,20 @@ class ImageHelper
         $url = '';
         // 根据上传记录判断上传类型
         $storage = UploadFile::find()->where(['file_url' => $image])->select('storage')->scalar();
-        $hostInfo = Yii::$app->request->hostInfo || '';
+        $appId = Yii::$app->id;
+
+        switch ($appId) {
+            case 'app-swoole':
+                $hostInfo = '';
+                break;
+            case 'app-console':
+                $hostInfo = '';
+                break;
+            default:
+                $hostInfo = Yii::$app->request->hostInfo || '';
+                break;
+        }
+
         switch ($storage) {
             case 'locai':
                 $url = $hostInfo;
