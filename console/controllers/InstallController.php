@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-02 15:16:05
+ * @Last Modified time: 2022-11-05 18:54:55
  */
 
 namespace console\controllers;
@@ -24,6 +24,8 @@ class InstallController extends \yii\console\Controller
 {
     public function actionIndex()
     {
+        $appId = Yii::$app->id;
+        echo $appId;
         if (file_exists(yii::getAlias('@console/data/install.lock'))) {
             Console::output('系统已安装，需要重新安装请删除文件：' . yii::getAlias('@common/install.lock'));
             return false;
@@ -163,10 +165,10 @@ class InstallController extends \yii\console\Controller
         Console::input('数据库初始成功，下一步注册管理员');
         ob_start();
         ob_implicit_flush(false);
-        $username = InstallServer::getConf('username', '请输入管理员名称(字母不含特殊字符)：');
+        $username = InstallServer::getConf('username', '请输入管理员名称(字母不含特殊字符)');
 
-        $mobile = InstallServer::getConf('mobile', '请输入手机号：');
-        $email = InstallServer::getConf('email', '请输入邮箱：');
+        $mobile = InstallServer::getConf('mobile', '请输入手机号');
+        $email = InstallServer::getConf('email', '请输入邮箱');
         $userpassword = InstallServer::getConf('userpassword', '请输入密码');
 
         $res = InstallServer::adminSignUp($username, $mobile, $email, $userpassword);
