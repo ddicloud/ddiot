@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-15 15:28:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-07 17:02:53
+ * @Last Modified time: 2022-11-05 20:25:24
  */
 $config = [
     'components' => [
@@ -14,7 +14,7 @@ $config = [
     ],
 ];
 
-if (!YII_ENV_TEST) {
+if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
