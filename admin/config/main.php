@@ -4,13 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 11:24:34
+ * @Last Modified time: 2022-11-05 20:00:45
  */
 $params = array_merge(
-    require __DIR__.'/../../common/config/params.php',
-    require __DIR__.'/../../common/config/params-local.php',
-    require __DIR__.'/params.php',
-    require __DIR__.'/params-local.php'
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -62,7 +62,7 @@ return [
         /* ------ 微信业务组件 ------ **/
         'wechat' => [
             'class' => 'common\components\wechat\Wechat',
-            'userOptions' => [],  // 用户身份类参数
+            'userOptions' => [], // 用户身份类参数
             'sessionParam' => 'wechatUser', // 微信用户信息将存储在会话在这个密钥
             'returnUrlParam' => '_wechatReturnUrl', // returnUrl 存储在会话中
             'rebinds' => [ // 自定义服务模块
@@ -247,6 +247,34 @@ return [
                     'extraPatterns' => [
                         'POST,GET,OPTIONS index' => 'index',
                         'POST ceshi' => 'ceshi',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['messages/messages-category'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'POST create' => 'create',
+                        'POST,PUT update/<id>' => 'update',
+                        'POST,GET,DELETE delete/<id>' => 'delete',
+                        'GET view/<id>' => 'view',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['messages/messages'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'GET list' => 'list',
+                        'POST create' => 'create',
+                        'POST,PUT update/<id>' => 'update',
+                        'POST,GET,DELETE delete/<id>' => 'delete',
+                        'GET view/<id>' => 'view',
+                        'GET user-view/<id>' => 'user-view',
+                        'GET unread' => 'unread',
+                        'GET read/<id>' => 'read',
                     ],
                 ],
                 [
