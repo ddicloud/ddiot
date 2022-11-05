@@ -7,7 +7,6 @@
  */
 namespace ddswoole\pool;
 
-
 class DbPool extends ConnectionPool
 {
     /**
@@ -23,7 +22,7 @@ class DbPool extends ConnectionPool
 
     public function createConnect()
     {
-        if($this->createHandle instanceof \Closure){
+        if ($this->createHandle instanceof \Closure) {
             $conn = call_user_func($this->createHandle);
             $this->reConnect($conn);
             return $conn;
@@ -32,8 +31,8 @@ class DbPool extends ConnectionPool
 
     public function reConnect($client)
     {
-        if($this->reConnectHandle instanceof \Closure){
-            call_user_func($this->reConnectHandle,$client);
+        if ($this->reConnectHandle instanceof \Closure) {
+            call_user_func($this->reConnectHandle, $client);
         }
     }
 

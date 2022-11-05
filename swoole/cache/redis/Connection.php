@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:42:40
+ * @Last Modified time: 2022-11-03 18:44:10
  */
 
 namespace ddswoole\cache\redis;
@@ -19,10 +19,12 @@ class Connection extends \yii\redis\Connection
      * @var string redis pool key
      */
     public $poolKey;
+
     /**
-     * @var Redis
+     * @var RedisPool
      */
     private $_socket;
+
     /**
      * @var DbPool
      */
@@ -53,8 +55,8 @@ class Connection extends \yii\redis\Connection
         if ($this->_socket !== null) {
             return;
         }
-        $connection = ($this->unixSocket ?: $this->hostname.':'.$this->port).', database='.$this->database;
-        \Yii::trace('Opening redis DB connection: '.$connection, __METHOD__);
+        $connection = ($this->unixSocket ?: $this->hostname . ':' . $this->port) . ', database=' . $this->database;
+        \Yii::trace('Opening redis DB connection: ' . $connection, __METHOD__);
         $this->_socket = $this->getConnectionFormPool();
         $this->initConnection();
     }
@@ -80,7 +82,7 @@ class Connection extends \yii\redis\Connection
     public function executeCommand($name, $params = [], $reconnect = 0)
     {
         if (in_array($name, self::NotSupportCMD)) {
-            throw new Exception('Swoole Coroutine Redis does no support Redis command : '.$name);
+            throw new Exception('Swoole Coroutine Redis does no support Redis command : ' . $name);
         }
         $this->open();
         // backup the params for try again when execute fail
@@ -89,9 +91,10 @@ class Connection extends \yii\redis\Connection
             if (in_array($name, $this->redisCommands)) {
                 $command = array_merge(explode(' ', $name), $params);
                 $ret = call_user_func_array([$this->_socket->getConnection(), 'rawCommand'], $command);
+                print_r($this->_socket);
                 // if (!$ret) {
                 //     // throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
-                //     throw new Exception("Redis error:  \nRedis command was: ".$name);
+                //     throw new Exception("Redis error:  \nRedis command was: " . $name);
                 // }
                 return $ret;
             } else {
@@ -112,7 +115,7 @@ class Connection extends \yii\redis\Connection
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        $cm->releaseConnection($this->poolKey, $this->_socket);
+        $cm->releaseConnection($this->poolKey, $this->pool, $this->_socket);
         $this->_socket = null;
     }
 
@@ -136,9 +139,9 @@ class Connection extends \yii\redis\Connection
                 'timeout' => $this->dataTimeout ? $this->dataTimeout : -1, //-1 is swoole default
                 'password' => $this->password,
             ];
-            $pc = $cm->poolConfig['redis'] ?? [];
-            $dbPool = new DbPool($pc);
-            $dbPool->createHandle = function () use ($config,$poolKey) {
+            $ManagerConfig = $cm->poolConfig['redis'] ?? [];
+            $dbPool = new DbPool($ManagerConfig);
+            $dbPool->createHandle = function () use ($config, $poolKey) {
                 $client = new RedisPool([
                     'hostname' => $config['hostname'],
                     'port' => $config['port'],
@@ -146,7 +149,7 @@ class Connection extends \yii\redis\Connection
                     'database' => $config['database'],
                     'timeout' => $config['timeout'],
                     'size' => $config['size'],
-                ],$poolKey);
+                ], $poolKey);
                 \Yii::trace('create new mysql connection', __METHOD__);
 
                 return $client;
@@ -163,7 +166,7 @@ class Connection extends \yii\redis\Connection
     protected function buildPoolKey()
     {
         if (!$this->poolKey) {
-            $connection = $this->hostname.':'.$this->port.', database='.$this->database;
+            $connection = $this->hostname . ':' . $this->port . ', database=' . $this->database;
             $this->poolKey = md5($connection);
         }
 

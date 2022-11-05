@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 20:18:22
+ * @Last Modified time: 2022-11-03 19:05:32
  */
 
 namespace ddswoole\db\mysql;
@@ -12,7 +12,6 @@ use common\helpers\StringHelper;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
 use ddswoole\pool\PdoPool;
-use ddswoole\servers\DebugService;
 use PDOException;
 use Swoole\Coroutine\Mysql;
 use Yii;
@@ -144,6 +143,7 @@ class PoolPDO
      */
     public function getClient()
     {
+
         if ($this->client === null) {
             $this->client = $this->getConnectionFromPool();
         }
@@ -151,7 +151,7 @@ class PoolPDO
         //     $this->client->connect($this->config);
         //     //TODO SWoole 可能有重连机制,导致connect在已连情况下,重新连接返回False,对Connected状态也是不对的.无法优雅判断是否正常连接.
         // }
-        return $this->client->getPools()->get();
+        return $this->client;
     }
 
     /**
@@ -161,7 +161,7 @@ class PoolPDO
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        $cm->releaseConnection($this->poolKey, $this->client);
+        $cm->releaseConnection($this->poolKey, $this->pool, $this->client);
         $this->client = null;
     }
 
@@ -177,8 +177,6 @@ class PoolPDO
         if (!$cm->hasPool($this->poolKey)) {
             $ManagerConfig = $cm->poolConfig['mysql'] ?? [];
             $dbPool = new DbPool($ManagerConfig);
-//            $config = $this->config;
-
             $config = require yii::getAlias('@common/config/db.php');
             // mysql:host=127.0.0.1;dbname=20220628;port=3306
             list($dri, $dsn) = explode(':', $config['dsn']);
@@ -187,8 +185,8 @@ class PoolPDO
                 list($k, $v) = explode('=', $value);
                 $dsnArr[$k] = $v;
             }
-
-            $dbPool->createHandle = function () use ($dsnArr, $config,$ManagerConfig) {
+            echo '再一次实例化处理:' . $this->dsn . 'poolKey:' . $this->poolKey . PHP_EOL;
+            $dbPool->createHandle = function () use ($dsnArr, $config, $ManagerConfig) {
                 $client = new PdoPool([
                     'host' => $dsnArr['host'],
                     'port' => $dsnArr['port'],
@@ -201,7 +199,7 @@ class PoolPDO
                         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //开启异常模式
                     ],
                     'size' => $ManagerConfig['maxActive'],
-                ],$this->poolKey);
+                ], $this->poolKey);
                 \Yii::trace('create new mysql connection', __METHOD__);
 
                 return $client;
@@ -357,7 +355,7 @@ class PoolPDO
             throw new PDOException('Only PDO::PARAM_STR is currently implemented for the $parameter_type of MysqlPoolPdo::quote()');
         }
 
-        return "'".str_replace("'", "''", $string)."'";
+        return "'" . str_replace("'", "''", $string) . "'";
     }
 
     /**

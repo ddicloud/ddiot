@@ -4,14 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-27 16:57:25
+ * @Last Modified time: 2022-11-03 16:35:59
  */
 
 namespace common\services\common;
 
 use common\helpers\ArrayHelper;
-use common\helpers\CacheHelper;
-use common\helpers\FileHelper;
 use common\helpers\ImageHelper;
 use common\models\enums\MessageStatus;
 use common\models\MessageNoticeLog;
@@ -41,7 +39,7 @@ class GlobalsService extends BaseService
 {
     // 公司id
     private $bloc_id = 1;
-    
+
     // 子公司id
     private $store_id = 1;
 
@@ -72,7 +70,7 @@ class GlobalsService extends BaseService
     {
         $Bloc = new Bloc();
         $global_bloc = $Bloc->find()->alias('b')->where(['b.bloc_id' => $this->bloc_id])->select(['global.bloc_id', 'global.store_id'])->innerJoinWith('global')->asArray()->one();
-      
+
         if (!empty($global_bloc)) {
             // 获取集团数据
             $this->global_bloc_id = $global_bloc['bloc_id'];
@@ -218,7 +216,6 @@ class GlobalsService extends BaseService
             return Yii::$app->cache->get($cacheKey);
         }
 
-
         // 配置优先级 自己--》集团--》系统默认
 
         $is_showall = [
@@ -267,63 +264,66 @@ class GlobalsService extends BaseService
 
         // 自己配置为空获取集团
         $Bloc = new Bloc();
-        $global_bloc = $Bloc->find()->where(['status' => 1])->select(['bloc_id', 'store_id'])->one();
-        $global_bloc_id = $global_bloc['bloc_id'];
+        $global_bloc = $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->one();
 
-        Yii::$app->params['global_bloc_id'] = $global_bloc['bloc_id'];
+        if (!empty($global_bloc)) {
+            $global_bloc_id = $global_bloc['group_bloc_id'];
 
-        Yii::$app->params['global_store_id'] = $global_bloc['store_id'];
+            Yii::$app->params['global_bloc_id'] = $global_bloc['group_bloc_id'];
 
-        if (empty($conf['baidu'])) {
-            // 百度ai-sdk
-            $conf['baidu'] = $BaiduConf->getConf($global_bloc_id);
-        }
+            Yii::$app->params['global_store_id'] = $Bloc->find()->where(['status' => 1, 'bloc_id' => $global_bloc_id])->select('store_id')->scalar();
 
-        if (empty($conf['wechatpay'])) {
-            // 微信支付配置
-            $conf['wechatpay'] = $WechatpayConf->getConf($global_bloc_id);
-        }
+            if (empty($conf['baidu'])) {
+                // 百度ai-sdk
+                $conf['baidu'] = $BaiduConf->getConf($global_bloc_id);
+            }
 
-        if (empty($conf['sms'])) {
-            // 短信配置
-            $SmsConf->getConf($global_bloc_id);
-            $conf['sms'] = $SmsConf;
-        }
+            if (empty($conf['wechatpay'])) {
+                // 微信支付配置
+                $conf['wechatpay'] = $WechatpayConf->getConf($global_bloc_id);
+            }
 
-        if (empty($conf['wxapp'])) {
-            // 小程序配置
-            $WxappConf->getConf($global_bloc_id);
-            $conf['wxapp'] = $WxappConf;
-        }
+            if (empty($conf['sms'])) {
+                // 短信配置
+                $SmsConf->getConf($global_bloc_id);
+                $conf['sms'] = $SmsConf;
+            }
 
-        if (empty($conf['wechat'])) {
-            // 公众号配置
-            $WechatConf->getConf($global_bloc_id);
-            $conf['wechat'] = $WechatConf;
-        }
+            if (empty($conf['wxapp'])) {
+                // 小程序配置
+                $WxappConf->getConf($global_bloc_id);
+                $conf['wxapp'] = $WxappConf;
+            }
 
-        if (empty($conf['email'])) {
-            // 邮件配置
-            $EmailConf->getConf($global_bloc_id);
-            $conf['email'] = $EmailConf;
-        }
+            if (empty($conf['wechat'])) {
+                // 公众号配置
+                $WechatConf->getConf($global_bloc_id);
+                $conf['wechat'] = $WechatConf;
+            }
 
-        if (empty($conf['app'])) {
-            // 邮件配置
-            $AppConf->getConf($global_bloc_id);
-            $conf['app'] = $AppConf;
-        }
+            if (empty($conf['email'])) {
+                // 邮件配置
+                $EmailConf->getConf($global_bloc_id);
+                $conf['email'] = $EmailConf;
+            }
 
-        if (empty($conf['microapp'])) {
-            // 抖音小程序配置
-            $MicroappConf->getConf($global_bloc_id);
-            $conf['microapp'] = $MicroappConf;
-        }
+            if (empty($conf['app'])) {
+                // 邮件配置
+                $AppConf->getConf($global_bloc_id);
+                $conf['app'] = $AppConf;
+            }
 
-        if (empty($conf['oss'])) {
-            // oss配置
-            $OssConf->getConf($global_bloc_id);
-            $conf['oss'] = $OssConf;
+            if (empty($conf['microapp'])) {
+                // 抖音小程序配置
+                $MicroappConf->getConf($global_bloc_id);
+                $conf['microapp'] = $MicroappConf;
+            }
+
+            if (empty($conf['oss'])) {
+                // oss配置
+                $OssConf->getConf($global_bloc_id);
+                $conf['oss'] = $OssConf;
+            }
         }
 
         // 都为空就使用系统默认的
@@ -386,7 +386,7 @@ class GlobalsService extends BaseService
     public function getBlocByuserId($user_id)
     {
         $Bloc = new Bloc();
-        $key = ['common',$user_id . '_blocs'];
+        $key = ['common', $user_id . '_blocs'];
         if (Yii::$app->cache->get($key)) {
             Yii::$app->params['userBloc'] = Yii::$app->cache->get($key);
 
@@ -498,7 +498,7 @@ class GlobalsService extends BaseService
             'list' => $list,
             'total' => count($list),
         ];
-        
+
         Yii::$app->cache->set($cacheKey, $message);
 
         return $message;

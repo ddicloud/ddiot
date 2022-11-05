@@ -47,7 +47,8 @@
         "symfony/browser-kit": ">=2.7 <5.0",
         "symfony/dependency-injection": "^5.4",
         "swoole/ide-helper": "^5.0",
-        "simps/mqtt": "^1.4"
+        "simps/mqtt": "^1.4",
+        "yii-diandi/yii2-rpc": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

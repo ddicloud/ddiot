@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-01 11:37:08
+ * @Last Modified time: 2022-11-03 18:40:01
  */
 namespace ddswoole\pool;
 
@@ -61,11 +61,11 @@ class ConnectionManager extends Component
         }
     }
 
-    public function releaseConnection($connectionKey, $connection)
+    public function releaseConnection($connectionKey, $pool, $connection)
     {
         if (isset(self::$poolMap[$connectionKey])) {
-            $pool = self::$poolMap[$connectionKey];
-            return $pool->release($connection);
+            $poolMap = self::$poolMap[$connectionKey];
+            return $poolMap->release($pool, $connection);
         }
     }
 }

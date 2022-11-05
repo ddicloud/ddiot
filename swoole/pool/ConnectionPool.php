@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-01 11:42:05
+ * @Last Modified time: 2022-11-03 18:41:42
  */
 
 namespace ddswoole\pool;
@@ -33,6 +33,7 @@ abstract class ConnectionPool extends Component
     {
         $connect = null;
         $connect = $this->createConnect();
+        // 重试3次
         if (!$connect) {
             $a = 0;
             while ($a <= 3) {
@@ -40,21 +41,15 @@ abstract class ConnectionPool extends Component
                 $a++;
             }
         }
-        // DebugService::consoleWrite('从连接池拿连接',[
-        //     'connect'=>$connect,
-        //     'a'=>$a,
-        // ]);
 
-        // if (!$this->queue->isEmpty()) {
-        //     $connect = $this->queue->shift();
-        // } elseif ($this->currentCount < $this->maxActive) {
-        //     $connect = $this->createConnect();
-
-        // } elseif ($retry < 3) {
-        //     //重试3次
-        //     \Swoole\Coroutine::sleep($this->waitTime);
-        //     $connect = $this->getConnect(++$retry);
-        // }
+        if (!$connect) {
+            //创新创建3次
+            sleep($this->waitTime);
+            while ($retry <= 3) {
+                $connect = $this->getConnect(++$retry);
+                $retry++;
+            }
+        }
 
         if ($connect === null) {
             throw new Exception('connection pool is full');
@@ -68,28 +63,11 @@ abstract class ConnectionPool extends Component
      *
      * @param object $connect 连接
      */
-    public function release($connect)
+    public function release($pool, $client)
     {
-        // print_r($connect);
-        // 释放连接
-        //  $pool = $this->getConnectionFromPool();
-        //  $pool->close($this->client);
-
-        // DebugService::consoleWrite('从连接池释放连接开始',[
-        //     'currentCount'=>$this->currentCount,
-        //     'maxActive'=>$this->maxActive,
-        // ]);
-        // $currentCount = $this->currentCount;
-        // if ($this->queue->count() < $this->maxActive) {
-        //     $this->queue->push($connect);
-        //     $currentCount--;
-        // }
-
-        // $this->currentCount = $currentCount;
-        // DebugService::consoleWrite('从连接池释放连接结束',[
-        //     'currentCount'=>$this->currentCount,
-        //     'maxActive'=>$this->maxActive,
-        // ]);
+        if ($pool instanceof PdoPool) {
+            $pool->close($client);
+        }
     }
 
     abstract public function createConnect();

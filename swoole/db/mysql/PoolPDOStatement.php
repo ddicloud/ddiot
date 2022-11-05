@@ -4,19 +4,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 16:09:41
+ * @Last Modified time: 2022-11-03 18:52:25
  */
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace ddswoole\db\mysql;
 
-use common\helpers\ArrayHelper;
 use ddswoole\pool\ResultData;
-use ddswoole\servers\DebugService;
 use PDO;
 use PDOStatement;
-use phpDocumentor\Reflection\Types\Mixed_;
 use RuntimeException;
 
 /**
@@ -27,7 +24,7 @@ use RuntimeException;
 class PoolPDOStatement extends PDOStatement
 {
     use fetchAll;
-    
+
     protected $statement;
 
     /**
@@ -102,7 +99,7 @@ class PoolPDOStatement extends PDOStatement
     public function execute($input_parameters = []): bool
     {
         try {
-            $client = $this->pdo->getClient();
+            $client = $this->pdo->getClient()->getPools()->get();
             $statement = $client->prepare($this->getRawSql());
             $result = $statement->execute($input_parameters);
             if (!$statement) {
@@ -114,6 +111,7 @@ class PoolPDOStatement extends PDOStatement
             if ($this->data === false && $client->error != null) {
                 throw new \PDOException($client->error, $client->errno);
             }
+
         } finally {
             if (!$this->pdo->inTransaction()) {
                 $this->pdo->releaseConnect();
@@ -171,7 +169,7 @@ class PoolPDOStatement extends PDOStatement
         $params = [];
         foreach ($this->params as $name => $value) {
             if (is_string($name) && strncmp(':', $name, 1)) {
-                $name = ':'.$name;
+                $name = ':' . $name;
             }
             if (is_string($value)) {
                 $params[$name] = $this->pdo->quote($value);
@@ -188,7 +186,7 @@ class PoolPDOStatement extends PDOStatement
         }
         $sql = '';
         foreach (explode('?', $this->sql) as $i => $part) {
-            $sql .= (isset($params[$i]) ? $params[$i] : '').$part;
+            $sql .= (isset($params[$i]) ? $params[$i] : '') . $part;
         }
 
         return $sql;
@@ -209,11 +207,10 @@ class PoolPDOStatement extends PDOStatement
         if (empty($this->data)) {
             return false;
         }
-        
+
         return $this->data[$this->_index] ?? false;
     }
 
-   
     // #[\ReturnTypeWillChange]
     // // public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
     // public function  fetchAll(int $fetch_style = PDO::FETCH_DEFAULT, mixed ...$args): array
@@ -232,8 +229,6 @@ class PoolPDOStatement extends PDOStatement
     //     return $this->data;
     // }
 
-  
-
     /**
      * @param int $column_number
      *
@@ -247,7 +242,7 @@ class PoolPDOStatement extends PDOStatement
         }
         // $data = $this->data[++$this->_index];
         $data = $this->data[$this->_index];
-        
+
         return current(array_slice($data, $column_number, 1));
     }
 }

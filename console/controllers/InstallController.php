@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-02 12:49:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-28 17:14:29
+ * @Last Modified time: 2022-11-02 15:16:05
  */
 
 namespace console\controllers;
@@ -25,7 +25,7 @@ class InstallController extends \yii\console\Controller
     public function actionIndex()
     {
         if (file_exists(yii::getAlias('@console/data/install.lock'))) {
-            Console::output('系统已安装，需要重新安装请删除文件：'.yii::getAlias('@common/install.lock'));
+            Console::output('系统已安装，需要重新安装请删除文件：' . yii::getAlias('@common/install.lock'));
             return false;
         }
 
@@ -36,14 +36,14 @@ class InstallController extends \yii\console\Controller
 
         $is_connect = false;
         do {
-            $host = InstallServer::getConf('host','请输入host');
+            $host = InstallServer::getConf('host', '请输入host');
             // $formatName = Console::ansiFormat($host, [Console::FG_YELLOW]);
             // Console::output("你的host是：{$formatName}");
-            $port = InstallServer::getConf('port','请输入数据库端口port');
-            $dbname = InstallServer::getConf('dbname','请输入dbname');
-            $tablePrefix = InstallServer::getConf('tablePrefix','请输入数据库前缀tablePrefix');
-            $dbusername = InstallServer::getConf('dbusername','请输入数据库dbusername');
-            $dbpassword = InstallServer::getConf('dbpassword','请输入数据库dbpassword');
+            $port = InstallServer::getConf('port', '请输入数据库端口port');
+            $dbname = InstallServer::getConf('dbname', '请输入dbname');
+            $tablePrefix = InstallServer::getConf('tablePrefix', '请输入数据库前缀tablePrefix');
+            $dbusername = InstallServer::getConf('dbusername', '请输入数据库dbusername');
+            $dbpassword = InstallServer::getConf('dbpassword', '请输入数据库dbpassword');
             $confTable = Table::widget([
                 'headers' => ['host', 'port', 'dbname', 'tablePrefix', 'username', 'password'],
                 'rows' => [
@@ -51,7 +51,7 @@ class InstallController extends \yii\console\Controller
                 ],
             ]);
 
-            Console::output('你的数据库配置汇总：'.PHP_EOL."{$confTable}");
+            Console::output('你的数据库配置汇总：' . PHP_EOL . "{$confTable}");
 
             $config = InstallServer::local_mysql_config();
 
@@ -63,7 +63,7 @@ class InstallController extends \yii\console\Controller
 
             $error = '';
             try {
-                $link = new PDO("mysql:host={$host};port={$port}", $dbusername, $dbpassword); 	// dns可以没有dbname
+                $link = new PDO("mysql:host={$host};port={$port}", $dbusername, $dbpassword); // dns可以没有dbname
                 $link->exec('SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary');
                 $link->exec("SET sql_mode=''");
                 if ($link->errorCode() != '00000') {
@@ -114,7 +114,7 @@ class InstallController extends \yii\console\Controller
         } while (!$is_connect);
 
         // 初始数据库
-        $version = InstallServer::getConf('version','请输入数据库脚本版本号');
+        $version = InstallServer::getConf('version', '请输入数据库脚本版本号');
 
         $bashPath = dirname(Yii::getAlias('@console'));
         $oldAPP = Yii::$app;
@@ -157,49 +157,49 @@ class InstallController extends \yii\console\Controller
                 ],
             ],
         ]);
-        $runResult = Yii::$app->runAction('migrate/up', ['migrationPath' => '@console/migrations/'.$version, 'interactive' => false]);
+        $runResult = Yii::$app->runAction('migrate/up', ['migrationPath' => '@console/migrations/' . $version, 'interactive' => false]);
         // $post_log = ob_get_clean();
         // Yii::info($post_log, 'fecshop_debug');
         Console::input('数据库初始成功，下一步注册管理员');
         ob_start();
         ob_implicit_flush(false);
-        $username = InstallServer::getConf('username','请输入管理员名称(字母不含特殊字符)：');
+        $username = InstallServer::getConf('username', '请输入管理员名称(字母不含特殊字符)：');
 
-        $mobile = InstallServer::getConf('mobile','请输入手机号：');
-        $email = InstallServer::getConf('email','请输入邮箱：');
-        $userpassword = InstallServer::getConf('userpassword','请输入密码');
+        $mobile = InstallServer::getConf('mobile', '请输入手机号：');
+        $email = InstallServer::getConf('email', '请输入邮箱：');
+        $userpassword = InstallServer::getConf('userpassword', '请输入密码');
 
         $res = InstallServer::adminSignUp($username, $mobile, $email, $userpassword);
         if ($res) {
-            InstallServer::getConf('host','管理员注册成功，下一步初始系统文件权限');
+            InstallServer::getConf('host', '管理员注册成功，下一步初始系统文件权限');
         }
         // 设置文件权限
 
         // nginx配置
-        $baseDir = dirname(__FILE__).'/../../';
+        $baseDir = dirname(__FILE__) . '/../../';
 
-        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/assets/', 'frontend/attachment', 'console/swoole/runtime/', 'admin/runtime/','api/web/store/'];
+        $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/assets/', 'frontend/attachment', 'console/swoole/runtime/', 'admin/runtime/', 'api/web/store/'];
 
         foreach ($dirs as $key => $value) {
-            if (is_dir($baseDir.$value)) {
-                chmod($baseDir.$value, 0777);
+            if (is_dir($baseDir . $value)) {
+                chmod($baseDir . $value, 0777);
             } else {
-                mkdir($baseDir.$value, 0777);
-                chmod($baseDir.$value, 0777);
+                mkdir($baseDir . $value, 0777);
+                chmod($baseDir . $value, 0777);
             }
-            echo '目录'.$value.'权限设置成功'.PHP_EOL;
+            echo '目录' . $value . '权限设置成功' . PHP_EOL;
             sleep(1);
         }
-        
+
         $lockDir = yii::getAlias('@console/data');
-        if(!is_dir($lockDir)){
+        if (!is_dir($lockDir)) {
             FileHelper::mkdirs($lockDir);
         }
 
         touch(yii::getAlias('@console/data/install.lock'));
 
         $installConfPath = yii::getAlias('@console/config/install.php');
-        if(file_exists($installConfPath)){
+        if (file_exists($installConfPath)) {
             @unlink($installConfPath);
         }
         Console::input('系统安装成功，配置你的nginx就可以访问了');

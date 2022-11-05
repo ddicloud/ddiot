@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-26 12:30:05
+ * @Last Modified time: 2022-11-03 18:37:58
  */
 
 namespace ddswoole\pool;
@@ -49,11 +49,11 @@ class RedisPool extends Component
         if (empty($this->getPools())) {
             $config = $this->getConfig();
             $pools = new DatabaseRedisPool((new RedisConfig())
-                ->withHost($config['hostname'])
-                ->withPort($config['port'])
-                ->withAuth('')
-                ->withDbIndex($config['database'])
-                ->withTimeout(1),
+                    ->withHost($config['hostname'])
+                    ->withPort($config['port'])
+                    ->withAuth('')
+                    ->withDbIndex($config['database'])
+                    ->withTimeout(1),
                 $this->config['size']
             );
             $this->setPools($pools);
@@ -75,7 +75,7 @@ class RedisPool extends Component
             $this->_instance[$poolName] = new static($config);
         }
 
-        return  $this->_instance[$poolName];
+        return $this->_instance[$poolName];
     }
 
     public function setInstance($value)
