@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 19:05:32
+ * @Last Modified time: 2022-11-18 12:17:22
  */
 
 namespace ddswoole\db\mysql;
 
+use common\helpers\loggingHelper;
 use common\helpers\StringHelper;
 use ddswoole\pool\DbPool;
 use ddswoole\pool\MysqlPool;
@@ -157,11 +158,11 @@ class PoolPDO
     /**
      * 释放链接.
      */
-    public function releaseConnect()
+    public function releaseConnect($pool,$client)
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        $cm->releaseConnection($this->poolKey, $this->pool, $this->client);
+        $cm->releaseConnection($this->poolKey, $pool,$client);
         $this->client = null;
     }
 
@@ -185,7 +186,7 @@ class PoolPDO
                 list($k, $v) = explode('=', $value);
                 $dsnArr[$k] = $v;
             }
-            echo '再一次实例化处理:' . $this->dsn . 'poolKey:' . $this->poolKey . PHP_EOL;
+            loggingHelper::writeLog('PoolPDO', 'getConnectionFromPool', '反复操作');
             $dbPool->createHandle = function () use ($dsnArr, $config, $ManagerConfig) {
                 $client = new PdoPool([
                     'host' => $dsnArr['host'],
@@ -215,7 +216,10 @@ class PoolPDO
         if (!$this->poolKey) {
             $this->poolKey = md5($this->dsn);
         }
-
+        loggingHelper::writeLog('poolpdo', 'buildPoolKey', 'md5', [
+            'dsn' => $this->dsn,
+            'poolKey' => $this->poolKey,
+        ]);
         return $this->poolKey;
     }
 

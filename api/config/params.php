@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 14:07:44
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-13 17:18:18
+ * @Last Modified time: 2022-11-18 10:31:07
  */
 
 return [
@@ -28,7 +28,7 @@ return [
         'duration' => 20 * 10, //全局缓存时间
     ],
     'api' => [
-        'rateLimit' =>120, //速率限制,
-        'timeLimit' =>60
+        'rateLimit' => 600, //速率限制,
+        'timeLimit' => 60,
     ],
 ];

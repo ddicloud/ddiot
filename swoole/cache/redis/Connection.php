@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 18:44:10
+ * @Last Modified time: 2022-11-18 12:19:55
  */
 
 namespace ddswoole\cache\redis;
@@ -91,7 +91,6 @@ class Connection extends \yii\redis\Connection
             if (in_array($name, $this->redisCommands)) {
                 $command = array_merge(explode(' ', $name), $params);
                 $ret = call_user_func_array([$this->_socket->getConnection(), 'rawCommand'], $command);
-                print_r($this->_socket);
                 // if (!$ret) {
                 //     // throw new Exception("Redis error: {$this->_socket->errMsg} \nRedis command was: ".$name);
                 //     throw new Exception("Redis error:  \nRedis command was: " . $name);

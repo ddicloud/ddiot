@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 17:27:32
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-28 09:14:45
+ * @Last Modified time: 2022-11-18 12:11:30
  */
 
 namespace ddswoole\pool;
 
+use common\helpers\loggingHelper;
 use RuntimeException;
 use Swoole\Database\PDOConfig;
 use Swoole\Database\PDOPool as SwoolePDOPool;
@@ -29,7 +30,7 @@ class PdoPool
         'size' => 64,
     ];
 
-    protected $_pools;
+    protected static $_pools;
 
     protected $_poolName;
 
@@ -42,8 +43,7 @@ class PdoPool
         //设置一个容量为1的通道
         $this->setConfig($config);
         $this->setPoolName($poolName);
-        //执行mysql相关 操作
-        $return = $this->init();
+        $this->init();
     }
 
     public function init()
@@ -62,8 +62,8 @@ class PdoPool
                     ->withOptions($config['options']),
                 $config['size']
             );
-            if($pools){
-                $this->setConnected(true);  
+            if ($pools) {
+                $this->setConnected(true);
                 $this->setPools($pools);
             }
         }
@@ -80,7 +80,7 @@ class PdoPool
             if (empty($config['size'])) {
                 throw new RuntimeException('the size of database connection pools cannot be empty');
             }
-
+            //执行mysql相关 操作
             $instance = new static($config);
         }
 
@@ -94,12 +94,12 @@ class PdoPool
 
     public function getPools()
     {
-        return $this->_pools;
+        return self::$_pools;
     }
 
     public function setPools($value)
     {
-        $this->_pools = $value;
+        self::$_pools = $value;
     }
 
     public function getConnected()

@@ -3,10 +3,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 18:40:01
+ * @Last Modified time: 2022-11-18 11:31:42
  */
 namespace ddswoole\pool;
 
+use common\helpers\loggingHelper;
 use yii\base\Component;
 use yii\base\InvalidParamException;
 
@@ -41,9 +42,14 @@ class ConnectionManager extends Component
 
     public function getPool($poolKey)
     {
+        loggingHelper::writeLog('poolpdo', 'getPool', '全部', [
+            'poolMap' => self::$poolMap,
+        ]);
+
         if (!$this->hasPool($poolKey)) {
             return null;
         }
+
         return self::$poolMap[$poolKey];
     }
 

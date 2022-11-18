@@ -4,12 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-18 16:51:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 19:49:41
+ * @Last Modified time: 2022-11-17 16:59:11
  */
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=2022115;port=3306',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=20220628;port=3306',
     'tablePrefix' => 'dd_',
     'username' => 'root',
     'password' => 'root',

@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 18:41:42
+ * @Last Modified time: 2022-11-18 12:17:48
  */
 
 namespace ddswoole\pool;
 
+use Swoole\Database\PDOPool;
 use yii\base\Component;
 use yii\base\Exception;
 
@@ -65,8 +66,8 @@ abstract class ConnectionPool extends Component
      */
     public function release($pool, $client)
     {
-        if ($pool instanceof PdoPool) {
-            $pool->close($client);
+        if ($pool instanceof PDOPool) {
+            $pool->put($client);
         }
     }
 

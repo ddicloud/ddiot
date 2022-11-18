@@ -12,9 +12,7 @@ use console\controllers\BaseController;
 use ddswoole\bootstrap\Loader;
 use ddswoole\interfaces\controllers\SwooleInterfaceController;
 use ddswoole\process\Manager;
-use ddswoole\process\WorkServer;
 use diandi\swoole\websocket\Context;
-use Swoole\Coroutine;
 use function Swoole\Coroutine\run;
 use Swoole\Process\Pool;
 use Yii;
@@ -44,7 +42,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
     public function actions()
     {
         parent::actions();
-        $confPath = Yii::getAlias('@addons/'.$this->addons.'/config/swoole_websocket.php');
+        $confPath = Yii::getAlias('@addons/' . $this->addons . '/config/swoole_websocket.php');
         $CommonConfPath = Yii::getAlias('@common/config');
         if (file_exists($confPath)) {
             $config = require $confPath;
@@ -52,8 +50,8 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
                 [
                     'app' => [
                         'params' => yii\helpers\ArrayHelper::merge(
-                            require($CommonConfPath.'/params.php'),
-                            require($CommonConfPath.'/params-local.php'),
+                            require ($CommonConfPath . '/params.php'),
+                            require ($CommonConfPath . '/params-local.php'),
                         ),
                     ],
                 ],
@@ -64,7 +62,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
                 $config
             );
         } else {
-            throw new \Exception('配置文件不存在：'.$confPath);
+            throw new \Exception('配置文件不存在：' . $confPath);
         }
     }
 
@@ -84,7 +82,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             $context = new Context();
             $server = new $serverName($this->config, $Loader, $context, $pool, $workerId);
 
-            return  $server->run();
+            return $server->run();
         }, 'start', 1);
 
         $pm->add(function (Pool $pool, string $data) {
@@ -117,7 +115,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             // return $workServer->start();
             $socket = $process->exportSocket();
             while (true) {
-                echo '进程消息1：'.$socket->recv();
+                echo '进程消息1：' . $socket->recv();
                 $socket->send('开个玩笑而已么');
             }
         }, 'start', 1);
@@ -137,7 +135,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
                 unlink($pidFile);
             }
         } else {
-            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGTERM.'.PHP_EOL);
+            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGTERM.' . PHP_EOL);
         }
     }
 
@@ -149,7 +147,7 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
             posix_kill($masterPid, SIGUSR1); // reload all worker
             //                posix_kill($masterPid, SIGUSR2); // reload all task
         } else {
-            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGUSR1.'.PHP_EOL);
+            print_r('master pid is null, maybe you delete the pid file we created. you can manually kill the master process with signal SIGUSR1.' . PHP_EOL);
         }
     }
 }

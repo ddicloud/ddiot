@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-17 09:25:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-16 19:52:47
+ * @Last Modified time: 2022-11-18 10:35:53
  */
 
 namespace ddswoole\components\mqtt;
@@ -11,11 +11,10 @@ namespace ddswoole\components\mqtt;
 use ddswoole\servers\BaseServer;
 use ddswoole\servers\DebugService;
 use ddswoole\traits\InteractsWithSwooleTable;
-use diandi\swoole\web\Application;
 use diandi\swoole\websocket\Context;
+use diandi\swoole\web\Application;
 use Simps\MQTT\Protocol\Types;
 use Simps\MQTT\Protocol\V5;
-use Simps\MQTT\Tools\Common;
 
 class MqttServer extends BaseServer
 {
@@ -166,7 +165,6 @@ class MqttServer extends BaseServer
             //        Common::printf($data);
             $data = V5::unpack($data);
             DebugService::consoleCrosswise('收到响应', $data['type']);
-            print_r($data);
             if (is_array($data) && isset($data['type'])) {
                 switch ($data['type']) {
                     case Types::CONNECT:

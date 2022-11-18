@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 21:27:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 18:52:25
+ * @Last Modified time: 2022-11-18 12:16:59
  */
 
 declare (strict_types = 1);
@@ -100,6 +100,7 @@ class PoolPDOStatement extends PDOStatement
     {
         try {
             $client = $this->pdo->getClient()->getPools()->get();
+            // print_r($client);
             $statement = $client->prepare($this->getRawSql());
             $result = $statement->execute($input_parameters);
             if (!$statement) {
@@ -111,14 +112,14 @@ class PoolPDOStatement extends PDOStatement
             if ($this->data === false && $client->error != null) {
                 throw new \PDOException($client->error, $client->errno);
             }
-
         } finally {
             if (!$this->pdo->inTransaction()) {
-                $this->pdo->releaseConnect();
+                $this->pdo->releaseConnect($this->pdo->getClient()->getPools(),$client);
             }
         }
 
         return is_array($this->data);
+
     }
 
     /**
