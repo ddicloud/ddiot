@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 18:16:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 18:37:58
+ * @Last Modified time: 2022-11-18 14:42:16
  */
 
 namespace ddswoole\pool;
@@ -27,7 +27,7 @@ class RedisPool extends Component
         'size' => 100,
     ];
 
-    public $_pools;
+    public static $_pools;
 
     protected $_poolName;
 
@@ -97,27 +97,27 @@ class RedisPool extends Component
 
     public function getConnection()
     {
-        return $this->_pools->get();
+        return self::$_pools->get();
     }
 
     public function close($connection = null)
     {
-        $this->_pools->put($connection);
+        self::$_pools->put($connection);
     }
 
     public function fill(): void
     {
-        $this->pools->fill();
+        self::$_pools->fill();
     }
 
     public function getPools()
     {
-        return $this->_pools;
+        return self::$_pools;
     }
 
     public function setPools($value)
     {
-        $this->_pools = $value;
+        self::$_pools = $value;
     }
 
     public function getConfig()

@@ -3,12 +3,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-08-30 16:43:08
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-18 12:17:48
+ * @Last Modified time: 2022-11-18 15:29:49
  */
 
 namespace ddswoole\pool;
 
 use Swoole\Database\PDOPool;
+use Swoole\Database\RedisPool;
 use yii\base\Component;
 use yii\base\Exception;
 
@@ -67,6 +68,8 @@ abstract class ConnectionPool extends Component
     public function release($pool, $client)
     {
         if ($pool instanceof PDOPool) {
+            $pool->put($client);
+        }else if($pool instanceof RedisPool){
             $pool->put($client);
         }
     }

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-09-24 11:56:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-18 12:19:55
+ * @Last Modified time: 2022-11-18 15:28:40
  */
 
 namespace ddswoole\cache\redis;
@@ -102,7 +102,7 @@ class Connection extends \yii\redis\Connection
                 return $ret;
             }
         } finally {
-            $this->releaseConnect();
+            $this->releaseConnect($this->_socket->getPools(),$this->_socket->getConnection());
         }
     }
 
@@ -110,11 +110,12 @@ class Connection extends \yii\redis\Connection
      * Closes the currently active DB connection.
      * It does nothing if the connection is already closed.
      */
-    public function releaseConnect()
+    public function releaseConnect($pool,$socket)
     {
         /** @var ConnectionManager $cm */
         $cm = \Yii::$app->getConnectionManager();
-        $cm->releaseConnection($this->poolKey, $this->pool, $this->_socket);
+        $this->_socket->close($socket);
+        $cm->releaseConnection($this->poolKey, $pool,$socket);
         $this->_socket = null;
     }
 
@@ -127,7 +128,7 @@ class Connection extends \yii\redis\Connection
         $cm = \Yii::$app->getConnectionManager();
         $poolKey = $this->buildPoolKey();
         $this->pool = $cm->getPool($poolKey);
-
+        
         if (!$this->pool) {
             // connect_timeout && time in  4.2.10
             $config = [
@@ -156,7 +157,6 @@ class Connection extends \yii\redis\Connection
             $this->pool = $dbPool;
             $cm->addPool($poolKey, $dbPool);
         }
-
         return $cm->get($this->poolKey);
 
         // return $this->pool->getConnect()->getConnection();
