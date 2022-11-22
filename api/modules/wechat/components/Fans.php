@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-25 19:42:17
+ * @Last Modified time: 2022-11-22 22:29:10
  */
 
 namespace app\modules\wechat\components;
@@ -124,6 +124,7 @@ class Fans extends BaseObject
                 'city' => $users['city'],
                 'province' => $users['province'],
                 'secretKey' => $secretKey,
+                'session_key' => $users['session_key'],
             ];
             FileHelper::writeLog($logPath, '登录日志:组装fans' . json_encode($dataFans));
 

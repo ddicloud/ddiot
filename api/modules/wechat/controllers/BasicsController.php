@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-29 15:22:26
+ * @Last Modified time: 2022-11-22 22:28:20
  */
 
 namespace api\modules\wechat\controllers;
@@ -115,26 +115,27 @@ class BasicsController extends AController
         $code = $users['code'];
 
         unset($users['code']);
-        $logPath = Yii::getAlias('@runtime/wechat/signup/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@runtime/wechat/signup/' . date('ymd') . '.log');
 
-        FileHelper::writeLog($logPath, '登录日志：请求code的用户数据'.json_encode($users));
+        FileHelper::writeLog($logPath, '登录日志：请求code的用户数据' . json_encode($users));
 
         $miniProgram = Yii::$app->wechat->miniProgram;
         if (empty($users['openid'])) { // 当openid有值的时候为app登录
             $user = $miniProgram->auth->session($code);
-            FileHelper::writeLog($logPath, '登录日志：获取信息'.json_encode($user));
+            FileHelper::writeLog($logPath, '登录日志：获取信息' . json_encode($user));
 
             if (key_exists('errcode', $user)) {
-                FileHelper::writeLog($logPath, '登录日志：请求错误信息'.json_encode($user));
+                FileHelper::writeLog($logPath, '登录日志：请求错误信息' . json_encode($user));
 
                 return ResultHelper::json(401, $user['errmsg'], []);
             }
+            $users['session_key'] = $user['session_key'];
             $users['openid'] = $user['openid'];
             $users['unionid'] = key_exists('unionid', $user) ? $user['unionid'] : '';
         }
         // 查询该openID是否存在
         $res = Yii::$app->fans->signup($users);
-        FileHelper::writeLog($logPath, '登录成功：'.json_encode($res));
+        FileHelper::writeLog($logPath, '登录成功：' . json_encode($res));
 
         return ResultHelper::json(200, '登录成功', $res);
     }
@@ -222,8 +223,8 @@ class BasicsController extends AController
             // 'open_id' => 'okFAZ0-',  //JS支付必填
             // 'auth_code' => 'ojPztwJ5bRWRt_Ipg',  刷卡支付必填
         ];
-        $logPath = Yii::getAlias('@runtime/wechat/payparameters'.date('ymd').'.log');
-        FileHelper::writeLog($logPath, '订单数据'.json_encode(ArrayHelper::toArray($orderData)));
+        $logPath = Yii::getAlias('@runtime/wechat/payparameters' . date('ymd') . '.log');
+        FileHelper::writeLog($logPath, '订单数据' . json_encode(ArrayHelper::toArray($orderData)));
 
         // 生成支付配置
         $payment = Yii::$app->wechat->payment;
@@ -244,32 +245,32 @@ class BasicsController extends AController
      */
     public function actionNotify()
     {
-        $logPath = Yii::getAlias('@runtime/wechat/notify/'.date('ymd').'.log');
-        FileHelper::writeLog($logPath, '开始回调'.json_encode(Yii::$app->wechat->payment));
+        $logPath = Yii::getAlias('@runtime/wechat/notify/' . date('ymd') . '.log');
+        FileHelper::writeLog($logPath, '开始回调' . json_encode(Yii::$app->wechat->payment));
 
         $input = file_get_contents('php://input');
 
-        FileHelper::writeLog($logPath, '开始回调'.json_encode($input));
+        FileHelper::writeLog($logPath, '开始回调' . json_encode($input));
 
         $response = Yii::$app->wechat->payment->handlePaidNotify(function ($message, $fail) {
-            $logPath = Yii::getAlias('@runtime/wechat/notify/'.date('ymd').'.log');
+            $logPath = Yii::getAlias('@runtime/wechat/notify/' . date('ymd') . '.log');
 
             FileHelper::writeLog($logPath, Json::encode(ArrayHelper::toArray($message)));
             /////////////  建议在这里调用微信的【订单查询】接口查一下该笔订单的情况，确认是已经支付 /////////////
 
             // return_code 表示通信状态，不代表支付状态
             if ($message['return_code'] === 'SUCCESS') {
-                FileHelper::writeLog($logPath, '成功回调'.$message['out_trade_no']);
+                FileHelper::writeLog($logPath, '成功回调' . $message['out_trade_no']);
                 $orderInfo = DdCorePaylog::findOne(['uniontid' => $message['out_trade_no']]);
-                FileHelper::writeLog($logPath, '订单信息'.json_encode($orderInfo));
+                FileHelper::writeLog($logPath, '订单信息' . json_encode($orderInfo));
 
                 $module = $orderInfo['module'];
 
-                FileHelper::writeLog($logPath, '下单模块'.$module);
+                FileHelper::writeLog($logPath, '下单模块' . $module);
 
                 $notify = Yii::$app->getModule($module)->Notify($message);
 
-                FileHelper::writeLog($logPath, '下单模块处理数据结构'.json_decode($notify));
+                FileHelper::writeLog($logPath, '下单模块处理数据结构' . json_decode($notify));
 
                 if ($notify) {
                     return true;
@@ -278,7 +279,7 @@ class BasicsController extends AController
 
             return $fail('处理失败，请稍后再通知我');
         });
-        FileHelper::writeLog($logPath, '回调完毕'.json_encode($response));
+        FileHelper::writeLog($logPath, '回调完毕' . json_encode($response));
 
         $response->send();
     }
@@ -286,15 +287,15 @@ class BasicsController extends AController
     // 退款回调
     public function actionRefundednotify()
     {
-        $logPath = Yii::getAlias('@runtime/wechat/refundednotify/'.date('ymd').'.log');
-        FileHelper::writeLog($logPath, '开始回调'.json_encode(Yii::$app->wechat->payment));
+        $logPath = Yii::getAlias('@runtime/wechat/refundednotify/' . date('ymd') . '.log');
+        FileHelper::writeLog($logPath, '开始回调' . json_encode(Yii::$app->wechat->payment));
 
         $input = file_get_contents('php://input');
 
-        FileHelper::writeLog($logPath, '退款回调数据'.json_encode($input));
+        FileHelper::writeLog($logPath, '退款回调数据' . json_encode($input));
 
         $response = Yii::$app->wechat->payment->handleRefundedNotify(function ($message, $reqInfo, $fail) {
-            $logPath = Yii::getAlias('@runtime/wechat/refundednotify/'.date('ymd').'.log');
+            $logPath = Yii::getAlias('@runtime/wechat/refundednotify/' . date('ymd') . '.log');
 
             FileHelper::writeLog($logPath, Json::encode(ArrayHelper::toArray($reqInfo)));
             /////////////  建议在这里调用微信的【订单查询】接口查一下该笔订单的情况，确认是已经支付 /////////////
@@ -328,11 +329,11 @@ class BasicsController extends AController
                     'out_refund_no' => $reqInfo['out_refund_no'],
                 ]);
 
-                FileHelper::writeLog($logPath, '全局更新日志结果'.json_decode($Res));
+                FileHelper::writeLog($logPath, '全局更新日志结果' . json_decode($Res));
 
                 $notify = Yii::$app->getModule($module)->Refundednotify($reqInfo);
 
-                FileHelper::writeLog($logPath, '下单模块处理数据结构'.json_decode($notify));
+                FileHelper::writeLog($logPath, '下单模块处理数据结构' . json_decode($notify));
 
                 if ($notify) {
                     return true;
@@ -341,7 +342,7 @@ class BasicsController extends AController
 
             return $fail('处理失败，请稍后再通知我');
         });
-        FileHelper::writeLog($logPath, '回调完毕'.json_encode($response));
+        FileHelper::writeLog($logPath, '回调完毕' . json_encode($response));
 
         $response->send();
     }

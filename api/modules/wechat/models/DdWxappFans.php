@@ -4,9 +4,8 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 02:29:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-08 09:13:24
+ * @Last Modified time: 2022-11-22 22:30:29
  */
-
 
 namespace api\modules\wechat\models;
 
@@ -47,9 +46,9 @@ class DdWxappFans extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'openid', 'nickname', 'fans_info'], 'required'],
-            [['user_id', 'update_time', 'create_time', 'gender','groupid'], 'integer'],
+            [['user_id', 'update_time', 'create_time', 'gender', 'groupid'], 'integer'],
             [['fans_info'], 'string'],
-            [['avatarUrl', 'secretKey'], 'string', 'max' => 255],
+            [['avatarUrl', 'secretKey', 'session_key'], 'string', 'max' => 255],
             [['openid', 'nickname'], 'string', 'max' => 50],
             [['unionid'], 'string', 'max' => 64],
             [['country', 'city', 'province'], 'string', 'max' => 100],
@@ -67,14 +66,14 @@ class DdWxappFans extends \yii\db\ActiveRecord
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'create_time',
                 'createdAttribute' => 'update_time',
-            ]
+            ],
         ];
     }
 
     // 根据用户id获取信息
     public static function getFansByUid($user_id)
     {
-        return  self::findOne(['user_id' => $user_id]);
+        return self::findOne(['user_id' => $user_id]);
     }
 
     /**
