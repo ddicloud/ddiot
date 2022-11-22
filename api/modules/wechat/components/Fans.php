@@ -66,14 +66,20 @@ class Fans extends BaseObject
 
         if (RegisterLevel::isRegister($isHave, $_GPC['bloc_id'])) {
             FileHelper::writeLog($logPath, '登录日志:有缓存');
-
+           
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);
             $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member, 1);
-            $userinfo['fans'] = $this->fansByopenid($openid);
+            $userinfo['fans'] = $fans;
             Yii::$app->cache->set($keys, $userinfo);
             FileHelper::writeLog($logPath, '登录日志:有缓存数据' . json_encode($userinfo));
-
+            $DdWxappFans = new DdWxappFans();
+            $DdWxappFans->updateAll([
+                'session_key' => $users['session_key']
+            ],[
+                'fanid'=>$fans['fanid'],
+                'openid' => $users['openid'],
+            ]);
             return $userinfo;
         } else {
             $password = StringHelper::randomNum();
