@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-22 22:29:10
+ * @Last Modified time: 2022-11-22 22:50:57
  */
 
 namespace app\modules\wechat\components;
@@ -66,20 +66,24 @@ class Fans extends BaseObject
 
         if (RegisterLevel::isRegister($isHave, $_GPC['bloc_id'])) {
             FileHelper::writeLog($logPath, '登录日志:有缓存');
-           
+
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);
             $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member, 1);
-            $userinfo['fans'] = $fans;
+
             Yii::$app->cache->set($keys, $userinfo);
             FileHelper::writeLog($logPath, '登录日志:有缓存数据' . json_encode($userinfo));
             $DdWxappFans = new DdWxappFans();
             $DdWxappFans->updateAll([
-                'session_key' => $users['session_key']
-            ],[
-                'fanid'=>$fans['fanid'],
+                'session_key' => $users['session_key'],
+            ], [
+                'fanid' => $fans['fanid'],
                 'openid' => $users['openid'],
             ]);
+            // 更新后获取
+            $fans = $this->fansByopenid($openid);
+
+            $userinfo['fans'] = $fans;
             return $userinfo;
         } else {
             $password = StringHelper::randomNum();
