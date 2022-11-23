@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-18 10:30:53
+ * @Last Modified time: 2022-11-23 14:31:59
  */
 
 use diandi\swoole\web\ErrorHandler;
@@ -99,10 +99,6 @@ return [
             'enableAutoLogin' => true,
             'enableSession' => true,
             'loginUrl' => null,
-        ],
-        // 缓存组件
-        'cachehelper' => [
-            'class' => 'common\helpers\CacheHelper',
         ],
         /* ------ 队列设置 ------ **/
         'queue' => [
