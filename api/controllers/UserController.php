@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 18:26:12
+ * @Last Modified time: 2022-11-23 14:04:24
  */
 
 namespace api\controllers;
@@ -171,7 +171,7 @@ class UserController extends AController
             $data = Yii::$app->request->post();
             $mobile = $data['mobile'];
             $code = $data['code'];
-            $sendcode = Yii::$app->cache->get($mobile.'_code');
+            $sendcode = Yii::$app->cache->get($mobile . '_code');
             if ($code != $sendcode) {
                 return ResultHelper::json(401, '验证码错误');
             }
@@ -186,7 +186,7 @@ class UserController extends AController
                 $service->namespace = 'api';
                 $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
                 // 清除验证码
-                Yii::$app->cache->delete($mobile.'_code');
+                Yii::$app->cache->delete($mobile . '_code');
 
                 return ResultHelper::json(200, '修改成功', $userinfo);
             }
@@ -316,7 +316,7 @@ class UserController extends AController
 
         $code = $_GPC['code'];
         $mobile = $_GPC['mobile'];
-        $sendcode = Yii::$app->cache->get($mobile.'_code');
+        $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
@@ -441,7 +441,7 @@ class UserController extends AController
         $mobile = $data['mobile'];
         $password = $data['password'];
         $code = $data['code'];
-        $sendcode = Yii::$app->cache->get($mobile.'_code');
+        $sendcode = Yii::$app->cache->get($mobile . '_code');
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
         }
@@ -449,7 +449,7 @@ class UserController extends AController
         $res = Yii::$app->service->apiAccessTokenService->forgetpassword($member, $mobile, $password);
         if ($res) {
             // 清除验证码
-            Yii::$app->cache->delete($mobile.'_code');
+            Yii::$app->cache->delete($mobile . '_code');
 
             return ResultHelper::json(200, '修改成功', []);
         } else {
@@ -506,7 +506,7 @@ class UserController extends AController
         }
 
         $code = random_int(1000, 9999);
-        Yii::$app->cache->set($mobile.'_code', $code);
+        Yii::$app->cache->set((int) $mobile . '_code', $code);
 
         $usage = '忘记密码验证';
 
