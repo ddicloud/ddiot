@@ -3,13 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-19 20:27:15
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 21:30:41
+ * @Last Modified time: 2022-11-30 20:21:39
  */
 return [
     'host' => '0.0.0.0',
     'port' => 9501,
-    'mode' => SWOOLE_PROCESS,
-    'sockType' => SWOOLE_SOCK_TCP,
+    'ssl' => false,
     'app' => require __DIR__ . '/web.php',
     'options' => [
         'task_enable_coroutine' => true,
