@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-05 10:04:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-14 12:46:38
+ * @Last Modified time: 2022-12-02 18:36:04
  */
 
 namespace ddswoole\components\websocket;
@@ -77,18 +77,26 @@ class WebsocketController extends BaseController implements SwooleInterfaceContr
 
         $pm = new Manager(SWOOLE_IPC_UNIXSOCK, $listens, 1);
         $pm->add(function (Pool $pool, int $workerId) use ($serverName) {
+            print_r($pool);
+            var_dump($workerId);
             //让每个OnWorkerStart回调都自动创建一个协程
-            $Loader = new Loader();
-            $context = new Context();
-            $server = new $serverName($this->config, $Loader, $context, $pool, $workerId);
+            // $Loader = new Loader();
+            // $context = new Context();
+            // $server = new $serverName($this->config, $Loader, $context, $pool, $workerId);
 
-            return $server->run();
+            // return $server->run();
         }, 'start', 1);
 
         $pm->add(function (Pool $pool, string $data) {
             echo 'we';
             var_dump($data);
         }, 'message');
+
+        
+        $pm->add(function (Pool $pool, string $data) {
+            echo 'WorkerExit';
+            var_dump($data);
+        }, 'WorkerExit');
 
         // $pm->add(function (Pool $pool, int $workerId) {
         //     $socket = new Coroutine\Socket(AF_INET, SOCK_STREAM, 0);
