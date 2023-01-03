@@ -1,5 +1,5 @@
 
-# 欢迎使用店滴 cms(ddicms)
+# 欢迎使用店滴 cms(ddiot)
 ![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F479ed84d544cfcb0f5a7e7be2f5f60c.jpg)
 
  店滴云，让经营场所，更智能。围绕茶室、酒店、健身房、公寓、出租房等经营性场所进行物联网改造。同时支持多种物联网通信协议，开放智能门锁，智能开关，智能手环的sdk供开发者使用。
