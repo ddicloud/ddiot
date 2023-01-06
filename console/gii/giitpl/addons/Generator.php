@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-30 10:45:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-12-19 08:01:37
+ * @Last Modified time: 2023-01-05 10:58:40
  */
 
 namespace addonstpl\addons;
@@ -130,7 +130,7 @@ EOD;
      */
     public function requiredTemplates()
     {
-        return ['module.php', 'controller.php', 'view.php', 'api.php', 'frontend.php', 'manifest.xml'];
+        return ['module.php', 'controller.php', 'api.php', 'frontend.php', 'manifest.xml'];
     }
 
     /**
@@ -149,10 +149,7 @@ EOD;
             $modulePath.'/backend/DefaultController.php',
             $this->render('controller.php')
         );
-        $files[] = new CodeFile(
-            $modulePath.'/views/default/index.php',
-            $this->render('view.php')
-        );
+
         $files[] = new CodeFile(
             $modulePath.'/api.php',
             $this->render('api.php')
@@ -171,11 +168,6 @@ EOD;
         );
 
         $files[] = new CodeFile(
-            $modulePath.'/frontend/DocController.php',
-            $this->render('DocController.php')
-        );
-
-        $files[] = new CodeFile(
             $modulePath.'/api/ApiController.php',
             $this->render('ApiController.php')
         );
@@ -191,18 +183,8 @@ EOD;
         );
 
         $files[] = new CodeFile(
-            $modulePath.'/AutocompleteAsset.php',
-            $this->render('AutocompleteAsset.php')
-        );
-
-        $files[] = new CodeFile(
             $modulePath.'/upgrade.php',
             $this->render('upgrade.php')
-        );
-
-        $files[] = new CodeFile(
-            $modulePath.'/python/__init__.py',
-            $this->render('__init__.py')
         );
 
         $files[] = new CodeFile(
