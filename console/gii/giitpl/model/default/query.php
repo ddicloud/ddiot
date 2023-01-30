@@ -1,5 +1,12 @@
 <?php
 /**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-05-28 22:31:12
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-12-21 11:38:04
+ */
+
+/**
  * This is the template for generating the ActiveQuery class.
  */
 

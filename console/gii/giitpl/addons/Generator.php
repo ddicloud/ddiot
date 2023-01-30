@@ -4,15 +4,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-30 10:45:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-24 10:56:22
+ * @Last Modified time: 2023-01-05 10:58:40
  */
 
 namespace addonstpl\addons;
 
 use common\helpers\FileHelper;
+use Yii;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
-use Yii;
 
 class Generator extends \yii\gii\Generator
 {
@@ -122,7 +122,7 @@ EOD;
     ......
 EOD;
 
-        return $output . '<pre>' . highlight_string($code, true) . '</pre>';
+        return $output.'<pre>'.highlight_string($code, true).'</pre>';
     }
 
     /**
@@ -130,7 +130,7 @@ EOD;
      */
     public function requiredTemplates()
     {
-        return ['module.php', 'controller.php', 'view.php', 'api.php', 'AutocompleteAsset.php', 'frontend.php', 'manifest.xml'];
+        return ['module.php', 'controller.php', 'api.php', 'frontend.php', 'manifest.xml'];
     }
 
     /**
@@ -141,96 +141,75 @@ EOD;
         $files = [];
         $modulePath = $this->getModulePath();
         $files[] = new CodeFile(
-            $modulePath . '/site.php',
+            $modulePath.'/site.php',
             $this->render('module.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/backend/DefaultController.php',
+            $modulePath.'/backend/DefaultController.php',
             $this->render('controller.php')
         );
+
         $files[] = new CodeFile(
-            $modulePath . '/views/default/index.php',
-            $this->render('view.php')
-        );
-        $files[] = new CodeFile(
-            $modulePath . '/api.php',
+            $modulePath.'/api.php',
             $this->render('api.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/admin.php',
+            $modulePath.'/admin.php',
             $this->render('admin.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/console.php',
+            $modulePath.'/console.php',
             $this->render('console.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/frontend.php',
+            $modulePath.'/frontend.php',
             $this->render('frontend.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/frontend/DocController.php',
-            $this->render('DocController.php')
-        );
-
-        $files[] = new CodeFile(
-            $modulePath . '/api/ApiController.php',
+            $modulePath.'/api/ApiController.php',
             $this->render('ApiController.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/install.php',
+            $modulePath.'/install.php',
             $this->render('install.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/uninstall.php',
+            $modulePath.'/uninstall.php',
             $this->render('uninstall.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/AutocompleteAsset.php',
-            $this->render('AutocompleteAsset.php')
-        );
-
-        $files[] = new CodeFile(
-            $modulePath . '/upgrade.php',
+            $modulePath.'/upgrade.php',
             $this->render('upgrade.php')
         );
 
         $files[] = new CodeFile(
-            $modulePath . '/python/__init__.py',
-            $this->render('__init__.py')
-        );
-
-        $files[] = new CodeFile(
-            $modulePath . '/manifest.xml',
+            $modulePath.'/manifest.xml',
             $this->render('manifest.xml')
         );
 
         // 配置文件生成
         $files[] = new CodeFile(
-            $modulePath . '/config/api.php',
+            $modulePath.'/config/api.php',
             $this->render('config/api.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/config/menu.php',
+            $modulePath.'/config/menu.php',
             $this->render('config/menu.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/config/console.php',
+            $modulePath.'/config/console.php',
             $this->render('config/console.php')
         );
-
-
 
         $dirs = ['migrations', 'assets', 'components', 'models', 'models\searchs', 'models\forms', 'models\enums', 'services', 'admin'];
 
         foreach ($dirs as $key => $value) {
-
-            FileHelper::mkdirs($modulePath . "/{$value}");
+            FileHelper::mkdirs($modulePath."/{$value}");
         }
 
         return $files;
@@ -241,7 +220,7 @@ EOD;
      */
     public function validateModuleClass()
     {
-        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@' . str_replace('\\', '/', $this->moduleClass), false) === false) {
+        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@'.str_replace('\\', '/', $this->moduleClass), false) === false) {
             $this->addError('moduleClass', 'Module class must be properly namespaced.');
         }
         if (empty($this->moduleClass) || substr_compare($this->moduleClass, '\\', -1, 1) === 0) {
@@ -249,21 +228,21 @@ EOD;
         }
     }
 
-
     /**
      * An inline validator that checks if the attribute value refers to a valid namespaced class name.
      * The validator will check if the directory containing the new class file exist or not.
+     *
      * @param string $attribute the attribute being validated
-     * @param array $params the validation options
+     * @param array  $params    the validation options
      */
     public function validateNewClass($attribute, $params)
     {
         $class = ltrim($this->$attribute, '\\');
         if (($pos = strrpos($class, '\\')) === false) {
-            $this->addError($attribute, "The class name must contain fully qualified namespace name.");
+            $this->addError($attribute, 'The class name must contain fully qualified namespace name.');
         } else {
             $ns = substr($class, 0, $pos);
-            $path = Yii::getAlias('@' . str_replace('\\', '/', $ns), false);
+            $path = Yii::getAlias('@'.str_replace('\\', '/', $ns), false);
             if ($path === false) {
                 $this->addError($attribute, "The class namespace is invalid: $ns");
             } elseif (!is_dir($path)) {
@@ -278,9 +257,9 @@ EOD;
      */
     public function getModulePath()
     {
-        $this->moduleClass = 'addons\\' . $this->moduleID . '\\site';
+        $this->moduleClass = 'addons\\'.$this->moduleID.'\\site';
 
-        return Yii::getAlias('@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
+        return Yii::getAlias('@'.str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
     }
 
     /**
@@ -293,19 +272,19 @@ EOD;
 
     public function getAssetsPath()
     {
-        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\assets';
+        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')).'\assets';
     }
 
     public function getFrontendPath()
     {
-        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\frontend';
+        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')).'\frontend';
     }
 
     public function getApiCachekey()
     {
         $key = explode('\\', $this->moduleClass);
 
-        return $key[2] . '-api';
+        return $key[2].'-api';
     }
 
     public function getItems($k)

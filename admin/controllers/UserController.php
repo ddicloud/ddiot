@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 19:13:16
+ * @Last Modified time: 2022-12-17 11:30:38
  */
 
 namespace admin\controllers;
@@ -285,7 +285,7 @@ class UserController extends AController
     {
         global $_GPC;
         $type = $_GPC['type'];
-        if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
+        if (!in_array($type, ['forgetpass', 'register', 'bindMobile','login'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
         $mobile = $_GPC['mobile'];
