@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 19:01:59
+ * @Last Modified time: 2023-02-20 11:50:50
  */
 
 namespace admin\controllers\addons;
@@ -19,6 +19,7 @@ use common\helpers\ErrorsHelper;
 use common\helpers\LevelTplHelper;
 use common\helpers\ResultHelper;
 use common\models\DdRegion;
+use diandi\addons\models\Bloc as ModelsBloc;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\BlocStoreSearch;
 use diandi\addons\models\searchs\StoreCategory;
@@ -365,6 +366,12 @@ class StoreController extends AController
     public function actionStoreCreate()
     {
         global $_GPC;
+        // 校验公司是否存储
+        $bloc_id = (int) $_GPC['bloc_id'];
+        $have_bloc = ModelsBloc::find()->where(['bloc_id'=>$bloc_id])->asArray()->one();
+        if(!$have_bloc){
+            return ResultHelper::json(400, '管理员授权公司不存在');
+        }
         $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);
         // 创建成功，重新返回用户权限数据
         $list = UserService::getUserMenus();
