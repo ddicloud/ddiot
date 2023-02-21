@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:30:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-01 16:45:38
+ * @Last Modified time: 2023-02-21 14:06:56
  */
  
 
@@ -89,7 +89,6 @@ class UploadValidate extends Model
             $file_rule['message'] = $this->message;
         }
         $rules = [$file_rule];
-        
         return $rules;
     }
 }

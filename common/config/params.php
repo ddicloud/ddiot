@@ -4,12 +4,12 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:35:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 11:12:51
+ * @Last Modified time: 2023-02-21 13:56:57
  */
 return [
     'uploadFile' => [
         'extensions' => ['jpg', 'png', 'jpeg', 'jpe', 'pdf', 'mp4', 'xls', 'txt', 'doc', 'xls', 'xlsx', 'zip', 'pem'],
-        'mime_types' => ['image/*', 'application/*', 'application/pdf', 'video/mp4', 'application/vnd.ms-excel', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'audio/x-mpeg', 'video/mp4', 'application/zip', 'application/octet-stream', 'application/x-x509-ca-cert'],
+        'mime_types' => ['image/*', 'application/*', 'application/pdf', 'video/mp4', 'application/vnd.ms-excel', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'audio/x-mpeg', 'video/mp4', 'application/zip', 'application/octet-stream'],
         'max_size' => 10 * 1024 * 1024,
         'min_size' => 1,
         'message' => '上传失败',
