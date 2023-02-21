@@ -118,7 +118,7 @@ class Upload extends Model
         $path = $path ? $path.'/' : '';
         $file = UploadedFile::getInstanceByName('file');
         $model->file = $file;
-
+        
         // 云上传
         $Attachment = new OssUpload();
 
