@@ -8,8 +8,8 @@
  */
 return [
     'uploadFile' => [
-        'extensions' => ['jpg', 'png', 'jpeg', 'jpe', 'pdf', 'mp4', 'xls', 'txt', 'doc', 'xls', 'xlsx','zip'],
-        'mime_types' => ['image/*', 'application/*', 'application/pdf', 'video/mp4', 'application/vnd.ms-excel', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'audio/x-mpeg', 'video/mp4','application/zip','application/octet-stream'],
+        'extensions' => ['jpg', 'png', 'jpeg', 'jpe', 'pdf', 'mp4', 'xls', 'txt', 'doc', 'xls', 'xlsx', 'zip', 'pem'],
+        'mime_types' => ['image/*', 'application/*', 'application/pdf', 'video/mp4', 'application/vnd.ms-excel', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'audio/x-mpeg', 'video/mp4', 'application/zip', 'application/octet-stream'],
         'max_size' => 10 * 1024 * 1024,
         'min_size' => 1,
         'message' => '上传失败',
