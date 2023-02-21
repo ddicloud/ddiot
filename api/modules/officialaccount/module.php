@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-08 00:13:41
+ * @Last Modified time: 2023-02-21 15:19:55
  */
 
 namespace api\modules\officialaccount;
@@ -101,7 +101,8 @@ class module extends \yii\base\Module
         if(StringHelper::strExists($requestedRoute,'payappparameters')){
             // app支付
             $Wechat = $conf['app'];
-
+            $apiclient_cert = Yii::getAlias('@attachment/'.$Wechat['apiclient_cert']['url']);
+            $apiclient_key = Yii::getAlias('@attachment/'.$Wechat['apiclient_key']['url']);
             $config['params']['wechatPaymentConfig'] = [
                 'app_id' => $Wechat['app_id'],
                 'mch_id' => $Wechat['partner'],
@@ -109,14 +110,20 @@ class module extends \yii\base\Module
                 // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
                 // 'cert_path'          => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
                 // 'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
-                'cert_path'          => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-                'key_path'          => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
+                'cert_path'          => $apiclient_cert, // XXX: 绝对路径！！！！
+                'key_path'          => $apiclient_key, // XXX: 绝对路径！！！！
                 'notify_url' => Yii::$app->request->hostInfo.'/api/officialaccount/basics/notify',
             ];
 
             FileHelper::writeLog($logPath, 'app支付'.json_encode($config['params']['wechatPaymentConfig']));
 
         }else{
+            
+            $apiclient_cert = Yii::getAlias('@attachment/'.$wechat['apiclient_cert']['url']);
+            $apiclient_key = Yii::getAlias('@attachment/'.$wechat['apiclient_key']['url']);
+            
+            
+
             $config['params']['wechatPaymentConfig'] = [
                 'app_id' => $wechat['app_id'],
                 'mch_id' => $Wechatpay['mch_id'],
@@ -124,8 +131,8 @@ class module extends \yii\base\Module
                 // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
                 // 'cert_path'          => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
                 // 'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
-                'cert_path'          => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-                'key_path'          => Yii::getAlias('@api/modules/officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
+                'cert_path'          => $apiclient_cert, // XXX: 绝对路径！！！！
+                'key_path'          => $apiclient_key, // XXX: 绝对路径！！！！
                 'notify_url' => Yii::$app->request->hostInfo.'/api/officialaccount/basics/notify',
             ];
         }

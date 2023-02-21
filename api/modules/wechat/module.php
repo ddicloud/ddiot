@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 12:00:07
+ * @Last Modified time: 2023-02-21 15:20:57
  */
 
 namespace api\modules\wechat;
@@ -92,14 +92,18 @@ class module extends \yii\base\Module
         $Wechatpay = $conf['wechatpay'];
         $Wxapp = $conf['wxapp'];
 
+        $apiclient_cert = Yii::getAlias('@attachment/'.$Wechatpay['apiclient_cert']['url']);
+        $apiclient_key = Yii::getAlias('@attachment/'.$Wechatpay['apiclient_key']['url']);
+        
+        
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
             'app_id' => $Wxapp['AppId'],
             'mch_id' => $Wechatpay['mch_id'],
             'key' => $Wechatpay['key'],  // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
-            'cert_path'          => Yii::getAlias('@api/modules/wechat/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-            'key_path'          => Yii::getAlias('@api/modules/wechat/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
+            'cert_path' => $apiclient_cert, // XXX: 绝对路径！！！！
+            'key_path'  => $apiclient_key, // XXX: 绝对路径！！！！
             'notify_url' => Yii::$app->request->hostInfo . '/api/wechat/basics/notify',
         ];
 
