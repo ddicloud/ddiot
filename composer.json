@@ -37,7 +37,7 @@
         "overtrue/wechat": "~4.0",
         "yii-diandi/yii2-migration": "^2.0",
         "yiisoft/yii2": "^2.0",
-        "yii-diandi/yii2-addons": "^2.9",
+        "yii-diandi/yii2-addons": "^3.0",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
