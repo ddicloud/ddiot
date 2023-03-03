@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 13:59:15
+ * @Last Modified time: 2023-03-03 14:14:42
  */
 
 namespace common\traits\ActiveQuery;
@@ -67,9 +67,10 @@ class CommonQuery extends ActiveQuery
      */
     public function findStores()
     {
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->column();
-
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->asArray()->all();
+        
         $bloc_ids = array_column($user_blocs,'bloc_id');
+        
         $store_ids = array_column($user_blocs,'store_id');
         
         $this->andWhere(['store_id' => $store_ids, 'bloc_id' => $bloc_ids]);
