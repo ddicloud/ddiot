@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 19:22:39
+ * @Last Modified time: 2023-03-03 15:06:25
  */
 
 namespace admin\services;
@@ -43,8 +43,8 @@ class UserService extends BaseService
 
         $AddonsUser = new AddonsUser();
         $module_names = $AddonsUser->find()->where([
-             'user_id' => Yii::$app->user->identity->user_id,
-         ])->with(['addons'])->asArray()->all();
+            'user_id' => Yii::$app->user->identity->user_id,
+        ])->with(['addons'])->asArray()->all();
 
         foreach ($module_names as $key => &$value) {
             if (empty($value['addons'])) {
@@ -132,7 +132,7 @@ class UserService extends BaseService
         $user = User::findOne($user_id);
         $user->status = $list[$type];
 
-        return  $user->update();
+        return $user->update();
     }
 
     /**
@@ -165,13 +165,13 @@ class UserService extends BaseService
         $model = new Assignment([
             'id' => $user_id,
             'is_sys' => 3,
-            ]);
+        ]);
 
         $model->assign([
             'role' => $default_group_ids,
         ]);
 
-        $key = 'auth_'.$user_id.'_'.'initmenu';
+        $key = 'auth_' . $user_id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
     }
 
@@ -283,7 +283,7 @@ class UserService extends BaseService
             'parent_id' => 0,
             'permission_type' => 1,
             'is_sys' => 0,
-            ])->select('id')->column();
+        ])->select('id')->column();
         loggingHelper::writeLog('StoreService', 'createStore', '初始权限数据', $items);
         $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
         $user = $class::findIdentity($user_id);
@@ -291,7 +291,7 @@ class UserService extends BaseService
         $model = new Assignment([
             'id' => $user_id,
             'type' => 1, //0 系统，1模块
-            ], $user);
+        ], $user);
         $itemsModel = $model->getItems(3); //3代表获取所有
         $all = $itemsModel['all'];
         // 所有应用
@@ -355,12 +355,12 @@ class UserService extends BaseService
         foreach ($addList as $key => $value) {
             $_AddonsUser = clone $AddonsUser;
             $data = [
-                 'user_id' => $user_id,
-                 'is_default' => 0,
-                 'type' => 1,
-                 'module_name' => $value['identifie'],
-                 'status' => 0,
-             ];
+                'user_id' => $user_id,
+                'is_default' => 0,
+                'type' => 1,
+                'module_name' => $value['identifie'],
+                'status' => 0,
+            ];
             $_AddonsUser->setAttributes($data);
             if (!$_AddonsUser->save()) {
                 $msg = ErrorsHelper::getModelError($_AddonsUser);
@@ -372,15 +372,15 @@ class UserService extends BaseService
         $delete_ids = array_diff($assigned_ids, $authItems);
         $deleteList = DdAddons::find()->where(['mid' => $delete_ids])->select('identifie')->column();
         $AddonsUser::deleteAll([
-             'user_id' => $user_id,
-             'module_name' => $deleteList,
-         ]);
+            'user_id' => $user_id,
+            'module_name' => $deleteList,
+        ]);
 
         // 授权插件的权限
         $model = new Assignment([
             'id' => $user_id,
             'is_sys' => 3,
-            ]);
+        ]);
 
         // 增加权限
         $add_ids = array_diff($authItems, $assigned_ids);
@@ -396,7 +396,52 @@ class UserService extends BaseService
             ]);
         }
 
-        $key = 'auth_'.$user_id.'_'.'initmenu';
+        $key = 'auth_' . $user_id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
+    }
+
+    /**
+     * 用户创建商户后授权商户权限
+     * @param [type] $bloc_id
+     * @param [type] $store_id
+     * @return void
+     * @date 2023-03-03
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function addUserBloc($user_id, $bloc_id, $store_id, $is_default)
+    {
+        $UserBloc = UserBloc::find()->where([
+            'user_id' => $user_id,
+            'bloc_id' => $bloc_id,
+            'store_id' => $store_id,
+        ])->asArray()->one();
+
+        if ($UserBloc) {
+            UserBloc::updateAll([
+                'is_default' => $is_default,
+            ], [
+                'user_id' => $user_id,
+                'bloc_id' => $bloc_id,
+                'store_id' => $store_id,
+            ]);
+        } else {
+            $UserBlocModel = new UserBloc();
+            $Res = $UserBlocModel->load([
+                'is_default' => $is_default,
+                'user_id' => $user_id,
+                'bloc_id' => $bloc_id,
+                'store_id' => $store_id,
+                'status'=>1,
+            ], '') && $UserBlocModel->save();
+            $msg = ErrorsHelper::getModelError($UserBlocModel);
+            if ($msg) {
+                return ResultHelper::serverJson(1, $msg);
+
+            }
+        }
+
+        return ResultHelper::serverJson(0, '保存成功');
     }
 }
