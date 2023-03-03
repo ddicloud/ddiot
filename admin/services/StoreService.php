@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 15:04:10
+ * @Last Modified time: 2023-03-03 15:14:05
  */
 
 namespace admin\services;
@@ -299,9 +299,9 @@ class StoreService extends BaseService
             'pid' => $data['pid'],
             'group_bloc_id' => $data['group_bloc_id'],
             'category' => $data['category'],
-            'province' => $data['province'],
-            'city' => $data['city'],
-            'district' => $data['district'],
+            'province' => $data['provinceCityDistrict'][0],
+            'city' => $data['provinceCityDistrict'][1],
+            'district' => $data['provinceCityDistrict'][2],
             'address' => $data['address'],
             'register_level' => $data['register_level'],
             'longitude' => $data['longitude'],
