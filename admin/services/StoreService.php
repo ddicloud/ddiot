@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 15:14:05
+ * @Last Modified time: 2023-03-03 15:28:40
  */
 
 namespace admin\services;
@@ -182,15 +182,15 @@ class StoreService extends BaseService
         ]);
         
         $storeData = [
-            'category_id' => $data['category_id'],
-            'category_pid' => $data['category_pid'],
+            'category_id' => $data['category'][0],
+            'category_pid' => $data['category'][1],
             'name' => $data['name'],
             'logo' => $data['logo'],
             'bloc_id' => $data['bloc_id'],
-            'province' => $data['province'],
-            'city' => $data['city'],
+            'province' => $data['provinceCityDistrict'][0],
+            'city' => $data['provinceCityDistrict'][1],
+            'county' => $data['provinceCityDistrict'][2],
             'address' => $data['address'],
-            'county' => $data['county'],
             'mobile' => $data['mobile'],
             'create_time' => $data['create_time'],
             'update_time' => $data['update_time'],
