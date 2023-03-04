@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 16:59:54
+ * @Last Modified time: 2023-03-04 17:14:22
  */
 
 namespace admin\services;
@@ -407,7 +407,7 @@ class StoreService extends BaseService
         $lists = [];
         foreach ($user_blocs as $key => $value) {
             if($value['bloc']){
-                $lists[] = [
+                $lists[$value['bloc_id']] = [
                     'id'=>$value['bloc_id'],
                     'name'=>$value['bloc']['business_name'],
                     "label" => $value['bloc']['business_name'],
@@ -416,7 +416,7 @@ class StoreService extends BaseService
 
             }
         }
-        return $lists;
+        return array_values($lists);
     }
 
     /**
@@ -433,7 +433,7 @@ class StoreService extends BaseService
         $lists = [];
         foreach ($user_blocs as $key => $value) {
             if($value['store']){
-                $lists[] = [
+                $lists[$value['store_id']] = [
                     'id'=>$value['store_id'],
                     'name'=>$value['store']['business_name'],
                     "label" => $value['store']['business_name'],
@@ -441,6 +441,6 @@ class StoreService extends BaseService
                 ];
             }
         }
-        return $lists;
+        return array_values($lists);
     }
 }
