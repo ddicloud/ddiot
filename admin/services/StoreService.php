@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 13:27:18
+ * @Last Modified time: 2023-03-04 13:30:12
  */
 
 namespace admin\services;
@@ -375,6 +375,6 @@ class StoreService extends BaseService
             }
         }
 
-        return $blocs;
+        return array_values($blocs);
     }
 }
