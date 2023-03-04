@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 20:43:13
+ * @Last Modified time: 2023-03-04 21:18:13
  */
 
 namespace admin\controllers\addons;
@@ -347,9 +347,9 @@ class BlocController extends AController
     {
         global $_GPC;
 
-        $global_bloc_id = Yii::$app->params['global_bloc_id'];
-
-        $levels = BlocLevel::find()->where(['global_bloc_id' => $global_bloc_id])->select(['level_num as value', 'name as text'])->asArray()->all();
+        // $global_bloc_id = Yii::$app->params['global_bloc_id'];
+        $bloc_id = $_GPC['bloc_id'];
+        $levels = BlocLevel::find()->where(['bloc_id' => $bloc_id])->select(['level_num as value', 'name as text'])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $levels);
     }
