@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 13:40:11
+ * @Last Modified time: 2023-03-04 14:11:53
  */
 
 namespace admin\services;
@@ -368,13 +368,18 @@ class StoreService extends BaseService
             }
 
             if (!empty($value['store'])) {
-                $blocs[$value['bloc_id']]['children'][] = [
+                $stores[$value['bloc_id']][] = [
                     "label" => $value['store']['name'],
                     "value" => $value['store']['store_id'],
                 ];
             } else {
                 unset($blocs[$value['bloc_id']]);
             }
+        }
+
+        
+        foreach ($blocs as $bloc_id => &$value) {
+            $value['children'] = $stores[$bloc_id];
         }
 
         return array_values($blocs);
