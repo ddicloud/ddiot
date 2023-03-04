@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 14:11:53
+ * @Last Modified time: 2023-03-04 16:59:54
  */
 
 namespace admin\services;
@@ -354,6 +354,14 @@ class StoreService extends BaseService
         }
     }
 
+    /**
+     * 获取公司与商户级联数据，表单级联使用
+     * @return void
+     * @date 2023-03-04
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
     public static function getStoresAndBloc()
     {
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc', 'store'])->asArray()->all();
@@ -383,5 +391,56 @@ class StoreService extends BaseService
         }
 
         return array_values($blocs);
+    }
+
+    /**
+     * 获取公司授权数据，检索使用
+     * @return void
+     * @date 2023-03-04
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function getAuthBlos()
+    {
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'])->asArray()->all();
+        $lists = [];
+        foreach ($user_blocs as $key => $value) {
+            if($value['bloc']){
+                $lists[] = [
+                    'id'=>$value['bloc_id'],
+                    'name'=>$value['bloc']['business_name'],
+                    "label" => $value['bloc']['business_name'],
+                    "value" => $value['bloc_id'],
+                ];
+
+            }
+        }
+        return $lists;
+    }
+
+    /**
+     * 获取商户授权数据，检索使用
+     * @return void
+     * @date 2023-03-04
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function getAuthStores()
+    {
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['store'])->asArray()->all();
+        $lists = [];
+        foreach ($user_blocs as $key => $value) {
+            if($value['store']){
+                $lists[] = [
+                    'id'=>$value['store_id'],
+                    'name'=>$value['store']['business_name'],
+                    "label" => $value['store']['business_name'],
+                    "value" => $value['store_id'],
+                ];
+            }
+        }
+        return $lists;
     }
 }
