@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 15:28:40
+ * @Last Modified time: 2023-03-04 11:06:16
  */
 
 namespace admin\services;
@@ -180,7 +180,7 @@ class StoreService extends BaseService
             'lng' => $data['longitude'],
             'lat' => $data['latitude'],
         ]);
-        
+
         $storeData = [
             'category_id' => $data['category'][0],
             'category_pid' => $data['category'][1],
@@ -323,7 +323,7 @@ class StoreService extends BaseService
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($blocData, '') && $model->save()) {
             loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
-            
+
             $bloc_id = $model->bloc_id;
 
             try {
@@ -337,6 +337,7 @@ class StoreService extends BaseService
                 }
                 $user_id = Yii::$app->user->identity->user_id;
                 // 初始权限
+                $store_id = 0;
                 UserService::addUserBloc($user_id, $bloc_id, $store_id, 0);
 
                 $transaction->commit();
@@ -353,4 +354,34 @@ class StoreService extends BaseService
         }
     }
 
+    public static function getStoresAndBloc()
+    {
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc', 'store'])->asArray()->all();
+        $blocs = [];
+        $stores = [];
+        foreach ($user_blocs as $key => $value) {
+            if ($value['bloc']) {
+                foreach ($value['bloc'] as $k => $val) {
+                    $blocs[$val['bloc_id']] = [
+                        "text" => $val['business_name'],
+                        "value" => $val['bloc_id'],
+                    ];
+                }
+            }
+
+            if ($value['store']) {
+                foreach ($value['store'] as $k => $val) {
+                    $stores[$val['bloc_id']] = [
+                        "text" => $val['name'],
+                        "value" => $val['store_id'],
+                    ];
+                }
+            }
+        }
+
+        return [
+            'bloc' => $blocs,
+            'store' => $stores,
+        ];
+    }
 }
