@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 11:45:19
+ * @Last Modified time: 2023-03-04 11:48:18
  */
 
 namespace admin\services;
@@ -362,15 +362,15 @@ class StoreService extends BaseService
         foreach ($user_blocs as $key => $value) {
             if (!empty($value['bloc'])) {
                 $blocs[$value['bloc_id']] = [
-                    "text" => $value['business_name'],
-                    "value" => $value['bloc_id'],
+                    "text" => $value['bloc']['business_name'],
+                    "value" => $value['bloc']['bloc_id'],
                 ];
             }
 
             if (!empty($value['store'])) {
-                $stores[$value['bloc_id']] = [
-                    "text" => $value['name'],
-                    "value" => $value['store_id'],
+                $stores[$value['store_id']] = [
+                    "text" => $value['store']['name'],
+                    "value" => $value['store']['store_id'],
                 ];
             }
         }
