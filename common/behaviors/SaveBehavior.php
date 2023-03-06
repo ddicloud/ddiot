@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-06 22:10:59
+ * @Last Modified time: 2023-03-06 22:16:15
  */
 
 namespace common\behaviors;
@@ -74,13 +74,6 @@ class SaveBehavior extends Behavior
 
         $time = $this->time_type === 'init' ? time() : date('Y-m-d H:i:s', time());
 
-        // 表单中提交了公司与商户就解析使用
-
-        $blocs = $_GPC['blocs'];
-        if (is_array($blocs)) {
-            $bloc_id = $blocs[0];
-            $store_id = $blocs[1];
-        }
         if ($this->value) {
             $time = $this->value;
         }
