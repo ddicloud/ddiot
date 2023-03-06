@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-06 21:57:57
+ * @Last Modified time: 2023-03-06 22:10:59
  */
 
 namespace common\behaviors;
@@ -56,19 +56,11 @@ class SaveBehavior extends Behavior
             ];
         }
 
-        if (!$this->is_bloc) {
-            $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
-            $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
-        } else {
-            $bloc_id = Yii::$app->params['global_bloc_id'];
-            $store_id = Yii::$app->params['global_store_id'];
-        }
+        $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
+        $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
+
         // DebugService::consoleWrite('行为-内存测试1');
 
-        // 后台用户使用
-        if (!empty($_GPC['bloc_id']) && $_GPC['bloc_id'] != $bloc_id) {
-            $bloc_id = $_GPC['bloc_id'];
-        }
         // DebugService::consoleWrite('行为-内存测试2');
 
         $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select('pid')->scalar();
