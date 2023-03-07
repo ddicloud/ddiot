@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 19:11:55
+ * @Last Modified time: 2023-03-07 10:51:49
  */
 
 namespace common\components\addons;
@@ -24,7 +24,7 @@ class AddonsModule extends Module
     {
         global $_GPC;
 
-        $logPath = Yii::getAlias('@runtime/base/addons/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@runtime/base/addons/' . date('ymd') . '.log');
 
         $module = $this->id;
 
@@ -47,7 +47,7 @@ class AddonsModule extends Module
             Yii::$app->i18n->translations[$module] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en',
-                'basePath' => '@addons/'.$module.'/messagess',
+                'basePath' => '@addons/' . $module . '/messagess',
             ];
         }
 
@@ -55,7 +55,7 @@ class AddonsModule extends Module
         $configPath = '';
         switch ($appId) {
             case 'app-backend':
-                $configPath = Yii::getAlias('@addons/'.$module.'/config/backend.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/backend.php');
                 Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
@@ -65,7 +65,7 @@ class AddonsModule extends Module
                 ]));
                 break;
             case 'app-api':
-                $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
                 $cookies->add(new \yii\web\Cookie([
@@ -74,7 +74,7 @@ class AddonsModule extends Module
                 ]));
                 break;
             case 'app-swoole':
-                $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
                 $cookies->add(new \yii\web\Cookie([
@@ -83,10 +83,10 @@ class AddonsModule extends Module
                 ]));
                 break;
             case 'app-frontend':
-                $configPath = Yii::getAlias('@addons/'.$module.'/config/frontend.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/frontend.php');
                 break;
             case 'app-console':
-                $runtimePath = Yii::getAlias('@app/runtime/'.$module.'/swoole');
+                $runtimePath = Yii::getAlias('@app/runtime/' . $module . '/swoole');
                 // define('SWOOLE_RUNTIME', $runtimePath);
                 FileHelper::mkdirs($runtimePath);
                 if (is_dir($runtimePath)) {
@@ -94,21 +94,21 @@ class AddonsModule extends Module
                 }
                 $files = ['baseserver.log', 'baseserver.pid', 'swoole.log', 'swoole.log'];
                 foreach ($files as $key => $value) {
-                    if (!file_exists($runtimePath.'/'.$value)) {
-                        file_put_contents($runtimePath.'/'.$value, '');
-                        @chmod($runtimePath.'/'.$value, 0777);
+                    if (!file_exists($runtimePath . '/' . $value)) {
+                        file_put_contents($runtimePath . '/' . $value, '');
+                        @chmod($runtimePath . '/' . $value, 0777);
                     }
                 }
                 break;
             default:
-                $configPath = Yii::getAlias('@addons/'.$module.'/config/api.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
                 $cookies->add(new \yii\web\Cookie([
                     'name' => 'language',
                     'value' => 'zh-CN',
                 ]));
-            break;
+                break;
         }
 
         if (file_exists($configPath)) {
@@ -163,7 +163,7 @@ class AddonsModule extends Module
             (!isset($return['icon']) || !$return['icon']) && $return['icon'] = 'fa fa-circle-o';
             $items && $return['children'] = $items;
 
-            return  $return;
+            return $return;
         };
         $where = ['is_sys' => 'addons', 'module_name' => $this->id];
         $menus = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $callback, $where);
@@ -183,21 +183,24 @@ class AddonsModule extends Module
         $Wechatpay = $conf['wechatpay'];
         $wechat = $conf['wechat'];
 
-        $pemPath = Yii::getAlias('@api/web/store/'.$store_id.'/officialaccount/cert');
+        $pemPath = Yii::getAlias('@api/web/store/' . $store_id . '/officialaccount/cert');
 
         if (!is_dir($pemPath)) {
             FileHelper::mkdirs($pemPath);
         }
 
+        $apiclient_cert = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
+        $apiclient_key = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
+
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
             'app_id' => $Wechatpay['app_id'],
             'mch_id' => $Wechatpay['mch_id'],
-            'key' => $Wechatpay['key'],  // API 密钥
+            'key' => $Wechatpay['key'], // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
-            'cert_path' => Yii::getAlias('@api/web/store/'.$store_id.'/officialaccount/cert/apiclient_cert.pem'), // XXX: 绝对路径！！！！
-            'key_path' => Yii::getAlias('@api/web/store/'.$store_id.'/officialaccount/cert/apiclient_key.pem'), // XXX: 绝对路径！！！！
-            'notify_url' => Yii::$app->request->hostInfo.'/api/wechat/basics/notify',
+            'cert_path' => $apiclient_cert, // XXX: 绝对路径！！！！
+            'key_path' => $apiclient_key, // XXX: 绝对路径！！！！
+            'notify_url' => Yii::$app->request->hostInfo . '/api/wechat/basics/notify',
         ];
 
         $redirect_uri = !empty($_GPC['redirect_uri']) ? $_GPC['redirect_uri'] : '';
@@ -209,7 +212,7 @@ class AddonsModule extends Module
              */
             'app_id' => $wechat['app_id'],
             'secret' => $wechat['secret'],
-            'token' => $wechat['token'],          // Token
+            'token' => $wechat['token'], // Token
             'aes_key' => $wechat['aes_key'],
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
@@ -224,13 +227,13 @@ class AddonsModule extends Module
                     // 测试环境
                     'dev' => [
                         'driver' => 'single',
-                        'path' => Yii::getAlias('@api/runtime/officialaccount/'.date('Ym/d').'.log'),
+                        'path' => Yii::getAlias('@api/runtime/officialaccount/' . date('Ym/d') . '.log'),
                         'level' => 'debug',
                     ],
                     // 生产环境
                     'prod' => [
                         'driver' => 'daily',
-                        'path' => Yii::getAlias('@api/runtime/officialaccount/'.date('Ym/d').'.log'),
+                        'path' => Yii::getAlias('@api/runtime/officialaccount/' . date('Ym/d') . '.log'),
                         'level' => 'info',
                     ],
                 ],
@@ -251,11 +254,11 @@ class AddonsModule extends Module
                 'level' => 'debug',
                 'file' => Yii::getAlias('@runtime/miniprogram'),
             ],
-             //必须添加部分
-			'guzzle' => [ // 配置
-				'verify' => false,
-				'timeout' => 4.0,
-			],
+            //必须添加部分
+            'guzzle' => [ // 配置
+                'verify' => false,
+                'timeout' => 4.0,
+            ],
         ];
 
         $params = Yii::$app->params;
