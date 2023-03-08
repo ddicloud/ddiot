@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 13:42:40
+ * @Last Modified time: 2023-03-08 13:51:12
  */
 
 namespace admin\services;
@@ -158,6 +158,88 @@ class StoreService extends BaseService
     }
 
     /**
+     * 更新关联店铺数据
+     * @param [type] $store_id
+     * @param [type] $data
+     * @return void
+     * @date 2023-03-08
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function upLinkStore($store_id,$data)
+    {
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
+            'data' => $data,
+        ]);
+
+        $model = BlocStore::findOne($store_id);
+
+        $link = new StoreLabelLink();
+        $data['lng_lat'] = json_encode([
+            'lng' => $data['longitude'],
+            'lat' => $data['latitude'],
+        ]);
+
+        $storeData = [
+            'category_id' => $data['category'][0],
+            'category_pid' => $data['category'][1],
+            'name' => $data['name'],
+            'logo' => $data['logo'],
+            'bloc_id' => $data['bloc_id'],
+            'province' => $data['provinceCityDistrict'][0],
+            'city' => $data['provinceCityDistrict'][1],
+            'county' => $data['provinceCityDistrict'][2],
+            'address' => $data['address'],
+            'mobile' => $data['mobile'],
+            'create_time' => $data['create_time'],
+            'update_time' => $data['update_time'],
+            'status' => $data['status'],
+            'lng_lat' => $data['lng_lat'],
+            'longitude' => $data['longitude'],
+            'latitude' => $data['latitude'],
+        ];
+
+        $transaction = Yii::$app->db->beginTransaction();
+        if ($model->load($storeData, '') && $model->save()) {
+            loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
+
+            try {
+                // 保存商户标签
+                $StoreLabelLink = $data['label_link'];
+                if (!empty($StoreLabelLink)) {
+                    $link->deleteAll(['store_id' => $store_id]);
+                    foreach ($StoreLabelLink as $key => $label_id) {
+                        $_link = clone $link;
+                        $bloc_id = $model->bloc_id;
+                        $store_id = $model->store_id;
+                        $data = [
+                            'bloc_id' => $bloc_id,
+                            'store_id' => $store_id,
+                            'label_id' => $label_id,
+                        ];
+                        $_link->setAttributes($data);
+                        if (!$_link->save()) {
+                            throw new \Exception('保存标签数据失败!');
+                        }
+                    }
+                }
+
+                $transaction->commit();
+
+                return $model;
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw new HttpException(400, $e->getMessage());
+            }
+        } else {
+            $transaction->rollBack();
+            $msg = ErrorsHelper::getModelError($model);
+            throw new HttpException(400, $msg);
+        }
+    }
+
+    /**
      * 新建店铺数据关联全局
      * @return void
      * @date 2023-03-03
@@ -207,8 +289,8 @@ class StoreService extends BaseService
             try {
                 // 保存商户标签
                 $StoreLabelLink = $data['label_link'];
-                if (!empty($StoreLabelLink['label_id'])) {
-                    foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
+                if (!empty($StoreLabelLink)) {
+                    foreach ($StoreLabelLink as $key => $label_id) {
                         $_link = clone $link;
                         $bloc_id = $model->bloc_id;
                         $store_id = $model->store_id;
