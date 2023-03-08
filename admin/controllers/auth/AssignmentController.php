@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 19:20:09
+ * @Last Modified time: 2023-03-08 19:38:48
  */
 
 namespace admin\controllers\auth;
@@ -150,6 +150,8 @@ class AssignmentController extends AController
         foreach ($all as $key => $value) {
             $alls[$key] = array_values($value);
         }
+
+        $assigned['bloc'] = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
 
         return ResultHelper::json(200, '获取成功', [
             'all' => $alls,
@@ -331,7 +333,7 @@ class AssignmentController extends AController
                 break;
             case 'bloc':
                 //授权的公司
-                $add_ids = $assigned['bloc'];
+                $add_ids = array_diff($authItems, $assigned_ids);
 
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
 
