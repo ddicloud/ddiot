@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:46:23
+ * @Last Modified time: 2023-03-08 10:55:52
  */
 
 namespace admin\controllers\auth;
@@ -106,17 +106,18 @@ class AssignmentController extends AController
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
             $store = $value['store'];
-            if (!empty($value['store'])) {
-                foreach ($store as $k => &$val) {
-                    $val['label'] = $val['name'];
-                    $val['id'] = $val['store_id'];
-                    $store_ids[] = $val['store_id'];
-                }
-                $value['children'] = $store;
-                $lists[] = $value;
-            } else {
-                unset($list[$key]);
+            // 需要把商户的权限交给公司，把公司权限授权出去
+            // if (!empty($value['store'])) {
+            foreach ($store as $k => &$val) {
+                $val['label'] = $val['name'];
+                $val['id'] = $val['store_id'];
+                $store_ids[] = $val['store_id'];
             }
+            $value['children'] = $store;
+            $lists[] = $value;
+            // } else {
+            //     unset($list[$key]);
+            // }
         }
         unset($value);
         $all['store'] = $list;
