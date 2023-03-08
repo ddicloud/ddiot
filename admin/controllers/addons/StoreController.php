@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 14:07:40
+ * @Last Modified time: 2023-03-08 14:09:01
  */
 
 namespace admin\controllers\addons;
@@ -263,8 +263,9 @@ class StoreController extends AController
         $store_id = $model->store_id;
         $data = Yii::$app->request->post();
         
-        $data['category_id'] = $data['category'][0];
-        $data['category_pid'] = $data['category'][1];
+        $data['category_pid'] = $data['category'][0];
+        $data['category_id'] = $data['category'][1];
+
         $data['province'] = $data['provinceCityDistrict'][0];
         $data['city'] = $data['provinceCityDistrict'][1];
         $data['county'] = $data['provinceCityDistrict'][2];
