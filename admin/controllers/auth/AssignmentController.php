@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 10:55:52
+ * @Last Modified time: 2023-03-08 17:38:54
  */
 
 namespace admin\controllers\auth;
@@ -305,7 +305,34 @@ class AssignmentController extends AController
             case 'store':
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
+                //授权的公司 
+                $assigned_bloc_ids = $assigned['bloc'];
+
                 $addList = BlocStore::find()->where(['store_id' => $add_ids])->asArray()->all();
+                $have_store_bloc = array_column($addList,'bloc_id');
+
+                $bloc_ids = array_diff($assigned_bloc_ids, $have_store_bloc);
+
+                $UserBloc::deleteAll([
+                    'user_id' => $id,
+                    'store_id' => 0,
+                ]);
+                
+                foreach ($bloc_ids as $key => $value) {
+                    $_UserBloc = clone $UserBloc;
+                    $data = [
+                        'user_id' => $id,
+                        'bloc_id' => $value['bloc_id'],
+                        'store_id' => 0,
+                        'status' => 0,
+                    ];
+                    $_UserBloc->setAttributes($data);
+                    if (!$_UserBloc->save()) {
+                        $msg = ErrorsHelper::getModelError($_UserBloc);
+                        throw new \Exception($msg);
+                    }
+                }
+                
                 foreach ($addList as $key => $value) {
                     $_UserBloc = clone $UserBloc;
                     $data = [
