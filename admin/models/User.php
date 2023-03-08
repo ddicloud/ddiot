@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 20:04:02
+ * @Last Modified time: 2023-03-08 15:20:19
  */
 
 namespace admin\models;
@@ -136,6 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->parent_bloc_id = (int) $parent_bloc_id;
         $this->company = $company;
         $this->mobile = $mobile;
+        
         if ((int) $_GPC['source_type'] === 1) {
             $this->store_id = $_GPC['store_id'];
             $this->bloc_id = $_GPC['bloc_id'];

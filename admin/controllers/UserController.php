@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-12-17 11:30:38
+ * @Last Modified time: 2023-03-08 15:20:34
  */
 
 namespace admin\controllers;
@@ -428,7 +428,7 @@ class UserController extends AController
         $mobile = $_GPC['mobile'];
         $password = $_GPC['password'];
         $email = $_GPC['email'];
-
+        $status= $_GPC['status'];
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
@@ -444,7 +444,7 @@ class UserController extends AController
 
         $model = new User();
 
-        $res = $model->signup($username, $mobile, $email, $password);
+        $res = $model->signup($username, $mobile, $email, $password,$status);
 
         if ($res) {
             return ResultHelper::json(200, '添加成功', $res);
