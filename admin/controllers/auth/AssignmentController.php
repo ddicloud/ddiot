@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 19:18:58
+ * @Last Modified time: 2023-03-08 19:20:09
  */
 
 namespace admin\controllers\auth;
@@ -333,7 +333,7 @@ class AssignmentController extends AController
                 //授权的公司
                 $add_ids = $assigned['bloc'];
 
-                $addList = Bloc::find()->where(['bloc_ids' => $add_ids])->asArray()->all();
+                $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
 
                 foreach ($addList as $key => $value) {
                     $_UserBloc = clone $UserBloc;
