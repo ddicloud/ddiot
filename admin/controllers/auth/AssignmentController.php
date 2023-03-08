@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 19:38:48
+ * @Last Modified time: 2023-03-08 19:44:11
  */
 
 namespace admin\controllers\auth;
@@ -333,6 +333,8 @@ class AssignmentController extends AController
                 break;
             case 'bloc':
                 //授权的公司
+                $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
+
                 $add_ids = array_diff($authItems, $assigned_ids);
 
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
