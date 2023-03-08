@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 17:38:54
+ * @Last Modified time: 2023-03-08 19:18:58
  */
 
 namespace admin\controllers\auth;
@@ -76,12 +76,12 @@ class AssignmentController extends AController
         }
 
         return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'module_name' => $this->module_name,
-                'idField' => $this->idField,
-                'usernameField' => $this->usernameField,
-                'extraColumns' => $this->extraColumns,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'module_name' => $this->module_name,
+            'idField' => $this->idField,
+            'usernameField' => $this->usernameField,
+            'extraColumns' => $this->extraColumns,
         ]);
     }
 
@@ -231,7 +231,7 @@ class AssignmentController extends AController
                 $model = new Assignment([
                     'id' => $id,
                     'is_sys' => 3,
-                    ]);
+                ]);
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
                 $model->assign([
@@ -242,12 +242,12 @@ class AssignmentController extends AController
                 $model->revoke([
                     'permission' => array_values($delete_ids),
                 ]);
-              break;
+                break;
             case 'route':
                 $model = new Assignment([
                     'id' => $id,
                     'is_sys' => 3,
-                    ]);
+                ]);
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
                 $model->assign([
@@ -258,12 +258,12 @@ class AssignmentController extends AController
                 $model->revoke([
                     'route' => array_values($delete_ids),
                 ]);
-              break;
+                break;
             case 'role':
                 $model = new Assignment([
                     'id' => $id,
                     'is_sys' => 3,
-                    ]);
+                ]);
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
                 $model->assign([
@@ -274,7 +274,7 @@ class AssignmentController extends AController
                 $model->revoke([
                     'role' => array_values($delete_ids),
                 ]);
-              break;
+                break;
             case 'addons':
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
@@ -301,38 +301,13 @@ class AssignmentController extends AController
                     'user_id' => $id,
                     'module_name' => $deleteList,
                 ]);
-              break;
+                break;
             case 'store':
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
-                //授权的公司 
-                $assigned_bloc_ids = $assigned['bloc'];
 
                 $addList = BlocStore::find()->where(['store_id' => $add_ids])->asArray()->all();
-                $have_store_bloc = array_column($addList,'bloc_id');
 
-                $bloc_ids = array_diff($assigned_bloc_ids, $have_store_bloc);
-
-                $UserBloc::deleteAll([
-                    'user_id' => $id,
-                    'store_id' => 0,
-                ]);
-                
-                foreach ($bloc_ids as $key => $value) {
-                    $_UserBloc = clone $UserBloc;
-                    $data = [
-                        'user_id' => $id,
-                        'bloc_id' => $value['bloc_id'],
-                        'store_id' => 0,
-                        'status' => 0,
-                    ];
-                    $_UserBloc->setAttributes($data);
-                    if (!$_UserBloc->save()) {
-                        $msg = ErrorsHelper::getModelError($_UserBloc);
-                        throw new \Exception($msg);
-                    }
-                }
-                
                 foreach ($addList as $key => $value) {
                     $_UserBloc = clone $UserBloc;
                     $data = [
@@ -353,12 +328,33 @@ class AssignmentController extends AController
                     'user_id' => $id,
                     'store_id' => $delete_ids,
                 ]);
-              break;
-            default:
-              break;
-          }
+                break;
+            case 'bloc':
+                //授权的公司
+                $add_ids = $assigned['bloc'];
 
-        $key = 'auth_'.$id.'_'.'initmenu';
+                $addList = Bloc::find()->where(['bloc_ids' => $add_ids])->asArray()->all();
+
+                foreach ($addList as $key => $value) {
+                    $_UserBloc = clone $UserBloc;
+                    $data = [
+                        'user_id' => $id,
+                        'bloc_id' => $value['bloc_id'],
+                        'store_id' => 0,
+                        'status' => 0,
+                    ];
+                    $_UserBloc->setAttributes($data);
+                    if (!$_UserBloc->save()) {
+                        $msg = ErrorsHelper::getModelError($_UserBloc);
+                        throw new \Exception($msg);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        $key = 'auth_' . $id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
 
         return $this->actionView($id);
@@ -378,7 +374,7 @@ class AssignmentController extends AController
         $model = new Assignment([
             'id' => $id,
             'is_sys' => $this->is_sys,
-            ]);
+        ]);
 
         $success = $model->assign($items);
         Yii::$app->getResponse()->format = 'json';
@@ -423,7 +419,7 @@ class AssignmentController extends AController
             return new Assignment([
                 'id' => $id,
                 'type' => $this->type,
-                ], $user);
+            ], $user);
         } else {
             throw new NotFoundHttpException('请检查数据是否存在');
         }
