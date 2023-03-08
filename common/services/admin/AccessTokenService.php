@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-18 17:29:30
+ * @Last Modified time: 2023-03-08 15:34:38
  */
 
 namespace common\services\admin;
@@ -102,7 +102,8 @@ class AccessTokenService extends BaseService
         // 关联用户的默认模块和商户
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
         $store_id = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
-        if (!empty($module_name) && !empty($store_id)) {
+        // 商户为空授权的是公司
+        if (!empty($module_name)) {
             $result['addons'] = [
                 'module_name' => $module_name,
                 'module_info' => DdAddons::find()->where(['identifie' => $module_name])->asArray()->one(),
