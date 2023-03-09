@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-09 14:18:42
+ * @Last Modified time: 2023-03-09 14:24:33
  */
 
 namespace common\traits\ActiveQuery;
@@ -28,14 +28,14 @@ class CommonQuery extends ActiveQuery
 
     public function findBloc($alias='')
     {
-        $this->andWhere([$alias.'bloc_id' => $this->bloc_id]);
+        $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
 
         return $this;
     }
 
     public function findStore($alias='')
     {
-        $this->andWhere([$alias.'store_id' => $this->store_id, $alias.'bloc_id' => $this->bloc_id]);
+        $this->andWhere([($alias?$alias.'.':'').'store_id' => $this->store_id, ($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
 
         return $this;
     }
@@ -52,7 +52,7 @@ class CommonQuery extends ActiveQuery
     {
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
         
-        $this->andWhere([$alias.'bloc_id' => $bloc_ids]);
+        $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
         return $this;
     }
@@ -74,7 +74,7 @@ class CommonQuery extends ActiveQuery
         
         $store_ids = array_column($user_blocs,'store_id');
         
-        $this->andWhere([$alias.'store_id' => $store_ids, $alias.'bloc_id' => $bloc_ids]);
+        $this->andWhere([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
         return $this;
     }
