@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 19:07:32
+ * @Last Modified time: 2023-03-09 11:20:53
  */
 
 namespace admin\controllers\auth;
@@ -144,7 +144,7 @@ class GroupController extends AController
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 0,
-                ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+            ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
                 $item = new Route([
                     'name' => $model['name'],
@@ -165,7 +165,7 @@ class GroupController extends AController
             $have_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 0,
-                ])->select('item_id')->asArray()->column();
+            ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
 
@@ -193,7 +193,7 @@ class GroupController extends AController
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 1,
-                ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+            ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
                 $item = new Item([
                     'name' => $model['name'],
@@ -214,7 +214,7 @@ class GroupController extends AController
             $have_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 1,
-                ])->select('item_id')->asArray()->column();
+            ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
 
@@ -246,7 +246,7 @@ class GroupController extends AController
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 2,
-                ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+            ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
                 $model->removeChildren(['group' => $remove_ids]);
             }
@@ -254,7 +254,7 @@ class GroupController extends AController
             $have_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 2,
-                ])->select('item_id')->asArray()->column();
+            ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
 
@@ -401,19 +401,19 @@ class GroupController extends AController
                 // 给item同步添加数据
                 $AcmodelsAuthItem = new AcmodelsAuthItem();
                 $items = [
-                        'permission_type' => 2,
-                        'name' => $model->name,
-                        'is_sys' => $model->is_sys,
-                        'parent_id' => 0,
-                        'permission_level' => 0,
-                    ];
+                    'permission_type' => 2,
+                    'name' => $model->name,
+                    'is_sys' => $model->is_sys,
+                    'parent_id' => 0,
+                    'permission_level' => 0,
+                ];
 
                 if ($AcmodelsAuthItem->load($items, '') && $AcmodelsAuthItem->save()) {
                     $model->updateAll([
-                            'item_id' => $AcmodelsAuthItem->id,
-                        ], [
-                            'id' => $model->id,
-                        ]);
+                        'item_id' => $AcmodelsAuthItem->id,
+                    ], [
+                        'id' => $model->id,
+                    ]);
                 }
 
                 return ResultHelper::json(200, '创建成功', $model);
@@ -453,7 +453,7 @@ class GroupController extends AController
                         'parent' => $_GPC['name'],
                     ], [
                         'parent_type' => 2,
-                        'parent_id' => $id,
+                        'parent_id' => $model->item_id,
                     ]);
                 }
 
@@ -466,10 +466,26 @@ class GroupController extends AController
                     'parent_id' => 0,
                     'permission_level' => 0,
                 ];
-
-                $AcmodelsAuthItem->updateAll($items, [
-                    'id' => $model->item_id,
-                ]);
+                // 首先查询是否存在
+                $isHave = $AcmodelsAuthItem->find()->where(['id' => $model->item_id])->one();
+                if ($isHave) {
+                    $AcmodelsAuthItem->updateAll($items, [
+                        'id' => $model->item_id,
+                    ]);
+                } else {
+                    $AcmodelsAuthItem->load($items, '') && $AcmodelsAuthItem->save();
+                    // 修复item_id被删除的情况
+                    $model->item_id = $AcmodelsAuthItem->id;
+                    $model->update();
+                    // 修复子权限不对应的情况
+                    AuthItemChild::updateAll([
+                        'parent_type' => 2,
+                        'parent_id' => $model->item_id,
+                        'parent' => $_GPC['name'],
+                    ], [
+                        'parent' => $old_parent,
+                    ]);
+                }
 
                 return ResultHelper::json(200, '编辑成功', $model);
             } else {
