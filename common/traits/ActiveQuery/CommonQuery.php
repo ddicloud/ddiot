@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 14:14:42
+ * @Last Modified time: 2023-03-09 14:18:42
  */
 
 namespace common\traits\ActiveQuery;
@@ -26,16 +26,16 @@ class CommonQuery extends ActiveQuery
         $this->store_id = $_GPC['store_id'];
     }
 
-    public function findBloc()
+    public function findBloc($alias='')
     {
-        $this->andWhere(['bloc_id' => $this->bloc_id]);
+        $this->andWhere([$alias.'bloc_id' => $this->bloc_id]);
 
         return $this;
     }
 
-    public function findStore()
+    public function findStore($alias='')
     {
-        $this->andWhere(['store_id' => $this->store_id, 'bloc_id' => $this->bloc_id]);
+        $this->andWhere([$alias.'store_id' => $this->store_id, $alias.'bloc_id' => $this->bloc_id]);
 
         return $this;
     }
@@ -48,15 +48,16 @@ class CommonQuery extends ActiveQuery
      * @author Wang Chunsheng
      * @since
      */
-    public function findBlocs()
+    public function findBlocs($alias='')
     {
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
         
-        $this->andWhere(['bloc_id' => $bloc_ids]);
+        $this->andWhere([$alias.'bloc_id' => $bloc_ids]);
 
         return $this;
     }
 
+   
     /**
      * 根据用户授权的商户进行检索
      * @return void
@@ -65,7 +66,7 @@ class CommonQuery extends ActiveQuery
      * @author Wang Chunsheng
      * @since
      */
-    public function findStores()
+    public function findStores($alias='')
     {
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->asArray()->all();
         
@@ -73,7 +74,7 @@ class CommonQuery extends ActiveQuery
         
         $store_ids = array_column($user_blocs,'store_id');
         
-        $this->andWhere(['store_id' => $store_ids, 'bloc_id' => $bloc_ids]);
+        $this->andWhere([$alias.'store_id' => $store_ids, $alias.'bloc_id' => $bloc_ids]);
 
         return $this;
     }
