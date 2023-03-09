@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 19:44:11
+ * @Last Modified time: 2023-03-09 13:50:52
  */
 
 namespace admin\controllers\auth;
@@ -151,9 +151,11 @@ class AssignmentController extends AController
             $alls[$key] = array_values($value);
         }
 
-        $assigned['bloc'] = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
+        // 公司授权
+        $assigned['bloc'] = UserBloc::find()->where(['user_id' => $id, 'store_id' => 0])->select('bloc_id')->groupBy('bloc_id')->column();
 
         return ResultHelper::json(200, '获取成功', [
+            'all' => $alls,
             'all' => $alls,
             'assigned' => $assigned,
         ]);
@@ -333,7 +335,7 @@ class AssignmentController extends AController
                 break;
             case 'bloc':
                 //授权的公司
-                $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
+                $assigned_ids = UserBloc::find()->where(['user_id' => $id, 'store_id' => 0])->select('bloc_id')->groupBy('bloc_id')->column();
 
                 $add_ids = array_diff($authItems, $assigned_ids);
 
@@ -353,6 +355,13 @@ class AssignmentController extends AController
                         throw new \Exception($msg);
                     }
                 }
+                // 删除权限
+                $delete_ids = array_diff($assigned_ids, $authItems);
+                $UserBloc::deleteAll([
+                    'user_id' => $id,
+                    'bloc_id' => $delete_ids,
+                    'store_id' => 0,
+                ]);
                 break;
             default:
                 break;
