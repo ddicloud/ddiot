@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 14:11:38
+ * @Last Modified time: 2023-03-09 12:14:03
  */
 
 namespace admin\services;
@@ -167,7 +167,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkStore($store_id,$data)
+    public static function upLinkStore($store_id, $data)
     {
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
             'data' => $data,
@@ -437,6 +437,82 @@ class StoreService extends BaseService
     }
 
     /**
+     * 用户编辑公司
+     * @param [type] $data
+     * @return void
+     * @date 2023-03-03
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public static function upLinkBloc($bloc_id, $data)
+    {
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
+            'data' => $data,
+        ]);
+
+        $model = Bloc::findOne($bloc_id);
+
+        $blocData = [
+            'invitation_code' => $data['invitation_code'],
+            'business_name' => $data['business_name'],
+            'logo' => $data['logo'],
+            'pid' => $data['pid'],
+            'group_bloc_id' => $data['group_bloc_id'],
+            'category' => $data['category'],
+            'province' => $data['provinceCityDistrict'][0],
+            'city' => $data['provinceCityDistrict'][1],
+            'district' => $data['provinceCityDistrict'][2],
+            'address' => $data['address'],
+            'register_level' => $data['register_level'],
+            'longitude' => $data['longitude'],
+            'latitude' => $data['latitude'],
+            'telephone' => $data['telephone'],
+            'avg_price' => $data['avg_price'],
+            'recommend' => $data['recommend'],
+            'special' => $data['special'],
+            'introduction' => $data['introduction'],
+            'open_time' => $data['open_time'],
+            'status' => $data['status'],
+            'is_group' => $data['is_group'],
+            'sosomap_poi_uid' => $data['sosomap_poi_uid'],
+            'license_no' => $data['license_no'],
+            'license_name' => $data['license_name'],
+            'level_num' => $data['level_num'],
+        ];
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+
+            if ($model->load($blocData, '') && $model->save()) {
+                loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
+
+                $bloc_id = $model->bloc_id;
+
+                $user = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
+                if ($user->store_id == 0) {
+                    $user->store_id = $model->store_id;
+                    if (!$user->save(false)) {
+                        throw new \Exception('保存用户数据失败!');
+                    }
+                }
+
+                $transaction->commit();
+
+                return $model;
+
+            } else {
+                $msg = ErrorsHelper::getModelError($model);
+                throw new HttpException(400, $msg);
+            }
+
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw new HttpException(400, $e->getMessage());
+        }
+    }
+
+    /**
      * 获取公司与商户级联数据，表单级联使用
      * @return void
      * @date 2023-03-04
@@ -467,7 +543,6 @@ class StoreService extends BaseService
             }
         }
 
-        
         foreach ($blocs as $bloc_id => &$value) {
             $value['children'] = $stores[$bloc_id];
         }
@@ -488,11 +563,11 @@ class StoreService extends BaseService
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'])->asArray()->all();
         $lists = [];
         foreach ($user_blocs as $key => $value) {
-            if($value['bloc']){
+            if ($value['bloc']) {
                 $lists[$value['bloc_id']] = [
-                    'id'=>$value['bloc_id'],
-                    'name'=>$value['bloc']['business_name'],
-                    'text'=>$value['bloc']['business_name'],
+                    'id' => $value['bloc_id'],
+                    'name' => $value['bloc']['business_name'],
+                    'text' => $value['bloc']['business_name'],
                     "label" => $value['bloc']['business_name'],
                     "value" => $value['bloc_id'],
                 ];
@@ -515,11 +590,11 @@ class StoreService extends BaseService
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['store'])->asArray()->all();
         $lists = [];
         foreach ($user_blocs as $key => $value) {
-            if($value['store']){
+            if ($value['store']) {
                 $lists[$value['store_id']] = [
-                    'id'=>$value['store_id'],
-                    'name'=>$value['store']['name'],
-                    'text'=>$value['store']['name'],
+                    'id' => $value['store_id'],
+                    'name' => $value['store']['name'],
+                    'text' => $value['store']['name'],
                     "label" => $value['store']['name'],
                     "value" => $value['store_id'],
                 ];
