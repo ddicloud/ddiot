@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 21:51:28
+ * @Last Modified time: 2023-03-10 21:55:30
  */
 
 namespace common\services\admin;
@@ -104,7 +104,7 @@ class AccessTokenService extends BaseService
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
         $store_id = UserStore::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
         $bloc = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->joinWith(['bloc'=>function($query){
-            return $query->select(['bloc_id','business_name']); 
+            return $query->select(['bloc_id','user_id','business_name']); 
         }])->one();
         $result['bloc'] = $bloc;
 
