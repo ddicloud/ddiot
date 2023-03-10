@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-09 13:50:52
+ * @Last Modified time: 2023-03-10 18:58:02
  */
 
 namespace admin\controllers\auth;
@@ -12,6 +12,7 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\UserBloc;
+use common\models\UserStore;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\BlocStore;
@@ -127,7 +128,7 @@ class AssignmentController extends AController
         // 用户的应用权限
         $assigneds['addons'] = AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
 
-        $assigneds['store'] = UserBloc::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
+        $assigneds['store'] = UserStore::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
 
         $keyList = [
             'addons',
@@ -207,8 +208,8 @@ class AssignmentController extends AController
         $assigneds['addons'] = $AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
 
         // 商户权限
-        $UserBloc = new UserBloc();
-        $assigneds['store'] = $UserBloc::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
+        $UserStore = new UserStore();
+        $assigneds['store'] = $UserStore::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
 
         $keyList = [
             'addons',
@@ -311,24 +312,24 @@ class AssignmentController extends AController
                 $add_ids = array_diff($authItems, $assigned_ids);
 
                 $addList = BlocStore::find()->where(['store_id' => $add_ids])->asArray()->all();
-
+                $UserStore = new UserStore();
                 foreach ($addList as $key => $value) {
-                    $_UserBloc = clone $UserBloc;
+                    $_UserStore = clone $UserStore;
                     $data = [
                         'user_id' => $id,
                         'bloc_id' => $value['bloc_id'],
                         'store_id' => $value['store_id'],
                         'status' => 0,
                     ];
-                    $_UserBloc->setAttributes($data);
-                    if (!$_UserBloc->save()) {
-                        $msg = ErrorsHelper::getModelError($_UserBloc);
+                    $_UserStore->setAttributes($data);
+                    if (!$_UserStore->save()) {
+                        $msg = ErrorsHelper::getModelError($_UserStore);
                         throw new \Exception($msg);
                     }
                 }
                 // 删除权限
                 $delete_ids = array_diff($assigned_ids, $authItems);
-                $UserBloc::deleteAll([
+                $UserStore::deleteAll([
                     'user_id' => $id,
                     'store_id' => $delete_ids,
                 ]);
@@ -340,7 +341,7 @@ class AssignmentController extends AController
                 $add_ids = array_diff($authItems, $assigned_ids);
 
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
-
+                $UserBloc = new UserBloc();
                 foreach ($addList as $key => $value) {
                     $_UserBloc = clone $UserBloc;
                     $data = [

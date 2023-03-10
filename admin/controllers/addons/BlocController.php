@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 17:21:15
+ * @Last Modified time: 2023-03-10 18:54:33
  */
 
 namespace admin\controllers\addons;
@@ -17,6 +17,7 @@ use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use common\models\UserStore;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\BlocLevel;
 use diandi\addons\models\BlocStore;
@@ -71,7 +72,7 @@ class BlocController extends AController
         $where = [];
         if (!array_intersect($defaultRoles, $group)) {
             // 查找自己的数据
-            $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
+            $store_ids = UserStore::find()->where(['user_id' => $user_id])->select('store_id')->column();
             $where['s.store_id'] = $store_ids;
         }
 
@@ -108,7 +109,7 @@ class BlocController extends AController
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
         if (!in_array(['总管理员'], $group)) {
             // 查找自己的数据
-            $store_ids = UserBloc::find()->where(['user_id' => $user_id])->select('store_id')->column();
+            $store_ids = UserStore::find()->where(['user_id' => $user_id])->select('store_id')->column();
             $where['store_id'] = $store_ids;
         }
 

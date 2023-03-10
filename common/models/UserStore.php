@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-12 20:49:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:06:35
+ * @Last Modified time: 2023-03-10 18:45:29
  */
 
 namespace common\models;
@@ -19,10 +19,11 @@ use yii\behaviors\TimestampBehavior;
  * @property int         $id
  * @property int|null    $user_id     管理员id
  * @property int|null    $bloc_id     集团id
+ * @property int|null    $store_id    子公司id
  * @property string|null $create_time
  * @property string|null $update_time
  */
-class UserBloc extends \yii\db\ActiveRecord
+class UserStore extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -38,7 +39,7 @@ class UserBloc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'bloc_id', 'status', 'is_default'], 'integer'],
+            [['user_id', 'bloc_id', 'store_id', 'status', 'is_default'], 'integer'],
             ['is_default', 'default', 'value' => 0],
             ['status', 'default', 'value' => 1],
             [['create_time', 'update_time'], 'string', 'max' => 30],
@@ -72,7 +73,7 @@ class UserBloc extends \yii\db\ActiveRecord
 
     public function getStore()
     {
-        return $this->hasOne(UserStore::className(), ['user_id' => 'user_id']);
+        return $this->hasOne(BlocStore::className(), ['store_id' => 'store_id']);
     }
 
     /**
@@ -84,6 +85,7 @@ class UserBloc extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => '管理员id',
             'bloc_id' => '集团id',
+            'store_id' => '子公司id',
             'create_time' => 'Create Time',
             'update_time' => 'Update Time',
         ];

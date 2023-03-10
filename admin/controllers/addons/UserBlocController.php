@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:43:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 17:00:48
+ * @Last Modified time: 2023-03-10 18:55:53
  */
 
 namespace admin\controllers\addons;
@@ -12,6 +12,7 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use common\models\UserStore;
 use diandi\addons\components\BlocUser;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\UserBlocSearch;
@@ -175,7 +176,7 @@ class UserBlocController extends AController
             return ResultHelper::json(400, '请先选择管理员', []);
         }
 
-        $userStore = UserBloc::find()->where([
+        $userStore = UserStore::find()->where([
                 'user_id' => $user_id,
             ])->select('store_id')->asArray()->column();
 

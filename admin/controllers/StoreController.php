@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:47:33
+ * @Last Modified time: 2023-03-10 18:47:34
  */
 
 namespace admin\controllers;
@@ -133,7 +133,8 @@ class StoreController extends AController
             }
 
             $UserBloc = new UserBloc();
-            $bloc_ids = $UserBloc->find()->alias('a')->where($where)->joinWith('bloc as c')->joinWith('store as s')->select(['a.bloc_id', 'a.store_id'])->limit(5)->asArray()->all();
+            $bloc_ids = $UserBloc->find()->alias('a')->where($where)->joinWith('bloc as c')->select(['a.bloc_id'])->limit(5)->asArray()->all();
+
 
             foreach ($bloc_ids as $key => $value) {
                 $value['bloc']['store'][] = $value['store'];

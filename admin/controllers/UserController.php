@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 17:46:05
+ * @Last Modified time: 2023-03-10 18:53:29
  */
 
 namespace admin\controllers;
@@ -22,6 +22,7 @@ use common\models\DdMember as ModelsDdMember;
 use common\models\DdWebsiteContact;
 use common\models\forms\PasswdForm;
 use common\models\UserBloc;
+use common\models\UserStore;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\form\Api;
 use diandi\admin\components\UserStatus;
@@ -487,7 +488,7 @@ class UserController extends AController
             }
         }
 
-        $UserBloc = UserBloc::find()->where(['user_id' => $user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
+        $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
         $UserBlocList = [];
         foreach ($UserBloc as $key => $value) {
             if (empty($value['store'])) {
@@ -514,7 +515,7 @@ class UserController extends AController
 
         $user_id = $_GPC['user_id'];
         $addons_user_id = AddonsUser::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
-        $store_user_id = UserBloc::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
+        $store_user_id = UserStore::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
 
         return ResultHelper::json(200, '获取成功', [
             'addons_user_id' => $addons_user_id,
@@ -527,6 +528,7 @@ class UserController extends AController
         global $_GPC;
         $user_id = $_GPC['user_id'];
         $store_user_id = $_GPC['store_user_id'];
+        $bloc_user_id = $_GPC['bloc_user_id'];
         $addons_user_id = $_GPC['addons_user_id'];
 
         if (empty($user_id)) {
@@ -554,6 +556,7 @@ class UserController extends AController
         if (empty($store_user_id)) {
             return ResultHelper::json(400, '请选择商户');
         } else {
+            // 公司默认
             $UserBloc = new UserBloc();
 
             $UserBloc->updateAll([
@@ -566,15 +569,33 @@ class UserController extends AController
                 'is_default' => 1,
             ], [
                 'user_id' => $user_id,
+                'id' => $bloc_user_id,
+            ]);
+            // 商户默认
+
+            $UserStore = new UserStore();
+
+            $UserStore->updateAll([
+                'is_default' => 0,
+            ], [
+                'user_id' => $user_id,
+            ]);
+
+            $UserStore->updateAll([
+                'is_default' => 1,
+            ], [
+                'user_id' => $user_id,
                 'id' => $store_user_id,
             ]);
+
+
             // 更新用户表中的商户与公司
             $bloc_users = $UserBloc->find()->where(['id' => $store_user_id])->asArray()->one();
             $AdminModelsUser = AdminModelsUser::findOne(['id' => $user_id]);
 
             $AdminModelsUser->status = $AdminModelsUser['status'];
-            $AdminModelsUser->bloc_id = $bloc_users['bloc_id'];
-            $AdminModelsUser->store_id = $bloc_users['store_id'];
+            $AdminModelsUser->bloc_id = $bloc_user_id;
+            $AdminModelsUser->store_id = $store_user_id;
             $AdminModelsUser->update();
         }
 
@@ -602,12 +623,13 @@ class UserController extends AController
 
         $user_id = Yii::$app->user->identity->user_id;
         $UserBloc = UserBloc::find()->where(['user_id' => $user_id, 'is_default' => 1, 'status' => 1])->asArray()->one();
+        $store_id = UserStore::find()->where(['user_id' => $user_id, 'is_default' => 1, 'status' => 1])->select('store_id')->scalar();
         $Api = new Api();
         $apiConf = $Api->getConf($UserBloc['bloc_id']);
         $data = [
             'baseUrl' => Yii::$app->request->getHostName(),
             'bloc_id' => $UserBloc['bloc_id'],
-            'store_id' => $UserBloc['store_id'],
+            'store_id' => $store_id,
             'siteUrl' => Yii::$app->request->getHostName(),
             'app_id' => $apiConf['app_id'],
             'app_secret' => $apiConf['app_secret'],

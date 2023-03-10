@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-09 12:14:03
+ * @Last Modified time: 2023-03-10 19:09:07
  */
 
 namespace admin\services;
@@ -12,6 +12,7 @@ use admin\models\User;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
 use common\models\UserBloc;
+use common\models\UserStore;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\Bloc;
@@ -125,20 +126,20 @@ class StoreService extends BaseService
                 ];
 
                 //给用户授权商户权限
-                $userBlocBool = UserBloc::find()->where($tempData)->exists();
-                if (!$userBlocBool) {
+                $userStoreBool = userStore::find()->where($tempData)->exists();
+                if (!$userStoreBool) {
                     unset($tempData['is_default']);
-                    $userBloc = UserBloc::find()->andWhere($tempData)->one();
-                    if ($userBloc) {
-                        $userBloc->is_default = 1;
-                        if (!$userBloc->save(false)) {
-                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
+                    $userStore = userStore::find()->andWhere($tempData)->one();
+                    if ($userStore) {
+                        $userStore->is_default = 1;
+                        if (!$userStore->save(false)) {
+                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userStore->getErrors());
                         }
                     } else {
-                        $userBloc = new UserBloc();
+                        $userStore = new userStore();
                         $tempData['is_default'] = 1;
-                        if (!($userBloc->load($tempData, '') && $userBloc->save())) {
-                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
+                        if (!($userStore->load($tempData, '') && $userStore->save())) {
+                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userStore->getErrors());
                         }
                     }
                 }
@@ -325,20 +326,20 @@ class StoreService extends BaseService
                 ];
 
                 //给用户授权商户权限
-                $userBlocBool = UserBloc::find()->where($tempData)->exists();
-                if (!$userBlocBool) {
+                $userStoreBool = userStore::find()->where($tempData)->exists();
+                if (!$userStoreBool) {
                     unset($tempData['is_default']);
-                    $userBloc = UserBloc::find()->andWhere($tempData)->one();
-                    if ($userBloc) {
-                        $userBloc->is_default = 1;
-                        if (!$userBloc->save(false)) {
-                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
+                    $userStore = userStore::find()->andWhere($tempData)->one();
+                    if ($userStore) {
+                        $userStore->is_default = 1;
+                        if (!$userStore->save(false)) {
+                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userStore->getErrors());
                         }
                     } else {
-                        $userBloc = new UserBloc();
+                        $userStore = new userStore();
                         $tempData['is_default'] = 1;
-                        if (!($userBloc->load($tempData, '') && $userBloc->save())) {
-                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userBloc->getErrors());
+                        if (!($userStore->load($tempData, '') && $userStore->save())) {
+                            loggingHelper::writeLog('Store', 'store', '_addonsCreate', $userStore->getErrors());
                         }
                     }
                 }
@@ -523,8 +524,10 @@ class StoreService extends BaseService
     public static function getStoresAndBloc()
     {
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc', 'store'])->asArray()->all();
+        
         $blocs = [];
         $stores = [];
+        $BlocStore = BlocStore::find()->indexBy('store_id')->asArray()->all();
         foreach ($user_blocs as $key => $value) {
             if (!empty($value['bloc'])) {
                 $blocs[$value['bloc_id']] = [
@@ -534,9 +537,10 @@ class StoreService extends BaseService
             }
 
             if (!empty($value['store'])) {
+                $store_id = $value['store']['store_id'];
                 $stores[$value['bloc_id']][] = [
-                    "label" => $value['store']['name'],
-                    "value" => $value['store']['store_id'],
+                    "label" =>  $BlocStore[$store_id]['name'],
+                    "value" => $store_id,
                 ];
             } else {
                 unset($blocs[$value['bloc_id']]);
@@ -587,7 +591,7 @@ class StoreService extends BaseService
      */
     public static function getAuthStores()
     {
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['store'])->asArray()->all();
+        $user_blocs = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['store'])->asArray()->all();
         $lists = [];
         foreach ($user_blocs as $key => $value) {
             if ($value['store']) {

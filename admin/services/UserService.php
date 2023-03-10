@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-20 20:25:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-03 15:06:25
+ * @Last Modified time: 2023-03-10 19:03:04
  */
 
 namespace admin\services;
@@ -18,6 +18,7 @@ use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\models\ActionLog;
 use common\models\enums\UserStatus;
+use common\models\UserStore;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\BlocStore;
@@ -80,6 +81,7 @@ class UserService extends BaseService
         AddonsUser::deleteAll($where);
         DdApiAccessToken::deleteAll($where);
         UserBloc::deleteAll($where);
+        UserStore::deleteAll($where);
         ActionLog::deleteAll($where);
         self::deleteUserStore($User['store_id']);
         self::deleteFile($user_id);
@@ -321,8 +323,8 @@ class UserService extends BaseService
         $assigneds['addons'] = $AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $user_id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
 
         // 商户权限
-        $UserBloc = new UserBloc();
-        $assigneds['store'] = $UserBloc::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $user_id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
+        $UserStore = new UserStore();
+        $assigneds['store'] = $UserStore::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $user_id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
 
         $keyList = [
             'addons',
@@ -412,14 +414,14 @@ class UserService extends BaseService
      */
     public static function addUserBloc($user_id, $bloc_id, $store_id, $is_default)
     {
-        $UserBloc = UserBloc::find()->where([
+        $UserStore = UserStore::find()->where([
             'user_id' => $user_id,
             'bloc_id' => $bloc_id,
             'store_id' => $store_id,
         ])->asArray()->one();
 
-        if ($UserBloc) {
-            UserBloc::updateAll([
+        if ($UserStore) {
+            UserStore::updateAll([
                 'is_default' => $is_default,
             ], [
                 'user_id' => $user_id,
@@ -427,15 +429,15 @@ class UserService extends BaseService
                 'store_id' => $store_id,
             ]);
         } else {
-            $UserBlocModel = new UserBloc();
-            $Res = $UserBlocModel->load([
+            $UserStoreModel = new UserStore();
+            $Res = $UserStoreModel->load([
                 'is_default' => $is_default,
                 'user_id' => $user_id,
                 'bloc_id' => $bloc_id,
                 'store_id' => $store_id,
                 'status'=>1,
-            ], '') && $UserBlocModel->save();
-            $msg = ErrorsHelper::getModelError($UserBlocModel);
+            ], '') && $UserStoreModel->save();
+            $msg = ErrorsHelper::getModelError($UserStoreModel);
             if ($msg) {
                 return ResultHelper::serverJson(1, $msg);
 
