@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-18 17:50:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 20:09:29
+ * @Last Modified time: 2023-03-10 16:09:20
  */
 
 namespace admin\controllers\messages;
@@ -25,6 +25,12 @@ class MessagesCategoryController extends AController
     public $modelSearchName = "HubMessagesCategorySearch";
 
     public $modelClass = '';
+    
+    // 根据公司检索字段,不参与检索设置为false
+    public $blocField = false;
+
+    // 根据商户检索字段,不参与检索设置为false
+    public $storeField = false;
 
     /**
      * Lists all HubMessagesCategory models.

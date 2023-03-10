@@ -4,13 +4,14 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 20:35:53
+ * @Last Modified time: 2023-03-10 16:10:46
  */
 
 namespace admin\models\message;
 
 use Codeception\Lib\Console\Message;
 use common\models\DdUser;
+use common\models\UserBloc;
 use Yii;
 
 /**
@@ -124,8 +125,13 @@ class HubMessages extends \yii\db\ActiveRecord
      */
     public static function countUnread($adminId)
     {
-        $blocId = \Yii::$app->params['bloc_id'];
-        $storeId = \Yii::$app->params['store_id'];
+        // 查找我授权的
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->asArray()->all();
+        
+        $bloc_ids = array_column($user_blocs,'bloc_id');
+        
+        $store_ids = array_column($user_blocs,'store_id');
+
         $sql = <<<SQL
         SELECT
             count( 1 ) as num
@@ -137,9 +143,9 @@ class HubMessages extends \yii\db\ActiveRecord
             AND
             b.id IS NULL
             AND
-            dd_messages.bloc_id = {$blocId}
+            dd_messages.bloc_id IN ({$bloc_ids})
             AND
-            dd_messages.store_id = {$storeId}
+            dd_messages.store_id IN ({$store_ids})
 SQL;
         $count = Yii::$app->getDb()->createCommand($sql)->queryOne();
         $count = $count['num'] ?? 0;
