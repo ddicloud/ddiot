@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 15:34:38
+ * @Last Modified time: 2023-03-10 19:11:29
  */
 
 namespace common\services\admin;
@@ -17,6 +17,7 @@ use common\helpers\ImageHelper;
 use common\helpers\StringHelper;
 use common\models\DdUser;
 use common\models\UserBloc;
+use common\models\UserStore;
 use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\DdAddons;
@@ -101,7 +102,7 @@ class AccessTokenService extends BaseService
 
         // 关联用户的默认模块和商户
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
-        $store_id = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
+        $store_id = UserStore::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
         // 商户为空授权的是公司
         if (!empty($module_name)) {
             $result['addons'] = [
