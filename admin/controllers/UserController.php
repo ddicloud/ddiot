@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 18:53:29
+ * @Last Modified time: 2023-03-10 19:24:20
  */
 
 namespace admin\controllers;
@@ -503,9 +503,25 @@ class UserController extends AController
             }
         }
 
+        $UserStore = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('store_id')->asArray()->all();
+        $UserStoreList = [];
+        foreach ($UserStore as $key => $value) {
+            if (empty($value['store'])) {
+                unset($UserStore[$key]);
+            } else {
+                $UserStoreList[] = [
+                    'value' => $value['id'],
+                    'id' => $value['id'],
+                    'is_default' => $value['is_default'],
+                    'text' => $value['bloc']['business_name'],
+                ];
+            }
+        }
+
         return ResultHelper::json(200, '获取成功', [
             'addons' => $addonsList,
             'UserBloc' => $UserBlocList,
+            'UserStore' => $UserStoreList,
         ]);
     }
 
