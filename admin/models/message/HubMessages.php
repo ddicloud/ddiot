@@ -4,7 +4,7 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 16:10:46
+ * @Last Modified time: 2023-03-10 16:14:37
  */
 
 namespace admin\models\message;
@@ -129,8 +129,10 @@ class HubMessages extends \yii\db\ActiveRecord
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->asArray()->all();
         
         $bloc_ids = array_column($user_blocs,'bloc_id');
+        $bloc_ids_str = $bloc_ids?implode(',',$bloc_ids):'';
         
         $store_ids = array_column($user_blocs,'store_id');
+        $store_ids_str = $store_ids?implode(',',$store_ids):'';
 
         $sql = <<<SQL
         SELECT
@@ -143,9 +145,9 @@ class HubMessages extends \yii\db\ActiveRecord
             AND
             b.id IS NULL
             AND
-            dd_messages.bloc_id IN ({$bloc_ids})
+            dd_messages.bloc_id IN ({$bloc_ids_str})
             AND
-            dd_messages.store_id IN ({$store_ids})
+            dd_messages.store_id IN ({$store_ids_str})
 SQL;
         $count = Yii::$app->getDb()->createCommand($sql)->queryOne();
         $count = $count['num'] ?? 0;
