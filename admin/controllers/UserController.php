@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 15:20:34
+ * @Last Modified time: 2023-03-10 16:40:17
  */
 
 namespace admin\controllers;
@@ -109,7 +109,7 @@ class UserController extends AController
             $data = Yii::$app->request->post();
             $mobile = $data['mobile'];
             $code = $data['code'];
-            $sendcode = Yii::$app->cache->get($mobile.'_code');
+            $sendcode = Yii::$app->cache->get($mobile . '_code');
             if ($code != $sendcode) {
                 return ResultHelper::json(401, '验证码错误');
             }
@@ -123,7 +123,7 @@ class UserController extends AController
                 $service->namespace = 'admin';
                 $userinfo = $service->AccessTokenService->getAccessToken($member, 1);
                 // 清除验证码
-                Yii::$app->cache->delete($mobile.'_code');
+                Yii::$app->cache->delete($mobile . '_code');
 
                 return ResultHelper::json(200, '修改成功', $userinfo);
             }
@@ -163,10 +163,10 @@ class UserController extends AController
 
         $Website = Yii::$app->settings->getAllBySection('Website');
         unset($Website['access_key_id'],
-        $Website['access_key_secret'],
-        $Website['sign_name'],
-        $Website['template_code'],
-        $Website['themcolor']);
+            $Website['access_key_secret'],
+            $Website['sign_name'],
+            $Website['template_code'],
+            $Website['themcolor']);
         $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
         $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
 
@@ -176,6 +176,13 @@ class UserController extends AController
         $userinfo['roles'] = $roles;
         $Api = new Api();
         $Api->getConf($userinfo['user']['bloc_id']);
+
+        $Api['app_id'] = (int) $Api['app_id'];
+        $Api['bloc_id'] = (int) $Api['bloc_id'];
+        $Api['id'] = (int) $Api['id'];
+        $Api['is_showall'] = (int) $Api['is_showall'];
+        $Api['member_id'] = (int) $Api['member_id'];
+        $Api['swoole_member_id'] = (int) $Api['swoole_member_id'];
 
         return ResultHelper::json(200, '获取成功', [
             'userinfo' => $userinfo,
@@ -191,7 +198,7 @@ class UserController extends AController
 
         $code = $_GPC['code'];
         $mobile = $_GPC['mobile'];
-        $sendcode = Yii::$app->cache->get($mobile.'_code');
+        $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
@@ -236,7 +243,7 @@ class UserController extends AController
         $password = $_GPC['password'];
         $repassword = $_GPC['repassword'];
         $code = $_GPC['sms_code'];
-        $sendcode = Yii::$app->cache->get($mobile.'_code');
+        $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         $settings = Yii::$app->settings;
         $settings->invalidateCache();
@@ -273,7 +280,7 @@ class UserController extends AController
         $res = Yii::$app->service->adminAccessTokenService->forgetpassword($member, $mobile, $password);
         if ($res) {
             // 清除验证码
-            Yii::$app->cache->delete($mobile.'_code');
+            Yii::$app->cache->delete($mobile . '_code');
 
             return ResultHelper::json(200, '修改成功', []);
         } else {
@@ -285,7 +292,7 @@ class UserController extends AController
     {
         global $_GPC;
         $type = $_GPC['type'];
-        if (!in_array($type, ['forgetpass', 'register', 'bindMobile','login'])) {
+        if (!in_array($type, ['forgetpass', 'register', 'bindMobile', 'login'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
         $mobile = $_GPC['mobile'];
@@ -311,7 +318,7 @@ class UserController extends AController
         }
 
         $code = random_int(1000, 9999);
-        Yii::$app->cache->set($mobile.'_code', $code);
+        Yii::$app->cache->set($mobile . '_code', $code);
         $res = Yii::$app->service->adminAccessTokenService->send($mobile, ['code' => $code]);
 
         return ResultHelper::json(200, '发送成功', $res);
@@ -428,7 +435,7 @@ class UserController extends AController
         $mobile = $_GPC['mobile'];
         $password = $_GPC['password'];
         $email = $_GPC['email'];
-        $status= $_GPC['status'];
+        $status = $_GPC['status'];
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
@@ -444,7 +451,7 @@ class UserController extends AController
 
         $model = new User();
 
-        $res = $model->signup($username, $mobile, $email, $password,$status);
+        $res = $model->signup($username, $mobile, $email, $password, $status);
 
         if ($res) {
             return ResultHelper::json(200, '添加成功', $res);
