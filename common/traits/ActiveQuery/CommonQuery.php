@@ -3,11 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-09 14:24:33
+ * @Last Modified time: 2023-03-10 20:05:00
  */
 
 namespace common\traits\ActiveQuery;
 
+use common\models\UserStore;
 use diandi\addons\models\UserBloc;
 use Yii;
 use yii\db\ActiveQuery;
@@ -68,11 +69,9 @@ class CommonQuery extends ActiveQuery
      */
     public function findStores($alias='')
     {
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select(['bloc_id','store_id'])->asArray()->all();
+        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
         
-        $bloc_ids = array_column($user_blocs,'bloc_id');
-        
-        $store_ids = array_column($user_blocs,'store_id');
+        $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
         
         $this->andWhere([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
