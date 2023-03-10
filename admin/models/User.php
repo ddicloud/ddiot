@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-29 01:59:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-08 15:20:19
+ * @Last Modified time: 2023-03-10 17:46:21
  */
 
 namespace admin\models;
@@ -131,6 +131,9 @@ class User extends ActiveRecord implements IdentityInterface
         if ($invitation_code) {
             $parent_bloc_id = Bloc::find()->where(['invitation_code' => $invitation_code])->select('bloc_id')->scalar();
         }
+        $avatar = $_GPC['avatar'];
+
+        $this->avatar = $avatar;
         $this->username = $username;
         $this->email = $email;
         $this->parent_bloc_id = (int) $parent_bloc_id;

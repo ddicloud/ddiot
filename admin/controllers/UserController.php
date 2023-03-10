@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 16:51:40
+ * @Last Modified time: 2023-03-10 17:46:05
  */
 
 namespace admin\controllers;
@@ -436,6 +436,7 @@ class UserController extends AController
         $password = $_GPC['password'];
         $email = $_GPC['email'];
         $status = $_GPC['status'];
+        
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
