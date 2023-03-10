@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:40:55
+ * @Last Modified time: 2023-03-10 20:21:45
  */
 
 namespace admin\controllers;
@@ -489,7 +489,7 @@ class UserController extends AController
         }
 
         // 公司授权
-        $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('store_id')->asArray()->all();
+        $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('bloc_id')->asArray()->all();
         $UserBlocList = [];
         foreach ($UserBloc as $key => $value) {
             if (empty($value['bloc'])) {
