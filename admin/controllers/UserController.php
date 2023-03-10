@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:24:20
+ * @Last Modified time: 2023-03-10 19:27:14
  */
 
 namespace admin\controllers;
@@ -488,7 +488,8 @@ class UserController extends AController
             }
         }
 
-        $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
+        // 公司授权
+        $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('store_id')->asArray()->all();
         $UserBlocList = [];
         foreach ($UserBloc as $key => $value) {
             if (empty($value['store'])) {
@@ -498,12 +499,13 @@ class UserController extends AController
                     'value' => $value['id'],
                     'id' => $value['id'],
                     'is_default' => $value['is_default'],
-                    'text' => $value['store']['name'],
+                    'text' => $value['bloc']['business_name'],
                 ];
             }
         }
 
-        $UserStore = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('store_id')->asArray()->all();
+        // 商户授权
+        $UserStore = UserStore::find()->where(['user_id' => $user_id])->with(['store'])->indexBy('store_id')->asArray()->all();
         $UserStoreList = [];
         foreach ($UserStore as $key => $value) {
             if (empty($value['store'])) {
@@ -513,7 +515,7 @@ class UserController extends AController
                     'value' => $value['id'],
                     'id' => $value['id'],
                     'is_default' => $value['is_default'],
-                    'text' => $value['bloc']['business_name'],
+                    'text' => $value['store']['name'],
                 ];
             }
         }
