@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:34:39
+ * @Last Modified time: 2023-03-10 19:40:55
  */
 
 namespace admin\controllers;
@@ -613,8 +613,8 @@ class UserController extends AController
             $AdminModelsUser = AdminModelsUser::findOne(['id' => $user_id]);
 
             $AdminModelsUser->status = $AdminModelsUser['status'];
-            $AdminModelsUser->bloc_id = $bloc_id;
-            $AdminModelsUser->store_id = $store_id;
+            $AdminModelsUser->bloc_id = (int) $bloc_id;
+            $AdminModelsUser->store_id = (int) $store_id;
             $AdminModelsUser->update();
             
         }
