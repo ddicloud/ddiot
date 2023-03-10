@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:32:06
+ * @Last Modified time: 2023-03-10 19:34:39
  */
 
 namespace admin\controllers;
@@ -609,13 +609,14 @@ class UserController extends AController
 
             // 更新用户表中的商户与公司
             $store_id = $UserStore->find()->where(['id' => $store_user_id])->select('store_id')->scalar();
-            $bloc_id = $UserBloc->find()->where(['id' => $store_user_id])->select('bloc_id')->scalar();
+            $bloc_id = $UserBloc->find()->where(['id' => $bloc_user_id])->select('bloc_id')->scalar();
             $AdminModelsUser = AdminModelsUser::findOne(['id' => $user_id]);
 
             $AdminModelsUser->status = $AdminModelsUser['status'];
             $AdminModelsUser->bloc_id = $bloc_id;
             $AdminModelsUser->store_id = $store_id;
             $AdminModelsUser->update();
+            
         }
 
         return ResultHelper::json(200, '设置成功');
