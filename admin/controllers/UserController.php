@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:27:14
+ * @Last Modified time: 2023-03-10 19:27:27
  */
 
 namespace admin\controllers;
@@ -492,7 +492,7 @@ class UserController extends AController
         $UserBloc = UserStore::find()->where(['user_id' => $user_id])->with(['bloc'])->indexBy('store_id')->asArray()->all();
         $UserBlocList = [];
         foreach ($UserBloc as $key => $value) {
-            if (empty($value['store'])) {
+            if (empty($value['bloc'])) {
                 unset($UserBloc[$key]);
             } else {
                 $UserBlocList[] = [
