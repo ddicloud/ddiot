@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 22:00:31
+ * @Last Modified time: 2023-03-10 22:27:04
  */
 
 namespace common\services\admin;
@@ -104,8 +104,10 @@ class AccessTokenService extends BaseService
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
         $store_id = UserStore::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
         $bloc = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->with(['bloc'])->asArray()->one();
-
-        $result['bloc'] = $bloc['bloc'];
+        if($bloc['bloc']){
+            $bloc['bloc']['logo'] = ImageHelper::tomedia($bloc['bloc']['logo']);
+            $result['bloc'] = $bloc['bloc'];
+        }
 
         // 商户为空授权的是公司
         if (!empty($module_name)) {
