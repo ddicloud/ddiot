@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 16:40:17
+ * @Last Modified time: 2023-03-10 16:51:40
  */
 
 namespace admin\controllers;
@@ -447,6 +447,10 @@ class UserController extends AController
         }
         if (empty($password)) {
             return ResultHelper::json(401, '密码不能为空', []);
+        }
+
+        if(strlen($password)<6){
+            return ResultHelper::json(401, '密码至少6位', []);
         }
 
         $model = new User();
