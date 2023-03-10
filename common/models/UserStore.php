@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-12 20:49:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 18:45:29
+ * @Last Modified time: 2023-03-10 19:13:00
  */
 
 namespace common\models;
@@ -30,7 +30,7 @@ class UserStore extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_bloc}}';
+        return '{{%user_store}}';
     }
 
     /**
