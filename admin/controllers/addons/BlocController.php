@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-04 21:18:13
+ * @Last Modified time: 2023-03-10 17:21:15
  */
 
 namespace admin\controllers\addons;
@@ -142,6 +142,21 @@ class BlocController extends AController
 
         $view['provinceCityDistrict'] = [$view['province'], $view['city'], $view['district']];
 
+        $view['open_time'] = date('Y-m-d H:i:s',$view['open_time']);
+        
+        $view['provinceCityDistrict'] = [
+            (int) $view['province'],
+            (int) $view['city'],
+            (int) $view['district'],
+        ];
+
+        $view['address'] = [
+            'address' => $view['address'],
+            'lng' => $view['longitude'],
+            'lat' => $view['latitude'],
+        ];
+
+    
         return ResultHelper::json(200, '获取成功', $view);
     }
 
