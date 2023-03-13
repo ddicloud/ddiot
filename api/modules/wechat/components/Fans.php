@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-22 22:50:57
+ * @Last Modified time: 2023-03-13 10:02:52
  */
 
 namespace app\modules\wechat\components;
@@ -64,7 +64,8 @@ class Fans extends BaseObject
             'isRegister' => RegisterLevel::isRegister($isHave, $_GPC['bloc_id']),
         ]));
 
-        if (RegisterLevel::isRegister($isHave, $_GPC['bloc_id'])) {
+        // 去掉注册级别限制条件
+        if ($isHave) {
             FileHelper::writeLog($logPath, '登录日志:有缓存');
 
             $fans = $this->fansByopenid($openid);
