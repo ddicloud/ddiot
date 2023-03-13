@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 09:40:58
+ * @Last Modified time: 2023-03-13 09:42:10
  */
 
 namespace common\services\api;
@@ -55,7 +55,7 @@ class AccessTokenService extends BaseService
     public function getAccessToken(DdMember $member, $group_id, $cycle_index = 1)
     {
         $model = $this->findModel($member->id, $group_id);
-
+        $member_id = $member->id;
         $model->member_id = $member->id;
 
         $model->group_id = $group_id;
@@ -110,8 +110,8 @@ class AccessTokenService extends BaseService
         $result['member'] = $member;
         $result['member']['account'] = ArrayHelper::toArray($account);
         // 获取fans数据
-        $result['wechatFans'] = DdWechatFans::find()->where(['user_id' => $member['id']])->asArray()->one();
-        $result['wxappFans'] = DdWxappFans::find()->where(['user_id' => $member['id']])->asArray()->one();
+        $result['wechatFans'] = DdWechatFans::find()->where(['user_id' => $member_id])->asArray()->one();
+        $result['wxappFans'] = DdWxappFans::find()->where(['user_id' => $member_id])->asArray()->one();
 
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
