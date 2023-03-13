@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 10:27:45
+ * @Last Modified time: 2023-03-13 10:43:05
  */
 
 namespace admin\controllers\auth;
@@ -339,10 +339,10 @@ class AssignmentController extends AController
                 $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
                 // 过滤掉总部的权限
                 $blocGroups = Bloc::find()->where(['is_group' => 1])->select('bloc_id')->column();
-                if($authItems && $authItems['bloc']){
-                    foreach ($authItems['bloc'] as $key => $value) {
+                if($authItems){
+                    foreach ($authItems as $key => $value) {
                         if(in_array($value,$blocGroups)){
-                            unset($authItems['bloc'][$key]);
+                            unset($authItems[$key]);
                         }
                     }
                 }
