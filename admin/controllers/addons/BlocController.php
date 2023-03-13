@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 15:17:51
+ * @Last Modified time: 2023-03-13 15:41:45
  */
 
 namespace admin\controllers\addons;
@@ -143,7 +143,6 @@ class BlocController extends AController
 
         $view['provinceCityDistrict'] = [$view['province'], $view['city'], $view['district']];
 
-        $view['open_time'] = date('Y-m-d H:i:s',$view['open_time']);
         
         $view['provinceCityDistrict'] = [
             (int) $view['province'],
