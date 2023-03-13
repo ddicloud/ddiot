@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 01:50:17
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 09:42:10
+ * @Last Modified time: 2023-03-13 09:45:08
  */
 
 namespace common\services\api;
@@ -112,6 +112,11 @@ class AccessTokenService extends BaseService
         // 获取fans数据
         $result['wechatFans'] = DdWechatFans::find()->where(['user_id' => $member_id])->asArray()->one();
         $result['wxappFans'] = DdWxappFans::find()->where(['user_id' => $member_id])->asArray()->one();
+
+        
+        loggingHelper::writeLog('AccessTokenService', 'getAccessToken', '获取sql', [
+            'member' => DdWxappFans::find()->where(['user_id' => $member_id])->createCommand()->getRawSql()
+        ]);
 
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
