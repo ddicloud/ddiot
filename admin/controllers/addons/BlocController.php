@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 18:54:33
+ * @Last Modified time: 2023-03-13 15:17:51
  */
 
 namespace admin\controllers\addons;
@@ -362,10 +362,8 @@ class BlocController extends AController
     public function actionLevels()
     {
         global $_GPC;
-
-        // $global_bloc_id = Yii::$app->params['global_bloc_id'];
-        $bloc_id = $_GPC['bloc_id'];
-        $levels = BlocLevel::find()->where(['bloc_id' => $bloc_id])->select(['level_num as value', 'name as text'])->asArray()->all();
+ 
+        $levels = BlocLevel::find()->select(['level_num as value', 'name as text'])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $levels);
     }
