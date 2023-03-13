@@ -3,7 +3,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-14 00:49:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:15:44
+ * @Last Modified time: 2023-03-13 10:25:43
  */
 
 namespace admin\controllers\auth;
@@ -337,6 +337,13 @@ class AssignmentController extends AController
             case 'bloc':
                 //授权的公司
                 $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
+                // 过滤掉总部的权限
+                $blocGroups = Bloc::find()->where(['is_groups' => 1])->select('bloc_id')->column();
+                foreach ($authItems['bloc'] as $key => $value) {
+                    if(in_array($value,$blocGroups)){
+                        unset($authItems['bloc'][$key]);
+                    }
+                }
 
                 $add_ids = array_diff($authItems, $assigned_ids);
 
