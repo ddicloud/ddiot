@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-12 20:49:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:06:35
+ * @Last Modified time: 2023-03-13 16:04:35
  */
 
 namespace common\models;
@@ -72,7 +72,7 @@ class UserBloc extends \yii\db\ActiveRecord
 
     public function getStore()
     {
-        return $this->hasOne(UserStore::className(), ['user_id' => 'user_id']);
+        return $this->hasMany(UserStore::className(), ['user_id' => 'user_id']);
     }
 
     /**
