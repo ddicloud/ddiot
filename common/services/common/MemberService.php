@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-09 14:52:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 14:03:50
+ * @Last Modified time: 2023-03-13 11:04:15
  */
 
 namespace common\services\common;
@@ -84,19 +84,10 @@ class MemberService extends BaseService
             'member_id' => $member_id
         ]));
 
-        $andWhere = [];
-
-        if (!empty(intval($bloc_id))) {
-            $andWhere['bloc_id'] = $bloc_id;
-        }
-
-        if (!empty(intval($store_id))) {
-            $andWhere['store_id'] = $store_id;
-        }
 
         $list =  DdMember::find()->with(['account', 'group', 'fans'])->where([
             'member_id' => $member_id
-        ])->andFilterWhere($andWhere)->asArray()->one();
+        ])->asArray()->one();
 
         if (!empty($list)) {
             $list['avatarUrl'] = ImageHelper::tomedia($list['avatarUrl'], 'avatar.jpg');
@@ -106,7 +97,7 @@ class MemberService extends BaseService
 
         FileHelper::writeLog($logPath, '获取用户基础信息sql:' . DdMember::find()->with(['account', 'group', 'fans'])->where([
             'member_id' => $member_id
-        ])->andFilterWhere($andWhere)->createCommand()->getRawSql());
+        ])->createCommand()->getRawSql());
         FileHelper::writeLog($logPath, '获取用户基础信息' . json_encode($list));
 
         if (empty($list['account']) && !empty($store_id) && !empty($list)) {
