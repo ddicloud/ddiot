@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 10:37:25
+ * @Last Modified time: 2023-03-13 10:40:07
  */
 
 
@@ -80,7 +80,7 @@ class Bloc extends BlocModel
         $query->andFilterWhere([
             'bloc_id' => $this->bloc_id,
             'pid' => $this->pid,
-            'group_bloc_id' => $this->group_bloc_id,
+            // 'group_bloc_id' => $this->group_bloc_id,
             'register_level' => $this->register_level,
             'avg_price' => $this->avg_price,
             'status' => $this->status,
