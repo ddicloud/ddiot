@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 18:47:34
+ * @Last Modified time: 2023-03-13 12:24:55
  */
 
 namespace admin\controllers;
 
+use admin\services\StoreService;
 use common\helpers\CacheHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
@@ -244,6 +245,11 @@ class StoreController extends AController
     {
         global $_GPC;
         if ($this->module->id == 'addons') {
+            // 校验数量限制
+            $storeNum = StoreService::checkStoreNum($_GPC['bloc_id']);
+            if(!$storeNum){
+                  return ResultHelper::json(400,'超过最大商户添加数量');
+            }
             $model = new BlocStore([
                 'extras' => $this->extras,
                 ]);

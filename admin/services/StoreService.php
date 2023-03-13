@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:09:07
+ * @Last Modified time: 2023-03-13 12:22:39
  */
 
 namespace admin\services;
@@ -605,5 +605,16 @@ class StoreService extends BaseService
             }
         }
         return array_values($lists);
+    }
+
+    public static function checkStoreNum($bloc_id)
+    {
+        $bloc = Bloc::find()->where(['bloc_id'=>$bloc_id])->select('store_num')->with(['store'])->scalar();
+        
+        if($bloc['store_num'] >= count($bloc['store']) ){
+            return false;
+        }
+
+        return true;
     }
 }
