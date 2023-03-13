@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 11:01:16
+ * @Last Modified time: 2023-03-13 10:37:25
  */
 
 
@@ -84,7 +84,6 @@ class Bloc extends BlocModel
             'register_level' => $this->register_level,
             'avg_price' => $this->avg_price,
             'status' => $this->status,
-            'is_group' => $this->is_group,
             'store_id' => $this->store_id,
         ]);
 
