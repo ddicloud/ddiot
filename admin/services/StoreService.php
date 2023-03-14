@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 10:34:48
+ * @Last Modified time: 2023-03-14 10:50:09
  */
 
 namespace admin\services;
@@ -525,8 +525,8 @@ class StoreService extends BaseService
     {
         $user_stores = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
 
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'=>function($query) use ($user_stores){
-            return $query->where(['in','store_id',$user_stores])->with(['store']);
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'=>function($query){
+            return $query->with(['store'])->asArray();
         }])->asArray()->all();
         
         
@@ -545,10 +545,15 @@ class StoreService extends BaseService
             if (!empty($value['bloc']['store'])) {
                 foreach ($value['bloc']['store'] as $k => $val) {
                     $store_id = $val['store_id'];
-                    $stores[$value['bloc_id']][] = [
-                        "label" =>  $BlocStore[$store_id]['name'],
-                        "value" => $store_id,
-                    ];
+                    if(!empty($user_stores) && !in_array($store_id,$user_stores)){
+                        continue;
+                    }else{
+                        $stores[] = [
+                            "label" =>  $BlocStore[$store_id]['name'],
+                            "value" => $store_id,
+                        ];
+                    }
+                   
                 }
                
             } else {
