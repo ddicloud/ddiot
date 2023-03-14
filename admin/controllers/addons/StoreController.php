@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 17:26:15
+ * @Last Modified time: 2023-03-14 17:29:21
  */
 
 namespace admin\controllers\addons;
@@ -12,7 +12,6 @@ namespace admin\controllers\addons;
 use admin\controllers\AController;
 use admin\models\addons\models\Bloc;
 use admin\models\enums\StoreStatus;
-use admin\models\StoreCategory as ModelsStoreCategory;
 use admin\services\StoreService;
 use admin\services\UserService;
 use common\helpers\ArrayHelper;
@@ -92,7 +91,7 @@ class StoreController extends AController
 
     public function actionCategory()
     {
-        $cates = ModelsStoreCategory::find()->findBlocs()->select(['parent_id', 'category_id', 'name as label', 'category_id as value'])->asArray()->all();
+        $cates = StoreCategory::find()->select(['parent_id', 'category_id', 'name as label', 'category_id as value'])->asArray()->all();
         $list = ArrayHelper::itemsMerge($cates, 0, 'category_id', 'parent_id', 'children');
 
         return ResultHelper::json(200, '获取成功', $list);
