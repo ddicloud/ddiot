@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 10:50:09
+ * @Last Modified time: 2023-03-14 17:09:16
  */
 
 namespace admin\services;
@@ -622,7 +622,7 @@ class StoreService extends BaseService
     {
         $bloc = Bloc::find()->where(['bloc_id'=>$bloc_id])->with(['store'])->asArray()->one();
         
-        if($bloc['store_num'] >= count($bloc['store'])){
+        if($bloc['store_num'] <= count($bloc['store'])){
             return false;
         }
 
