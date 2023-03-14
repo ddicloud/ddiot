@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-03 17:40:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:20:19
+ * @Last Modified time: 2023-03-14 18:57:12
  */
 
 namespace admin\controllers\addons;
@@ -70,7 +70,7 @@ class BloclevelController extends AController
 
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-
+            
             if ($model->load($data, '') && $model->save()) {
                 return ResultHelper::json(200, '创建成功', $model);
             } else {
