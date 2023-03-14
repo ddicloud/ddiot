@@ -4,7 +4,7 @@
  * @Author: Radish <minradish@163.com>
  * @Date:   2022-10-09 15:34:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 19:00:06
+ * @Last Modified time: 2023-03-14 17:49:34
  */
 
 namespace admin\models\message;
@@ -127,11 +127,11 @@ class HubMessages extends \yii\db\ActiveRecord
     public static function countUnread($adminId)
     {
         // 查找我授权的
-        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
+        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->andWhere(['>','bloc_id',0])->select('bloc_id')->column();
         $bloc_ids_str = $bloc_ids ? implode(',', $bloc_ids) : '';
 
-        $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
-      
+        $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->andWhere(['>','store_id',0])->select('store_id')->column();
+        
         $store_ids_str = $store_ids ? implode(',', $store_ids) : '';
 
         $sql = <<<SQL
