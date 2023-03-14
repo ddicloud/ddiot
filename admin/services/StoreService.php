@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 16:07:30
+ * @Last Modified time: 2023-03-14 10:34:48
  */
 
 namespace admin\services;
@@ -523,12 +523,18 @@ class StoreService extends BaseService
      */
     public static function getStoresAndBloc()
     {
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc', 'store'])->asArray()->all();
+        $user_stores = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
+
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'=>function($query) use ($user_stores){
+            return $query->where(['in','store_id',$user_stores])->with(['store']);
+        }])->asArray()->all();
+        
         
         $blocs = [];
-        $stores = [];
         $BlocStore = BlocStore::find()->indexBy('store_id')->asArray()->all();
         foreach ($user_blocs as $key => $value) {
+            $stores = [];
+
             if (!empty($value['bloc'])) {
                 $blocs[$value['bloc_id']] = [
                     "label" => $value['bloc']['business_name'],
@@ -536,8 +542,8 @@ class StoreService extends BaseService
                 ];
             }
 
-            if (!empty($value['store'])) {
-                foreach ($value['store'] as $k => $val) {
+            if (!empty($value['bloc']['store'])) {
+                foreach ($value['bloc']['store'] as $k => $val) {
                     $store_id = $val['store_id'];
                     $stores[$value['bloc_id']][] = [
                         "label" =>  $BlocStore[$store_id]['name'],
@@ -548,10 +554,7 @@ class StoreService extends BaseService
             } else {
                 unset($blocs[$value['bloc_id']]);
             }
-        }
-
-        foreach ($blocs as $bloc_id => &$value) {
-            $value['children'] = $stores[$bloc_id];
+            $blocs[$value['bloc_id']]['children'] = $stores;
         }
 
         return array_values($blocs);
