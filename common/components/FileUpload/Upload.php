@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-15 16:02:20
+ * @Last Modified time: 2023-03-15 16:06:28
  */
 
 namespace common\components\FileUpload;
@@ -228,6 +228,7 @@ class Upload extends Model
 
             return [
                 'status' => 1,
+                'file'=>$model->file,
                 'message' => Json::encode($model->errors),
             ];
         }
