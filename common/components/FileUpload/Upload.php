@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 14:17:12
+ * @Last Modified time: 2023-03-15 16:02:20
  */
 
 namespace common\components\FileUpload;
@@ -174,7 +174,7 @@ class Upload extends Model
 
         $extension = $model->file->extension;
         
-        if ($model->validate() || $extension === 'pem') {
+        if ($model->validate()) {
             //生成文件名
             $rand_name = rand(1000, 9999);
             $fileName = $rand_name . '_' . $model->file->baseName . '.' . $model->file->extension;
