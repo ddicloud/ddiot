@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-15 14:37:35
+ * @Last Modified time: 2023-03-15 14:56:22
  */
 
 namespace admin\services;
@@ -608,6 +608,7 @@ class StoreService extends BaseService
             if ($value['store']) {
                 $lists[$value['store_id']] = [
                     'id' => $value['store_id'],
+                    'bloc_id' => $value['store']['bloc_id'],
                     'name' => $value['store']['name'],
                     'text' => $value['store']['name'],
                     "label" => $value['store']['name'],
