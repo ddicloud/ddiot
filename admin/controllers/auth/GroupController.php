@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-04 17:44:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-09 11:20:53
+ * @Last Modified time: 2023-03-18 14:04:10
  */
 
 namespace admin\controllers\auth;
@@ -215,7 +215,7 @@ class GroupController extends AController
                 'parent_id' => $id,
                 'child_type' => 1,
             ])->select('item_id')->asArray()->column();
-
+            
             $add_ids = array_diff($list, $have_ids);
 
             if (!empty($add_ids)) {
