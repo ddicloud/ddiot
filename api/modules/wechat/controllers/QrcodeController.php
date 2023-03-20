@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 01:02:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-28 18:01:29
+ * @Last Modified time: 2023-03-20 18:56:04
  */
 
 namespace api\modules\wechat\controllers;
@@ -59,7 +59,7 @@ class QrcodeController extends AController
         }
 
         // 随机文件名称防止重复
-        $filename = time().$scene.'.png';
+        $filename = time().md5($scene).'.png';
 
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             $Res = $response->saveAs($directory, $filename);
