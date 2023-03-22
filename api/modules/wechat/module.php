@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 15:20:57
+ * @Last Modified time: 2023-03-22 20:46:00
  */
 
 namespace api\modules\wechat;
@@ -12,6 +12,7 @@ namespace api\modules\wechat;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
+use diandi\addons\models\Bloc;
 use Yii;
 use yii\di\ServiceLocator;
 
@@ -78,7 +79,8 @@ class module extends \yii\base\Module
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
 
                 Yii::$app->service->commonGlobalsService->initId($orderInfo['bloc_id'], $orderInfo['store_id'], $orderInfo['module']);
-                Yii::$app->service->commonGlobalsService->getConf($orderInfo['bloc_id']);
+                $group_bloc_id = Bloc::find()->where(['bloc_id'=>$orderInfo['bloc_id']])->select('group_bloc_id')->scalar();
+                Yii::$app->service->commonGlobalsService->getConf($group_bloc_id);
                 Yii::$app->params['bloc_id'] = $orderInfo['bloc_id'];
                 Yii::$app->params['store_id'] = $orderInfo['store_id'];
             }
