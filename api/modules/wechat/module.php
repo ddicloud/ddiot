@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-22 20:46:00
+ * @Last Modified time: 2023-03-27 16:11:01
  */
 
 namespace api\modules\wechat;
@@ -77,11 +77,11 @@ class module extends \yii\base\Module
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
+                $group_bloc_id = Bloc::find()->where(['bloc_id' => $orderInfo['bloc_id']])->select('group_bloc_id')->scalar();
 
-                Yii::$app->service->commonGlobalsService->initId($orderInfo['bloc_id'], $orderInfo['store_id'], $orderInfo['module']);
-                $group_bloc_id = Bloc::find()->where(['bloc_id'=>$orderInfo['bloc_id']])->select('group_bloc_id')->scalar();
+                Yii::$app->service->commonGlobalsService->initId($group_bloc_id, $orderInfo['store_id'], $orderInfo['module']);
                 Yii::$app->service->commonGlobalsService->getConf($group_bloc_id);
-                Yii::$app->params['bloc_id'] = $orderInfo['bloc_id'];
+                Yii::$app->params['bloc_id'] = $group_bloc_id;
                 Yii::$app->params['store_id'] = $orderInfo['store_id'];
             }
 
@@ -94,10 +94,10 @@ class module extends \yii\base\Module
         $Wechatpay = $conf['wechatpay'];
         $Wxapp = $conf['wxapp'];
 
-        $apiclient_cert = Yii::getAlias('@attachment/'.$Wechatpay['apiclient_cert']['url']);
-        $apiclient_key = Yii::getAlias('@attachment/'.$Wechatpay['apiclient_key']['url']);
-        
-        
+        $apiclient_cert = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
+        $apiclient_key = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
+
+
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
             'app_id' => $Wxapp['AppId'],
@@ -123,11 +123,11 @@ class module extends \yii\base\Module
                 'level' => 'debug',
                 'file' => Yii::getAlias('@runtime/miniprogram'),
             ],
-             //必须添加部分
-			'guzzle' => [ // 配置
-				'verify' => false,
-				'timeout' => 4.0,
-			],
+            //必须添加部分
+            'guzzle' => [ // 配置
+                'verify' => false,
+                'timeout' => 4.0,
+            ],
         ];
 
         $params = Yii::$app->params;
