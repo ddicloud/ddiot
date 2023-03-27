@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-15 15:28:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 20:23:24
+ * @Last Modified time: 2023-03-26 11:33:25
  */
 $config = [
     'components' => [
@@ -25,7 +26,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        // 'controllerNamespace' => 'backend\controllers\gii',
+        'controllerNamespace' => 'admin\controllers\gii',
         'viewPath' => '@admin/views/gii',
         /*自定义*/
         'allowedIPs' => ['127.0.0.1'],

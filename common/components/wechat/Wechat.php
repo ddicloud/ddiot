@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-24 12:16:30
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-07 10:16:10
+ * @Last Modified time: 2023-03-27 15:42:58
  */
 
 namespace common\components\wechat;
@@ -199,9 +200,9 @@ class Wechat extends Component
      */
     public function getPayment()
     {
-        $logPath =  Yii::getAlias("@runtime/wechat/notify/" . date('ymd') . ".log");
-        FileHelper::writeLog($logPath,'开始回调看配置'.json_encode(Yii::$app->params['wechatPaymentConfig']));
-        
+        $logPath =  Yii::getAlias("@runtime/wechat/getPayment/" . date('ymd') . ".log");
+        FileHelper::writeLog($logPath, '开始回调看配置' . json_encode(Yii::$app->params['wechatPaymentConfig']));
+
         if (!self::$_payment instanceof \EasyWeChat\Payment\Application) {
             self::$_payment = Factory::payment(Yii::$app->params['wechatPaymentConfig']);
             !empty($this->rebinds) && self::$_payment = $this->rebind(self::$_payment);
