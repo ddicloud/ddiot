@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-15 14:56:22
+ * @Last Modified time: 2023-03-28 15:55:18
  */
 
 namespace admin\services;
@@ -474,6 +475,7 @@ class StoreService extends BaseService
             'special' => $data['special'],
             'introduction' => $data['introduction'],
             'open_time' => $data['open_time'],
+            'end_time' => $data['end_time'],
             'status' => $data['status'],
             'is_group' => $data['is_group'],
             'sosomap_poi_uid' => $data['sosomap_poi_uid'],
@@ -501,12 +503,10 @@ class StoreService extends BaseService
                 $transaction->commit();
 
                 return $model;
-
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 throw new HttpException(400, $msg);
             }
-
         } catch (\Exception $e) {
             $transaction->rollBack();
             throw new HttpException(400, $e->getMessage());
@@ -525,11 +525,11 @@ class StoreService extends BaseService
     {
         $user_stores = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
 
-        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'=>function($query){
+        $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc' => function ($query) {
             return $query->with(['store'])->asArray();
         }])->asArray()->all();
-        
-        
+
+
         $blocs = [];
         $BlocStore = BlocStore::find()->indexBy('store_id')->asArray()->all();
         foreach ($user_blocs as $key => $value) {
@@ -545,17 +545,15 @@ class StoreService extends BaseService
             if (!empty($value['bloc']['store'])) {
                 foreach ($value['bloc']['store'] as $k => $val) {
                     $store_id = $val['store_id'];
-                    if(!empty($user_stores) && !in_array($store_id,$user_stores)){
+                    if (!empty($user_stores) && !in_array($store_id, $user_stores)) {
                         continue;
-                    }else{
+                    } else {
                         $stores[] = [
                             "label" =>  $BlocStore[$store_id]['name'],
                             "value" => $store_id,
                         ];
                     }
-                   
                 }
-               
             } else {
                 unset($blocs[$value['bloc_id']]);
             }
@@ -586,7 +584,6 @@ class StoreService extends BaseService
                     "label" => $value['bloc']['business_name'],
                     "value" => $value['bloc_id'],
                 ];
-
             }
         }
         return array_values($lists);
@@ -621,9 +618,9 @@ class StoreService extends BaseService
 
     public static function checkStoreNum($bloc_id)
     {
-        $bloc = Bloc::find()->where(['bloc_id'=>$bloc_id])->with(['store'])->asArray()->one();
-        
-        if($bloc['store_num'] <= count($bloc['store'])){
+        $bloc = Bloc::find()->where(['bloc_id' => $bloc_id])->with(['store'])->asArray()->one();
+
+        if ($bloc['store_num'] <= count($bloc['store'])) {
             return false;
         }
 
@@ -634,12 +631,12 @@ class StoreService extends BaseService
     {
         // 删除全局商户
         BlocStore::deleteAll([
-            'store_id'=>$store_id
+            'store_id' => $store_id
         ]);
         // 删除商户授权
         UserStore::deleteAll([
-            'store_id'=>$store_id,
-            'user_id'=>Yii::$app->user->identity->user_id
+            'store_id' => $store_id,
+            'user_id' => Yii::$app->user->identity->user_id
         ]);
     }
 }
