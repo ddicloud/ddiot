@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 15:19:55
+ * @Last Modified time: 2023-03-31 14:09:01
  */
 
 namespace api\modules\officialaccount;
@@ -31,7 +31,7 @@ class module extends \yii\base\Module
     public function init()
     {
         global $_GPC;
-        $logPath = Yii::getAlias('@runtime/officialaccount/payparameters'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@runtime/officialaccount/payparameters' . date('ymd') . '.log');
         parent::init();
 
         /* 加载语言包 */
@@ -43,8 +43,8 @@ class module extends \yii\base\Module
             ];
         }
 
-        $config = require __DIR__.'/config.php';
-    
+        $config = require __DIR__ . '/config.php';
+
         // 获取应用程序的组件
         $components = \Yii::$app->getComponents();
 
@@ -60,23 +60,23 @@ class module extends \yii\base\Module
         $settings = Yii::$app->settings;
 
         $input = file_get_contents('php://input');
-        FileHelper::writeLog($logPath, '入口配置回来的值'.$input);
-        FileHelper::writeLog($logPath, '入口配置回来的值0-5'.substr($input, 0, 5));
+        FileHelper::writeLog($logPath, '入口配置回来的值' . $input);
+        FileHelper::writeLog($logPath, '入口配置回来的值0-5' . substr($input, 0, 5));
         if (substr($input, 0, 5) == '<xml>') {
             FileHelper::writeLog($logPath, '准备处理');
             $xmldata = StringHelper::getXml($input);
-            FileHelper::writeLog($logPath, 'xml解析后'.$xmldata['trade_type'].'/'.json_encode($xmldata));
+            FileHelper::writeLog($logPath, 'xml解析后' . $xmldata['trade_type'] . '/' . json_encode($xmldata));
             if ($xmldata['trade_type'] == 'JSAPI') {
                 $out_trade_no = $xmldata['out_trade_no'];
-                FileHelper::writeLog($logPath, '入口配置回来的订单编号：'.$out_trade_no);
+                FileHelper::writeLog($logPath, '入口配置回来的订单编号：' . $out_trade_no);
                 $DdCorePaylog = new DdCorePaylog();
                 $orderInfo = $DdCorePaylog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->asArray()->one();
-                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql'.$DdCorePaylog->find()->where([
+                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql' . $DdCorePaylog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
-                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志'.json_encode($orderInfo));
+                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
 
                 Yii::$app->service->commonGlobalsService->initId($orderInfo['bloc_id'], $orderInfo['store_id'], $orderInfo['module']);
                 Yii::$app->service->commonGlobalsService->getConf($orderInfo['bloc_id']);
@@ -84,25 +84,25 @@ class module extends \yii\base\Module
                 Yii::$app->params['store_id'] = $orderInfo['store_id'];
             }
 
-            FileHelper::writeLog($logPath, '_W_W_W'.json_encode(Yii::$app->params['bloc_id']));
+            FileHelper::writeLog($logPath, '_W_W_W' . json_encode(Yii::$app->params['bloc_id']));
         }
 
         $params = Yii::$app->params;
         $conf = $params['conf'];
-    
+
         $Wechatpay = $conf['wechatpay'];
         $wechat = $conf['wechat'];
-        
+
         // 支付参数设置
 
         $requestedRoute = $this->module->requestedRoute;
 
-        
-        if(StringHelper::strExists($requestedRoute,'payappparameters')){
+
+        if (StringHelper::strExists($requestedRoute, 'payappparameters')) {
             // app支付
             $Wechat = $conf['app'];
-            $apiclient_cert = Yii::getAlias('@attachment/'.$Wechat['apiclient_cert']['url']);
-            $apiclient_key = Yii::getAlias('@attachment/'.$Wechat['apiclient_key']['url']);
+            $apiclient_cert = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
+            $apiclient_key = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
             $config['params']['wechatPaymentConfig'] = [
                 'app_id' => $Wechat['app_id'],
                 'mch_id' => $Wechat['partner'],
@@ -112,17 +112,15 @@ class module extends \yii\base\Module
                 // 'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
                 'cert_path'          => $apiclient_cert, // XXX: 绝对路径！！！！
                 'key_path'          => $apiclient_key, // XXX: 绝对路径！！！！
-                'notify_url' => Yii::$app->request->hostInfo.'/api/officialaccount/basics/notify',
+                'notify_url' => Yii::$app->request->hostInfo . '/api/officialaccount/basics/notify',
             ];
 
-            FileHelper::writeLog($logPath, 'app支付'.json_encode($config['params']['wechatPaymentConfig']));
+            FileHelper::writeLog($logPath, 'app支付' . json_encode($config['params']['wechatPaymentConfig']));
+        } else {
+            $apiclient_cert = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
+            $apiclient_key = Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
 
-        }else{
-            
-            $apiclient_cert = Yii::getAlias('@attachment/'.$wechat['apiclient_cert']['url']);
-            $apiclient_key = Yii::getAlias('@attachment/'.$wechat['apiclient_key']['url']);
-            
-            
+
 
             $config['params']['wechatPaymentConfig'] = [
                 'app_id' => $wechat['app_id'],
@@ -133,22 +131,22 @@ class module extends \yii\base\Module
                 // 'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
                 'cert_path'          => $apiclient_cert, // XXX: 绝对路径！！！！
                 'key_path'          => $apiclient_key, // XXX: 绝对路径！！！！
-                'notify_url' => Yii::$app->request->hostInfo.'/api/officialaccount/basics/notify',
+                'notify_url' => Yii::$app->request->hostInfo . '/api/officialaccount/basics/notify',
             ];
         }
-        
-       
 
-        FileHelper::writeLog($logPath, '入口配置'.json_encode($config['params']['wechatPaymentConfig']));
-        FileHelper::writeLog($logPath, '总配置'.json_encode($conf));
-        
-        $redirect_uri = !empty($_GPC['redirect_uri'])?$_GPC['redirect_uri']:'';
-        
+
+
+        FileHelper::writeLog($logPath, '入口配置' . json_encode($config['params']['wechatPaymentConfig']));
+        FileHelper::writeLog($logPath, '总配置' . json_encode($conf));
+
+        $redirect_uri = !empty($_GPC['redirect_uri']) ? $_GPC['redirect_uri'] : '';
+
         // 公众号设置
         $wechatConfig = [
             /**
-            * 账号基本信息，请从微信公众平台/开放平台获取
-            */
+             * 账号基本信息，请从微信公众平台/开放平台获取
+             */
             'app_id' => $wechat['app_id'],
             'secret' => $wechat['secret'],
             'token'   => $wechat['token'],          // Token
@@ -166,30 +164,30 @@ class module extends \yii\base\Module
                     // 测试环境
                     'dev' => [
                         'driver' => 'single',
-                        'path' => Yii::getAlias('@api/runtime/officialaccount/'.date('Ym/d').'.log'),
+                        'path' => Yii::getAlias('@api/runtime/officialaccount/' . date('Ym/d') . '.log'),
                         'level' => 'debug',
                     ],
                     // 生产环境
                     'prod' => [
                         'driver' => 'daily',
-                        'path' => Yii::getAlias('@api/runtime/officialaccount/'.date('Ym/d').'.log'),
+                        'path' => Yii::getAlias('@api/runtime/officialaccount/' . date('Ym/d') . '.log'),
                         'level' => 'info',
                     ],
                 ],
             ]
         ];
-        FileHelper::writeLog($logPath, '公众号配置'.json_encode($wechatConfig));
-        
-        $config['params']['wechatConfig'] = array_merge($config['params']['wechatConfig'],$wechatConfig);
-      
+        FileHelper::writeLog($logPath, '公众号配置' . json_encode($wechatConfig));
+
+        $config['params']['wechatConfig'] = array_merge($config['params']['wechatConfig'], $wechatConfig);
+
         $params = Yii::$app->params;
-        
+
         foreach ($params as $key => $value) {
-           if(isset($config['params'][$key])){
+            if (isset($config['params'][$key])) {
                 $config['params'][$key] = $config['params'][$key];
-           }else{
+            } else {
                 $config['params'][$key] = $value;
-           } 
+            }
         }
         // 将新的配置设置到应用程序
         // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$app
