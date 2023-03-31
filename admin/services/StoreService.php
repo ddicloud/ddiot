@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-28 15:55:18
+ * @Last Modified time: 2023-03-31 16:00:18
  */
 
 namespace admin\services;
@@ -529,7 +529,6 @@ class StoreService extends BaseService
             return $query->with(['store'])->asArray();
         }])->asArray()->all();
 
-
         $blocs = [];
         $BlocStore = BlocStore::find()->indexBy('store_id')->asArray()->all();
         foreach ($user_blocs as $key => $value) {
@@ -554,8 +553,6 @@ class StoreService extends BaseService
                         ];
                     }
                 }
-            } else {
-                unset($blocs[$value['bloc_id']]);
             }
             $blocs[$value['bloc_id']]['children'] = $stores;
         }
