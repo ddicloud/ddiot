@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-03 10:50:29
+ * @Last Modified time: 2023-04-03 11:04:23
  */
 
 namespace admin\controllers\addons;
@@ -26,6 +26,13 @@ class CategoryController extends AController
     public $modelSearchName = 'StoreCategory';
 
     public $modelClass = '';
+
+
+    // 根据公司检索字段,不参与检索设置为false
+    public $blocField = false;
+
+    // 根据商户检索字段,不参与检索设置为false
+    public $storeField = false;
 
     /**
      * Lists all StoreCategory models.
