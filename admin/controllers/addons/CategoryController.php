@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-14 16:49:17
+ * @Last Modified time: 2023-04-03 10:50:29
  */
 
 namespace admin\controllers\addons;
@@ -40,8 +40,11 @@ class CategoryController extends AController
         $dataProvider = ArrayHelper::objectToarray($dataProvider);
 
         $parentMent = $dataProvider['allModels'];
-
-        $lists = ArrayHelper::itemsMerge($parentMent, 0, 'category_id', 'parent_id', 'children');
+        if ($parentMent) {
+            $lists = ArrayHelper::itemsMerge($parentMent, 0, 'category_id', 'parent_id', 'children');
+        } else {
+            $lists = [];
+        }
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $lists,
