@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 17:29:21
+ * @Last Modified time: 2023-04-04 10:00:37
  */
 
 namespace admin\controllers\addons;
@@ -159,7 +159,7 @@ class StoreController extends AController
                 break;
         }
         $detail['config'] = [
-            'attachmentUrl' => $url.'/attachment',
+            'attachmentUrl' => $url . '/attachment',
         ];
 
         return ResultHelper::json(200, '获取成功', $detail);
@@ -201,19 +201,21 @@ class StoreController extends AController
 
             if ($model->load($data, '') && $model->save()) {
                 $StoreLabelLink = $_GPC['label_link'];
+                if (!empty($StoreLabelLink) && is_array($StoreLabelLink)) {
 
-                foreach ($StoreLabelLink as $key => $label_id) {
-                    if (!empty($label_id) && is_numeric($label_id)) {
-                        $_link = clone  $link;
-                        $bloc_id = $model->bloc_id;
-                        $store_id = $model->store_id;
-                        $data = [
-                            'bloc_id' => $bloc_id,
-                            'store_id' => $store_id,
-                            'label_id' => $label_id,
-                        ];
-                        $_link->setAttributes($data);
-                        $_link->save();
+                    foreach ($StoreLabelLink as $key => $label_id) {
+                        if (!empty($label_id) && is_numeric($label_id)) {
+                            $_link = clone  $link;
+                            $bloc_id = $model->bloc_id;
+                            $store_id = $model->store_id;
+                            $data = [
+                                'bloc_id' => $bloc_id,
+                                'store_id' => $store_id,
+                                'label_id' => $label_id,
+                            ];
+                            $_link->setAttributes($data);
+                            $_link->save();
+                        }
                     }
                 }
 
@@ -262,7 +264,7 @@ class StoreController extends AController
         $bloc_id = $model->bloc_id;
         $store_id = $model->store_id;
         $data = Yii::$app->request->post();
-        
+
         $data['category_pid'] = $data['category'][0];
         $data['category_id'] = $data['category'][1];
 
@@ -275,16 +277,19 @@ class StoreController extends AController
             $link->deleteAll([
                 'store_id' => $store_id,
             ]);
-            foreach ($StoreLabelLink as $key => $label_id) {
-                if (!empty($label_id) && is_numeric($label_id)) {
-                    $_link = clone  $link;
-                    $data = [
-                        'bloc_id' => $bloc_id,
-                        'store_id' => $store_id,
-                        'label_id' => $label_id,
-                    ];
-                    $_link->setAttributes($data);
-                    $_link->save();
+            if (!empty($StoreLabelLink) && is_array($StoreLabelLink)) {
+
+                foreach ($StoreLabelLink as $key => $label_id) {
+                    if (!empty($label_id) && is_numeric($label_id)) {
+                        $_link = clone  $link;
+                        $data = [
+                            'bloc_id' => $bloc_id,
+                            'store_id' => $store_id,
+                            'label_id' => $label_id,
+                        ];
+                        $_link->setAttributes($data);
+                        $_link->save();
+                    }
                 }
             }
 
@@ -376,8 +381,8 @@ class StoreController extends AController
         global $_GPC;
         // 校验公司是否存储
         $bloc_id = (int) $_GPC['bloc_id'];
-        $have_bloc = ModelsBloc::find()->where(['bloc_id'=>$bloc_id])->asArray()->one();
-        if(!$have_bloc){
+        $have_bloc = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
+        if (!$have_bloc) {
             return ResultHelper::json(400, '管理员授权公司不存在');
         }
         $store = StoreService::createStore($_GPC, $_GPC['mid'], $_GPC['extras']);
