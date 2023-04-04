@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-03 17:40:00
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 18:57:12
+ * @Last Modified time: 2023-04-04 20:03:27
  */
 
 namespace admin\controllers\addons;
@@ -25,6 +26,13 @@ class BloclevelController extends AController
     public $modelSearchName = 'BlocLevel';
 
     public $modelClass = '';
+
+
+    // 根据公司检索字段,不参与检索设置为false
+    public $blocField = false;
+
+    // 根据商户检索字段,不参与检索设置为false
+    public $storeField = false;
 
     /**
      * Lists all BlocLevel models.
@@ -70,7 +78,7 @@ class BloclevelController extends AController
 
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-            
+
             if ($model->load($data, '') && $model->save()) {
                 return ResultHelper::json(200, '创建成功', $model);
             } else {
