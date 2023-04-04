@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 20:23:57
+ * @Last Modified time: 2023-04-04 10:22:32
  */
 
 namespace admin\controllers;
@@ -109,11 +109,18 @@ class UserController extends AController
             /* @var $member \common\models\backend\Member */
             $data = Yii::$app->request->post();
             $mobile = $data['mobile'];
-            $code = $data['code'];
-            $sendcode = Yii::$app->cache->get($mobile . '_code');
-            if ($code != $sendcode) {
-                return ResultHelper::json(401, '验证码错误');
+            $settings = Yii::$app->settings;
+
+            $info = $settings->getAllBySection('Website');
+            if ((int) $info['is_send_code'] === 1) {
+                $code = $data['code'];
+                $sendcode = Yii::$app->cache->get($mobile . '_code');
+                if ($code != $sendcode) {
+                    return ResultHelper::json(401, '验证码错误');
+                }
             }
+
+
 
             $member = User::findByMobile($data['mobile']);
             $member->password_hash = Yii::$app->security->generatePasswordHash($model->newpassword);
@@ -163,11 +170,13 @@ class UserController extends AController
         $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
 
         $Website = Yii::$app->settings->getAllBySection('Website');
-        unset($Website['access_key_id'],
+        unset(
+            $Website['access_key_id'],
             $Website['access_key_secret'],
             $Website['sign_name'],
             $Website['template_code'],
-            $Website['themcolor']);
+            $Website['themcolor']
+        );
         $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
         $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
 
@@ -437,7 +446,7 @@ class UserController extends AController
         $password = $_GPC['password'];
         $email = $_GPC['email'];
         $status = $_GPC['status'];
-        
+
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
@@ -451,7 +460,7 @@ class UserController extends AController
             return ResultHelper::json(401, '密码不能为空', []);
         }
 
-        if(strlen($password)<6){
+        if (strlen($password) < 6) {
             return ResultHelper::json(401, '密码至少6位', []);
         }
 
@@ -616,7 +625,6 @@ class UserController extends AController
             $AdminModelsUser->bloc_id = (int) $bloc_id;
             $AdminModelsUser->store_id = (int) $store_id;
             $AdminModelsUser->update();
-            
         }
 
         return ResultHelper::json(200, '设置成功');
