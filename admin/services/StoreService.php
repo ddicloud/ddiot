@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-31 16:00:18
+ * @Last Modified time: 2023-04-04 21:57:06
  */
 
 namespace admin\services;
@@ -538,6 +538,7 @@ class StoreService extends BaseService
                 $blocs[$value['bloc_id']] = [
                     "label" => $value['bloc']['business_name'],
                     "value" => $value['bloc']['bloc_id'],
+                    "bloc_id" => $value['bloc']['bloc_id'],
                 ];
             }
 
@@ -550,6 +551,9 @@ class StoreService extends BaseService
                         $stores[] = [
                             "label" =>  $BlocStore[$store_id]['name'],
                             "value" => $store_id,
+                            "store_id" => $store_id,
+                            "bloc_id" => $value['bloc']['bloc_id'],
+
                         ];
                     }
                 }
