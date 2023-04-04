@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-05 16:03:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 17:20:12
+ * @Last Modified time: 2023-04-04 21:20:47
  */
 
 namespace admin\controllers\addons;
@@ -25,6 +25,12 @@ class StorelabelController extends AController
     public $modelSearchName = 'StoreLabelSearch';
 
     public $modelClass = '';
+
+    // 根据公司检索字段,不参与检索设置为false
+    public $blocField = false;
+
+    // 根据商户检索字段,不参与检索设置为false
+    public $storeField = false;
 
     /**
      * Lists all StoreLabel models.

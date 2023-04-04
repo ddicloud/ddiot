@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 20:09:43
+ * @Last Modified time: 2023-04-04 21:23:58
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -484,6 +484,7 @@ return [
                         'GET parentbloc' => 'parentbloc',
                         'POST childbloc' => 'childbloc',
                         'GET reglevel' => 'reglevel',
+                        'GET bloc-store' => 'bloc-store',
                         'POST assign/<id>' => 'assign',
                         'POST remove/<id>' => 'remove',
                     ],

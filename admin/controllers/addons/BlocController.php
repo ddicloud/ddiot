@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 15:41:45
+ * @Last Modified time: 2023-04-04 21:22:21
  */
 
 namespace admin\controllers\addons;
@@ -13,6 +13,7 @@ use admin\controllers\AController;
 use admin\models\addons\models\Bloc as BlocSearch;
 use admin\models\enums\BlocStatus;
 use admin\models\enums\ReglevelStatus;
+use admin\services\StoreService;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
@@ -143,7 +144,7 @@ class BlocController extends AController
 
         $view['provinceCityDistrict'] = [$view['province'], $view['city'], $view['district']];
 
-        
+
         $view['provinceCityDistrict'] = [
             (int) $view['province'],
             (int) $view['city'],
@@ -156,7 +157,7 @@ class BlocController extends AController
             'lat' => $view['latitude'],
         ];
 
-    
+
         return ResultHelper::json(200, '获取成功', $view);
     }
 
@@ -361,9 +362,16 @@ class BlocController extends AController
     public function actionLevels()
     {
         global $_GPC;
- 
+
         $levels = BlocLevel::find()->select(['level_num as value', 'name as text'])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $levels);
+    }
+
+    public function actionBlocStore()
+    {
+        $list = StoreService::getStoresAndBloc();
+
+        return ResultHelper::json(200, '获取成功', $list);
     }
 }
