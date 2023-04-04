@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 15:20:02
+ * @Last Modified time: 2023-04-04 09:29:50
  */
 
 
@@ -29,11 +29,11 @@ class Bloc extends BlocModel
     {
         return [
             [['bloc_id', 'pid', 'group_bloc_id', 'register_level', 'avg_price', 'status', 'is_group', 'store_id', 'level_num'], 'integer'],
-            [['business_name', 'category', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'sosomap_poi_uid', 'license_no','invitation_code', 'license_name', 'other_files', 'extra'], 'safe'],
+            [['business_name', 'category', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'sosomap_poi_uid', 'license_no', 'invitation_code', 'license_name', 'other_files', 'extra'], 'safe'],
         ];
     }
 
-        /**
+    /**
      * @param bool  $insert
      * @param array $changedAttributes
      */
@@ -119,10 +119,10 @@ class Bloc extends BlocModel
             // ->limit($pagination->limit)
             ->asArray()
             ->all();
-        //foreach ($list as $key => &$value) {
-        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
-        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //} 
+        foreach ($list as $key => &$value) {
+            $value['open_time'] = date('Y-m-d H:i:s', strtotime($value['open_time']));
+            $value['end_time'] = date('Y-m-d H:i:s', strtotime($value['end_time']));
+        }
 
 
         $provider = new ArrayDataProvider([
