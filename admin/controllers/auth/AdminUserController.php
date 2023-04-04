@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-10-31 13:35:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 19:55:39
+ * @Last Modified time: 2023-04-04 10:02:29
  */
 
 namespace admin\controllers\auth;
@@ -22,7 +22,7 @@ use yii\web\NotFoundHttpException;
  */
 class AdminUserController extends AController
 {
-    public $modelClass = 'User';
+    public $modelClass = 'adminUser';
 
     public $searchLevel = 0;
 
