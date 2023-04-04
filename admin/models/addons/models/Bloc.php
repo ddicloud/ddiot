@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 09:29:50
+ * @Last Modified time: 2023-04-04 09:33:04
  */
 
 
@@ -120,8 +120,8 @@ class Bloc extends BlocModel
             ->asArray()
             ->all();
         foreach ($list as $key => &$value) {
-            $value['open_time'] = date('Y-m-d H:i:s', strtotime($value['open_time']));
-            $value['end_time'] = date('Y-m-d H:i:s', strtotime($value['end_time']));
+            $value['open_time'] = date('Y-m-d', strtotime($value['open_time']));
+            $value['end_time'] = date('Y-m-d', strtotime($value['end_time']));
         }
 
 
