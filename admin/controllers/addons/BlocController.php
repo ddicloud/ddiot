@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 21:22:21
+ * @Last Modified time: 2023-04-06 15:04:40
  */
 
 namespace admin\controllers\addons;
@@ -32,7 +32,7 @@ use yii\web\NotFoundHttpException;
  */
 class BlocController extends AController
 {
-    public $modelSearchName = 'BlocSearch';
+    public $modelSearchName = 'Bloc';
 
     public $modelClass = '';
 
