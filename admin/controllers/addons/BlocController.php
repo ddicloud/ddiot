@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-06 15:04:40
+ * @Last Modified time: 2023-04-06 15:17:08
  */
 
 namespace admin\controllers\addons;
@@ -53,6 +53,10 @@ class BlocController extends AController
         $parentMent = $dataProvider['allModels'];
 
         $lists = ArrayHelper::itemsMerge($parentMent, 0, 'bloc_id', 'pid', 'children');
+
+        if (empty($lists) && !empty($parentMent)) {
+            $lists = $parentMent;
+        }
 
         return ResultHelper::json(200, '获取成功', [
             'searchModel' => $searchModel,
