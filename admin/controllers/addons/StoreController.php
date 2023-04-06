@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 10:00:37
+ * @Last Modified time: 2023-04-06 15:47:23
  */
 
 namespace admin\controllers\addons;
@@ -63,9 +63,7 @@ class StoreController extends AController
     {
         $bloc_id = $this->bloc_id ? $this->bloc_id : Yii::$app->params['bloc_id'];
 
-        $searchModel = new BlocStoreSearch([
-            'bloc_id' => $bloc_id,
-        ]);
+        $searchModel = new BlocStoreSearch();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
