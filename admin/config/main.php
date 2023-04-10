@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 21:23:58
+ * @Last Modified time: 2023-04-10 13:37:30
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -182,6 +182,16 @@ return [
                         'POST authurl' => 'auth-url',
                         'POST bind' => 'bind',
                         'POST unbind' => 'unbind',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['enums'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET storesbloc' => 'storesbloc',
+                        'GET blocs' => 'blocs',
+                        'GET stores' => 'stores'
                     ],
                 ],
                 [

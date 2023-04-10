@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 12:24:55
+ * @Last Modified time: 2023-04-10 11:49:23
  */
 
 namespace admin\controllers;
@@ -80,7 +80,7 @@ class StoreController extends AController
     public function actionList()
     {
         global $_GPC;
-        $logPath = Yii::getAlias('@runtime/StoreService/list/'.date('Y/md').'.log');
+        $logPath = Yii::getAlias('@runtime/StoreService/list/' . date('Y/md') . '.log');
 
         $category_pid = $_GPC['category_pid'];
         $category_id = $_GPC['category_id'];
@@ -247,12 +247,12 @@ class StoreController extends AController
         if ($this->module->id == 'addons') {
             // 校验数量限制
             $storeNum = StoreService::checkStoreNum($_GPC['bloc_id']);
-            if(!$storeNum){
-                  return ResultHelper::json(400,'超过最大商户添加数量');
+            if (!$storeNum) {
+                return ResultHelper::json(400, '超过最大商户添加数量');
             }
             $model = new BlocStore([
                 'extras' => $this->extras,
-                ]);
+            ]);
 
             $modelcate = new StoreCategory();
 
@@ -277,10 +277,10 @@ class StoreController extends AController
                             $bloc_id = $model->bloc_id;
                             $store_id = $model->store_id;
                             $data = [
-                                    'bloc_id' => $bloc_id,
-                                    'store_id' => $store_id,
-                                    'label_id' => $label_id,
-                                ];
+                                'bloc_id' => $bloc_id,
+                                'store_id' => $store_id,
+                                'label_id' => $label_id,
+                            ];
                             $_link->setAttributes($data);
                             $_link->save();
                         }
@@ -343,10 +343,10 @@ class StoreController extends AController
                 foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
                     $_link = clone  $link;
                     $data = [
-                            'bloc_id' => $bloc_id,
-                            'store_id' => $store_id,
-                            'label_id' => $label_id,
-                        ];
+                        'bloc_id' => $bloc_id,
+                        'store_id' => $store_id,
+                        'label_id' => $label_id,
+                    ];
                     $_link->setAttributes($data);
                     $_link->save();
                 }
@@ -377,6 +377,7 @@ class StoreController extends AController
 
         return ResultHelper::json(200, '获取成功', ['bloc_id' => $bloc_id]);
     }
+
 
     /**
      * Finds the BlocStore model based on its primary key value.
