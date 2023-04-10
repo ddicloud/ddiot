@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-23 14:04:24
+ * @Last Modified time: 2023-04-10 17:23:27
  */
 
 namespace api\controllers;
@@ -268,7 +268,10 @@ class UserController extends AController
 
         $service = Yii::$app->service;
         $service->namespace = 'api';
-        $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+        $userinfo =  [];
+        if ($userobj) {
+            $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
+        }
 
         return ResultHelper::json(200, '获取成功', ['userinfo' => $userinfo]);
     }
