@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:51:08
+ * @Last Modified time: 2023-04-11 21:05:00
  */
 
 namespace admin\controllers\system;
@@ -108,7 +109,8 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Baidu();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Baidu[bloc_id]'];
+
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -149,7 +151,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechatpay();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Wechatpay[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -191,7 +193,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Sms();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Sms[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -233,7 +235,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Email();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Email[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -275,7 +277,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wxapp();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Wxapp[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -317,7 +319,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechat();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Wechat[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -359,7 +361,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Microapp();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Microapp[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -401,7 +403,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new App();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['App[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -443,7 +445,7 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Map();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Map[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
@@ -484,7 +486,7 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Oss();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = $_GPC['Oss[bloc_id]'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
