@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-15 16:06:28
+ * @Last Modified time: 2023-04-12 18:32:22
  */
 
 namespace common\components\FileUpload;
@@ -57,7 +57,7 @@ class Upload extends Model
         if (!ImageHelper::isImg($fileName)) {
             return [
                 'code' => 400,
-                'message' => '请检查图片格式',
+                'message' => "请检查图片格式",
             ];
         }
         if ($model->validate()) {
@@ -173,7 +173,7 @@ class Upload extends Model
         }
 
         $extension = $model->file->extension;
-        
+
         if ($model->validate()) {
             //生成文件名
             $rand_name = rand(1000, 9999);
@@ -228,7 +228,7 @@ class Upload extends Model
 
             return [
                 'status' => 1,
-                'file'=>$model->file,
+                'file' => $model->file,
                 'message' => Json::encode($model->errors),
             ];
         }
@@ -261,7 +261,6 @@ class Upload extends Model
             }
             $Mimetype = MimeTypes::getMimetype($baseFile);
             ImageHelper::uploadDb($pathinfo['basename'], $filesize, $Mimetype, $pathinfo['extension'], $file, 0, $storage);
-
         } catch (\Local\LocalException $e) {
             throw new LocalException($e->getMessage());
         } catch (Exception $e) {
