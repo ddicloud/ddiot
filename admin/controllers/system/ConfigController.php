@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-11 21:34:56
+ * @Last Modified time: 2023-04-12 09:21:47
  */
 
 namespace admin\controllers\system;
@@ -120,6 +120,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -162,6 +164,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -204,6 +208,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -246,6 +252,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -288,6 +296,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -330,6 +340,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -372,6 +384,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -414,6 +428,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -456,6 +472,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
@@ -497,6 +515,8 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message'], []);
             }
         } else {
+            $bloc_id = $_GPC['bloc_id'];
+
             $model->getConf($bloc_id);
 
             return ResultHelper::json(200, '获取成功', $model);
