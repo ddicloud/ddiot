@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-19 18:05:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 14:53:20
+ * @Last Modified time: 2023-04-12 18:24:44
  */
 
 
@@ -48,6 +48,8 @@ class UploadController extends AController
     public function actionImages()
     {
         global $_GPC;
+        header('Content-type:text/html;charset=utf-8');
+
         try {
             $model = new Upload();
             $info = $model->upImage();
