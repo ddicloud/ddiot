@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-19 18:05:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-01 17:04:05
+ * @Last Modified time: 2023-04-12 14:53:20
  */
 
 
@@ -45,29 +45,6 @@ class UploadController extends AController
         return $behaviors;
     }
 
-    /**
-     * @SWG\Post(path="/upload/images",
-     *     tags={"资源上传"},
-     *     summary="上传图片",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "上传图片",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="images",
-     *      type="string",
-     *      description="需要上传的图片",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *     )
-     * )
-     */
     public function actionImages()
     {
         global $_GPC;
