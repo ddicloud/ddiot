@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:42:41
+ * @Last Modified time: 2023-04-12 16:59:43
  */
 
 namespace common\behaviors;
@@ -72,7 +72,7 @@ class HttpRequstMethod extends Behavior
         $where = [];
 
         if ($this->owner->adminField) {
-            $whereInit[$this->owner->adminField] = $this->admin_id;
+            $whereInit[$this->owner->adminField] = (int) $this->admin_id;
         }
 
         // 0不检索商户与公司，1只检索公司，2检索公司和商户.
@@ -89,7 +89,7 @@ class HttpRequstMethod extends Behavior
                     throw new NotFoundHttpException('控制器必须设置`modelSearchName`属性', 400);
                 }
 
-                if ($this->owner->blocField) {
+                if ((int) $this->owner->blocField) {
                     $whereInit[$this->owner->blocField] = $this->bloc_id;
                 }
 
@@ -99,11 +99,11 @@ class HttpRequstMethod extends Behavior
                     throw new NotFoundHttpException('控制器必须设置`modelSearchName`属性', 400);
                 }
 
-                if ($this->owner->blocField) {
+                if ((int) $this->owner->blocField) {
                     $whereInit[$this->owner->blocField] = $this->bloc_id;
                 }
 
-                if ($this->owner->storeField) {
+                if ((int) $this->owner->storeField) {
                     $whereInit[$this->owner->storeField] = $this->store_id;
                 }
 
@@ -161,16 +161,16 @@ class HttpRequstMethod extends Behavior
         if (!empty($user_id)) {
             $defaultRoles = Yii::$app->authManager->defaultRoles;
             $groupHave = AuthAssignmentGroup::find()->where([
-                  'user_id' => $user_id,
-                  'item_name' => $defaultRoles,
-              ])->asArray()->all();
+                'user_id' => $user_id,
+                'item_name' => $defaultRoles,
+            ])->asArray()->all();
 
             if (empty($groupHave)) {
                 // 不是最高权限用户，继续校验
                 $store_id_have = UserBloc::find()->where([
-                      'store_id' => Yii::$app->params['store_id'],
-                      'user_id' => $user_id,
-                  ])->select('store_id')->scalar();
+                    'store_id' => Yii::$app->params['store_id'],
+                    'user_id' => $user_id,
+                ])->select('store_id')->scalar();
                 if (empty($store_id_have)) {
                     throw new NotFoundHttpException('没有该商户的数据权限.');
                 }
