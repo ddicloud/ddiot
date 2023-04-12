@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:20:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-06 15:21:27
+ * @Last Modified time: 2023-04-12 09:56:49
  */
 
 namespace admin\controllers\addons;
@@ -188,8 +188,6 @@ class BlocController extends AController
             $data['city'] = $data['provinceCityDistrict']['1'];
             $data['district'] = $data['provinceCityDistrict']['2'];
 
-            $pid = $_GPC['pid'];
-            $data['group_bloc_id'] = Bloc::find()->where(['bloc_id' => $pid])->select('group_bloc_id')->scalar();
 
             if ($model->load($data, '') && $model->save()) {
                 return ResultHelper::json(200, '创建成功', $model);
@@ -224,8 +222,6 @@ class BlocController extends AController
             $data['city'] = $data['provinceCityDistrict']['1'];
             $data['district'] = $data['provinceCityDistrict']['2'];
 
-            $pid = $_GPC['pid'];
-            $data['group_bloc_id'] = Bloc::find()->where(['bloc_id' => $pid])->select('group_bloc_id')->scalar();
             if ($model->load($data, '') && $model->save()) {
                 return ResultHelper::json(200, '编辑成功', $model);
             } else {
