@@ -1,20 +1,21 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 19:53:59
+ * @Last Modified time: 2023-04-17 16:31:09
  */
 $db = [];
 
-if (file_exists(__DIR__.'/../../common/config/db.php')) {
-    $db = require __DIR__.'/../../common/config/db.php';
+if (file_exists(__DIR__ . '/../../common/config/db.php')) {
+    $db = require __DIR__ . '/../../common/config/db.php';
 }
 
 $config = [
     'components' => [
         'db' => $db,
-         /* ------ 缓存 ------ **/
+        /* ------ 缓存 ------ **/
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],

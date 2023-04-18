@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-08-12 16:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-12 16:18:29
+ * @Last Modified time: 2023-04-18 09:50:58
  */
- 
+
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -26,99 +27,103 @@ echo "<?php\n";
 
 namespace <?= $generator->ns ?>;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
- * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
- *
-<?php foreach ($properties as $property => $data): ?>
- * @property <?= "{$data['type']} \${$property}"  . ($data['comment'] ? ' ' . strtr($data['comment'], ["\n" => ' ']) : '') . "\n" ?>
+* This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+*
+<?php foreach ($properties as $property => $data) : ?>
+    * @property <?= "{$data['type']} \${$property}"  . ($data['comment'] ? ' ' . strtr($data['comment'], ["\n" => ' ']) : '') . "\n" ?>
 <?php endforeach; ?>
-<?php if (!empty($relations)): ?>
- *
-<?php foreach ($relations as $name => $relation): ?>
- * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-<?php endforeach; ?>
+<?php if (!empty($relations)) : ?>
+    *
+    <?php foreach ($relations as $name => $relation) : ?>
+        * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+    <?php endforeach; ?>
 <?php endif; ?>
- */
+*/
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return '<?= $generator->generateTableName($tableName) ?>';
-    }
-<?php if ($generator->db !== 'db'): ?>
+use StoreTrait;
+
+/**
+* {@inheritdoc}
+*/
+public static function tableName()
+{
+return '<?= $generator->generateTableName($tableName) ?>';
+}
+<?php if ($generator->db !== 'db') : ?>
 
     /**
-     * @return \yii\db\Connection the database connection used by this AR class.
-     */
+    * @return \yii\db\Connection the database connection used by this AR class.
+    */
     public static function getDb()
     {
-        return Yii::$app->get('<?= $generator->db ?>');
+    return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
-    }
+/**
+* {@inheritdoc}
+*/
+public function rules()
+{
+return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
+}
 
-    /**
-     * 行为.
-     */
-    public function behaviors()
-    {
-        /*自动添加创建和修改时间*/
-        return [
-            [
-                'class' => \common\behaviors\SaveBehavior::className(),
-                'updatedAttribute' => 'update_time',
-                'createdAttribute' => 'create_time',
-            ],
-        ];
-    }
+/**
+* 行为.
+*/
+public function behaviors()
+{
+/*自动添加创建和修改时间*/
+return [
+[
+'class' => \common\behaviors\SaveBehavior::className(),
+'updatedAttribute' => 'update_time',
+'createdAttribute' => 'create_time',
+'time_type' => 'datetime',
+],
+];
+}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-<?php foreach ($labels as $name => $label): ?>
-            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+/**
+* {@inheritdoc}
+*/
+public function attributeLabels()
+{
+return [
+<?php foreach ($labels as $name => $label) : ?>
+    <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endforeach; ?>
-        ];
-    }
-<?php foreach ($relations as $name => $relation): ?>
+];
+}
+<?php foreach ($relations as $name => $relation) : ?>
 
     /**
-     * Gets query for [[<?= $name ?>]].
-     *
-     * @return <?= $relationsClassHints[$name] . "\n" ?>
-     */
+    * Gets query for [[<?= $name ?>]].
+    *
+    * @return <?= $relationsClassHints[$name] . "\n" ?>
+    */
     public function get<?= $name ?>()
     {
-        <?= $relation[0] . "\n" ?>
+    <?= $relation[0] . "\n" ?>
     }
 <?php endforeach; ?>
-<?php if ($queryClassName): ?>
-<?php
+<?php if ($queryClassName) : ?>
+    <?php
     $queryClassFullName = ($generator->ns === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
-?>
+    ?>
     /**
-     * {@inheritdoc}
-     * @return <?= $queryClassFullName ?> the active query used by this AR class.
-     */
+    * {@inheritdoc}
+    * @return <?= $queryClassFullName ?> the active query used by this AR class.
+    */
     public static function find()
     {
-        return new <?= $queryClassFullName ?>(get_called_class());
+    return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
 }
