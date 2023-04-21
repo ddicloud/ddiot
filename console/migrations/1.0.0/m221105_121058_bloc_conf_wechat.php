@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2022-11-05 20:10:58
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-04-21 10:23:37
+ */
+
+
 use yii\db\Migration;
 
 class m221105_121058_bloc_conf_wechat extends Migration
@@ -8,7 +16,7 @@ class m221105_121058_bloc_conf_wechat extends Migration
     {
         /* 取消外键约束 */
         $this->execute('SET foreign_key_checks = 0');
-        
+
         /* 创建表 */
         $this->createTable('{{%bloc_conf_wechat}}', [
             'id' => "int(11) NOT NULL AUTO_INCREMENT",
@@ -22,13 +30,13 @@ class m221105_121058_bloc_conf_wechat extends Migration
             'create_time' => "int(11) NULL",
             'PRIMARY KEY (`id`)'
         ], "ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公众号配置'");
-        
+
         /* 索引设置 */
-        $this->createIndex('bloc_id','{{%bloc_conf_wechat}}','bloc_id',1);
-        
-        
+        $this->createIndex('bloc_id', '{{%bloc_conf_wechat}}', 'bloc_id', 1);
+
+
         /* 表数据 */
-        
+
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
     }
@@ -41,4 +49,3 @@ class m221105_121058_bloc_conf_wechat extends Migration
         $this->execute('SET foreign_key_checks = 1;');
     }
 }
-
