@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05ef7abadc7de03fa3f1e8afcadcd278",
+    "content-hash": "664fa0f50a885698f18b26846b671c87",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4948,65 +4948,6 @@
                 "source": "https://github.com/yii-diandi/yii2-rpc/tree/1.0.3"
             },
             "time": "2022-11-05T04:09:45+00:00"
-        },
-        {
-            "name": "yii-diandi/yii2-swoole",
-            "version": "2.9.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yii-diandi/yii2-swoole.git",
-                "reference": "012d103091b244ae900c8a9105c4b17096fe46fa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-swoole/zipball/012d103091b244ae900c8a9105c4b17096fe46fa",
-                "reference": "012d103091b244ae900c8a9105c4b17096fe46fa",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=7.0",
-                "yiisoft/yii2": "~2.0.14"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "swoole/ide-helper": "~4.3.0",
-                "yiisoft/yii2-redis": "^2.0"
-            },
-            "suggest": {
-                "ext-swoole": "install ext-swoole when use php swoole extension"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "diandi\\swoole\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "run yii2 in swoole coroutine mode，基于店滴云开源框架的swoole扩展",
-            "keywords": [
-                "coroutine",
-                "swoole",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/yii-diandi/yii2-swoole/issues",
-                "source": "https://github.com/yii-diandi/yii2-swoole/tree/2.9.9"
-            },
-            "time": "2022-12-01T08:48:13+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",
