@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-22 22:37:20
+ * @Last Modified time: 2023-04-22 22:41:44
  */
 
 namespace common\components\FileUpload;
@@ -56,7 +56,9 @@ class Upload extends Model
         $relativePath = $successPath = '';
         $fileName = Uuid::uuid() . '.' . $model->file->extension;
         if (!ImageHelper::isImg($fileName)) {
-            return ResultHelper::json(400, '请检查图片格式');
+            return ResultHelper::json(400, '请检查图片格式', [
+                'fileName' => $fileName
+            ]);
         }
         if ($model->validate()) {
             $relativePath = Yii::$app->params['imageUploadRelativePath'];
