@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-19 18:05:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 18:24:44
+ * @Last Modified time: 2023-04-22 22:38:20
  */
 
 
@@ -48,22 +48,12 @@ class UploadController extends AController
     public function actionImages()
     {
         global $_GPC;
-        header('Content-type:text/html;charset=utf-8');
-
         try {
             $model = new Upload();
             $info = $model->upImage();
-            $info && is_array($info) ?
-                exit(Json::htmlEncode($info)) :
-                exit(Json::htmlEncode([
-                    'code' => 1,
-                    'msg' => 'error'
-                ]));
+            return ResultHelper::json(200, '上传成功', $info);
         } catch (\Exception $e) {
-            exit(Json::htmlEncode([
-                'code' => 1,
-                'msg' => $e->getMessage()
-            ]));
+            return ResultHelper::json(400, $e->getMessage());
         }
     }
 

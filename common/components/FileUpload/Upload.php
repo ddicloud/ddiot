@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 18:32:22
+ * @Last Modified time: 2023-04-22 22:37:20
  */
 
 namespace common\components\FileUpload;
@@ -13,6 +13,7 @@ use Alioss\Core\MimeTypes;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper as HelpersFileHelper;
 use common\helpers\ImageHelper;
+use common\helpers\ResultHelper;
 use Exception;
 use Faker\Provider\Uuid;
 use Local\LocalCor;
@@ -55,10 +56,7 @@ class Upload extends Model
         $relativePath = $successPath = '';
         $fileName = Uuid::uuid() . '.' . $model->file->extension;
         if (!ImageHelper::isImg($fileName)) {
-            return [
-                'code' => 400,
-                'message' => "请检查图片格式",
-            ];
+            return ResultHelper::json(400, '请检查图片格式');
         }
         if ($model->validate()) {
             $relativePath = Yii::$app->params['imageUploadRelativePath'];
@@ -81,19 +79,14 @@ class Upload extends Model
                 ImageHelper::uploadDb($fileName, $model->file->size, $model->file->type, $model->file->extension, $successPath . $fileName, 0, $storage);
             }
 
-            return [
-                'code' => 200,
+            return ResultHelper::json(200, '上传成功', [
                 'cloudOss' => $cloudOss,
                 'url' => ImageHelper::tomedia($successPath . $fileName),
                 'attachment' => $successPath . $fileName,
-            ];
+            ]);
         } else {
             $errors = $model->errors;
-
-            return [
-                'code' => 400,
-                'message' => current($errors)[0],
-            ];
+            return ResultHelper::json(400, current($errors)[0], $errors);
         }
     }
 
