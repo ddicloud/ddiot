@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-09 11:20:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-22 22:41:44
+ * @Last Modified time: 2023-04-22 23:35:41
  */
 
 namespace common\components\FileUpload;
@@ -50,6 +50,7 @@ class Upload extends Model
     {
         $model = new static();
         $model->file = UploadedFile::getInstanceByName('file');
+
         if (!$model->file) {
             return false;
         }
