@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2023-04-25 16:02:32
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-04-25 23:08:30
+ */
+
+
 
 namespace EasySwoole\Rpc\Client;
 
@@ -130,13 +138,13 @@ class RequestContext
 
     public function enableRetry(int $times): RequestContext
     {
-        if($times >= 0){
+        if ($times >= 0) {
             $this->retryTimes = $times;
         }
         return $this;
     }
 
-    public function getRetryTimes():int
+    public function getRetryTimes(): int
     {
         return $this->retryTimes;
     }

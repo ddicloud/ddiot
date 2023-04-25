@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2023-04-25 16:02:32
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-04-25 16:14:26
+ */
+
+
 
 namespace EasySwoole\Rpc;
+
 use EasySwoole\Rpc\Config\Client as ClientConfig;
 use EasySwoole\Rpc\Config\Server;
 use EasySwoole\Rpc\Config\Assist;
@@ -29,7 +38,7 @@ class Config
     function __construct(NodeManagerInterface $manager = null)
     {
         $this->nodeId = Random::character(10);
-        if($manager == null){
+        if ($manager == null) {
             $manager = new MemoryManager();
         }
         $this->nodeManager = $manager;
@@ -40,7 +49,7 @@ class Config
      */
     public function getClient(): ClientConfig
     {
-        if(!$this->client){
+        if (!$this->client) {
             $this->client = new ClientConfig();
         }
         return $this->client;
@@ -59,7 +68,7 @@ class Config
      */
     public function getServer(): Server
     {
-        if(!$this->server){
+        if (!$this->server) {
             $this->server = new Server();
         }
         return $this->server;
@@ -78,7 +87,7 @@ class Config
      */
     public function getAssist(): Assist
     {
-        if(!$this->assist){
+        if (!$this->assist) {
             $this->assist = new Assist();
         }
         return $this->assist;
@@ -108,7 +117,7 @@ class Config
         $this->serverName = $serverName;
     }
 
-    function getNodeManager():?NodeManagerInterface
+    function getNodeManager(): ?NodeManagerInterface
     {
         return $this->nodeManager;
     }

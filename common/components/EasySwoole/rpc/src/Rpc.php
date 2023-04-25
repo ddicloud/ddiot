@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2023-04-25 16:02:32
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-04-25 23:09:00
+ */
+
+
 
 namespace EasySwoole\Rpc;
 
@@ -22,24 +30,24 @@ class Rpc
         $this->config = $config;
     }
 
-    function serviceManager():Manager
+    function serviceManager(): Manager
     {
         return $this->manager;
     }
 
-    function getConfig():Config
+    function getConfig(): Config
     {
         return $this->config;
     }
 
-    function client():Client
+    function client(): Client
     {
-        return new Client($this->config->getNodeManager(),$this->config->getClient());
+        return new Client($this->config->getNodeManager(), $this->config->getClient());
     }
 
     function attachServer(Server $server)
     {
-        if(empty($this->config->getServer()->getServerIp())){
+        if (empty($this->config->getServer()->getServerIp())) {
             throw new Exception("ServerIp is require for Rpc Server Config");
         }
         $serviceWorkers = $this->__getServiceWorker();
@@ -51,18 +59,18 @@ class Rpc
     }
 
     /** 不希望用户主动调用 */
-    function __getServiceWorker():array
+    function __getServiceWorker(): array
     {
         $list = [];
-        for($i = 0;$i < $this->config->getServer()->getWorkerNum();$i++){
+        for ($i = 0; $i < $this->config->getServer()->getWorkerNum(); $i++) {
             $config = new TcpProcessConfig();
             $config->setProcessGroup("{$this->config->getServerName()}.Rpc");
             $config->setProcessName("{$this->config->getServerName()}.Rpc.Worker.{$i}");
             $config->setListenAddress($this->config->getServer()->getListenAddress());
             $config->setListenPort($this->config->getServer()->getListenPort());
             $config->setArg([
-                'manager'=>$this->manager,
-                'config'=>$this->config
+                'manager' => $this->manager,
+                'config' => $this->config
             ]);
             $p = new ServiceWorker($config);
             $list[] = $p;
@@ -72,15 +80,15 @@ class Rpc
 
 
     /** 不希望用户主动调用 */
-    function __getAssistWorker():AssistWorker
+    function __getAssistWorker(): AssistWorker
     {
         $config = new ProcessConfig();
         $config->setProcessGroup("{$this->config->getServerName()}.Rpc");
         $config->setProcessName("{$this->config->getServerName()}.Rpc.AssistWorker");
         $config->setEnableCoroutine(true);
         $config->setArg([
-            'manager'=>$this->manager,
-            'config'=>$this->config
+            'manager' => $this->manager,
+            'config' => $this->config
         ]);
         return new AssistWorker($config);
     }
