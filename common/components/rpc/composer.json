@@ -1,0 +1,34 @@
+{
+    "name": "easyswoole/rpc",
+    "type": "library",
+    "description": "An efficient swoole framework",
+    "keywords" : ["swoole", "framework", "async","easyswoole"],
+    "homepage" : "https://www.easyswoole.com/",
+    "license" : "Apache-2.0",
+    "authors": [
+        {
+            "name": "YF",
+            "email": "291323003@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "ext-swoole": ">=4.4.5",
+        "ext-json": ">=1.0",
+        "ext-openssl": ">=7.1",
+        "easyswoole/spl": "^1.0",
+        "easyswoole/utility": "^1.0",
+        "easyswoole/component": "^2.0",
+        "ext-sockets": "*"
+    },
+    "require-dev": {
+        "easyswoole/swoole-ide-helper": "^1.1",
+        "easyswoole/phpunit": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EasySwoole\\Rpc\\": "src/",
+            "EasySwoole\\Rpc\\Tests\\": "tests/"
+        }
+    }
+}

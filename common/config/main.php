@@ -4,15 +4,15 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-27 11:30:16
+ * @Last Modified time: 2023-04-25 15:29:24
  */
 
 return [
     'name' => '店滴云CMS',
     'version' => '1.1.9',
     'aliases' => [
-        '@bower' => dirname(dirname(__DIR__)).'/frontend/resource/lib',
-        '@npm' => dirname(dirname(__DIR__)).'/frontend/node_modules',
+        '@bower' => dirname(dirname(__DIR__)) . '/frontend/resource/lib',
+        '@npm' => dirname(dirname(__DIR__)) . '/frontend/node_modules',
         // '@bower' => '@vendor/bower-asset',
         '@vue' => '@common/widgets/firevue',
         '@npm' => '@vendor/npm-asset',
@@ -28,7 +28,7 @@ return [
         '@diandi' => '@vendor/yii-diandi',
         '@addonstpl' => '@console/gii/giitpl',
     ],
-    'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'modules' => [
         'settings' => [
             'class' => 'yii2mod\settings\Module',
@@ -100,21 +100,21 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             //'flushInterval' => 1,
             'targets' => [
-               [
-                  'class' => 'yii\log\FileTarget', //默认文件处理类
-                  'levels' => ['error', 'warning','info'],
-                  'exportInterval' => 1,
-                  'categories' => ['ddicms'],
-                  //'categories' => ['yii\*'],//$categories the message categories to filter by. If empty, it means all categories are allowed.
-                  'logVars' => ['*'], //记录最基本的 []赋值也可以
-                  //'logFile' => '@runtime/logs/order.log'.date('Ymd'),//用日期方式记录日志
-                  'except' => [
-                    'yii\web\HttpException:404',
-                    'yii\web\HttpException:403',
-                    'yii\web\HttpException:402',
-                    'yii\web\HttpException:401',
-                  ]
-               ],
+                [
+                    'class' => 'yii\log\FileTarget', //默认文件处理类
+                    'levels' => ['error', 'warning', 'info'],
+                    'exportInterval' => 1,
+                    'categories' => ['ddicms'],
+                    //'categories' => ['yii\*'],//$categories the message categories to filter by. If empty, it means all categories are allowed.
+                    'logVars' => ['*'], //记录最基本的 []赋值也可以
+                    //'logFile' => '@runtime/logs/order.log'.date('Ymd'),//用日期方式记录日志
+                    'except' => [
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:403',
+                        'yii\web\HttpException:402',
+                        'yii\web\HttpException:401',
+                    ]
+                ],
             ],
         ],
     ],
