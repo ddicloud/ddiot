@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-11 04:48:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-01-06 17:01:46
+ * @Last Modified time: 2023-04-25 10:29:18
  */
 
 namespace common\helpers;
@@ -50,7 +50,7 @@ class StringHelper extends BaseStringHelper
                 break;
                 // php自带的唯一id
             case  'uniqid':
-                return md5(uniqid(md5(microtime(true).self::randomNum(8)), true));
+                return md5(uniqid(md5(microtime(true) . self::randomNum(8)), true));
 
                 break;
         }
@@ -123,7 +123,7 @@ class StringHelper extends BaseStringHelper
     {
         $url = explode('/', $url);
         $nameArr = explode('.', end($url));
-        $url[count($url) - 1] = $nameArr[0]."@{$width}x{$height}.".$nameArr[1];
+        $url[count($url) - 1] = $nameArr[0] . "@{$width}x{$height}." . $nameArr[1];
 
         return implode('/', $url);
     }
@@ -139,7 +139,7 @@ class StringHelper extends BaseStringHelper
     {
         $url = explode('/', $url);
         $nameArr = explode('.', end($url));
-        $url[count($url) - 1] = $nameArr[0]."@{$alias}.".$nameArr[1];
+        $url[count($url) - 1] = $nameArr[0] . "@{$alias}." . $nameArr[1];
 
         return implode('/', $url);
     }
@@ -186,7 +186,7 @@ class StringHelper extends BaseStringHelper
     public static function subtext($text, $length)
     {
         if (mb_strlen($text, 'utf8') > $length) {
-            return mb_substr($text, 0, $length, 'utf8').'...';
+            return mb_substr($text, 0, $length, 'utf8') . '...';
         } else {
             return $text;
         }
@@ -217,7 +217,7 @@ class StringHelper extends BaseStringHelper
         preg_match_all($re[$charset], $str, $match);
         $slice = join('', array_slice($match[0], $start, $length));
         if ($suffix) {
-            return $slice.'…';
+            return $slice . '…';
         }
 
         return $slice;
@@ -273,26 +273,26 @@ class StringHelper extends BaseStringHelper
         while (($n < $cutlength) and ($i <= $str_length)) {
             $temp_str = substr($sourcestr, $i, 1);
             $ascnum = ord($temp_str); //得到字符串中第$i位字符的ascii码
-        if ($ascnum >= 224) { //如果ASCII位高与224，
-            $returnstr = $returnstr.substr($sourcestr, $i, 3); //根据UTF-8编码规范，将3个连续的字符计为单个字符
-            $i = $i + 3; //实际Byte计为3
-            ++$n; //字串长度计1
-        } elseif ($ascnum >= 192) { //如果ASCII位高与192，
-            $returnstr = $returnstr.substr($sourcestr, $i, 2); //根据UTF-8编码规范，将2个连续的字符计为单个字符
-            $i = $i + 2; //实际Byte计为2
-            ++$n; //字串长度计1
-        } elseif ($ascnum >= 65 && $ascnum <= 90) { //如果是大写字母，
-            $returnstr = $returnstr.substr($sourcestr, $i, 1);
-            $i = $i + 1; //实际的Byte数仍计1个
-            ++$n; //但考虑整体美观，大写字母计成一个高位字符
-        } else { //其他情况下，包括小写字母和半角标点符号，
-            $returnstr = $returnstr.substr($sourcestr, $i, 1);
-            $i = $i + 1; //实际的Byte数计1个
-            $n = $n + 0.5; //小写字母和半角标点等与半个高位字符宽...
-        }
+            if ($ascnum >= 224) { //如果ASCII位高与224，
+                $returnstr = $returnstr . substr($sourcestr, $i, 3); //根据UTF-8编码规范，将3个连续的字符计为单个字符
+                $i = $i + 3; //实际Byte计为3
+                ++$n; //字串长度计1
+            } elseif ($ascnum >= 192) { //如果ASCII位高与192，
+                $returnstr = $returnstr . substr($sourcestr, $i, 2); //根据UTF-8编码规范，将2个连续的字符计为单个字符
+                $i = $i + 2; //实际Byte计为2
+                ++$n; //字串长度计1
+            } elseif ($ascnum >= 65 && $ascnum <= 90) { //如果是大写字母，
+                $returnstr = $returnstr . substr($sourcestr, $i, 1);
+                $i = $i + 1; //实际的Byte数仍计1个
+                ++$n; //但考虑整体美观，大写字母计成一个高位字符
+            } else { //其他情况下，包括小写字母和半角标点符号，
+                $returnstr = $returnstr . substr($sourcestr, $i, 1);
+                $i = $i + 1; //实际的Byte数计1个
+                $n = $n + 0.5; //小写字母和半角标点等与半个高位字符宽...
+            }
         }
         if ($str_length > $cutlength) {
-            $returnstr = $returnstr.$suffix; //超过长度时在尾处加上省略号
+            $returnstr = $returnstr . $suffix; //超过长度时在尾处加上省略号
         }
 
         return $returnstr;
@@ -412,8 +412,8 @@ class StringHelper extends BaseStringHelper
      */
     public static function random($length, $numeric = false)
     {
-        $seed = base_convert(md5(microtime().$_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
-        $seed = $numeric ? (str_replace('0', '', $seed).'012340567890') : ($seed.'zZ'.strtoupper($seed));
+        $seed = base_convert(md5(microtime() . $_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
+        $seed = $numeric ? (str_replace('0', '', $seed) . '012340567890') : ($seed . 'zZ' . strtoupper($seed));
 
         $hash = '';
         if (!$numeric) {
@@ -442,7 +442,7 @@ class StringHelper extends BaseStringHelper
     {
         $str = $prefix ?? '';
 
-        return $str.substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, $length);
+        return $str . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, $length);
     }
 
     /**
@@ -568,7 +568,7 @@ class StringHelper extends BaseStringHelper
             180, 181, 182, 183, 184, 185, 186, 187, 188, 189,
         ];
         for ($i = 0; $i < $count; ++$i) {
-            $tmp[] = $arr[array_rand($arr)].' '.mt_rand(1000, 9999).' '.mt_rand(1000, 9999);
+            $tmp[] = $arr[array_rand($arr)] . ' ' . mt_rand(1000, 9999) . ' ' . mt_rand(1000, 9999);
         }
         if ($type === 'string') {
             $tmp = json_encode($tmp); //如果是字符串，解析成字符串
@@ -600,7 +600,7 @@ class StringHelper extends BaseStringHelper
                 }
                 $return .= $unit[strlen($num) - 1];
             } elseif ($num < 20) {
-                $return = $unit[substr($num, 0, -1)].$char[substr($num, -1)];
+                $return = $unit[substr($num, 0, -1)] . $char[substr($num, -1)];
             } else {
                 $numData = str_split($num);
                 $numLength = count($numData) - 1;
@@ -640,9 +640,9 @@ class StringHelper extends BaseStringHelper
         if (!is_array($results)) {
             return 'xml结构错误';
         }
-        $logPath = Yii::getAlias('@runtime/wechat/payparameters'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@runtime/wechat/payparameters' . date('ymd') . '.log');
 
-        FileHelper::writeLog($logPath, 'xml处理中'.json_encode($results));
+        FileHelper::writeLog($logPath, 'xml处理中' . json_encode($results));
 
         return $results;
     }
@@ -683,7 +683,7 @@ class StringHelper extends BaseStringHelper
     {
         $tmp = [];
         foreach ($array_query as $k => $param) {
-            $tmp[] = $k.'='.$param;
+            $tmp[] = $k . '=' . $param;
         }
         $params = implode('&', $tmp);
 
@@ -730,7 +730,7 @@ class StringHelper extends BaseStringHelper
                 $lastname_rand_key = mt_rand(0, count($lastname_arr) - 1);
                 $lastname .= $lastname_arr[$lastname_rand_key];
             }
-            $temp[] = $firstname.$lastname;
+            $temp[] = $firstname . $lastname;
         }
 
         return $temp;
