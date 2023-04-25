@@ -80,8 +80,11 @@
     },
     "autoload": {
         "psr-4": {
-            "EasySwoole\\Rpc\\": "common/components/rpc/src/",
-            "EasySwoole\\Rpc\\Tests\\": "common/components/rpc/tests/"
+            "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",
+            "EasySwoole\\Rpc\\Tests\\": "common/components/EasySwoole/rpc/tests/",
+            "EasySwoole\\Component\\": "common/components/EasySwoole/component/src/",
+            "EasySwoole\\Spl\\": "common/components/EasySwoole/spl/src/",
+            "EasySwoole\\Utility\\": "common/components/EasySwoole/utility/src/"
         }
     },
     "repositories": {
