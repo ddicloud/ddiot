@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 09:21:47
+ * @Last Modified time: 2023-04-27 21:46:51
  */
 
 namespace admin\controllers\system;
@@ -13,6 +13,7 @@ use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use common\models\forms\Weburl;
 use diandi\addons\models\Bloc;
+use diandi\addons\models\form\Api;
 use diandi\addons\models\form\App;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
@@ -505,6 +506,30 @@ class ConfigController extends AController
         global $_GPC;
         $model = new Oss();
         $bloc_id = $_GPC['Oss']['bloc_id'];
+
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $Res = $model->saveConf($bloc_id);
+            if ($Res['code'] == 200) {
+                return ResultHelper::json(200, $Res['message'], []);
+            } else {
+                return ResultHelper::json(400, $Res['message'], []);
+            }
+        } else {
+            $bloc_id = $_GPC['bloc_id'];
+
+            $model->getConf($bloc_id);
+
+            return ResultHelper::json(200, '获取成功', $model);
+        }
+    }
+
+
+    public function actionApi()
+    {
+        global $_GPC;
+        $model = new Api();
+        $bloc_id = $_GPC['Api']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
