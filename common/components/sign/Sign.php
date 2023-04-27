@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 22:01:20
+ * @Last Modified time: 2023-04-27 22:20:58
  */
 
 namespace common\components\sign;
@@ -59,7 +59,7 @@ class Sign extends ActionFilter
             'app_id' => $apiConf['app_id'],
         ]);
 
-        return $apiConf['app_secret'];
+        return md5($apiConf['app_secret'] . $apiConf['app_id']);
     }
 
     /**
