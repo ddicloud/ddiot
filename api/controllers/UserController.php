@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 11:39:25
+ * @Last Modified time: 2023-04-27 11:41:36
  */
 
 namespace api\controllers;
@@ -72,12 +72,10 @@ class UserController extends AController
 
 
 
-        if (empty($username)) {
-            return ResultHelper::json(401, '用户名不能为空', []);
+        if (empty($username) && empty($mobile)) {
+            return ResultHelper::json(401, '用户名或手机号不能为空', []);
         }
-        if (empty($mobile)) {
-            return ResultHelper::json(401, '手机号不能为空', []);
-        }
+
         if (empty($password)) {
             return ResultHelper::json(401, '密码不能为空', []);
         }
