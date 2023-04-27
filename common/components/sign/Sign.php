@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 21:05:59
+ * @Last Modified time: 2023-04-27 21:07:19
  */
 
 namespace common\components\sign;
@@ -87,7 +87,7 @@ class Sign extends ActionFilter
      *
      * @throws SignException
      */
-    public function validateSign($params, $appId = '')
+    public function validateSign($params)
     {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
