@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 21:11:48
+ * @Last Modified time: 2023-04-27 21:31:46
  */
 
 namespace common\components\sign;
@@ -130,6 +130,7 @@ class Sign extends ActionFilter
     {
         $paraFilter = $param;
         unset($paraFilter['sign']); // 剔除sign本身
+        unset($paraFilter['appid']); // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
         ksort($paraFilter); // 对数组根据键名升序排序
         reset($paraFilter); // 函数将内部指针指向数组中的第一个元素，并输出
