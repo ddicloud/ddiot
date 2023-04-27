@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-04-25 23:10:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 19:17:14
+ * @Last Modified time: 2023-04-27 19:59:48
  */
 
 namespace common\components\EasySwoole;
@@ -87,7 +87,15 @@ class IotClient
             }
 
             fclose($fp);
-            return $data;
+
+            return [
+                'code' => $data['status'],
+                'message' => $data['msg'],
+                'data' => [
+                    'result' => $data['result'],
+                    'responseUUID' => $data['responseUUID']
+                ],
+            ];
         }
     }
 }
