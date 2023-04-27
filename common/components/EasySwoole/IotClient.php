@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-04-25 23:10:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 14:20:08
+ * @Last Modified time: 2023-04-27 14:31:19
  */
 
 namespace common\components\EasySwoole;
@@ -60,56 +60,43 @@ class IotClient
 
 
         // Create server socket
-        $fp = stream_socket_server($this->buildTcpUrl(), $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $sslContext);
+        $fp = stream_socket_client($this->buildTcpUrl(), $errno, $errstr, 10, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $sslContext);
 
-        // Accept incoming connections
-        while ($conn = stream_socket_accept($fp)) {
-            // Get client certificate
-            $peerCert = stream_socket_get_name($conn, true);
+        if ($fp) {
+            // Client certificate is valid, handle request
+            // tcp://127.0.0.1:9600（示例请求地址） 是 rpc 服务端的地址，这里是本地，所以使用 127.0.0.1
+            // 开发者需要根据实际情况调整进行调用
+            // $fp = stream_socket_client($this->buildTcpUrl());
+            fwrite($fp, pack('N', strlen($raw)) . $raw); // pack 数据校验
 
-            // Verify client certificate
-            $result = openssl_x509_checkpurpose($peerCert, X509_PURPOSE_SSL_CLIENT, ['server_cert' => $cert]);
-
-            if ($result === true) {
-                // Client certificate is valid, handle request
-                // tcp://127.0.0.1:9600（示例请求地址） 是 rpc 服务端的地址，这里是本地，所以使用 127.0.0.1
-                // 开发者需要根据实际情况调整进行调用
-                // $fp = stream_socket_client($this->buildTcpUrl());
-                fwrite($fp, pack('N', strlen($raw)) . $raw); // pack 数据校验
-
-                $try = 3;
-                $data = fread($fp, 4);
-                if (strlen($data) < 4 && $try > 0) {
-                    $data .= fread($fp, 4);
-                    $try--;
-                    usleep(1);
-                }
-
-                // 做长度头部校验
-                $len = unpack('N', $data);
-                $data = '';
-                $try = 3;
-                if (strlen($data) < $len[1] && $try > 0) {
-                    $data .= fread($fp, $len[1]);
-                    $try--;
-                    usleep(1);
-                }
-
-                if (strlen($data) != $len[1]) {
-                    echo 'data error';
-                } else {
-                    $data = json_decode($data, true);
-                    // 这就是服务端返回的结果
-                    // var_dump($data);
-                }
-
-                fclose($fp);
-                return $data;
-            } else {
-                // Client certificate is invalid, close connection
-                fclose($conn);
-                return [];
+            $try = 3;
+            $data = fread($fp, 4);
+            if (strlen($data) < 4 && $try > 0) {
+                $data .= fread($fp, 4);
+                $try--;
+                usleep(1);
             }
+
+            // 做长度头部校验
+            $len = unpack('N', $data);
+            $data = '';
+            $try = 3;
+            if (strlen($data) < $len[1] && $try > 0) {
+                $data .= fread($fp, $len[1]);
+                $try--;
+                usleep(1);
+            }
+
+            if (strlen($data) != $len[1]) {
+                echo 'data error';
+            } else {
+                $data = json_decode($data, true);
+                // 这就是服务端返回的结果
+                // var_dump($data);
+            }
+
+            fclose($fp);
+            return $data;
         }
     }
 }
