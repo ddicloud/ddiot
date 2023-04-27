@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-04-25 23:10:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 14:31:19
+ * @Last Modified time: 2023-04-27 19:17:14
  */
 
 namespace common\components\EasySwoole;
@@ -46,21 +46,12 @@ class IotClient
 
         // Load server certificate and private key
         // file_get_contents
-        $cert = Yii::getAlias("@addons/diandi_hotel/cert/certificate.pem");
-        $key = Yii::getAlias("@addons/diandi_hotel/cert/private.key");
 
         $raw = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-        $sslContext = stream_context_create([
-            'ssl' => [
-                'local_cert' => $cert,
-                'local_pk' => $key,
-            ],
-        ]);
-
 
         // Create server socket
-        $fp = stream_socket_client($this->buildTcpUrl(), $errno, $errstr, 10, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $sslContext);
+        $fp = stream_socket_client($this->buildTcpUrl());
 
         if ($fp) {
             // Client certificate is valid, handle request
