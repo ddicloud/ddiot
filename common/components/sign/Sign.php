@@ -3,8 +3,8 @@
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
- * @Last Modified by:   Radish <minradish@163.com>
- * @Last Modified time: 2022-10-19 18:46:28
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-04-27 21:05:59
  */
 
 namespace common\components\sign;
@@ -91,9 +91,15 @@ class Sign extends ActionFilter
     {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+        if (!isset($params['appid']) || empty($params['appid'])) {
+            throw new SignException(CodeConst::CODE_90006);
+        }
+
+        // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         if (!isset($params['sign']) || empty($params['sign'])) {
             throw new SignException(CodeConst::CODE_90001);
         }
+
         if (!isset($params['timestamp']) || !$params['timestamp']) {
             throw new SignException(CodeConst::CODE_90002);
         }
@@ -104,11 +110,10 @@ class Sign extends ActionFilter
 
         // 获取通用型的签名
         $forAllString = $this->paramFilter($params);  // 参数处理
-        $forAllSign = $this->md5Sign($forAllString, $appId ?: ($params['app_id'] ?? ''));
+        $forAllSign = $this->md5Sign($forAllString, $params['appid']);
         // && (!$forMerSign && $forMerSign != $params['sign'])
         if ($params['sign'] != $forAllSign) {
-            // Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
-            throw new SignException(CodeConst::CODE_90005);
+            throw  new SignException(CodeConst::CODE_90005);
         } else {
             return true;
         }
