@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-10 17:23:27
+ * @Last Modified time: 2023-04-27 11:38:00
  */
 
 namespace api\controllers;
@@ -65,6 +65,15 @@ class UserController extends AController
         $username = $data['username'];
         $mobile = $data['mobile'];
         $password = $data['password'];
+
+        /* @var $member \common\models\backend\Member */
+        $code = $data['code'];
+        $sendcode = Yii::$app->cache->get($mobile . '_code');
+
+        if ($code != $sendcode) {
+            return ResultHelper::json(401, '验证码错误');
+        }
+
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
         }
