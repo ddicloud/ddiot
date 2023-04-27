@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 21:07:19
+ * @Last Modified time: 2023-04-27 21:11:48
  */
 
 namespace common\components\sign;
@@ -50,13 +50,13 @@ class Sign extends ActionFilter
     {
         global $_GPC;
         $apiConf = new Api();
-        $apiConf->getApiConf($appId ?: $_GPC['app_id']);
+        $apiConf->getApiConf($appId ?: $_GPC['appid']);
         if (empty($apiConf)) {
             throw new SignException(CodeConst::CODE_90000);
         }
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
             'app_secret' => $apiConf['app_secret'],
-            'app_id' => $appId ?: $_GPC['app_id'],
+            'app_id' => $appId ?: $_GPC['appid'],
         ]);
 
         return $apiConf['app_secret'];
