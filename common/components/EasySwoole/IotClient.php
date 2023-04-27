@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-04-25 23:10:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 14:15:44
+ * @Last Modified time: 2023-04-27 14:20:08
  */
 
 namespace common\components\EasySwoole;
@@ -45,8 +45,9 @@ class IotClient
         ];
 
         // Load server certificate and private key
-        $cert = file_get_contents(Yii::getAlias("@addons/diandi_hotel/cert/certificate.pem"));
-        $key = file_get_contents(Yii::getAlias("@addons/diandi_hotel/cert/private.key"));
+        // file_get_contents
+        $cert = Yii::getAlias("@addons/diandi_hotel/cert/certificate.pem");
+        $key = Yii::getAlias("@addons/diandi_hotel/cert/private.key");
 
         $raw = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
