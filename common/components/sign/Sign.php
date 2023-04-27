@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 21:31:46
+ * @Last Modified time: 2023-04-27 21:36:39
  */
 
 namespace common\components\sign;
@@ -150,7 +150,7 @@ class Sign extends ActionFilter
     {
         // 生成sign  字符串和密钥拼接
         $str = $preStr . '&key=' . self::generateSecret($appId);
-        loggingHelper::writeLog('sign', 'md5Sign', '签名前数据', $str);
+        loggingHelper::writeLog('sign', 'md5Sign', '签名前数据', [$str, $appId]);
         $sign = md5($str);
         loggingHelper::writeLog('sign', 'md5Sign', '签名后数据', strtoupper($sign));
 
