@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-04-25 23:10:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 20:38:04
+ * @Last Modified time: 2023-04-27 22:30:14
  */
 
 namespace common\components\EasySwoole;
 
+use diandi\addons\models\form\Api;
 use Yii;
 
 class IotClient
@@ -27,12 +28,26 @@ class IotClient
         $this->service = $service;
         $this->module = $module;
         $this->action = $action;
+        $arg['appid'] = $this->getAppid();
         $this->arg = $arg;
     }
 
     public function buildTcpUrl()
     {
         return 'tcp://' . $this->iot_ip . ':' . $this->iot_rpc_port;
+    }
+
+    /**
+     * 根据key生成密钥 secret是由MD5(key+appid)生成 32位.
+     *
+     * @return string
+     */
+    public  function getAppid()
+    {
+        global $_GPC;
+        $apiConf = new Api();
+        $apiConf->getConf($_GPC['bloc_id']);
+        return $apiConf['app_id'];
     }
 
     public function run()

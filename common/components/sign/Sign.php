@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-07-16 09:18:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 22:20:58
+ * @Last Modified time: 2023-04-27 22:24:55
  */
 
 namespace common\components\sign;
@@ -41,26 +41,7 @@ class Sign extends ActionFilter
      */
     private $needSignEnvironment = ['beta', 'production'];
 
-    /**
-     * 根据key生成密钥 secret是由MD5(key+appid)生成 32位.
-     *
-     * @return string
-     */
-    public static function generateSecret($appId = null)
-    {
-        global $_GPC;
-        $apiConf = new Api();
-        $apiConf->getConf($_GPC['bloc_id']);
-        if (empty($apiConf)) {
-            throw new SignException(CodeConst::CODE_90000);
-        }
-        loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
-            'app_secret' => $apiConf['app_secret'],
-            'app_id' => $apiConf['app_id'],
-        ]);
 
-        return md5($apiConf['app_secret'] . $apiConf['app_id']);
-    }
 
     /**
      * Sign constructor.
@@ -78,6 +59,27 @@ class Sign extends ActionFilter
                 \Yii::$app->request->post()
             );
         }
+    }
+
+    /**
+     * 根据key生成密钥 secret是由MD5(key+appid)生成 32位.
+     *
+     * @return string
+     */
+    public static function generateSecret()
+    {
+        global $_GPC;
+        $apiConf = new Api();
+        $apiConf->getConf($_GPC['bloc_id']);
+        if (empty($apiConf)) {
+            throw new SignException(CodeConst::CODE_90000);
+        }
+        loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
+            'app_secret' => $apiConf['app_secret'],
+            'app_id' => $apiConf['app_id'],
+        ]);
+
+        return md5($apiConf['app_secret'] . $apiConf['app_id']);
     }
 
     /**
@@ -144,7 +146,7 @@ class Sign extends ActionFilter
     public function md5Sign($preStr, $appId = '')
     {
         // 生成sign  字符串和密钥拼接
-        $str = $preStr . '&key=' . self::generateSecret($appId);
+        $str = $preStr . '&key=' . self::generateSecret();
         loggingHelper::writeLog('sign', 'md5Sign', '签名前数据', [$str, $appId]);
         $sign = md5($str);
         loggingHelper::writeLog('sign', 'md5Sign', '签名后数据', strtoupper($sign));
