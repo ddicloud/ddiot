@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 22:51:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-23 14:26:55
+ * @Last Modified time: 2023-05-17 12:28:45
  */
 $db = [];
 $sqlServer = [];
@@ -30,6 +31,7 @@ return [
         'cache' => [
             'class' => 'yii\redis\Cache',
             'defaultDuration' => 60 * 60 * 2, //默认缓存2个小时
+            'keyPrefix' => 'tea:',
         ],
         /* ------ REDIS ------ **/
         'redis' => $redis,
