@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-03 09:53:09
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-08 19:38:04
+ * @Last Modified time: 2023-06-04 12:56:30
  */
 
 namespace common\helpers;
@@ -22,7 +22,6 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * 递归数组.
      *
-     * @param array  $items
      * @param string $idField
      * @param int    $pid
      * @param string $pidField
@@ -49,7 +48,6 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * 传递一个子分类ID返回所有的父级分类.
      *
-     * @param array $items
      * @param $id
      *
      * @return array
@@ -162,9 +160,26 @@ class ArrayHelper extends BaseArrayHelper
     }
 
     /**
+     * 获取数组指定的字段为key.
+     *
+     * @param array  $arr   数组
+     * @param string $field 要成为key的字段名
+     *
+     * @return array
+     */
+    public static function arrayKeys(array $arr, $field)
+    {
+        $newArray = [];
+        foreach ($arr as $value) {
+            isset($value[$field]) && $newArray[$value[$field]][] = $value;
+        }
+
+        return $newArray;
+    }
+
+    /**
      * 移除数组内某个key的值为传递的值
      *
-     * @param array $array
      * @param $value
      * @param string $key
      *
@@ -182,10 +197,9 @@ class ArrayHelper extends BaseArrayHelper
     }
 
     /**
-     * 移除数组内某个key
+     * 移除数组内某个key.
      *
-     * @param array $array
-     * @param $value
+     * @param array  $array
      * @param string $key
      *
      * @return array
@@ -198,10 +212,9 @@ class ArrayHelper extends BaseArrayHelper
                 self::removeByKey($item['child'], $key);
             }
         }
+
         return $array;
     }
-
-
 
     /**
      * 获取数字区间.
@@ -224,8 +237,7 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * 根据级别和数组返回字符串.
      *
-     * @param int   $level  级别
-     * @param array $models
+     * @param int $level 级别
      * @param $k
      * @param int $treeStat 开始计算
      *
@@ -239,10 +251,10 @@ class ArrayHelper extends BaseArrayHelper
 
             if ($i == $level - $treeStat) {
                 if (isset($models[$k + 1])) {
-                    return $str . '├──';
+                    return $str.'├──';
                 }
 
-                return $str . '└──';
+                return $str.'└──';
             }
         }
 
@@ -265,7 +277,7 @@ class ArrayHelper extends BaseArrayHelper
         foreach ($models as $k => $model) {
             $arr[] = [
                 $idField => $model[$idField],
-                $titleField => self::itemsLevel($model['level'], $models, $k, $treeStat) . ' ' . $model[$titleField],
+                $titleField => self::itemsLevel($model['level'], $models, $k, $treeStat).' '.$model[$titleField],
             ];
 
             if (!empty($model['-'])) {
@@ -389,7 +401,6 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * 数组内某字段转数组.
      *
-     * @param array  $data
      * @param string $field
      *
      * @return array
@@ -412,8 +423,6 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * @desc 对象转化为数组
      *
-     * @param $array  object_data
-     *
      * @return array
      */
     public static function objectToarray(&$object)
@@ -435,7 +444,6 @@ class ArrayHelper extends BaseArrayHelper
     /**
      * 数组转xml.
      *
-     *
      * @param $arr
      * 微信回调成功：['return_code' => 'SUCCESS', 'return_msg' => 'OK']
      * 微信回调失败：['return_code' => 'FAIL', 'return_msg' => 'OK']
@@ -451,9 +459,9 @@ class ArrayHelper extends BaseArrayHelper
         $xml = '<xml>';
         foreach ($arr as $key => $val) {
             if (is_numeric($val)) {
-                $xml .= '<' . $key . '>' . $val . '</' . $key . '>';
+                $xml .= '<'.$key.'>'.$val.'</'.$key.'>';
             } else {
-                $xml .= '<' . $key . '><![CDATA[' . $val . ']]></' . $key . '>';
+                $xml .= '<'.$key.'><![CDATA['.$val.']]></'.$key.'>';
             }
         }
 
@@ -474,22 +482,22 @@ class ArrayHelper extends BaseArrayHelper
                 if (strpos($tagname, '-') !== false) {
                     list($tagname, $num) = explode('-', $tagname);
                 }
-                $s .= "<{$tagname}>" . (!is_numeric($value) ? '<![CDATA[' : '') . $value . (!is_numeric($value) ? ']]>' : '') . "</{$tagname}>";
+                $s .= "<{$tagname}>".(!is_numeric($value) ? '<![CDATA[' : '').$value.(!is_numeric($value) ? ']]>' : '')."</{$tagname}>";
             } else {
-                $s .= "<{$tagname}>" . self::array2xml($value, $level + 1) . "</{$tagname}>";
+                $s .= "<{$tagname}>".self::array2xml($value, $level + 1)."</{$tagname}>";
             }
         }
         $s = preg_replace("/([\x01-\x08\x0b-\x0c\x0e-\x1f])+/", ' ', $s);
 
-        return 1 == $level ? $s . '</xml>' : $s;
+        return 1 == $level ? $s.'</xml>' : $s;
     }
 
     public static function xml2array($xml)
     {
         if (empty($xml)) {
-            return array();
+            return [];
         }
-        $result = array();
+        $result = [];
         $xmlobj = isimplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         if ($xmlobj instanceof SimpleXMLElement) {
             $result = json_decode(json_encode($xmlobj), true);
