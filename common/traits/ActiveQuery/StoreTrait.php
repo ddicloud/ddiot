@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 14:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 10:55:16
+ * @Last Modified time: 2023-06-19 13:01:58
  */
 
 namespace common\traits\ActiveQuery;
@@ -12,22 +12,33 @@ trait StoreTrait
 {
     public $blocs = [];
 
-    /** * {@inheritdoc} * @return CommentQuery */
+    /**
+     * find查询扩展.
+     *
+     * @return CommonQuery
+     * @date 2023-06-19
+     *
+     * @example
+     *
+     * @author Wang Chunsheng
+     *
+     * @since
+     */
     public static function find()
     {
         return new CommonQuery(get_called_class());
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['blocs'] = 'blocs';
+        return $fields;
+    }
+
     public function afterFind()
     {
-        // 全局处理多商户数据返回
-        $this->blocs = [
-            $this->bloc_id,
-            $this->store_id
-        ];
-
-        // 其他处理代码
-
+        $this->blocs = [$this->bloc_id,$this->store_id];
         parent::afterFind();
     }
 }
