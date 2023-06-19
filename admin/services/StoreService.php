@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 18:33:10
+ * @Last Modified time: 2023-06-19 19:37:23
  */
 
 namespace admin\services;
@@ -169,46 +169,42 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkStore($store_id, $data)
+    public static function upLinkStore($store_id, $bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
     {
-        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
-            'data' => $data,
-        ]);
-
         $model = BlocStore::findOne($store_id);
 
         $link = new StoreLabelLink();
-        $data['lng_lat'] = json_encode([
-            'lng' => $data['longitude'],
-            'lat' => $data['latitude'],
+        $lng_lat = json_encode([
+            'lng' => $longitude,
+            'lat' => $latitude,
         ]);
 
         $storeData = [
-            'category_id' => $data['category'][1],
-            'category_pid' => $data['category'][0],
-            'name' => $data['name'],
-            'logo' => $data['logo'],
-            'bloc_id' => $data['bloc_id'],
-            'province' => $data['provinceCityDistrict'][0],
-            'city' => $data['provinceCityDistrict'][1],
-            'county' => $data['provinceCityDistrict'][2],
-            'address' => $data['address'],
-            'mobile' => $data['mobile'],
-            'create_time' => $data['create_time'],
-            'update_time' => $data['update_time'],
-            'status' => $data['status'],
-            'lng_lat' => $data['lng_lat'],
-            'longitude' => $data['longitude'],
-            'latitude' => $data['latitude'],
+            'category_id' => $category[1],
+            'category_pid' => $category[0],
+            'name' => $name,
+            'logo' => $logo,
+            'bloc_id' => $bloc_id,
+            'province' => $provinceCityDistrict[0],
+            'city' => $provinceCityDistrict[1],
+            'county' => $provinceCityDistrict[2],
+            'address' => $address,
+            'mobile' => $mobile,
+            'status' => $status,
+            'lng_lat' => $lng_lat,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
         ];
-
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
+            'data' => $storeData,
+        ]);
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($storeData, '') && $model->save()) {
             loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
 
             try {
                 // 保存商户标签
-                $StoreLabelLink = $data['label_link'];
+                $StoreLabelLink = $label_link;
                 if (!empty($StoreLabelLink)) {
                     $link->deleteAll(['store_id' => $store_id]);
                     foreach ($StoreLabelLink as $key => $label_id) {
@@ -249,40 +245,38 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkStore($data)
+    public static function addLinkStore($bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
     {
-        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
-            'data' => $data,
-        ]);
-
+        
         $model = new BlocStore([
             'extras' => [],
         ]);
 
         $link = new StoreLabelLink();
-        $data['lng_lat'] = json_encode([
-            'lng' => $data['longitude'],
-            'lat' => $data['latitude'],
+        $lng_lat = json_encode([
+            'lng' => $longitude,
+            'lat' => $latitude,
         ]);
 
         $storeData = [
-            'category_id' => $data['category'][1],
-            'category_pid' => $data['category'][0],
-            'name' => $data['name'],
-            'logo' => $data['logo'],
-            'bloc_id' => $data['bloc_id'],
-            'province' => $data['provinceCityDistrict'][0],
-            'city' => $data['provinceCityDistrict'][1],
-            'county' => $data['provinceCityDistrict'][2],
-            'address' => $data['address'],
-            'mobile' => $data['mobile'],
-            'create_time' => $data['create_time'],
-            'update_time' => $data['update_time'],
-            'status' => $data['status'],
-            'lng_lat' => $data['lng_lat'],
-            'longitude' => $data['longitude'],
-            'latitude' => $data['latitude'],
+            'category_id' => $category[1],
+            'category_pid' => $category[0],
+            'name' => $name,
+            'logo' => $logo,
+            'bloc_id' => $bloc_id,
+            'province' => $provinceCityDistrict[0],
+            'city' => $provinceCityDistrict[1],
+            'county' => $provinceCityDistrict[2],
+            'address' => $address,
+            'mobile' => $mobile,
+            'status' => $status,
+            'lng_lat' => $lng_lat,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
         ];
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
+            'data' => $storeData,
+        ]);
 
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($storeData, '') && $model->save()) {
@@ -290,7 +284,7 @@ class StoreService extends BaseService
 
             try {
                 // 保存商户标签
-                $StoreLabelLink = $data['label_link'];
+                $StoreLabelLink = $label_link;
                 if (!empty($StoreLabelLink)) {
                     foreach ($StoreLabelLink as $key => $label_id) {
                         $_link = clone $link;
@@ -390,7 +384,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkBloc($invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
+    public static function addLinkBloc($invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$end_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
     {
        
 
@@ -415,6 +409,7 @@ class StoreService extends BaseService
             'recommend' => $recommend,
             'special' => $special,
             'introduction' => $introduction,
+            'end_time' => $end_time,
             'open_time' => $open_time,
             'status' => $status,
             'is_group' => $is_group,
@@ -492,7 +487,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkBloc($bloc_id, $invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
+    public static function upLinkBloc($bloc_id, $invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$end_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
     {
        
 
@@ -518,6 +513,7 @@ class StoreService extends BaseService
             'special' => $special,
             'introduction' => $introduction,
             'open_time' => $open_time,
+            'end_time' => $end_time,
             'status' => $status,
             'is_group' => $is_group,
             'sosomap_poi_uid' => $sosomap_poi_uid,
