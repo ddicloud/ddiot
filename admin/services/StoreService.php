@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 18:16:37
+ * @Last Modified time: 2023-06-19 18:33:10
  */
 
 namespace admin\services;
@@ -361,9 +361,31 @@ class StoreService extends BaseService
 
     /**
      * 用户添加公司
-     * @param [type] $data
+     * @param [type] $invitation_code
+     * @param [type] $business_name
+     * @param [type] $logo
+     * @param [type] $pid
+     * @param [type] $group_bloc_id
+     * @param [type] $category
+     * @param array $provinceCityDistrict
+     * @param [type] $address
+     * @param [type] $register_level
+     * @param [type] $longitude
+     * @param [type] $latitude
+     * @param [type] $telephone
+     * @param [type] $avg_price
+     * @param [type] $recommend
+     * @param [type] $special
+     * @param [type] $introduction
+     * @param [type] $open_time
+     * @param [type] $status
+     * @param [type] $is_group
+     * @param [type] $sosomap_poi_uid
+     * @param [type] $license_no
+     * @param [type] $license_name
+     * @param [type] $level_num
      * @return void
-     * @date 2023-03-03
+     * @date 2023-06-19
      * @example
      * @author Wang Chunsheng
      * @since
@@ -440,49 +462,73 @@ class StoreService extends BaseService
 
     /**
      * 用户编辑公司
-     * @param [type] $data
+     * @param [type] $bloc_id
+     * @param [type] $invitation_code
+     * @param [type] $business_name
+     * @param [type] $logo
+     * @param [type] $pid
+     * @param [type] $group_bloc_id
+     * @param [type] $category
+     * @param array $provinceCityDistrict
+     * @param [type] $address
+     * @param [type] $register_level
+     * @param [type] $longitude
+     * @param [type] $latitude
+     * @param [type] $telephone
+     * @param [type] $avg_price
+     * @param [type] $recommend
+     * @param [type] $special
+     * @param [type] $introduction
+     * @param [type] $open_time
+     * @param [type] $status
+     * @param [type] $is_group
+     * @param [type] $sosomap_poi_uid
+     * @param [type] $license_no
+     * @param [type] $license_name
+     * @param [type] $level_num
      * @return void
-     * @date 2023-03-03
+     * @date 2023-06-19
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkBloc($bloc_id, $data)
+    public static function upLinkBloc($bloc_id, $invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
     {
-        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
-            'data' => $data,
-        ]);
+       
 
         $model = Bloc::findOne($bloc_id);
 
         $blocData = [
-            'invitation_code' => $data['invitation_code'],
-            'business_name' => $data['business_name'],
-            'logo' => $data['logo'],
-            'pid' => $data['pid'],
-            'group_bloc_id' => $data['group_bloc_id'],
-            'category' => $data['category'],
-            'province' => $data['provinceCityDistrict'][0],
-            'city' => $data['provinceCityDistrict'][1],
-            'district' => $data['provinceCityDistrict'][2],
-            'address' => $data['address'],
-            'register_level' => $data['register_level'],
-            'longitude' => $data['longitude'],
-            'latitude' => $data['latitude'],
-            'telephone' => $data['telephone'],
-            'avg_price' => $data['avg_price'],
-            'recommend' => $data['recommend'],
-            'special' => $data['special'],
-            'introduction' => $data['introduction'],
-            'open_time' => $data['open_time'],
-            'end_time' => $data['end_time'],
-            'status' => $data['status'],
-            'is_group' => $data['is_group'],
-            'sosomap_poi_uid' => $data['sosomap_poi_uid'],
-            'license_no' => $data['license_no'],
-            'license_name' => $data['license_name'],
-            'level_num' => $data['level_num'],
+            'invitation_code' => $invitation_code,
+            'business_name' => $business_name,
+            'logo' => $logo,
+            'pid' => $pid,
+            'group_bloc_id' => $group_bloc_id,
+            'category' => $category,
+            'province' => $provinceCityDistrict[0],
+            'city' => $provinceCityDistrict[1],
+            'district' => $provinceCityDistrict[2],
+            'address' => $address,
+            'register_level' => $register_level,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
+            'telephone' => $telephone,
+            'avg_price' => $avg_price,
+            'recommend' => $recommend,
+            'special' => $special,
+            'introduction' => $introduction,
+            'open_time' => $open_time,
+            'status' => $status,
+            'is_group' => $is_group,
+            'sosomap_poi_uid' => $sosomap_poi_uid,
+            'license_no' => $license_no,
+            'license_name' => $license_name,
+            'level_num' => $level_num,
         ];
+        
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
+            'data' => $blocData,
+        ]);
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
