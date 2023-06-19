@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-13 04:06:57
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-24 22:02:27
+ * @Last Modified time: 2023-06-13 09:17:54
  */
 
 
@@ -22,7 +22,7 @@ class MapController extends AController
     public $modelClass = '';
     protected $authOptional = ['distance', 'citylist'];
 
-   
+
     public function actionDistance()
     {
         $lng = Yii::$app->request->get('lng');
@@ -31,7 +31,7 @@ class MapController extends AController
         return ResultHelper::json(200, '获取成功', $data);
     }
 
-  
+
     public function actionCitylist()
     {
 
