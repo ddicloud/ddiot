@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 14:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 13:01:58
+ * @Last Modified time: 2023-06-19 13:47:23
  */
 
 namespace common\traits\ActiveQuery;
@@ -38,7 +38,9 @@ trait StoreTrait
 
     public function afterFind()
     {
-        $this->blocs = [$this->bloc_id,$this->store_id];
+        $store_id = $this->getAttribute('store_id');
+        $bloc_id = $this->getAttribute('bloc_id');
+        $this->blocs = [$bloc_id,$store_id];
         parent::afterFind();
     }
 }
