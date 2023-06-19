@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 22:04:37
+ * @Last Modified time: 2023-06-19 18:16:37
  */
 
 namespace admin\services;
@@ -368,42 +368,42 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkBloc($data)
+    public static function addLinkBloc($invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
     {
-        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
-            'data' => $data,
-        ]);
+       
 
         $model = new Bloc();
 
         $blocData = [
-            'invitation_code' => $data['invitation_code'],
-            'business_name' => $data['business_name'],
-            'logo' => $data['logo'],
-            'pid' => $data['pid'],
-            'group_bloc_id' => $data['group_bloc_id'],
-            'category' => $data['category'],
-            'province' => $data['provinceCityDistrict'][0],
-            'city' => $data['provinceCityDistrict'][1],
-            'district' => $data['provinceCityDistrict'][2],
-            'address' => $data['address'],
-            'register_level' => $data['register_level'],
-            'longitude' => $data['longitude'],
-            'latitude' => $data['latitude'],
-            'telephone' => $data['telephone'],
-            'avg_price' => $data['avg_price'],
-            'recommend' => $data['recommend'],
-            'special' => $data['special'],
-            'introduction' => $data['introduction'],
-            'open_time' => $data['open_time'],
-            'status' => $data['status'],
-            'is_group' => $data['is_group'],
-            'sosomap_poi_uid' => $data['sosomap_poi_uid'],
-            'license_no' => $data['license_no'],
-            'license_name' => $data['license_name'],
-            'level_num' => $data['level_num'],
+            'invitation_code' => $invitation_code,
+            'business_name' => $business_name,
+            'logo' => $logo,
+            'pid' => $pid,
+            'group_bloc_id' => $group_bloc_id,
+            'category' => $category,
+            'province' => $provinceCityDistrict[0],
+            'city' => $provinceCityDistrict[1],
+            'district' => $provinceCityDistrict[2],
+            'address' => $address,
+            'register_level' => $register_level,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
+            'telephone' => $telephone,
+            'avg_price' => $avg_price,
+            'recommend' => $recommend,
+            'special' => $special,
+            'introduction' => $introduction,
+            'open_time' => $open_time,
+            'status' => $status,
+            'is_group' => $is_group,
+            'sosomap_poi_uid' => $sosomap_poi_uid,
+            'license_no' => $license_no,
+            'license_name' => $license_name,
+            'level_num' => $level_num,
         ];
-
+        
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据',$blocData);
+        
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($blocData, '') && $model->save()) {
             loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
