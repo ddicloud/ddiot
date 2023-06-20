@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 10:58:22
+ * @Last Modified time: 2023-06-20 11:05:03
  */
 
 namespace admin\services;
@@ -245,7 +245,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkStore($bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
+    public static function addLinkStore($user_id,$bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
     {
         
         $model = new BlocStore([
@@ -302,14 +302,14 @@ class StoreService extends BaseService
                     }
                 }
 
-                $user = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
+                $user = User::find()->where(['id' => $user_id])->one();
                 if ($user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
                         throw new \Exception('保存用户数据失败!');
                     }
                 }
-                $user_id = Yii::$app->user->identity->user_id;
+                // $user_id = Yii::$app->user->identity->user_id;
                 // 初始权限
                 UserService::addUserBloc($user_id, $bloc_id, $store_id, 0);
                 $tempData = [
