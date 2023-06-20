@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 15:01:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 11:07:24
+ * @Last Modified time: 2023-06-20 09:46:15
  */
 
 namespace common\traits\ActiveQuery;
@@ -44,7 +44,7 @@ class CommonQuery extends ActiveQuery
 
     /**
      * 根据用户授权进行检索
-     * @return void
+     * @return CommonQuery
      * @date 2023-03-03
      * @example
      * @author Wang Chunsheng
@@ -62,7 +62,7 @@ class CommonQuery extends ActiveQuery
    
     /**
      * 根据用户授权的商户进行检索
-     * @return void
+     * @return CommonQuery
      * @date 2023-03-03
      * @example
      * @author Wang Chunsheng

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 19:37:23
+ * @Last Modified time: 2023-06-20 10:45:35
  */
 
 namespace admin\services;
@@ -180,14 +180,14 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_id' => $category[1],
-            'category_pid' => $category[0],
+            'category_id' => (int) $category[1],
+            'category_pid' => (int) $category[0],
             'name' => $name,
             'logo' => $logo,
-            'bloc_id' => $bloc_id,
-            'province' => $provinceCityDistrict[0],
-            'city' => $provinceCityDistrict[1],
-            'county' => $provinceCityDistrict[2],
+            'bloc_id' => (int) $bloc_id,
+            'province' => (int) $provinceCityDistrict[0],
+            'city' => (int) $provinceCityDistrict[1],
+            'county' => (int) $provinceCityDistrict[2],
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
@@ -259,14 +259,14 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_id' => $category[1],
-            'category_pid' => $category[0],
+            'category_id' => (int) $category[1],
+            'category_pid' =>(int) $category[0],
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => $bloc_id,
-            'province' => $provinceCityDistrict[0],
-            'city' => $provinceCityDistrict[1],
-            'county' => $provinceCityDistrict[2],
+            'province' => (int) $provinceCityDistrict[0],
+            'city' => (int) $provinceCityDistrict[1],
+            'county' => (int) $provinceCityDistrict[2],
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
@@ -394,12 +394,12 @@ class StoreService extends BaseService
             'invitation_code' => $invitation_code,
             'business_name' => $business_name,
             'logo' => $logo,
-            'pid' => $pid,
+            'pid' => (int) $pid,
             'group_bloc_id' => $group_bloc_id,
-            'category' => $category,
-            'province' => $provinceCityDistrict[0],
-            'city' => $provinceCityDistrict[1],
-            'district' => $provinceCityDistrict[2],
+            'category' => (int) $category,
+            'province' => (int) $provinceCityDistrict[0],
+            'city' => (int) $provinceCityDistrict[1],
+            'district' => (int) $provinceCityDistrict[2],
             'address' => $address,
             'register_level' => $register_level,
             'longitude' => $longitude,
@@ -411,12 +411,12 @@ class StoreService extends BaseService
             'introduction' => $introduction,
             'end_time' => $end_time,
             'open_time' => $open_time,
-            'status' => $status,
-            'is_group' => $is_group,
-            'sosomap_poi_uid' => $sosomap_poi_uid,
+            'status' => (int) $status,
+            'is_group' => (int) $is_group,
+            'sosomap_poi_uid' => (int) $sosomap_poi_uid,
             'license_no' => $license_no,
             'license_name' => $license_name,
-            'level_num' => $level_num,
+            'level_num' => (int) $level_num,
         ];
         
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据',$blocData);
@@ -497,12 +497,12 @@ class StoreService extends BaseService
             'invitation_code' => $invitation_code,
             'business_name' => $business_name,
             'logo' => $logo,
-            'pid' => $pid,
-            'group_bloc_id' => $group_bloc_id,
-            'category' => $category,
-            'province' => $provinceCityDistrict[0],
-            'city' => $provinceCityDistrict[1],
-            'district' => $provinceCityDistrict[2],
+            'pid' => (int) $pid,
+            'group_bloc_id' =>(int) $group_bloc_id,
+            'category' =>(int) $category,
+            'province' => (int) $provinceCityDistrict[0],
+            'city' => (int) $provinceCityDistrict[1],
+            'district' => (int) $provinceCityDistrict[2],
             'address' => $address,
             'register_level' => $register_level,
             'longitude' => $longitude,
@@ -514,12 +514,12 @@ class StoreService extends BaseService
             'introduction' => $introduction,
             'open_time' => $open_time,
             'end_time' => $end_time,
-            'status' => $status,
-            'is_group' => $is_group,
-            'sosomap_poi_uid' => $sosomap_poi_uid,
+            'status' =>(int) $status,
+            'is_group' => (int) $is_group,
+            'sosomap_poi_uid' => (int) $sosomap_poi_uid,
             'license_no' => $license_no,
             'license_name' => $license_name,
-            'level_num' => $level_num,
+            'level_num' =>(int) $level_num,
         ];
         
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
