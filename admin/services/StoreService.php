@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 10:45:35
+ * @Last Modified time: 2023-06-20 10:58:22
  */
 
 namespace admin\services;
@@ -192,8 +192,8 @@ class StoreService extends BaseService
             'mobile' => $mobile,
             'status' => $status,
             'lng_lat' => $lng_lat,
-            'longitude' => $longitude,
-            'latitude' => $latitude,
+            'longitude' =>(string) $longitude,
+            'latitude' => (string)$latitude,
         ];
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
             'data' => $storeData,
@@ -271,8 +271,8 @@ class StoreService extends BaseService
             'mobile' => $mobile,
             'status' => $status,
             'lng_lat' => $lng_lat,
-            'longitude' => $longitude,
-            'latitude' => $latitude,
+            'longitude' => (string) $longitude,
+            'latitude' => (string) $latitude,
         ];
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
             'data' => $storeData,
