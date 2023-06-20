@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 14:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 11:17:19
+ * @Last Modified time: 2023-06-20 11:48:57
  */
 
 namespace common\traits\ActiveQuery;
@@ -15,7 +15,11 @@ use Yii;
 trait StoreLinkTrait
 {
     public function getUser(){
-        return parent::getUser();
+        if (method_exists($this, 'getUser')) {
+            return parent::getUser();
+        } else {
+            throw new \Exception('模型类中 getUser 方法不存在!');
+        }
     }
 
     public function beforeSave($insert)
