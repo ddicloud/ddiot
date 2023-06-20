@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-04-22 14:40:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 11:13:33
+ * @Last Modified time: 2023-06-20 11:17:19
  */
 
 namespace common\traits\ActiveQuery;
@@ -15,7 +15,7 @@ use Yii;
 trait StoreLinkTrait
 {
     public function getUser(){
-        
+        return parent::getUser();
     }
 
     public function beforeSave($insert)
