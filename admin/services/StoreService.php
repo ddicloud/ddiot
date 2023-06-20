@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 11:23:43
+ * @Last Modified time: 2023-06-20 13:02:52
  */
 
 namespace admin\services;
@@ -247,8 +247,8 @@ class StoreService extends BaseService
      */
     public static function addLinkStore($user_id,$bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
     {
-        if($user_id){
-            throw new \Exception('用户ID不能为空!');
+        if(empty($user_id)){
+            throw new \Exception('关联商户中，用户ID不能为空!');
         }
         $model = new BlocStore([
             'extras' => [],
