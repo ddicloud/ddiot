@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-27 18:01:33
+ * @Last Modified time: 2023-06-27 18:41:37
  */
 
 
@@ -66,18 +66,19 @@ class SenangPay
      *
      * @return string
      **/
-    public function createPayment($detail, $amount, $orderId, $optionals)
+    public function createPayment($detail, $amount, $orderId, $status_id, $transaction_id, $msg)
     {
         // Construct params
         $params = [
             'detail' => $detail,
             'amount' => $amount,
             'order_id' => $orderId,
-            'hash' => $this->createHash($detail, $amount, $orderId)
+            'status_id' => $status_id,
+            'transaction_id' => $transaction_id,
+            'msg' => $msg,
+            'hash' => $this->createHash($detail, $amount, $orderId, $status_id, $transaction_id, $msg)
         ];
 
-        // Merge optional params with required params
-        $params = $optionals ? array_merge($params, $optionals) : $params;
 
         // Create senangPay payment URL
         $url = $this->senangPayUrl . '/payment/' . $this->merchantId . '?' . http_build_query($params);
@@ -94,10 +95,11 @@ class SenangPay
      *
      * @return string|null
      **/
-    public function createHash($detail, $amount, $orderId)
+    public function createHash($detail, $amount, $orderId, $status_id, $transaction_id, $msg)
     {
         // Construct string from data
-        $stringData = $this->secretKey . $detail . $amount . $orderId;
+        $stringData = $this->secretKey .  urldecode($status_id) . urldecode($orderId) . urldecode($transaction_id) . urldecode($msg);
+
 
         // generate md5 hash for stringData
         $hashString = md5($stringData);
