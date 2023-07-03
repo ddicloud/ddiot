@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-12 14:47:29
+ * @Last Modified time: 2023-07-03 11:52:51
  */
 
 namespace api\models;
@@ -105,10 +105,10 @@ class DdMember extends ActiveRecord
      */
     public function signup($username, $mobile, $password)
     {
-        $logPath = Yii::getAlias('@runtime/DdMember/signup/'.date('ymd').'.log');
+        $logPath = Yii::getAlias('@runtime/DdMember/signup/' . date('ymd') . '.log');
 
         if (!$this->validate()) {
-            FileHelper::writeLog($logPath, '登录日志:会员注册校验失败'.json_encode($this->validate()));
+            FileHelper::writeLog($logPath, '登录日志:会员注册校验失败' . json_encode($this->validate()));
 
             return $this->validate();
         }
@@ -126,14 +126,20 @@ class DdMember extends ActiveRecord
                 return ResultHelper::json(401, '手机号重复');
             }
         }
-        FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号'.json_encode($mobile));
+        FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号' . json_encode($mobile));
+
+        $isHave = $this->find()->where(['username' => $username])->select('member_id')->scalar();
+
+        if ($isHave) {
+            return ResultHelper::json(401, '用户名已存在，请修改');
+        }
 
         $this->username = $username;
         $this->mobile = $mobile;
         $this->level = 1;
         $this->group_id = 1;
         $num = rand(1, 10);
-        $this->avatarUrl = 'public/avatar'.$num.'.jpeg';
+        $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
 
         $this->setPassword($password);
         $this->generateAuthKey();
@@ -144,7 +150,7 @@ class DdMember extends ActiveRecord
             // 更新用户邀请码
 
             $isHave = DdMemberAccount::find()->where(['member_id' => $member_id])->asArray()->one();
-            FileHelper::writeLog($logPath, '登录日志:获取用户ID'.json_encode([
+            FileHelper::writeLog($logPath, '登录日志:获取用户ID' . json_encode([
                 'member_id' => $member_id,
                 'member_ids' => $this->getId(),
                 'isHave' => $isHave,
@@ -173,7 +179,7 @@ class DdMember extends ActiveRecord
                 $DdMemberAccount->save();
 
                 $msg = ErrorsHelper::getModelError($DdMemberAccount);
-                FileHelper::writeLog($logPath, '登录日志:用户资产写入失败'.json_encode($msg));
+                FileHelper::writeLog($logPath, '登录日志:用户资产写入失败' . json_encode($msg));
             }
 
             /* 写入用户apitoken */
@@ -184,7 +190,7 @@ class DdMember extends ActiveRecord
             return $userinfo;
         } else {
             $msg = ErrorsHelper::getModelError($this);
-            FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误'.json_encode($msg));
+            FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
 
             return ResultHelper::json(401, $msg);
         }
@@ -222,7 +228,7 @@ class DdMember extends ActiveRecord
     public static function findByUsername($username)
     {
         return static::find()
-            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status ='.self::STATUS_ACTIVE])
+            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status =' . self::STATUS_ACTIVE])
             ->one();
     }
 
@@ -351,7 +357,7 @@ class DdMember extends ActiveRecord
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -359,7 +365,7 @@ class DdMember extends ActiveRecord
      */
     public function generateEmailVerificationToken()
     {
-        $this->verification_token = Yii::$app->security->generateRandomString().'_'.time();
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -379,7 +385,7 @@ class DdMember extends ActiveRecord
             [['gender', 'address_id', 'group_id', 'organization_id', 'create_time', 'update_time'], 'integer'],
             [['username', 'openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email'], 'string', 'max' => 255],
             [['country', 'province', 'city'], 'string', 'max' => 100],
-            // ['username','unique']
+            // ['username', 'unique'],
         ];
     }
 
