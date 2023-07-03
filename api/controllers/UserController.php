@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-27 11:41:36
+ * @Last Modified time: 2023-07-03 11:41:58
  */
 
 namespace api\controllers;
@@ -24,7 +24,7 @@ use Yii;
 class UserController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
+    protected $authOptional = ['login', 'signup', 'register', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
 
     /**
      * @SWG\Post(path="/user/signup",
@@ -87,6 +87,32 @@ class UserController extends AController
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
         }
+
+        $res = $DdMember->signup($username, $mobile, $password);
+
+        return ResultHelper::json(200, '注册成功', $res);
+    }
+
+    public function actionRegister()
+    {
+        global $_GPC;
+        $DdMember = new DdMember();
+        $data = Yii::$app->request->post();
+        $username = $data['username'];
+        $password = $data['password'];
+
+
+
+        if (empty($username)) {
+            return ResultHelper::json(401, '用户名不能为空', []);
+        }
+
+        if (empty($password)) {
+            return ResultHelper::json(401, '密码不能为空', []);
+        }
+
+
+        $mobile = '';
 
         $res = $DdMember->signup($username, $mobile, $password);
 

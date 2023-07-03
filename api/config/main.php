@@ -4,13 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-09 18:26:49
+ * @Last Modified time: 2023-07-03 11:42:12
  */
 $params = array_merge(
-    require __DIR__.'/../../common/config/params.php',
-    require __DIR__.'/../../common/config/params-local.php',
-    require __DIR__.'/params.php',
-    require __DIR__.'/params-local.php'
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -183,6 +183,7 @@ return [
                     'extraPatterns' => [
                         'POST   login' => 'login',
                         'POST   signup' => 'signup',
+                        'POST   register' => 'register',
                         'POST   repassword' => 'repassword',
                         'POST   up-repassword' => 'up-repassword',
                         'POST   userinfo' => 'userinfo',
