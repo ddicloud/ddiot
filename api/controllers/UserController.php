@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-03 11:41:58
+ * @Last Modified time: 2023-07-03 15:25:21
  */
 
 namespace api\controllers;
@@ -27,36 +27,12 @@ class UserController extends AController
     protected $authOptional = ['login', 'signup', 'register', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
 
     /**
-     * @SWG\Post(path="/user/signup",
-     *     tags={"登录与注册"},
-     *     summary="注册",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "注册",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="username",
-     *      type="string",
-     *      description="用户名",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="mobile",
-     *      type="string",
-     *      description="手机号",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="password",
-     *      type="string",
-     *      description="密码",
-     *      required=true,
-     *    ),
-     *
-     * )
+     * 手机号注册
+     * @return void
+     * @date 2023-07-03
+     * @example
+     * @author Wang Chunsheng
+     * @since
      */
     public function actionSignup()
     {
@@ -93,6 +69,14 @@ class UserController extends AController
         return ResultHelper::json(200, '注册成功', $res);
     }
 
+    /**
+     * 账户注册
+     * @return void
+     * @date 2023-07-03
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
     public function actionRegister()
     {
         global $_GPC;
@@ -100,8 +84,6 @@ class UserController extends AController
         $data = Yii::$app->request->post();
         $username = $data['username'];
         $password = $data['password'];
-
-
 
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空', []);
