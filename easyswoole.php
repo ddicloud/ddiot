@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-07-05 10:10:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 10:16:40
+ * @Last Modified time: 2023-07-05 10:18:15
  */
 
 require __DIR__ . '/vendor/autoload.php';
@@ -26,7 +26,7 @@ $configYii = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/console/config/main-local.php',
 );
 
-$http->on("request", function($request, $response,$configYii) {
+$http->on("request", function($request, $response) use ($configYii) {
     $app = new yii\console\Application($configYii);
     $app->runAction('swoole/index');
 
