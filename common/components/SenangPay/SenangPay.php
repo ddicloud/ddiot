@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 16:55:46
+ * @Last Modified time: 2023-07-05 17:06:09
  */
 
 
@@ -86,10 +86,11 @@ class SenangPay
      *
      * @return string
      **/
-    public function __construct($merchantId, $secretKey)
+    public function __construct($merchantId, $secretKey, $env = 0)
     {
         $this->secretKey = $secretKey;
         $this->merchantId = $merchantId;
+        $this->env = $env;
         $this->header = [
             'auth' => [$merchantId, $secretKey]
         ];
@@ -105,19 +106,6 @@ class SenangPay
         return $this->merchantId;
     }
 
-    /**
-     * 设置当前环境 0 测试环境1正式环境
-     * @param [type] $env
-     * @return void
-     * @date 2023-07-05
-     * @example
-     * @author Wang Chunsheng
-     * @since
-     */
-    public function setEnv($env = 0)
-    {
-        $this->env = $env;
-    }
 
     public static function createData($data)
     {
