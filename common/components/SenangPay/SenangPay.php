@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 16:52:57
+ * @Last Modified time: 2023-07-05 16:55:46
  */
 
 
@@ -131,7 +131,7 @@ class SenangPay
 
     public static function getUrl()
     {
-        if (self::$env) {
+        if ((int) self::$env === 1) {
             return  self::$senangPayUrl;
         } else {
             return  self::$testPayUrl;
