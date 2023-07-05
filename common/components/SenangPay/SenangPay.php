@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 16:46:10
+ * @Last Modified time: 2023-07-05 16:49:32
  */
 
 
@@ -20,7 +20,7 @@ class SenangPay
      *
      * @var string
      */
-    private $senangPayUrl = 'https://api.senangpay.my';
+    private static $senangPayUrl = 'https://api.senangpay.my';
 
 
     /**
@@ -31,7 +31,7 @@ class SenangPay
      * @author Wang Chunsheng
      * @since
      */
-    private $testPayUrl = 'https://sandbox.senangpay.my';
+    private static $testPayUrl = 'https://sandbox.senangpay.my';
 
 
     /**
