@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:06:09
+ * @Last Modified time: 2023-07-05 17:07:45
  */
 
 
@@ -12,8 +12,9 @@ namespace common\components\SenangPay;
 
 use common\helpers\ResultHelper;
 use GuzzleHttp\Client;
+use yii\base\BaseObject;
 
-class SenangPay
+class SenangPay extends BaseObject
 {
     /**
      * 支付正式域名.
