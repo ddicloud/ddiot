@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:09:09
+ * @Last Modified time: 2023-07-05 17:16:18
  */
 
 
@@ -21,7 +21,7 @@ class SenangPay extends BaseObject
      *
      * @var string
      */
-    private static $senangPayUrl = 'https://api.senangpay.my';
+    private static $_senangPayUrl = 'https://api.senangpay.my';
 
 
     /**
@@ -32,7 +32,7 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    private static $testPayUrl = 'https://sandbox.senangpay.my';
+    private static $_testPayUrl = 'https://sandbox.senangpay.my';
 
 
     /**
@@ -43,21 +43,21 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    public static $env;
+    public static $_env;
 
     /**
      * senangPay Merchant ID.
      *
      * @var string
      */
-    private static $merchantId;
+    private static $_merchantId;
 
     /**
      * senangPay Secret Key.
      *
      * @var string
      */
-    private static $secretKey;
+    private static $_secretKey;
 
     /**
      * 请求头部
@@ -67,7 +67,7 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    private static $header = [];
+    private static $_header = [];
 
     const    PREAUTH_BY_TOKEN = '/apiv1/preauth_by_token'; //预授权接口
     const    PREAUTH_CAPTURE  =  '/apiv1/preauth_capture'; //预授权 – 捕获
