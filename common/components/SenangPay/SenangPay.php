@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:32:37
+ * @Last Modified time: 2023-07-05 17:35:45
  */
 
 
@@ -221,15 +221,10 @@ class SenangPay
     // 解析返回的内容
     public static function analysisRes($Res)
     {
-        if ((int) $Res['errcode']) {
-            return ResultHelper::serverJson($Res['errcode'], $Res['errmsg'], $Res);
+        if ((int) $Res['status'] != 1) {
+            return ResultHelper::serverJson(400, $Res['msg'], $Res);
         } else {
-            $data = [
-                'code' => $Res['resultCode'],
-                'content' => $Res['reason'],
-            ];
-
-            return ResultHelper::serverJson(200, '获取成功', $Res);
+            return ResultHelper::json(200, '获取成功', $Res['data']);
         }
     }
 
