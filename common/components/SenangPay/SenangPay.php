@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:07:45
+ * @Last Modified time: 2023-07-05 17:09:09
  */
 
 
@@ -89,6 +89,8 @@ class SenangPay extends BaseObject
      **/
     public function __construct($merchantId, $secretKey, $env = 0)
     {
+        // 调用父类构造函数
+        parent::__construct();
         $this->secretKey = $secretKey;
         $this->merchantId = $merchantId;
         $this->env = $env;
