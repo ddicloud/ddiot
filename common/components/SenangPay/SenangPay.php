@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:35:45
+ * @Last Modified time: 2023-07-05 19:06:01
  */
 
 
@@ -20,7 +20,7 @@ class SenangPay
      *
      * @var string
      */
-    private static $senangPayUrl = 'https://api.senangpay.my';
+    private static $senangPayUrl = 'https://api.senangpay.my/';
 
 
     /**
@@ -31,7 +31,7 @@ class SenangPay
      * @author Wang Chunsheng
      * @since
      */
-    private static $testPayUrl = 'https://sandbox.senangpay.my';
+    private static $testPayUrl = 'https://sandbox.senangpay.my/';
 
 
     /**
@@ -68,14 +68,14 @@ class SenangPay
      */
     private static $header = [];
 
-    const    PREAUTH_BY_TOKEN = '/apiv1/preauth_by_token'; //预授权接口
-    const    PREAUTH_CAPTURE  =  '/apiv1/preauth_capture'; //预授权 – 捕获
-    const    QUERY_ORDER_STATUS  = '/apiv1/query_order_status'; //查看订单状态
-    const    GET_TRANSACTION_LIST  = '/apiv1/get_transaction_list'; //获取交易列表
-    const    PAY_CC  = '/apiv1/pay_cc'; //信用卡支付
-    const    UPDATE_TOKEN_STATUS  =  '/apiv1/update_token_status'; // 启用和禁用信用卡
-    const    PAYMENT  = '/payment'; //付款接口
-    const    FPX_BANK_LIST  = '/fpx_bank_list'; //银行列表
+    const    PREAUTH_BY_TOKEN = 'apiv1/preauth_by_token'; //预授权接口
+    const    PREAUTH_CAPTURE  =  'apiv1/preauth_capture'; //预授权 – 捕获
+    const    QUERY_ORDER_STATUS  = 'apiv1/query_order_status'; //查看订单状态
+    const    GET_TRANSACTION_LIST  = 'apiv1/get_transaction_list'; //获取交易列表
+    const    PAY_CC  = 'apiv1/pay_cc'; //信用卡支付
+    const    UPDATE_TOKEN_STATUS  =  'apiv1/update_token_status'; // 启用和禁用信用卡
+    const    PAYMENT  = 'payment'; //付款接口
+    const    FPX_BANK_LIST  = 'fpx_bank_list'; //银行列表
 
     /**
      * Construct a new senangPay instance
@@ -88,11 +88,15 @@ class SenangPay
      **/
     public function __construct($merchantId, $secretKey, $env = 0)
     {
-        $this->secretKey = $secretKey;
-        $this->merchantId = $merchantId;
+        self::$secretKey = $secretKey;
+        self::$merchantId = $merchantId;
         $this->setEnv($env);
+        $this->setHeader($merchantId, $secretKey);
+    }
 
-        $this->header = [
+    public function setHeader($merchantId, $secretKey)
+    {
+        self::$header =  [
             'auth' => [$merchantId, $secretKey]
         ];
     }
@@ -114,7 +118,7 @@ class SenangPay
      **/
     public function getMerchantId()
     {
-        return $this->merchantId;
+        return self::$merchantId;
     }
 
 
@@ -122,9 +126,12 @@ class SenangPay
     {
         $merchant_id = self::$merchantId;
         $secret_key = self::$secretKey;
+        // unset($data['merchant_id']);
         $string = implode('', $data);
+        $string = str_replace($merchant_id, '', $string);
         $hash = hash_hmac('sha256', $merchant_id . $secret_key . $string, $secret_key);
         $data['hash'] = $hash;
+
         return $data;
     }
 
@@ -164,6 +171,7 @@ class SenangPay
             'base_uri' => $base_uri,
             // You can set any number of default request options.
             'timeout' => 10,
+            // 'verify' => false
         ]);
 
         $res = $client->request('POST', $url, [
@@ -205,12 +213,18 @@ class SenangPay
             'base_uri' => $base_uri,
             // You can set any number of default request options.
             'timeout' => 10,
+            // 'verify' => false,
+            'headers' => $headers,
         ]);
 
         $res = $client->request('GET', $url, [
-            'form_params' => $data,
-            'headers' => $headers,
+            'query' => $data,
+            // 'auth' => [
+            //     self::$merchantId, self::$secretKey
+            // ],
+
         ]);
+
         $body = $res->getBody();
         $remainingBytes = $body->getContents();
 
@@ -222,7 +236,7 @@ class SenangPay
     public static function analysisRes($Res)
     {
         if ((int) $Res['status'] != 1) {
-            return ResultHelper::serverJson(400, $Res['msg'], $Res);
+            return ResultHelper::json(400, $Res['msg'], $Res['data']);
         } else {
             return ResultHelper::json(200, '获取成功', $Res['data']);
         }
@@ -275,7 +289,7 @@ class SenangPay
         // hash:746e8e8382996ebc9259c4f1051ad4edf3854098a53827bddd09b40d6efc1d0c
         $url = self::QUERY_ORDER_STATUS;
         $data = self::createData([
-            'merchant_id' => $this->merchantId,
+            'merchant_id' => self::$merchantId,
             'order_id' => $order_id
         ]);
         $Res  =  self::getHttp($url, $data);
@@ -300,8 +314,9 @@ class SenangPay
         // timestamp_end:1688538991
         // hash:645f6b627c2395fd15f9d9f2b218143e5a6ed80163bf03de9b4501407be7dbc6
         $url = self::GET_TRANSACTION_LIST;
+        $url = 'https://app.senangpay.my/apiv1/get_transaction_list';
         $data = self::createData([
-            'merchant_id' => $this->merchantId,
+            'merchant_id' => self::$merchantId,
             'timestamp_start' => $timestamp_start,
             'timestamp_end' => $timestamp_end
         ]);
@@ -406,7 +421,7 @@ class SenangPay
     public function createHash($detail, $amount, $orderId, $status_id, $transaction_id, $msg)
     {
         // Construct string from data
-        $stringData = $this->secretKey .  urldecode($status_id) . urldecode($orderId) . urldecode($transaction_id) . urldecode($msg);
+        $stringData = self::$secretKey .  urldecode($status_id) . urldecode($orderId) . urldecode($transaction_id) . urldecode($msg);
 
 
         // generate md5 hash for stringData
@@ -429,7 +444,7 @@ class SenangPay
         $transactionId = urldecode($data['transaction_id']);
         $hash = urldecode($data['hash']);
 
-        $hashString = md5($this->secretKey . $statusId . $orderId . $transactionId . $msg);
+        $hashString = md5(self::$secretKey . $statusId . $orderId . $transactionId . $msg);
 
         if ($hashString == $hash) {
             unset($data['hash']);
