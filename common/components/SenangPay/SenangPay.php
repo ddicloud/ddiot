@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 16:38:20
+ * @Last Modified time: 2023-07-05 16:46:10
  */
 
 
@@ -49,14 +49,14 @@ class SenangPay
      *
      * @var string
      */
-    private $merchantId;
+    private static $merchantId;
 
     /**
      * senangPay Secret Key.
      *
      * @var string
      */
-    private $secretKey;
+    private static $secretKey;
 
     /**
      * 请求头部
@@ -66,7 +66,7 @@ class SenangPay
      * @author Wang Chunsheng
      * @since
      */
-    private $header;
+    private static $header;
 
     const    PREAUTH_BY_TOKEN = '/apiv1/preauth_by_token'; //预授权接口
     const    PREAUTH_CAPTURE  =  '/apiv1/preauth_capture'; //预授权 – 捕获
