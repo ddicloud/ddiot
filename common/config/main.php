@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-02-29 16:57:27
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 10:21:27
+ * @Last Modified time: 2023-07-05 11:36:39
  */
 
 return [
@@ -117,10 +117,5 @@ return [
                 ],
             ],
         ],
-    ],
-    'controllerMap' => [
-        'swoole' => [
-            'class' => 'api\controllers\SwooleController',
-        ],
-    ],
+    ]
 ];

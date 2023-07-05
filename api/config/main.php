@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-03 11:42:12
+ * @Last Modified time: 2023-07-05 11:39:56
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -366,5 +366,5 @@ return [
             ],
         ],
     ],
-    'params' => $params,
+    'params' => $params
 ];
