@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 17:16:18
+ * @Last Modified time: 2023-07-05 17:32:37
  */
 
 
@@ -12,16 +12,15 @@ namespace common\components\SenangPay;
 
 use common\helpers\ResultHelper;
 use GuzzleHttp\Client;
-use yii\base\BaseObject;
 
-class SenangPay extends BaseObject
+class SenangPay
 {
     /**
      * 支付正式域名.
      *
      * @var string
      */
-    private static $_senangPayUrl = 'https://api.senangpay.my';
+    private static $senangPayUrl = 'https://api.senangpay.my';
 
 
     /**
@@ -32,7 +31,7 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    private static $_testPayUrl = 'https://sandbox.senangpay.my';
+    private static $testPayUrl = 'https://sandbox.senangpay.my';
 
 
     /**
@@ -43,21 +42,21 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    public static $_env;
+    public static $env;
 
     /**
      * senangPay Merchant ID.
      *
      * @var string
      */
-    private static $_merchantId;
+    private static $merchantId;
 
     /**
      * senangPay Secret Key.
      *
      * @var string
      */
-    private static $_secretKey;
+    private static $secretKey;
 
     /**
      * 请求头部
@@ -67,7 +66,7 @@ class SenangPay extends BaseObject
      * @author Wang Chunsheng
      * @since
      */
-    private static $_header = [];
+    private static $header = [];
 
     const    PREAUTH_BY_TOKEN = '/apiv1/preauth_by_token'; //预授权接口
     const    PREAUTH_CAPTURE  =  '/apiv1/preauth_capture'; //预授权 – 捕获
@@ -89,14 +88,23 @@ class SenangPay extends BaseObject
      **/
     public function __construct($merchantId, $secretKey, $env = 0)
     {
-        // 调用父类构造函数
-        parent::__construct();
         $this->secretKey = $secretKey;
         $this->merchantId = $merchantId;
-        $this->env = $env;
+        $this->setEnv($env);
+
         $this->header = [
             'auth' => [$merchantId, $secretKey]
         ];
+    }
+
+    public function setEnv($env)
+    {
+        self::$env = $env;
+    }
+
+    public function getEnv($env)
+    {
+        return self::$env;
     }
 
     /**
