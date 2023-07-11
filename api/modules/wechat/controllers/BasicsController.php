@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 01:32:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 20:38:12
+ * @Last Modified time: 2023-07-11 14:15:18
  */
 
 namespace api\modules\wechat\controllers;
@@ -114,7 +114,7 @@ class BasicsController extends AController
         $users = Yii::$app->request->post();
         $code = $users['code'];
 
-        unset($users['code']);
+        // unset($users['code']);
         $logPath = Yii::getAlias('@runtime/wechat/signup/' . date('ymd') . '.log');
 
         FileHelper::writeLog($logPath, '登录日志：请求code的用户数据' . json_encode($users));
