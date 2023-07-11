@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-03 11:52:51
+ * @Last Modified time: 2023-07-11 11:27:27
  */
 
 namespace api\models;
@@ -128,6 +128,7 @@ class DdMember extends ActiveRecord
         }
         FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号' . json_encode($mobile));
 
+        // 校验用户名是否重复
         $isHave = $this->find()->where(['username' => $username])->select('member_id')->scalar();
 
         if ($isHave) {

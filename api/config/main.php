@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 11:39:56
+ * @Last Modified time: 2023-07-11 13:13:05
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -320,6 +320,14 @@ return [
                     'pluralize' => false,
                     'extraPatterns' => [
                         'POST  getqrcode' => 'getqrcode',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['wechat/decrypt'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST  msg' => 'msg',
                     ],
                 ],
                 // 公众号接口
