@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 15:22:48
+ * @Last Modified time: 2023-07-11 15:25:08
  */
 
 namespace app\modules\wechat\components;
@@ -103,8 +103,9 @@ class Fans extends BaseObject
             FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);
 
             if (empty($nickname)) {
+                $max_member_id = $DdMember->find()->max('member_id');
                 // 使用随机昵称
-                $nickname = '游客';
+                $nickname = '游客' . ($max_member_id + 1);
             }
 
             FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);

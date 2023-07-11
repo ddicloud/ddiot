@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 00:35:06
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 15:16:07
+ * @Last Modified time: 2023-07-11 15:25:18
  */
 
 namespace api\models;
@@ -114,10 +114,10 @@ class DdMember extends ActiveRecord
         }
 
         /* 查看用户名是否重复 */
-        // $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
-        // if (!empty($userinfo)) {
-        //     return ResultHelper::json(401, '用户名重复');
-        // }
+        $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
+        if (!empty($userinfo)) {
+            return ResultHelper::json(401, '用户名重复');
+        }
         /* 查看手机号是否重复 */
         if ($mobile) {
             $userinfo = $this->find()->where(['mobile' => $mobile])
