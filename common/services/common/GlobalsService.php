@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:10:15
+ * @Last Modified time: 2023-07-11 11:13:11
  */
 
 namespace common\services\common;
@@ -272,7 +272,7 @@ class GlobalsService extends BaseService
             'sql' => $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->createCommand()->getRawSql(),
             'group_bloc_id' => $global_bloc_id
         ]);
-        if (!empty($global_bloc)) {
+        if (!empty($global_bloc_id)) {
 
             Yii::$app->params['global_bloc_id'] = $global_bloc_id;
 
