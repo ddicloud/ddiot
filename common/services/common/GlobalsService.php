@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:00:10
+ * @Last Modified time: 2023-07-11 11:05:27
  */
 
 namespace common\services\common;
@@ -268,6 +268,8 @@ class GlobalsService extends BaseService
         $global_bloc = $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->one();
         loggingHelper::writeLog('GlobalsService', 'getConf', '获取自身配置', [
             'conf' => $conf,
+            'bloc_id' => $bloc_id,
+            'sql' => $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->createCommand()->getRawSql(),
             'global_bloc' => $global_bloc
         ]);
         if (!empty($global_bloc)) {
