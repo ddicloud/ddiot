@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 14:17:53
+ * @Last Modified time: 2023-07-11 14:32:36
  */
 
 namespace app\modules\wechat\components;
@@ -42,6 +42,7 @@ class Fans extends BaseObject
         $openid = $users['openid'];
         $nickname = $users['nickName'];
         $keys = $openid . '_userinfo';
+        $mobile = $users['mobile'] ?? '';
         FileHelper::writeLog($logPath, '登录日志:用户信息openid' . json_encode($openid));
         FileHelper::writeLog($logPath, '登录日志:用户信息缓存获取' . json_encode(Yii::$app->cache->get($keys)));
 
@@ -65,18 +66,10 @@ class Fans extends BaseObject
             'isRegister' => RegisterLevel::isRegister($isHave, $_GPC['bloc_id']),
         ]));
 
-        // 解密手机号
-        $mobielRes = null;
-        if ($users['encryptedData'] && $users['iv']) {
-            $mobielRes = DecryptService::decryptWechatData($users['encryptedData'], $users['iv'], $users['code']);
-            FileHelper::writeLog($logPath, '登录日志:解密手机号', $mobielRes);
-        }
-
-
 
         // 去掉注册级别限制条件
         if ($isHave) {
-            FileHelper::writeLog($logPath, '登录日志:有缓存', $mobielRes);
+            FileHelper::writeLog($logPath, '登录日志:已有数据');
 
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);
@@ -115,7 +108,7 @@ class Fans extends BaseObject
 
             FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);
 
-            $res = $DdMember->signup($nickname, '', $password);
+            $res = $DdMember->signup($nickname, $mobile, $password);
 
             FileHelper::writeLog($logPath, '登录日志:会员注册返回结果' . json_encode($res));
 
