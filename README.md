@@ -13,7 +13,7 @@
 
 ## qq群
 
-：823429313，点击可直接加入：[开发者交流群](https://jq.qq.com/?_wv=1027&k=4d2Rl2lc)
+：789294254，点击可直接加入：[点击链接加入群聊【店滴云物联网2群】：](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=aU7p7jQW_yqfjuOH3TcwYu8NCOaT2Gk_&authKey=GFcZa9JHej9cgqFfIII26njgeMFHk7Ry8CHHeV9EGstFjwlg633A2oA%2FIqly8UjH&noverify=0&group_code=789294254)
 
 ## 微信公众号
 ![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F8edc20c70e46975e7520a8961414295.jpg)

@@ -4,13 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-03 16:35:59
+ * @Last Modified time: 2023-07-11 11:00:10
  */
 
 namespace common\services\common;
 
 use common\helpers\ArrayHelper;
 use common\helpers\ImageHelper;
+use common\helpers\loggingHelper;
 use common\models\enums\MessageStatus;
 use common\models\MessageNoticeLog;
 use common\models\UserBloc;
@@ -265,7 +266,10 @@ class GlobalsService extends BaseService
         // 自己配置为空获取集团
         $Bloc = new Bloc();
         $global_bloc = $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->one();
-
+        loggingHelper::writeLog('GlobalsService', 'getConf', '获取自身配置', [
+            'conf' => $conf,
+            'global_bloc' => $global_bloc
+        ]);
         if (!empty($global_bloc)) {
             $global_bloc_id = $global_bloc['group_bloc_id'];
 
@@ -326,6 +330,10 @@ class GlobalsService extends BaseService
             }
         }
 
+        loggingHelper::writeLog('GlobalsService', 'getConf', '获取集团配置', [
+            'conf' => $conf
+        ]);
+
         // 都为空就使用系统默认的
         if (empty($conf['baidu'])) {
             $conf['baidu'] = Yii::$app->settings->getAllBySection('Baidu');
@@ -381,7 +389,7 @@ class GlobalsService extends BaseService
     }
 
     /**
-     * 获取一个用户所有得公司.
+     * 获取一个用户所有的公司.
      */
     public function getBlocByuserId($user_id)
     {

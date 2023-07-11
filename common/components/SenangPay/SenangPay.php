@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2017-11-25 17:20:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-05 19:06:01
+ * @Last Modified time: 2023-07-06 09:09:15
  */
 
 
@@ -76,6 +76,8 @@ class SenangPay
     const    UPDATE_TOKEN_STATUS  =  'apiv1/update_token_status'; // 启用和禁用信用卡
     const    PAYMENT  = 'payment'; //付款接口
     const    FPX_BANK_LIST  = 'fpx_bank_list'; //银行列表
+    const    QUERY_TRANSACTION_STATUS = '/apiv1/query_transaction_status'; //查询交易状态
+
 
     /**
      * Construct a new senangPay instance
@@ -171,7 +173,7 @@ class SenangPay
             'base_uri' => $base_uri,
             // You can set any number of default request options.
             'timeout' => 10,
-            // 'verify' => false
+            'verify' => false
         ]);
 
         $res = $client->request('POST', $url, [
@@ -180,7 +182,8 @@ class SenangPay
         ]);
         $body = $res->getBody();
         $remainingBytes = $body->getContents();
-
+        print_r($data);
+        die;
         return self::analysisRes(json_decode($remainingBytes, true));
     }
 
@@ -271,6 +274,29 @@ class SenangPay
         $url = self::PREAUTH_CAPTURE;
         $data = self::createData([]);
         $Res  =  self::postHttp($url, $data);
+        return $Res;
+    }
+
+    /**
+     * 查询交易状态
+     * @param [type] $transaction_reference
+     * @return void
+     * @date 2023-07-06
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
+    public function queryTransactionStatus($transaction_reference)
+    {
+        // merchant_id:889167583736038
+        // order_id:25527336
+        // hash:746e8e8382996ebc9259c4f1051ad4edf3854098a53827bddd09b40d6efc1d0c
+        $url = self::QUERY_TRANSACTION_STATUS;
+        $data = self::createData([
+            'merchant_id' => self::$merchantId,
+            'transaction_reference' => $transaction_reference
+        ]);
+        $Res  =  self::getHttp($url, $data);
         return $Res;
     }
 
@@ -376,6 +402,8 @@ class SenangPay
     public function payment($payment_method, $fpx_bank_code, $customer_name, $customer_email, $order_id, $amount, $detail)
     {
         $url = self::PAYMENT;
+        $url = 'https://sandbox.senangpay.my/apiv1/get_transaction_list' . $url;
+
         $data = self::createData([
             'payment_method' => $payment_method,
             'fpx_bank_code' => $fpx_bank_code,
