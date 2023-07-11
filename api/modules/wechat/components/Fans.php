@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 15:12:12
+ * @Last Modified time: 2023-07-11 15:22:48
  */
 
 namespace app\modules\wechat\components;
@@ -111,7 +111,7 @@ class Fans extends BaseObject
 
             $res = $DdMember->signup($nickname, $mobile, $password);
 
-            if ($res['code'] != 200) {
+            if ($res['code'] && $res['code'] != 200) {
                 return ResultHelper::json($res['code'], $res['message']);
             }
 
