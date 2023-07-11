@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:13:11
+ * @Last Modified time: 2023-07-11 11:20:33
  */
 
 namespace common\services\common;
@@ -276,53 +276,53 @@ class GlobalsService extends BaseService
 
             Yii::$app->params['global_bloc_id'] = $global_bloc_id;
 
-            if (empty($conf['baidu'])) {
+            if (empty($conf['baidu']['id'])) {
                 // 百度ai-sdk
                 $conf['baidu'] = $BaiduConf->getConf($global_bloc_id);
             }
 
-            if (empty($conf['wechatpay'])) {
+            if (empty($conf['wechatpay']['id'])) {
                 // 微信支付配置
                 $conf['wechatpay'] = $WechatpayConf->getConf($global_bloc_id);
             }
 
-            if (empty($conf['sms'])) {
+            if (empty($conf['sms']['id'])) {
                 // 短信配置
                 $SmsConf->getConf($global_bloc_id);
                 $conf['sms'] = $SmsConf;
             }
 
-            if (empty($conf['wxapp'])) {
+            if (empty($conf['wxapp']['id'])) {
                 // 小程序配置
                 $WxappConf->getConf($global_bloc_id);
                 $conf['wxapp'] = $WxappConf;
             }
 
-            if (empty($conf['wechat'])) {
+            if (empty($conf['wechat']['id'])) {
                 // 公众号配置
                 $WechatConf->getConf($global_bloc_id);
                 $conf['wechat'] = $WechatConf;
             }
 
-            if (empty($conf['email'])) {
+            if (empty($conf['email']['id'])) {
                 // 邮件配置
                 $EmailConf->getConf($global_bloc_id);
                 $conf['email'] = $EmailConf;
             }
 
-            if (empty($conf['app'])) {
+            if (empty($conf['app']['id'])) {
                 // 邮件配置
                 $AppConf->getConf($global_bloc_id);
                 $conf['app'] = $AppConf;
             }
 
-            if (empty($conf['microapp'])) {
+            if (empty($conf['microapp']['id'])) {
                 // 抖音小程序配置
                 $MicroappConf->getConf($global_bloc_id);
                 $conf['microapp'] = $MicroappConf;
             }
 
-            if (empty($conf['oss'])) {
+            if (empty($conf['oss']['id'])) {
                 // oss配置
                 $OssConf->getConf($global_bloc_id);
                 $conf['oss'] = $OssConf;
@@ -334,41 +334,41 @@ class GlobalsService extends BaseService
         ]);
 
         // 都为空就使用系统默认的
-        if (empty($conf['baidu'])) {
+        if (empty($conf['baidu']['id'])) {
             $conf['baidu'] = Yii::$app->settings->getAllBySection('Baidu');
         }
 
-        if (empty($conf['wechatpay'])) {
+        if (empty($conf['wechatpay']['id'])) {
             $conf['wechatpay'] = Yii::$app->settings->getAllBySection('Wechatpay');
         }
 
-        if (empty($conf['sms'])) {
+        if (empty($conf['sms']['id'])) {
             $conf['sms'] = Yii::$app->settings->getAllBySection('Sms');
         }
 
-        if (empty($conf['wxapp'])) {
+        if (empty($conf['wxapp']['id'])) {
             $conf['wxapp'] = Yii::$app->settings->getAllBySection('Wxapp');
         }
 
-        if (empty($conf['wechat'])) {
+        if (empty($conf['wechat']['id'])) {
             $conf['wechat'] = Yii::$app->settings->getAllBySection('Wechat');
         }
 
-        if (empty($conf['email'])) {
+        if (empty($conf['email']['id'])) {
             $conf['email'] = Yii::$app->settings->getAllBySection('Email');
         }
 
-        if (empty($conf['app'])) {
+        if (empty($conf['app']['id'])) {
             // app
             $conf['app'] = Yii::$app->settings->getAllBySection('App');
         }
 
-        if (empty($conf['microapp'])) {
+        if (empty($conf['microapp']['id'])) {
             // 抖音
             $conf['microapp'] = Yii::$app->settings->getAllBySection('Microapp');
         }
 
-        if (empty($conf['oss'])) {
+        if (empty($conf['oss']['id'])) {
             // 抖音
             $conf['oss'] = Yii::$app->settings->getAllBySection('Oss');
         }
@@ -379,6 +379,7 @@ class GlobalsService extends BaseService
 
         return $conf;
     }
+
 
     public function isSelf()
     {
