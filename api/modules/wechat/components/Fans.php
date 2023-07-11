@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 13:58:17
+ * @Last Modified time: 2023-07-11 14:09:01
  */
 
 namespace app\modules\wechat\components;
@@ -66,7 +66,7 @@ class Fans extends BaseObject
         ]));
 
         // 解密手机号
-
+        $mobielRes = null;
         if ($users['encryptedData'] && $users['iv']) {
             $mobielRes = DecryptService::decryptWechatData($users['encryptedData'], $users['iv'], $users['code']);
         }
