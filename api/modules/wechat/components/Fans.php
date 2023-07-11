@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 10:02:52
+ * @Last Modified time: 2023-07-11 13:58:17
  */
 
 namespace app\modules\wechat\components;
@@ -12,6 +12,7 @@ namespace app\modules\wechat\components;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
 use api\modules\wechat\models\DdWxappFans;
+use api\modules\wechat\services\DecryptService;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
@@ -64,9 +65,17 @@ class Fans extends BaseObject
             'isRegister' => RegisterLevel::isRegister($isHave, $_GPC['bloc_id']),
         ]));
 
+        // 解密手机号
+
+        if ($users['encryptedData'] && $users['iv']) {
+            $mobielRes = DecryptService::decryptWechatData($users['encryptedData'], $users['iv'], $users['code']);
+        }
+
+
+
         // 去掉注册级别限制条件
         if ($isHave) {
-            FileHelper::writeLog($logPath, '登录日志:有缓存');
+            FileHelper::writeLog($logPath, '登录日志:有缓存', $mobielRes);
 
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);

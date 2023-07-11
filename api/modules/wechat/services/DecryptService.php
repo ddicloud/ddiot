@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-07-11 13:06:01
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 13:31:27
+ * @Last Modified time: 2023-07-11 13:52:47
  */
 
 namespace api\modules\wechat\services;
@@ -40,7 +40,7 @@ class DecryptService extends BaseService
             if (isset($user['session_key'])) {
                 $decryptData = $miniProgram->encryptor->decryptData($user['session_key'], $iv, $encryptedData);
 
-                return ResultHelper::json(200, '解密成功', $decryptData);
+                return $decryptData;
             } else {
                 return ResultHelper::json(400, 'session_key 不存在', $user);
             }
