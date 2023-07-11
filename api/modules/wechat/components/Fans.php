@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 15:25:08
+ * @Last Modified time: 2023-07-11 15:34:55
  */
 
 namespace app\modules\wechat\components;
@@ -155,6 +155,7 @@ class Fans extends BaseObject
             $DdWxappFans = new DdWxappFans();
             if ($DdWxappFans->load($dataFans, '') && $DdWxappFans->save()) {
                 $res['fans'] = $dataFans;
+                $res['wechatFans'] = $dataFans;
                 FileHelper::writeLog($logPath, '登录日志:组装fans002' . json_encode($res));
                 Yii::$app->cache->set($keys, $res);
 
