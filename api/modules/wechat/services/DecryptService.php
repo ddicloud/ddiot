@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-07-11 13:06:01
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 13:52:47
+ * @Last Modified time: 2023-07-11 14:27:33
  */
 
 namespace api\modules\wechat\services;
 
+use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;
 
@@ -37,8 +38,10 @@ class DecryptService extends BaseService
         if ($encryptedData && $iv && $code) {
             $miniProgram = \Yii::$app->wechat->miniProgram;
             $user = $miniProgram->auth->session($code);
+            loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密准备', $user);
             if (isset($user['session_key'])) {
                 $decryptData = $miniProgram->encryptor->decryptData($user['session_key'], $iv, $encryptedData);
+                loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密结果', $decryptData);
 
                 return $decryptData;
             } else {
