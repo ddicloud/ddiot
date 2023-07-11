@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 14:32:36
+ * @Last Modified time: 2023-07-11 15:12:12
  */
 
 namespace app\modules\wechat\components;
@@ -15,6 +15,7 @@ use api\modules\wechat\models\DdWxappFans;
 use api\modules\wechat\services\DecryptService;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
+use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\services\api\RegisterLevel;
 use function GuzzleHttp\json_decode;
@@ -109,6 +110,10 @@ class Fans extends BaseObject
             FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);
 
             $res = $DdMember->signup($nickname, $mobile, $password);
+
+            if ($res['code'] != 200) {
+                return ResultHelper::json($res['code'], $res['message']);
+            }
 
             FileHelper::writeLog($logPath, '登录日志:会员注册返回结果' . json_encode($res));
 
