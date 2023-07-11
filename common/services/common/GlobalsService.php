@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:09:26
+ * @Last Modified time: 2023-07-11 11:10:15
  */
 
 namespace common\services\common;
@@ -275,8 +275,6 @@ class GlobalsService extends BaseService
         if (!empty($global_bloc)) {
 
             Yii::$app->params['global_bloc_id'] = $global_bloc_id;
-
-            Yii::$app->params['global_store_id'] = $Bloc->find()->where(['status' => 1, 'bloc_id' => $global_bloc_id])->select('store_id')->scalar();
 
             if (empty($conf['baidu'])) {
                 // 百度ai-sdk
