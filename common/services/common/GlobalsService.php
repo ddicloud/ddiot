@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:05:27
+ * @Last Modified time: 2023-07-11 11:09:26
  */
 
 namespace common\services\common;
@@ -265,17 +265,16 @@ class GlobalsService extends BaseService
 
         // 自己配置为空获取集团
         $Bloc = new Bloc();
-        $global_bloc = $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->one();
+        $global_bloc_id = $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['group_bloc_id'])->scalar();
         loggingHelper::writeLog('GlobalsService', 'getConf', '获取自身配置', [
             'conf' => $conf,
             'bloc_id' => $bloc_id,
             'sql' => $Bloc->find()->where(['status' => 1, 'bloc_id' => $bloc_id])->select(['bloc_id', 'store_id'])->createCommand()->getRawSql(),
-            'global_bloc' => $global_bloc
+            'group_bloc_id' => $global_bloc_id
         ]);
         if (!empty($global_bloc)) {
-            $global_bloc_id = $global_bloc['group_bloc_id'];
 
-            Yii::$app->params['global_bloc_id'] = $global_bloc['group_bloc_id'];
+            Yii::$app->params['global_bloc_id'] = $global_bloc_id;
 
             Yii::$app->params['global_store_id'] = $Bloc->find()->where(['status' => 1, 'bloc_id' => $global_bloc_id])->select('store_id')->scalar();
 
