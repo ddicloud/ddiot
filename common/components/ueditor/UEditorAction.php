@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-25 16:58:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-12 10:23:32
+ * @Last Modified time: 2023-07-12 10:36:02
  */
 
 namespace common\components\ueditor;
@@ -42,6 +42,7 @@ class UEditorAction extends Action
 
     public function run()
     {
+        header('Content-Type: application/javascript');
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
