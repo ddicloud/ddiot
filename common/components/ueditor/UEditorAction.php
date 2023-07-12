@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-25 16:58:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-12 10:43:16
+ * @Last Modified time: 2023-07-12 10:47:00
  */
 
 namespace common\components\ueditor;
@@ -52,7 +52,6 @@ class UEditorAction extends Action
         // } else {
         //     Yii::$app->response->format = Response::FORMAT_JSON;
         // }
-        Yii::$app->response->format = Response::FORMAT_JSON;
 
         return $this->handleAction();
     }
@@ -103,6 +102,7 @@ class UEditorAction extends Action
                 break;
         }
         /* 输出结果 */
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
         return  $result;
     }
