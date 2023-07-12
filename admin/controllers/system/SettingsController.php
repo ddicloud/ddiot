@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 23:43:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:47:14
+ * @Last Modified time: 2023-07-12 10:31:38
  */
 
 namespace admin\controllers\system;
@@ -76,6 +76,21 @@ class SettingsController extends AController
         return ResultHelper::json(200, '设置成功', []);
     }
 
+    public function actionUeditor()
+    {
+        return ResultHelper::json(200, '设置成功', [
+            'a' => 1
+        ]);
+
+        // $UEditorAction = new UEditorAction($id, $action);
+        // $UEditorAction->config = [
+        //     'imageUrlPrefix' => Yii::$app->request->hostInfo, //图片访问路径前缀
+        //     'imagePathFormat' => '../attachment/image/{yyyy}{mm}{dd}/{time}{rand:6}', //上传保存路径
+        //     'imageMaxSize' => 10000000,
+        //     'imageCompressEnable' => true,
+        // ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -84,15 +99,15 @@ class SettingsController extends AController
         parent::actions();
 
         $setActions = [
-            'ueditor' => [
-                'class' => UEditorAction::class,
-                'config' => [
-                    'imageUrlPrefix' => Yii::$app->request->hostInfo, //图片访问路径前缀
-                    'imagePathFormat' => '../attachment/image/{yyyy}{mm}{dd}/{time}{rand:6}', //上传保存路径
-                    'imageMaxSize' => 10000000,
-                    'imageCompressEnable' => true,
-                ],
-            ],
+            // 'ueditor' => [
+            //     'class' => UEditorAction::class,
+            //     'config' => [
+            //         'imageUrlPrefix' => Yii::$app->request->hostInfo, //图片访问路径前缀
+            //         'imagePathFormat' => '../attachment/image/{yyyy}{mm}{dd}/{time}{rand:6}', //上传保存路径
+            //         'imageMaxSize' => 10000000,
+            //         'imageCompressEnable' => true,
+            //     ],
+            // ],
             'baidu' => [
                 'class' => AdminSettingsAction::class,
                 'successMessage' => '保存成功',
