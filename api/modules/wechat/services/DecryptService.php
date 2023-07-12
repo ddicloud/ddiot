@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-07-11 13:06:01
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 15:07:10
+ * @Last Modified time: 2023-07-11 16:29:40
  */
 
 namespace api\modules\wechat\services;
 
+use api\modules\wechat\models\DdWxappFans;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;

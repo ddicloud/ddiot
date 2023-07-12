@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-25 16:58:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 12:06:39
+ * @Last Modified time: 2023-07-12 10:19:15
  */
 
 namespace common\components\ueditor;
@@ -27,7 +28,7 @@ class UEditorAction extends Action
         //close csrf
         Yii::$app->request->enableCsrfValidation = false;
         //默认设置
-        $_config = require __DIR__.'/config.php';
+        $_config = require __DIR__ . '/config.php';
         //添加图片默认root路径；
         $_config['imageRoot'] = Yii::getAlias('@webroot');
         $_config['scrawlRoot'] = Yii::getAlias('@webroot');
@@ -41,12 +42,12 @@ class UEditorAction extends Action
 
     public function run()
     {
-        // if (Yii::$app->request->get('callback', false)) {
-        //     Yii::$app->response->format = Response::FORMAT_JSONP;
-        // } else {
-        //     Yii::$app->response->format = Response::FORMAT_JSON;
-        // }
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->request->get('callback', false)) {
+            Yii::$app->response->format = Response::FORMAT_JSONP;
+        } else {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        }
+        // Yii::$app->response->format = Response::FORMAT_JSON;
 
         return $this->handleAction();
     }
@@ -63,7 +64,7 @@ class UEditorAction extends Action
                 $result = $this->config;
                 break;
 
-            /* 上传图片 */
+                /* 上传图片 */
             case 'uploadimage':
                 /* 上传涂鸦 */
             case 'uploadscrawl':
@@ -74,18 +75,18 @@ class UEditorAction extends Action
                 $result = $this->actionUpload();
                 //处理返回的URL
                 if (substr($result['url'], 0, 1) != '/') {
-                    $result['url'] = '/'.$result['url'];
+                    $result['url'] = '/' . $result['url'];
                 }
-                $result['url'] = Yii::getAlias('@web'.$result['url']);
+                $result['url'] = Yii::getAlias('@web' . $result['url']);
                 break;
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
                 /* 列出文件 */
             case 'listfile':
                 $result = $this->actionList();
                 break;
 
-            /* 抓取远程文件 */
+                /* 抓取远程文件 */
             case 'catchimage':
                 $result = $this->actionCrawler();
                 break;
@@ -178,13 +179,13 @@ class UEditorAction extends Action
     {
         /* 判断类型 */
         switch ($_GET['action']) {
-            /* 列出文件 */
+                /* 列出文件 */
             case 'listfile':
                 $allowFiles = $this->config['fileManagerAllowFiles'];
                 $listSize = $this->config['fileManagerListSize'];
                 $path = $this->config['fileManagerListPath'];
                 break;
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
             default:
                 $allowFiles = $this->config['imageManagerAllowFiles'];
@@ -199,7 +200,7 @@ class UEditorAction extends Action
         $end = (int) $start + (int) $size;
 
         /* 获取文件列表 */
-        $path = $_SERVER['DOCUMENT_ROOT'].(substr($path, 0, 1) == '/' ? '' : '/').$path;
+        $path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == '/' ? '' : '/') . $path;
         $files = $this->getfiles($path, $allowFiles);
         if (!count($files)) {
             return [
@@ -217,7 +218,7 @@ class UEditorAction extends Action
         }
         //倒序
         //for ($i = $end, $list = array(); $i < $len && $i < $end; $i++){
-//    $list[] = $files[$i];
+        //    $list[] = $files[$i];
         //}
 
         /* 返回数据 */
@@ -292,11 +293,11 @@ class UEditorAction extends Action
         $handle = opendir($path);
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
-                $path2 = $path.$file;
+                $path2 = $path . $file;
                 if (is_dir($path2)) {
                     $this->getfiles($path2, $allowFiles, $files);
                 } else {
-                    if (preg_match("/\.(".$allowFiles.')$/i', $file)) {
+                    if (preg_match("/\.(" . $allowFiles . ')$/i', $file)) {
                         $files[] = [
                             'url' => substr($path2, strlen($_SERVER['DOCUMENT_ROOT'])),
                             'mtime' => filemtime($path2),

@@ -219,7 +219,7 @@ class SettingsController extends AController
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post('bloc', '');
             if ($data) {
-                $key = Yii::$app->user->identity->id.'globalBloc';
+                $key = Yii::$app->user->identity->id . 'globalBloc';
                 Yii::$app->cache->set($key, $data);
 
                 return ResultHelper::json(200, '切换成功', Yii::$app->cache->get('globalBloc'));
