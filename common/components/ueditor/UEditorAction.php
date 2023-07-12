@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-25 16:58:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-12 10:48:06
+ * @Last Modified time: 2023-07-12 11:03:37
  */
 
 namespace common\components\ueditor;
@@ -42,16 +42,17 @@ class UEditorAction extends Action
 
     public function run()
     {
-        header('Content-Type: application/json');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        // header('Content-Type: application/json');
+        // header("Access-Control-Allow-Origin: *");
+        // header("Access-Control-Allow-Methods: GET, POST");
+        // header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
         // if (Yii::$app->request->get('callback', false)) {
         //     Yii::$app->response->format = Response::FORMAT_JSONP;
         // } else {
         //     Yii::$app->response->format = Response::FORMAT_JSON;
         // }
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
         return $this->handleAction();
     }
@@ -102,7 +103,6 @@ class UEditorAction extends Action
                 break;
         }
         /* 输出结果 */
-        // Yii::$app->response->format = Response::FORMAT_JSON;
 
         return  $result;
     }
