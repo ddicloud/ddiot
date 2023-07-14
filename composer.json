@@ -34,7 +34,7 @@
         "hashids/hashids": "^4.0",
         "overtrue/wechat": "~4.0",
         "yii-diandi/yii2-migration": "^2.0",
-        "yiisoft/yii2": "^2.0",
+        "yiisoft/yii2": "2.0.48.1",
         "yii-diandi/yii2-addons": "^4.0",
         "ext-curl": "*",
         "ext-json": "*",
