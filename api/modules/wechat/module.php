@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 03:04:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 17:14:39
+ * @Last Modified time: 2023-07-14 17:16:29
  */
 
 namespace api\modules\wechat;
@@ -95,8 +95,8 @@ class module extends \yii\base\Module
         $Wxapp = $conf['wxapp'];
 
 
-        $apiclient_certUrl =  $Wechatpay['apiclient_cert'] ? $Wechatpay['apiclient_cert']['url'] : '';
-        $apiclient_keyUrl =  $Wechatpay['apiclient_key'] ? $Wechatpay['apiclient_key']['url'] : '';
+        $apiclient_certUrl =  !empty($Wechatpay['apiclient_cert']) &&  !empty($Wechatpay['apiclient_cert']['url'])  ? $Wechatpay['apiclient_cert']['url'] : '';
+        $apiclient_keyUrl =  !empty($Wechatpay['apiclient_key']) &&  !empty($Wechatpay['apiclient_key']['url'])  ? $Wechatpay['apiclient_key']['url'] : '';
         $apiclient_cert = Yii::getAlias('@attachment/' . $apiclient_certUrl);
         $apiclient_key = Yii::getAlias('@attachment/' . $apiclient_keyUrl);
 
