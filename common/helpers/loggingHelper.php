@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 14:06:58
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-29 10:32:30
+ * @Last Modified time: 2023-07-14 15:25:04
  */
 
 namespace common\helpers;
@@ -41,23 +42,23 @@ class loggingHelper
         $appId = Yii::$app->id;
 
         list($app, $alia) = explode('-', $appId);
-        $basepath = Yii::getAlias("@{$alia}/runtime/".$moduleName.'/'.date('Y/m/d/').$path.'.log');
+        $basepath = Yii::getAlias("@{$alia}/runtime/" . $moduleName . '/' . date('Y/m/d/') . $path . '.log');
         self::mkdirs(dirname($basepath));
         @chmod($path, 0777);
         $time = date('m/d H:i:s');
         // 加入内存使用情况
         $memoryInit = memory_get_usage() / 1024 / 1024;
 
-        $memory = StringHelper::currency_format($memoryInit, 2).'mb';
-
+        $memory = StringHelper::currency_format($memoryInit, 2) . 'mb';
+        $contentTxt = '';
         if (is_array($content)) {
             $content['memory'] = $memory;
             $contentTxt = json_encode($content);
         } elseif (is_string($content)) {
-            $contentTxt = $content.'//memory:'.$memory;
+            $contentTxt = $content . '//memory:' . $memory;
         }
 
-        return file_put_contents($basepath, "\r\n".$time.'-'.$mark.':'.$contentTxt, FILE_APPEND);
+        return file_put_contents($basepath, "\r\n" . $time . '-' . $mark . ':' . $contentTxt, FILE_APPEND);
     }
 
     public static function actionLog($user_id, $operation, $logip)
