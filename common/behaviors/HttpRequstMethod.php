@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 16:59:43
+ * @Last Modified time: 2023-07-14 15:30:13
  */
 
 namespace common\behaviors;
@@ -58,7 +58,7 @@ class HttpRequstMethod extends Behavior
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
 
-        $this->admin_id = Yii::$app->user->identity->id;
+        $this->admin_id = Yii::$app->user ? Yii::$app->user->identity->id : 0;
         $this->bloc_id = $bloc_id;
         $this->store_id = $store_id;
     }
