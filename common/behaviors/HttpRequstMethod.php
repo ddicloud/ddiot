@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-16 09:37:55
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 15:33:30
+ * @Last Modified time: 2023-07-14 15:44:46
  */
 
 namespace common\behaviors;
@@ -130,7 +130,7 @@ class HttpRequstMethod extends Behavior
                 $whereInit = array_merge($whereInit, Yii::$app->request->queryParams[$this->owner->modelSearchName]);
             }
 
-            $whereGpc = is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
+            $whereGpc = !empty($_GPC[$this->owner->modelSearchName]) && is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
             $where[$this->owner->modelSearchName] = array_merge($whereInit, $whereGpc);
         }
 

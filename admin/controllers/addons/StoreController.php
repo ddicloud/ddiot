@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-06 15:47:23
+ * @Last Modified time: 2023-07-14 15:53:51
  */
 
 namespace admin\controllers\addons;
@@ -137,20 +137,21 @@ class StoreController extends AController
             }
         }
 
-        $storage = Yii::$app->params['conf']['oss']['remote_type'];
+        $oss = Yii::$app->params['conf']['oss'];
+        $storage = $oss ? $oss['remote_type'] : '';
         $url = '';
         switch ($storage) {
             case 'locai':
                 $url = Yii::$app->request->hostInfo;
                 break;
             case 'alioss':
-                $url = Yii::$app->params['conf']['oss']['Aliyunoss_url'];
+                $url = $oss ? $oss['Aliyunoss_url'] : '';
                 break;
             case 'qiniu':
-                $url = Yii::$app->params['conf']['oss']['Qiniuoss_url'];
+                $url = $oss ? $oss['Qiniuoss_url'] : '';
                 break;
             case 'cos':
-                $url = Yii::$app->params['conf']['oss']['Tengxunoss_url'];
+                $url = $oss ? $oss['Tengxunoss_url'] : '';
                 break;
             default:
                 $url = Yii::$app->request->hostInfo;

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 11:45:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 10:22:32
+ * @Last Modified time: 2023-07-14 15:55:47
  */
 
 namespace admin\controllers;
@@ -148,8 +148,8 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $mobile = $_GPC['mobile'];
-        $is_addons = $_GPC['is_addons'];
+        $mobile = $_GPC['mobile'] ?? '';
+        $is_addons = $_GPC['is_addons'] ?? '';
 
         $data = Yii::$app->request->post();
 
@@ -179,8 +179,6 @@ class UserController extends AController
         );
         $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
         $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
-
-        $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
 
         $roles = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $userinfo['roles'] = $roles;

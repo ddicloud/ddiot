@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 15:34:33
+ * @Last Modified time: 2023-07-14 15:59:37
  */
 
 namespace common\behaviors;
@@ -70,7 +70,7 @@ class SaveBehavior extends Behavior
 
         $blocPid = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->select('pid')->scalar();
 
-        $admin_id = Yii::$app->user->identity && Yii::$app->user->identity->id ? Yii::$app->user->identity->id : 0;
+        $admin_id = Yii::$app->user->isGuest ? 0 : Yii::$app->user->identity->id;
 
         $time = $this->time_type === 'init' ? time() : date('Y-m-d H:i:s', time());
 

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-01 15:32:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-11-05 19:08:50
+ * @Last Modified time: 2023-07-14 15:38:57
  */
 
 namespace common\helpers;
@@ -31,7 +31,8 @@ class ImageHelper
      *
      * @return string
      */
-    function default($imgSrc, $defaultImgSre = '/resources/img/error.png') {
+    function default($imgSrc, $defaultImgSre = '/resources/img/error.png')
+    {
         return !empty($imgSrc) ? $imgSrc : Yii::getAlias('@web') . $defaultImgSre;
     }
 
@@ -141,18 +142,21 @@ class ImageHelper
             $hostInfo = Yii::$app->request->hostInfo;
         }
 
+
+        $oss = Yii::$app->params['conf']['oss'];
+
         switch ($storage) {
             case 'locai':
                 $url = $hostInfo;
                 break;
             case 'alioss':
-                $url = Yii::$app->params['conf']['oss']['Aliyunoss_url'];
+                $url = $oss ? $oss['Aliyunoss_url'] : '';
                 break;
             case 'qiniu':
-                $url = Yii::$app->params['conf']['oss']['Qiniuoss_url'];
+                $url = $oss ? $oss['Qiniuoss_url'] : '';
                 break;
             case 'cos':
-                $url = Yii::$app->params['conf']['oss']['Tengxunoss_url'];
+                $url = $oss ? $oss['Tengxunoss_url'] : '';
                 break;
             default:
                 $url = $hostInfo;
