@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:50:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-19 11:39:29
+ * @Last Modified time: 2023-07-14 15:34:33
  */
 
 namespace common\behaviors;
@@ -49,7 +49,7 @@ class SaveBehavior extends Behavior
     public function init()
     {
         global $_GPC;
-        
+
         if (empty($this->attributes)) {
             $this->attributes = [
                 BaseActiveRecord::EVENT_BEFORE_INSERT => [$this->createdAttribute, $this->updatedAttribute, $this->blocAttribute, $this->storeAttribute, $this->blocPAttribute, $this->adminAttribute, $this->globalBlocAttribute], //准备数据 在插入之前更新created和updated两个字段
@@ -59,10 +59,10 @@ class SaveBehavior extends Behavior
 
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
-        
+
         // 后台多级数据传递
-        $blocs = $_GPC['blocs'];
-        if(!empty($blocs)){
+        if (!empty($_GPC['blocs'])) {
+            $blocs = $_GPC['blocs'];
             $bloc_id  = $blocs[0];
             $store_id = $blocs[1];
         }
@@ -102,7 +102,7 @@ class SaveBehavior extends Behavior
     {
         if (!empty($this->attributes[$event->name])) {
             $attributes = $this->attributes[$event->name];
-            
+
             foreach ($attributes as $attribute) {
                 // 如果赋值了，就不需要改变
                 if (!empty($this->owner->attributes[$attribute]) && $attribute == 'store_id') {
@@ -112,7 +112,7 @@ class SaveBehavior extends Behavior
                 if (!empty($this->owner->attributes[$attribute]) && $attribute == 'bloc_id') {
                     continue;
                 }
-                
+
 
                 if (array_key_exists($attribute, $this->owner->attributes) && !in_array($attribute, $this->noAttributes)) {
                     $this->owner->$attribute = $this->getValue($attribute);
