@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 18:33:26
+ * @Last Modified time: 2023-07-18 14:54:57
  */
 
 namespace common\services\admin;
@@ -90,18 +90,18 @@ class NavService extends BaseService
         self::$module_names = $module_names;
 
         $module_name = array_column($module_names, 'identifie');
-        $key = 'auth_'.Yii::$app->user->id.'_'.'initmenu';
+        $key = 'auth_' . Yii::$app->user->id . '_' . 'initmenu';
 
         $initmenu = Yii::$app->cache->get($key);
 
-        $pluginsMenus = self::getPluginsMenuId();
+        // $pluginsMenus = self::getPluginsMenuId();
 
         if ($initmenu) {
             return $initmenu;
         } else {
             // 获取所有的路由
             $routeList = AuthRoute::find()->indexBy('id')->select(['id', 'route_name'])->asArray()->all();
-            $callback = function ($menu) use ($module_name, $routeList,$pluginsMenus) {
+            $callback = function ($menu) use ($module_name, $routeList) {
                 $route_name = !empty($routeList[$menu['route_id']]) ? $routeList[$menu['route_id']]['route_name'] : '';
                 // 解析地址路由参数
                 $data = json_decode($menu['data'], true);
@@ -115,7 +115,7 @@ class NavService extends BaseService
                     $parent = $parent_id > 0 ? $parent_id : $menu['id'];
 
                     $menu_type = 'system';
-                // $module_name = $menu['module_name'];
+                    // $module_name = $menu['module_name'];
                     // $addonsdefault = "/{$module_name}/default/index";
                 } else {
                     $menu_type = $menu['module_name'];
@@ -124,10 +124,10 @@ class NavService extends BaseService
                 $route = $menu['route'];
 
                 // 校验是否存在子模块
-                $parent_menu_id = 0;
-                if (!empty($pluginsMenus[$menu_type])) {
-                    $parent_menu_id = $pluginsMenus[$menu_type];
-                }
+                // $parent_menu_id = 0;
+                // if (!empty($pluginsMenus[$menu_type])) {
+                //     $parent_menu_id = $pluginsMenus[$menu_type];
+                // }
 
                 $return = [
                     'id' => $menu['id'],
@@ -138,13 +138,13 @@ class NavService extends BaseService
                     'level_type' => $menu['level_type'],
                     'type' => $menu_type,
                     'meta' => [
-                        'parent_menu_id' => $parent_menu_id,
+                        'parent_menu_id' => 0,
                         'title' => $menu['name'],
                         'icon' => $menu['icon'],
                         'affix' => ($menu['name'] === '工作台' && !empty($parent_id)) ? true : false,
                         'parent' => $parent_id ? $parent_id : $menu['id'],
                     ],
-                    'path' => $route ? $route : '/'.$menu['id'],
+                    'path' => $route ? $route : '/' . $menu['id'],
                     'children' => $menu['children'],
                 ];
 
@@ -224,11 +224,11 @@ class NavService extends BaseService
         }])->asArray()->all();
 
         foreach ($list as $key => &$value) {
-            unset($value['ruoter']['id'],$value['ruoter']['created_at'],$value['ruoter']['updated_at']);
+            unset($value['ruoter']['id'], $value['ruoter']['created_at'], $value['ruoter']['updated_at']);
             if (is_array($value['ruoter']) && !empty($value['ruoter'])) {
                 foreach ($value['ruoter'] as $k => $val) {
                     if (!empty($value['ruoter']['item']) && is_array($value['ruoter']['item'])) {
-                        unset($value['ruoter']['item']['id'],$value['ruoter']['item']['created_at'],$value['ruoter']['item']['updated_at']);
+                        unset($value['ruoter']['item']['id'], $value['ruoter']['item']['created_at'], $value['ruoter']['item']['updated_at']);
                     }
                 }
             }
@@ -239,20 +239,20 @@ class NavService extends BaseService
         $menu = ArrayHelper::removeByKey($lists);
         $menus = ArrayHelper::removeByKey($menu, 'parent');
         $menus = ArrayHelper::removeByKey($menus, 'route_id');
-        $text = '<?php return '.var_export($menus, true).';';
+        $text = '<?php return ' . var_export($menus, true) . ';';
 
-        $configFile = Yii::getAlias('@addons/'.$addons.'/config');
+        $configFile = Yii::getAlias('@addons/' . $addons . '/config');
         if (!is_dir($configFile)) {
             FileHelper::mkdirs($configFile);
             @chmod($configFile, 0777);
         }
-        $file = Yii::getAlias('@addons/'.$addons.'/config/menu.php');
+        $file = Yii::getAlias('@addons/' . $addons . '/config/menu.php');
 
         if (false !== fopen($file, 'w+')) {
             file_put_contents($file, $text);
-            echo '菜单创建成功'.PHP_EOL;
+            echo '菜单创建成功' . PHP_EOL;
         } else {
-            echo '菜单创建失败'.PHP_EOL;
+            echo '菜单创建失败' . PHP_EOL;
         }
 
         return   $menus;
