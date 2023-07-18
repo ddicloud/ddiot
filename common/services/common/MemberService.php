@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-09 14:52:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 11:04:15
+ * @Last Modified time: 2023-07-18 17:15:20
  */
 
 namespace common\services\common;
@@ -31,18 +31,10 @@ class MemberService extends BaseService
 
     public function setAccessToken($token)
     {
-        global $_GPC;
-        $tokens = [];
-
         if (Yii::$app->id == 'app-admin') {
-            $tokens = ModelsDdApiAccessToken::find()->where(['access_token' => $token])->asArray()->one();
-            $this->member_id = $tokens['user_id'];
+            $this->member_id =  ModelsDdApiAccessToken::find()->where(['access_token' => $token])->select('user_id')->scalar();
         } else if (Yii::$app->id == 'app-api') {
-            $tokens = DdApiAccessToken::find()->where(['access_token' => $token])->asArray()->one();
-            $this->member_id = $tokens['member_id'];
-        }else if (Yii::$app->id == 'app-swoole') {
-            $tokens = SwooleAccessToken::find()->where(['access_token' => $token])->asArray()->one();
-            $this->member_id = $tokens['swoole_member_id'];
+            $this->member_id = DdApiAccessToken::find()->where(['access_token' => $token])->select('member_id')->scalar();
         }
     }
 
@@ -139,7 +131,7 @@ class MemberService extends BaseService
     }
 
     // 获取所有的会员信息
-    public static function memberLists($where, $memberAlias, $joinModel, $joinfiled, $fields = [], $page=1, $pageSize = 20)
+    public static function memberLists($where, $memberAlias, $joinModel, $joinfiled, $fields = [], $page = 1, $pageSize = 20)
     {
         $selectFs = [];
         foreach ($fields as $key => $value) {
