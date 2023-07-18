@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-10 11:49:23
+ * @Last Modified time: 2023-07-18 17:11:06
  */
 
 namespace admin\controllers;
@@ -89,8 +89,8 @@ class StoreController extends AController
         $latitude = $_GPC['latitude'];
         $label_id = intval($_GPC['label_id']);
 
-        $page = $_GPC['page'];
-        $pageSize = $_GPC['pageSize'];
+        $page = $_GPC['page']??1;
+        $pageSize = $_GPC['pageSize']??10;
 
         $list = Yii::$app->service->commonStoreService->list($category_pid, $category_id, $longitude, $latitude, $keywords, $label_id, $page, $pageSize);
 
