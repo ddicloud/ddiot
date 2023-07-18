@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-09 14:07:44
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 16:46:41
+ * @Last Modified time: 2023-07-18 15:58:10
  */
 
 return [
@@ -34,7 +34,7 @@ return [
     // 系统权限配置
     'diandi.admin.configs' => [
         'authManager' => [
-            'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
+            'class' => 'diandi\admin\components\DbManager', // 使用数据库管理配置文件
             'defaultRoles' => ['基础权限组'], //默认角色，该角色有最高权限
         ],
     ]

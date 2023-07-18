@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "842ec52482d7a80f1691bd4a1f13902c",
+    "content-hash": "cf05ba1a68143c823774f19b5e346973",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4408,16 +4408,16 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "4.0.9",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
-                "reference": "e3362a41eaf78b2624ccdd6d7e0fc03d18e99d54"
+                "reference": "80676b25cb9e720f1a98a08a9a24fe620882f456"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/e3362a41eaf78b2624ccdd6d7e0fc03d18e99d54",
-                "reference": "e3362a41eaf78b2624ccdd6d7e0fc03d18e99d54",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/80676b25cb9e720f1a98a08a9a24fe620882f456",
+                "reference": "80676b25cb9e720f1a98a08a9a24fe620882f456",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4457,22 +4457,22 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.0.9"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.1.0"
             },
-            "time": "2023-07-04T07:09:21+00:00"
+            "time": "2023-07-18T09:01:11+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.0.9",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "7a6336031696385e5cdd99deb8622f603ba03f2c"
+                "reference": "0cb6d322693ff937b4e265a21e0098bb241ce0d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/7a6336031696385e5cdd99deb8622f603ba03f2c",
-                "reference": "7a6336031696385e5cdd99deb8622f603ba03f2c",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/0cb6d322693ff937b4e265a21e0098bb241ce0d5",
+                "reference": "0cb6d322693ff937b4e265a21e0098bb241ce0d5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4522,9 +4522,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.0.9"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.1.0"
             },
-            "time": "2022-10-28T12:28:41+00:00"
+            "time": "2023-07-18T09:03:06+00:00"
         },
         {
             "name": "yii-diandi/yii2-migration",

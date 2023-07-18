@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:17:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 16:55:29
+ * @Last Modified time: 2023-07-18 15:58:01
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -102,7 +102,7 @@ return [
             ],
         ],
         'authManager' => [
-            'class' => 'diandi\\admin\\components\\DbManager', // 使用数据库管理配置文件
+            'class' => 'diandi\admin\components\DbManager', // 使用数据库管理配置文件
             'defaultRoles' => ['基础权限组'], //默认角色，该角色有最高权限
         ],
         'i18n' => [

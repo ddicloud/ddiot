@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-18 14:54:57
+ * @Last Modified time: 2023-07-18 16:53:58
  */
 
 namespace common\services\admin;
@@ -61,10 +61,11 @@ class NavService extends BaseService
         $menucate = $this->getMenuTop($types);
 
         foreach ($menucate as $key => &$value) {
-            $value['text'] = $value['name'];
+            $value['text'] = $value['title'];
             $value['icon'] = $value['icon'];
             $value['targetType'] = 'top-nav';
-            $value['url'] = "system/welcome/{$value['mark']}";
+            $mark = !empty($value['mark'])  ? $value['mark'] : '';
+            $value['url'] = "system/welcome/{$mark}";
         }
         if (!$is_addons) {
             $menus = [
@@ -104,7 +105,7 @@ class NavService extends BaseService
             $callback = function ($menu) use ($module_name, $routeList) {
                 $route_name = !empty($routeList[$menu['route_id']]) ? $routeList[$menu['route_id']]['route_name'] : '';
                 // 解析地址路由参数
-                $data = json_decode($menu['data'], true);
+                $data = $menu['data'] ? json_decode($menu['data'], true) : [];
 
                 $parent_id = intval($menu['parent']);
 
