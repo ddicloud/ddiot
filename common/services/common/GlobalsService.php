@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:34:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 11:20:33
+ * @Last Modified time: 2023-07-18 15:05:12
  */
 
 namespace common\services\common;
@@ -232,7 +232,7 @@ class GlobalsService extends BaseService
         $AppConf = new App($is_showall);
         $MicroappConf = new Microapp($is_showall);
         $OssConf = new Oss($is_showall);
-
+        $conf = [];
         if (!empty($bloc_id)) {
             // 微信支付配置
             $WechatpayConf->getConf($bloc_id);
