@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-02 17:55:14
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 09:33:04
+ * @Last Modified time: 2023-07-18 17:32:17
  */
 
 
@@ -105,8 +105,8 @@ class Bloc extends BlocModel
             ->andFilterWhere(['like', 'other_files', $this->other_files]);
 
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize']??10;
-        $page       = $_GPC['page']??1;
+        $pageSize   = $_GPC['pageSize'] ?? 10;
+        $page       = $_GPC['page'] ?? 1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
@@ -119,9 +119,10 @@ class Bloc extends BlocModel
             // ->limit($pagination->limit)
             ->asArray()
             ->all();
+
         foreach ($list as $key => &$value) {
-            $value['open_time'] = date('Y-m-d', strtotime($value['open_time']));
-            $value['end_time'] = date('Y-m-d', strtotime($value['end_time']));
+            $value['open_time'] = $value['open_time'] ? date('Y-m-d', strtotime($value['open_time'])) : '';
+            $value['end_time'] = $value['end_time'] ? date('Y-m-d', strtotime($value['end_time'])) : '';
         }
 
 
