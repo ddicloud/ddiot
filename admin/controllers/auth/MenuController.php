@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-28 16:42:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:46:32
+ * @Last Modified time: 2023-07-18 17:51:27
  */
 
 namespace admin\controllers\auth;
@@ -54,11 +54,12 @@ class MenuController extends AController
         $parentMent = $dataProvider['allModels'];
 
         foreach ($parentMent as $key => &$value) {
-            $value['addons'] = $addons[$value['module_name']];
+            $module_name = !empty($addons[$value['module_name']]) ? $addons[$value['module_name']] : '';
+            $value['addons'] = $module_name;
             if ($value['type'] == 1) {
-                $module_name = $addons[$value['module_name']];
-                $value['name'] = $module_name.'-'.$value['name'];
-                $value['label'] = $module_name.'-'.$value['name'];
+                $module_name = $module_name;
+                $value['name'] = $module_name . '-' . $value['name'];
+                $value['label'] = $module_name . '-' . $value['name'];
             } else {
                 $value['label'] = $value['name'];
             }
