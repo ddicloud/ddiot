@@ -4,9 +4,8 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 20:27:36
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-18 14:50:05
+ * @Last Modified time: 2023-07-18 14:56:01
  */
-error_reporting(error_reporting() & ~E_NOTICE);
 
 if (in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     //开发环境dev的入口文件代码
