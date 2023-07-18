@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-01 15:32:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-14 15:38:57
+ * @Last Modified time: 2023-07-18 17:23:40
  */
 
 namespace common\helpers;
@@ -168,6 +168,9 @@ class ImageHelper
 
     public static function tomedia($image, $type = 'default.jpg')
     {
+        if (empty($image)) {
+            return '';
+        }
         $hostUrl = self::getMediaUrl($image);
         $default = '/resource/images/public/' . $type;
         if (is_array($image)) {

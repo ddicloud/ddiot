@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-10-26 15:43:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 13:02:52
+ * @Last Modified time: 2023-07-18 17:27:09
  */
 
 namespace admin\services;
@@ -169,7 +169,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkStore($store_id, $bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
+    public static function upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = [])
     {
         $model = BlocStore::findOne($store_id);
 
@@ -192,7 +192,7 @@ class StoreService extends BaseService
             'mobile' => $mobile,
             'status' => $status,
             'lng_lat' => $lng_lat,
-            'longitude' =>(string) $longitude,
+            'longitude' => (string) $longitude,
             'latitude' => (string)$latitude,
         ];
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
@@ -245,9 +245,9 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkStore($user_id,$bloc_id,$category,$provinceCityDistrict,$name,$logo,$address,$longitude,$latitude,$mobile,$status,$label_link=[])
+    public static function addLinkStore($user_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = [])
     {
-        if(empty($user_id)){
+        if (empty($user_id)) {
             throw new \Exception('关联商户中，用户ID不能为空!');
         }
         $model = new BlocStore([
@@ -262,7 +262,7 @@ class StoreService extends BaseService
 
         $storeData = [
             'category_id' => (int) $category[1],
-            'category_pid' =>(int) $category[0],
+            'category_pid' => (int) $category[0],
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => $bloc_id,
@@ -386,9 +386,9 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkBloc($invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$end_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
+    public static function addLinkBloc($invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num)
     {
-       
+
 
         $model = new Bloc();
 
@@ -420,9 +420,9 @@ class StoreService extends BaseService
             'license_name' => $license_name,
             'level_num' => (int) $level_num,
         ];
-        
-        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据',$blocData);
-        
+
+        loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', $blocData);
+
         $transaction = Yii::$app->db->beginTransaction();
         if ($model->load($blocData, '') && $model->save()) {
             loggingHelper::writeLog('StoreService', 'createStore', '商户基础数据创建完成', $model);
@@ -489,9 +489,9 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkBloc($bloc_id, $invitation_code,$business_name,$logo,$pid,$group_bloc_id,$category,$provinceCityDistrict= [],$address,$register_level,$longitude,$latitude,$telephone,$avg_price,$recommend,$special,$introduction,$open_time,$end_time,$status,$is_group,$sosomap_poi_uid,$license_no,$license_name,$level_num)
+    public static function upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num)
     {
-       
+
 
         $model = Bloc::findOne($bloc_id);
 
@@ -500,8 +500,8 @@ class StoreService extends BaseService
             'business_name' => $business_name,
             'logo' => $logo,
             'pid' => (int) $pid,
-            'group_bloc_id' =>(int) $group_bloc_id,
-            'category' =>(int) $category,
+            'group_bloc_id' => (int) $group_bloc_id,
+            'category' => (int) $category,
             'province' => (int) $provinceCityDistrict[0],
             'city' => (int) $provinceCityDistrict[1],
             'district' => (int) $provinceCityDistrict[2],
@@ -516,14 +516,14 @@ class StoreService extends BaseService
             'introduction' => $introduction,
             'open_time' => $open_time,
             'end_time' => $end_time,
-            'status' =>(int) $status,
+            'status' => (int) $status,
             'is_group' => (int) $is_group,
             'sosomap_poi_uid' => (int) $sosomap_poi_uid,
             'license_no' => $license_no,
             'license_name' => $license_name,
-            'level_num' =>(int) $level_num,
+            'level_num' => (int) $level_num,
         ];
-        
+
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
             'data' => $blocData,
         ]);

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:59:53
+ * @Last Modified time: 2023-07-18 17:22:20
  */
 
 namespace admin\controllers\addons;
@@ -90,7 +90,7 @@ class AddonsController extends AController
     public function actionUninstalled()
     {
         global $_GPC;
-        $title = $_GPC['title'];
+        $title = $_GPC['title'] ?? '';
         $list = addonsService::unAddons($title);
 
         return ResultHelper::json(200, '获取成功', [

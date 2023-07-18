@@ -89,8 +89,8 @@ class StoreController extends AController
         $latitude = $_GPC['latitude'];
         $label_id = intval($_GPC['label_id']);
 
-        $page = $_GPC['page']??1;
-        $pageSize = $_GPC['pageSize']??10;
+        $page = $_GPC['page'] ?? 1;
+        $pageSize = $_GPC['pageSize'] ?? 10;
 
         $list = Yii::$app->service->commonStoreService->list($category_pid, $category_id, $longitude, $latitude, $keywords, $label_id, $page, $pageSize);
 

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-03 16:36:46
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-28 16:46:39
+ * @Last Modified time: 2023-07-18 17:26:04
  */
 
 namespace admin\controllers\auth;
@@ -94,11 +94,12 @@ class PermissionController extends AController
         $parentMent = $dataProvider['allModels'];
 
         foreach ($parentMent as $key => &$value) {
-            $value['addons'] = $addons[$value['module_name']];
+            $module_name = !empty($addons[$value['module_name']]) ? $addons[$value['module_name']] : '';
+            $value['addons'] = $module_name;
 
             if ($value['is_sys'] == 1) {
-                $module_name = $addons[$value['module_name']];
-                $value['name'] = $module_name.'-'.$value['name'];
+                $module_name = $module_name;
+                $value['name'] = $module_name . '-' . $value['name'];
             }
         }
 
@@ -145,7 +146,7 @@ class PermissionController extends AController
         foreach ($parentMent as $key => &$value) {
             if ($value['is_sys'] == 1) {
                 $module_name = $addons[$value['module_name']];
-                $value['label'] = $module_name.'-'.$value['label'];
+                $value['label'] = $module_name . '-' . $value['label'];
             }
         }
 
@@ -338,7 +339,7 @@ class PermissionController extends AController
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 0,
-                ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+            ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
                 $model->removeChildren(['route' => $remove_ids]);
             }
@@ -346,7 +347,7 @@ class PermissionController extends AController
             $have_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 0,
-                ])->select('item_id')->asArray()->column();
+            ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
 
@@ -360,7 +361,7 @@ class PermissionController extends AController
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 1,
-                ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+            ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
             if (!empty($remove_ids)) {
                 $model->removeChildren(['permission' => $remove_ids]);
             }
@@ -368,7 +369,7 @@ class PermissionController extends AController
             $have_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
                 'child_type' => 1,
-                ])->select('item_id')->asArray()->column();
+            ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
 
@@ -424,7 +425,7 @@ class PermissionController extends AController
      */
     public function getViewPath()
     {
-        return $this->module->getViewPath().DIRECTORY_SEPARATOR.'item';
+        return $this->module->getViewPath() . DIRECTORY_SEPARATOR . 'item';
     }
 
     /**
