@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-27 03:18:49
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-18 16:53:58
+ * @Last Modified time: 2023-07-18 17:08:30
  */
 
 namespace common\services\admin;
@@ -42,11 +42,12 @@ class NavService extends BaseService
         ], self::$module_names);
 
         foreach ($lists as $key => &$value) {
-            $value['name'] = $value['route_name'];
+            $value['name'] = $value['title'];
             $value['mark'] = $value['identifie'];
             $value['icon'] = '';
             $value['targetType'] = 'top-nav';
-            $value['url'] = "system/welcome/{$value['mark']}";
+
+            $value['url'] = !empty($value['mark']) ? "system/welcome/{$value['mark']}" : '';
         }
 
         return $lists;
