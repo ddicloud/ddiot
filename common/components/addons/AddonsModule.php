@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-19 08:56:12
+ * @Last Modified time: 2023-07-19 09:09:00
  */
 
 namespace common\components\addons;
@@ -194,9 +194,9 @@ class AddonsModule extends Module
 
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
-            'app_id' => $Wechatpay['app_id'],
-            'mch_id' => $Wechatpay['mch_id'],
-            'key' => $Wechatpay['key'], // API 密钥
+            'app_id' => $Wechatpay ? $Wechatpay['app_id'] : '',
+            'mch_id' => $Wechatpay ? $Wechatpay['mch_id'] : '',
+            'key' => $Wechatpay ? $Wechatpay['key'] : '', // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
             'cert_path' => $apiclient_cert, // XXX: 绝对路径！！！！
             'key_path' => $apiclient_key, // XXX: 绝对路径！！！！
@@ -210,10 +210,10 @@ class AddonsModule extends Module
             /*
              * 账号基本信息，请从微信公众平台/开放平台获取
              */
-            'app_id' => $wechat['app_id'],
-            'secret' => $wechat['secret'],
-            'token' => $wechat['token'], // Token
-            'aes_key' => $wechat['aes_key'],
+            'app_id' => $wechat ? $wechat['app_id'] : '',
+            'secret' => $wechat ? $wechat['secret'] : '',
+            'token' => $wechat ? $wechat['token'] : '', // Token
+            'aes_key' => $wechat ? $wechat['aes_key'] : '',
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
             'oauth' => [
@@ -246,8 +246,8 @@ class AddonsModule extends Module
         // 小程序初始化
         // 小程序参数设置
         $config['params']['wechatMiniProgramConfig'] = [
-            'app_id' => $Wxapp['AppId'],
-            'secret' => $Wxapp['AppSecret'],
+            'app_id' => $Wxapp ? $Wxapp['AppId'] : '',
+            'secret' => $Wxapp ? $Wxapp['AppSecret'] : '',
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
             'log' => [
