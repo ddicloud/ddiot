@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 09:30:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-05-17 12:48:38
+ * @Last Modified time: 2023-07-19 08:56:12
  */
 
 namespace common\components\addons;
@@ -189,8 +189,8 @@ class AddonsModule extends Module
             FileHelper::mkdirs($pemPath);
         }
 
-        $apiclient_cert = $Wechatpay['apiclient_cert'] ?? Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
-        $apiclient_key = $Wechatpay['apiclient_key'] ?? Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
+        $apiclient_cert = !empty($Wechatpay['apiclient_cert'])  ?? Yii::getAlias('@attachment/' . $Wechatpay['apiclient_cert']['url']);
+        $apiclient_key = !empty($Wechatpay['apiclient_key'])  ?? Yii::getAlias('@attachment/' . $Wechatpay['apiclient_key']['url']);
 
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
