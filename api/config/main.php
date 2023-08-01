@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-05 08:27:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 13:13:05
+ * @Last Modified time: 2023-07-25 16:25:56
  */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -143,32 +143,6 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['dingzuo'],
-                    // 由于 resetful 风格规定 URL 保持格式一致并且始终使用复数形式
-                    // 所以如果你的 controller 是单数的名称比如 UserController
-                    // 设置 pluralize 为 true （默认为 true）的话，url 地址必须是 users 才可访问
-                    // 如果 pluralize 设置为 false, url 地址必须是 user 也可访问
-                    // 如果你的 controller 本身是复数名称 UsersController ，此参数没用，url 地址必须是 users
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'GET index' => 'index',
-                    ],
-                ],
-                // 文档
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['doc'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'GET index' => 'index',
-                        'GET admin' => 'admin',
-                        'GET json-officialaccount' => 'json-officialaccount',
-                        'GET json-wechat' => 'json-wechat',
-                        'GET json-inits' => 'json-inits',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
                     'controller' => ['map'],
                     'pluralize' => false,
                     'extraPatterns' => [
@@ -195,32 +169,6 @@ return [
                         'POST   refresh' => 'refresh',
                         'GET   smsconf' => 'smsconf',
                         'POST   relations' => 'relations',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['swoole'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'POST   login' => 'login',
-                        'POST   signup' => 'signup',
-                        'POST   repassword' => 'repassword',
-                        'POST   up-repassword' => 'up-repassword',
-                        'POST   userinfo' => 'userinfo',
-                        'POST   edituserinfo' => 'edituserinfo',
-                        'POST   sendcode' => 'sendcode',
-                        'POST   forgetpass' => 'forgetpass',
-                        'POST   bindmobile' => 'bindmobile',
-                        'POST   refresh' => 'refresh',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['addons'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'GET index' => 'index',
-                        'POST   diandishop' => 'diandi-shop',
                     ],
                 ],
                 // 基础接口
@@ -250,48 +198,6 @@ return [
                     'pluralize' => false,
                     'extraPatterns' => [
                         'POST  lists' => 'lists',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['doc'],
-                    'pluralize' => false,
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/user'],
-                    'pluralize' => false,
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/category'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'POST  list' => 'list',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/ceshi'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'GET ccc' => 'ccc',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/goods'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'POST  ccc' => 'ccc',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/index'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'POST  ccc' => 'ccc',
                     ],
                 ],
                 // 小程序接口

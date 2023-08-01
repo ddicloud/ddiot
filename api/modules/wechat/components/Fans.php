@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-10 20:37:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-11 16:23:22
+ * @Last Modified time: 2023-07-25 15:39:23
  */
 
 namespace app\modules\wechat\components;
