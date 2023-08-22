@@ -67,7 +67,7 @@ $asset = yii\gii\GiiAsset::register($this);
                             'items' => [
                                 ['label' => '官方网站', 'url' => 'https://www.dandicloud.com/'],
                                 ['label' => '开发社区', 'url' => 'https://www.hopesfire.com/'],
-                                ['label' => '开发手册', 'url' => 'http://doc.hopesfire.com/'],
+                                ['label' => '开发手册', 'url' => 'https://doc.hopesfire.com/'],
                             ],
                     ]);
                     ?>

@@ -4,10 +4,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-13 08:45:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-24 10:50:29
+ * @Last Modified time: 2023-08-11 07:35:24
  */
 
-namespace common\models;
+namespace addons\diandi_soot\models\article;
 
 /**
  * This is the model class for table "dd_article_category".

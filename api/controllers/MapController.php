@@ -20,7 +20,7 @@ use common\models\DdRegion;
 class MapController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['distance', 'citylist'];
+    protected array $authOptional = ['distance', 'citylist'];
 
 
     public function actionDistance()

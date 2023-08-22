@@ -7,6 +7,9 @@
  * @Last Modified time: 2023-07-18 14:50:10
  */
 
+use yii\base\InvalidConfigException;
+
+
 if (in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     //开发环境dev的入口文件代码
     defined('YII_DEBUG') or define('YII_DEBUG', true);
@@ -18,31 +21,45 @@ if (in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     defined('YII_ENV') or define('YII_ENV', 'prod');
 }
 
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
-require __DIR__ . '/../../common/config/bootstrap.php';
-require __DIR__ . '/../../api/config/bootstrap.php';
-
-$config = yii\helpers\ArrayHelper::merge(
-    require __DIR__ . '/../../common/config/main.php',
-    require __DIR__ . '/../../common/config/main-local.php',
-    require __DIR__ . '/../../api/config/main.php',
-    require __DIR__ . '/../../api/config/main-local.php'
-);
-
 /**
- * 打印.
+ * @return void
+ * @throws InvalidConfigException
  */
-function p(...$array)
+function extracted(): void
 {
-    echo '<pre>';
+    require __DIR__ . '/../../vendor/autoload.php';
+    require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+    require __DIR__ . '/../../common/config/bootstrap.php';
+    require __DIR__ . '/../../api/config/bootstrap.php';
 
-    if (count($array) == 1) {
-        print_r($array[0]);
-    } else {
-        print_r($array);
+    $config = yii\helpers\ArrayHelper::merge(
+        require __DIR__ . '/../../common/config/main.php',
+        require __DIR__ . '/../../common/config/main-local.php',
+        require __DIR__ . '/../../api/config/main.php',
+        require __DIR__ . '/../../api/config/main-local.php'
+    );
+
+    /**
+     * 打印.
+     */
+    function p(...$array)
+    {
+        echo '<pre>';
+
+        if (count($array) == 1) {
+            print_r($array[0]);
+        } else {
+            print_r($array);
+        }
+
+        echo '</pre>';
     }
 
-    echo '</pre>';
+    (new yii\web\Application($config))->run();
 }
-(new yii\web\Application($config))->run();
+
+try {
+    extracted();
+} catch (InvalidConfigException $e) {
+    throw new \yii\base\Exception($e->getMessage());
+}

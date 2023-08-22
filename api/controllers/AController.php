@@ -15,18 +15,22 @@ use common\filters\auth\HttpBasicAuth;
 use common\filters\auth\HttpBearerAuth;
 use common\filters\auth\QueryParamAuth;
 use common\helpers\ResultHelper;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Yii;
 use yii\base\InlineAction;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
  * 基类控制器.
  *
  * Class AController
+ * @method setResponse($analysisError)
+ * @method analysisError($getFirstErrors)
  */
 class AController extends ActiveController
 {
@@ -37,7 +41,7 @@ class AController extends ActiveController
      *
      * @var array
      */
-    protected $authOptional = [];
+    protected array $authOptional = [];
 
     /**
      * 需要进行签名验证的方法 * 全部不需要，all全部需要，update指update需要
@@ -46,14 +50,14 @@ class AController extends ActiveController
      *
      * @var array
      */
-    protected $signOptional = ['*'];
+    protected array $signOptional = ['*'];
 
-    protected $optionsAction = []; //需要options的方法
+    protected array $optionsAction = []; //需要options的方法
 
     // 主要数据的模型
     public $modelClass = '';
 
-    public function behaviors()
+    public function behaviors(): array
     {
         /* 添加行为 */
         $behaviors = parent::behaviors();
@@ -108,7 +112,10 @@ class AController extends ActiveController
         return $behaviors;
     }
 
-    public function beforeAction($action)
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function beforeAction($action): bool
     {
         Yii::$app->params['bloc_id'] = Yii::$app->service->commonGlobalsService->getBloc_id();
         Yii::$app->params['store_id'] = Yii::$app->service->commonGlobalsService->getStore_id();
@@ -179,7 +186,7 @@ class AController extends ActiveController
      *
      * @return ActiveDataProvider
      */
-    public function actionIndex()
+    public function actionIndex(): ActiveDataProvider
     {
         $modelClass = $this->modelClass;
         $query = $modelClass::find();
@@ -194,7 +201,7 @@ class AController extends ActiveController
      *
      * @return bool
      */
-    public function actionCreate()
+    public function actionCreate(): bool
     {
         $model = new $this->modelClass();
         $model->member_id = Yii::$app->user->identity->user_id;

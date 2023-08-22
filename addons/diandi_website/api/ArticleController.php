@@ -17,7 +17,7 @@ use common\helpers\ResultHelper;
 
 class ArticleController extends AController
 {
-    protected $authOptional = ['*'];
+    protected array $authOptional = ['*'];
 
     public $modelClass = '';
 

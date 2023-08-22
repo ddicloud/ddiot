@@ -12,6 +12,7 @@ namespace common\components\SenangPay;
 
 use common\helpers\ResultHelper;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class SenangPay
 {
@@ -149,12 +150,12 @@ class SenangPay
     /**
      * 统一请求
      *
-     * @param [type] $datas   请求参数
-     * @param [type] $url     请求地址
-     * @param array  $params  地址栏的参数
-     * @param array  $headers 请求头部
+     * @param $url
+     * @param $data
+     * @param array $headers 请求头部
      *
-     * @return void
+     * @return array|void
+     * @throws GuzzleException
      * @date 2022-05-11
      *
      * @example
@@ -163,7 +164,7 @@ class SenangPay
      *
      * @since
      */
-    public static function postHttp($url, $data, $headers = [])
+    public static function postHttp($url, $data, array $headers = [])
     {
         $base_uri = self::getUrl();
         $headers = array_merge(self::$header, $headers);
@@ -182,8 +183,7 @@ class SenangPay
         ]);
         $body = $res->getBody();
         $remainingBytes = $body->getContents();
-        print_r($data);
-        die;
+
         return self::analysisRes(json_decode($remainingBytes, true));
     }
 
@@ -393,7 +393,7 @@ class SenangPay
 
     /**
      * 付款接口 post
-     * @return void
+     * @return array|null
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng

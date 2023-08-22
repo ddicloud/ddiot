@@ -19,7 +19,7 @@ use yii\web\NotFoundHttpException;
 
 class MsgController extends AController
 {
-    protected $authOptional = ['event', 'open'];
+    protected array $authOptional = ['event', 'open'];
 
     public $modelClass = 'api\modules\officialaccount\models\DdWechatFans';
 
