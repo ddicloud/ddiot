@@ -24,7 +24,7 @@ use yii\helpers\Json;
  */
 class BasicsController extends AController
 {
-    protected $authOptional = ['signup', 'notify'];
+    protected array $authOptional = ['signup', 'notify'];
     public $modelClass = 'api\modules\wechat\models\DdWxappFans';
 
     /**

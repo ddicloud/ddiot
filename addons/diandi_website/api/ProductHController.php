@@ -17,7 +17,7 @@ class ProductHController extends AController
 {
     use \addons\diandi_website\components\ResultTrait;
 
-    protected $authOptional = ['*'];
+    protected array $authOptional = ['*'];
 
     public $modelClass = '';
 

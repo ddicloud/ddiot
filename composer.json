@@ -18,7 +18,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=8.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "yiisoft/yii2-redis": "^2.0",
         "yiisoft/yii2-queue": "^2.3",
@@ -45,7 +45,8 @@
         "symfony/browser-kit": ">=2.7 <5.0",
         "symfony/dependency-injection": "^5.4",
         "swoole/ide-helper": "^5.0",
-        "simps/mqtt": "^1.4"
+        "simps/mqtt": "^1.4",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -80,6 +81,8 @@
     },
     "autoload": {
         "psr-4": {
+            "admin\\": "admin",
+            "api\\": "api",
             "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",
             "EasySwoole\\Rpc\\Tests\\": "common/components/EasySwoole/rpc/tests/",
             "EasySwoole\\Component\\": "common/components/EasySwoole/component/src/",

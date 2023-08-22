@@ -27,7 +27,7 @@ use yii\rest\ActiveController;
 class StoreController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['*'];
+    protected array $authOptional = ['*'];
     
     public function actionInfo()
     {

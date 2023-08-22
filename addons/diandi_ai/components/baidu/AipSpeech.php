@@ -35,20 +35,20 @@ class AipSpeech extends AipBase{
      * url
      * @var string
      */
-    public $asrUrl = 'http://vop.baidu.com/server_api';
+    public string $asrUrl = 'https://vop.baidu.com/server_api';
 
     /**
      * url
      * @var string
      */
-    public $ttsUrl = 'http://tsn.baidu.com/text2audio';
+    public string $ttsUrl = 'https://tsn.baidu.com/text2audio';
 
     /**
      * 判断认证是否有权限
      * @param  array   $authObj 
      * @return boolean          
      */
-    protected function isPermission($authObj)
+    protected function isPermission($authObj): bool
     {
         return true;
     }

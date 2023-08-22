@@ -16,7 +16,7 @@ use common\helpers\ResultHelper;
 
 class DecryptController extends AController
 {
-    protected $authOptional = ['msg'];
+    protected array $authOptional = ['msg'];
 
     public function actionMsg()
     {

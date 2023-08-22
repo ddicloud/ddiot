@@ -22,7 +22,7 @@ use yii\helpers\Json;
  */
 class JssdkController extends AController
 {
-    protected $authOptional = ['config'];
+    protected array $authOptional = ['config'];
     public $modelClass = 'api\modules\wechat\models\DdWxappFans';
 
     /**

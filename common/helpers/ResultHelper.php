@@ -22,13 +22,13 @@ use yii\web\Response;
 class ResultHelper
 {
     /**
-     * @param int    $code
+     * @param int $code
      * @param string $message
-     * @param array  $data
+     * @param array $data
      *
-     * @return array|mixed
+     * @return array
      */
-    public static function json($code = 404, $message = '未知错误', $data = [])
+    public static function json(int $code = 404, string $message = '未知错误', array $data = []): array
     {
         if (!empty($data) && is_array($data)) {
             if (array_key_exists('code', $data)) {
@@ -42,19 +42,17 @@ class ResultHelper
         return static::baseJson($code, $message, $data);
     }
 
-    public static function serverJson($status, $msg, $data = [])
+    public static function serverJson($status, $msg, $data = []): array
     {
         if (Yii::$app->id != 'app-console') {
             Yii::$app->response->format = Response::FORMAT_JSON;
         }
 
-        $result = [
+        return [
             'status' => $status,
             'message' => trim($msg),
             'data' => $data,
         ];
-
-        return $result;
     }
 
     public static function socketJson($type, $code = 404, $message = '未知错误', $data = [])
@@ -72,56 +70,36 @@ class ResultHelper
         return static::SocketBaseJson($type, $code, $message, $data);
     }
 
-    /**
-     * swoolehttp服务内容返回处理
-     * @return void
-     * @date 2022-08-22
-     * @example
-     * @author Wang Chunsheng
-     * @since
-     */
-    public static function httpJson($code = 404, $message = '未知错误', $data = [])
-    {
-        $content = static::baseJson($code, $message, $data);
-        if (Yii::$app->id === 'app-swoole') {
-            assert(Yii::$app->response->isWritable(), true);
-            Yii::$app->response->content = json_encode($content);
-            Yii::$app->response->send();
-        }
-        
-        return true;
-    }
+
 
     /**
      * 返回json数据格式.
      *
-     * @param int          $code    状态码
-     * @param string       $message 返回的报错信息
-     * @param array|object $data    返回的数据结构
+     * @param int $code    状态码
+     * @param string $message 返回的报错信息
+     * @param object|array $data    返回的数据结构
      */
-    protected static function baseJson($code, $message, $data)
+    protected static function baseJson(int $code, string $message, object|array $data): array
     {
         if (Yii::$app->id != 'app-console') {
             Yii::$app->response->format = Response::FORMAT_JSON;
         }
 
-        $result = [
+        return [
             'code' => (int) $code,
             'message' => trim($message),
             'data' => $data ? ArrayHelper::toArray($data) : [],
         ];
-
-        return $result;
     }
 
     /**
      * 返回json字符串数据格式.
      *
-     * @param int          $code    状态码
-     * @param string       $message 返回的报错信息
-     * @param array|object $data    返回的数据结构
+     * @param int $code    状态码
+     * @param string $message 返回的报错信息
+     * @param object|array $data    返回的数据结构
      */
-    protected static function SocketBaseJson($type, $code, $message, $data)
+    protected static function SocketBaseJson($type, int $code, string $message, object|array $data): string
     {
         $result = [
             'type' => $type,
@@ -138,11 +116,11 @@ class ResultHelper
     /**
      * 返回 array 数据格式 api 自动转为 json.
      *
-     * @param int          $code    状态码 注意：要符合http状态码
-     * @param string       $message 返回的报错信息
-     * @param array|object $data    返回的数据结构
+     * @param int $code    状态码 注意：要符合http状态码
+     * @param string $message 返回的报错信息
+     * @param object|array $data    返回的数据结构
      */
-    protected static function api($code, $message, $data)
+    protected static function api(int $code, string $message, object|array $data)
     {
         Yii::$app->response->setStatusCode($code, $message);
         Yii::$app->response->data = $data ? ArrayHelper::toArray($data) : [];

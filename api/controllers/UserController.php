@@ -24,7 +24,7 @@ use Yii;
 class UserController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['login', 'signup', 'register', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
+    protected array $authOptional = ['login', 'signup', 'register', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
 
     /**
      * 手机号注册
