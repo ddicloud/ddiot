@@ -71,15 +71,15 @@ class ResultHelper
     }
 
 
-
     /**
      * 返回json数据格式.
      *
-     * @param int $code    状态码
+     * @param int $code 状态码
      * @param string $message 返回的报错信息
-     * @param object|array $data    返回的数据结构
+     * @param array $data 返回的数据结构
+     * @return array
      */
-    protected static function baseJson(int $code, string $message, object|array $data): array
+    protected static function baseJson(int $code, string $message, array $data): array
     {
         if (Yii::$app->id != 'app-console') {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -95,11 +95,13 @@ class ResultHelper
     /**
      * 返回json字符串数据格式.
      *
-     * @param int $code    状态码
+     * @param $type
+     * @param int $code 状态码
      * @param string $message 返回的报错信息
-     * @param object|array $data    返回的数据结构
+     * @param array $data 返回的数据结构
+     * @return string
      */
-    protected static function SocketBaseJson($type, int $code, string $message, object|array $data): string
+    protected static function SocketBaseJson($type, int $code, string $message, array $data): string
     {
         $result = [
             'type' => $type,
@@ -116,11 +118,12 @@ class ResultHelper
     /**
      * 返回 array 数据格式 api 自动转为 json.
      *
-     * @param int $code    状态码 注意：要符合http状态码
+     * @param int $code 状态码 注意：要符合http状态码
      * @param string $message 返回的报错信息
-     * @param object|array $data    返回的数据结构
+     * @param array $data 返回的数据结构
+     * @return array|mixed|object[]|string[]
      */
-    protected static function api(int $code, string $message, object|array $data)
+    protected static function api(int $code, string $message, array $data): mixed
     {
         Yii::$app->response->setStatusCode($code, $message);
         Yii::$app->response->data = $data ? ArrayHelper::toArray($data) : [];
