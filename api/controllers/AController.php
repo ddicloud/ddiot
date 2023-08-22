@@ -184,24 +184,21 @@ class AController extends ActiveController
     /**
      * 首页.
      *
-     * @return ActiveDataProvider
+     * @return array|object[]|string[]
      */
-    public function actionIndex(): ActiveDataProvider
+    public function actionIndex(): array
     {
         $modelClass = $this->modelClass;
-        $query = $modelClass::find();
-
-        return new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $REs = $modelClass::find()->asArray()->one();
+        return ResultHelper::json(200, '获取成功', $REs);
     }
 
     /**
      * 创建.
      *
-     * @return bool
+     * @return array|bool|object[]|string[]
      */
-    public function actionCreate(): bool
+    public function actionCreate()
     {
         $model = new $this->modelClass();
         $model->member_id = Yii::$app->user->identity->user_id;
@@ -209,10 +206,11 @@ class AController extends ActiveController
 
         if (!$model->save()) {
             // 返回数据验证失败
-            return $this->setResponse($this->analysisError($model->getFirstErrors()));
+            $msg =  $model->getFirstErrors();
+            return ResultHelper::json(500, $msg);
         }
 
-        return $model;
+        return ResultHelper::json(200, '新建成功');
     }
 
     /**
@@ -230,10 +228,11 @@ class AController extends ActiveController
         $model->attributes = Yii::$app->request->post();
         if (!$model->save()) {
             // 返回数据验证失败
-            return $this->setResponse($this->analysisError($model->getFirstErrors()));
+            $msg =  $model->getFirstErrors();
+            return ResultHelper::json(500, $msg);
         }
 
-        return $model;
+        return ResultHelper::json(200, '修改成功');
     }
 
     /**
@@ -245,9 +244,16 @@ class AController extends ActiveController
      *
      * @throws NotFoundHttpException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): mixed
     {
-        return $this->findModel($id)->delete();
+        $Res = $this->findModel($id)->delete();
+        if ($Res) {
+            return ResultHelper::json(200, '删除成功');
+
+        }else{
+            return ResultHelper::json(500, '删除失败');
+        }
+
     }
 
     /**
@@ -259,9 +265,11 @@ class AController extends ActiveController
      *
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView($id): mixed
     {
-        return $this->findModel($id);
+        $detail = $this->findModel($id)->asArray()->one();
+        return ResultHelper::json(200, '获取成功',$detail);
+
     }
 
     /**
@@ -273,7 +281,7 @@ class AController extends ActiveController
      *
      * @throws NotFoundHttpException
      */
-    protected function findModel($id)
+    protected function findModel($id): mixed
     {
         if (empty($id)) {
             throw new NotFoundHttpException('请求的数据失败.');
