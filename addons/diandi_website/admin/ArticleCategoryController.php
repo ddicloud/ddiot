@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
  */
 class ArticleCategoryController extends AController
 {
-    public $modelSearchName = 'WebsiteArticleCategory';
+    public string $modelSearchName = 'WebsiteArticleCategory';
 
     public $modelClass = '';
 

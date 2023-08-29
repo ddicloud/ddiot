@@ -22,7 +22,7 @@ use yii\web\NotFoundHttpException;
  */
 class ProSlideController extends AController
 {
-    public $modelSearchName = 'WebsiteProSlideSearch';
+    public string $modelSearchName = 'WebsiteProSlideSearch';
 
     public $modelClass = '';
 

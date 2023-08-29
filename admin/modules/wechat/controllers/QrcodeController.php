@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-28 18:01:10
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use admin\controllers\AController;
 use common\helpers\ImageHelper;

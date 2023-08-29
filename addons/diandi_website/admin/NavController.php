@@ -28,7 +28,7 @@ use common\helpers\ErrorsHelper;
  */
 class NavController extends AController
 {
-    public $modelSearchName = "NavSearch";
+    public string $modelSearchName = "NavSearch";
 
     public $modelClass = '';
 

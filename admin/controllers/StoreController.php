@@ -31,13 +31,13 @@ use yii\web\Response;
 class StoreController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['*'];
+    protected array $authOptional = ['*'];
 
     public $bloc_id;
 
     public $extras = [];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     public function actionInfo()
     {
@@ -183,11 +183,11 @@ class StoreController extends AController
     /**
      * Lists all BlocStore models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
-        $bloc_id = $this->bloc_id ? $this->bloc_id : Yii::$app->params['bloc_id'];
+        $bloc_id = $this->bloc_id ?? Yii::$app->params['bloc_id'];
 
         $searchModel = new BlocStoreSearch([
             'bloc_id' => $bloc_id,
@@ -221,7 +221,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -239,7 +239,7 @@ class StoreController extends AController
      * Creates a new BlocStore model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -318,7 +318,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -366,7 +366,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -395,7 +395,7 @@ class StoreController extends AController
             'extras' => $this->extras,
         ]);
         if (($model = $BlocStore::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
         throw new NotFoundHttpException('校验数据是否存在');

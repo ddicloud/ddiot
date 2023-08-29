@@ -7,7 +7,7 @@
  * @Last Modified time: 2023-03-20 18:56:04
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use api\controllers\AController;
 use common\helpers\FileHelper;

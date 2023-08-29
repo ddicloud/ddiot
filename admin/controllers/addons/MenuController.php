@@ -12,6 +12,7 @@ namespace admin\controllers\addons;
 use admin\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
+use common\helpers\ResultHelper;
 use diandi\addons\models\searchs\DdAddons;
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
@@ -35,9 +36,9 @@ class MenuController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    public function actions()
+    public function actions(): array
     {
         return [
             'update-files' => [
@@ -48,71 +49,16 @@ class MenuController extends AController
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        Yii::$app->params['plugins'] = 'sysai';
 
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Lists all Menu models.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new MenuSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-        $addon = Yii::$app->request->get('addon');
-        $rules = addonsService::addonsRules($addon);
-        $parentMenu = Menu::findAll(['parent' => 0]);
-
-        $query = Menu::find()->where(['is_sys' => 'addons', 'module_name' => $addon]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => false,
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'rules' => $rules,
-            'parentMenu' => $parentMenu,
-        ]);
-    }
-
-    /**
-     * Displays a single Menu model.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
     /**
      * Creates a new Menu model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
+     * @throws BadRequestHttpException
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new Menu();
         $addon = Yii::$app->request->get('addon');
@@ -127,22 +73,24 @@ class MenuController extends AController
             $data = Yii::$app->request->post();
             if ($model->load($data) && $model->save()) {
                 Helper::invalidate();
-
-                return $this->redirect(['view', 'id' => $model->id, 'addon' => $addon]);
+                return  ResultHelper::json(200,'获取成功', [
+                    'id' => $model->id, 'addon' => $addon
+                ]);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 throw new BadRequestHttpException($msg);
             }
         } else {
             $addons = DdAddons::find()->asArray()->all();
+            $routes = [];
             $route = Menu::getSavedRoutes();
             foreach ($route as $key => &$value) {
-                if ($addon && strpos($value, $addon) !== false) {
+                if ($addon && str_contains($value, $addon)) {
                     $routes[] = $value;
                 }
             }
 
-            return $this->render('create', [
+            return  ResultHelper::json(200,'获取成功', [
                 'model' => $model,
                 'addon' => $addon,
                 'rules' => $rules,
@@ -158,9 +106,9 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
         $addon = $this->findModel($id)->module_name;
@@ -175,7 +123,7 @@ class MenuController extends AController
             if ($model->load($data) && $model->save()) {
                 Helper::invalidate();
 
-                return $this->redirect(['view', 'addon' => $addon, 'id' => $model->id]);
+                return ResultHelper::json(200,'获取成功',['view', 'addon' => $addon, 'id' => $model->id]);
             }
         } else {
             $addons = DdAddons::find()->asArray()->all();
@@ -190,12 +138,12 @@ class MenuController extends AController
             $addons = DdAddons::find()->asArray()->all();
             $route = Menu::getSavedRoutes();
             foreach ($route as $key => &$value) {
-                if ($addon && strpos($value, $addon) !== false) {
+                if ($addon && str_contains($value, $addon)) {
                     $routes[] = $value;
                 }
             }
 
-            return $this->render('update', [
+            return ResultHelper::json(200,'获取成功', [
                 'model' => $model,
                 'addons' => $addons,
                 'addon' => $addon,
@@ -212,16 +160,16 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $addon = $this->findModel($id)->module_name;
 
         $this->findModel($id)->delete();
         Helper::invalidate();
 
-        return $this->redirect(['index', 'addon' => $addon]);
+        return ResultHelper::json(200,'获取成功',['index', 'addon' => $addon]);
     }
 
     /**
@@ -230,16 +178,15 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return Menu the loaded model
+     * @return array the loaded model
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = Menu::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         } else {
-            throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(500, '请检查数据是否存在');
         }
     }
 }

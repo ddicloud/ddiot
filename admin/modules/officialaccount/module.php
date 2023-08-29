@@ -46,11 +46,11 @@ class module extends \yii\base\Module
         $config = require __DIR__.'/config.php';
     
         // 获取应用程序的组件
-        $components = \Yii::$app->getComponents();
+        $components = Yii::$app->getComponents();
 
         // 遍历子模块独立配置的组件部分，并继承应用程序的组件配置
         foreach ($config['components'] as $k => $component) {
-            if (isset($component['class']) && isset($components[$k]) == false) {
+            if (isset($component['class']) && !isset($components[$k])) {
                 continue;
             }
             $config['components'][$k] = array_merge($components[$k], $component);
@@ -62,8 +62,7 @@ class module extends \yii\base\Module
         $input = file_get_contents('php://input');
         FileHelper::writeLog($logPath, '入口配置回来的值'.$input);
         FileHelper::writeLog($logPath, '入口配置回来的值0-5'.substr($input, 0, 5));
-        if (substr($input, 0, 5) == '<xml>') {
-            FileHelper::writeLog($logPath, '准备处理');
+        if (str_starts_with($input, '<xml>')) {
             $xmldata = StringHelper::getXml($input);
             FileHelper::writeLog($logPath, 'xml解析后'.$xmldata['trade_type'].'/'.json_encode($xmldata));
             if ($xmldata['trade_type'] == 'JSAPI') {
@@ -186,6 +185,6 @@ class module extends \yii\base\Module
         }
         // 将新的配置设置到应用程序
         // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$app
-        \Yii::configure(\Yii::$app, $config);
+        Yii::configure(Yii::$app, $config);
     }
 }

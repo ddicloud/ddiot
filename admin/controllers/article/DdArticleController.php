@@ -9,11 +9,11 @@
 
 namespace admin\controllers\article;
 
+use addons\diandi_soot\models\article\DdArticleCategory;
 use admin\controllers\AController;
-use common\helpers\LevelTplHelper;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdArticle;
-use common\models\DdArticleCategory;
 use common\models\searchs\DdArticleSearch;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -25,22 +25,10 @@ class DdArticleController extends AController
 {
     public $modelClass = 'common\models\DdArticle';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    public function actions()
-    {
-        return [
-            'upload' => [
-                'class' => 'kucha\ueditor\UEditorAction',
-                'config' => [
-                    'imageUrlPrefix' => 'https://www.cc.com', //图片访问路径前缀
-                    'imagePathFormat' => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}', //上传保存路径
-                ],
-            ],
-        ];
-    }
 
-    public function actionCeshi()
+    public function actionCeshi(): array
     {
         return ResultHelper::json(200, '获取成功');
     }
@@ -48,9 +36,9 @@ class DdArticleController extends AController
     /**
      * Lists all DdArticle models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new DdArticleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -66,11 +54,10 @@ class DdArticleController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -81,37 +68,19 @@ class DdArticleController extends AController
      * Creates a new DdArticle model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdArticle();
 
-        if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                $model->load(Yii::$app->request->post());
-                print_r($model->attributes);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return ResultHelper::json(200, '新建成功', (array)$model);
+        } else {
 
-                return $this->error($model, 'index');
-            }
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
-
-        $modelcate = new DdArticleCategory();
-
-        $Helper = new LevelTplHelper([
-            'pid' => 'pcate',
-            'cid' => 'id',
-            'title' => 'title',
-            'model' => $modelcate,
-            'id' => 'id',
-        ]);
-
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-            'Helper' => $Helper,
-        ]);
     }
 
     /**
@@ -120,30 +89,22 @@ class DdArticleController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        $modelcate = new DdArticleCategory();
-        $Helper = new LevelTplHelper([
-            'pid' => 'pcate',
-            'cid' => 'id',
-            'title' => 'title',
-            'model' => $modelcate,
-            'id' => 'id',
-        ]);
+            return ResultHelper::json(200, '修改成功', (array)$model);
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-            'Helper' => $Helper,
-        ]);
+        }else{
+
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
+        }
     }
 
     /**
@@ -152,11 +113,11 @@ class DdArticleController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -169,16 +130,15 @@ class DdArticleController extends AController
      *
      * @param int $id
      *
-     * @return DdArticle the loaded model
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = DdArticle::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

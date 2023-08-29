@@ -32,16 +32,16 @@ class MenuController extends AController
 {
     public $modelClass = '';
 
-    public $modelSearchName = 'Menu';
+    public string $modelSearchName = 'Menu';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * Lists all Menu models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
@@ -57,7 +57,6 @@ class MenuController extends AController
             $module_name = !empty($addons[$value['module_name']]) ? $addons[$value['module_name']] : '';
             $value['addons'] = $module_name;
             if ($value['type'] == 1) {
-                $module_name = $module_name;
                 $value['name'] = $module_name . '-' . $value['name'];
                 $value['label'] = $module_name . '-' . $value['name'];
             } else {
@@ -82,47 +81,46 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
-        return ResultHelper::json(200, '获取成功', $view);
+        return ResultHelper::json(200, '获取成功', (array)$view);
     }
 
     /**
      * Creates a new Menu model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
         $model = new Menu();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            $data['parent'] = intval($data['parent']);
-            $data['order'] = intval($data['order']);
-            $data['is_sys'] = $_GPC['module_name'] == 'sys' || empty($_GPC['module_name']) ? 'system' : 'addons';
-            $data['route'] = AuthRoute::find()->where(['id' => $_GPC['route_id']])->select('name')->scalar();
+        $data = Yii::$app->request->post();
+        $data['parent'] = intval($data['parent']);
+        $data['order'] = intval($data['order']);
+        $data['is_sys'] = $_GPC['module_name'] == 'sys' || empty($_GPC['module_name']) ? 'system' : 'addons';
+        $data['route'] = AuthRoute::find()->where(['id' => $_GPC['route_id']])->select('name')->scalar();
 
-            if ($model->load($data, '') && $model->save()) {
-                Helper::invalidate();
+        if ($model->load($data, '') && $model->save()) {
+            Helper::invalidate();
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
-    public function actionLevels()
+    public function actionLevels(): array
     {
         $addons = DdAddons::find()->asArray()->all();
         $parentMent = Menu::find()->where(['is_sys' => 'system'])->asArray()->all();
@@ -134,7 +132,7 @@ class MenuController extends AController
         ]);
     }
 
-    public function actionRoute()
+    public function actionRoute(): array
     {
         global $_GPC;
         $name = $_GPC['name'];
@@ -176,15 +174,14 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
 
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
             $data['route'] = AuthRoute::find()->where(['id' => $_GPC['route_id']])->select('name')->scalar();
 
@@ -195,13 +192,13 @@ class MenuController extends AController
             if ($model->load($data, '') && $model->save()) {
                 Helper::invalidate();
 
-                return ResultHelper::json(200, '更新成功', $model);
+                return ResultHelper::json(200, '更新成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     public function actionUpdateFiles()
@@ -226,9 +223,9 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
         Helper::invalidate();
@@ -242,16 +239,14 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return Menu the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = Menu::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         } else {
-            throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(500, '请检查数据是否存在');
         }
     }
 }

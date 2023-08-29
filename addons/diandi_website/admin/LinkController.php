@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class LinkController extends AController
 {
-    public $modelSearchName = "WebsiteLinkSearch";
+    public string $modelSearchName = "WebsiteLinkSearch";
 
     public $modelClass = '';
 

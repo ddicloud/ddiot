@@ -14,34 +14,49 @@ use common\helpers\ResultHelper;
 use diandi\addons\services\addonsService;
 use diandi\admin\models\Route;
 use Yii;
+use yii\web\BadRequestHttpException;
 
 class ManageController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * 安装.
      *
-     * @return void
+     * @return array
      */
-    public function actionInstall()
+    public function actionInstall(): array
     {
         $addon = Yii::$app->request->get('addon', '');
         $addonsXml = addonsService::unAddon($addon);
-        $res = addonsService::install($addonsXml);
-        if ($res) {
-            return ResultHelper::json(200, '安装成功');
+        try {
+            $res = addonsService::install($addonsXml);
+            if ($res) {
+                return ResultHelper::json(200, '安装成功');
+            }else{
+
+                return ResultHelper::json(500, '安装失败');
+            }
+        } catch (BadRequestHttpException $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        } catch (\Throwable $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
         }
+
+
     }
 
     /**
      * 卸载.
      *
-     * @return void
+     * @return array
+     * @throws \Throwable
      */
-    public function actionUninstall()
+    public function actionUninstall(): array
     {
         $addon = Yii::$app->request->get('addon', '');
         $res = addonsService::unInstall($addon);

@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use api\controllers\AController;
 

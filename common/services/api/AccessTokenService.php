@@ -12,7 +12,7 @@ namespace common\services\api;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
 use api\modules\officialaccount\models\DdWechatFans;
-use api\modules\wechat\models\DdWxappFans;
+use admin\modules\wechat\models\DdWxappFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;

@@ -7,9 +7,9 @@
  * @Last Modified time: 2023-07-11 16:29:40
  */
 
-namespace api\modules\wechat\services;
+namespace admin\modules\wechat\services;
 
-use api\modules\wechat\models\DdWxappFans;
+use admin\modules\wechat\models\DdWxappFans;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;

@@ -19,8 +19,8 @@ use Yii;
 class WechatController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['signup'];
-    public $searchLevel = 0;
+    protected array $authOptional = ['signup'];
+    public int $searchLevel = 0;
 
     public function actionAuthUrl()
     {

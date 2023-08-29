@@ -46,18 +46,19 @@ class PermissionController extends AController
 
     public $parent_type = 0; //0:系统,1模块
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    public function actions()
+    public function actions(): array
     {
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->is_sys = $this->module_name == 'sys' ? 1 : 0;
+        return  parent::actions();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function labels()
+    public function labels(): array
     {
         return [
             'Item' => 'Permission',
@@ -68,7 +69,7 @@ class PermissionController extends AController
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): int
     {
         return Item::TYPE_PERMISSION;
     }
@@ -76,9 +77,9 @@ class PermissionController extends AController
     /**
      * Lists all AuthItem models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $authManager = Configs::authManager();
         $where = ['is_sys' => $this->is_sys, 'module_name' => $this->module_name]; //简化权限管理
@@ -98,7 +99,6 @@ class PermissionController extends AController
             $value['addons'] = $module_name;
 
             if ($value['is_sys'] == 1) {
-                $module_name = $module_name;
                 $value['name'] = $module_name . '-' . $value['name'];
             }
         }
@@ -185,11 +185,12 @@ class PermissionController extends AController
      *
      * @param string $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         global $_GPC;
+        $all = [];
         $permission_type = $_GPC['permission_type'];
         $module_name = $_GPC['module_name'];
 
@@ -248,9 +249,9 @@ class PermissionController extends AController
      * Creates a new AuthItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
@@ -258,7 +259,6 @@ class PermissionController extends AController
 
         $module_name = $this->module_name;
 
-        if (Yii::$app->request->isPost) {
             $data = Yii::$app->getRequest()->post();
 
             if ($model->load($data, '') && $model->save()) {
@@ -268,35 +268,29 @@ class PermissionController extends AController
 
                 return ResultHelper::json(400, $msg);
             }
-        }
 
-        // $parentMent = AuthItemModel::find()->where(['module_name'=>$module_name])->asArray()->all();
-        // $parentItem =  HelpersArrayHelper::itemsMergeDropDown(HelpersArrayHelper::itemsMerge($parentMent,0,"id",'parent_id','-'),"id",'name');
-
-        // $addons = DdAddons::find()->asArray()->all();
     }
 
     /**
      * Updates an existing AuthItem model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
+     * @throws NotFoundHttpException
      */
-    public function actionUpdateitem()
+    public function actionUpdateitem(): array
     {
         global $_GPC;
         $id = $_GPC['id'];
         $model = $this->findModel($id);
-        if (yii::$app->request->isPost) {
-            $data = yii::$app->request->post();
+        $data = yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功');
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功');
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -306,9 +300,10 @@ class PermissionController extends AController
      *
      * @param string $id
      *
-     * @return mixed
+     * @return array
+     * @throws NotFoundHttpException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $model = $this->findModel($id);
         Configs::authManager()->remove($model->item);
@@ -448,7 +443,7 @@ class PermissionController extends AController
 
             return new AuthItem($item);
         } else {
-            throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(500, '请检查数据是否存在');
         }
     }
 }

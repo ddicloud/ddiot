@@ -10,6 +10,7 @@
 namespace admin\controllers\addons;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\services\common\AddonsService as CommonAddonsService;
 use diandi\addons\models\AddonsUser;
@@ -26,9 +27,9 @@ class AddonsController extends AController
 {
     public $modelClass = 'DdAddons';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    public function actionInfo()
+    public function actionInfo(): array
     {
         global $_GPC;
         $addons = $_GPC['addons'];
@@ -40,9 +41,9 @@ class AddonsController extends AController
     /**
      * Lists all DdAddons models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionList()
+    public function actionList(): array
     {
         $module_names = [];
         $AddonsUser = new AddonsUser();
@@ -66,7 +67,7 @@ class AddonsController extends AController
         ]);
     }
 
-    public function actionChild()
+    public function actionChild(): array
     {
         global $_GPC;
         $parent_mid = $_GPC['parent_mid'];
@@ -87,7 +88,7 @@ class AddonsController extends AController
     /**
      * 未安装.
      */
-    public function actionUninstalled()
+    public function actionUninstalled(): array
     {
         global $_GPC;
         $title = $_GPC['title'] ?? '';
@@ -103,25 +104,25 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        return $this->render('view', [
+        return ResultHelper::json(200, '获取成功',  [
             'model' => $this->findModel($id),
         ]);
     }
 
     // 显示logo
-    public function actionLogo()
+    public function actionLogo(): array
     {
         $this->layout = false;
         $identifie = Yii::$app->request->get('addon');
         $logo = addonsService::getLogo($identifie);
 
-        return $this->render('logo', [
+        return ResultHelper::json(200, '获取成功', [
             'logo' => $logo,
         ]);
     }
@@ -130,19 +131,20 @@ class AddonsController extends AController
      * Creates a new DdAddons model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdAddons();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mid]);
+            return  ResultHelper::json(200,'获取成功' ,[
+                'model' => $model
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return  ResultHelper::json(500,$msg);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -151,21 +153,22 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->mid]);
+            return  ResultHelper::json(200,'获取成功' ,[
+                'model' => $model
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return  ResultHelper::json(500,$msg);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -174,15 +177,14 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        return  ResultHelper::json(200,'删除成功');
     }
 
     /**
@@ -191,16 +193,14 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return DdAddons the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = DdAddons::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

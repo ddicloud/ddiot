@@ -31,13 +31,13 @@ use yii\web\Response;
 class EnumsController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['*'];
+    protected array $authOptional = ['*'];
 
     public $bloc_id;
 
     public $extras = [];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * 获取用户授权的商户和公司数据-级联数据

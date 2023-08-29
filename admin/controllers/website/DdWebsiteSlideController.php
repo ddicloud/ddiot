@@ -13,6 +13,7 @@ use common\helpers\ResultHelper;
 use common\models\DdWebsiteSlide;
 use common\models\searchs\DdWebsiteSlideSearch;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -22,16 +23,16 @@ class DdWebsiteSlideController extends AController
 {
     public $modelClass = '';
 
-    protected $authOptional = [];
+    protected array $authOptional = [];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * Lists all DdWebsiteSlide models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
         $searchModel = new DdWebsiteSlideSearch();
@@ -48,11 +49,11 @@ class DdWebsiteSlideController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -63,9 +64,9 @@ class DdWebsiteSlideController extends AController
      * Creates a new DdWebsiteSlide model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdWebsiteSlide();
 
@@ -82,11 +83,11 @@ class DdWebsiteSlideController extends AController
      * Updates an existing DdWebsiteSlide model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdateitem()
+    public function actionUpdateitem(): array
     {
         global $_GPC;
 
@@ -107,11 +108,13 @@ class DdWebsiteSlideController extends AController
      * Deletes an existing DdWebsiteSlide model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDeleteitem()
+    public function actionDeleteitem(): array
     {
         global $_GPC;
 
@@ -131,12 +134,12 @@ class DdWebsiteSlideController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = DdWebsiteSlide::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

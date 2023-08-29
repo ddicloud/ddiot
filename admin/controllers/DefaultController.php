@@ -8,6 +8,8 @@
 
 namespace admin\controllers;
 
+use common\helpers\ResultHelper;
+
 /**
  * @SWG\Swagger(
  *     schemes={"https"},
@@ -60,8 +62,10 @@ class DefaultController extends AController
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
+        return ResultHelper::json(200,'获取成功');
+
     }
 }

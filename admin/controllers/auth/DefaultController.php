@@ -9,6 +9,7 @@
 namespace admin\controllers\auth;
 
 use admin\controllers\AController;
+use common\helpers\ResultHelper;
 use Yii;
 
 /**
@@ -25,14 +26,10 @@ class DefaultController extends AController
     /**
      * Action index.
      */
-    public function actionIndex($page = 'README.md')
+    public function actionIndex(): array
     {
-        if (strpos($page, '.png') !== false) {
-            $file = Yii::getAlias("@diandi/admin/{$page}");
 
-            return Yii::$app->getResponse()->sendFile($file);
-        }
 
-        return $this->render('index', ['page' => $page]);
+        return ResultHelper::json(200,'获取成功');
     }
 }

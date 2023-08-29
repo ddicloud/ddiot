@@ -117,7 +117,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      * @param mixed $token
      * @param null  $type
      *
-     * @return array|mixed|ActiveRecord|\yii\web\IdentityInterface|null
+     * @return array|mixed|ActiveRecord|IdentityInterface|null
      *
      * @throws UnauthorizedHttpException
      */

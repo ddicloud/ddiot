@@ -57,8 +57,8 @@ class ResBeforeSendBehavior extends Behavior
                  */
                 $rData = $response->data;
                 $response->data = [
-                    'code' => isset($rData['error_code']) ? $rData['error_code'] : 0,
-                    'msg' => isset($rData['res_msg']) ? $rData['res_msg'] : $rData,
+                    'code' => $rData['error_code'] ?? 0,
+                    'msg' => $rData['res_msg'] ?? $rData,
                 ];
                 $response->statusCode = 200;
             }

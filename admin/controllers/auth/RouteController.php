@@ -26,18 +26,18 @@ class RouteController extends AController
 {
     public $modelClass = 'admin\models\searchs\auth\AuthRoute';
 
-    public $modelSearchName = 'AuthRouteSearch';
+    public string $modelSearchName = 'AuthRouteSearch';
 
-    protected $signOptional = ['refresh'];
+    protected array $signOptional = ['refresh'];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * Lists all AuthRoute models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new AuthRouteSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -48,7 +48,7 @@ class RouteController extends AController
         ]);
     }
 
-    public function actionAvailable()
+    public function actionAvailable(): array
     {
         $model = new Route();
         $list = $model->getRoutes();
@@ -63,30 +63,29 @@ class RouteController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
-        return ResultHelper::json(200, '获取成功', $view);
+        return ResultHelper::json(200, '获取成功', (array)$view);
     }
 
     /**
      * Creates a new AuthRoute model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
         $model = new AuthRoute();
 
-        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['is_sys'] = $_GPC['module_name'] == 'sys' || empty($_GPC['module_name']) ? 1 : 0;
             if ($model->load($data, '') && $model->save()) {
@@ -118,7 +117,7 @@ class RouteController extends AController
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
@@ -127,14 +126,14 @@ class RouteController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
-        if (Yii::$app->request->isPut) {
+
             if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
                 $AcmodelsAuthItem = new AuthItem();
                 $items = [
@@ -148,13 +147,13 @@ class RouteController extends AController
                     'id' => $model->item_id,
                 ]);
 
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
@@ -163,11 +162,11 @@ class RouteController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -179,7 +178,7 @@ class RouteController extends AController
      *
      * @return array
      */
-    public function actionAssign()
+    public function actionAssign(): array
     {
         global $_GPC;
         $routes = $_GPC['routes'];
@@ -194,7 +193,7 @@ class RouteController extends AController
      *
      * @return array
      */
-    public function actionRemove()
+    public function actionRemove(): array
     {
         $routes = Yii::$app->getRequest()->post('routes', []);
         $model = new Route();
@@ -206,9 +205,9 @@ class RouteController extends AController
     /**
      * Refresh cache.
      *
-     * @return type
+     * @return array
      */
-    public function actionRefresh()
+    public function actionRefresh(): array
     {
         $model = new Route();
         $model->invalidate();
@@ -217,7 +216,7 @@ class RouteController extends AController
         $assigned = $list['assigned'];
         $available = $list['available'];
         $availables = array_merge($assigned, $available);
-
+        $assigneds = [];
         foreach ($assigned as $key => $value) {
             $assigneds[] = array_search($value, $availables);
         }
@@ -234,16 +233,15 @@ class RouteController extends AController
      *
      * @param int $id
      *
-     * @return AuthRoute the loaded model
+     * @return array the loaded model
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = AuthRoute::findOne(['id' => $id])) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

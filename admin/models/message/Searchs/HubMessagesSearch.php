@@ -99,8 +99,8 @@ class HubMessagesSearch extends HubMessages
         $provider = new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total' => $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -175,8 +175,8 @@ class HubMessagesSearch extends HubMessages
         $provider = new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total' => $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',

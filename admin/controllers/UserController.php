@@ -37,9 +37,9 @@ class UserController extends AController
 {
     public $modelClass = 'admin\models\User';
 
-    protected $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh'];
+    protected array $authOptional = ['login', 'signup', 'repassword', 'sendcode', 'forgetpass', 'refresh'];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     public function actionUserlist()
     {
@@ -392,7 +392,7 @@ class UserController extends AController
         ]);
     }
 
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         UserService::deleteUser($id);
 
@@ -436,7 +436,7 @@ class UserController extends AController
         }
     }
 
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
         $username = $_GPC['username'];
@@ -628,7 +628,7 @@ class UserController extends AController
         return ResultHelper::json(200, '设置成功');
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 

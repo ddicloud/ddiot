@@ -483,16 +483,14 @@ class StoreService extends BaseService
      * @param [type] $license_no
      * @param [type] $license_name
      * @param [type] $level_num
-     * @return void
      * @date 2023-06-19
+     * @throws HttpException
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num)
+    public static function upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num): ?Bloc
     {
-
-
         $model = Bloc::findOne($bloc_id);
 
         $blocData = [
@@ -559,13 +557,13 @@ class StoreService extends BaseService
 
     /**
      * 获取公司与商户级联数据，表单级联使用
-     * @return void
+     * @return array
      * @date 2023-03-04
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function getStoresAndBloc()
+    public static function getStoresAndBloc(): array
     {
         $user_stores = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
 

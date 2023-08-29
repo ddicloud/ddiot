@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class SysWorthController extends AController
 {
-    public $modelSearchName = "SysWorthSearch";
+    public string $modelSearchName = "SysWorthSearch";
 
     public $modelClass = '';
 

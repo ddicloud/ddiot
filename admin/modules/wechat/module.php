@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-04-01 10:29:27
  */
 
-namespace api\modules\wechat;
+namespace admin\modules\wechat;
 
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
@@ -45,11 +45,11 @@ class module extends \yii\base\Module
 
         $config = require __DIR__.'/config.php';
         // 获取应用程序的组件
-        $components = \Yii::$app->getComponents();
+        $components = Yii::$app->getComponents();
 
         // 遍历子模块独立配置的组件部分，并继承应用程序的组件配置
         foreach ($config['components'] as $k => $component) {
-            if (isset($component['class']) && isset($components[$k]) == false) {
+            if (isset($component['class']) && !isset($components[$k])) {
                 continue;
             }
             $config['components'][$k] = array_merge($components[$k], $component);
@@ -61,18 +61,17 @@ class module extends \yii\base\Module
         $input = file_get_contents('php://input');
         FileHelper::writeLog($logPath, '入口配置回来的值'.$input);
         FileHelper::writeLog($logPath, '入口配置回来的值0-5'.substr($input, 0, 5));
-        if (substr($input, 0, 5) == '<xml>') {
-            FileHelper::writeLog($logPath, '准备处理');
+        if (str_starts_with($input, '<xml>')) {
             $xmldata = StringHelper::getXml($input);
             FileHelper::writeLog($logPath, 'xml解析后'.$xmldata['trade_type'].'/'.json_encode($xmldata));
             if ($xmldata['trade_type'] == 'JSAPI') {
                 $out_trade_no = $xmldata['out_trade_no'];
                 FileHelper::writeLog($logPath, '入口配置回来的订单编号：'.$out_trade_no);
-                $DdCorePaylog = new DdCorePaylog();
-                $orderInfo = $DdCorePaylog->find()->where([
+                $DdCorePayLog = new DdCorePaylog();
+                $orderInfo = $DdCorePayLog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->asArray()->one();
-                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql'.$DdCorePaylog->find()->where([
+                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql'.$DdCorePayLog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志'.json_encode($orderInfo));
@@ -130,6 +129,6 @@ class module extends \yii\base\Module
         
         // 将新的配置设置到应用程序
         // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$app
-        \Yii::configure(\Yii::$app, $config);
+        Yii::configure(Yii::$app, $config);
     }
 }

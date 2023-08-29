@@ -22,7 +22,7 @@ use yii\web\NotFoundHttpException;
  */
 class ProSellingController extends AController
 {
-    public $modelSearchName = 'WebsiteProSellingSearch';
+    public string $modelSearchName = 'WebsiteProSellingSearch';
 
     public $modelClass = '';
 

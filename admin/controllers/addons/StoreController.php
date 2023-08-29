@@ -34,7 +34,7 @@ use yii\web\NotFoundHttpException;
  */
 class StoreController extends AController
 {
-    public $modelSearchName = 'BlocStore';
+    public string $modelSearchName = 'BlocStore';
 
     public $modelClass = '';
 
@@ -57,11 +57,11 @@ class StoreController extends AController
     /**
      * Lists all BlocStore models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
-        $bloc_id = $this->bloc_id ? $this->bloc_id : Yii::$app->params['bloc_id'];
+        $bloc_id = $this->bloc_id ?? Yii::$app->params['bloc_id'];
 
         $searchModel = new BlocStoreSearch();
 
@@ -100,7 +100,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -139,24 +139,12 @@ class StoreController extends AController
 
         $oss = Yii::$app->params['conf']['oss'];
         $storage = $oss ? $oss['remote_type'] : '';
-        $url = '';
-        switch ($storage) {
-            case 'locai':
-                $url = Yii::$app->request->hostInfo;
-                break;
-            case 'alioss':
-                $url = $oss ? $oss['Aliyunoss_url'] : '';
-                break;
-            case 'qiniu':
-                $url = $oss ? $oss['Qiniuoss_url'] : '';
-                break;
-            case 'cos':
-                $url = $oss ? $oss['Tengxunoss_url'] : '';
-                break;
-            default:
-                $url = Yii::$app->request->hostInfo;
-                break;
-        }
+        $url = match ($storage) {
+            'alioss' => $oss ? $oss['Aliyunoss_url'] : '',
+            'qiniu' => $oss ? $oss['Qiniuoss_url'] : '',
+            'cos' => $oss ? $oss['Tengxunoss_url'] : '',
+            default => Yii::$app->request->hostInfo,
+        };
         $detail['config'] = [
             'attachmentUrl' => $url . '/attachment',
         ];
@@ -168,7 +156,7 @@ class StoreController extends AController
      * Creates a new BlocStore model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -248,7 +236,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -341,7 +329,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -369,10 +357,10 @@ class StoreController extends AController
             'extras' => $this->extras,
         ]);
         if (($model = $BlocStore::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 
     public function actionStoreCreate()

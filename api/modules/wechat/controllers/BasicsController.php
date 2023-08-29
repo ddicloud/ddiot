@@ -7,7 +7,7 @@
  * @Last Modified time: 2023-07-11 14:31:32
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use api\controllers\AController;
 use common\helpers\ArrayHelper;

@@ -34,8 +34,8 @@ class SiteController extends AController
 {
     public $modelClass = '';
 
-    protected $authOptional = ['login', 'logout', 'error', 'signup', 'request-password-reset', 'setpassword', 'relations'];
-    public $searchLevel = 0;
+    protected array $authOptional = ['login', 'logout', 'error', 'signup', 'request-password-reset', 'setpassword', 'relations'];
+    public int $searchLevel = 0;
 
     /**
      * Displays homepage.

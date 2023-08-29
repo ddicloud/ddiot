@@ -22,7 +22,7 @@ class UploadController extends AController
 
     public $enableCsrfValidation = false;
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * {@inheritdoc}

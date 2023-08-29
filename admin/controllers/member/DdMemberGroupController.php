@@ -22,12 +22,12 @@ use yii\web\NotFoundHttpException;
 class DdMemberGroupController extends AController
 {
     public $modelClass = '';
-    public $modelSearchName = 'DdMemberGroupSearch';
+    public string $modelSearchName = 'DdMemberGroupSearch';
 
     /**
      * Lists all DdMemberGroup models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -45,7 +45,7 @@ class DdMemberGroupController extends AController
      *
      * @param string $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -60,7 +60,7 @@ class DdMemberGroupController extends AController
      * Creates a new DdMemberGroup model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -85,7 +85,7 @@ class DdMemberGroupController extends AController
      *
      * @param string $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -112,7 +112,7 @@ class DdMemberGroupController extends AController
      *
      * @param string $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -136,9 +136,9 @@ class DdMemberGroupController extends AController
     protected function findModel($id)
     {
         if (($model = DdMemberGroup::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

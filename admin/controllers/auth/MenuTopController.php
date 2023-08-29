@@ -15,6 +15,7 @@ use common\helpers\ResultHelper;
 use diandi\admin\models\MenuTop;
 use diandi\admin\models\searchs\MenuTopSearch;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -22,18 +23,18 @@ use yii\web\NotFoundHttpException;
  */
 class MenutopController extends AController
 {
-    public $modelSearchName = 'MenuTopSearch';
+    public string $modelSearchName = 'MenuTopSearch';
 
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * Lists all MenuTop models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new MenuTopSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -49,11 +50,11 @@ class MenutopController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
@@ -64,9 +65,9 @@ class MenutopController extends AController
      * Creates a new MenuTop model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
@@ -93,11 +94,11 @@ class MenutopController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
 
@@ -124,11 +125,13 @@ class MenutopController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -145,12 +148,12 @@ class MenutopController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = MenuTop::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

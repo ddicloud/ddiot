@@ -28,7 +28,7 @@ use common\helpers\ErrorsHelper;
  */
 class BacExhibitController extends AController
 {
-    public $modelSearchName = "BackendExhibitSearch";
+    public string $modelSearchName = "BackendExhibitSearch";
 
     public $modelClass = '';
 

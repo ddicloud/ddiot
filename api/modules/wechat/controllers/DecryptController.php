@@ -8,10 +8,10 @@
  * @Last Modified time: 2023-07-11 13:22:41
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use api\controllers\AController;
-use api\modules\wechat\services\DecryptService;
+use admin\modules\wechat\services\DecryptService;
 use common\helpers\ResultHelper;
 
 class DecryptController extends AController

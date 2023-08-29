@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class ContentController extends AController
 {
-    public $modelSearchName = "WebsiteContentSearch";
+    public string $modelSearchName = "WebsiteContentSearch";
 
     public $modelClass = '';
 

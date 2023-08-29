@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class ContactController extends AController
 {
-    public $modelSearchName = "WebsiteContact";
+    public string $modelSearchName = "WebsiteContact";
 
     public $modelClass = '';
 

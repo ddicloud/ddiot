@@ -22,7 +22,7 @@ use yii\web\NotFoundHttpException;
  */
 class ProH5TopController extends AController
 {
-    public $modelSearchName = 'WebsiteProH5TopSearch';
+    public string $modelSearchName = 'WebsiteProH5TopSearch';
 
     public $modelClass = '';
 

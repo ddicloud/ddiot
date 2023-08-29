@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class SlideController extends AController
 {
-    public $modelSearchName = "WebsiteSlide";
+    public string $modelSearchName = "WebsiteSlide";
 
     public $modelClass = '';
 

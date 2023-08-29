@@ -16,11 +16,11 @@ class WelcomeController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     public $layout = '@backend/views/layouts/main-base';
 
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $this->layout = '@backend/views/layouts/main';
 

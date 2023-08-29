@@ -19,7 +19,7 @@ use common\helpers\ErrorsHelper;
  */
 class FeedbackController extends AController
 {
-    public $modelSearchName = "WebsiteFeedbackSearch";
+    public string $modelSearchName = "WebsiteFeedbackSearch";
     
     public $modelClass = '';
   

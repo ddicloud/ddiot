@@ -37,7 +37,7 @@ class ConfigController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     public function actions()
     {

@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class SolutionController extends AController
 {
-    public $modelSearchName = "SolutionSearch";
+    public string $modelSearchName = "SolutionSearch";
 
     public $modelClass = '';
 

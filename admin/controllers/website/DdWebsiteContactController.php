@@ -9,6 +9,7 @@
 namespace admin\controllers\website;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdWebsiteContact;
 use common\models\DdWebsiteContactSearch;
@@ -23,29 +24,16 @@ class DdWebsiteContactController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
 
     /**
      * Lists all DdWebsiteContact models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new DdWebsiteContactSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -61,11 +49,11 @@ class DdWebsiteContactController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -76,19 +64,20 @@ class DdWebsiteContactController extends AController
      * Creates a new DdWebsiteContact model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdWebsiteContact();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
-
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -97,21 +86,22 @@ class DdWebsiteContactController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
-
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -120,11 +110,11 @@ class DdWebsiteContactController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -141,12 +131,12 @@ class DdWebsiteContactController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = DdWebsiteContact::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

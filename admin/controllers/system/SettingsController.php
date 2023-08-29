@@ -26,7 +26,7 @@ class SettingsController extends AController
 
     public $enableCsrfValidation = false;
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * @SWG\Post(path="/system/settings/conf",

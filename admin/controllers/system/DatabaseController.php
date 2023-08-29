@@ -25,7 +25,7 @@ class DatabaseController extends AController
 {
     public $modelClass = '';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
     /**
      * 存储路径.
      *
@@ -182,7 +182,7 @@ class DatabaseController extends AController
             $tab = ['id' => $id, 'start' => $start[0]];
             $rate = floor(100 * ($start[0] / $start[1]));
             // 对下一个表进行备份
-            return ResultHelper::json(200, "正在备份...({$rate}%)", [
+            return ResultHelper::json(200, "正在备份...($rate%)", [
                 'tablename' => $tables[$id],
                 'achieveStatus' => 0,
                 'tab' => $tab,
@@ -207,20 +207,20 @@ class DatabaseController extends AController
         // 判断是否是数组
         if (is_array($tables)) {
             $tables = implode('`,`', $tables);
-            if (Yii::$app->db->createCommand("OPTIMIZE TABLE `{$tables}`")->queryAll()) {
+            if (Yii::$app->db->createCommand("OPTIMIZE TABLE `$tables`")->queryAll()) {
                 return ResultHelper::json(200, '数据表优化完成');
             }
 
             return ResultHelper::json(404, '数据表优化出错请重试！');
         }
 
-        $list = Yii::$app->db->createCommand("REPAIR TABLE `{$tables}`")->queryOne();
+        $list = Yii::$app->db->createCommand("REPAIR TABLE `$tables`")->queryOne();
         // 判断是否成功
         if ($list['Msg_text'] == 'OK') {
-            return ResultHelper::json(200, "数据表'{$tables}'优化完成！");
+            return ResultHelper::json(200, "数据表'$tables'优化完成！");
         }
 
-        return ResultHelper::json(404, "数据表'{$tables}'优化出错！错误信息:".$list['Msg_text']);
+        return ResultHelper::json(404, "数据表'$tables'优化出错！错误信息:".$list['Msg_text']);
     }
 
     /**
@@ -230,7 +230,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionRepair()
+    public function actionRepair(): array
     {
         $tables = Yii::$app->request->post('tables', '');
         if (!$tables) {
@@ -240,19 +240,19 @@ class DatabaseController extends AController
         // 判断是否是数组
         if (is_array($tables)) {
             $tables = implode('`,`', $tables);
-            if (Yii::$app->db->createCommand("REPAIR TABLE `{$tables}`")->queryAll()) {
+            if (Yii::$app->db->createCommand("REPAIR TABLE `$tables`")->queryAll()) {
                 return ResultHelper::json(200, '数据表修复化完成');
             }
 
             return ResultHelper::json(404, '数据表修复出错请重试！');
         }
 
-        $list = Yii::$app->db->createCommand("REPAIR TABLE `{$tables}`")->queryOne();
+        $list = Yii::$app->db->createCommand("REPAIR TABLE `$tables`")->queryOne();
         if ($list['Msg_text'] == 'OK') {
-            return ResultHelper::json(200, "数据表'{$tables}'修复完成！");
+            return ResultHelper::json(200, "数据表'$tables'修复完成！");
         }
 
-        return ResultHelper::json(404, "数据表'{$tables}'修复出错！错误信息:".$list['Msg_text']);
+        return ResultHelper::json(404, "数据表'$tables'修复出错！错误信息:".$list['Msg_text']);
     }
 
     /************************************还原数据库************************************/
@@ -260,7 +260,7 @@ class DatabaseController extends AController
     /**
      * 还原列表.
      */
-    public function actionRestore()
+    public function actionRestore(): string
     {
         Yii::$app->language = '';
 
@@ -279,8 +279,8 @@ class DatabaseController extends AController
                 $time = "{$name[3]}:{$name[4]}:{$name[5]}";
                 $part = $name[6];
 
-                if (isset($list["{$date} {$time}"])) {
-                    $info = $list["{$date} {$time}"];
+                if (isset($list["$date {$time}"])) {
+                    $info = $list["$date {$time}"];
                     $info['part'] = max($info['part'], $part);
                     $info['size'] = $info['size'] + $file->getSize();
                 } else {
@@ -290,9 +290,9 @@ class DatabaseController extends AController
 
                 $extension = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
                 $info['compress'] = ($extension === 'SQL') ? '-' : $extension;
-                $info['time'] = strtotime("{$date} {$time}");
+                $info['time'] = strtotime("$date $time");
                 $info['filename'] = $file->getBasename();
-                $list["{$date} {$time}"] = $info;
+                $list["$date $time"] = $info;
             }
         }
 
@@ -515,8 +515,8 @@ class DatabaseController extends AController
         foreach ($tableSchemas as $key => $datum) {
             $table_comment = $tables[$i]['comment'];
 
-            $str .= "### {$key}".'<br>';
-            $str .= "#### {$table_comment}".'<br>';
+            $str .= "### $key".'<br>';
+            $str .= "#### $table_comment".'<br>';
             $str .= '字段 | 类型 | 允许为空 | 默认值 | 字段说明'.'<br>';
             $str .= '---|---|---|---|---'.'<br>';
 

@@ -24,7 +24,7 @@ use yii\web\NotFoundHttpException;
  */
 class ArticleController extends AController
 {
-    public $modelSearchName = 'WebsiteArticle';
+    public string $modelSearchName = 'WebsiteArticle';
 
     public $modelClass = '';
 

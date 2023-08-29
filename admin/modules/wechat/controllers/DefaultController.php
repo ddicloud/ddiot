@@ -1,8 +1,9 @@
 <?php
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use admin\controllers\AController;
+use common\helpers\ResultHelper;
 
 /**
 * Default controller for the `wechat` module
@@ -13,8 +14,8 @@ class DefaultController extends AController
 * Renders the index view for the module
 * @return string
 */
-public function actionIndex()
+public function actionIndex(): array
 {
-return $this->render('index');
+    return ResultHelper::json(200,'获取成功');
 }
 }

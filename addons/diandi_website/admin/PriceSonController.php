@@ -19,7 +19,7 @@ use common\helpers\ErrorsHelper;
  */
 class PriceSonController extends AController
 {
-    public $modelSearchName = "WebsitePriceSonSearch";
+    public string $modelSearchName = "WebsitePriceSonSearch";
     
     public $modelClass = '';
   

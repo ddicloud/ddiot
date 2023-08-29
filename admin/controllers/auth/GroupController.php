@@ -24,6 +24,7 @@ use diandi\admin\models\Route as ModelsRoute;
 use diandi\admin\models\searchs\UserGroupSearch;
 use diandi\admin\models\UserGroup;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -33,14 +34,14 @@ class GroupController extends AController
 {
     public $modelClass = 'UserGroup';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * Lists all UserGroup models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new UserGroupSearch();
 
@@ -57,13 +58,13 @@ class GroupController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        $model = $this->findModel($id);
+        $model = $this->getGroups($id);
         $manager = Configs::authManager();
 
         $list = $manager->getAuths($model->item_id, 3);
@@ -135,7 +136,7 @@ class GroupController extends AController
             return ResultHelper::json(400, '参数items不能为空');
         }
 
-        $model = $this->findModel($id);
+        $model = $this->getGroups($id);
 
         $success = 0;
 
@@ -278,7 +279,7 @@ class GroupController extends AController
         $manager = Configs::authManager();
 
         $items = Yii::$app->getRequest()->post('items', []);
-        $model = $this->findModel($id);
+        $model = $this->getGroups($id);
 
         $success = 0;
 
@@ -335,10 +336,10 @@ class GroupController extends AController
      *
      * @return array
      */
-    public function actionRemove($id)
+    public function actionRemove($id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
-        $model = $this->findModel($id);
+        $model = $this->getGroups($id);
         $success = 0;
 
         // 规则
@@ -388,13 +389,12 @@ class GroupController extends AController
      * Creates a new UserGroup model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new UserGroup();
 
-        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['bloc_id'] = $data['store_id'] ? BlocStore::find()->where(['store_id' => $data['store_id']])->select('bloc_id')->scalar() : 0;
             if ($model->load($data, '') && $model->save()) {
@@ -416,13 +416,13 @@ class GroupController extends AController
                     ]);
                 }
 
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
@@ -431,18 +431,19 @@ class GroupController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
         $model = UserGroup::findOne($id);
 
         $old_parent = $model->name;
 
-        if (Yii::$app->request->isPut) {
+
             $data = Yii::$app->request->post();
 
             $data['bloc_id'] = $data['store_id'] ? BlocStore::find()->where(['store_id' => $data['store_id']])->select('bloc_id')->scalar() : 0;
@@ -487,13 +488,12 @@ class GroupController extends AController
                     ]);
                 }
 
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
-        }
     }
 
     /**
@@ -502,16 +502,19 @@ class GroupController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         UserGroup::findOne($id)->delete();
 
         return ResultHelper::json(200, '删除成功');
     }
+
+
 
     /**
      * Finds the UserGroup model based on its primary key value.
@@ -523,7 +526,7 @@ class GroupController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function getGroups(int $id): UserGroup
     {
         if (($model = UserGroup::findOne($id)) !== null) {
             return new UserGroup($model);

@@ -23,11 +23,11 @@ class IndexController extends AController
 
     public $enableCsrfValidation = false;
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     // public $layout = false;
 
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $csrfToken = Yii::$app->request->csrfToken;
 

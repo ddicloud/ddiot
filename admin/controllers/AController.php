@@ -9,25 +9,28 @@
 
 namespace admin\controllers;
 
+use common\behaviors\HttpRequstMethod;
 use common\filters\auth\CompositeAuth;
 use common\filters\auth\HttpBasicAuth;
 use common\filters\auth\HttpBearerAuth;
 use common\filters\auth\QueryParamAuth;
 use common\helpers\loggingHelper;
+use common\helpers\ResultHelper;
+use common\middlewares\AccessControl;
 use diandi\addons\models\DdAddons;
 use Yii;
 use yii\base\InlineAction;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
+use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
 class AController extends ActiveController
 {
-    private $actionStart = 0;
-
-    private $actionEnd = 0;
+    private int $actionStart = 0;
 
     /**
      * 不用进行登录验证的方法
@@ -36,7 +39,7 @@ class AController extends ActiveController
      *
      * @var array
      */
-    protected $authOptional = [];
+    protected array $authOptional = [];
 
     /**
      * 不用进行签名验证的方法
@@ -45,9 +48,9 @@ class AController extends ActiveController
      *
      * @var array
      */
-    protected $signOptional = [];
+    protected array $signOptional = [];
 
-    protected $optionsAction = []; //需要options的方法
+    protected array $optionsAction = []; //需要options的方法
 
     /**
      * 数据分离等级. 0不检索商户与公司，1只检索公司，2检索公司和商户.
@@ -61,24 +64,24 @@ class AController extends ActiveController
      *
      * @since
      */
-    public $searchLevel = 2;
+    public int $searchLevel = 2;
 
     // 根据公司检索字段,不参与检索设置为false
-    public $blocField = 'bloc_id';
+    public string $blocField = 'bloc_id';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $storeField = 'store_id';
+    public string $storeField = 'store_id';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $adminField = 'admin_id';
+    public string $adminField = 'admin_id';
 
     // 主要数据的模型
     public $modelClass = '';
 
     // 检索的模型名称，区分大小写，注意是原来的类名称，不能是as后的，
-    public $modelSearchName = '';
+    public string $modelSearchName = '';
 
-    public function behaviors()
+    public function behaviors(): array
     {
         /* 添加行为 */
         $behaviors = parent::behaviors();
@@ -105,7 +108,7 @@ class AController extends ActiveController
 
         // 跨域支持
         $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::className(),
+            'class' => Cors::className(),
             'cors' => [
                 // restrict access to
                 'Origin' => explode(',', $urls),
@@ -125,11 +128,11 @@ class AController extends ActiveController
 
         // 添加默认的公司与商户参数
         $behaviors['request'] = [
-            'class' => \common\behaviors\HttpRequstMethod::className(),
+            'class' => HttpRequstMethod::className(),
         ];
 
         $behaviors['access'] = [
-            'class' => \common\middlewares\AccessControl::className(),
+            'class' => AccessControl::className(),
             'allowActions' => [
                 'user/login', //登录
                 'user/signup', //注册
@@ -162,7 +165,10 @@ class AController extends ActiveController
         return $behaviors;
     }
 
-    public function beforeAction($action)
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function beforeAction($action): bool
     {
         $this->actionStart = microtime(true);
         Yii::$app->params['bloc_id'] = Yii::$app->service->commonGlobalsService->getBloc_id();
@@ -183,10 +189,10 @@ class AController extends ActiveController
 
         Yii::$app->params['moduleAll'] = [];
 
-        $is_addons = $moduleName ? true : false;
+        $is_addons = (bool)$moduleName;
 
-        Yii::$app->params['is_addons'] = $is_addons; //  empty($menutypes['type']) ? $nav['top'][0]['mark'] : $menutypes['type'];
-        Yii::$app->params['module'] = $moduleName; //  empty($menutypes['type']) ? $nav['top'][0]['mark'] : $menutypes['type'];
+        Yii::$app->params['is_addons'] = $is_addons;
+        Yii::$app->params['module'] = $moduleName;
 
         // 初始化权限管理语言包
         if (!isset(Yii::$app->i18n->translations['rbac-admin'])) {
@@ -204,17 +210,16 @@ class AController extends ActiveController
     {
         loggingHelper::writeLog('adminApi', 'afterAction', '请求完成');
 
-        $this->actionEnd = microtime(true);
+        $actionEnd = 0;
+        $actionEnd = microtime(true);
 
         // 记录API请求接口，耗时took
         loggingHelper::writeLog('adminApi', 'afterAction', '接口请求时间记录', [
             'api' => Yii::$app->request->url,
-            'took' => sprintf('%.5f', $this->actionEnd - $this->actionStart),
+            'took' => sprintf('%.5f', $actionEnd - $this->actionStart),
         ]);
 
-        $afterAction = parent::afterAction($action, $result);
-
-        return $afterAction;
+        return parent::afterAction($action, $result);
     }
 
     public function createAction($id)
@@ -225,10 +230,10 @@ class AController extends ActiveController
         $actionMap = $this->actions();
         if (isset($actionMap[$id])) {
             try {
-                return \Yii::createObject($actionMap[$id], [$id, $this]);
+                return Yii::createObject($actionMap[$id], [$id, $this]);
             } catch (InvalidConfigException $e) {
             }
-        } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && strpos($id, '--') === false && trim($id, '-') === $id) {
+        } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && !str_contains($id, '--') && trim($id, '-') === $id) {
             $methodName = 'action'.str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
 
             if (method_exists($this, $methodName)) {
@@ -250,42 +255,35 @@ class AController extends ActiveController
         return null;
     }
 
-    public function actions()
+    public function actions(): array
     {
         $actions = parent::actions();
         // 注销系统自带的实现方法
         unset($actions['index'], $actions['update'], $actions['create'], $actions['delete'], $actions['view']);
-        // 自定义数据indexDataProvider覆盖IndexAction中的prepareDataProvider()方法
-        // $actions['index']['prepareDataProvider'] = [$this, 'indexDataProvider'];
-        //需要在使用的方法加上跨域请求   
-        // header('content-type:application/json;charset=utf8');
-        // header('Access-Control-Allow-Origin:*');
-        // header('Access-Control-Allow-Methods:POST');
-        // header('Access-Control-Allow-Headers:x-requested-with,content-type');
         return $actions;
     }
 
     /**
      * 首页.
      *
-     * @return ActiveDataProvider
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $modelClass = $this->modelClass;
         $query = $modelClass::find();
-
-        return new ActiveDataProvider([
+        $list = new ActiveDataProvider([
             'query' => $query,
         ]);
+        return ResultHelper::json(200,'获取成功', (array)$list);
     }
 
     /**
      * 创建.
      *
-     * @return bool
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new $this->modelClass();
         $model->member_id = Yii::$app->user->identity->user_id;
@@ -293,10 +291,11 @@ class AController extends ActiveController
 
         if (!$model->save()) {
             // 返回数据验证失败
-            return $this->setResponse($this->analysisError($model->getFirstErrors()));
-        }
+            $msg = $model->getFirstErrors();
+            return ResultHelper::json(500,$msg);
 
-        return $model;
+        }
+        return ResultHelper::json(200,'创建成功', (array)$model);
     }
 
     /**
@@ -304,20 +303,24 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed|void
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
         $model->attributes = Yii::$app->request->post();
         if (!$model->save()) {
             // 返回数据验证失败
-            return $this->setResponse($this->analysisError($model->getFirstErrors()));
+
+            $msg = $model->getFirstErrors();
+            return ResultHelper::json(500,$msg);
+
         }
 
-        return $model;
+        return ResultHelper::json(200,'创建成功', (array)$model);
+
     }
 
     /**
@@ -325,13 +328,15 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        return $this->findModel($id)->delete();
+        $this->findModel($id)->delete();
+        return ResultHelper::json(200,'删除成功');
+
     }
 
     /**
@@ -339,13 +344,15 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        return $this->findModel($id);
+        $detail = $this->findModel($id);
+        return ResultHelper::json(200,'获取成功',$detail);
+
     }
 
     /**
@@ -353,19 +360,17 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (empty($id)) {
-            throw new NotFoundHttpException('请求的数据失败.');
+            return ResultHelper::json(500,'id不能为空');
         }
         if ($model = $this->modelClass::findOne($id)) {
-            return $model;
+            return ResultHelper::json(200,'获取成功',$model);
         }
-
-        throw new NotFoundHttpException('请求的数据失败.');
     }
 }

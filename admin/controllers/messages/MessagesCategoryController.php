@@ -14,6 +14,7 @@ use admin\models\message\Searchs\HubMessagesCategorySearch;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -22,21 +23,21 @@ use yii\web\NotFoundHttpException;
  */
 class MessagesCategoryController extends AController
 {
-    public $modelSearchName = "HubMessagesCategorySearch";
+    public string $modelSearchName = "HubMessagesCategorySearch";
 
     public $modelClass = '';
     
     // 根据公司检索字段,不参与检索设置为false
-    public $blocField = false;
+    public string $blocField = '';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $storeField = false;
+    public string $storeField = '';
 
     /**
      * Lists all HubMessagesCategory models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubMessagesCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -50,71 +51,71 @@ class MessagesCategoryController extends AController
     /**
      * Displays a single HubMessagesCategory model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
         $view = $this->findModel($id);
 
-        return ResultHelper::json(200, '获取成功', $view);
+        return ResultHelper::json(200, '获取成功', (array)$view);
     }
 
     /**
      * Creates a new HubMessagesCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new HubMessagesCategory();
 
-        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
      * Updates an existing HubMessagesCategory model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
      * Deletes an existing HubMessagesCategory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -125,13 +126,13 @@ class MessagesCategoryController extends AController
      * Finds the HubMessagesCategory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return HubMessagesCategory the loaded model
+     * @return array|object[]|string[] the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = HubMessagesCategory::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

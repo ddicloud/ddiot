@@ -11,6 +11,7 @@ namespace admin\controllers\auth;
 
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
+use common\helpers\ResultHelper;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\DdAddons;
@@ -44,7 +45,7 @@ class UserController extends AController
     public $module_name;
     public $type;
 
-    public function actions()
+    public function actions(): array
     {
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->type = $this->module_name == 'sys' ? 0 : 1;
@@ -53,7 +54,7 @@ class UserController extends AController
     /**
      * {@inheritdoc}
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (parent::beforeAction($action)) {
             if (Yii::$app->has('mailer') && ($mailer = Yii::$app->getMailer()) instanceof BaseMailer) {
@@ -83,9 +84,10 @@ class UserController extends AController
     /**
      * Lists all User models.
      *
-     * @return mixed
+     * @return array
+     * @throws HttpException
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $module_name = $this->module_name;
         $AddonsUser = new AddonsUser();
@@ -106,7 +108,7 @@ class UserController extends AController
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return ResultHelper::json(200, '获取成功',[
             'module_name' => $this->module_name,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider->getModels(),
@@ -119,16 +121,18 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException|BadRequestHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'module_name' => $this->module_name]);
+                return ResultHelper::json(200, '获取成功',[
+                    'id' => $model->id, 'module_name' => $this->module_name
+                ]);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 throw new BadRequestHttpException($msg);
@@ -150,16 +154,16 @@ class UserController extends AController
             $Bloc = Bloc::find()->where(['bloc_id' => $model->bloc_id])->select(['business_name'])->one();
             // $ResetPassword = new  ResetPassword($model->password_reset_token);
 
-            return $this->render('update', [
+            return ResultHelper::json(200, '获取成功',[
                 'model' => $model,
                 'assign' => $assign,
-                'business_name' => $Bloc['business_name'] ? $Bloc['business_name'] : '暂未分配',
+                'business_name' => $Bloc['business_name'] ?? '暂未分配',
             ]);
         }
     }
 
     // 修改别人的密码
-    public function actionChangePass($id)
+    public function actionChangePass($id): array
     {
         global $_GPC;
 
@@ -182,17 +186,13 @@ class UserController extends AController
             }
 
             if ($user->load(Yii::$app->getRequest()->post()) && $user->validate() && $user->resetPassword()) {
-                Yii::$app->session->setFlash('success', '密码修改成功');
-
-                return $this->redirect(['update', 'id' => $id]);
+                return ResultHelper::json(500, '密码修改成功');
             }
         }
 
         if (!$user->save()) {
             // 修改密码
-            Yii::$app->session->setFlash('success', '重置验证失败');
-
-            return $this->redirect(['index']);
+            return ResultHelper::json(500, '重置验证失败');
         }
 
         try {
@@ -201,7 +201,7 @@ class UserController extends AController
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        return $this->render('password', [
+        return ResultHelper::json(200, '获取成功', [
             'ResetPassword' => $ResetPassword,
             'title' => $title,
             'id' => $id,
@@ -213,9 +213,9 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $AddonsUser = new AddonsUser([
             'user_id' => $id,
@@ -223,7 +223,7 @@ class UserController extends AController
         $opts = $AddonsUser->getItems();
         $animateIcon = '';
 
-        return $this->render('view', [
+        return ResultHelper::json(200, '获取成功', [
             'animateIcon' => $animateIcon,
             'model' => $this->findModel($id),
             'opts' => Json::htmlEncode($opts),
@@ -236,16 +236,16 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'module_name' => $this->module_name]);
+        return ResultHelper::json(200, '获取成功', ['module_name' => $this->module_name]);
     }
 
-    public function actionAssign($id)
+    public function actionAssign($id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = $this->findModel($id);
@@ -260,7 +260,7 @@ class UserController extends AController
         return array_merge($opts, ['success' => $success]);
     }
 
-    public function actionRemove($id)
+    public function actionRemove($id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = $this->findModel($id);
@@ -275,45 +275,25 @@ class UserController extends AController
         return array_merge($opts, ['success' => $success]);
     }
 
-    /**
-     * Login.
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->getUser()->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new Login();
-        if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
 
     /**
      * Logout.
      *
-     * @return string
+     * @return array
      */
-    public function actionLogout()
+    public function actionLogout(): array
     {
         Yii::$app->getUser()->logout();
 
-        return $this->goHome();
+        return ResultHelper::json(200, '退出成功');
     }
 
     /**
      * Signup new user.
      *
-     * @return string
+     * @return array|object[]|string|string[]
      */
-    public function actionSignup()
+    public function actionSignup(): array|string
     {
         $model = new Signup();
         if ($model->load(Yii::$app->getRequest()->post())) {
@@ -323,11 +303,10 @@ class UserController extends AController
                     $childmodel = $this->findModel($id);
                     $childmodel->addChildren([$this->module_name]);
                 }
-                Yii::$app->session->setFlash('success', '添加成功');
             }
         }
 
-        return $this->render('signup', [
+        return ResultHelper::json(200, '获取成功', [
             'model' => $model,
             'module_name' => $this->module_name,
         ]);
@@ -336,32 +315,35 @@ class UserController extends AController
     /**
      * Request reset password.
      *
-     * @return string
+     * @return array|object[]|string|string[]
      */
-    public function actionRequestPasswordReset()
+    public function actionRequestPasswordReset(): array|string
     {
         $model = new PasswordResetRequest();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
+                return ResultHelper::json(200, 'Check your email for further instructions.', [
+                    'model' => $model
+                ]);
             } else {
-                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                return ResultHelper::json(500, 'Sorry, we are unable to reset password for email provided.', [
+                    'model' => $model
+                ]);
             }
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
     }
 
     /**
      * Reset password.
      *
-     * @return string
+     * @param $token
+     * @return array|object[]|string|string[]
+     * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
+    public function actionResetPassword($token): array|string
     {
         try {
             $model = new ResetPassword($token);
@@ -370,31 +352,30 @@ class UserController extends AController
         }
 
         if ($model->load(Yii::$app->getRequest()->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->getSession()->setFlash('success', 'New password was saved.');
-
-            return $this->goHome();
+            return ResultHelper::json(200, 'New password was saved.', [
+                'model' => $model
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
 
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
     }
 
     /**
      * Reset password.
      *
-     * @return string
+     * @return array|object[]|string|string[]
      */
-    public function actionChangePassword()
+    public function actionChangePassword(): array|string
     {
         $model = new ChangePassword();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->change()) {
-            return $this->goHome();
+            return ResultHelper::json(200, '修改成功');
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
         }
-
-        return $this->render('change-password', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -402,12 +383,12 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return type
+     * @return array
      *
      * @throws UserException
      * @throws NotFoundHttpException
      */
-    public function actionActivate($id)
+    public function actionActivate(int $id): array
     {
         /* @var $user User */
         $user = $this->findModel($id);
@@ -430,16 +411,16 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return User the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = User::findOne($id)) !== null) {
-            return  $model;
+
+            return ResultHelper::json(200, '获取成功', (array)$model);
+
         } else {
-            throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(500, '请检查数据是否存在');
         }
     }
 }

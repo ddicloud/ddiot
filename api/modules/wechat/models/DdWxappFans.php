@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-11-22 22:30:29
  */
 
-namespace api\modules\wechat\models;
+namespace admin\modules\wechat\models;
 
 use Yii;
 

@@ -27,7 +27,7 @@ use common\helpers\ErrorsHelper;
  */
 class AdController extends AController
 {
-    public $modelSearchName = "WebsiteAdSearch";
+    public string $modelSearchName = "WebsiteAdSearch";
 
     public $modelClass = '';
 

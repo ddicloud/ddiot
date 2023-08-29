@@ -16,6 +16,7 @@ use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
+use yii\db\ActiveRecord;
 use function GuzzleHttp\json_decode;
 use Yii;
 use yii\base\BaseObject;
@@ -140,17 +141,21 @@ class Fans extends BaseObject
         }
     }
 
-    public function checkByopenid($openid)
+    /**
+     * @param $openid
+     * @return array|ActiveRecord|null
+     */
+    public function checkByopenid($openid): array|ActiveRecord|null
+    {
+        return DdWechatFans::find()->where(['openid' => $openid])->one();
+    }
+
+    public function fansByopenid($openid): array|ActiveRecord|null
     {
         return  DdWechatFans::find()->where(['openid' => $openid])->one();
     }
 
-    public function fansByopenid($openid)
-    {
-        return  DdWechatFans::find()->where(['openid' => $openid])->one();
-    }
-
-    public function removeEmoji($nickname)
+    public function removeEmoji($nickname): array|string|null
     {
         $clean_text = '';
         // Match Emoticons
@@ -167,36 +172,31 @@ class Fans extends BaseObject
         $clean_text = preg_replace($regexMisc, '', $clean_text);
         // Match Dingbats
         $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
-        $clean_text = preg_replace($regexDingbats, '', $clean_text);
-
-        return $clean_text;
+        return preg_replace($regexDingbats, '', $clean_text);
     }
 
-    public function filterEmoji($str)
+    public function filterEmoji($str): array|string|null
     {
-        $str = preg_replace_callback('/./u',
+        return preg_replace_callback('/./u',
         function (array $match) {
             return strlen($match[0]) >= 4 ? '' : $match[0];
         },
         $str);
-
-        return $str;
     }
 
     /**
+     * @param $data
      * @param string $key 密钥
      *
      * @return string
      */
-    public static function encrypt($data, $key)
+    public static function encrypt($data, string $key): string
     {
         $string = base64_encode(json_encode($data));
         // openssl_encrypt 加密不同Mcrypt，对秘钥长度要求，超出16加密结果不变
         $data = openssl_encrypt($string, 'AES-128-ECB', $key, OPENSSL_RAW_DATA);
 
-        $data = strtolower(bin2hex($data));
-
-        return $data;
+        return strtolower(bin2hex($data));
     }
 
     /**
@@ -205,7 +205,7 @@ class Fans extends BaseObject
      *
      * @return string
      */
-    public static function decrypt($string, $key)
+    public static function decrypt(string $string, string $key): string
     {
         $decrypted = openssl_decrypt(hex2bin($string), 'AES-128-ECB', $key, OPENSSL_RAW_DATA);
 
@@ -220,7 +220,7 @@ class Fans extends BaseObject
      * @param integer $nonce 随机数
      * @return bool
      */
-    public static function verifyToken($signature, $timestamp, $nonce)
+    public static function verifyToken(string $signature, int $timestamp, int $nonce): bool
     {
         $logPath = Yii::getAlias('@runtime/wechat/msg/'.date('ymd').'.log');
 
@@ -235,7 +235,7 @@ class Fans extends BaseObject
         
         FileHelper::writeLog($logPath, '验证结果：'.json_encode([$tmpStr,$signature]));
 
-        return $tmpStr == $signature ? true : false;
+        return $tmpStr == $signature;
     }
 
     /**
@@ -243,7 +243,7 @@ class Fans extends BaseObject
      *
      * @return bool|string
      */
-    public static function success()
+    public static function success(): bool|string
     {
         return ArrayHelper::toXml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']);
     }
@@ -253,7 +253,7 @@ class Fans extends BaseObject
      *
      * @return bool|string
      */
-    public static function fail()
+    public static function fail(): bool|string
     {
         return ArrayHelper::toXml(['return_code' => 'FAIL', 'return_msg' => 'OK']);
     }

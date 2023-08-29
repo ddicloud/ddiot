@@ -34,9 +34,8 @@ class AssignmentController extends AController
     public $modelClass = '';
 
     public $userClassName;
-    public $idField = 'id';
-    public $usernameField = 'username';
-    public $fullnameField;
+    public string $idField = 'id';
+    public string $usernameField = 'username';
     public $searchClass;
     public $extraColumns = [];
 
@@ -44,12 +43,13 @@ class AssignmentController extends AController
 
     public $module_name;
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
+    private mixed $is_sys;
 
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         if ($this->userClassName === null) {
@@ -63,9 +63,9 @@ class AssignmentController extends AController
     /**
      * Lists all Assignment models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         if ($this->searchClass === null) {
             $searchModel = new AssignmentSearch();
@@ -75,8 +75,7 @@ class AssignmentController extends AController
             $searchModel = new $class();
             $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams());
         }
-
-        return $this->render('index', [
+        return ResultHelper::json(200, '获取成功', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
             'module_name' => $this->module_name,
@@ -91,11 +90,12 @@ class AssignmentController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
+     * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        $model = $this->findModel($id);
+        $model = $this->getAssigment($id);
         $items = $model->getItems(3);
         $all = $items['all'];
         // 所有应用
@@ -103,12 +103,13 @@ class AssignmentController extends AController
         $addons_mids = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
+        $lists = [];
+        $store_ids = [];
         foreach ($list as $key => &$value) {
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
             $store = $value['store'];
             // 需要把商户的权限交给公司，把公司权限授权出去
-            // if (!empty($value['store'])) {
             foreach ($store as $k => &$val) {
                 $val['label'] = $val['name'];
                 $val['id'] = $val['store_id'];
@@ -116,9 +117,6 @@ class AssignmentController extends AController
             }
             $value['children'] = $store;
             $lists[] = $value;
-            // } else {
-            //     unset($list[$key]);
-            // }
         }
         unset($value);
         $all['store'] = $list;
@@ -157,12 +155,14 @@ class AssignmentController extends AController
 
         return ResultHelper::json(200, '获取成功', [
             'all' => $alls,
-            'all' => $alls,
             'assigned' => $assigned,
         ]);
     }
 
-    public function actionChange()
+    /**
+     * @throws \Exception
+     */
+    public function actionChange(): array
     {
         global $_GPC;
         $id = $_GPC['id'];
@@ -178,7 +178,7 @@ class AssignmentController extends AController
         }
 
         // 获取原先的权限集
-        $model = $this->findModel($id);
+        $model = $this->getAssigment($id);
         $itemsModel = $model->getItems(3);
         $all = $itemsModel['all'];
         // 所有应用
@@ -186,6 +186,7 @@ class AssignmentController extends AController
         $addons_mids = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
+        $lists = [];
         foreach ($list as $key => &$value) {
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
@@ -219,6 +220,7 @@ class AssignmentController extends AController
             'store',
         ];
         $assignedKey = [];
+        unset($value);
         foreach ($assigneds as $key => $value) {
             $assignedKey[] = $key;
             $assigned[$key] = array_keys($value);
@@ -378,17 +380,22 @@ class AssignmentController extends AController
         $key = 'auth_' . $id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
 
-        return $this->actionView($id);
+        try {
+            return $this->actionView($id);
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        }
     }
 
     /**
      * Assign items.
      *
-     * @param string $id
+     * @param int $id
      *
      * @return array
      */
-    public function actionAssign($id)
+    public function actionAssign(int $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
 
@@ -406,11 +413,11 @@ class AssignmentController extends AController
     /**
      * Assign items.
      *
-     * @param string $id
+     * @param int $id
      *
      * @return array
      */
-    public function actionRevoke($id)
+    public function actionRevoke(int $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = new Assignment([
@@ -423,17 +430,7 @@ class AssignmentController extends AController
         return array_merge($model->getItems($this->is_sys), ['success' => $success]);
     }
 
-    /**
-     * Finds the Assignment model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param int $id
-     *
-     * @return Assignment the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    public function getAssigment($id): array|Assignment
     {
         $class = $this->userClassName;
         if (($user = $class::findIdentity($id)) !== null) {
@@ -441,8 +438,11 @@ class AssignmentController extends AController
                 'id' => $id,
                 'type' => $this->type,
             ], $user);
+
         } else {
-            throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(500, '请检查数据是否存在');
         }
     }
+
+
 }

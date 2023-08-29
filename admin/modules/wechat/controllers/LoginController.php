@@ -7,9 +7,10 @@
  * @Last Modified time: 2020-09-07 10:03:07
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use admin\controllers\AController;
+use common\helpers\ResultHelper;
 use Yii;
 
 /**
@@ -41,7 +42,7 @@ class LoginController extends AController
      * )
      *
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         if (Yii::$app->wechat->isWechat && !Yii::$app->wechat->isAuthorized()) {
             return Yii::$app->wechat->authorizeRequired()->send();
@@ -52,6 +53,6 @@ class LoginController extends AController
 
         // 获取微信当前用户信息方法二
         Yii::$app->wechat->user;
-        return $this->render('index');
+        return ResultHelper::json(200,'登录成功');
     }
 }

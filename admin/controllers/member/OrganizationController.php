@@ -23,14 +23,14 @@ use yii\web\NotFoundHttpException;
  */
 class OrganizationController extends AController
 {
-    public $modelSearchName = 'MemberOrganizationSearch';
+    public string $modelSearchName = 'MemberOrganizationSearch';
 
     public $modelClass = '';
 
     /**
      * Lists all MemberOrganization models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -57,7 +57,7 @@ class OrganizationController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -72,7 +72,7 @@ class OrganizationController extends AController
      * Creates a new MemberOrganization model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -97,7 +97,7 @@ class OrganizationController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -124,7 +124,7 @@ class OrganizationController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -148,9 +148,9 @@ class OrganizationController extends AController
     protected function findModel($id)
     {
         if (($model = MemberOrganization::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

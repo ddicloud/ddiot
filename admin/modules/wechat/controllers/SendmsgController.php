@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-13 17:19:42
  */
 
-namespace api\modules\wechat\controllers;
+namespace admin\modules\wechat\controllers;
 
 use admin\controllers\AController;
 use Yii;

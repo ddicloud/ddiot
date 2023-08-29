@@ -27,7 +27,7 @@ use diandi\admin\acmodels\AuthItem;
  */
 class AuthRoute extends \yii\db\ActiveRecord
 {
-    public $route_types = ['根路由', '页面路由', '按钮路由', '接口路由'];
+    public array $route_types = ['根路由', '页面路由', '按钮路由', '接口路由'];
 
     /**
      * {@inheritdoc}

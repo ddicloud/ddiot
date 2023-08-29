@@ -20,7 +20,7 @@ use common\services\common\AddonsService;
  */
 class DefaultController extends AController
 {
-    public $modelSearchName = "WebsiteContentDetailSearch";
+    public string $modelSearchName = "WebsiteContentDetailSearch";
 
     public $modelClass = '';
 

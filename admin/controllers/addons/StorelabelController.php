@@ -22,22 +22,22 @@ use yii\web\NotFoundHttpException;
  */
 class StorelabelController extends AController
 {
-    public $modelSearchName = 'StoreLabelSearch';
+    public string $modelSearchName = 'StoreLabelSearch';
 
     public $modelClass = '';
 
     // 根据公司检索字段,不参与检索设置为false
-    public $blocField = false;
+    public string $blocField = '';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $storeField = false;
+    public string $storeField = '';
 
     /**
      * Lists all StoreLabel models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new StoreLabelSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -53,24 +53,24 @@ class StorelabelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
-        return ResultHelper::json(200, '获取成功', $view);
+        return ResultHelper::json(200, '获取成功', (array)$view);
     }
 
     /**
      * Creates a new StoreLabel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new StoreLabel();
 
@@ -78,7 +78,7 @@ class StorelabelController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -93,11 +93,11 @@ class StorelabelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -105,7 +105,7 @@ class StorelabelController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -120,11 +120,11 @@ class StorelabelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -137,16 +137,14 @@ class StorelabelController extends AController
      *
      * @param int $id
      *
-     * @return StoreLabel the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = StoreLabel::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

@@ -19,9 +19,9 @@ use Yii;
 class SettingController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['info'];
+    protected array $authOptional = ['info'];
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * {@inheritdoc}

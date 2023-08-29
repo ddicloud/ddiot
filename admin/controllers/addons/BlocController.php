@@ -25,6 +25,7 @@ use diandi\addons\models\BlocStore;
 use diandi\addons\models\UserBloc;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -32,7 +33,7 @@ use yii\web\NotFoundHttpException;
  */
 class BlocController extends AController
 {
-    public $modelSearchName = 'Bloc';
+    public string $modelSearchName = 'Bloc';
 
     public $modelClass = '';
 
@@ -41,7 +42,7 @@ class BlocController extends AController
     /**
      * Lists all Bloc models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -124,7 +125,7 @@ class BlocController extends AController
 
         $stores = BlocStore::find()->where($where)->with(['bloc', 'addons'])->asArray()->all();
         foreach ($stores as $key => &$value) {
-            $value['create_time'] = date('Y-m-d', $value['create_time'] ? $value['create_time'] : time());
+            $value['create_time'] = date('Y-m-d', $value['create_time'] ?? time());
             $value['identifie'] = $value['addons'] ? $value['addons']['identifie'] : '';
             $value['logo'] = ImageHelper::tomedia($value['logo']);
             // if (empty($value['addons'])) {
@@ -140,18 +141,14 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = Bloc::find()->where(['bloc_id' => $id])->asArray()->one();
 
         $view['extra'] = !empty($view['extra']) ? unserialize($view['extra']) : $view['extra'];
-
-        $view['provinceCityDistrict'] = [$view['province'], $view['city'], $view['district']];
-
 
         $view['provinceCityDistrict'] = [
             (int) $view['province'],
@@ -173,9 +170,9 @@ class BlocController extends AController
      * Creates a new Bloc model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
@@ -190,7 +187,7 @@ class BlocController extends AController
 
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -205,11 +202,11 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
 
@@ -223,7 +220,7 @@ class BlocController extends AController
             $data['district'] = $data['provinceCityDistrict']['2'];
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -238,11 +235,12 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws StaleObjectException|\Throwable
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -255,24 +253,25 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return Bloc the loaded model
+     * @return array the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = Bloc::findOne($id)) !== null) {
-            return $model;
-        }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(200, '获取成功', (array)$model);
+
+        }
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 
     /**
      * Creates a new Bloc model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionParentbloc()
     {
@@ -291,9 +290,9 @@ class BlocController extends AController
      * Creates a new Bloc model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionChildbloc()
+    public function actionChildbloc(): array
     {
         global $_GPC;
 
@@ -320,18 +319,17 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionStores($id)
+    public function actionStores(int $id): array
     {
         $stores = BlocStore::find()->where(['bloc_id' => $id])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $stores);
     }
 
-    public function actionReglevel()
+    public function actionReglevel(): array
     {
         $list = ReglevelStatus::listData();
 
@@ -347,7 +345,7 @@ class BlocController extends AController
         return ResultHelper::json(200, '获取成功', $lists);
     }
 
-    public function actionBlocstatus()
+    public function actionBlocstatus(): array
     {
         $list = BlocStatus::listData();
 
@@ -363,7 +361,7 @@ class BlocController extends AController
         return ResultHelper::json(200, '获取成功', $lists);
     }
 
-    public function actionLevels()
+    public function actionLevels(): array
     {
         global $_GPC;
 
@@ -372,7 +370,7 @@ class BlocController extends AController
         return ResultHelper::json(200, '获取成功', $levels);
     }
 
-    public function actionBlocStore()
+    public function actionBlocStore(): array
     {
         $list = StoreService::getStoresAndBloc();
 

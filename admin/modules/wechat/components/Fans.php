@@ -11,7 +11,7 @@ namespace app\modules\wechat\components;
 
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
-use api\modules\wechat\models\DdWxappFans;
+use admin\modules\wechat\models\DdWxappFans;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;

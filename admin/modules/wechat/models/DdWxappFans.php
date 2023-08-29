@@ -8,7 +8,7 @@
  */
 
 
-namespace api\modules\wechat\models;
+namespace admin\modules\wechat\models;
 
 use Yii;
 

@@ -53,7 +53,7 @@ class UserService extends BaseService
             }
         }
 
-        $moduleAll = $module_names ? $module_names : [];
+        $moduleAll = $module_names ?? [];
 
         $Website = Yii::$app->settings->getAllBySection('Website');
         $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);

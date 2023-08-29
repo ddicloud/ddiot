@@ -14,6 +14,7 @@ use common\models\DdUser;
 use common\models\UserBloc;
 use common\models\UserStore;
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "dd_messages".
@@ -112,19 +113,20 @@ class HubMessages extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCurrentUserRead()
+    public function getCurrentUserRead(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(HubMessagesRead::class, ['message_id' => 'id'])->where(['admin_id' => \Yii::$app->user->identity->user_id]);
+        return $this->hasOne(HubMessagesRead::class, ['message_id' => 'id'])->where(['admin_id' => Yii::$app->user->identity->user_id]);
     }
 
     /**
      * 统计管理员未读数
      * @date 2022-10-11 周二
-     * @author Radish <minradish@163.com>
      * @param int $adminId 管理员ID
      * @return int
+     * @throws Exception
+     * @author Radish <minradish@163.com>
      */
-    public static function countUnread($adminId)
+    public static function countUnread($adminId): int
     {
         // 查找我授权的
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->andWhere(['>','bloc_id',0])->select('bloc_id')->column();

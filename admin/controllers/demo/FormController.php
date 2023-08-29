@@ -23,7 +23,7 @@ class FormController extends AController
 {
     public $modelClass = '';
 
-    public function actions()
+    public function actions(): array
     {
         $actions = parent::actions();
         $actions['get-region'] = [
@@ -34,7 +34,7 @@ class FormController extends AController
         return $actions;
     }
 
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $model = new DdMember();
         $DdRegion = new DdRegion();
@@ -45,7 +45,7 @@ class FormController extends AController
         ]);
     }
 
-    public function actionMaile()
+    public function actionMaile(): array
     {
         // 不使用模板
         $mail = Yii::$app->mailer->compose();

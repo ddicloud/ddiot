@@ -19,7 +19,7 @@ use common\helpers\ErrorsHelper;
  */
 class ConfigController extends AController
 {
-    public $modelSearchName = "WebsiteConfigSearch";
+    public string $modelSearchName = "WebsiteConfigSearch";
     
     public $modelClass = '';
   

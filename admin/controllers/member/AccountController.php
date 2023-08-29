@@ -9,6 +9,7 @@
 namespace admin\controllers\member;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdMemberAccount;
 use common\models\searchs\DdMemberAccount as DdMemberAccountSearch;
@@ -23,12 +24,12 @@ class AccountController extends AController
 {
     public $modelClass = '';
 
-    public $modelSearchName = 'DdMemberAccountSearch';
+    public string $modelSearchName = 'DdMemberAccountSearch';
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
@@ -44,9 +45,9 @@ class AccountController extends AController
     /**
      * Lists all DdMemberAccount models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new DdMemberAccountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -62,11 +63,11 @@ class AccountController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -77,19 +78,22 @@ class AccountController extends AController
      * Creates a new DdMemberAccount model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdMemberAccount();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500,$msg);
         }
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+
     }
 
     /**
@@ -98,21 +102,23 @@ class AccountController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
 
-        return ResultHelper::json(200, '获取成功', [
-            'model' => $model,
-        ]);
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
+        }
     }
 
     /**
@@ -121,11 +127,11 @@ class AccountController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -138,16 +144,14 @@ class AccountController extends AController
      *
      * @param int $id
      *
-     * @return DdMemberAccount the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = DdMemberAccount::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

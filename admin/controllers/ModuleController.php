@@ -25,7 +25,7 @@ class ModuleController extends AController
     /**
      * Lists all DdAiApplications models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {

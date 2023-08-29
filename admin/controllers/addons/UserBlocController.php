@@ -19,6 +19,7 @@ use diandi\addons\models\searchs\UserBlocSearch;
 use diandi\addons\models\UserBloc;
 use diandi\admin\models\User as ModelsUser;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
@@ -32,35 +33,22 @@ class UserBlocController extends AController
 
     public $bloc_id;
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
-    public function actions()
+    public function actions(): array
     {
         $bloc_id = Yii::$app->request->get('bloc_id');
         $this->bloc_id = $bloc_id;
+        return  parent::actions();
     }
 
     /**
      * Lists all UserBloc models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $bloc_id = Yii::$app->request->get('bloc_id');
         $searchModel = new UserBlocSearch(['bloc_id' => $bloc_id]);
@@ -69,7 +57,7 @@ class UserBlocController extends AController
         // 获取当前用户所有的公司
         $blocs = BlocUser::getMybloc();
 
-        return $this->render('index', [
+        return ResultHelper::json(200,'获取成功',[
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'bloc_id' => $this->bloc_id,
@@ -81,13 +69,13 @@ class UserBlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        return $this->render('view', [
+        return ResultHelper::json(200,'获取成功',[
             'model' => $this->findModel($id),
             'bloc_id' => $this->bloc_id,
         ]);
@@ -97,9 +85,9 @@ class UserBlocController extends AController
      * Creates a new UserBloc model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new UserBloc();
         $model->status = 1;
@@ -134,7 +122,7 @@ class UserBlocController extends AController
                 ]);
         }
 
-        return $this->render('create', [
+        return  ResultHelper::json(200, '获取成功',[
             'model' => $model,
             'bloc_id' => $this->bloc_id,
         ]);
@@ -146,25 +134,28 @@ class UserBlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'bloc_id' => $model->bloc_id]);
+            return  ResultHelper::json(200, '获取成功',['view', 'id' => $model->id, 'bloc_id' => $model->bloc_id]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return  ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+                'bloc_id' => $this->bloc_id,
+            ]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-            'bloc_id' => $this->bloc_id,
-        ]);
+
     }
 
-    public function actionGetstore()
+    public function actionGetstore(): array
     {
         global $_GPC;
 
@@ -194,7 +185,7 @@ class UserBlocController extends AController
         return  ResultHelper::json(200, '请求成功', $lists);
     }
 
-    public function actionGetuser()
+    public function actionGetuser(): array
     {
         global $_GPC;
         $bloc_id = $_GPC['bloc_id'];
@@ -213,15 +204,17 @@ class UserBlocController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'bloc_id' => $this->findModel($id)->bloc_id]);
+        return  ResultHelper::json(200, '请求成功',['index', 'bloc_id' => $this->findModel($id)->bloc_id]);
     }
 
     /**
@@ -230,16 +223,14 @@ class UserBlocController extends AController
      *
      * @param int $id
      *
-     * @return UserBloc the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array the loaded model
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = UserBloc::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

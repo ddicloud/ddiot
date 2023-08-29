@@ -23,23 +23,23 @@ use yii\web\NotFoundHttpException;
  */
 class BloclevelController extends AController
 {
-    public $modelSearchName = 'BlocLevel';
+    public string $modelSearchName = 'BlocLevel';
 
     public $modelClass = '';
 
 
     // 根据公司检索字段,不参与检索设置为false
-    public $blocField = false;
+    public string $blocField = '';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $storeField = false;
+    public string $storeField = '';
 
     /**
      * Lists all BlocLevel models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new BlocLevelSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -55,11 +55,11 @@ class BloclevelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
@@ -70,22 +70,20 @@ class BloclevelController extends AController
      * Creates a new BlocLevel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new BlocLevel();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -95,24 +93,22 @@ class BloclevelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -122,11 +118,11 @@ class BloclevelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -139,20 +135,21 @@ class BloclevelController extends AController
      *
      * @param int $id
      *
-     * @return BlocLevel the loaded model
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = BlocLevel::findOne($id)) !== null) {
-            return $model;
-        }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+            return ResultHelper::json(200, '获取成功', (array)$model);
+
+        }
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 
-    public function actionLevels()
+    public function actionLevels(): array
     {
         $list = LevelStatus::listData();
 

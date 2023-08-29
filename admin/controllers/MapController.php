@@ -18,9 +18,9 @@ use Yii;
 class MapController extends AController
 {
     public $modelClass = '';
-    protected $authOptional = ['distance'];
+    protected array $authOptional = ['distance'];
     
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
     /**
      * @SWG\Get(path="/map/distance",

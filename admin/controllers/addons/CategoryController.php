@@ -16,6 +16,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\models\searchs\StoreCategory as StoreCategorySearch;
 use diandi\addons\models\StoreCategory;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -23,23 +24,23 @@ use yii\web\NotFoundHttpException;
  */
 class CategoryController extends AController
 {
-    public $modelSearchName = 'StoreCategory';
+    public string $modelSearchName = 'StoreCategory';
 
     public $modelClass = '';
 
 
     // 根据公司检索字段,不参与检索设置为false
-    public $blocField = false;
+    public string $blocField = '';
 
     // 根据商户检索字段,不参与检索设置为false
-    public $storeField = false;
+    public string $storeField = '';
 
     /**
      * Lists all StoreCategory models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new StoreCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -66,7 +67,7 @@ class CategoryController extends AController
         ]);
     }
 
-    public function actionCategory()
+    public function actionCategory(): array
     {
         global $_GPC;
         $bloc_id = $_GPC['bloc_id'];
@@ -80,11 +81,11 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
@@ -95,22 +96,20 @@ class CategoryController extends AController
      * Creates a new StoreCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new StoreCategory();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -120,24 +119,22 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -147,11 +144,13 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -164,16 +163,16 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return StoreCategory the loaded model
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = StoreCategory::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }

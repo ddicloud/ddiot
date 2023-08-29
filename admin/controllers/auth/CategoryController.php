@@ -9,8 +9,10 @@
 namespace admin\controllers\auth;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
+use common\helpers\ResultHelper;
+use diandi\addons\models\StoreCategory;
 use diandi\admin\models\searchs\StoreCategory as StoreCategorySearch;
-use diandi\admin\models\StoreCategory;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -22,37 +24,23 @@ class CategoryController extends AController
 {
     public $modelClass = '';
 
-    public $modelSearchName = 'StoreCategorySearch';
+    public string $modelSearchName = 'StoreCategorySearch';
 
-    public $searchLevel = 0;
+    public int $searchLevel = 0;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
-            'actions' => [
-                'delete' => ['POST'],
-            ],
-        ];
 
-        return $behaviors;
-    }
 
     /**
      * Lists all StoreCategory models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new StoreCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return ResultHelper::json(200, '获取成功', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -63,13 +51,13 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-        return $this->render('view', [
+        return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -78,14 +66,14 @@ class CategoryController extends AController
      * Creates a new StoreCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new StoreCategory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->category_id]);
+            return ResultHelper::json(200, '获取成功',['view', 'id' => $model->category_id]);
         }
 
         $where['parent_id'] = 0;
@@ -93,7 +81,7 @@ class CategoryController extends AController
         $catedata = $model::find()->where($where)->asArray()->all();
         array_unshift($catedata, ['category_id' => 0, 'name' => '顶级分类']);
 
-        return $this->render('create', [
+        return  ResultHelper::json(200,'获取成功', [
             'model' => $model,
             'catedata' => $catedata,
         ]);
@@ -105,27 +93,20 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->category_id]);
+            return  ResultHelper::json(200,'获取成功',['view', 'id' => $model->category_id]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return  ResultHelper::json(500,$msg);
         }
-
-        $where['parent_id'] = 0;
-
-        $catedata = $model::find()->where($where)->asArray()->all();
-        array_unshift($catedata, ['category_id' => 0, 'name' => '顶级分类']);
-
-        return $this->render('update', [
-            'catedata' => $catedata,
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -134,15 +115,14 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        return  ResultHelper::json(200,'删除成功');
     }
 
     /**
@@ -155,12 +135,12 @@ class CategoryController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array
     {
         if (($model = StoreCategory::findOne($id)) !== null) {
-            return $model;
+            return ResultHelper::json(200, '获取成功',(array)$model);
         }
 
-        throw new NotFoundHttpException('请检查数据是否存在');
+        return ResultHelper::json(500, '请检查数据是否存在');
     }
 }
