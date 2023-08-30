@@ -42,7 +42,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     // 时间范围
     public int $timeLimit = 60;
 
-    public string $auth_key;
+    public string $auth_key = '';
 
     /**
      * {@inheritdoc}
@@ -196,7 +196,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * @param string $authKey
      *
-     * @return bool if auth key is valid for current user
+     * @return bool if an auth key is valid for current user
      */
     public function validateAuthKey($authKey): bool
     {
