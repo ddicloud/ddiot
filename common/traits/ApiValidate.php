@@ -10,10 +10,10 @@ trait ApiValidate {
     /**
      * 验证参数方法
      * @param array $rules 验证规则数组
-     * @return array|object[]|string[]|true
+     * @return array|object[]|string[]|bool
      * @throws InvalidConfigException
      */
-    public function validateParams(array $rules): array|true
+    public function validateParams(array $rules): array|bool
     {
         global $_GPC;
         $validator = DynamicModel::validateData($_GPC, $rules);
