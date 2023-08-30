@@ -8,17 +8,17 @@
  * @Last Modified time: 2023-07-11 13:22:41
  */
 
-namespace admin\modules\wechat\controllers;
+namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
-use admin\modules\wechat\services\DecryptService;
+use api\modules\wechat\services\DecryptService;
 use common\helpers\ResultHelper;
 
 class DecryptController extends AController
 {
     protected array $authOptional = ['msg'];
 
-    public function actionMsg()
+    public function actionMsg(): array
     {
         global $_GPC;
 

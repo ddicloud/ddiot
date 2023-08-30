@@ -11,7 +11,6 @@
 namespace api\controllers;
 
 use Yii;
-use api\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
@@ -23,7 +22,7 @@ class MapController extends AController
     protected array $authOptional = ['distance', 'citylist'];
 
 
-    public function actionDistance()
+    public function actionDistance(): array
     {
         $lng = Yii::$app->request->get('lng');
         $lat = Yii::$app->request->get('lat');
@@ -32,7 +31,7 @@ class MapController extends AController
     }
 
 
-    public function actionCitylist()
+    public function actionCitylist(): array
     {
 
         $region = new DdRegion();
@@ -41,11 +40,11 @@ class MapController extends AController
             $citylist   = $regionVal;
         } else {
             $list   =  $region->find()->select(['name', 'id', 'pid'])->asArray()->all();
-            foreach ($list as $key => &$value) {
+            foreach ($list as &$value) {
                 $value['value'] = $value['id'];
             }
-            $citylist = [];
-            $citylist = ArrayHelper::itemsMerge($list, $pid = 0, "id", 'pid', 'children');
+
+            $citylist = ArrayHelper::itemsMerge($list,0, "id", 'pid', 'children');
 
             Yii::$app->cache->set('region', $citylist);
         }

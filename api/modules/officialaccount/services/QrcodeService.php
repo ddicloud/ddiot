@@ -11,6 +11,7 @@ namespace api\modules\officialaccount\services;
 use common\models\Qrcode;
 use common\services\BaseService;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * Class QrcodeService.
@@ -20,9 +21,10 @@ use Yii;
 class QrcodeService extends BaseService
 {
     /**
-     * @return array|\yii\db\ActiveRecord|null
+     * @param array $where
+     * @return array|ActiveRecord|null
      */
-    public function findByWhere(array $where = [])
+    public function findByWhere(array $where = []): array|\yii\db\ActiveRecord|null
     {
         return Qrcode::find()
             ->filterWhere($where)
@@ -36,7 +38,7 @@ class QrcodeService extends BaseService
      *
      * @return int|mixed
      */
-    public function getSceneId()
+    public function getSceneId(): mixed
     {
         $qrCode = Qrcode::find()
             ->where(['model' => Qrcode::MODEL_TEM])
@@ -47,7 +49,7 @@ class QrcodeService extends BaseService
         return $qrCode ? $qrCode->scene_id + 1 : 10001;
     }
 
-    public function syncCreate(Qrcode $model)
+    public function syncCreate(Qrcode $model): Qrcode
     {
         $qrcode = Yii::$app->wechat->app->qrcode;
         if ($model->model == Qrcode::MODEL_TEM) {

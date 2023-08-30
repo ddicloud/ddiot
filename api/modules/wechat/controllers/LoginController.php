@@ -7,41 +7,19 @@
  * @Last Modified time: 2020-09-07 10:03:07
  */
 
-namespace admin\modules\wechat\controllers;
+namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
+use common\helpers\ResultHelper;
 use Yii;
 
 /**
- * login controller for the `wechat` module
+ * login controller for the `WeChat` module
  */
 class LoginController extends AController
 {
-    /**
-     * @SWG\Post(path="/wechat/login/index",
-     *     tags={"微信接口测试"},
-     *     summary="微信接口测试",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "微信接口测试"
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="images",
-     *      type="string",
-     *      description="脸部图片路径",
-     *      required=true,
-     *    ),
-     * @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *  )
-     * )
-     *
-     */
-    public function actionIndex()
+
+    public function actionIndex(): array
     {
         if (Yii::$app->wechat->isWechat && !Yii::$app->wechat->isAuthorized()) {
             return Yii::$app->wechat->authorizeRequired()->send();
@@ -52,6 +30,6 @@ class LoginController extends AController
 
         // 获取微信当前用户信息方法二
         Yii::$app->wechat->user;
-        return $this->render('index');
+        return ResultHelper::json(200,'获取成功');
     }
 }

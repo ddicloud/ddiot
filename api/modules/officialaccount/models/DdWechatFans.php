@@ -11,7 +11,7 @@
 namespace api\modules\officialaccount\models;
 
 use common\traits\ActiveQuery\StoreTrait;
-use Yii;
+
 
 /**
  * This is the model class for table "dd_wxapp_fans".
@@ -41,7 +41,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%wechat_fans}}';
     }
@@ -49,7 +49,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'openid', 'nickname', 'fans_info'], 'required'],
@@ -65,12 +65,12 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * 行为
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'create_time',
                 'createdAttribute' => 'update_time',
             ]
@@ -78,7 +78,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     }
 
     // 根据用户id获取信息
-    public static function getFansByUid($user_id)
+    public static function getFansByUid($user_id): ?DdWechatFans
     {
         return  self::findOne(['user_id' => $user_id]);
     }
@@ -86,7 +86,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'fanid' => '粉丝id',

@@ -27,7 +27,7 @@ class FansService extends BaseService
      *
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    public function follow($openid)
+    public function follow($openid): void
     {
         global $_GPC;
         // 获取用户信息
@@ -70,7 +70,7 @@ class FansService extends BaseService
      *
      * @param $openid
      */
-    public function unFollow($openid)
+    public function unFollow($openid): void
     {
         if ($fans = DdWechatFans::find()->where(['openid' => $openid])->findStore()->findBloc()->one()) {
             $fans->follow = DdWechatFans::FOLLOW_OFF;
@@ -92,7 +92,7 @@ class FansService extends BaseService
      * @throws \yii\db\Exception
      * @throws \yii\web\UnprocessableEntityHttpException
      */
-    public function syncAllOpenid()
+    public function syncAllOpenid(): array
     {
         global $_GPC;
         // 获取全部列表
@@ -150,7 +150,7 @@ class FansService extends BaseService
      *
      * @return array|\yii\db\ActiveRecord|null
      */
-    public function findByIdWithTag($fan_id)
+    public function findByIdWithTag($fan_id): array|\yii\db\ActiveRecord|null
     {
         return DdWechatFans::find()
             ->where(['id' => $fan_id])
@@ -165,7 +165,7 @@ class FansService extends BaseService
      *
      * @return array|\yii\db\ActiveRecord|null
      */
-    public function findByOpenId($openid)
+    public function findByOpenId($openid): array|\yii\db\ActiveRecord|null
     {
         return DdWechatFans::find()
             ->where(['openid' => $openid])
@@ -176,7 +176,7 @@ class FansService extends BaseService
     /**
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getListByOpenids(array $openids)
+    public function getListByOpenids(array $openids): array
     {
         return DdWechatFans::find()
             ->where(['in', 'openid', $openids])
@@ -191,7 +191,7 @@ class FansService extends BaseService
      *
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getFollowListByPage($page = 0)
+    public function getFollowListByPage(int $page = 0): array
     {
         return DdWechatFans::find()
             ->where(['follow' => DdWechatFans::FOLLOW_ON])
@@ -208,7 +208,7 @@ class FansService extends BaseService
      *
      * @return int|string
      */
-    public function getCountFollow()
+    public function getCountFollow(): int|string
     {
         return DdWechatFans::find()
             ->where(['follow' => DdWechatFans::FOLLOW_ON])
@@ -224,7 +224,7 @@ class FansService extends BaseService
      *
      * @return array|DdWechatFans|\yii\db\ActiveRecord|null
      */
-    protected function findModel($openid)
+    protected function findModel($openid): DdWechatFans|array|\yii\db\ActiveRecord|null
     {
         if (empty($openid) || empty(($model = DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->one()))) {
             return new DdWechatFans();

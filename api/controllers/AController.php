@@ -10,12 +10,14 @@
 namespace api\controllers;
 
 use common\components\sign\Sign;
+use common\components\sign\SignException;
 use common\filters\auth\CompositeAuth;
 use common\filters\auth\HttpBasicAuth;
 use common\filters\auth\HttpBearerAuth;
 use common\filters\auth\QueryParamAuth;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\base\ErrorException;
 use yii\base\InlineAction;
 use yii\base\InvalidConfigException;
 use yii\filters\RateLimiter;
@@ -50,11 +52,14 @@ class AController extends ActiveController
      */
     protected array $signOptional = ['*'];
 
-    protected array $optionsAction = []; //需要options的方法
+    //需要options的方法
 
     // 主要数据的模型
     public $modelClass = '';
 
+    /**
+     * @throws ErrorException
+     */
     public function behaviors(): array
     {
         /* 添加行为 */
@@ -62,34 +67,38 @@ class AController extends ActiveController
 
         // 速率限制
         $behaviors['rateLimiter'] = [
-            'class' => RateLimiter::className(),
+            'class' => RateLimiter::class,
             'enableRateLimitHeaders' => true,
             'errorMessage' => '访问接口太频繁',
         ];
 
         $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
+            'class' => CompositeAuth::class,
             'authMethods' => [
-                HttpBasicAuth::className(),
-                HttpBearerAuth::className(),
-                QueryParamAuth::className(),
+                HttpBasicAuth::class,
+                HttpBearerAuth::class,
+                QueryParamAuth::class,
             ],
             // 不进行认证判断方法
             'optional' => $this->authOptional,
         ];
 
         // 签名验证
-        $behaviors['sign'] = [
-            'class' => Sign::className(),
-            'key' => Sign::generateSecret(), // 密钥
-            'optional' => $this->signOptional,
-        ];
+        try {
+            $behaviors['sign'] = [
+                'class' => Sign::class,
+                'key' => Sign::generateSecret(), // 密钥
+                'optional' => $this->signOptional,
+            ];
+        } catch (SignException $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
 
         $urls = Yii::$app->settings->get('Weburl', 'urls');
 
         // 跨域支持
         $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::className(),
+            'class' => \yii\filters\Cors::class,
             'cors' => [
                 // restrict access to
                 'Origin' => explode(',', $urls),
@@ -123,7 +132,10 @@ class AController extends ActiveController
         return parent::beforeAction($action);
     }
 
-    public function createAction($id)
+    /**
+     * @throws ErrorException
+     */
+    public function createAction($id): ?object
     {
         if ($id === '') {
             $id = $this->defaultAction;
@@ -133,8 +145,9 @@ class AController extends ActiveController
             try {
                 return \Yii::createObject($actionMap[$id], [$id, $this]);
             } catch (InvalidConfigException $e) {
+                throw new ErrorException($e->getMessage(),400);
             }
-        } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && strpos($id, '--') === false && trim($id, '-') === $id) {
+        } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && !str_contains($id, '--') && trim($id, '-') === $id) {
             $methodName = 'action' . str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
 
             if (method_exists($this, $methodName)) {
@@ -156,7 +169,7 @@ class AController extends ActiveController
         return null;
     }
 
-    public function actions()
+    public function actions(): array
     {
         $actions = parent::actions();
 
@@ -196,10 +209,10 @@ class AController extends ActiveController
      *
      * @return array|bool|object[]|string[]
      */
-    public function actionCreate()
+    public function actionCreate(): array|bool
     {
         $model = new $this->modelClass();
-        $model->member_id = Yii::$app->user->identity->user_id;
+        $model->member_id = Yii::$app->user->identity->user_id??0;
         $model->attributes = Yii::$app->request->post();
 
         if (!$model->save()) {
@@ -238,11 +251,11 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    public function actionDelete($id): mixed
+    public function actionDelete($id): array
     {
         $Res = $this->findModel($id)->delete();
         if ($Res) {
@@ -259,11 +272,11 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException
      */
-    public function actionView($id): mixed
+    public function actionView($id): array
     {
         $detail = $this->findModel($id)->asArray()->one();
         return ResultHelper::json(200, '获取成功',$detail);

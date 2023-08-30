@@ -19,14 +19,14 @@ use Yii;
  */
 class MessageService extends BaseService
 {
-    protected $message;
+    protected string $message;
 
     /**
      * 群发消息.
      *
      * @var array
      */
-    protected $sendMethod = [
+    protected array $sendMethod = [
         'text' => 'sendText',
         'news' => 'sendNews',
         'voice' => 'sendVoice',
@@ -40,7 +40,7 @@ class MessageService extends BaseService
      *
      * @param $message
      */
-    public function setMessage($message)
+    public function setMessage($message): void
     {
         $this->message = $message;
     }
@@ -48,9 +48,9 @@ class MessageService extends BaseService
     /**
      * 获取微信消息.
      *
-     * @return mixed
+     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -62,7 +62,7 @@ class MessageService extends BaseService
      *
      * @throws \yii\web\NotFoundHttpException
      */
-    public function text()
+    public function text(): mixed
     {
         $message = Yii::$app->wechatService->message->getMessage();
         // 查询用户关键字匹配
@@ -85,7 +85,7 @@ class MessageService extends BaseService
      *
      * @throws \yii\web\NotFoundHttpException
      */
-    public function follow()
+    public function follow(): mixed
     {
         $replyDefault = Yii::$app->wechatService->replyDefault->findOne();
         if ($replyDefault->follow_content) {
@@ -98,14 +98,13 @@ class MessageService extends BaseService
     /**
      * 其他匹配回复.
      *
-     * @return bool|mixed
+     * @return bool
      *
-     * @throws \yii\web\NotFoundHttpException
      */
-    public function other()
+    public function other(): bool
     {
         $message = $this->getMessage();
-        $msgType = $message['MsgType'];
+//        $msgType = $message['MsgType'];
 
         return false;
     }

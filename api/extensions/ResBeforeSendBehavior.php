@@ -15,12 +15,12 @@ use yii\base\Behavior;
 
 class ResBeforeSendBehavior extends Behavior
 {
-    public $defaultCode = 500;
+    public int $defaultCode = 500;
 
-    public $defaultMsg = 'error';
+    public string $defaultMsg = 'error';
 
     // 重载events() 使得在事件触发时，调用行为中的一些方法
-    public function events()
+    public function events(): array
     {
         // 在 EVENT_BEFORE_SEND 事件触发时，调用成员函数 beforeSend
         return [
@@ -30,7 +30,7 @@ class ResBeforeSendBehavior extends Behavior
 
     // 注意 beforeSend 是行为的成员函数，而不是绑定的类的成员函数。
     // 还要注意，这个函数的签名，要满足事件 handler 的要求。
-    public function beforeSend($event)
+    public function beforeSend($event): true
     {
         try {
             $response = $event->sender;
@@ -57,15 +57,15 @@ class ResBeforeSendBehavior extends Behavior
                  */
                 $rData = $response->data;
                 $response->data = [
-                    'code' => isset($rData['error_code']) ? $rData['error_code'] : 0,
-                    'msg' => isset($rData['res_msg']) ? $rData['res_msg'] : $rData,
+                    'code' => $rData['error_code'] ?? 0,
+                    'msg' => $rData['res_msg'] ?? $rData,
                 ];
                 $response->statusCode = 200;
             }
         } catch (\Exception $e) {
             $response->data = [
-                'code'  => $this->defaultCode,
-                'msg'   => $this->defaultMsg,
+                'code'  => 400,
+                'msg'   => $e->getMessage(),
             ];
         }
         return true;

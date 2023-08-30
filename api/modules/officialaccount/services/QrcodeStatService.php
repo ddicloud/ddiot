@@ -28,7 +28,7 @@ class QrcodeStatService extends BaseService
      *
      * @return bool|mixed
      */
-    public function scan($message)
+    public function scan(array $message): mixed
     {
         // 关注事件
         if ($message['Event'] == 'subscribe' && !empty($message['Ticket'])) {
@@ -66,7 +66,7 @@ class QrcodeStatService extends BaseService
      * @param $openid
      * @param $type
      */
-    public function create($qrCode, $openid, $type)
+    public function create(Qrcode $qrCode, $openid, $type): void
     {
         $model = new QrcodeStat();
         $model->attributes = ArrayHelper::toArray($qrCode);

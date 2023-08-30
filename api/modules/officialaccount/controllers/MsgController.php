@@ -11,7 +11,7 @@ namespace api\modules\officialaccount\controllers;
 use api\controllers\AController;
 use api\modules\officialaccount\services\FansService;
 use api\modules\officialaccount\services\MessageService;
-use app\modules\officialaccount\components\Fans;
+use api\modules\officialaccount\components\Fans;
 use common\helpers\loggingHelper;
 use EasyWeChat\Factory;
 use Yii;
@@ -25,7 +25,7 @@ class MsgController extends AController
 
     public $defaultAction = 'event';
 
-    public function actionOpen()
+    public function actionOpen(): void
     {
         global $_GPC;
         $request = Yii::$app->request;
@@ -71,8 +71,9 @@ class MsgController extends AController
     /**
      * 只做微信公众号激活，不做其他消息处理.
      * https://dev.hopesfire.com/api/officialaccount/msg/event?store_id=81&bloc_id=32.
+     * @throws NotFoundHttpException
      */
-    public function actionEvent()
+    public function actionEvent(): void
     {
         global $_GPC;
 
@@ -88,14 +89,14 @@ class MsgController extends AController
                 $Res = Fans::verifyToken($request->get('signature'), $request->get('timestamp'), $request->get('nonce'));
                 if ($Res) {
                     loggingHelper::writeLog('officialaccount', 'actionIndex', '签名验证成功', [
-                        'Res' => $Res,
+                        'Res' => true,
                     ]);
                     $response = $app->server->serve();
                     $response->send();
                     exit;
                 }
                 loggingHelper::writeLog('officialaccount', 'actionIndex', '签名验证失败', [
-                    'Res' => $Res,
+                    'Res' => false,
                 ]);
                 throw new NotFoundHttpException('签名验证失败.');
                 break;
@@ -112,17 +113,11 @@ class MsgController extends AController
                             'MsgType' => $message['MsgType'],
                         ]);
 
-                        switch ($message['MsgType']) {
-                            case 'event': // '收到事件消息';
-                                $reply = $this->event($message);
-                                break;
-                            case 'text': //  '收到文字消息';
-                                $reply = $MessageService->text();
-                                break;
-                            default: // ... 其它消息(image、voice、video、location、link、file ...)
-                                $reply = $MessageService->other();
-                                break;
-                        }
+                        $reply = match ($message['MsgType']) {
+                            'event' => $this->event($message),
+                            'text' => $MessageService->text(),
+                            default => $MessageService->other(),
+                        };
 
                         loggingHelper::writeLog('officialaccount', 'services', '历史消息内容记录', [
                             'msg' => $MessageService->getMessage(),
@@ -164,7 +159,7 @@ class MsgController extends AController
      * @throws NotFoundHttpException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    protected function event($message)
+    protected function event($message): mixed
     {
         Yii::$app->params['msgHistory']['event'] = $message['Event'];
         $FansService = new FansService();

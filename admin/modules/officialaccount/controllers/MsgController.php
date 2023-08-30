@@ -11,7 +11,7 @@ namespace api\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
 use Yii;
-use app\modules\officialaccount\components\Fans;
+use api\modules\officialaccount\components\Fans;
 use common\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 

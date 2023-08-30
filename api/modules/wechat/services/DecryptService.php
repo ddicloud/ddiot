@@ -7,9 +7,9 @@
  * @Last Modified time: 2023-07-11 16:29:40
  */
 
-namespace admin\modules\wechat\services;
+namespace api\modules\wechat\services;
 
-use admin\modules\wechat\models\DdWxappFans;
+use api\modules\wechat\models\DdWxappFans;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;
@@ -18,7 +18,10 @@ class DecryptService extends BaseService
 {
     /**
      * 小程序通过code解密数据
-     * @param array $data
+     * @param $encryptedData
+     * @param $iv
+     * @param $code
+     * @return array|object[]|string[]|void
      * @date 2022-08-09
      * @author Radish
      */
@@ -36,18 +39,16 @@ class DecryptService extends BaseService
             return ResultHelper::json(400, 'code is requred');
         }
 
-        if ($encryptedData && $iv && $code) {
-            $miniProgram = \Yii::$app->wechat->miniProgram;
-            $user = $miniProgram->auth->session($code);
-            loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密准备', $user);
-            if (isset($user['session_key'])) {
-                $decryptData = $miniProgram->encryptor->decryptData($user['session_key'], $iv, urldecode($encryptedData));
-                loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密结果', $decryptData);
+        $miniProgram = \Yii::$app->wechat->miniProgram;
+        $user = $miniProgram->auth->session($code);
+        loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密准备', $user);
+        if (isset($user['session_key'])) {
+            $decryptData = $miniProgram->encryptor->decryptData($user['session_key'], $iv, urldecode($encryptedData));
+            loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密结果', $decryptData);
 
-                return $decryptData;
-            } else {
-                return ResultHelper::json(400, 'session_key 不存在', $user);
-            }
+            return $decryptData;
+        } else {
+            return ResultHelper::json(400, 'session_key 不存在', $user);
         }
     }
 }

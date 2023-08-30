@@ -16,7 +16,7 @@ use common\services\common\QrcodeService;
 use Yii;
 
 /**
- * Default controller for the `wechat` module.
+ * Default controller for the `WeChat` module.
  */
 class QrcodeController extends AController
 {
@@ -25,16 +25,16 @@ class QrcodeController extends AController
     /**
      * Renders the index view for the module.
      *
-     * @return string
+     * @return array|object[]|string|string[]
      */
-    public function actionGetqrcode()
+    public function actionGetqrcode(): array|string
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/officialaccount/Qrcode'.date('ymd').'.log');
         
         FileHelper::writeLog($logPath, '0002');
         
-        $member_id = Yii::$app->user->identity->member_id;
+        $member_id = Yii::$app->user->identity->member_id??0;
         $option  = $_GPC['option'];
         $aging  = $_GPC['aging'];//1临时，2永久
         
@@ -42,7 +42,7 @@ class QrcodeController extends AController
         $expire_seconds = 0;
         FileHelper::writeLog($logPath, json_encode($app));
         FileHelper::writeLog($logPath, json_encode($aging));
-
+        $result = [];
         if($aging == 1){//临时
             $expire_seconds = 6 * 24 * 3600;
             $result = $app->qrcode->temporary($option,$expire_seconds);
@@ -58,6 +58,9 @@ class QrcodeController extends AController
         if($Qrcode){
             $codeUrl = $app->qrcode->url($result['ticket']);
             return ResultHelper::json(200, '获取成功', $codeUrl);
+        }else{
+
+            return ResultHelper::json(200, '获取失败');
         }
     }
 }

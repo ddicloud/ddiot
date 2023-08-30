@@ -9,7 +9,6 @@
 
 namespace api\models;
 
-use common\helpers\ResultHelper;
 use common\models\DdMemberGroup;
 use common\models\enums\CodeStatus;
 use Yii;
@@ -38,17 +37,17 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     const STATUS_ACTIVE = 0; //正常
 
     // 次数限制
-    public $rateLimit;
+    public array $rateLimit;
 
     // 时间范围
-    public $timeLimit = 60;
+    public int $timeLimit = 60;
 
-    public $auth_key;
+    public string $auth_key;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%api_access_token}}';
     }
@@ -56,19 +55,19 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'create_time',
                 'createdAttribute' => 'update_time',
             ],
         ];
     }
 
-    public function getRateLimit($request, $action)
+    public function getRateLimit($request, $action): array
     {
         $this->rateLimit = Yii::$app->params['api']['rateLimit'];
         $this->timeLimit = Yii::$app->params['api']['timeLimit'];
@@ -76,7 +75,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         return [$this->rateLimit, $this->timeLimit];
     }
 
-    public function loadAllowance($request, $action)
+    public function loadAllowance($request, $action): array
     {
         $allowance = Yii::$app->cache->get($this->getCacheKey('api_rate_allowance'));
         $timestamp = Yii::$app->cache->get($this->getCacheKey('api_rate_timestamp'));
@@ -88,7 +87,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         return [$allowance, $timestamp];
     }
 
-    public function saveAllowance($request, $action, $allowance, $timestamp)
+    public function saveAllowance($request, $action, $allowance, $timestamp): void
     {
         Yii::$app->cache->set($this->getCacheKey('api_rate_allowance'), $allowance, $this->timeLimit);
         Yii::$app->cache->set($this->getCacheKey('api_rate_timestamp'), $timestamp, $this->timeLimit);
@@ -100,7 +99,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['group_id', 'status', 'allowance', 'allowance_updated_at', 'create_time', 'updated_time', 'login_num'], 'integer'],
@@ -119,7 +118,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @throws UnauthorizedHttpException
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): mixed
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         // 判断验证token有效性是否开启

@@ -7,18 +7,18 @@
  * @Last Modified time: 2023-07-25 15:39:23
  */
 
-namespace app\modules\wechat\components;
+namespace api\modules\wechat\components;
 
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
-use admin\modules\wechat\models\DdWxappFans;
-use admin\modules\wechat\services\DecryptService;
+use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\services\api\RegisterLevel;
-use function GuzzleHttp\json_decode;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use Yii;
 use yii\base\BaseObject;
 
@@ -27,13 +27,14 @@ class Fans extends BaseObject
     /**
      * 注册fans数据.
      *
-     * @param int|null post
+     * @param array|null $users post
      *
-     * @return string
+     * @return array|object[]|string|string[]
      *
-     * @throws NotFoundHttpException
+     * @throws ErrorException
+     * @throws Exception
      */
-    public function signup($users)
+    public function signup(?array $users): array|string
     {
         global $_GPC;
 
@@ -169,22 +170,21 @@ class Fans extends BaseObject
         }
     }
 
-    public function checkByopenid($openid)
+    public function checkByopenid($openid): array|\yii\db\ActiveRecord|null
     {
         global $_GPC;
         return DdWxappFans::find()->where(['openid' => $openid, 'store_id' => $_GPC['store_id']])->asArray()->one();
     }
 
-    public function fansByopenid($openid)
+    public function fansByopenid($openid): array|\yii\db\ActiveRecord|null
     {
         global $_GPC;
 
         return DdWxappFans::find()->where(['openid' => $openid, 'store_id' => $_GPC['store_id']])->asArray()->one();
     }
 
-    public function removeEmoji($nickname)
+    public function removeEmoji($nickname): array|string|null
     {
-        $clean_text = '';
         // Match Emoticons
         $regexEmoticons = '/[\x{1F600}-\x{1F64F}]/u';
         $clean_text = preg_replace($regexEmoticons, '', $nickname);
@@ -199,38 +199,33 @@ class Fans extends BaseObject
         $clean_text = preg_replace($regexMisc, '', $clean_text);
         // Match Dingbats
         $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
-        $clean_text = preg_replace($regexDingbats, '', $clean_text);
-
-        return $clean_text;
+        return preg_replace($regexDingbats, '', $clean_text);
     }
 
-    public function filterEmoji($str)
+    public function filterEmoji($str): array|string|null
     {
-        $str = preg_replace_callback(
+        return preg_replace_callback(
             '/./u',
             function (array $match) {
                 return strlen($match[0]) >= 4 ? '' : $match[0];
             },
             $str
         );
-
-        return $str;
     }
 
     /**
+     * @param $data
      * @param string $key 密钥
      *
      * @return string
      */
-    public static function encrypt($data, $key)
+    public static function encrypt($data, string $key): string
     {
         $string = base64_encode(json_encode($data));
         // openssl_encrypt 加密不同Mcrypt，对秘钥长度要求，超出16加密结果不变
         $data = openssl_encrypt($string, 'AES-128-ECB', $key, OPENSSL_RAW_DATA);
 
-        $data = strtolower(bin2hex($data));
-
-        return $data;
+        return strtolower(bin2hex($data));
     }
 
     /**
@@ -239,7 +234,7 @@ class Fans extends BaseObject
      *
      * @return string
      */
-    public static function decrypt($string, $key)
+    public static function decrypt(string $string, string $key): string
     {
         $decrypted = openssl_decrypt(hex2bin($string), 'AES-128-ECB', $key, OPENSSL_RAW_DATA);
 

@@ -21,45 +21,36 @@ if (in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     defined('YII_ENV') or define('YII_ENV', 'prod');
 }
 
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+require __DIR__ . '/../../common/config/bootstrap.php';
+require __DIR__ . '/../../api/config/bootstrap.php';
+
+$config = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/../../common/config/main.php',
+    require __DIR__ . '/../../common/config/main-local.php',
+    require __DIR__ . '/../../api/config/main.php',
+    require __DIR__ . '/../../api/config/main-local.php'
+);
+
 /**
- * @return void
- * @throws InvalidConfigException
+ * 打印.
  */
-function extracted(): void
+function p(...$array): void
 {
-    require __DIR__ . '/../../vendor/autoload.php';
-    require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
-    require __DIR__ . '/../../common/config/bootstrap.php';
-    require __DIR__ . '/../../api/config/bootstrap.php';
+    echo '<pre>';
 
-    $config = yii\helpers\ArrayHelper::merge(
-        require __DIR__ . '/../../common/config/main.php',
-        require __DIR__ . '/../../common/config/main-local.php',
-        require __DIR__ . '/../../api/config/main.php',
-        require __DIR__ . '/../../api/config/main-local.php'
-    );
-
-    /**
-     * 打印.
-     */
-    function p(...$array)
-    {
-        echo '<pre>';
-
-        if (count($array) == 1) {
-            print_r($array[0]);
-        } else {
-            print_r($array);
-        }
-
-        echo '</pre>';
+    if (count($array) == 1) {
+        print_r($array[0]);
+    } else {
+        print_r($array);
     }
 
-    (new yii\web\Application($config))->run();
+    echo '</pre>';
 }
 
 try {
-    extracted();
+    (new yii\web\Application($config))->run();
 } catch (InvalidConfigException $e) {
-    throw new \yii\base\Exception($e->getMessage());
+    throw new \yii\base\ErrorException($e->getMessage(),400);
 }

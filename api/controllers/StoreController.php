@@ -11,17 +11,9 @@
 namespace api\controllers;
 
 use Yii;
-use api\controllers\AController;
-use yii\filters\VerbFilter;
-use common\components\Upload;
-use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
-use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
-use diandi\admin\models\BlocStore;
-use diandi\admin\models\searchs\StoreCategory;
-use yii\helpers\Json;
-use yii\rest\ActiveController;
+
 
 
 class StoreController extends AController
@@ -29,9 +21,8 @@ class StoreController extends AController
     public $modelClass = '';
     protected array $authOptional = ['*'];
     
-    public function actionInfo()
+    public function actionInfo(): array
     {
-        global $_GPC;
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
         
@@ -45,7 +36,7 @@ class StoreController extends AController
     }
 
       
-    public function actionDetailinfo()
+    public function actionDetailinfo(): array
     {
         global $_GPC;
         $store_id = $_GPC['store_id'];
@@ -60,7 +51,7 @@ class StoreController extends AController
 
     }
 
-    public function actionCate()
+    public function actionCate(): array
     {
         global $_GPC;
         $parent_id = $_GPC['parent_id'];
@@ -70,7 +61,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionList()
+    public function actionList(): array
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/StoreService/list/'.date('Y/md').'.log');
@@ -89,7 +80,7 @@ class StoreController extends AController
             'longitude'=>$longitude,
             'latitude'=>$latitude,
             '_GPC'=>$_GPC,
-            'member_id' => Yii::$app->user->identity->member_id
+            'member_id' => Yii::$app->user->identity->member_id??0
         ]));
         
         $list = Yii::$app->service->commonStoreService->list($category_pid,$category_id,$longitude,$latitude,$keywords,$label_id,$page,$pageSize);

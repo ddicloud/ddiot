@@ -28,7 +28,7 @@ class module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/officialaccount/payparameters' . date('ymd') . '.log');
@@ -50,7 +50,7 @@ class module extends \yii\base\Module
 
         // 遍历子模块独立配置的组件部分，并继承应用程序的组件配置
         foreach ($config['components'] as $k => $component) {
-            if (isset($component['class']) && isset($components[$k]) == false) {
+            if (isset($component['class']) && !isset($components[$k])) {
                 continue;
             }
             $config['components'][$k] = array_merge($components[$k], $component);
@@ -62,7 +62,7 @@ class module extends \yii\base\Module
         $input = file_get_contents('php://input');
         FileHelper::writeLog($logPath, '入口配置回来的值' . $input);
         FileHelper::writeLog($logPath, '入口配置回来的值0-5' . substr($input, 0, 5));
-        if (substr($input, 0, 5) == '<xml>') {
+        if (str_starts_with($input, '<xml>')) {
             FileHelper::writeLog($logPath, '准备处理');
             $xmldata = StringHelper::getXml($input);
             FileHelper::writeLog($logPath, 'xml解析后' . $xmldata['trade_type'] . '/' . json_encode($xmldata));
@@ -183,9 +183,7 @@ class module extends \yii\base\Module
         $params = Yii::$app->params;
 
         foreach ($params as $key => $value) {
-            if (isset($config['params'][$key])) {
-                $config['params'][$key] = $config['params'][$key];
-            } else {
+            if (!isset($config['params'][$key])) {
                 $config['params'][$key] = $value;
             }
         }

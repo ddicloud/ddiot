@@ -30,7 +30,7 @@ class ResBeforeSendBehavior extends Behavior
 
     // 注意 beforeSend 是行为的成员函数，而不是绑定的类的成员函数。
     // 还要注意，这个函数的签名，要满足事件 handler 的要求。
-    public function beforeSend($event)
+    public function beforeSend($event): true
     {
         try {
             $response = $event->sender;

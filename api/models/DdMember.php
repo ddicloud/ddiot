@@ -16,6 +16,8 @@ use common\helpers\HashidsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdMemberAccount;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 
 /**
@@ -45,7 +47,7 @@ class DdMember extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%member}}';
     }
@@ -53,13 +55,13 @@ class DdMember extends ActiveRecord
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
-            ServiceBehavior::className(),
+            ServiceBehavior::class,
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],
@@ -70,7 +72,7 @@ class DdMember extends ActiveRecord
      * @param bool  $insert
      * @param array $changedAttributes
      */
-    public function afterSave($insert, $changedAttributes)
+    public function afterSave($insert, $changedAttributes): void
     {
         if ($insert) {
             empty($this->invitation_code) && DdMember::updateAll(['invitation_code' => HashidsHelper::encode($this->member_id)], ['member_id' => $this->member_id]);
@@ -83,7 +85,7 @@ class DdMember extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAccesstoken()
+    public function getAccesstoken(): \yii\db\ActiveQuery
     {
         return $this->hasOne(DdApiAccessToken::class, ['member_id' => 'member_id']);
     }
@@ -93,7 +95,7 @@ class DdMember extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAccount()
+    public function getAccount(): \yii\db\ActiveQuery
     {
         return $this->hasOne(DdMemberAccount::class, ['member_id' => 'member_id']);
     }
@@ -101,9 +103,10 @@ class DdMember extends ActiveRecord
     /**
      * Signs user up.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return array|bool|object[]|string[]
+     * @throws ErrorException
      */
-    public function signup($username, $mobile, $password)
+    public function signup($username, $mobile, $password): array|bool
     {
         $logPath = Yii::getAlias('@runtime/DdMember/signup/' . date('ymd') . '.log');
 
@@ -142,10 +145,15 @@ class DdMember extends ActiveRecord
         $num = rand(1, 10);
         $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
 
-        $this->setPassword($password);
-        $this->generateAuthKey();
-        $this->generateEmailVerificationToken();
-        $this->generatePasswordResetToken();
+        try {
+            $this->setPassword($password);
+            $this->generateAuthKey();
+            $this->generateEmailVerificationToken();
+            $this->generatePasswordResetToken();
+        } catch (ErrorException|Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
+
         if ($this->save()) {
             $member_id = $this->getId();
             // 更新用户邀请码
@@ -186,9 +194,7 @@ class DdMember extends ActiveRecord
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'api';
-            $userinfo = $service->AccessTokenService->getAccessToken($this, 1);
-
-            return $userinfo;
+            return $service->AccessTokenService->getAccessToken($this, 1);
         } else {
             $msg = ErrorsHelper::getModelError($this);
             FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
@@ -200,11 +206,11 @@ class DdMember extends ActiveRecord
     /**
      * 生成accessToken字符串.
      *
-     * @return string
+     * @return string|null
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
-    public function generateAccessToken()
+    public function generateAccessToken(): ?string
     {
         $this->access_token = Yii::$app->security->generateRandomString();
 
@@ -212,9 +218,9 @@ class DdMember extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): ?DdMember
     {
         return static::findOne(['member_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -224,21 +230,22 @@ class DdMember extends ActiveRecord
      *
      * @param string $username
      *
-     * @return static|null
+     * @return array|ActiveRecord
      */
-    public static function findByUsername($username)
+    public static function findByUsername(string $username): array|ActiveRecord
     {
         return static::find()
-            ->where(['and', ['or', " username = '{$username}'", "mobile='{$username}'"], 'status =' . self::STATUS_ACTIVE])
+            ->where(['and', ['or', " username = '$username'", "mobile='$username'"], 'status =' . self::STATUS_ACTIVE])
             ->one();
     }
 
     /**
      * Finds user by password reset token.
      *
+     * @param $mobile
      * @return static|null
      */
-    public static function findByMobile($mobile)
+    public static function findByMobile($mobile): null|static
     {
         return static::findOne([
             'mobile' => $mobile,
@@ -253,7 +260,7 @@ class DdMember extends ActiveRecord
      *
      * @return static|null
      */
-    public static function findByPasswordResetToken($token)
+    public static function findByPasswordResetToken(string $token): null|static
     {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
@@ -272,7 +279,7 @@ class DdMember extends ActiveRecord
      *
      * @return static|null
      */
-    public static function findByVerificationToken($token)
+    public static function findByVerificationToken(string $token): null|static
     {
         return static::findOne([
             'verification_token' => $token,
@@ -287,7 +294,7 @@ class DdMember extends ActiveRecord
      *
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token)
+    public static function isPasswordResetTokenValid(string $token): bool
     {
         if (empty($token)) {
             return false;
@@ -300,7 +307,7 @@ class DdMember extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
     public function getId()
     {
@@ -308,17 +315,17 @@ class DdMember extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
         return $this->auth_key;
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
         return $this->getAuthKey() === $authKey;
     }
@@ -330,7 +337,7 @@ class DdMember extends ActiveRecord
      *
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
+    public function validatePassword(string $password): bool
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
@@ -339,8 +346,9 @@ class DdMember extends ActiveRecord
      * Generates password hash from password and sets it to the model.
      *
      * @param string $password
+     * @throws Exception
      */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
@@ -348,31 +356,45 @@ class DdMember extends ActiveRecord
     /**
      * Generates "remember me" authentication key.
      */
-    public function generateAuthKey()
+    public function generateAuthKey(): void
     {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+        try {
+            $this->auth_key = Yii::$app->security->generateRandomString();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Generates new password reset token.
+     * @throws ErrorException
      */
-    public function generatePasswordResetToken()
+    public function generatePasswordResetToken(): void
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        try {
+            $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Generates new token for email verification.
+     * @throws ErrorException
      */
-    public function generateEmailVerificationToken()
+    public function generateEmailVerificationToken(): void
     {
-        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        try {
+            $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Removes password reset token.
      */
-    public function removePasswordResetToken()
+    public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;
     }
@@ -380,7 +402,7 @@ class DdMember extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['gender', 'address_id', 'group_id', 'organization_id', 'create_time', 'update_time'], 'integer'],
@@ -390,7 +412,7 @@ class DdMember extends ActiveRecord
         ];
     }
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
         // 去掉一些包含敏感信息的字段
@@ -402,7 +424,7 @@ class DdMember extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'member_id' => '用户id',

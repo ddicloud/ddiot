@@ -7,38 +7,21 @@
  * @Last Modified time: 2020-09-07 10:03:22
  */
 
-namespace admin\modules\wechat\controllers;
+namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
-use backend\controllers\BaseController;
 use Yii;
 
 /**
- * login controller for the `wechat` module
+ * login controller for the `WeChat` module
  */
 class SendmsgController extends AController
 {
     public $modelClass = '';
 
 
-    /**
-     * @SWG\Post(path="/wechat/sendmsg/send",
-     *     tags={"微信消息"},
-     *     summary="发送订单通知",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "发送订单通知"
-     *     ),
-     * @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *  )
-     * )
-     *
-     */
-    public function actionSend()
+
+    public function actionSend(): void
     {
 
         // 支付金额

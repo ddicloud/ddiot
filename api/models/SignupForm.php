@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-08 19:03:02
  */
 
-namespace frontend\models;
+namespace api\models;
 
 use Yii;
 use yii\base\Model;
@@ -17,15 +17,15 @@ use common\models\User;
  */
 class SignupForm extends Model
 {
-    public $username;
-    public $email;
-    public $password;
+    public string $username;
+    public string $email;
+    public string $password;
 
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['username', 'trim'],
@@ -47,9 +47,9 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return bool|null whether the creating new account was successful and email was sent
      */
-    public function signup()
+    public function signup(): ?bool
     {
         if (!$this->validate()) {
             return null;
@@ -69,7 +69,7 @@ class SignupForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user)
+    protected function sendEmail($user): bool
     {
         return Yii::$app
             ->mailer

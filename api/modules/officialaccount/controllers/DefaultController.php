@@ -9,19 +9,20 @@
 namespace api\modules\officialaccount\controllers;
 
 use api\controllers\AController;
+use common\helpers\ResultHelper;
 
 /**
- * Default controller for the `wechat` module.
+ * Default controller for the `WeChat` module.
  */
 class DefaultController extends AController
 {
     /**
      * Renders the index view for the module.
      *
-     * @return string
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
-        return $this->render('index');
+        return ResultHelper::json(200,'获取成功');
     }
 }

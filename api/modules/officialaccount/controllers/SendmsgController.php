@@ -21,24 +21,7 @@ class SendmsgController extends AController
     public $modelClass = '';
 
 
-    /**
-     * @SWG\Post(path="/officialaccount/sendmsg/send",
-     *     tags={"微信消息"},
-     *     summary="发送订单通知",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "发送订单通知"
-     *     ),
-     * @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *  )
-     * )
-     *
-     */
-    public function actionSend()
+    public function actionSend(): void
     {
 
         // 支付金额

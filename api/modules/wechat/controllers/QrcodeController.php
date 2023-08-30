@@ -7,12 +7,14 @@
  * @Last Modified time: 2023-03-20 18:56:04
  */
 
-namespace admin\modules\wechat\controllers;
+namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
 use common\helpers\FileHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
+use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Yii;
 
 /**
@@ -26,9 +28,11 @@ class QrcodeController extends AController
     /**
      * Renders the index view for the module.
      *
-     * @return string
+     * @return array|object[]|string|string[]
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
-    public function actionGetqrcode()
+    public function actionGetqrcode(): array|string
     {
         global $_GPC;
         $path = $_GPC['path'];
@@ -37,7 +41,7 @@ class QrcodeController extends AController
 
         $module_name = $_GPC['module_name'];
         if (!$module_name) {
-            return ResultHelper::json(400, '缺少参数module_name', []);
+            return ResultHelper::json(400, '缺少参数module_name');
         }
         $baseInfo = Yii::$app->service->commonMemberService->baseInfo();
 
@@ -63,15 +67,19 @@ class QrcodeController extends AController
 
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             $Res = $response->saveAs($directory, $filename);
+            if(!$Res){
+                return ResultHelper::json(400, '获取失败',$Res);
+            }
+            $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['member_id'].'/'.$filename);
+
+            return ResultHelper::json(200, '获取成功', [
+                'codePath' => $codePath,
+                'response' => $response,
+                'filename' => $filename,
+                'fans' => $baseInfo['fans'],
+            ]);
         }
 
-        $codePath = ImageHelper::tomedia('wxappcode/'.$module_name.'/'.$bloc_id.'/'.$store_id.'/'.$baseInfo['member_id'].'/'.$filename);
 
-        return ResultHelper::json(200, '获取成功', [
-            'codePath' => $codePath,
-            'response' => $response,
-            'filename' => $filename,
-            'fans' => $baseInfo['fans'],
-        ]);
     }
 }

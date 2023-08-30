@@ -33,7 +33,7 @@ $config = yii\helpers\ArrayHelper::merge(
 /**
  * 打印.
  */
-function p(...$array)
+function p(...$array): void
 {
     echo '<pre>';
 
@@ -45,4 +45,9 @@ function p(...$array)
 
     echo '</pre>';
 }
-(new yii\web\Application($config))->run();
+
+try {
+    (new yii\web\Application($config))->run();
+} catch (\yii\base\InvalidConfigException $e) {
+    throw new \yii\base\ErrorException($e->getMessage(),400);
+}

@@ -11,14 +11,13 @@
 namespace api\controllers;
 
 use Yii;
-use api\controllers\AController;
 use common\components\FileUpload\Upload;
+use yii\base\ErrorException;
+use yii\base\ExitException;
 use yii\filters\VerbFilter;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use Faker\Provider\Uuid;
-use yii\helpers\Json;
-use yii\rest\ActiveController;
 
 
 class UploadController extends AController
@@ -29,25 +28,28 @@ class UploadController extends AController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['POST'],
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             \Yii::$app->response->setStatusCode(204);
-            \Yii::$app->end(0);
+            try {
+                \Yii::$app->end();
+            } catch (ExitException $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
         return $behaviors;
     }
 
-    public function actionImages()
+    public function actionImages(): array
     {
-        global $_GPC;
         try {
             $model = new Upload();
             $info = $model->upImage();
@@ -57,14 +59,13 @@ class UploadController extends AController
         }
     }
 
-    public function actionBaseimg()
+    public function actionBaseimg(): array
     {
         global $_GPC;
 
         header('Content-type:text/html;charset=utf-8');
         $base64_image_content       = $_GPC['images'];
 
-        $member_id = Yii::$app->user->identity->member_id;
 
         if (!$base64_image_content) return ['code' => 404, 'msg' => '数据不能为空'];
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
@@ -77,7 +78,7 @@ class UploadController extends AController
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
                 mkdir($new_file, 0700);
             }
-            $new_file = $new_file . Uuid::uuid() . ".{$type}";
+            $new_file = $new_file . Uuid::uuid() . ".$type";
             // base64解码后保存图片
             if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
 
@@ -90,5 +91,7 @@ class UploadController extends AController
                 return ['code' => 4041, 'message' => '文件保存失败', 'data' => null];
             }
         }
+        return ['code' => 4041, 'message' => '文件保存失败', 'data' => null];
+
     }
 }

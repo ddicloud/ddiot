@@ -7,7 +7,7 @@
  * @Last Modified time: 2023-07-11 14:31:32
  */
 
-namespace admin\modules\wechat\controllers;
+namespace api\modules\wechat\controllers;
 
 use api\controllers\AController;
 use common\helpers\ArrayHelper;
@@ -20,97 +20,16 @@ use Yii;
 use yii\helpers\Json;
 
 /**
- * Default controller for the `wechat` module.
+ * Default controller for the `WeChat` module.
  */
 class BasicsController extends AController
 {
     protected array $authOptional = ['signup', 'notify'];
     public $modelClass = 'api\modules\wechat\models\DdWxappFans';
 
-    /**
-     * @SWG\Post(path="/wechat/basics/signup",
-     *     tags={"微信基础接口"},
-     *     summary="微信接口测试",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "微信接口测试"
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="code",
-     *      type="string",
-     *      description="微信授权code",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="user_id",
-     *      type="string",
-     *      in="query",
-     *      description="用户id",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="avatarUrl",
-     *      type="string",
-     *      in="query",
-     *      description="头像",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="nickname",
-     *      type="string",
-     *      in="query",
-     *      description="昵称",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="gender",
-     *      type="string",
-     *      in="query",
-     *      description="性别",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="country",
-     *      type="string",
-     *      in="query",
-     *      description="国家",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="city",
-     *      type="string",
-     *      in="query",
-     *      description="城市",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="province",
-     *      type="string",
-     *      in="query",
-     *      description="省份",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="openid",
-     *      type="string",
-     *      in="query",
-     *      description="openId",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="unionid",
-     *      type="string",
-     *      in="query",
-     *      description="unionId",
-     *      required=false
-     *    ),
-     *
-     * )
-     */
-    public function actionSignup()
+
+    public function actionSignup(): array
     {
-        global $_GPC;
         $users = Yii::$app->request->post();
         $code = $users['code'];
 
@@ -127,7 +46,7 @@ class BasicsController extends AController
             if (key_exists('errcode', $user)) {
                 FileHelper::writeLog($logPath, '登录日志：请求错误信息' . json_encode($user));
 
-                return ResultHelper::json(401, $user['errmsg'], []);
+                return ResultHelper::json(401, $user['errmsg']);
             }
             $users['session_key'] = $user['session_key'];
             $users['openid'] = $user['openid'];
@@ -140,66 +59,9 @@ class BasicsController extends AController
         return ResultHelper::json(200, '登录成功', $res);
     }
 
-    /**
-     * @SWG\Post(path="/wechat/basics/payparameters",
-     *     tags={"微信支付"},
-     *     summary="获取支付参数",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "获取支付参数"
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="access-token",
-     *      type="string",
-     *      description="access-token",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="openid",
-     *      type="string",
-     *      in="formData",
-     *      description="openid",
-     *      required=false
-     *    ),
-     *    @SWG\Parameter(
-     *      name="trade_type",
-     *      type="string",
-     *      in="formData",
-     *      default="JSAPI",
-     *      enum={"JSAPI","NATIVE","APP","MWEB","MICROPAY"},
-     *      description="支付类型:JSAPI-js支付/NATIVE-Native支付/APP--app支付/MWEB--h5支付/MICROPAY--付款码支付",
-     *      required=true
-     *    ),
-     *   @SWG\Parameter(
-     *      name="body",
-     *      type="string",
-     *      in="formData",
-     *      description="订单名称",
-     *      required=true
-     *    ),
-     *    @SWG\Parameter(
-     *      name="out_trade_no",
-     *      type="string",
-     *      in="formData",
-     *      description="订单编号",
-     *      required=true
-     *    ),
-     *    @SWG\Parameter(
-     *      name="total_fee",
-     *      type="string",
-     *      in="formData",
-     *      description="支付总金额",
-     *      required=true
-     *    ),
-     * )
-     */
-    public function actionPayparameters()
-    {
-        global $_GPC;
 
-        $bloc_id = Yii::$app->params['bloc_id'];
-        $store_id = Yii::$app->params['store_id'];
+    public function actionPayparameters(): array
+    {
         $data = Yii::$app->request->post();
         if (empty(Yii::$app->params['wechatPaymentConfig']['mch_id'])) {
             return ResultHelper::json(401, '请检查商户号配置');
@@ -210,7 +72,6 @@ class BasicsController extends AController
         }
 
         // 生成订单
-        $domain = Yii::$app->request->hostInfo;
         $orderData = [
             'openid' => $data['openid'],
             'spbill_create_ip' => Yii::$app->request->userIP,
@@ -243,7 +104,7 @@ class BasicsController extends AController
     /**
      * 支付回调.
      */
-    public function actionNotify()
+    public function actionNotify(): void
     {
         $logPath = Yii::getAlias('@runtime/wechat/notify/' . date('ymd') . '.log');
         FileHelper::writeLog($logPath, '开始回调1' . json_encode(Yii::$app->wechat->payment));
@@ -285,7 +146,7 @@ class BasicsController extends AController
     }
 
     // 退款回调
-    public function actionRefundednotify()
+    public function actionRefundednotify(): void
     {
         $logPath = Yii::getAlias('@runtime/wechat/refundednotify/' . date('ymd') . '.log');
         FileHelper::writeLog($logPath, '开始回调' . json_encode(Yii::$app->wechat->payment));
