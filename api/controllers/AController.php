@@ -9,6 +9,7 @@
 
 namespace api\controllers;
 
+use ApiValidate;
 use common\components\sign\Sign;
 use common\components\sign\SignException;
 use common\filters\auth\CompositeAuth;
@@ -34,6 +35,7 @@ use yii\web\NotFoundHttpException;
  */
 class AController extends ActiveController
 {
+    use  ApiValidate;
     /**
      * 不用进行登录验证的方法
      * 例如： ['index', 'update', 'create', 'view', 'delete']
