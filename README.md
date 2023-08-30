@@ -1,75 +1,176 @@
-[![official JetBrains project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub) [![Latest Stable Version](https://poser.pugx.org/jetbrains/phpstorm-workshop/v/stable.png)](https://packagist.org/packages/jetbrains/phpstorm-workshop) [![Total Downloads](https://poser.pugx.org/jetbrains/phpstorm-workshop/downloads.png)](https://packagist.org/packages/jetbrains/phpstorm-workshop) [![License](https://poser.pugx.org/jetbrains/phpstorm-workshop/license.png)](https://packagist.org/packages/jetbrains/phpstorm-workshop)
 
-# PhpStorm Workshop
+# 欢迎使用店滴 cms(ddiot)
+![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F479ed84d544cfcb0f5a7e7be2f5f60c.jpg)
 
-In these materials, you'll learn about many of the features and productivity tools available in [PhpStorm](http://www.jetbrains.com/phpstorm). Examples are navigation, editing, inspections, live templates, refactoring, tools like Composer and the HTTP client, and many more. It's virtually impossible to cover every option and feature in PhpStorm, but we're providing a number of practical exercises on how we can do our daily work as PHP developers.
+店滴云，让经营场所，更智能。围绕茶室、酒店、健身房、公寓、出租房等经营性场所进行物联网改造。同时支持多种物联网通信协议，开放智能门锁，智能开关，智能手环的sdk供开发者使用。
 
-We'll also cover a vast amount of keyboard shortcuts to make working with PhpStorm more efficient. Other IntelliJ-based IDE's use the same keyboard shortcuts, so if you know how to work with PhpStorm, you'll know how to work with WebStorm, RubyMine, PyCharm, IntelliJ IDEA and more. A [cheat sheet is available online](http://bit.ly/1Ni0XJ0) and is also included in the workshop download.
 
-This workshop is self-paced, meaning you can work your way through exercises on your own, whenever and wherever you want. Exercises come as a PhpStorm project in which every file is a new exercise that may contain code and tips to get things done.
+## 官方地址
+[店滴云官网](https://www.dandicloud.com/)
+[官方开源库](https://toscode.gitee.com/wayfirer)
+[cms源码](https://toscode.gitee.com/wayfirer/ddicms)
+#### 开发者参与
 
-## Prerequisites
+## qq群
 
-* Docker for Mac, Docker for Windows or Docker (Linux) 1.13+. See [Docker documentation](https://docs.docker.com/install/) for installation instructions for your operating system. 
-* PhpStorm 2016.3+
+：823429313，点击可直接加入：[开发者交流群](https://jq.qq.com/?_wv=1027&k=4d2Rl2lc)
 
-## Getting the Project
+## 微信公众号
+![在这里插入图片描述](https://diandi-1255369109.cos.ap-nanjing.myqcloud.com/cms%2F8edc20c70e46975e7520a8961414295.jpg)
+# 特性
+- 使用稳定的 YII 框架，优化处理开发过程，开发体验如 tp 一样顺滑。
+- 支持多层权限管控，路由权限，数据权限，菜单权限，集团权限，商户权限，扩展功能权限随意搭配调度
+- 基于 swoole 协程化，定时任务调度，im 聊天环境支持，系统接口支持协程,应对高并发
+- 开源百度 ai 接口对接，完成人脸库维护，人脸库创建，人脸库在线识别，人脸会员建立
+- 多模块可安装，便于迅速扩展业务，支持横向纵向双向扩展业务需求
+- 后台支持多种开发模式，php 混合开发，element-ui 的 vue 开发模式，纯 html 的传统开发都支持
+- 表单多样，除 yii 自身的表单组件，系统还对表单做了丰富，支持一句话配置万能表单
+- gii代码自动生成，包括扩展模块，数据库模型，检索模型，控制器和接口都可以自动生成
+- element-ui+uniapp+店滴cms，中后台，多端兼容，数据处理全部支持且开源
 
-There are several ways to get started with the PhpStorm workshop materials:
+# 环境准备：
 
-* Create a new PhpStorm Workshop Project in PhpStorm
+    php>=7.3
+    redis
+    git 工具下载：https://git-scm.com/downloads
+    composer https://www.phpcomposer.com/
+    composer建议使用阿里镜像 https://developer.aliyun.com/composer
 
-* Create a new project with Composer. Note that you can also create a new project in PhpStorm: use the *Composer* project type and search for "jetbrains/phpstorm-workshop"
+# 第一步：git 下载代码
 
-    `php composer.phar create-project jetbrains/phpstorm-workshop -s dev`
+```
+git clone https://toscode.gitee.com/wayfirer/ddicms.git
 
-* Clone the project from GitHub
+```
 
-    `git clone https://github.com/JetBrains/phpstorm-workshop.git`
-    
-    `git checkout docker`
+# 第二步：更新 composer 扩展
 
-* Download the ZIP
+```
+cd 你的文件路径
+composer update
 
-    `wget https://github.com/JetBrains/phpstorm-workshop/archive/docker.zip`
-    
-## Getting Started
+```
 
-Most exercises not related to the code editor require having Docker containers running. 
+# 第三步：建立数据库并完成配置
 
-Before you start:
+```
+cd common\config
 
-1. Open *Settings/Preferences | Build, Execution, Deployment | Docker* and select how to connect to the Docker daemon:
+vim common\config\main-local.php
 
-    * Windows:  
-        * Select *TCP socket*.
-        * Set *Engine API URL* to *tcp://localhost:2375*.
-        * Leave the *Certificates folder* field empty.
-            
-        Make sure to enable *Expose daemon on tcp://localhost:2375 without TLS* in the *General* section of Docker for Windows settings.
-        
-    * macOS: 
-        
-        * Select *Docker for Mac*
-    
-    * Linux:
-        * Select *Unix socket*
+```
 
-2. Update `XDEBUG_CONFIG` variable in `docker-compose.yml` with the value depending on your operating system. This is necessary for Web Debugging.
-    
-    * Windows/macOS: use `host.docker.internal`, which will automatically resolve to the internal address of the host Docker is running on.
-    * Linux: execute `hostname` in Terminal and use the returned value.
+```
+<?php
 
-3. Uncomment an appropriate line for `sftp` service in the same `docker-compose.yml`. This is necessary for Deployment to work correctly.
+/**
+ * @Author: Wang Chunsheng 2192138785@qq.com
+ * @Date:   2020-03-12 20:12:31
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2021-04-09 18:25:50
+ */
 
-4. In the same `docker-compose.yml`, click the *Run* icon next to `services:` in the editor gutter to start all required Docker containers. Alternatively, you can open the built-in PhpStorm terminal from *View | Tool Windows | Terminal* and execute the `docker-compose up` command.
+return [
+    'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=netos',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+            'attributes'  => [
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_EMULATE_PREPARES  => false,
+            ],
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
+    ],
+    'language' => 'zh-CN',
 
-There are some things to know about the project:
+];
 
-* The project can be opened as is in PhpStorm. We've included configurations for PHP Remote Interpreter, Database, Deployment Server, PHP Web Debug, PHPUnit and Behat.
-* All numbered folders contain exercises that you can work on. Simply open the numbered files one by one and follow the comments in the file. Most exercises are self-contained, others build on previous exercises.
-* Some of the exercises (like this one) are in *Markdown* format. You can read these files easier by toggling *View* to *Show Preview Only* in the top-right corner.
-* The `PhpStorm Reference Card.pdf` is the PhpStorm keymap. The latest version can always be found on the [PhpStorm website](http://bit.ly/1Ni0XJ0).
 
-## Open Source and Contribution
-The workshop is Open Source, licensed under the Apache 2 license. If you would like to contribute to the workshop materials, please feel free to fork the repo and send us a pull request. Or if you have a comment, question, or suggestion for improvements, please [raise an issue](https://github.com/JetBrains/phpstorm-workshop/issues).
+make distclean
+
+phpize && \
+./configure  --with-php-config=/www/server/php/74/bin/php-config  \
+--enable-openssl \
+--with-openssl-dir  \
+--enable-swoole-curl  \
+--enable-http2 && \
+make && sudo make install
+
+
+
+
+```
+
+# Nginx 部署配置
+
+首先解析网站到 frontend\web，然后配置 nginx 如下：
+
+```
+server {
+        listen        80;
+        server_name  www.ai.com;
+        root   "*/firetech/frontend";
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS,DELETE,PUT;
+
+        location /api {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/api/(.*)$ /api/index.php last;
+            }
+            if (!-f $request_filename){
+                set $rule_0 1$rule_0;
+            }
+        }
+
+        location /admin {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/admin/(.*)$ /admin/index.php last;
+            }
+        }
+
+        location / {
+            proxy_http_version 1.1;
+            proxy_set_header Connection "keep-alive";
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header SERVER_NAME $server_name;
+            if (!-e $request_filename) {
+                proxy_pass http://127.0.0.1:9501;
+            }
+        }
+}
+
+
+```
+# 特别鸣谢
+
+感谢以下的项目，排名不分先后
+
+- Yii：http://www.yiiframework.com
+
+- EasyWechat：https://www.easywechat.com
+
+- AdminLTE：https://adminlte.io
+
+- Vue: https://vuejs.org/
+
+- vue-ele-form: https://github.com/dream2023/vue-ele-form
+
+- element-ui: https://element.eleme.cn/
+
+- 百度ai:https://ai.baidu.com/

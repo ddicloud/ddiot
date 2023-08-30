@@ -6,4 +6,4 @@
  * @Last Modified time: 2020-11-17 20:00:05
  */
  
-Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
+Yii::setAlias('@api', dirname(__DIR__, 2) . '/api');
