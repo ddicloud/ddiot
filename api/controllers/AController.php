@@ -9,7 +9,6 @@
 
 namespace api\controllers;
 
-use ApiValidate;
 use common\components\sign\Sign;
 use common\components\sign\SignException;
 use common\filters\auth\CompositeAuth;
@@ -17,6 +16,7 @@ use common\filters\auth\HttpBasicAuth;
 use common\filters\auth\HttpBearerAuth;
 use common\filters\auth\QueryParamAuth;
 use common\helpers\ResultHelper;
+use common\traits\ApiValidate;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\InlineAction;

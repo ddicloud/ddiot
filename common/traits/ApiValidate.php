@@ -1,5 +1,7 @@
 <?php
 
+namespace common\traits;
+
 use yii\base\DynamicModel;
 use yii\base\InvalidConfigException;
 
