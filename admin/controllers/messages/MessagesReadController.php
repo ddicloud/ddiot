@@ -14,7 +14,6 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -70,17 +69,16 @@ class MessagesReadController extends AController
     {
         $model = new HubMessagesRead();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -94,16 +92,14 @@ class MessagesReadController extends AController
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -127,13 +123,13 @@ class MessagesReadController extends AController
      * Finds the HubMessagesRead model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return array the loaded model
+     * @return HubMessagesRead|array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = HubMessagesRead::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

@@ -357,7 +357,7 @@ class StoreController extends AController
             'extras' => $this->extras,
         ]);
         if (($model = $BlocStore::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

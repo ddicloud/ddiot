@@ -6,4 +6,4 @@
  * @Last Modified time: 2021-04-22 01:31:53
  */
  
-Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
+Yii::setAlias('@admin', dirname(__DIR__, 2) . '/admin');

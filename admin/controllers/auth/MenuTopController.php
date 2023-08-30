@@ -21,7 +21,7 @@ use yii\web\NotFoundHttpException;
 /**
  * MenuTopController implements the CRUD actions for MenuTop model.
  */
-class MenutopController extends AController
+class MenuTopController extends AController
 {
     public string $modelSearchName = 'MenuTopSearch';
 
@@ -52,7 +52,6 @@ class MenutopController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -69,23 +68,21 @@ class MenutopController extends AController
      */
     public function actionCreate(): array
     {
-        global $_GPC;
 
         $model = new MenuTop();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            if (!empty($data['module_name'])) {
-                $data['mark'] = $data['module_name'];
-            }
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-
-                return ResultHelper::json(400, $msg);
-            }
+        $data = Yii::$app->request->post();
+        if (!empty($data['module_name'])) {
+            $data['mark'] = $data['module_name'];
         }
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $msg);
+        }
+
     }
 
     /**
@@ -96,27 +93,25 @@ class MenutopController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
-        global $_GPC;
 
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
-            if (!empty($data['module_name'])) {
-                $data['mark'] = $data['module_name'];
-            }
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+        $data = Yii::$app->request->post();
+        if (!empty($data['module_name'])) {
+            $data['mark'] = $data['module_name'];
         }
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $msg);
+        }
+
     }
 
     /**
@@ -144,14 +139,12 @@ class MenutopController extends AController
      *
      * @param int $id
      *
-     * @return MenuTop the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array|MenuTop
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = MenuTop::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

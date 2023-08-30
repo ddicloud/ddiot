@@ -67,9 +67,9 @@ class GroupController extends AController
         $model = $this->getGroups($id);
         $manager = Configs::authManager();
 
-        $list = $manager->getAuths($model->item_id, 3);
+        $list = $manager->getAuths($model->item_id);
         $all = [];
-        $assigneds = $availables = [];
+        $assigneds = [];
         $assigned = $list['assigned'];
 
         $available = $list['available'];
@@ -88,7 +88,7 @@ class GroupController extends AController
 
         foreach ($available as $key => $value) {
             $value = ArrayHelper::toArray($value);
-            foreach ($value as $k => &$val) {
+            foreach ($value as &$val) {
                 $val['key'] = $val['id'];
                 $val['label'] = $val['name'];
             }
@@ -104,7 +104,7 @@ class GroupController extends AController
         foreach ($assigned as $key => &$value) {
             $value = ArrayHelper::toArray($value);
 
-            foreach ($value as $k => &$val) {
+            foreach ($value as &$val) {
                 $val['key'] = $val['id'];
                 $val['label'] = $val['name'];
                 $assigneds[$key][] = $val['item_id'];
@@ -122,7 +122,7 @@ class GroupController extends AController
         ]);
     }
 
-    public function actionChange()
+    public function actionChange(): array
     {
         global $_GPC;
         $id = $_GPC['id'];
@@ -136,11 +136,13 @@ class GroupController extends AController
             return ResultHelper::json(400, '参数items不能为空');
         }
 
-        $model = $this->getGroups($id);
+        try {
+            $model = $this->getGroups($id);
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(500,$e->getMessage());
+        }
 
-        $success = 0;
-
-        if (key_exists('route', $items) && !empty($items)) {
+        if (key_exists('route', $items)) {
             $list = $items['route'];
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
@@ -189,7 +191,7 @@ class GroupController extends AController
             }
 
             return ResultHelper::json(200, '操作成功');
-        } elseif (key_exists('permission', $items) && !empty($items)) {
+        } elseif (key_exists('permission', $items)) {
             $list = $items['permission'];
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
@@ -238,7 +240,7 @@ class GroupController extends AController
             }
 
             return ResultHelper::json(200, '操作成功');
-        } elseif (key_exists('role', $items) && !empty($items)) {
+        } elseif (key_exists('role', $items)) {
             $list = $items['role'];
             $group = UserGroup::findOne($id);
             $group->item_id = $group->id;
@@ -265,6 +267,8 @@ class GroupController extends AController
 
             return ResultHelper::json(200, '操作成功');
         }
+        return ResultHelper::json(200, '操作成功');
+
     }
 
     /**
@@ -273,8 +277,9 @@ class GroupController extends AController
      * @param string $id
      *
      * @return array
+     * @throws NotFoundHttpException
      */
-    public function actionAssign($id)
+    public function actionAssign(string $id): array
     {
         $manager = Configs::authManager();
 
@@ -324,7 +329,7 @@ class GroupController extends AController
 
         Yii::$app->getResponse()->format = 'json';
 
-        $items = $manager->getAuths($model['name'], 3);
+        $items = $manager->getAuths($model['name']);
 
         return array_merge($items, ['success' => $success]);
     }
@@ -335,8 +340,9 @@ class GroupController extends AController
      * @param string $id
      *
      * @return array
+     * @throws NotFoundHttpException
      */
-    public function actionRemove($id): array
+    public function actionRemove(string $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = $this->getGroups($id);

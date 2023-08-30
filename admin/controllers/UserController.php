@@ -30,7 +30,10 @@ use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\searchs\User as ModelsUser;
 use diandi\admin\models\User as AdminModelsUser;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\data\Pagination;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 class UserController extends AController
@@ -41,7 +44,7 @@ class UserController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionUserlist()
+    public function actionUserlist(): array
     {
         $searchModel = new ModelsUser([
             'module_name' => 'sys',
@@ -55,7 +58,7 @@ class UserController extends AController
         ]);
     }
 
-    public function actionSignup()
+    public function actionSignup(): array
     {
         $User = new User();
         $data = Yii::$app->request->post();
@@ -66,38 +69,48 @@ class UserController extends AController
         $invitation_code = trim($data['invitation_code']);
 
         if (empty($username)) {
-            return ResultHelper::json(401, '用户名不能为空', []);
+            return ResultHelper::json(401, '用户名不能为空');
         }
         if (empty($mobile)) {
-            return ResultHelper::json(401, '手机号不能为空', []);
+            return ResultHelper::json(401, '手机号不能为空');
         }
         if (empty($password)) {
-            return ResultHelper::json(401, '密码不能为空', []);
+            return ResultHelper::json(401, '密码不能为空');
         }
 
         $res = $User->signup($username, $mobile, $email, $password, 1, $invitation_code);
 
-        return ResultHelper::json(200, '注册成功', $res);
+        return ResultHelper::json(200, '注册成功', (array)$res);
     }
 
-    public function actionLogin()
+    /**
+     * @throws Exception
+     */
+    public function actionLogin(): array
     {
-        global $_GPC;
 
         \YII::beginProfile('actionLogin');
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $userinfo = $model->login()) {
-            return ResultHelper::json(200, '登录成功', $userinfo);
-        } else {
-            $message = ErrorsHelper::getModelError($model);
+        try {
+            if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $userinfo = $model->login()) {
+                \YII::endProfile('actionLogin');
 
-            return ResultHelper::json('401', $message);
+                return ResultHelper::json(200, '登录成功', (array)$userinfo);
+            } else {
+                $message = ErrorsHelper::getModelError($model);
+                \YII::endProfile('actionLogin');
+
+                return ResultHelper::json('401', $message);
+            }
+        } catch (InvalidConfigException $e) {
+            \YII::endProfile('actionLogin');
+
+            throw new Exception($e->getMessage(),400);
         }
-        \YII::endProfile('actionLogin');
     }
 
-    public function actionRepassword()
+    public function actionRepassword(): array
     {
         $model = new PasswdForm();
         if ($model->load(Yii::$app->request->post(), '')) {
@@ -106,7 +119,7 @@ class UserController extends AController
 
                 return ResultHelper::json(404, $res);
             }
-            /* @var $member \common\models\backend\Member */
+
             $data = Yii::$app->request->post();
             $mobile = $data['mobile'];
             $settings = Yii::$app->settings;
@@ -135,8 +148,8 @@ class UserController extends AController
 
                 return ResultHelper::json(200, '修改成功', $userinfo);
             }
-
-            return ResultHelper::json(404, $this->analyErr($member->getFirstErrors()));
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(404,$msg);
         } else {
             $res = ErrorsHelper::getModelError($model);
 
@@ -144,16 +157,15 @@ class UserController extends AController
         }
     }
 
-    public function actionUserinfo()
+    public function actionUserinfo(): array
     {
         global $_GPC;
 
         $mobile = $_GPC['mobile'] ?? '';
-        $is_addons = $_GPC['is_addons'] ?? '';
 
         $data = Yii::$app->request->post();
 
-        $user_id = Yii::$app->user->identity->user_id;
+        $user_id = Yii::$app->user->identity->user_id??0;
 
         if (!empty($mobile)) {
             $userobj = User::findByMobile($data['mobile']);
@@ -217,11 +229,14 @@ class UserController extends AController
         $res = Yii::$app->service->adminAccessTokenService->editInfo($use_id, $fields);
 
         if ($res) {
-            return ResultHelper::json(200, '绑定手机号成功', []);
+            return ResultHelper::json(200, '绑定手机号成功');
+        }else{
+            return ResultHelper::json(401, '绑定失败');
+
         }
     }
 
-    public function actionEdituserinfo()
+    public function actionEdituserinfo(): array
     {
         $model = new EdituserinfoForm();
         if ($model->load(Yii::$app->request->post(), '')) {
@@ -232,10 +247,10 @@ class UserController extends AController
             }
             $userinfo = $model->edituserinfo();
             if ($userinfo) {
-                return ResultHelper::json(200, '修改成功', $userinfo);
+                return ResultHelper::json(200, '修改成功', (array)$userinfo);
             }
-
-            return ResultHelper::json(404, $this->analyErr($model->getFirstErrors()));
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(404, $msg);
         } else {
             $res = ErrorsHelper::getModelError($model);
 
@@ -243,10 +258,9 @@ class UserController extends AController
         }
     }
 
-    public function actionForgetpass()
+    public function actionForgetpass(): array
     {
         global $_GPC;
-        $data = Yii::$app->request->post();
         $mobile = $_GPC['mobile'];
         $password = $_GPC['password'];
         $repassword = $_GPC['repassword'];
@@ -290,13 +304,13 @@ class UserController extends AController
             // 清除验证码
             Yii::$app->cache->delete($mobile . '_code');
 
-            return ResultHelper::json(200, '修改成功', []);
+            return ResultHelper::json(200, '修改成功');
         } else {
-            return ResultHelper::json(401, '修改失败', []);
+            return ResultHelper::json(401, '修改失败');
         }
     }
 
-    public function actionSendcode()
+    public function actionSendcode(): array
     {
         global $_GPC;
         $type = $_GPC['type'];
@@ -311,7 +325,7 @@ class UserController extends AController
         $user = User::find()->where($where)->asArray()->one();
 
         if (empty($user) && $type === 'forgetpass') {
-            return ResultHelper::json(401, '手机号不存在', []);
+            return ResultHelper::json(401, '手机号不存在');
         }
 
         if (empty($mobile)) {
@@ -322,7 +336,7 @@ class UserController extends AController
         $member = ModelsDdMember::find()->where($where)->asArray()->one();
 
         if ($member && $type == 'register') {
-            return ResultHelper::json(401, '手机号已经存在', []);
+            return ResultHelper::json(401, '手机号已经存在');
         }
 
         $code = random_int(1000, 9999);
@@ -332,7 +346,7 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', $res);
     }
 
-    public function actionRefresh()
+    public function actionRefresh(): array
     {
         global $_GPC;
 
@@ -353,7 +367,7 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', ['access_token' => $access_token]);
     }
 
-    public function actionFeedback()
+    public function actionFeedback(): array
     {
         global $_GPC;
 
@@ -369,15 +383,15 @@ class UserController extends AController
         ];
 
         if ($contacts->load($data, '') && $contacts->save()) {
-            return ResultHelper::json(200, '反馈成功', []);
+            return ResultHelper::json(200, '反馈成功');
         } else {
             $errors = ErrorsHelper::getModelError($contacts);
 
-            return ResultHelper::json(401, $errors, []);
+            return ResultHelper::json(401, $errors);
         }
     }
 
-    public function actionAddons()
+    public function actionAddons(): array
     {
         global $_GPC;
         $id = $_GPC['id'];
@@ -412,10 +426,13 @@ class UserController extends AController
 
                 return ResultHelper::json(401, reset($errors));
             }
+        }else {
+            return ResultHelper::json(401, '用户状态不正确');
+
         }
     }
 
-    public function actionUpstatus()
+    public function actionUpstatus(): array
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
@@ -446,20 +463,20 @@ class UserController extends AController
         $status = $_GPC['status'];
 
         if (empty($username)) {
-            return ResultHelper::json(401, '用户名不能为空', []);
+            return ResultHelper::json(401, '用户名不能为空');
         }
         if (empty($mobile)) {
-            return ResultHelper::json(401, '手机号不能为空', []);
+            return ResultHelper::json(401, '手机号不能为空');
         }
         if (empty($email)) {
-            return ResultHelper::json(401, '邮箱不能为空', []);
+            return ResultHelper::json(401, '邮箱不能为空');
         }
         if (empty($password)) {
-            return ResultHelper::json(401, '密码不能为空', []);
+            return ResultHelper::json(401, '密码不能为空');
         }
 
         if (strlen($password) < 6) {
-            return ResultHelper::json(401, '密码至少6位', []);
+            return ResultHelper::json(401, '密码至少6位');
         }
 
         $model = new User();
@@ -467,7 +484,7 @@ class UserController extends AController
         $res = $model->signup($username, $mobile, $email, $password, $status);
 
         if ($res) {
-            return ResultHelper::json(200, '添加成功', $res);
+            return ResultHelper::json(200, '添加成功', (array)$res);
         } else {
             $msg = ErrorsHelper::getModelError($model);
 
@@ -475,7 +492,7 @@ class UserController extends AController
         }
     }
 
-    public function actionSetinfo()
+    public function actionSetinfo(): array
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
@@ -534,7 +551,7 @@ class UserController extends AController
         ]);
     }
 
-    public function actionDefaultInfo()
+    public function actionDefaultInfo(): array
     {
         global $_GPC;
 
@@ -548,7 +565,7 @@ class UserController extends AController
         ]);
     }
 
-    public function actionDefault()
+    public function actionDefault(): array
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];
@@ -622,7 +639,16 @@ class UserController extends AController
             $AdminModelsUser->status = $AdminModelsUser['status'];
             $AdminModelsUser->bloc_id = (int) $bloc_id;
             $AdminModelsUser->store_id = (int) $store_id;
-            $AdminModelsUser->update();
+            try {
+                $AdminModelsUser->update();
+            } catch (StaleObjectException $e) {
+
+                return ResultHelper::json(400, $e->getMessage());
+
+            } catch (\Throwable $e) {
+                return ResultHelper::json(400, $e->getMessage());
+
+            }
         }
 
         return ResultHelper::json(200, '设置成功');
@@ -643,9 +669,8 @@ class UserController extends AController
         }
     }
 
-    public function actionConfig()
+    public function actionConfig(): array
     {
-        global $_GPC;
 
         $user_id = Yii::$app->user->identity->user_id;
         $UserBloc = UserBloc::find()->where(['user_id' => $user_id, 'is_default' => 1, 'status' => 1])->asArray()->one();
@@ -664,7 +689,7 @@ class UserController extends AController
         return ResultHelper::json(200, '设置成功', $data);
     }
 
-    public function actionLog()
+    public function actionLog(): array
     {
         global $_GPC;
         $user_id = $_GPC['user_id'];

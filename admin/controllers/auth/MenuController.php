@@ -19,7 +19,7 @@ use diandi\admin\components\Helper;
 use diandi\admin\models\Menu;
 use diandi\admin\models\searchs\Menu as MenuSearch;
 use Yii;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -46,14 +46,13 @@ class MenuController extends AController
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
         $DdAddons = new DdAddons();
-        $addons = [];
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
         $addons['sys'] = '系统';
         $dataProvider = HelpersArrayHelper::objectToarray($dataProvider);
 
         $parentMent = $dataProvider['allModels'];
 
-        foreach ($parentMent as $key => &$value) {
+        foreach ($parentMent as &$value) {
             $module_name = !empty($addons[$value['module_name']]) ? $addons[$value['module_name']] : '';
             $value['addons'] = $module_name;
             if ($value['type'] == 1) {
@@ -71,6 +70,7 @@ class MenuController extends AController
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
+            'addons' => $addons,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -124,7 +124,7 @@ class MenuController extends AController
     {
         $addons = DdAddons::find()->asArray()->all();
         $parentMent = Menu::find()->where(['is_sys' => 'system'])->asArray()->all();
-        $parentMenu = HelpersArrayHelper::itemsMergeDropDown(HelpersArrayHelper::itemsMerge($parentMent, 0, 'id', 'parent', '-'), 'id', 'name');
+        $parentMenu = HelpersArrayHelper::itemsMergeDropDown(HelpersArrayHelper::itemsMerge($parentMent, 0, 'id', 'parent'), 'id', 'name');
 
         return ResultHelper::json(200, '获取成功', [
             'addons' => $addons,
@@ -201,20 +201,20 @@ class MenuController extends AController
 
     }
 
-    public function actionUpdateFiles()
+    public function actionUpdateFiles(): array
     {
-        if (Yii::$app->request->isPost) {
-            $pk = Yii::$app->request->post('pk');
-            $id = unserialize(base64_decode($pk));
 
-            $model = $this->findModel($id);
+        $pk = Yii::$app->request->post('pk');
+        $id = unserialize(base64_decode($pk));
 
-            $files = Yii::$app->request->post('name');
-            $value = Yii::$app->request->post('value');
-            $Res = $model->updateAll([$files => $value], ['id' => $id]);
+        $model = $this->findModel($id);
 
-            return true;
-        }
+        $files = Yii::$app->request->post('name');
+        $value = Yii::$app->request->post('value');
+        $Res = $model->updateAll([$files => $value], ['id' => $id]);
+
+        return ResultHelper::json(200, '上传成功',$Res);
+
     }
 
     /**
@@ -227,7 +227,15 @@ class MenuController extends AController
      */
     public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        } catch (\Throwable $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        }
         Helper::invalidate();
 
         return ResultHelper::json(200, '删除成功');
@@ -239,12 +247,12 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|Menu
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = Menu::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         } else {
             return ResultHelper::json(500, '请检查数据是否存在');
         }

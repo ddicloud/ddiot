@@ -10,18 +10,20 @@ namespace admin\actions;
 
 use common\helpers\ResultHelper;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii2mod\settings\actions\SettingsAction;
+use yii2mod\settings\events\FormEvent;
 
 class AdminSettingsAction extends SettingsAction
 {
     /**
      * Renders the settings form.
      *
-     * @return string
+     * @return array|object[]|string|string[]|\yii\web\Response
+     * @throws InvalidConfigException
      */
-    public function run()
+    public function run(): array|\yii\web\Response|string
     {
-        /* @var $model Model */
         $model = Yii::createObject($this->modelClass);
         $event = Yii::createObject(['class' => FormEvent::class, 'form' => $model]);
 

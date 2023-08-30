@@ -26,7 +26,7 @@ class SettingController extends AController
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'website' => [
@@ -45,7 +45,7 @@ class SettingController extends AController
         ];
     }
 
-    public function actionConfig()
+    public function actionConfig(): array
     {
         global $_GPC;
         $settings = Yii::$app->settings;
@@ -58,7 +58,7 @@ class SettingController extends AController
         return ResultHelper::json(200, '设置成功', $info);
     }
 
-    public function actionInfo()
+    public function actionInfo(): array
     {
         $settings = Yii::$app->settings;
         $settings->invalidateCache();

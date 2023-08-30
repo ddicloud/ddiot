@@ -18,6 +18,7 @@ use diandi\addons\models\DdAddons;
 use diandi\addons\models\searchs\DdAddons as DdAddonsSearch;
 use diandi\addons\services\addonsService;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -45,7 +46,6 @@ class AddonsController extends AController
      */
     public function actionList(): array
     {
-        $module_names = [];
         $AddonsUser = new AddonsUser();
 
         // 根据用户获取应用权限
@@ -106,7 +106,6 @@ class AddonsController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -155,7 +154,6 @@ class AddonsController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -179,7 +177,8 @@ class AddonsController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -193,12 +192,12 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|DdAddons
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdAddons::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

@@ -10,7 +10,7 @@ namespace admin\controllers\auth;
 
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
-use Yii;
+
 
 /**
  * DefaultController.

@@ -33,35 +33,35 @@ class EnumsController extends AController
     public $modelClass = '';
     protected array $authOptional = ['*'];
 
-    public $bloc_id;
+    public int $bloc_id;
 
-    public $extras = [];
+    public array $extras = [];
 
     public int $searchLevel = 0;
 
     /**
      * 获取用户授权的商户和公司数据-级联数据
-     * @return void
+     * @return array
      * @date 2023-03-04
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function actionStoresbloc()
+    public function actionStoresbloc(): array
     {
         $list = StoreService::getStoresAndBloc();
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionBlocs()
+    public function actionBlocs(): array
     {
         $list = StoreService::getAuthBlos();
-        return ResultHelper::json(200, '获取成功', $list);
+        return ResultHelper::json(200, '获取成功', (array)$list);
     }
 
-    public function actionStores()
+    public function actionStores(): array
     {
         $list = StoreService::getAuthStores();
-        return ResultHelper::json(200, '获取成功', $list);
+        return ResultHelper::json(200, '获取成功', (array)$list);
     }
 }

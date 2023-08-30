@@ -16,6 +16,8 @@ use common\helpers\ResultHelper;
 use common\models\MemberOrganization;
 use common\models\searchs\MemberOrganizationSearch;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -32,14 +34,13 @@ class OrganizationController extends AController
      *
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new MemberOrganizationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $list = [];
         $dataProviders = ArrayHelper::objectToarray($dataProvider);
         $parentMent = $dataProviders['allModels'];
-        foreach ($parentMent as $key => &$value) {
+        foreach ($parentMent as &$value) {
             $value['id'] = $value['group_id'];
             $value['label'] = $value['item_name'];
         }
@@ -59,9 +60,8 @@ class OrganizationController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findModel($id);
 
@@ -74,21 +74,20 @@ class OrganizationController extends AController
      *
      * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new MemberOrganization();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -99,13 +98,11 @@ class OrganizationController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
@@ -115,7 +112,7 @@ class OrganizationController extends AController
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
@@ -126,11 +123,18 @@ class OrganizationController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        } catch (\Throwable $e) {
+            return ResultHelper::json(500, $e->getMessage());
+
+        }
 
         return ResultHelper::json(200, '删除成功');
     }
@@ -141,14 +145,13 @@ class OrganizationController extends AController
      *
      * @param int $id
      *
-     * @return MemberOrganization the loaded model
+     * @return array|ActiveRecord the loaded model
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = MemberOrganization::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

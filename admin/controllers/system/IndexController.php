@@ -35,63 +35,23 @@ class IndexController extends AController
     }
 
     /**
-     * @return string
+     * @return DdRegion[]|string
      */
-    public function actionChildcate()
+    public function actionChildcate(): array|string
     {
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            $pid = Yii::$app->request->post('parent_id');
-            $cates = DdRegion::findAll(['pid' => $pid]);
-
-            return $cates;
-        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $pid = Yii::$app->request->post('parent_id');
+        return DdRegion::findAll(['pid' => $pid]);
     }
 
-    public function actionMenus()
+    public function actionMenus(): array
     {
-        global $_GPC;
 
         $list = UserService::getUserMenus();
 
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function creAteVue($menus)
-    {
-        foreach ($menus as $key => $value) {
-            if ($value['component'] != 'Layout') {
-                $path = $value['component'];
-                $mark = $value['name'];
-                $content = "<template>
-                <div>
-                {$mark} 
-                </div>
-                </template>
-                
-                <script>
-                export default {
-                    name: '',
-                    components: {  },
-                    data() {
-                      return {
-                       
-                      }
-                    }
-                  }
-                </script>
-                
-                <style lang=\\\"scss \\\" scoped>
-                </style>
-                ";
-                self::writeLog($path, $mark, $content);
-            } else {
-                if (!empty($value['children'])) {
-                    $this->creAteVue($value['children']);
-                }
-            }
-        }
-    }
 
     /**
      * 写入日志.
@@ -101,14 +61,12 @@ class IndexController extends AController
      *
      * @return bool|int
      */
-    public static function writeLog($path, $mark, $content)
+    public static function writeLog($path, $content): bool|int
     {
-        $appId = Yii::$app->id;
 
         $basepath = Yii::getAlias('@admin/vue/'.$path.'.vue');
         loggingHelper::mkdirs(dirname($basepath));
         @chmod($path, 0777);
-        $time = date('m/d H:i:s');
 
         return file_put_contents($basepath, $content, FILE_APPEND);
     }

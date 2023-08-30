@@ -15,7 +15,6 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -126,13 +125,13 @@ class MessagesCategoryController extends AController
      * Finds the HubMessagesCategory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return array|object[]|string[] the loaded model
+     * @return HubMessagesCategory the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): HubMessagesCategory
     {
         if (($model = HubMessagesCategory::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

@@ -18,15 +18,16 @@ use diandi\addons\models\DdAddons;
 use diandi\admin\components\UserStatus;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\form\ChangePassword;
-use diandi\admin\models\form\Login;
 use diandi\admin\models\form\PasswordResetRequest;
 use diandi\admin\models\form\ResetPassword;
 use diandi\admin\models\form\Signup;
 use diandi\admin\models\searchs\User as UserSearch;
 use diandi\admin\models\User;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\base\UserException;
+use yii\db\StaleObjectException;
 use yii\helpers\Json;
 use yii\mail\BaseMailer;
 use yii\web\BadRequestHttpException;
@@ -40,27 +41,33 @@ class UserController extends AController
 {
     public $modelClass = '';
 
-    private $_oldMailPath;
+    private string|null $_oldMailPath;
 
-    public $module_name;
-    public $type;
+    public string $module_name;
+    public int $type;
 
     public function actions(): array
     {
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->type = $this->module_name == 'sys' ? 0 : 1;
+        return  parent::actions();
     }
 
     /**
      * {@inheritdoc}
+     * @throws NotFoundHttpException
      */
     public function beforeAction($action): bool
     {
         if (parent::beforeAction($action)) {
-            if (Yii::$app->has('mailer') && ($mailer = Yii::$app->getMailer()) instanceof BaseMailer) {
-                /* @var $mailer BaseMailer */
-                $this->_oldMailPath = $mailer->getViewPath();
-                $mailer->setViewPath('@diandi/admin/mail');
+            try {
+                if (Yii::$app->has('mailer') && ($mailer = Yii::$app->getMailer()) instanceof BaseMailer) {
+                    /* @var $mailer BaseMailer */
+                    $this->_oldMailPath = $mailer->getViewPath();
+                    $mailer->setViewPath('@diandi/admin/mail');
+                }
+            } catch (InvalidConfigException $e) {
+                throw new NotFoundHttpException($e->getMessage(),500);
             }
 
             return true;
@@ -71,11 +78,16 @@ class UserController extends AController
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
     public function afterAction($action, $result)
     {
         if ($this->_oldMailPath !== null) {
-            Yii::$app->getMailer()->setViewPath($this->_oldMailPath);
+            try {
+                Yii::$app->getMailer()->setViewPath($this->_oldMailPath);
+            } catch (InvalidConfigException $e) {
+                throw new Exception($e->getMessage(),500);
+            }
         }
 
         return parent::afterAction($action, $result);
@@ -110,6 +122,7 @@ class UserController extends AController
 
         return ResultHelper::json(200, '获取成功',[
             'module_name' => $this->module_name,
+            'user_ids' => $user_ids,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider->getModels(),
         ]);
@@ -123,7 +136,7 @@ class UserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException|BadRequestHttpException if the model cannot be found
+     * @throws BadRequestHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -163,7 +176,12 @@ class UserController extends AController
     }
 
     // 修改别人的密码
-    public function actionChangePass($id): array
+
+    /**
+     * @throws Exception
+     * @throws BadRequestHttpException
+     */
+    public function actionChangePass(): array
     {
         global $_GPC;
 
@@ -181,7 +199,7 @@ class UserController extends AController
         if (Yii::$app->request->isPost) {
             try {
                 $user = new ResetPassword($token);
-            } catch (InvalidParamException $e) {
+            } catch (\Exception $e) {
                 throw new BadRequestHttpException($e->getMessage());
             }
 
@@ -197,7 +215,7 @@ class UserController extends AController
 
         try {
             $ResetPassword = new ResetPassword($token);
-        } catch (InvalidParamException $e) {
+        } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
@@ -237,6 +255,8 @@ class UserController extends AController
      * @param int $id
      *
      * @return array
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -347,7 +367,7 @@ class UserController extends AController
     {
         try {
             $model = new ResetPassword($token);
-        } catch (InvalidParamException $e) {
+        } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
@@ -411,13 +431,13 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|User
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = User::findOne($id)) !== null) {
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return $model;
 
         } else {
             return ResultHelper::json(500, '请检查数据是否存在');

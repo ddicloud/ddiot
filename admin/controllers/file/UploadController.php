@@ -13,6 +13,8 @@ use admin\controllers\AController;
 use common\components\FileUpload\models\UploadValidate;
 use common\components\FileUpload\Upload;
 use common\helpers\ResultHelper;
+use yii\base\Exception;
+use yii\base\ExitException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 
@@ -26,50 +28,32 @@ class UploadController extends AController
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['POST'],
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             \Yii::$app->response->setStatusCode(204);
-            \Yii::$app->end(0);
+            try {
+                \Yii::$app->end();
+            } catch (ExitException $e) {
+                throw new Exception($e->getMessage(),500);
+            }
         }
 
         return $behaviors;
     }
 
-    /**
-     * @SWG\Post(path="/file/images",
-     *     tags={"资源上传"},
-     *     summary="上传图片",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "上传图片",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="images",
-     *      type="string",
-     *      description="需要上传的图片",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *     )
-     * )
-     */
-    public function actionImages()
+
+    public function actionImages(): void
     {
-        global $_GPC;
         try {
             $model = new Upload();
             $info = $model->upImage();
@@ -87,30 +71,8 @@ class UploadController extends AController
         }
     }
 
-    /**
-     * @SWG\Post(path="/file/file",
-     *     tags={"资源上传"},
-     *     summary="上传文件",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "上传文件",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="images",
-     *      type="string",
-     *      description="需要上传的文件",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *     )
-     * )
-     */
-    public function actionFile()
+
+    public function actionFile(): array
     {
         global $_GPC;
 
@@ -118,7 +80,6 @@ class UploadController extends AController
             $Upload = new Upload();
             //实例化上传验证类，传入上传配置参数项名称
             $model = new UploadValidate('uploadFile');
-            $field = $_GPC['field'];
             $path = $_GPC['path'];
             $is_chunk = $_GPC['is_chunk'];
             $chunk_partSize = $_GPC['chunk_partSize'];
@@ -146,40 +107,18 @@ class UploadController extends AController
                 return ResultHelper::json(400, $info['message'], $info['data']);
             }
         } catch (\Exception $e) {
-            return  ResultHelper::json(400, $e->getMessage(), $e);
+            return  ResultHelper::json(400, $e->getMessage());
         }
     }
 
-    /**
-     * @SWG\Post(path="/file/merge",
-     *     tags={"资源上传"},
-     *     summary="本地文件合并",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "上传文件",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="images",
-     *      type="string",
-     *      description="需要上传的文件",
-     *      required=true,
-     *    ),
-     *    @SWG\Parameter(
-     *      name="access-token",
-     *      type="string",
-     *      in="query",
-     *      required=true
-     *     )
-     * )
-     */
+
     public function actionMerge()
     {
         global $_GPC;
         try {
             $Upload = new Upload();
             //实例化上传验证类，传入上传配置参数项名称
-            $model = new UploadValidate('uploadFile');
+//            $model = new UploadValidate('uploadFile');
             $file_name = $_GPC['file_name'];
             $file_type = $_GPC['file_type'];
             $file_size = $_GPC['file_size'];

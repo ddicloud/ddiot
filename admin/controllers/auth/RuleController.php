@@ -16,10 +16,7 @@ use diandi\admin\components\Helper;
 use diandi\admin\models\AuthItem;
 use diandi\admin\models\BizRule;
 use diandi\admin\models\searchs\BizRule as BizRuleSearch;
-use HttpException;
 use Yii;
-use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
 
 /**
  * Description of RuleController.

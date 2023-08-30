@@ -15,7 +15,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\models\searchs\StoreLabelSearch;
 use diandi\addons\models\StoreLabel;
 use Yii;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * StorelabelController implements the CRUD actions for StoreLabel model.
@@ -55,7 +55,6 @@ class StorelabelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -74,17 +73,16 @@ class StorelabelController extends AController
     {
         $model = new StoreLabel();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -95,23 +93,21 @@ class StorelabelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -122,7 +118,8 @@ class StorelabelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -137,12 +134,12 @@ class StorelabelController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|StoreLabel
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = StoreLabel::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

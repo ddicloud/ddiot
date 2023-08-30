@@ -14,7 +14,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\models\StoreCategory;
 use diandi\admin\models\searchs\StoreCategory as StoreCategorySearch;
 use Yii;
-use yii\filters\VerbFilter;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -53,7 +53,6 @@ class CategoryController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -95,7 +94,6 @@ class CategoryController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -118,6 +116,8 @@ class CategoryController extends AController
      * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -131,14 +131,12 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return StoreCategory the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array|StoreCategory
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = StoreCategory::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

@@ -13,6 +13,8 @@ use common\helpers\ArrayHelper;
 use common\helpers\ResultHelper;
 use common\models\Database;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * 数据备份还原
@@ -26,22 +28,22 @@ class DatabaseController extends AController
     public $modelClass = '';
 
     public int $searchLevel = 0;
-    /**
-     * 存储路径.
-     *
-     * @var
-     */
-    public $path;
-    /**
-     * 配置信息.
-     *
-     * @var
-     */
-    public $config;
 
-    public function init()
+
+    public string $path;
+
+    public array $config;
+
+    /**
+     * @throws Exception
+     */
+    public function init(): void
     {
-        parent::init();
+        try {
+            parent::init();
+        } catch (InvalidConfigException $e) {
+            throw new Exception($e->getMessage(),400);
+        }
 
         /* ------ 备份配置配置 ------ **/
         $this->path = Yii::getAlias('@backend').'/runtime/console/backup'; // 数据库备份根路径
@@ -67,7 +69,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionBackups()
+    public function actionBackups(): string
     {
         $models = Yii::$app->db->createCommand('SHOW TABLE STATUS')->queryAll();
         $models = array_map('array_change_key_case', $models);
@@ -82,7 +84,7 @@ class DatabaseController extends AController
      *
      * @return array
      */
-    public function actionExport()
+    public function actionExport(): array
     {
         $tables = Yii::$app->request->post('tables');
         if (empty($tables)) {
@@ -142,7 +144,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionExportStart()
+    public function actionExportStart(): array
     {
         $tables = Yii::$app->session->get('backup_tables');
         $file = Yii::$app->session->get('backup_file');
@@ -197,7 +199,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionOptimize()
+    public function actionOptimize(): array
     {
         $tables = Yii::$app->request->post('tables', '');
         if (!$tables) {
@@ -272,7 +274,7 @@ class DatabaseController extends AController
         $list = [];
         foreach ($glob as $name => $file) {
             // 正则匹配文件名
-            if (preg_match('/^\d{8,8}-\d{6,6}-\d+\.sql(?:\.gz)?$/', $name)) {
+            if (preg_match('/^\d{8}-\d{6}-\d+\.sql(?:\.gz)?$/', $name)) {
                 $name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
 
                 $date = "{$name[0]}-{$name[1]}-{$name[2]}";
@@ -318,11 +320,11 @@ class DatabaseController extends AController
 
         $list = [];
         $size = 0;
-        foreach ($files as $name => $file) {
+        foreach ($files as $file) {
             $size += filesize($file);
             $basename = basename($file);
             $match = sscanf($basename, '%4s%2s%2s-%2s%2s%2s-%d');
-            $gz = preg_match('/^\d{8,8}-\d{6,6}-\d+\.sql.gz$/', $basename);
+            $gz = preg_match('/^\d{8}-\d{6}-\d+\.sql.gz$/', $basename);
             $list[$match[6]] = [$match[6], $file, $gz];
         }
         // 排序数组
@@ -350,7 +352,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionRestoreStart()
+    public function actionRestoreStart(): array
     {
         set_time_limit(0);
 
@@ -407,7 +409,7 @@ class DatabaseController extends AController
     /**
      * 删除文件.
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         global $_GPC;
 
@@ -425,9 +427,8 @@ class DatabaseController extends AController
         return ResultHelper::json(200, '文件删除成功', []);
     }
 
-    public function actionBacklist()
+    public function actionBacklist(): array
     {
-        global $_GPC;
 
         Yii::$app->language = '';
 
@@ -439,7 +440,7 @@ class DatabaseController extends AController
         $list = [];
         foreach ($glob as $name => $file) {
             // 正则匹配文件名
-            if (preg_match('/^\d{8,8}-\d{6,6}-\d+\.sql(?:\.gz)?$/', $name)) {
+            if (preg_match('/^\d{8}-\d{6}-\d+\.sql(?:\.gz)?$/', $name)) {
                 $name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
 
                 $date = "{$name[0]}-{$name[1]}-{$name[2]}";
@@ -476,7 +477,7 @@ class DatabaseController extends AController
      *
      * @throws \yii\db\Exception
      */
-    public function actionDataDictionary()
+    public function actionDataDictionary(): array
     {
         // 获取全部表结构信息
         $tableSchema = Yii::$app->db->schema->getTableSchemas();

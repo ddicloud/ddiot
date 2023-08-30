@@ -22,7 +22,7 @@ class WechatController extends AController
     protected array $authOptional = ['signup'];
     public int $searchLevel = 0;
 
-    public function actionAuthUrl()
+    public function actionAuthUrl(): array
     {
         global $_GPC;
         $configPath = Yii::getAlias('@common/config/wechat.php');
@@ -49,7 +49,7 @@ class WechatController extends AController
         return ResultHelper::json(200, '获取成功', ['url' => $url]);
     }
 
-    public function actionSignup()
+    public function actionSignup(): array
     {
         $code = Yii::$app->request->post('code');
         if ($code) {
@@ -81,7 +81,7 @@ class WechatController extends AController
                     $adminUser->union_id = $user->getOriginal()['unionid'] ?? null;
                     $res = $adminUser->signup($maxId + 1, $maxId + 1, ($maxId + 1).'@cn.com', '123465', 1);
 
-                    return ResultHelper::json(200, '注册成功', $res);
+                    return ResultHelper::json(200, '注册成功', (array)$res);
                 }
             } else {
                 ResultHelper::json(400, '获取微信用户失败！');
@@ -89,16 +89,18 @@ class WechatController extends AController
         } else {
             ResultHelper::json(400, 'CODE 是必须的！');
         }
+        return ResultHelper::json(200, '注册成功');
+
     }
 
-    public function actionTick()
+    public function actionTick(): void
     {
         global $_GPC;
 
         loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $_GPC);
     }
 
-    public function actionBind()
+    public function actionBind(): array
     {
         $code = Yii::$app->request->post('code');
         if ($code) {
@@ -136,9 +138,11 @@ class WechatController extends AController
         } else {
             ResultHelper::json(400, 'CODE 是必须的！');
         }
+        return ResultHelper::json(200, '绑定成功！');
+
     }
 
-    public function actionUnbind()
+    public function actionUnbind(): array
     {
         $adminUser = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
         if ($adminUser) {

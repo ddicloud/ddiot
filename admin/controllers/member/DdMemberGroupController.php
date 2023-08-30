@@ -14,6 +14,8 @@ use common\helpers\ResultHelper;
 use common\models\DdMemberGroup;
 use common\models\searchs\DdMemberGroupSearch;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -29,7 +31,7 @@ class DdMemberGroupController extends AController
      *
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new DdMemberGroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -47,9 +49,8 @@ class DdMemberGroupController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -62,21 +63,20 @@ class DdMemberGroupController extends AController
      *
      * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new DdMemberGroup();
 
-        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', (array)$model);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
@@ -87,23 +87,21 @@ class DdMemberGroupController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -115,8 +113,10 @@ class DdMemberGroupController extends AController
      * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -129,14 +129,13 @@ class DdMemberGroupController extends AController
      *
      * @param string $id
      *
-     * @return DdMemberGroup the loaded model
+     * @return array|ActiveRecord the loaded model
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdMemberGroup::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

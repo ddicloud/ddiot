@@ -142,9 +142,9 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      * @param $token
      * @param null $group
      *
-     * @return AccessToken|\common\models\base\User|null
+     * @return DdApiAccessToken|null
      */
-    public static function findIdentityByRefreshToken($token, $group = null)
+    public static function findIdentityByRefreshToken($token, $group = null): ?DdApiAccessToken
     {
         return static::findOne(['group_id' => $group, 'refresh_token' => $token, 'status' => 1]);
     }
@@ -154,7 +154,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMember()
+    public function getMember(): \yii\db\ActiveQuery
     {
         return $this->hasOne(DdMember::class, ['member_id' => 'member_id']);
     }
@@ -164,7 +164,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMemberGroup()
+    public function getMemberGroup(): \yii\db\ActiveQuery
     {
         return $this->hasOne(DdMemberGroup::class, ['group_id' => 'group_id'])
             ->where(['type' => Yii::$app->id]);
@@ -173,7 +173,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): DdApiAccessToken|IdentityInterface|null
     {
         return static::findOne(['member_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -181,7 +181,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * @return int|string 当前用户ID
      */
-    public function getId()
+    public function getId(): int|string
     {
         return $this->getPrimaryKey();
     }
@@ -189,7 +189,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * @return string 当前用户的（cookie）认证密钥
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
         return $this->auth_key;
     }
@@ -199,7 +199,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return bool if auth key is valid for current user
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
         return $this->getAuthKey() === $authKey;
     }
@@ -209,7 +209,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return array
      */
-    public function getCacheKey($key)
+    public function getCacheKey($key): array
     {
         return [__CLASS__, $this->getId(), $key];
     }
@@ -217,7 +217,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',

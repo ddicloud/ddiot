@@ -37,14 +37,14 @@ class BlocController extends AController
 
     public $modelClass = '';
 
-    public $extras = [];
+    public array $extras = [];
 
     /**
      * Lists all Bloc models.
      *
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new BlocSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -70,16 +70,15 @@ class BlocController extends AController
         ]);
     }
 
-    public function actionStoreGroup()
+    public function actionStoreGroup(): array
     {
         // 校验数据权限
         $user_id = Yii::$app->user->id;
         $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $where = [];
-        $list = [];
+        $lists = [];
         $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
-        $where = [];
         if (!array_intersect($defaultRoles, $group)) {
             // 查找自己的数据
             $store_ids = UserStore::find()->where(['user_id' => $user_id])->select('store_id')->column();
@@ -93,7 +92,7 @@ class BlocController extends AController
             $value['id'] = $value['bloc_id'];
             $store = $value['store'];
             if (!empty($value['store'])) {
-                foreach ($store as $k => &$val) {
+                foreach ($store as &$val) {
                     $val['label'] = $val['name'];
                     $val['id'] = $val['store_id'];
                 }
@@ -109,13 +108,11 @@ class BlocController extends AController
         ]);
     }
 
-    public function actionStoreList()
+    public function actionStoreList(): array
     {
         $user_id = Yii::$app->user->id;
         $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $where = [];
-        $list = [];
-        $defaultRoles = Yii::$app->authManager->defaultRoles;
         // 确定我的权限角色与系统默认有交集，name就显示所有集团
         if (!in_array(['总管理员'], $group)) {
             // 查找自己的数据
@@ -124,7 +121,7 @@ class BlocController extends AController
         }
 
         $stores = BlocStore::find()->where($where)->with(['bloc', 'addons'])->asArray()->all();
-        foreach ($stores as $key => &$value) {
+        foreach ($stores as &$value) {
             $value['create_time'] = date('Y-m-d', $value['create_time'] ?? time());
             $value['identifie'] = $value['addons'] ? $value['addons']['identifie'] : '';
             $value['logo'] = ImageHelper::tomedia($value['logo']);
@@ -174,26 +171,24 @@ class BlocController extends AController
      */
     public function actionCreate(): array
     {
-        global $_GPC;
 
         $model = new Bloc();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            $data['province'] = $data['provinceCityDistrict']['0'];
-            $data['city'] = $data['provinceCityDistrict']['1'];
-            $data['district'] = $data['provinceCityDistrict']['2'];
+        $data['province'] = $data['provinceCityDistrict']['0'];
+        $data['city'] = $data['provinceCityDistrict']['1'];
+        $data['district'] = $data['provinceCityDistrict']['2'];
 
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -204,29 +199,26 @@ class BlocController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
-        global $_GPC;
 
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            $data['province'] = $data['provinceCityDistrict']['0'];
-            $data['city'] = $data['provinceCityDistrict']['1'];
-            $data['district'] = $data['provinceCityDistrict']['2'];
+        $data['province'] = $data['provinceCityDistrict']['0'];
+        $data['city'] = $data['provinceCityDistrict']['1'];
+        $data['district'] = $data['provinceCityDistrict']['2'];
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', (array)$model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', (array)$model);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
@@ -253,15 +245,14 @@ class BlocController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|Bloc
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = Bloc::findOne($id)) !== null) {
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return $model;
 
         }
         return ResultHelper::json(500, '请检查数据是否存在');
@@ -273,7 +264,7 @@ class BlocController extends AController
      *
      * @return array
      */
-    public function actionParentbloc()
+    public function actionParentbloc(): array
     {
         $model = new Bloc([
             'extras' => $this->extras,
@@ -363,7 +354,6 @@ class BlocController extends AController
 
     public function actionLevels(): array
     {
-        global $_GPC;
 
         $levels = BlocLevel::find()->select(['level_num as value', 'name as text'])->asArray()->all();
 

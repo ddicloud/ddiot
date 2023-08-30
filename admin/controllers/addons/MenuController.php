@@ -17,12 +17,9 @@ use diandi\addons\models\searchs\DdAddons;
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
 use diandi\admin\models\Menu;
-use diandi\admin\models\searchs\Menu as MenuSearch;
 use Yii;
-use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
+use yii\db\StaleObjectException;
 use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
 use yii2mod\editable\EditableAction;
 
 /**
@@ -68,7 +65,7 @@ class MenuController extends AController
         $sql = "`route` <> '{$defaultroute}' || route is NULL";
 
         $parentMenus = Menu::find()->where(['module_name' => $addon])->andWhere($sql)->asArray()->all();
-        $parentMenu = ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus, 0, 'id', 'parent', $child = '-'), 'id', 'name');
+        $parentMenu = ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus, 0, 'id', 'parent'), 'id', 'name');
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             if ($model->load($data) && $model->save()) {
@@ -84,7 +81,7 @@ class MenuController extends AController
             $addons = DdAddons::find()->asArray()->all();
             $routes = [];
             $route = Menu::getSavedRoutes();
-            foreach ($route as $key => &$value) {
+            foreach ($route as $value) {
                 if ($addon && str_contains($value, $addon)) {
                     $routes[] = $value;
                 }
@@ -93,6 +90,7 @@ class MenuController extends AController
             return  ResultHelper::json(200,'获取成功', [
                 'model' => $model,
                 'addon' => $addon,
+                'addons' => $addons,
                 'rules' => $rules,
                 'routes' => $routes,
                 'parentMenu' => $parentMenu,
@@ -124,20 +122,23 @@ class MenuController extends AController
                 Helper::invalidate();
 
                 return ResultHelper::json(200,'获取成功',['view', 'addon' => $addon, 'id' => $model->id]);
+            }else{
+                $msg = ErrorsHelper::getModelError($model);
+                return ResultHelper::json(500,$msg);
             }
         } else {
-            $addons = DdAddons::find()->asArray()->all();
             $rules = addonsService::addonsRules($addon);
 
             $defaultroute = "/{$addon}/default/index";
             $sql = "`route` <> '{$defaultroute}' || route is NULL";
 
             $parentMenus = Menu::find()->where(['module_name' => $addon])->andWhere($sql)->asArray()->all();
-            $parentMenu = ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus, null, 'id', 'parent', $child = '-'), 'id', 'name');
+            $parentMenu = ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus, null, 'id', 'parent'), 'id', 'name');
 
             $addons = DdAddons::find()->asArray()->all();
             $route = Menu::getSavedRoutes();
-            foreach ($route as $key => &$value) {
+            $routes = [];
+            foreach ($route as $value) {
                 if ($addon && str_contains($value, $addon)) {
                     $routes[] = $value;
                 }
@@ -166,10 +167,18 @@ class MenuController extends AController
     {
         $addon = $this->findModel($id)->module_name;
 
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (StaleObjectException $e) {
+
+            return ResultHelper::json(500,$e->getMessage());
+        } catch (\Throwable $e) {
+
+            return ResultHelper::json(500,$e->getMessage());
+        }
         Helper::invalidate();
 
-        return ResultHelper::json(200,'获取成功',['index', 'addon' => $addon]);
+        return ResultHelper::json(200,'删除成功',['index', 'addon' => $addon]);
     }
 
     /**
@@ -178,13 +187,13 @@ class MenuController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|Menu
      *
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = Menu::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         } else {
             return ResultHelper::json(500, '请检查数据是否存在');
         }

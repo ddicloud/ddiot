@@ -62,16 +62,20 @@ class ManageController extends AController
         $res = addonsService::unInstall($addon);
         if ($res) {
             return ResultHelper::json(200, '卸载成功');
+        }else{
+            return ResultHelper::json(401, '卸载失败');
         }
     }
 
-    public function actionAuth()
+    public function actionAuth(): array
     {
         $Route = new Route();
         $routes = $Route->getAppRoutes('diandi_dingzuo');
         $model = new Route();
         if ($model->addNew($routes)) {
             return ResultHelper::json(200, '卸载成功');
+        }else{
+            return ResultHelper::json(401, '卸载失败');
         }
     }
 }

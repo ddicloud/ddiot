@@ -28,39 +28,9 @@ class SettingsController extends AController
 
     public int $searchLevel = 0;
 
-    /**
-     * @SWG\Post(path="/system/settings/conf",
-     *     tags={"系统配置"},
-     *     summary="参数设置",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "参数设置",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="header",
-     *      name="refresh_token",
-     *      type="string",
-     *      description="刷新token令牌",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="section",
-     *      type="string",
-     *      enum={"Baidu","Wxapp","Wechat","Wechatpay","Weburl","Sms","Email","Map"},
-     *      description="配置类型",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="formData",
-     *      name="data",
-     *      type="string",
-     *      description="配置数据：key=>value",
-     *      required=true,
-     *    ),
-     * )
-     */
-    public function actionConf()
+
+
+    public function actionConf(): array
     {
         global $_GPC;
         $section = $_GPC['section'];
@@ -81,7 +51,7 @@ class SettingsController extends AController
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         parent::actions();
 
@@ -201,9 +171,9 @@ class SettingsController extends AController
     /**
      * 清理缓存.
      *
-     * @return string
+     * @return array|object[]|string[]
      */
-    public function actionClearCache()
+    public function actionClearCache(): array
     {
         // $this->layout = "@backend/views/layouts/main-base";
         $model = new ClearCache();
@@ -231,12 +201,12 @@ class SettingsController extends AController
         }
     }
 
-    public function actionStore()
+    public function actionStore(): array
     {
         return ResultHelper::json(200, '切换失败', []);
     }
 
-    public function actionThem()
+    public function actionThem(): array
     {
         global $_GPC;
         $themcolor = $_GPC['themcolor'];

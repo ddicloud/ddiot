@@ -16,7 +16,6 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
 use yii\db\StaleObjectException;
-use yii\web\NotFoundHttpException;
 
 /**
  * AdminUserController implements the CRUD actions for User model.
@@ -50,7 +49,6 @@ class AdminUserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -89,7 +87,6 @@ class AdminUserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -110,7 +107,15 @@ class AdminUserController extends AController
 
     public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(500,$e->getMessage());
+
+        } catch (\Throwable $e) {
+            return ResultHelper::json(500,$e->getMessage());
+
+        }
 
         return ResultHelper::json(200, '删除成功');
     }
@@ -121,13 +126,13 @@ class AdminUserController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return User|array
      *
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = User::findOne($id)) !== null) {
-            return ResultHelper::json(20, '获取成功', (array)$model);
+            return $model;
         }
         return ResultHelper::json(500, '请检查数据是否存在');
     }

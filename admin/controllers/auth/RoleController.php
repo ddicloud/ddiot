@@ -25,9 +25,9 @@ class RoleController extends AController
     public int $searchLevel = 0;
 
     /**
-     * {@inheritdoc}
+     * {}
      */
-    public function labels()
+    public function labels(): array
     {
         return[
             'Item' => 'Role',
@@ -36,9 +36,9 @@ class RoleController extends AController
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
-    public function getType()
+    public function getType(): int
     {
         return Item::TYPE_ROLE;
     }

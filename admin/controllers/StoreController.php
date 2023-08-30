@@ -24,6 +24,8 @@ use diandi\addons\models\StoreLabel;
 use diandi\addons\models\StoreLabelLink;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -33,15 +35,14 @@ class StoreController extends AController
     public $modelClass = '';
     protected array $authOptional = ['*'];
 
-    public $bloc_id;
+    public int $bloc_id;
 
-    public $extras = [];
+    public array $extras = [];
 
     public int $searchLevel = 0;
 
-    public function actionInfo()
+    public function actionInfo(): array
     {
-        global $_GPC;
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
         if (!$store) {
@@ -54,7 +55,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $store);
     }
 
-    public function actionDetailinfo()
+    public function actionDetailinfo(): array
     {
         global $_GPC;
         $store_id = $_GPC['store_id'];
@@ -67,7 +68,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $store);
     }
 
-    public function actionCate()
+    public function actionCate(): array
     {
         global $_GPC;
         $parent_id = $_GPC['parent_id'];
@@ -77,10 +78,9 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionList()
+    public function actionList(): array
     {
         global $_GPC;
-        $logPath = Yii::getAlias('@runtime/StoreService/list/' . date('Y/md') . '.log');
 
         $category_pid = $_GPC['category_pid'];
         $category_id = $_GPC['category_id'];
@@ -101,7 +101,7 @@ class StoreController extends AController
     {
     }
 
-    public function actionBlocs()
+    public function actionBlocs(): array
     {
         global $_GPC;
 
@@ -137,7 +137,7 @@ class StoreController extends AController
             $bloc_ids = $UserBloc->find()->alias('a')->where($where)->joinWith('bloc as c')->select(['a.bloc_id'])->limit(5)->asArray()->all();
 
 
-            foreach ($bloc_ids as $key => $value) {
+            foreach ($bloc_ids as $value) {
                 $value['bloc']['store'][] = $value['store'];
                 $list[$value['bloc_id']] = $value['bloc'];
             }
@@ -166,12 +166,13 @@ class StoreController extends AController
         }
 
         $cacheClass = new CacheHelper();
+        $key = '';
         $cacheClass->set($key, $list);
 
         $blocs = Yii::$app->params['userBloc'];
-        foreach ($blocs as $key => &$value) {
+        foreach ($blocs as &$value) {
             if (!empty($value['store'])) {
-                foreach ($value['store'] as $k => &$val) {
+                foreach ($value['store'] as &$val) {
                     $val['logo'] = ImageHelper::tomedia($val['logo']);
                 }
             }
@@ -202,19 +203,16 @@ class StoreController extends AController
     }
 
     /**
-     * @return string
+     * @return StoreCategory[]|string
      */
-    public function actionChildcate()
+    public function actionChildcate(): array|string
     {
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            $data = Yii::$app->request->post();
-            $parent_id = $data['parent_id'];
-            $cates = StoreCategory::findAll(['parent_id' => $parent_id]);
-
-            return $cates;
-        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $data = Yii::$app->request->post();
+        $parent_id = $data['parent_id'];
+        return StoreCategory::findAll(['parent_id' => $parent_id]);
     }
+
 
     /**
      * Displays a single BlocStore model.
@@ -225,7 +223,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);
@@ -240,8 +238,9 @@ class StoreController extends AController
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return array
+     * @throws HttpException
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
         if ($this->module->id == 'addons') {
@@ -272,7 +271,7 @@ class StoreController extends AController
                     $StoreLabelLink = $_GPC['StoreLabelLink'];
 
                     if (!empty($StoreLabelLink['label_id'])) {
-                        foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
+                        foreach ($StoreLabelLink['label_id'] as $label_id) {
                             $_link = clone  $link;
                             $bloc_id = $model->bloc_id;
                             $store_id = $model->store_id;
@@ -286,7 +285,7 @@ class StoreController extends AController
                         }
                     }
 
-                    return $this->redirect(['view', 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
+                    return ResultHelper::json(200, '获取成功',[ 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
                 } else {
                     $msg = ErrorsHelper::getModelError($model);
                     throw new HttpException(400, $msg);
@@ -322,7 +321,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
 
@@ -340,7 +339,7 @@ class StoreController extends AController
             ]);
 
             if (!empty($StoreLabelLink['label_id'])) {
-                foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
+                foreach ($StoreLabelLink['label_id'] as $label_id) {
                     $_link = clone  $link;
                     $data = [
                         'bloc_id' => $bloc_id,
@@ -369,8 +368,10 @@ class StoreController extends AController
      * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
         $bloc_id = $this->bloc_id;
@@ -385,17 +386,17 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return BlocStore the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         $BlocStore = new BlocStore([
             'extras' => $this->extras,
         ]);
         if (($model = $BlocStore::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         throw new NotFoundHttpException('校验数据是否存在');

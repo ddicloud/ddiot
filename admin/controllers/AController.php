@@ -22,11 +22,13 @@ use Yii;
 use yii\base\InlineAction;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
 use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
+use yii\web\UnauthorizedHttpException;
 
 class AController extends ActiveController
 {
@@ -50,7 +52,6 @@ class AController extends ActiveController
      */
     protected array $signOptional = [];
 
-    protected array $optionsAction = []; //需要options的方法
 
     /**
      * 数据分离等级. 0不检索商户与公司，1只检索公司，2检索公司和商户.
@@ -88,17 +89,17 @@ class AController extends ActiveController
 
         // 速率限制
         $behaviors['rateLimiter'] = [
-            'class' => RateLimiter::className(),
+            'class' => RateLimiter::class,
             'enableRateLimitHeaders' => true,
             'errorMessage' => '访问接口太频繁',
         ];
 
         $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
+            'class' => CompositeAuth::class,
             'authMethods' => [
-                HttpBasicAuth::className(),
-                HttpBearerAuth::className(),
-                QueryParamAuth::className(),
+                HttpBasicAuth::class,
+                HttpBearerAuth::class,
+                QueryParamAuth::class,
             ],
             // 不进行认证判断方法
             'optional' => $this->authOptional,
@@ -108,7 +109,7 @@ class AController extends ActiveController
 
         // 跨域支持
         $behaviors['corsFilter'] = [
-            'class' => Cors::className(),
+            'class' => Cors::class,
             'cors' => [
                 // restrict access to
                 'Origin' => explode(',', $urls),
@@ -128,11 +129,11 @@ class AController extends ActiveController
 
         // 添加默认的公司与商户参数
         $behaviors['request'] = [
-            'class' => HttpRequstMethod::className(),
+            'class' => HttpRequstMethod::class,
         ];
 
         $behaviors['access'] = [
-            'class' => AccessControl::className(),
+            'class' => AccessControl::class,
             'allowActions' => [
                 'user/login', //登录
                 'user/signup', //注册
@@ -183,7 +184,6 @@ class AController extends ActiveController
 
         Yii::$app->params['addons'] = Yii::$app->service->commonGlobalsService->getAddons();
 
-        $module = Yii::$app->params['addons'];
 
         $moduleName = $DdAddons->find()->where(['identifie' => Yii::$app->params['addons']])->asArray()->one();
 
@@ -210,7 +210,6 @@ class AController extends ActiveController
     {
         loggingHelper::writeLog('adminApi', 'afterAction', '请求完成');
 
-        $actionEnd = 0;
         $actionEnd = microtime(true);
 
         // 记录API请求接口，耗时took
@@ -222,7 +221,10 @@ class AController extends ActiveController
         return parent::afterAction($action, $result);
     }
 
-    public function createAction($id)
+    /**
+     * @throws UnauthorizedHttpException
+     */
+    public function createAction($id): ?object
     {
         if ($id === '') {
             $id = $this->defaultAction;
@@ -232,6 +234,7 @@ class AController extends ActiveController
             try {
                 return Yii::createObject($actionMap[$id], [$id, $this]);
             } catch (InvalidConfigException $e) {
+                throw new UnauthorizedHttpException($e->getMessage(),500);
             }
         } elseif (preg_match('/^[a-z0-9\\-_]+$/', $id) && !str_contains($id, '--') && trim($id, '-') === $id) {
             $methodName = 'action'.str_replace(' ', '', ucwords(implode(' ', explode('-', $id))));
@@ -286,7 +289,7 @@ class AController extends ActiveController
     public function actionCreate(): array
     {
         $model = new $this->modelClass();
-        $model->member_id = Yii::$app->user->identity->user_id;
+        $model->member_id = Yii::$app->user->identity->user_id??0;
         $model->attributes = Yii::$app->request->post();
 
         if (!$model->save()) {
@@ -305,7 +308,6 @@ class AController extends ActiveController
      *
      * @return array
      *
-     * @throws NotFoundHttpException
      */
     public function actionUpdate($id): array
     {
@@ -330,11 +332,16 @@ class AController extends ActiveController
      *
      * @return array
      *
-     * @throws NotFoundHttpException
      */
     public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(500,$e->getMessage());
+        } catch (\Throwable $e) {
+            return ResultHelper::json(500,$e->getMessage());
+        }
         return ResultHelper::json(200,'删除成功');
 
     }
@@ -346,7 +353,6 @@ class AController extends ActiveController
      *
      * @return array
      *
-     * @throws NotFoundHttpException
      */
     public function actionView($id): array
     {
@@ -360,17 +366,18 @@ class AController extends ActiveController
      *
      * @param $id
      *
-     * @return array
+     * @return array|ActiveRecord
      *
-     * @throws NotFoundHttpException
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|ActiveRecord
     {
         if (empty($id)) {
             return ResultHelper::json(500,'id不能为空');
         }
         if ($model = $this->modelClass::findOne($id)) {
-            return ResultHelper::json(200,'获取成功',$model);
+            return $model;
+        }else{
+            return [];
         }
     }
 }

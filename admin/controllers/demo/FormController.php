@@ -27,8 +27,8 @@ class FormController extends AController
     {
         $actions = parent::actions();
         $actions['get-region'] = [
-            'class' => \diandi\region\RegionAction::className(),
-            'model' => DdRegion::className(),
+            'class' => \diandi\region\RegionAction::class,
+            'model' => DdRegion::class,
         ];
 
         return $actions;
@@ -62,9 +62,6 @@ class FormController extends AController
         // 　　 ->setHtmlBody('<b>HTML content</b>')
         // 　　 ->send();
         //compose 与控制器中的 render 方法参数方式相同.
-        return ResultHelper::json(200, '获取成功', [
-            // 'model' => $model,
-            // 'DdRegion' => $DdRegion,
-        ]);
+        return ResultHelper::json(200, '获取成功');
     }
 }

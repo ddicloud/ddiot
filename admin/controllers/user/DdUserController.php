@@ -14,7 +14,7 @@ use common\helpers\ResultHelper;
 use common\models\DdUser;
 use common\models\DdUserSearch;
 use Yii;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * DdUserController implements the CRUD actions for DdUser model.
@@ -48,7 +48,6 @@ class DdUserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -86,7 +85,6 @@ class DdUserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -124,7 +122,8 @@ class DdUserController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -139,12 +138,12 @@ class DdUserController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|DdUser
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdUser::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

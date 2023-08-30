@@ -24,8 +24,9 @@ use diandi\admin\models\AuthItem;
 use diandi\admin\models\AuthItemModel;
 use diandi\admin\models\searchs\AuthItemSearch;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
-use yii\web\NotFoundHttpException;
+
 
 /**
  * PermissionController implements the CRUD actions for AuthItem model.
@@ -40,11 +41,11 @@ class PermissionController extends AController
 
     public $enableCsrfValidation = false;
 
-    public $is_sys;
+    public int $is_sys;
 
-    public $module_name;
+    public string $module_name;
 
-    public $parent_type = 0; //0:系统,1模块
+    public int $parent_type = 0; //0:系统,1模块
 
     public int $searchLevel = 0;
 
@@ -56,7 +57,7 @@ class PermissionController extends AController
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
     public function labels(): array
     {
@@ -67,7 +68,7 @@ class PermissionController extends AController
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
     public function getType(): int
     {
@@ -82,19 +83,19 @@ class PermissionController extends AController
     public function actionIndex(): array
     {
         $authManager = Configs::authManager();
-        $where = ['is_sys' => $this->is_sys, 'module_name' => $this->module_name]; //简化权限管理
+//        $where = ['is_sys' => $this->is_sys, 'module_name' => $this->module_name]; //简化权限管理
         $searchModel = new AuthItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         $DdAddons = new DdAddons();
-        $addons = [];
+
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
         $addons['sys'] = '系统';
         $dataProvider = HelpersArrayHelper::objectToarray($dataProvider);
 
         $parentMent = $dataProvider['allModels'];
 
-        foreach ($parentMent as $key => &$value) {
+        foreach ($parentMent as &$value) {
             $module_name = !empty($addons[$value['module_name']]) ? $addons[$value['module_name']] : '';
             $value['addons'] = $module_name;
 
@@ -111,16 +112,17 @@ class PermissionController extends AController
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $list,
+            '$authManager' => $authManager,
             'dataProvider' => $dataProvider,
             'addons' => $addons,
             'searchModel' => $searchModel,
         ]);
     }
 
-    public function actionAddons()
+    public function actionAddons(): array
     {
         $DdAddons = new DdAddons();
-        $addons = [];
+
         $addon['sys'] = '系统';
 
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
@@ -128,11 +130,11 @@ class PermissionController extends AController
         return ResultHelper::json(200, '获取成功', array_merge($addon, $addons));
     }
 
-    public function actionLevels()
+    public function actionLevels(): array
     {
         global $_GPC;
         $DdAddons = new DdAddons();
-        $addons = [];
+
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
         $addons['sys'] = '系统';
 
@@ -143,7 +145,7 @@ class PermissionController extends AController
         // 权限只能是2级，不能是三级
         $parentMent = AuthItemModel::find()->where($where)->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
 
-        foreach ($parentMent as $key => &$value) {
+        foreach ($parentMent as &$value) {
             if ($value['is_sys'] == 1) {
                 $module_name = $addons[$value['module_name']];
                 $value['label'] = $module_name . '-' . $value['label'];
@@ -155,13 +157,13 @@ class PermissionController extends AController
         return ResultHelper::json(200, '获取成功', $levels);
     }
 
-    public function actionRule()
+    public function actionRule(): array
     {
         // 获取所有的权限规则
         $Rules = Configs::authManager()->getRules();
 
         $Rule = HelpersArrayHelper::objectToarray($Rules);
-
+        $rulesSelect = [];
         foreach ($Rule as $key => $value) {
             $item = [
                 'value' => $key,
@@ -173,7 +175,7 @@ class PermissionController extends AController
         return ResultHelper::json(200, '获取成功', $rulesSelect);
     }
 
-    public function actionRoute()
+    public function actionRoute(): array
     {
         $list = AuthRoute::find()->select(['name as label', 'id'])->limit(10)->asArray()->all();
 
@@ -196,7 +198,7 @@ class PermissionController extends AController
 
         $model = $this->findModel($id);
         $list = $model->getAdminItems($permission_type);
-        $assigneds = $availables = [];
+        $assigneds = [];
         $assigned = $list['assigned'];
 
         $available = $list['available'];
@@ -216,7 +218,7 @@ class PermissionController extends AController
         foreach ($assigned as $key => &$value) {
             $value = ArrayHelper::toArray($value);
 
-            foreach ($value as $k => &$val) {
+            foreach ($value as &$val) {
                 $val['key'] = $val['id'];
                 $val['label'] = $val['name'];
                 $assigneds[$key][] = $val['item_id'];
@@ -253,7 +255,6 @@ class PermissionController extends AController
      */
     public function actionCreate(): array
     {
-        global $_GPC;
 
         $model = new AcmodelsAuthItem();
 
@@ -262,7 +263,9 @@ class PermissionController extends AController
             $data = Yii::$app->getRequest()->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '提交成功');
+                return ResultHelper::json(200, '提交成功',[
+                    'module_name'=>$module_name
+                ]);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -276,7 +279,6 @@ class PermissionController extends AController
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @return array
-     * @throws NotFoundHttpException
      */
     public function actionUpdateitem(): array
     {
@@ -301,7 +303,6 @@ class PermissionController extends AController
      * @param string $id
      *
      * @return array
-     * @throws NotFoundHttpException
      */
     public function actionDelete($id): array
     {
@@ -310,10 +311,10 @@ class PermissionController extends AController
         Helper::invalidate();
         $module_name = $this->module_name;
 
-        return ResultHelper::json(200, '删除成功');
+        return ResultHelper::json(200, '删除成功',['module_name'=>$module_name]);
     }
 
-    public function actionChange()
+    public function actionChange(): array
     {
         global $_GPC;
         $id = $_GPC['id'];
@@ -329,7 +330,7 @@ class PermissionController extends AController
 
         $model = $this->findModel($id);
 
-        if (key_exists('route', $items) && !empty($items)) {
+        if (key_exists('route', $items)) {
             $list = $items['route'];
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
@@ -351,7 +352,7 @@ class PermissionController extends AController
             }
 
             return ResultHelper::json(200, '操作成功');
-        } elseif (key_exists('permission', $items) && !empty($items)) {
+        } elseif (key_exists('permission', $items)) {
             $list = $items['permission'];
             $remove_ids = AuthItemChild::find()->where([
                 'parent_id' => $id,
@@ -374,6 +375,8 @@ class PermissionController extends AController
 
             return ResultHelper::json(200, '操作成功');
         }
+        return ResultHelper::json(200, '操作成功');
+
     }
 
     /**
@@ -383,18 +386,18 @@ class PermissionController extends AController
      *
      * @return array
      */
-    public function actionAssign($id)
+    public function actionAssign(string $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = $this->findModel($id);
         $success = $model->addChildren($items);
         if (!$success) {
             $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(500, $msg);
+
+        }else{
+            return ResultHelper::json(200, '操作成功',array_merge($model->getItems(), ['success' => $success]));
         }
-
-        return ResultHelper::json(200, '操作成功');
-
-        // return array_merge($model->getItems(), ['success' => $success,'error'=>$msg]);
     }
 
     /**
@@ -404,21 +407,19 @@ class PermissionController extends AController
      *
      * @return array
      */
-    public function actionRemove($id)
+    public function actionRemove(string $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
         $model = $this->findModel($id);
         $success = $model->removeChildren($items);
 
-        return ResultHelper::json(200, '移除成功');
-
-        // return array_merge($model->getItems(), ['success' => $success]);
+        return ResultHelper::json(200, '移除成功',array_merge($model->getItems(), ['success' => $success]));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getViewPath()
+    public function getViewPath(): string
     {
         return $this->module->getViewPath() . DIRECTORY_SEPARATOR . 'item';
     }
@@ -429,11 +430,9 @@ class PermissionController extends AController
      *
      * @param string $id
      *
-     * @return AuthItem the loaded model
-     *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array|AuthItem|object[]|string[]
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         $auth = Configs::authManager();
         $item = $auth->getPermission($id);

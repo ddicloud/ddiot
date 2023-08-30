@@ -14,7 +14,7 @@ use common\helpers\ResultHelper;
 use common\models\DdWebsiteContact;
 use common\models\DdWebsiteContactSearch;
 use Yii;
-use yii\filters\VerbFilter;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -51,7 +51,6 @@ class DdWebsiteContactController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -88,7 +87,6 @@ class DdWebsiteContactController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -113,6 +111,8 @@ class DdWebsiteContactController extends AController
      * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -127,14 +127,13 @@ class DdWebsiteContactController extends AController
      *
      * @param int $id
      *
-     * @return DdWebsiteContact the loaded model
+     * @return array|DdWebsiteContact
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdWebsiteContact::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

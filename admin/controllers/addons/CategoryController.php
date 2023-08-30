@@ -69,8 +69,7 @@ class CategoryController extends AController
 
     public function actionCategory(): array
     {
-        global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
+
         $list = StoreCategory::find()->where(['parent_id' => 0])->select(['name as text', 'category_id as value'])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $list);
@@ -83,7 +82,6 @@ class CategoryController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -121,7 +119,6 @@ class CategoryController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -163,14 +160,13 @@ class CategoryController extends AController
      *
      * @param int $id
      *
-     * @return array
+     * @return array|StoreCategory
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = StoreCategory::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

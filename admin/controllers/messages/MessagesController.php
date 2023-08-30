@@ -14,7 +14,8 @@ use admin\models\message\Searchs\HubMessagesSearch;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
-use yii\web\Controller;
+use yii\db\Exception;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -82,32 +83,37 @@ class MessagesController extends AController
      * @return array
      * @throws NotFoundHttpException|\yii\db\Exception if the model cannot be found
      */
-    public function actionUserView($id): array
+    public function actionUserView(int $id): array
     {
         $model = $this->findModel($id);
         if ($model) {
             HubMessages::updateAllCounters(['view' => 1], ['id' => $id]);
-            $read = HubMessagesRead::find()->where(['admin_id' => Yii::$app->user->identity->user_id, 'message_id' => $model->id])->one();
+            $read = null;
+            if (!empty(Yii::$app->user->identity->user_id)) {
+                $read = HubMessagesRead::find()->where(['admin_id' => Yii::$app->user->identity->user_id, 'message_id' => $model->id??0])->one();
+            }
             if (!$read) {
                 $readModel = new HubMessagesRead;
-                $readModel->admin_id = Yii::$app->user->identity->user_id;
-                $readModel->message_id = $model->id;
+                    $readModel->admin_id = Yii::$app->user->identity->user_id??0;
+
+                $readModel->message_id = $model->id??0;
                 $readModel->save(false);
             }
         }
         return ResultHelper::json(200, '获取成功', [
             'data' => $model,
-            'unread' => HubMessages::countUnread(Yii::$app->user->identity->user_id),
+            'unread' => HubMessages::countUnread(Yii::$app->user->identity->user_id??0),
         ]);
     }
 
     /**
      * Displays a single HubMessages model.
      * @return array
+     * @throws Exception
      */
     public function actionUnread(): array
     {
-        return ResultHelper::json(200, '获取成功', ['unread' => HubMessages::countUnread(Yii::$app->user->identity->user_id) ?: 0]);
+        return ResultHelper::json(200, '获取成功', ['unread' => HubMessages::countUnread(Yii::$app->user->identity->user_id??0) ?: 0]);
     }
 
     /**
@@ -160,6 +166,8 @@ class MessagesController extends AController
      * @param integer $id
      * @return array
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -172,13 +180,13 @@ class MessagesController extends AController
      * Finds the HubMessages model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return array the loaded model
+     * @return HubMessages|array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = HubMessages::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
@@ -189,10 +197,10 @@ class MessagesController extends AController
         $exists = HubMessages::find()->where(['id' => $id])->exists();
         if ($exists) {
             HubMessages::updateAllCounters(['view' => 1], ['id' => $id]);
-            $read = HubMessagesRead::find()->where(['admin_id' => Yii::$app->user->identity->user_id, 'message_id' => $id])->one();
+            $read = HubMessagesRead::find()->where(['admin_id' => Yii::$app->user->identity->user_id??0, 'message_id' => $id])->one();
             if (!$read) {
                 $readModel = new HubMessagesRead;
-                $readModel->admin_id = Yii::$app->user->identity->user_id;
+                $readModel->admin_id = Yii::$app->user->identity->user_id??0;
                 $readModel->message_id = $id;
                 $readModel->save(false);
             }

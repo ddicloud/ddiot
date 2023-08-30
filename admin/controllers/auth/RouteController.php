@@ -17,7 +17,7 @@ use common\helpers\ResultHelper;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\models\Route;
 use Yii;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * RouteController implements the CRUD actions for AuthRoute model.
@@ -65,7 +65,6 @@ class RouteController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -106,7 +105,7 @@ class RouteController extends AController
                         'id' => $model->id,
                     ]);
 
-                    return ResultHelper::json(200, '创建成功', $model);
+                    return ResultHelper::json(200, '创建成功', (array)$model);
                 } else {
                     $msg = ErrorsHelper::getModelError($model);
 
@@ -128,7 +127,6 @@ class RouteController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -164,7 +162,8 @@ class RouteController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -185,7 +184,7 @@ class RouteController extends AController
         $model = new Route();
         $Res = $model->addNew($routes);
 
-        return ResultHelper::json(200, '添加成功', ['list' => $model->getRoutes()]);
+        return ResultHelper::json(200, '添加成功', ['list' => $model->getRoutes(),'Res'=>$Res]);
     }
 
     /**
@@ -217,7 +216,7 @@ class RouteController extends AController
         $available = $list['available'];
         $availables = array_merge($assigned, $available);
         $assigneds = [];
-        foreach ($assigned as $key => $value) {
+        foreach ($assigned as $value) {
             $assigneds[] = array_search($value, $availables);
         }
 
@@ -233,13 +232,13 @@ class RouteController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return AuthRoute|array
      *
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = AuthRoute::findOne(['id' => $id])) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

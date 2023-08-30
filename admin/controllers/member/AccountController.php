@@ -14,33 +14,18 @@ use common\helpers\ResultHelper;
 use common\models\DdMemberAccount;
 use common\models\searchs\DdMemberAccount as DdMemberAccountSearch;
 use Yii;
-use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * AccountController implements the CRUD actions for DdMemberAccount model.
  */
 class AccountController extends AController
 {
-    public $modelClass = '';
+    public  $modelClass = '';
 
     public string $modelSearchName = 'DdMemberAccountSearch';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors(): array
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
-            'actions' => [
-                'delete' => ['POST'],
-            ],
-        ];
 
-        return $behaviors;
-    }
 
     /**
      * Lists all DdMemberAccount models.
@@ -65,7 +50,6 @@ class AccountController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -104,7 +88,6 @@ class AccountController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -129,7 +112,8 @@ class AccountController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -144,12 +128,12 @@ class AccountController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|DdMemberAccount
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdMemberAccount::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

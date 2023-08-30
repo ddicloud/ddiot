@@ -40,14 +40,14 @@ class SiteController extends AController
     /**
      * Displays homepage.
      *
-     * @return string
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         return ResultHelper::json(200, '获取成功');
     }
 
-    public function actionLogin()
+    public function actionLogin(): \yii\web\Response|string
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -86,7 +86,7 @@ class SiteController extends AController
         }
     }
 
-    public function actionLogout()
+    public function actionLogout(): array
     {
         DdUser::updateAll([
             'is_login' => 0,
@@ -99,7 +99,7 @@ class SiteController extends AController
         ]);
     }
 
-    public function actionSignup()
+    public function actionSignup(): array
     {
         global $_GPC;
         $model = new SignupForm();
@@ -118,7 +118,7 @@ class SiteController extends AController
         }
     }
 
-    public function actionRequestPasswordReset()
+    public function actionRequestPasswordReset(): string
     {
         $model = new FormsPasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -134,7 +134,7 @@ class SiteController extends AController
         ]);
     }
 
-    public function actionSetpassword($token)
+    public function actionSetpassword($token): string
     {
         $this->layout = '@backend/views/layouts/main-login';
         $isGuest = Yii::$app->user->isGuest;
@@ -163,7 +163,7 @@ class SiteController extends AController
         ]);
     }
 
-    public function actionResetPassword($token)
+    public function actionResetPassword($token): string
     {
         $this->layout = '@backend/views/layouts/main';
         $isGuest = Yii::$app->user->isGuest;
@@ -191,7 +191,10 @@ class SiteController extends AController
         ]);
     }
 
-    public function actionVerifyEmail($token)
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function actionVerifyEmail($token): \yii\web\Response
     {
         try {
             $model = new VerifyEmailForm($token);
@@ -211,7 +214,7 @@ class SiteController extends AController
         return $this->goHome();
     }
 
-    public function actionResendVerificationEmail()
+    public function actionResendVerificationEmail(): string
     {
         $model = new ResendVerificationEmailForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -228,7 +231,7 @@ class SiteController extends AController
         ]);
     }
 
-    public function actionXiufu()
+    public function actionXiufu(): void
     {
         global $_GPC;
         if ($_GPC['type'] == 1) {

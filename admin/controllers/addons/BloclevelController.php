@@ -16,7 +16,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\models\BlocLevel;
 use diandi\addons\models\searchs\BlocLevel as BlocLevelSearch;
 use Yii;
-use yii\web\NotFoundHttpException;
+use yii\db\StaleObjectException;
 
 /**
  * BloclevelController implements the CRUD actions for BlocLevel model.
@@ -57,7 +57,6 @@ class BloclevelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -95,7 +94,6 @@ class BloclevelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -120,7 +118,8 @@ class BloclevelController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {
@@ -135,15 +134,14 @@ class BloclevelController extends AController
      *
      * @param int $id
      *
-     * @return array
+     * @return array|BlocLevel
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = BlocLevel::findOne($id)) !== null) {
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return $model;
 
         }
         return ResultHelper::json(500, '请检查数据是否存在');

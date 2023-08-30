@@ -20,6 +20,8 @@ use diandi\addons\models\DdAddons;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\searchs\Assignment as AssignmentSearch;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -33,25 +35,30 @@ class AssignmentController extends AController
 {
     public $modelClass = '';
 
-    public $userClassName;
+    public  $userClassName;
     public string $idField = 'id';
     public string $usernameField = 'username';
-    public $searchClass;
-    public $extraColumns = [];
+    public null $searchClass;
+    public array $extraColumns = [];
 
-    public $type;
+    public int $type;
 
-    public $module_name;
+    public string $module_name;
 
     public int $searchLevel = 0;
-    private mixed $is_sys;
+
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
     public function init(): void
     {
-        parent::init();
+        try {
+            parent::init();
+        } catch (InvalidConfigException $e) {
+            throw new Exception($e->getMessage(),500);
+        }
         if ($this->userClassName === null) {
             $this->userClassName = Yii::$app->getUser()->identityClass;
             $this->userClassName = $this->userClassName ?: 'diandi\admin\models\User';
@@ -91,7 +98,6 @@ class AssignmentController extends AController
      * @param int $id
      *
      * @return array
-     * @throws NotFoundHttpException
      */
     public function actionView($id): array
     {
@@ -103,20 +109,20 @@ class AssignmentController extends AController
         $addons_mids = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
-        $lists = [];
+//        $lists = [];
         $store_ids = [];
-        foreach ($list as $key => &$value) {
+        foreach ($list as &$value) {
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
             $store = $value['store'];
             // 需要把商户的权限交给公司，把公司权限授权出去
-            foreach ($store as $k => &$val) {
+            foreach ($store as &$val) {
                 $val['label'] = $val['name'];
                 $val['id'] = $val['store_id'];
                 $store_ids[] = $val['store_id'];
             }
             $value['children'] = $store;
-            $lists[] = $value;
+//            $lists[] = $value;
         }
         unset($value);
         $all['store'] = $list;
@@ -142,7 +148,7 @@ class AssignmentController extends AController
         }
 
         $keyDiff = array_diff($keyList, $assignedKey);
-        foreach ($keyDiff as $key => $value) {
+        foreach ($keyDiff as $value) {
             $assigned[$value] = [];
         }
 
@@ -186,19 +192,20 @@ class AssignmentController extends AController
         $addons_mids = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
-        $lists = [];
+//        $lists = [];
+        $store_ids = [];
         foreach ($list as $key => &$value) {
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
             $store = $value['store'];
             if (!empty($value['store'])) {
-                foreach ($store as $k => &$val) {
+                foreach ($store as &$val) {
                     $val['label'] = $val['name'];
                     $val['id'] = $val['store_id'];
                     $store_ids[] = $val['store_id'];
                 }
                 $value['children'] = $store;
-                $lists[] = $value;
+//                $lists[] = $value;
             } else {
                 unset($list[$key]);
             }
@@ -227,7 +234,7 @@ class AssignmentController extends AController
         }
 
         $keyDiff = array_diff($keyList, $assignedKey);
-        foreach ($keyDiff as $key => $value) {
+        foreach ($keyDiff as $value) {
             $assigned[$value] = [];
         }
 
@@ -286,7 +293,7 @@ class AssignmentController extends AController
                 // 增加权限
                 $add_ids = array_diff($authItems, $assigned_ids);
                 $addList = DdAddons::find()->where(['mid' => $add_ids])->asArray()->all();
-                foreach ($addList as $key => $value) {
+                foreach ($addList as $value) {
                     $_AddonsUser = clone $AddonsUser;
                     $data = [
                         'user_id' => $id,
@@ -315,7 +322,7 @@ class AssignmentController extends AController
 
                 $addList = BlocStore::find()->where(['store_id' => $add_ids])->asArray()->all();
                 $UserStore = new UserStore();
-                foreach ($addList as $key => $value) {
+                foreach ($addList as $value) {
                     $_UserStore = clone $UserStore;
                     $data = [
                         'user_id' => $id,
@@ -353,7 +360,7 @@ class AssignmentController extends AController
 
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
                 $UserBloc = new UserBloc();
-                foreach ($addList as $key => $value) {
+                foreach ($addList as $value) {
                     $_UserBloc = clone $UserBloc;
                     $data = [
                         'user_id' => $id,
@@ -380,12 +387,7 @@ class AssignmentController extends AController
         $key = 'auth_' . $id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
 
-        try {
-            return $this->actionView($id);
-        } catch (NotFoundHttpException $e) {
-            return ResultHelper::json(500, $e->getMessage());
-
-        }
+        return $this->actionView($id);
     }
 
     /**

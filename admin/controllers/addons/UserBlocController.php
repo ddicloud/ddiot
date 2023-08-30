@@ -20,7 +20,6 @@ use diandi\addons\models\UserBloc;
 use diandi\admin\models\User as ModelsUser;
 use Yii;
 use yii\db\StaleObjectException;
-use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
@@ -31,7 +30,7 @@ class UserBlocController extends AController
 {
     public $modelClass = '';
 
-    public $bloc_id;
+    public int $bloc_id;
 
     public int $searchLevel = 0;
 
@@ -60,6 +59,7 @@ class UserBlocController extends AController
         return ResultHelper::json(200,'获取成功',[
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'blocs' => $blocs,
             'bloc_id' => $this->bloc_id,
         ]);
     }
@@ -71,7 +71,6 @@ class UserBlocController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id): array
     {
@@ -99,7 +98,7 @@ class UserBlocController extends AController
             $status = $data['status'];
             $bloc_id = 0;
             $list = BlocStore::find()->where(['store_id' => $store_id])->select(['bloc_id', 'store_id'])->asArray()->all();
-            foreach ($list as $key => $value) {
+            foreach ($list as $value) {
                 $_model = clone $model;
                 $_model->setAttributes([
                     'user_id' => $user_id,
@@ -111,7 +110,7 @@ class UserBlocController extends AController
                 if (!$_model->save()) {
                     $msg = ErrorsHelper::getModelError($_model);
 
-                    return ResultHelper::json(400, $msg, []);
+                    return ResultHelper::json(400, $msg);
                 }
 
                 $bloc_id = $value['bloc_id'];
@@ -136,7 +135,6 @@ class UserBlocController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
@@ -146,10 +144,7 @@ class UserBlocController extends AController
             return  ResultHelper::json(200, '获取成功',['view', 'id' => $model->id, 'bloc_id' => $model->bloc_id]);
         }else{
             $msg = ErrorsHelper::getModelError($model);
-            return  ResultHelper::json(200, '获取成功', [
-                'model' => $model,
-                'bloc_id' => $this->bloc_id,
-            ]);
+            return  ResultHelper::json(500, $msg);
         }
 
 
@@ -164,7 +159,7 @@ class UserBlocController extends AController
         $user_id = $_GPC['user_id'];
 
         if (!$user_id) {
-            return ResultHelper::json(400, '请先选择管理员', []);
+            return ResultHelper::json(400, '请先选择管理员');
         }
 
         $userStore = UserStore::find()->where([
@@ -175,7 +170,7 @@ class UserBlocController extends AController
 
         $lists = [];
 
-        foreach ($list as $key => &$value) {
+        foreach ($list as &$value) {
             if (!in_array($value['store_id'], $userStore)) {
                 $value['logo'] = ImageHelper::tomedia($value['logo']);
                 $lists[] = $value;
@@ -187,11 +182,9 @@ class UserBlocController extends AController
 
     public function actionGetuser(): array
     {
-        global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
         // 查询普通的管理员
         $userlist = ModelsUser::find()->where([])->select(['username', 'avatar', 'id'])->asArray()->all();
-        foreach ($userlist as $key => &$value) {
+        foreach ($userlist as &$value) {
             $value['avatar'] = ImageHelper::tomedia($value['avatar']);
         }
 
@@ -223,12 +216,12 @@ class UserBlocController extends AController
      *
      * @param int $id
      *
-     * @return array the loaded model
+     * @return array|UserBloc
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = UserBloc::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

@@ -29,67 +29,66 @@ class WelcomeController extends AController
         return ResultHelper::json(200, '获取成功');
     }
 
-    public function actionSysai()
+    public function actionSysai(): array
     {
         Yii::$app->params['plugins'] = 'sysai';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'sysai']);
     }
 
-    public function actionMember()
+    public function actionMember(): array
     {
         Yii::$app->params['plugins'] = 'member';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'member']);
     }
 
-    public function actionAimember()
+    public function actionAimember(): array
     {
         Yii::$app->params['plugins'] = 'aimember';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'aimember']);
     }
 
-    public function actionGoods()
+    public function actionGoods(): array
     {
         Yii::$app->params['plugins'] = 'goods';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'goods']);
     }
 
-    public function actionMarketing()
+    public function actionMarketing(): array
     {
         Yii::$app->params['plugins'] = 'marketing';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'marketing']);
     }
 
-    public function actionOrder()
+    public function actionOrder(): array
     {
         yii::$app->params['plugins'] = 'order';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'order']);
     }
 
-    public function actionWxapp()
+    public function actionWxapp(): array
     {
         yii::$app->params['plugins'] = 'wxapp';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'wxapp']);
     }
 
-    public function actionPlugins()
+    public function actionPlugins(): array
     {
         yii::$app->params['plugins'] = 'plugins';
 
         return ResultHelper::json(200, '获取成功', ['plugins' => 'plugins']);
     }
 
-    public function actionSystem()
+    public function actionSystem(): array
     {
         $this->layout = '@backend/views/layouts/main';
         $plugins = yii::$app->request->get('plugins');
-
-        return $this->render('system', ['plugins' => $plugins]);
+        return ResultHelper::json(200, '获取成功', ['plugins' => 'plugins']);
     }
 }

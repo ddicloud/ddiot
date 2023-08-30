@@ -22,31 +22,8 @@ class MapController extends AController
     
     public int $searchLevel = 0;
 
-    /**
-     * @SWG\Get(path="/map/distance",
-     *     tags={"地图"},
-     *     summary="根据经纬度获取省市区",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "根据经纬度获取省市区",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lat",
-     *      type="string",
-     *      description="纬度",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lng",
-     *      type="string",
-     *      description="经度",
-     *      required=true,
-     *    )
-     * )
-     */
-    public function actionDistance()
+
+    public function actionDistance(): array
     {
         $lng = Yii::$app->request->get('lng');
         $lat = Yii::$app->request->get('lat');
@@ -55,32 +32,8 @@ class MapController extends AController
         return ResultHelper::json(200, '获取成功', $data);
     }
 
-    /**
-     * @SWG\Get(path="/map/citylist",
-     *     tags={"地图"},
-     *     summary="根据经纬度获取省市区",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "根据经纬度获取省市区",
-     *     ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lat",
-     *      type="string",
-     *      description="纬度",
-     *      required=true,
-     *    ),
-     *     @SWG\Parameter(
-     *      in="query",
-     *      name="lng",
-     *      type="string",
-     *      description="经度",
-     *      required=true,
-     *    ),
-     *
-     * )
-     */
-    public function actionCitylist()
+
+    public function actionCitylist(): array
     {
         $region = new DdRegion();
         $regionVal = Yii::$app->cache->get('region');

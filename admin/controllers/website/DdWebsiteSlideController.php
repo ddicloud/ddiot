@@ -9,6 +9,7 @@
 namespace admin\controllers\website;
 
 use admin\controllers\AController;
+use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\DdWebsiteSlide;
 use common\models\searchs\DdWebsiteSlideSearch;
@@ -34,7 +35,7 @@ class DdWebsiteSlideController extends AController
      */
     public function actionIndex(): array
     {
-        global $_GPC;
+
         $searchModel = new DdWebsiteSlideSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -70,13 +71,15 @@ class DdWebsiteSlideController extends AController
     {
         $model = new DdWebsiteSlide();
 
-        if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-                return ResultHelper::json(200, '获取成功', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400,$msg);
         }
+
     }
 
     /**
@@ -95,12 +98,13 @@ class DdWebsiteSlideController extends AController
 
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-                return ResultHelper::json(200, '获取成功', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            return ResultHelper::json(200, '获取成功', [
+                'model' => $model,
+            ]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400,$msg);
         }
     }
 
@@ -130,14 +134,13 @@ class DdWebsiteSlideController extends AController
      *
      * @param int $id
      *
-     * @return DdWebsiteSlide the loaded model
+     * @return array|DdWebsiteSlide
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = DdWebsiteSlide::findOne($id)) !== null) {
-            return ResultHelper::json(200, '获取成功',(array)$model);
+            return $model;
         }
 
         return ResultHelper::json(500, '请检查数据是否存在');

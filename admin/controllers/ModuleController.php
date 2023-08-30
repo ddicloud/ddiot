@@ -27,16 +27,10 @@ class ModuleController extends AController
      *
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $module = Yii::$app->params['addons'];
 
-        if (empty(Yii::$app->params['store_id'])) {
-            Yii::$app->session->setFlash('error', '请点击右上角选择商户后进入模块');
-            $this->refresh();
-
-            return $this->goHome();
-        }
 
         $moduleName = DdAddons::findOne(['identifie' => $module]);
 
