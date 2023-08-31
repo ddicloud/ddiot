@@ -108,6 +108,9 @@ class StoreController extends AController
         ]);
         $lables = StoreLabel::find()->indexBy('id')->asArray()->all();
         $detail = $BlocStore::find()->where(['store_id' => $id])->with(['label'])->asArray()->one();
+        if(empty($detail)){
+            return ResultHelper::json(400, '商户不存在');
+        }
         $detail['extra'] = !empty($detail['extra']) ? unserialize($detail['extra']):[];
         $detail['county'] = (int) $detail['county'];
         $detail['province'] = (int) $detail['province'];
