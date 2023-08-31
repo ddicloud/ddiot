@@ -45,7 +45,7 @@ trait StoreLinkTrait
         $lng_lat = $_GPC['lng_lat']??[];
         $category = $_GPC['category']??[];
         $provinceCityDistrict = $_GPC['provinceCityDistrict']??[];
-        $label_link = (array) $_GPC['label_link']??[];
+        $label_link = isset($_GPC['label_link'])??[];
         if ($insert) {
             try {
                 $user_id = $this->getUser();
