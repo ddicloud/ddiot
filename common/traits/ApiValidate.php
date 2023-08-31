@@ -26,7 +26,7 @@ trait ApiValidate {
         } else {
             // 验证失败，返回第一个错误信息
             $error = reset($validator->errors);
-            throw new ErrorException($error,400);
+            throw new ErrorException($error[0],400);
         }
     }
 }
