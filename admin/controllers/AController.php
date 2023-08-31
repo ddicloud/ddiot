@@ -32,7 +32,7 @@ use yii\web\UnauthorizedHttpException;
 
 class AController extends ActiveController
 {
-    private int $actionStart = 0;
+    private float|string $actionStart = 0;
 
     /**
      * 不用进行登录验证的方法
