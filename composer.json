@@ -51,10 +51,9 @@
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "phpunit/phpunit": "~6.5.5",
         "yiisoft/yii2-gii": "^2.1",
         "codeception/verify": "~1.0.0",
-        "codeception/base": "^3.1"
+        "phpunit/phpunit": "^9.6"
     },
     "config": {
         "process-timeout": 1800,
