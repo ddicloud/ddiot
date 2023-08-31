@@ -49,10 +49,12 @@ class AccessTokenService extends BaseService
     /**
      * 获取token.
      *
+     * @param User $member
      * @param [type] $group_id
-     * @param int    $cycle_index
+     * @param int $cycle_index
      *
-     * @return void
+     * @return array
+     * @throws UnprocessableEntityHttpException
      * @date 2022-10-18
      *
      * @example
@@ -61,7 +63,7 @@ class AccessTokenService extends BaseService
      *
      * @since
      */
-    public function getAccessToken(User $member, $group_id, $cycle_index = 1)
+    public function getAccessToken(User $member, $group_id, int $cycle_index = 1): array
     {
         $model = $this->findModel($member->id, $group_id);
 
@@ -104,7 +106,7 @@ class AccessTokenService extends BaseService
         $module_name = AddonsUser::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('module_name')->scalar();
         $store_id = UserStore::find()->where(['is_default' => 1, 'user_id' => $user['id']])->select('store_id')->scalar();
         $bloc = UserBloc::find()->where(['is_default' => 1, 'user_id' => $user['id']])->with(['bloc'])->asArray()->one();
-        if($bloc['bloc']){
+        if(!empty($bloc) && $bloc['bloc']){
             $bloc['bloc']['logo'] = ImageHelper::tomedia($bloc['bloc']['logo']);
             $result['bloc'] = $bloc['bloc'];
         }
