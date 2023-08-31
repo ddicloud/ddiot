@@ -11,15 +11,15 @@ namespace addons\diandi_ai\models;
 /**
  * This is the model class for table "{{%diandi_ai_baidu_config}}".
  *
- * @property int         $id
- * @property int|null    $bloc_id     公司id
- * @property int|null    $store_id    商户id
- * @property string|null $APP_ID
- * @property string|null $API_KEY
- * @property string|null $SECRET_KEY
- * @property string|null $name        应用名称
- * @property int|null    $create_time 创建时间
- * @property int|null    $update_time 更新时间
+ * @public int         $id
+ * @public int|null    $bloc_id     公司id
+ * @public int|null    $store_id    商户id
+ * @public string|null $APP_ID
+ * @public string|null $API_KEY
+ * @public string|null $SECRET_KEY
+ * @public string|null $name        应用名称
+ * @public int|null    $create_time 创建时间
+ * @public int|null    $update_time 更新时间
  */
 class BaiduConfig extends \yii\db\ActiveRecord
 {
@@ -50,7 +50,7 @@ class BaiduConfig extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

@@ -15,18 +15,18 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_backend_exhibit}}".
  *
- * @property int $id ID
- * @property int $bloc_id
- * @property int $store_id
- * @property int $solution_id 解决案例ID
- * @property string $title 标题
- * @property string $subtitle 副标题
- * @property string $icon ICON
- * @property string $image 图片
- * @property string $link 链接
- * @property string $content 内容
- * @property string $created_at 创建时间
- * @property string $updated_at
+ * @public int $id ID
+ * @public int $bloc_id
+ * @public int $store_id
+ * @public int $solution_id 解决案例ID
+ * @public string $title 标题
+ * @public string $subtitle 副标题
+ * @public string $icon ICON
+ * @public string $image 图片
+ * @public string $link 链接
+ * @public string $content 内容
+ * @public string $created_at 创建时间
+ * @public string $updated_at
  */
 class BackendExhibit extends \yii\db\ActiveRecord
 {
@@ -64,7 +64,7 @@ class BackendExhibit extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
                 'time_type' => 'datetime',

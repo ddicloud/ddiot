@@ -11,11 +11,11 @@ namespace addons\diandi_ai\models;
 /**
  * This is the model class for table "dd_ai_applications".
  *
- * @property int         $id
- * @property string|null $name        人脸库应用名称
- * @property string|null $appid       appid
- * @property string|null $create_time
- * @property string|null $updatetime
+ * @public int         $id
+ * @public string|null $name        人脸库应用名称
+ * @public string|null $appid       appid
+ * @public string|null $create_time
+ * @public string|null $updatetime
  */
 class DdAiApplications extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class DdAiApplications extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
            [
-               'class' => \common\behaviors\SaveBehavior::className(),
+               'class' => \common\behaviors\SaveBehavior::class,
                'updatedAttribute' => 'create_time',
                'createdAttribute' => 'updatetime',
            ],

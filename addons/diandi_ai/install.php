@@ -22,7 +22,7 @@ use common\interfaces\AddonWidget;
  */
 class Install extends Migration implements AddonWidget
 {
-  public function run($addon)
+  public function run($params)
   {
     MigrateHelper::upByPath([
       '@addons/diandi_ai/migrations/'

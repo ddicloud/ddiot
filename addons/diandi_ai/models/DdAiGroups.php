@@ -8,39 +8,42 @@
 
 namespace addons\diandi_ai\models;
 
-use diandi\diandiai\AipFace;
+use addons\diandi_ai\components\baidu\AipFace;
+use common\helpers\ResultHelper;
 use Yii;
+use yii\db\StaleObjectException;
 
 /**
  * This is the model class for table "dd_ai_groups".
  *
- * @property int         $id
- * @property int|null    $ai_group_id 百度ai用户组id
- * @property string|null $name        分组名称
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int         $id
+ * @public int         $is_default
+ * @public int|null    $ai_group_id 百度ai用户组id
+ * @public string|null $name        分组名称
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class DdAiGroups extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%diandi_ai_groups}}';
     }
 
-    public $is_default = 0;
+    public int $is_default = 0;
 
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
            [
-               'class' => \common\behaviors\SaveBehavior::className(),
+               'class' => \common\behaviors\SaveBehavior::class,
                'updatedAttribute' => 'createtime',
                'createdAttribute' => 'updatetime',
            ],
@@ -50,7 +53,7 @@ class DdAiGroups extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             // [['id'], 'required'],
@@ -62,7 +65,7 @@ class DdAiGroups extends \yii\db\ActiveRecord
     }
 
     /* 创建人脸库分组 */
-    public function groupAdd($groupId)
+    public function groupAdd($groupId): array
     {
         // 你的 APPID AK SK
         $settings = Yii::$app->settings;
@@ -74,13 +77,19 @@ class DdAiGroups extends \yii\db\ActiveRecord
         $res = $client->groupAdd($groupId);
         $this->findOne($groupId);
         $this->ai_group_status = $res['error_code'];
-        $this->update();
+        try {
+            $this->update();
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(400, $e->getMessage());
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage());
+        }
 
         return $res;
     }
 
     /* 删除人脸库分组 */
-    public function groupDelete($groupId)
+    public function groupDelete($groupId): array
     {
         // 你的 APPID AK SK
         $settings = Yii::$app->settings;
@@ -90,13 +99,11 @@ class DdAiGroups extends \yii\db\ActiveRecord
         $client = new AipFace($APP_ID, $API_KEY, $SECRET_KEY);
 
         // 带参数调用人脸检测
-        $res = $client->groupDelete($groupId);
-
-        return $res;
+        return $client->groupDelete($groupId);
     }
 
     /* 人脸库分组查询 */
-    public function getGroupList($groupId)
+    public function getGroupList($groupId): array
     {
         // 你的 APPID AK SK
         $settings = Yii::$app->settings;
@@ -105,13 +112,11 @@ class DdAiGroups extends \yii\db\ActiveRecord
         $SECRET_KEY = $settings->get('Baidu', 'SECRET_KEY');
         $client = new AipFace($APP_ID, $API_KEY, $SECRET_KEY);
         // 带参数调用人脸检测
-        $res = $client->getGroupList($groupId);
-
-        return $res;
+        return $client->getGroupList($groupId);
     }
 
     /* 获取用户组 */
-    public function getGroupUsers($groupId)
+    public function getGroupUsers($groupId): array
     {
         // 你的 APPID AK SK
         $settings = Yii::$app->settings;
@@ -120,15 +125,13 @@ class DdAiGroups extends \yii\db\ActiveRecord
         $SECRET_KEY = $settings->get('Baidu', 'SECRET_KEY');
         $client = new AipFace($APP_ID, $API_KEY, $SECRET_KEY);
         // 带参数调用人脸检测
-        $res = $client->getGroupUsers($groupId);
-
-        return $res;
+        return $client->getGroupUsers($groupId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',

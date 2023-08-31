@@ -11,14 +11,14 @@ namespace addons\diandi_website\models;
 /**
  * This is the model class for table "{{%diandi_website_page_config}}".
  *
- * @property int         $id
- * @property int|null    $bloc_id
- * @property int|null    $store_id
- * @property string      $title
- * @property string|null $template
- * @property string      $type
- * @property int|null    $create_time
- * @property int|null    $update_time
+ * @public int         $id
+ * @public int|null    $bloc_id
+ * @public int|null    $store_id
+ * @public string      $title
+ * @public string|null $template
+ * @public string      $type
+ * @public int|null    $create_time
+ * @public int|null    $update_time
  */
 class WebsitePageConfig extends \yii\db\ActiveRecord
 {
@@ -52,7 +52,7 @@ class WebsitePageConfig extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

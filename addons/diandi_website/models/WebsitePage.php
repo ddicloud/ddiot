@@ -15,15 +15,15 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_page}}".
  *
- * @property int $id
- * @property string $title
- * @property string $image
- * @property string $description
- * @property string $keyword
- * @property string $template 模板路径
- * @property string $content
- * @property int $created_at
- * @property int $updated_at
+ * @public int $id
+ * @public string $title
+ * @public string $image
+ * @public string $description
+ * @public string $keyword
+ * @public string $template 模板路径
+ * @public string $content
+ * @public int $created_at
+ * @public int $updated_at
  */
 class WebsitePage extends \yii\db\ActiveRecord
 {
@@ -57,7 +57,7 @@ class WebsitePage extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
             ],

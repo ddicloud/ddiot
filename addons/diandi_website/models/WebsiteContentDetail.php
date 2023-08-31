@@ -15,13 +15,13 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_content_detail}}".
  *
- * @property int $id
- * @property int $content_id
- * @property string $detail
- * @property string $params
- * @property string $file_url
- * @property int|null $created_at
- * @property int|null $updated_at
+ * @public int $id
+ * @public int $content_id
+ * @public string $detail
+ * @public string $params
+ * @public string $file_url
+ * @public int|null $created_at
+ * @public int|null $updated_at
  */
 class WebsiteContentDetail extends \yii\db\ActiveRecord
 {
@@ -55,7 +55,7 @@ class WebsiteContentDetail extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

@@ -24,7 +24,7 @@ class AddonsInstall extends Migration implements AddonWidget
 {
     public $addons = '';
 
-    public function run($addon)
+    public function run($params)
     {
         if (!empty($this->addons)) {
             $module_root = Yii::getAlias('@addons');

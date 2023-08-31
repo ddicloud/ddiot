@@ -15,15 +15,15 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_sys_fun}}".
  *
- * @property int $id ID
- * @property int $bloc_id
- * @property int $store_id
- * @property int $cate_id 分类ID
- * @property string $title 标题
- * @property string $icon
- * @property string $des 描述
- * @property string $created_at 创建时间
- * @property string $updated_at 最后一次更新时间
+ * @public int $id ID
+ * @public int $bloc_id
+ * @public int $store_id
+ * @public int $cate_id 分类ID
+ * @public string $title 标题
+ * @public string $icon
+ * @public string $des 描述
+ * @public string $created_at 创建时间
+ * @public string $updated_at 最后一次更新时间
  */
 class SysFun extends \yii\db\ActiveRecord
 {
@@ -59,7 +59,7 @@ class SysFun extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
                 'time_type' => 'datetime'

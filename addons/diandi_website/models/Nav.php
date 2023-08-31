@@ -15,19 +15,19 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_nav}}".
  *
- * @property int $id
- * @property string $name 名称
- * @property int $parent 父级
- * @property string|null $link 链接地址
- * @property int $order 排序
- * @property resource|null $data 数据
- * @property string|null $type 导航类型
- * @property string|null $icon 图标
- * @property int|null $is_show 是否显示
- * @property int|null $store_id 商户
- * @property int|null $bloc_id 公司
- * @property int|null $create_time 创建时间
- * @property int|null $update_time 更新时间
+ * @public int $id
+ * @public string $name 名称
+ * @public int $parent 父级
+ * @public string|null $link 链接地址
+ * @public int $order 排序
+ * @public resource|null $data 数据
+ * @public string|null $type 导航类型
+ * @public string|null $icon 图标
+ * @public int|null $is_show 是否显示
+ * @public int|null $store_id 商户
+ * @public int|null $bloc_id 公司
+ * @public int|null $create_time 创建时间
+ * @public int|null $update_time 更新时间
  */
 class Nav extends \yii\db\ActiveRecord
 {
@@ -63,7 +63,7 @@ class Nav extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

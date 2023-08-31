@@ -13,26 +13,26 @@ use Yii;
 /**
  * This is the model class for table "dd_ai_member".
  *
- * @property int         $user_id                 人脸招聘
- * @property int         $face_group_id           人脸库组id
- * @property string      $nickName
- * @property string      $face_image              人脸照片
- * @property int         $gender
- * @property int|null    $face_id                 人脸id
- * @property int|null    $uid                     线下标识id
- * @property string|null $face_token              脸部图片唯一标识
- * @property int|null    $wxapp_id
- * @property int         $create_time
- * @property int         $update_time
- * @property int|null    $ai_age                  ai年龄
- * @property string|null $ai_gender               ai性别
- * @property string|null $ai_glasses
- * @property string|null $ai_race                 ai种族
- * @property string|null $ai_emotion              ai情绪
- * @property string|null $face_shape              ai脸型
- * @property string|null $ai_quality_blur         ai图片质量1
- * @property string|null $ai_quality_illumination ai图片质量1
- * @property string|null $ai_quality_completeness ai图片质量1
+ * @public int         $user_id                 人脸招聘
+ * @public int         $face_group_id           人脸库组id
+ * @public string      $nickName
+ * @public string      $face_image              人脸照片
+ * @public int         $gender
+ * @public int|null    $face_id                 人脸id
+ * @public int|null    $uid                     线下标识id
+ * @public string|null $face_token              脸部图片唯一标识
+ * @public int|null    $wxapp_id
+ * @public int         $create_time
+ * @public int         $update_time
+ * @public int|null    $ai_age                  ai年龄
+ * @public string|null $ai_gender               ai性别
+ * @public string|null $ai_glasses
+ * @public string|null $ai_race                 ai种族
+ * @public string|null $ai_emotion              ai情绪
+ * @public string|null $face_shape              ai脸型
+ * @public string|null $ai_quality_blur         ai图片质量1
+ * @public string|null $ai_quality_illumination ai图片质量1
+ * @public string|null $ai_quality_completeness ai图片质量1
  */
 class DdAiMember extends \yii\db\ActiveRecord
 {
@@ -52,7 +52,7 @@ class DdAiMember extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
            [
-               'class' => \common\behaviors\SaveBehavior::className(),
+               'class' => \common\behaviors\SaveBehavior::class,
                'updatedAttribute' => 'create_time',
                'createdAttribute' => 'update_time',
            ],

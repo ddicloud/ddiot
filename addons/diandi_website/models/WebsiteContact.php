@@ -15,17 +15,17 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_contact}}".
  *
- * @property int $id
- * @property string|null $name 公司名称
- * @property string|null $mobile 联系电话
- * @property string|null $phone 座机号码
- * @property string|null $email 邮箱
- * @property string|null $address 具体地址
- * @property string|null $intro 简介
- * @property string|null $logo 公司logo
- * @property string|null $wechat_code 公众号二维码
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int $id
+ * @public string|null $name 公司名称
+ * @public string|null $mobile 联系电话
+ * @public string|null $phone 座机号码
+ * @public string|null $email 邮箱
+ * @public string|null $address 具体地址
+ * @public string|null $intro 简介
+ * @public string|null $logo 公司logo
+ * @public string|null $wechat_code 公众号二维码
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class WebsiteContact extends \yii\db\ActiveRecord
 {
@@ -60,7 +60,7 @@ class WebsiteContact extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

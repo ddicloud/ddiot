@@ -13,17 +13,17 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%diandi_website_pro_app}}".
  *
- * @property int         $id
- * @property int|null    $store_id
- * @property int|null    $bloc_id
- * @property string|null $create_time
- * @property string|null $update_time
- * @property string|null $link        立即使用链接地址
- * @property string|null $logo        图标
- * @property string|null $content     内容
- * @property string|null $title       标题
- * @property string|null $tip1        小提示1
- * @property string|null $tip2        小提示2
+ * @public int         $id
+ * @public int|null    $store_id
+ * @public int|null    $bloc_id
+ * @public string|null $create_time
+ * @public string|null $update_time
+ * @public string|null $link        立即使用链接地址
+ * @public string|null $logo        图标
+ * @public string|null $content     内容
+ * @public string|null $title       标题
+ * @public string|null $tip1        小提示1
+ * @public string|null $tip2        小提示2
  */
 class WebsiteProApp extends \yii\db\ActiveRecord
 {
@@ -59,7 +59,7 @@ class WebsiteProApp extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
                 'time_type' => 'datetime',

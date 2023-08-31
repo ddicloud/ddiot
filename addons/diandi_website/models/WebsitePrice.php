@@ -8,16 +8,16 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%diandi_website_pro_price}}".
  *
- * @property int $id
- * @property int|null $store_id
- * @property int|null $bloc_id
- * @property string|null $create_time
- * @property string|null $update_time
- * @property string|null $title 标题
- * @property string|null $describe 描述
- * @property float|null $price 价格
- * @property string|null $link 链接地址
- * @property int|null $sort 排序
+ * @public int $id
+ * @public int|null $store_id
+ * @public int|null $bloc_id
+ * @public string|null $create_time
+ * @public string|null $update_time
+ * @public string|null $title 标题
+ * @public string|null $describe 描述
+ * @public float|null $price 价格
+ * @public string|null $link 链接地址
+ * @public int|null $sort 排序
  */
 class WebsitePrice extends \yii\db\ActiveRecord
 {
@@ -53,7 +53,7 @@ class WebsitePrice extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
                 'time_type' => 'datetime',

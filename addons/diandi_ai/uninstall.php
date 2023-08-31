@@ -26,7 +26,7 @@ use common\interfaces\AddonWidget;
 class UnInstall extends Migration implements AddonWidget
 {
     
-    public function run($addon)
+    public function run($params)
     {
 
         MigrateHelper::downByPath([

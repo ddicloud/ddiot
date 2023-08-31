@@ -13,13 +13,13 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%diandi_website_pro_slide}}".
  *
- * @property int         $id
- * @property int|null    $store_id
- * @property int|null    $bloc_id
- * @property string|null $create_time
- * @property string|null $update_time
- * @property string|null $link        链接地址
- * @property string|null $image       显示图片
+ * @public int         $id
+ * @public int|null    $store_id
+ * @public int|null    $bloc_id
+ * @public string|null $create_time
+ * @public string|null $update_time
+ * @public string|null $link        链接地址
+ * @public string|null $image       显示图片
  */
 class WebsiteProSlide extends \yii\db\ActiveRecord
 {
@@ -53,7 +53,7 @@ class WebsiteProSlide extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
                 'time_type' => 'datetime',

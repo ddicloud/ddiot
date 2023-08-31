@@ -15,13 +15,13 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_config}}".
  *
- * @property int $id
- * @property string $name 字段名英文
- * @property string $label 字段标注
- * @property string $value 字段值
- * @property int $created_at
- * @property int $updated_at
- * @property string $language
+ * @public int $id
+ * @public string $name 字段名英文
+ * @public string $label 字段标注
+ * @public string $value 字段值
+ * @public int $created_at
+ * @public int $updated_at
+ * @public string $language
  */
 class WebsiteConfig extends \yii\db\ActiveRecord
 {
@@ -55,7 +55,7 @@ class WebsiteConfig extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

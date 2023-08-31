@@ -15,18 +15,18 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_product_price}}".
  *
- * @property int $id ID
- * @property int $bloc_id
- * @property int $store_id
- * @property int $solution_id 解决案例ID
- * @property string $name 产品名称
- * @property string $des 产品描述
- * @property float $price 产品价格
- * @property string $show_price 展示价格
- * @property int $drift 价格浮动
- * @property string $fun 产品功能
- * @property string $created_at 创建时间
- * @property string $updated_at
+ * @public int $id ID
+ * @public int $bloc_id
+ * @public int $store_id
+ * @public int $solution_id 解决案例ID
+ * @public string $name 产品名称
+ * @public string $des 产品描述
+ * @public float $price 产品价格
+ * @public string $show_price 展示价格
+ * @public int $drift 价格浮动
+ * @public string $fun 产品功能
+ * @public string $created_at 创建时间
+ * @public string $updated_at
  */
 class ProductPrice extends \yii\db\ActiveRecord
 {
@@ -73,7 +73,7 @@ class ProductPrice extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
                 'time_type' => 'datetime'

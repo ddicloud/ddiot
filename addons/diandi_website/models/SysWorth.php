@@ -15,16 +15,16 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_sys_worth}}".
  *
- * @property int $id ID
- * @property int $bloc_id
- * @property int $store_id
- * @property int $solution_id 解决案例ID
- * @property int $is_website 是否是官网
- * @property string $title 标题
- * @property string $icon
- * @property string $des 描述
- * @property string $created_at 创建时间
- * @property string $updated_at
+ * @public int $id ID
+ * @public int $bloc_id
+ * @public int $store_id
+ * @public int $solution_id 解决案例ID
+ * @public int $is_website 是否是官网
+ * @public string $title 标题
+ * @public string $icon
+ * @public string $des 描述
+ * @public string $created_at 创建时间
+ * @public string $updated_at
  */
 class SysWorth extends \yii\db\ActiveRecord
 {
@@ -63,7 +63,7 @@ class SysWorth extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
                 'time_type' => 'datetime',

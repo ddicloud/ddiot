@@ -15,13 +15,13 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_solution_cate}}".
  *
- * @property int $id ID
- * @property int $bloc_id
- * @property int $store_id
- * @property string $name 名称
- * @property string $des 描述
- * @property string $created_at 创建时间
- * @property string $updated_at 更新时间
+ * @public int $id ID
+ * @public int $bloc_id
+ * @public int $store_id
+ * @public string $name 名称
+ * @public string $des 描述
+ * @public string $created_at 创建时间
+ * @public string $updated_at 更新时间
  */
 class SolutionCate extends \yii\db\ActiveRecord
 {
@@ -55,7 +55,7 @@ class SolutionCate extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
                 'time_type' => 'datetime'

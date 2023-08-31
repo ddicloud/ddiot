@@ -227,7 +227,7 @@ class UserController extends AController
             return ResultHelper::json(401, '验证码错误');
         }
 
-        $member_id = Yii::$app->user->identity->member_id;
+        $member_id = Yii::$app->user->identity->member_id??0;
         $fields['mobile'] = $mobile;
         $res = Yii::$app->service->commonMemberService->editInfo($member_id, $fields);
 

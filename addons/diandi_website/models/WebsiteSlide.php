@@ -12,14 +12,14 @@ namespace addons\diandi_website\models;
 /**
  * This is the model class for table "{{%diandi_website_slide}}".
  *
- * @property int         $id
- * @property string|null $images
- * @property string|null $title
- * @property string|null $description
- * @property string|null $menuname
- * @property string|null $menuurl
- * @property int|null    $createtime
- * @property int|null    $updatetime
+ * @public int         $id
+ * @public string|null $images
+ * @public string|null $title
+ * @public string|null $description
+ * @public string|null $menuname
+ * @public string|null $menuurl
+ * @public int|null    $createtime
+ * @public int|null    $updatetime
  */
 class WebsiteSlide extends \yii\db\ActiveRecord
 {
@@ -50,7 +50,7 @@ class WebsiteSlide extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

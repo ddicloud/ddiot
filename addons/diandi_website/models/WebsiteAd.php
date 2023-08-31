@@ -15,14 +15,14 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_ad}}".
  *
- * @property int $id
- * @property string $title
- * @property int|null $type 101 轮播图 102 友情链接
- * @property int|null $category_id
- * @property string $image
- * @property string $link
- * @property int $created_at
- * @property int $updated_at
+ * @public int $id
+ * @public string $title
+ * @public int|null $type 101 轮播图 102 友情链接
+ * @public int|null $category_id
+ * @public string $image
+ * @public string $link
+ * @public int $created_at
+ * @public int $updated_at
  */
 class WebsiteAd extends \yii\db\ActiveRecord
 {
@@ -54,7 +54,7 @@ class WebsiteAd extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'updated_at',
                 'createdAttribute' => 'created_at',
             ],

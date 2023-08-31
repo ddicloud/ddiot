@@ -14,14 +14,14 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_feedback}}".
  *
- * @property int $id
- * @property string $subject
- * @property string $name
- * @property string $phone
- * @property string $email
- * @property string $body
- * @property int $created_at
- * @property int $updated_at
+ * @public int $id
+ * @public string $subject
+ * @public string $name
+ * @public string $phone
+ * @public string $email
+ * @public string $body
+ * @public int $created_at
+ * @public int $updated_at
  */
 class WebsiteFeedback extends \yii\db\ActiveRecord
 {
@@ -55,7 +55,7 @@ class WebsiteFeedback extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

@@ -15,17 +15,17 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_link}}".
  *
- * @property int $id
- * @property string|null $name 公司名称
- * @property string|null $intro 简介
- * @property string|null $logo 公司logo
- * @property string|null $wechat_code 公众号二维码
- * @property string|null $image 显示图片
- * @property string|null $link 链接地址
- * @property int|null $store_id
- * @property int|null $bloc_id
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int $id
+ * @public string|null $name 公司名称
+ * @public string|null $intro 简介
+ * @public string|null $logo 公司logo
+ * @public string|null $wechat_code 公众号二维码
+ * @public string|null $image 显示图片
+ * @public string|null $link 链接地址
+ * @public int|null $store_id
+ * @public int|null $bloc_id
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class WebsiteLink extends \yii\db\ActiveRecord
 {
@@ -58,7 +58,7 @@ class WebsiteLink extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],

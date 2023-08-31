@@ -14,11 +14,11 @@ use Yii;
 /**
  * This is the model class for table "dd_ai_faces".
  *
- * @property int         $id
- * @property int|null    $ai_user_id
- * @property int|null    $ai_group_id
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int         $id
+ * @public int|null    $ai_user_id
+ * @public int|null    $ai_group_id
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class DdAiFaces extends \yii\db\ActiveRecord
 {
@@ -38,7 +38,7 @@ class DdAiFaces extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
            [
-               'class' => \common\behaviors\SaveBehavior::className(),
+               'class' => \common\behaviors\SaveBehavior::class,
                'updatedAttribute' => 'createtime',
                'createdAttribute' => 'updatetime',
            ],

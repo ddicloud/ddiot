@@ -12,11 +12,11 @@ namespace addons\diandi_website\models;
 /**
  * This is the model class for table "{{%diandi_website_article_category}}".
  *
- * @property int      $id
- * @property string   $title
- * @property int      $displayorder
- * @property int|null $pcate
- * @property string   $type
+ * @public int      $id
+ * @public string   $title
+ * @public int      $displayorder
+ * @public int|null $pcate
+ * @public string   $type
  */
 class WebsiteArticleCategory extends \yii\db\ActiveRecord
 {
@@ -50,7 +50,7 @@ class WebsiteArticleCategory extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
             ],
@@ -59,7 +59,7 @@ class WebsiteArticleCategory extends \yii\db\ActiveRecord
 
     public function getArticle()
     {
-        return $this->hasMany(WebsiteArticle::className(), ['pcate' => 'id'])->limit(3);
+        return $this->hasMany(WebsiteArticle::class, ['pcate' => 'id'])->limit(3);
     }
 
     /**

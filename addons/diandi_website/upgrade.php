@@ -21,22 +21,22 @@ class Upgrade extends Migration implements AddonWidget
     /**
      * @var array
      */
-    public $versions = [
+    public array $versions = [
         '1.0.0', // 默认版本
         '1.0.1',
         '1.0.2',
     ];
 
     /**
-     * @param $addon
+     * @param $params
      *
      * @return mixed|void
      *
      * @throws \yii\db\Exception
      */
-    public function run($addon)
+    public function run($params)
     {
-        switch ($addon->version) {
+        switch ($params->version) {
             case '1.0.1':
                 // 增加测试 - 冗余的字段
                 // $this->addColumn('{{%addon_example_curd}}', 'field1', 'varchar(48)');

@@ -15,23 +15,23 @@ use Yii;
 /**
  * This is the model class for table "{{%diandi_website_article}}".
  *
- * @property int $id
- * @property int $ishot
- * @property int $pcate
- * @property int $ccate
- * @property string $template
- * @property string $title
- * @property string $description
- * @property string $content
- * @property string $thumb
- * @property int $incontent
- * @property string $source
- * @property string $author
- * @property int $displayorder
- * @property string $linkurl
- * @property int $createtime
- * @property int $edittime
- * @property string|null $icon
+ * @public int $id
+ * @public int $ishot
+ * @public int $pcate
+ * @public int $ccate
+ * @public string $template
+ * @public string $title
+ * @public string $description
+ * @public string $content
+ * @public string $thumb
+ * @public int $incontent
+ * @public string $source
+ * @public string $author
+ * @public int $displayorder
+ * @public string $linkurl
+ * @public int $createtime
+ * @public int $edittime
+ * @public string|null $icon
  */
 class WebsiteArticle extends \yii\db\ActiveRecord
 {
@@ -70,7 +70,7 @@ class WebsiteArticle extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'create_time',
                 'createdAttribute' => 'update_time',
             ],
@@ -92,7 +92,7 @@ class WebsiteArticle extends \yii\db\ActiveRecord
 
     public function getCate()
     {
-        return $this->hasOne(WebsiteArticleCategory::className(), ['id' => 'pcate']);
+        return $this->hasOne(WebsiteArticleCategory::class, ['id' => 'pcate']);
     }
 
     /**

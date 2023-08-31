@@ -13,15 +13,15 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%diandi_website_pro_h5_body}}".
  *
- * @property int         $id
- * @property int|null    $store_id
- * @property int|null    $bloc_id
- * @property string|null $create_time
- * @property string|null $update_time
- * @property string|null $title       标题
- * @property string|null $content     内容
- * @property string|null $image_a     a图
- * @property string|null $image_b     b图
+ * @public int         $id
+ * @public int|null    $store_id
+ * @public int|null    $bloc_id
+ * @public string|null $create_time
+ * @public string|null $update_time
+ * @public string|null $title       标题
+ * @public string|null $content     内容
+ * @public string|null $image_a     a图
+ * @public string|null $image_b     b图
  */
 class WebsiteProH5Body extends \yii\db\ActiveRecord
 {
@@ -57,7 +57,7 @@ class WebsiteProH5Body extends \yii\db\ActiveRecord
         /*自动添加创建和修改时间*/
         return [
             [
-                'class' => \common\behaviors\SaveBehavior::className(),
+                'class' => \common\behaviors\SaveBehavior::class,
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
                 'time_type' => 'datetime',
