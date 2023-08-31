@@ -23,15 +23,15 @@ use yii\filters\RateLimitInterface;
 /**
  * This is the model class for table "dd_admin_access_token".
  *
- * @property int         $id
- * @property string|null $refresh_token 刷新令牌
- * @property string|null $access_token  授权令牌
- * @property int|null    $user_id     用户id
- * @property string|null $openid        授权对象openid
- * @property string|null $group         组别
- * @property int|null    $status        状态[-1:删除;0:禁用;1启用]
- * @property int|null    $create_time   创建时间
- * @property int|null    $updated_time  修改时间
+ * @public int         $id
+ * @public string|null $refresh_token 刷新令牌
+ * @public string|null $access_token  授权令牌
+ * @public int|null    $user_id     用户id
+ * @public string|null $openid        授权对象openid
+ * @public string|null $group         组别
+ * @public int|null    $status        状态[-1:删除;0:禁用;1启用]
+ * @public int|null    $create_time   创建时间
+ * @public int|null    $updated_time  修改时间
  */
 
 

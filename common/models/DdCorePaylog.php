@@ -15,21 +15,21 @@ use Yii;
 /**
  * This is the model class for table "dd_core_paylog".
  *
- * @property int $plid
- * @property string $type 支付类型
- * @property string $openid openid
- * @property string $uniontid 跨应用标识
- * @property string $tid
- * @property float $fee 支付金额
- * @property int $status 支付状态
- * @property string $module 模块
- * @property string $tag
- * @property int $is_usecard 是否使用会员卡
- * @property int $card_type 会员卡类型
- * @property string $card_id 会员卡id
- * @property float $card_fee 会员卡余额
- * @property string $encrypt_code 加密字符串
- * @property int $is_wish
+ * @public int $plid
+ * @public string $type 支付类型
+ * @public string $openid openid
+ * @public string $uniontid 跨应用标识
+ * @public string $tid
+ * @public float $fee 支付金额
+ * @public int $status 支付状态
+ * @public string $module 模块
+ * @public string $tag
+ * @public int $is_usecard 是否使用会员卡
+ * @public int $card_type 会员卡类型
+ * @public string $card_id 会员卡id
+ * @public float $card_fee 会员卡余额
+ * @public string $encrypt_code 加密字符串
+ * @public int $is_wish
  */
 class DdCorePaylog extends \yii\db\ActiveRecord
 {

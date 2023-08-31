@@ -14,18 +14,18 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "dd_region".
  *
- * @property int         $id
- * @property int|null    $pid
- * @property string|null $shortname
- * @property string|null $name
- * @property string|null $merger_name
- * @property int|null    $level
- * @property string|null $pinyin
- * @property string|null $code
- * @property string|null $zip_code
- * @property string|null $first
- * @property string|null $lng
- * @property string|null $lat
+ * @public int         $id
+ * @public int|null    $pid
+ * @public string|null $shortname
+ * @public string|null $name
+ * @public string|null $merger_name
+ * @public int|null    $level
+ * @public string|null $pinyin
+ * @public string|null $code
+ * @public string|null $zip_code
+ * @public string|null $first
+ * @public string|null $lng
+ * @public string|null $lat
  */
 class DdRegion extends \yii\db\ActiveRecord
 {

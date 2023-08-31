@@ -15,62 +15,62 @@ use common\helpers\HashidsHelper;
 /**
  * This is the model class for table "{{%member}}".
  *
- * @property int         $member_id
- * @property int|null    $group_id
- * @property int|null    $level
- * @property string      $openid
- * @property int|null    $store_id
- * @property int         $bloc_id
- * @property string|null $username             会员名称
- * @property int|null    $mobile               手机号
- * @property string|null $address              用户地址
- * @property string      $nickName             微信昵称
- * @property string      $avatarUrl            会员头像
- * @property int         $gender               0男1女
- * @property string      $country              国家
- * @property string      $province             省份
- * @property int|null    $status               会员状态
- * @property string      $city                 城市
- * @property int         $address_id           收货地址id
- * @property int         $wxapp_id
- * @property string|null $verification_token   验证token
- * @property int         $create_time
- * @property int         $update_time
- * @property string      $auth_key
- * @property string      $password_hash
- * @property string|null $password_reset_token
- * @property string|null $realname             真实姓名
- * @property string|null $avatar               头像
- * @property string|null $qq                   QQ号
- * @property string|null $vip                  VIP级别
- * @property string|null $birthyear            出生生日
- * @property string|null $constellation        星座
- * @property string|null $zodiac               生肖
- * @property string|null $telephone            固定电话
- * @property string|null $idcard               证件号码
- * @property string|null $studentid            学号
- * @property string|null $grade                班级
- * @property string|null $zipcode              邮编
- * @property string|null $nationality          国籍
- * @property string|null $resideprovince       居住地址
- * @property string|null $graduateschool       毕业学校
- * @property string|null $company              公司
- * @property string|null $education            学历
- * @property string|null $occupation           职业
- * @property string|null $position             职位
- * @property string|null $revenue              年收入
- * @property string|null $affectivestatus      情感状态
- * @property string|null $lookingfor           交友目的
- * @property string|null $bloodtype            血型
- * @property string|null $height               身高
- * @property string|null $weight               体重
- * @property string|null $alipay               支付宝帐号
- * @property string|null $msn                  MSN
- * @property string|null $email                电子邮箱
- * @property string|null $taobao               阿里旺旺
- * @property string|null $site                 主页
- * @property string|null $bio                  自我介绍
- * @property string|null $interest             兴趣爱好
+ * @public int         $member_id
+ * @public int|null    $group_id
+ * @public int|null    $level
+ * @public string      $openid
+ * @public int|null    $store_id
+ * @public int         $bloc_id
+ * @public string|null $username             会员名称
+ * @public int|null    $mobile               手机号
+ * @public string|null $address              用户地址
+ * @public string      $nickName             微信昵称
+ * @public string      $avatarUrl            会员头像
+ * @public int         $gender               0男1女
+ * @public string      $country              国家
+ * @public string      $province             省份
+ * @public int|null    $status               会员状态
+ * @public string      $city                 城市
+ * @public int         $address_id           收货地址id
+ * @public int         $wxapp_id
+ * @public string|null $verification_token   验证token
+ * @public int         $create_time
+ * @public int         $update_time
+ * @public string      $auth_key
+ * @public string      $password_hash
+ * @public string|null $password_reset_token
+ * @public string|null $realname             真实姓名
+ * @public string|null $avatar               头像
+ * @public string|null $qq                   QQ号
+ * @public string|null $vip                  VIP级别
+ * @public string|null $birthyear            出生生日
+ * @public string|null $constellation        星座
+ * @public string|null $zodiac               生肖
+ * @public string|null $telephone            固定电话
+ * @public string|null $idcard               证件号码
+ * @public string|null $studentid            学号
+ * @public string|null $grade                班级
+ * @public string|null $zipcode              邮编
+ * @public string|null $nationality          国籍
+ * @public string|null $resideprovince       居住地址
+ * @public string|null $graduateschool       毕业学校
+ * @public string|null $company              公司
+ * @public string|null $education            学历
+ * @public string|null $occupation           职业
+ * @public string|null $position             职位
+ * @public string|null $revenue              年收入
+ * @public string|null $affectivestatus      情感状态
+ * @public string|null $lookingfor           交友目的
+ * @public string|null $bloodtype            血型
+ * @public string|null $height               身高
+ * @public string|null $weight               体重
+ * @public string|null $alipay               支付宝帐号
+ * @public string|null $msn                  MSN
+ * @public string|null $email                电子邮箱
+ * @public string|null $taobao               阿里旺旺
+ * @public string|null $site                 主页
+ * @public string|null $bio                  自我介绍
+ * @public string|null $interest             兴趣爱好
  */
 class DdMember extends \yii\db\ActiveRecord
 {

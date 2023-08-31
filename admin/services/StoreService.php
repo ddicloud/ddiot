@@ -30,9 +30,9 @@ class StoreService extends BaseService
      *
      * @param [type] $data   店铺数据
      * @param [type] $mid    模块ID
-     * @param array  $extras 商户扩展字段
+     * @param array $extras 商户扩展字段
      *
-     * @return void
+     * @return
      * @date 2022-10-26
      *
      * @example
@@ -41,7 +41,7 @@ class StoreService extends BaseService
      *
      * @since
      */
-    public static function createStore($data, $mid, $extras = [])
+    public static function createStore($data, $mid, array $extras = []): BlocStore
     {
         loggingHelper::writeLog('StoreService', 'createStore', '创建初始数据', [
             'data' => $data,
@@ -161,15 +161,26 @@ class StoreService extends BaseService
 
     /**
      * 更新关联店铺数据
-     * @param [type] $store_id
-     * @param [type] $data
-     * @return void
+     * @param $store_id
+     * @param $bloc_id
+     * @param $category
+     * @param $provinceCityDistrict
+     * @param $name
+     * @param $logo
+     * @param $address
+     * @param $longitude
+     * @param $latitude
+     * @param $mobile
+     * @param $status
+     * @param array $label_link
+     * @return BlocStore|null
+     * @throws HttpException
      * @date 2023-03-08
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = [])
+    public static function upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): ?BlocStore
     {
         $model = BlocStore::findOne($store_id);
 
@@ -239,13 +250,26 @@ class StoreService extends BaseService
 
     /**
      * 新建店铺数据关联全局
-     * @return void
+     * @param $user_id
+     * @param $bloc_id
+     * @param $category
+     * @param $provinceCityDistrict
+     * @param $name
+     * @param $logo
+     * @param $address
+     * @param $longitude
+     * @param $latitude
+     * @param $mobile
+     * @param $status
+     * @param array $label_link
+     * @return BlocStore
+     * @throws HttpException
      * @date 2023-03-03
-     * @example
      * @author Wang Chunsheng
      * @since
+     * @example
      */
-    public static function addLinkStore($user_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = [])
+    public static function addLinkStore($user_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): BlocStore
     {
         if (empty($user_id)) {
             throw new \Exception('关联商户中，用户ID不能为空!');
@@ -380,13 +404,14 @@ class StoreService extends BaseService
      * @param [type] $license_no
      * @param [type] $license_name
      * @param [type] $level_num
-     * @return void
+     * @return
      * @date 2023-06-19
+     * @throws HttpException
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function addLinkBloc($invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num)
+    public static function addLinkBloc($invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, array $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num): Bloc
     {
 
 
@@ -459,37 +484,39 @@ class StoreService extends BaseService
 
     /**
      * 用户编辑公司
-     * @param [type] $bloc_id
-     * @param [type] $invitation_code
-     * @param [type] $business_name
-     * @param [type] $logo
-     * @param [type] $pid
-     * @param [type] $group_bloc_id
-     * @param [type] $category
+     * @param $bloc_id
+     * @param $invitation_code
+     * @param $business_name
+     * @param $logo
+     * @param $pid
+     * @param $group_bloc_id
+     * @param $category
      * @param array $provinceCityDistrict
-     * @param [type] $address
-     * @param [type] $register_level
-     * @param [type] $longitude
-     * @param [type] $latitude
-     * @param [type] $telephone
-     * @param [type] $avg_price
-     * @param [type] $recommend
-     * @param [type] $special
-     * @param [type] $introduction
-     * @param [type] $open_time
-     * @param [type] $status
-     * @param [type] $is_group
-     * @param [type] $sosomap_poi_uid
-     * @param [type] $license_no
-     * @param [type] $license_name
-     * @param [type] $level_num
-     * @date 2023-06-19
+     * @param $address
+     * @param $register_level
+     * @param $longitude
+     * @param $latitude
+     * @param $telephone
+     * @param $avg_price
+     * @param $recommend
+     * @param $special
+     * @param $introduction
+     * @param $open_time
+     * @param $end_time
+     * @param $status
+     * @param $is_group
+     * @param $sosomap_poi_uid
+     * @param $license_no
+     * @param $license_name
+     * @param $level_num
+     * @return Bloc|null
      * @throws HttpException
+     * @date 2023-06-19
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num): ?Bloc
+    public static function upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, array $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num): ?Bloc
     {
         $model = Bloc::findOne($bloc_id);
 
@@ -608,13 +635,13 @@ class StoreService extends BaseService
 
     /**
      * 获取公司授权数据，检索使用
-     * @return void
+     * @return
      * @date 2023-03-04
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function getAuthBlos()
+    public static function getAuthBlos(): array
     {
         $user_blocs = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['bloc'])->asArray()->all();
         $lists = [];
@@ -634,15 +661,15 @@ class StoreService extends BaseService
 
     /**
      * 获取商户授权数据，检索使用
-     * @return void
+     * @return array
      * @date 2023-03-04
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function getAuthStores()
+    public static function getAuthStores(): array
     {
-        $user_blocs = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->with(['store'])->asArray()->all();
+        $user_blocs = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->with(['store'])->asArray()->all();
         $lists = [];
         foreach ($user_blocs as $key => $value) {
             if ($value['store']) {
@@ -659,7 +686,7 @@ class StoreService extends BaseService
         return array_values($lists);
     }
 
-    public static function checkStoreNum($bloc_id)
+    public static function checkStoreNum($bloc_id): bool
     {
         $bloc = Bloc::find()->where(['bloc_id' => $bloc_id])->with(['store'])->asArray()->one();
 
@@ -670,7 +697,7 @@ class StoreService extends BaseService
         return true;
     }
 
-    public static function deleteStore($store_id)
+    public static function deleteStore($store_id): void
     {
         // 删除全局商户
         BlocStore::deleteAll([
@@ -679,7 +706,7 @@ class StoreService extends BaseService
         // 删除商户授权
         UserStore::deleteAll([
             'store_id' => $store_id,
-            'user_id' => Yii::$app->user->identity->user_id
+            'user_id' => Yii::$app->user->identity->user_id??0
         ]);
     }
 }

@@ -14,16 +14,16 @@ use diandi\admin\acmodels\AuthItem;
 /**
  * This is the model class for table "{{%auth_route}}".
  *
- * @property int           $id
- * @property string        $name
- * @property int           $type
- * @property string|null   $description
- * @property string|null   $title
- * @property int|null      $pid
- * @property resource|null $data
- * @property string|null   $module_name
- * @property int|null      $created_at
- * @property int|null      $updated_at
+ * @public int           $id
+ * @public string        $name
+ * @public int           $type
+ * @public string|null   $description
+ * @public string|null   $title
+ * @public int|null      $pid
+ * @public resource|null $data
+ * @public string|null   $module_name
+ * @public int|null      $created_at
+ * @public int|null      $updated_at
  */
 class AuthRoute extends \yii\db\ActiveRecord
 {

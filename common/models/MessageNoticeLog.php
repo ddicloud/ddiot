@@ -14,18 +14,18 @@ use Yii;
 /**
  * This is the model class for table "dd_message_notice_log".
  *
- * @property int $id
- * @property int|null $bloc_id 公司id
- * @property int|null $store_id 商户id
- * @property string $message 消息内容
- * @property int $is_read 是否阅读
- * @property int $user_id 用户
- * @property string $sign
- * @property int $type 消息类型
- * @property int|null $status 消息状态
- * @property int $create_time
- * @property int $end_time
- * @property string $url 链接地址
+ * @public int $id
+ * @public int|null $bloc_id 公司id
+ * @public int|null $store_id 商户id
+ * @public string $message 消息内容
+ * @public int $is_read 是否阅读
+ * @public int $user_id 用户
+ * @public string $sign
+ * @public int $type 消息类型
+ * @public int|null $status 消息状态
+ * @public int $create_time
+ * @public int $end_time
+ * @public string $url 链接地址
  */
 class MessageNoticeLog extends \yii\db\ActiveRecord
 {

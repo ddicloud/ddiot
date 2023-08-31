@@ -14,10 +14,10 @@ use Yii;
 /**
  * This is the model class for table "dd_diandi_hub_messages_read".
  *
- * @property int $id ID
- * @property int $admin_id 管理员ID
- * @property int $message_id 消息ID
- * @property string $created_at 阅读时间
+ * @public int $id ID
+ * @public int $admin_id 管理员ID
+ * @public int $message_id 消息ID
+ * @public string $created_at 阅读时间
  */
 class HubMessagesRead extends \yii\db\ActiveRecord
 {

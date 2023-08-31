@@ -14,13 +14,13 @@ use Yii;
 /**
  * This is the model class for table "dd_api_log".
  *
- * @property int $id
- * @property string|null $method 提交类型
- * @property string|null $url 提交url
- * @property string|null $get_data get数据
- * @property string|null $post_data post数据
- * @property string|null $ip ip地址
- * @property int|null $append 创建时间
+ * @public int $id
+ * @public string|null $method 提交类型
+ * @public string|null $url 提交url
+ * @public string|null $get_data get数据
+ * @public string|null $post_data post数据
+ * @public string|null $ip ip地址
+ * @public int|null $append 创建时间
  */
 class DdApiLog extends \yii\db\ActiveRecord
 {

@@ -12,25 +12,25 @@ namespace common\models;
 /**
  * This is the model class for table "dd_article".
  *
- * @property int    $id
- * @property int    $ishot
- * @property int    $pcate
- * @property int    $ccate
- * @property string $template
- * @property string $title
- * @property string $description
- * @property string $content
- * @property string $thumb
- * @property int    $incontent
- * @property string $source
- * @property string $author
- * @property int    $displayorder
- * @property string $linkurl
- * @property int    $createtime
- * @property int    $edittime
- * @property int    $click
- * @property string $type
- * @property string $credit
+ * @public int    $id
+ * @public int    $ishot
+ * @public int    $pcate
+ * @public int    $ccate
+ * @public string $template
+ * @public string $title
+ * @public string $description
+ * @public string $content
+ * @public string $thumb
+ * @public int    $incontent
+ * @public string $source
+ * @public string $author
+ * @public int    $displayorder
+ * @public string $linkurl
+ * @public int    $createtime
+ * @public int    $edittime
+ * @public int    $click
+ * @public string $type
+ * @public string $credit
  */
 class DdArticle extends \yii\db\ActiveRecord
 {

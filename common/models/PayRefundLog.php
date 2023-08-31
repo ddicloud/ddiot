@@ -14,27 +14,27 @@ use Yii;
 /**
  * This is the model class for table "{{%pay_refund_log}}".
  *
- * @property int $id
- * @property string|null $return_code
- * @property string|null $out_refund_no 商户退款单号
- * @property string|null $out_trade_no 商户订单号 
- * @property string|null $refund_account 退款资金来源
- * @property float|null $refund_fee 申请退款金额 
- * @property string|null $refund_id 微信退款单号
- * @property float $refund_recv_accout 支付用户零钱
- * @property string $refund_request_source 退款发起来源
- * @property string|null $refund_status 退款状态
- * @property string|null $module 模块标识
- * @property string|null $settlement_refund_fee 退款金额 
- * @property float $settlement_total_fee 应结订单金额
- * @property string|null $success_time 退款成功时间
- * @property float $total_fee 订单金额 
- * @property string|null $transaction_id 微信订单号
- * @property int|null $member_id 用户id
- * @property int|null $create_time 创建时间
- * @property int|null $update_time 更新时间
- * @property int|null $bloc_id 公司ID
- * @property int|null $store_id 商户ID
+ * @public int $id
+ * @public string|null $return_code
+ * @public string|null $out_refund_no 商户退款单号
+ * @public string|null $out_trade_no 商户订单号 
+ * @public string|null $refund_account 退款资金来源
+ * @public float|null $refund_fee 申请退款金额 
+ * @public string|null $refund_id 微信退款单号
+ * @public float $refund_recv_accout 支付用户零钱
+ * @public string $refund_request_source 退款发起来源
+ * @public string|null $refund_status 退款状态
+ * @public string|null $module 模块标识
+ * @public string|null $settlement_refund_fee 退款金额 
+ * @public float $settlement_total_fee 应结订单金额
+ * @public string|null $success_time 退款成功时间
+ * @public float $total_fee 订单金额 
+ * @public string|null $transaction_id 微信订单号
+ * @public int|null $member_id 用户id
+ * @public int|null $create_time 创建时间
+ * @public int|null $update_time 更新时间
+ * @public int|null $bloc_id 公司ID
+ * @public int|null $store_id 商户ID
  */
 class PayRefundLog extends \yii\db\ActiveRecord
 {

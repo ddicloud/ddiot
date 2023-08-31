@@ -16,11 +16,11 @@ use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "diandi_user_bloc".
  *
- * @property int         $id
- * @property int|null    $user_id     管理员id
- * @property int|null    $bloc_id     集团id
- * @property string|null $create_time
- * @property string|null $update_time
+ * @public int         $id
+ * @public int|null    $user_id     管理员id
+ * @public int|null    $bloc_id     集团id
+ * @public string|null $create_time
+ * @public string|null $update_time
  */
 class UserBloc extends \yii\db\ActiveRecord
 {

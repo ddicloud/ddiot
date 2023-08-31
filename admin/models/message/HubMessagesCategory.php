@@ -13,13 +13,13 @@ use Yii;
 /**
  * This is the model class for table "dd_diandi_hub_messages_category".
  *
- * @property int $id ID
- * @property int $bloc_id 企业ID
- * @property int $store_id 商户ID
- * @property int $pid 上级分类
- * @property string $name 分类名称
- * @property string $created_at 创建时间
- * @property string $updated_at 更新时间
+ * @public int $id ID
+ * @public int $bloc_id 企业ID
+ * @public int $store_id 商户ID
+ * @public int $pid 上级分类
+ * @public string $name 分类名称
+ * @public string $created_at 创建时间
+ * @public string $updated_at 更新时间
  */
 class HubMessagesCategory extends \yii\db\ActiveRecord
 {

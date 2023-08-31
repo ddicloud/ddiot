@@ -22,15 +22,15 @@ use yii\behaviors\BlameableBehavior;
 /**
  * This is the model class for table "{{%setting}}".
  *
- * @property int    $id
- * @property string $type
- * @property string $section
- * @property string $key
- * @property string $value
- * @property bool   $status
- * @property string $description
- * @property string $created_at
- * @property string $updated_at
+ * @public int    $id
+ * @public string $type
+ * @public string $section
+ * @public string $key
+ * @public string $value
+ * @public bool   $status
+ * @public string $description
+ * @public string $created_at
+ * @public string $updated_at
  */
 class Setting extends SettingModel
 {

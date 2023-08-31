@@ -12,10 +12,10 @@ namespace addons\diandi_soot\models\article;
 /**
  * This is the model class for table "dd_article_category".
  *
- * @property int    $id
- * @property string $title
- * @property int    $displayorder
- * @property string $type
+ * @public int    $id
+ * @public string $title
+ * @public int    $displayorder
+ * @public string $type
  */
 class DdArticleCategory extends \yii\db\ActiveRecord
 {

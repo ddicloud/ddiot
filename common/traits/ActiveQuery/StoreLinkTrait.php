@@ -10,56 +10,59 @@
 namespace common\traits\ActiveQuery;
 
 use admin\services\StoreService;
+use common\helpers\ResultHelper;
 use Yii;
+use yii\web\HttpException;
 
 trait StoreLinkTrait
 {
+    /**
+     * @throws \Exception
+     */
     public function getUser(){
-        if (method_exists($this, 'getUser')) {
-            return parent::getUser();
+        $parent  = new parent();
+        if (method_exists($parent, 'getUser')) {
+            return $parent::getUser();
         } else {
             throw new \Exception('模型类中 getUser 方法不存在!');
         }
     }
 
-    public function beforeSave($insert)
+    /**
+     * @throws HttpException
+     */
+    public function beforeSave($insert): bool|array
     {
         global $_GPC;
+        $bloc_id =   $_GPC['bloc_id'];
+        $name = $_GPC['name'];
+        $logo = $_GPC['logo'];
+        $address = $_GPC['address'];
+        $longitude = $_GPC['longitude'];
+        $latitude = $_GPC['latitude'];
+        $mobile = $_GPC['mobile'];
+        $status = $_GPC['status'];
+        $lng_lat = $_GPC['lng_lat'];
+        $category = $_GPC['category'];
+        $provinceCityDistrict = $_GPC['provinceCityDistrict'];
+        $label_link = (array) $_GPC['label_link'];
         if ($insert) {
-            $bloc_id =   $_GPC['bloc_id'];
-            $name = $_GPC['name'];
-            $logo = $_GPC['logo'];
-            $address = $_GPC['address'];
-            $longitude = $_GPC['longitude'];
-            $latitude = $_GPC['latitude'];
-            $mobile = $_GPC['mobile'];
-            $status = $_GPC['status'];
-            $lng_lat = $_GPC['lng_lat'];
-            $category = $_GPC['category'];
-            $provinceCityDistrict = $_GPC['provinceCityDistrict'];
-            $label_link = (array) $_GPC['label_link'];
-            $user_id = $this->getUser();
-            $bloc = StoreService::addLinkStore($user_id,$bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link);
+            try {
+                $user_id = $this->getUser();
+            } catch (\Exception $e) {
+                return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            }
+            try {
+                $bloc = StoreService::addLinkStore($user_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link);
+            } catch (HttpException $e) {
+                return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            }
             $this->store_id = $bloc['store_id'];
-            parent::beforeSave($insert);
-            return true;
         } else {
-            $bloc_id =   $_GPC['bloc_id'];
-            $name = $_GPC['name'];
-            $logo = $_GPC['logo'];
-            $address = $_GPC['address'];
-            $longitude = $_GPC['longitude'];
-            $latitude = $_GPC['latitude'];
-            $mobile = $_GPC['mobile'];
-            $status = $_GPC['status'];
-            $lng_lat = $_GPC['lng_lat'];
-            $category = $_GPC['category'];
-            $provinceCityDistrict = $_GPC['provinceCityDistrict'];
-            $label_link = (array) $_GPC['label_link'];
             $store_id = $this->store_id;
             $bloc = StoreService::upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link);
-            parent::beforeSave($insert);
-            return true;
         }
+        parent::beforeSave($insert);
+        return true;
     }
 }

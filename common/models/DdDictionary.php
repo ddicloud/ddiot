@@ -14,10 +14,10 @@ use Yii;
 /**
  * This is the model class for table "dd_dictionary".
  *
- * @property int $id
- * @property string $type
- * @property string $name
- * @property string $value
+ * @public int $id
+ * @public string $type
+ * @public string $name
+ * @public string $value
  */
 class DdDictionary extends \yii\db\ActiveRecord
 {

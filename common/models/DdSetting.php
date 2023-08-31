@@ -14,11 +14,11 @@ use Yii;
 /**
  * This is the model class for table "dd_setting".
  *
- * @property string $key
- * @property string $describe
- * @property string $values
- * @property int $wxapp_id
- * @property int $update_time
+ * @public string $key
+ * @public string $describe
+ * @public string $values
+ * @public int $wxapp_id
+ * @public int $update_time
  */
 class DdSetting extends \yii\db\ActiveRecord
 {

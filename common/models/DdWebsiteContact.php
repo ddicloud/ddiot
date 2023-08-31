@@ -11,10 +11,10 @@ namespace common\models;
 /**
  * This is the model class for table "dd_website_contact".
  *
- * @property int         $id
- * @property string|null $contact
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int         $id
+ * @public string|null $contact
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class DdWebsiteContact extends \yii\db\ActiveRecord
 {

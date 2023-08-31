@@ -19,18 +19,18 @@ use yii\db\Exception;
 /**
  * This is the model class for table "dd_messages".
  *
- * @property int $id ID
- * @property int $bloc_id 企业ID
- * @property int $store_id 商户ID
- * @property int $category_id 分类ID
- * @property string $title 标题
- * @property string $content 内容
- * @property string $admin_ids 接收者IDS
- * @property string $publish_at 发布时间
- * @property int $view 查看次数
- * @property int $status 状态
- * @property string $created_at 创建时间
- * @property string $updated_at 更新时间
+ * @public int $id ID
+ * @public int $bloc_id 企业ID
+ * @public int $store_id 商户ID
+ * @public int $category_id 分类ID
+ * @public string $title 标题
+ * @public string $content 内容
+ * @public string $admin_ids 接收者IDS
+ * @public string $publish_at 发布时间
+ * @public int $view 查看次数
+ * @public int $status 状态
+ * @public string $created_at 创建时间
+ * @public string $updated_at 更新时间
  */
 class HubMessages extends \yii\db\ActiveRecord
 {

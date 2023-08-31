@@ -13,23 +13,23 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%qrcode}}".
  *
- * @property int      $id
- * @property int      $store_id
- * @property int|null $bloc_id
- * @property string   $type
- * @property int      $extra
- * @property int      $qrcid
- * @property string   $scene_str
- * @property string   $name
- * @property string   $keyword
- * @property int      $model
- * @property string   $ticket
- * @property string   $url
- * @property int      $expire
- * @property int      $subnum
- * @property int|null $update_time
- * @property int      $create_time
- * @property int      $status
+ * @public int      $id
+ * @public int      $store_id
+ * @public int|null $bloc_id
+ * @public string   $type
+ * @public int      $extra
+ * @public int      $qrcid
+ * @public string   $scene_str
+ * @public string   $name
+ * @public string   $keyword
+ * @public int      $model
+ * @public string   $ticket
+ * @public string   $url
+ * @public int      $expire
+ * @public int      $subnum
+ * @public int|null $update_time
+ * @public int      $create_time
+ * @public int      $status
  */
 class Qrcode extends \yii\db\ActiveRecord
 {

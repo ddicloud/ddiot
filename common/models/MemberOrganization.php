@@ -14,11 +14,11 @@ use Yii;
 /**
  * This is the model class for table "{{%member_organization}}".
  *
- * @property int $group_id
- * @property string $item_name 名称
- * @property int|null $group_pid 父级组织
- * @property int|null $create_time
- * @property int|null $update_time
+ * @public int $group_id
+ * @public string $item_name 名称
+ * @public int|null $group_pid 父级组织
+ * @public int|null $create_time
+ * @public int|null $update_time
  */
 class MemberOrganization extends \yii\db\ActiveRecord
 {

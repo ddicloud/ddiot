@@ -15,17 +15,17 @@ use Yii;
 /**
  * This is the model class for table "dd_user_address".
  *
- * @property int $address_id
- * @property string $name
- * @property string $phone
- * @property int $province_id
- * @property int $city_id
- * @property int $region_id
- * @property string $detail
- * @property int $user_id
- * @property int $wxapp_id
- * @property int $create_time
- * @property int $update_time
+ * @public int $address_id
+ * @public string $name
+ * @public string $phone
+ * @public int $province_id
+ * @public int $city_id
+ * @public int $region_id
+ * @public string $detail
+ * @public int $user_id
+ * @public int $wxapp_id
+ * @public int $create_time
+ * @public int $update_time
  */
 class DdUserAddress extends \yii\db\ActiveRecord
 {

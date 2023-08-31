@@ -14,16 +14,16 @@ use Yii;
 /**
  * This is the model class for table "{{%account_log}}".
  *
- * @property int $id
- * @property int|null $bloc_id
- * @property int|null $store_id
- * @property int|null $member_id 会员id
- * @property int|null $account_type 资金类型
- * @property float|null $money 资金
- * @property int|null $is_add 0增加，1减少
- * @property string|null $remark 备注
- * @property int|null $update_time 创建时间
- * @property int|null $create_time 更新时间
+ * @public int $id
+ * @public int|null $bloc_id
+ * @public int|null $store_id
+ * @public int|null $member_id 会员id
+ * @public int|null $account_type 资金类型
+ * @public float|null $money 资金
+ * @public int|null $is_add 0增加，1减少
+ * @public string|null $remark 备注
+ * @public int|null $update_time 创建时间
+ * @public int|null $create_time 更新时间
  */
 class AccountLog extends \yii\db\ActiveRecord
 {

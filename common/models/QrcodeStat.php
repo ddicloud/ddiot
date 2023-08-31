@@ -13,17 +13,17 @@ use common\traits\ActiveQuery\StoreTrait;
 /**
  * This is the model class for table "{{%qrcode_stat}}".
  *
- * @property int      $id
- * @property int      $store_id
- * @property int      $bloc_id
- * @property int      $qid
- * @property string   $openid
- * @property int      $type
- * @property int      $qrcid
- * @property string   $scene_str
- * @property string   $name
- * @property int      $create_time
- * @property int|null $update_time
+ * @public int      $id
+ * @public int      $store_id
+ * @public int      $bloc_id
+ * @public int      $qid
+ * @public string   $openid
+ * @public int      $type
+ * @public int      $qrcid
+ * @public string   $scene_str
+ * @public string   $name
+ * @public int      $create_time
+ * @public int|null $update_time
  */
 class QrcodeStat extends \yii\db\ActiveRecord
 {

@@ -12,18 +12,18 @@ namespace common\models;
 /**
  * This is the model class for table "dd_user".
  *
- * @property int    $user_id
- * @property string $open_id
- * @property string $nickName
- * @property string $avatarUrl
- * @property int    $gender
- * @property string $country
- * @property string $province
- * @property string $city
- * @property int    $address_id
- * @property int    $wxapp_id
- * @property int    $create_time
- * @property int    $update_time
+ * @public int    $user_id
+ * @public string $open_id
+ * @public string $nickName
+ * @public string $avatarUrl
+ * @public int    $gender
+ * @public string $country
+ * @public string $province
+ * @public string $city
+ * @public int    $address_id
+ * @public int    $wxapp_id
+ * @public int    $create_time
+ * @public int    $update_time
  */
 class DdUser extends \yii\db\ActiveRecord
 {

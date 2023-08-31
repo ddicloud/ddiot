@@ -7,13 +7,13 @@ use Yii;
 /**
  * This is the model class for table "{{%api_log}}".
  *
- * @property int $id
- * @property string $url
- * @property string $method
- * @property string $get_data
- * @property string $post_data
- * @property string $ip ip地址
- * @property int $append
+ * @public int $id
+ * @public string $url
+ * @public string $method
+ * @public string $get_data
+ * @public string $post_data
+ * @public string $ip ip地址
+ * @public int $append
  */
 class ApiLog extends \yii\db\ActiveRecord
 {

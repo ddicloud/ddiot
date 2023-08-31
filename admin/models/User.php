@@ -17,6 +17,8 @@ use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -24,17 +26,18 @@ use yii\web\IdentityInterface;
 /**
  * User model.
  *
- * @property int    $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $verification_token
- * @property string $email
- * @property string $auth_key
- * @property int    $status
- * @property int    $created_at
- * @property int    $updated_at
- * @property string $password             write-only password
+ * @public int    $id
+ * @public int    $store_id
+ * @public string $username
+ * @public string $password_hash
+ * @public string $password_reset_token
+ * @public string $verification_token
+ * @public string $email
+ * @public string $auth_key
+ * @public int    $status
+ * @public int    $created_at
+ * @public int    $updated_at
+ * @public string $password             write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -45,7 +48,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user}}';
     }
@@ -53,7 +56,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id'], 'integer'],
@@ -67,14 +70,14 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             TimestampBehavior::className(),
         ];
     }
 
-    public function setStatus(UserStatus $status)
+    public function setStatus(UserStatus $status): void
     {
         $this->status = $status->getValue();
     }
@@ -84,16 +87,16 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->status;
     }
 
-    public function getUserGroup()
+    public function getUserGroup(): \yii\db\ActiveQuery
     {
         return $this->hasOne(AuthAssignmentGroup::className(), ['user_id' => 'id']);
     }
 
     /**
      * Signs user up.
-     * source_type: 0主动注册1后台添加.
+     * Source_type: 0主动注册1后台添加.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return array|bool|object[]|string[]
      */
     public function signup($username, $mobile, $email, $password, $status = 0, $invitation_code = '', $source_type = 0, $company = '')
     {
@@ -128,6 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
             }
         }
         FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号'.json_encode($email));
+        $parent_bloc_id = 0;
         if ($invitation_code) {
             $parent_bloc_id = Bloc::find()->where(['invitation_code' => $invitation_code])->select('bloc_id')->scalar();
         }
@@ -159,9 +163,7 @@ class User extends ActiveRecord implements IdentityInterface
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'admin';
-            $userinfo = $service->AccessTokenService->getAccessToken($this, 1);
-
-            return $userinfo;
+            return $service->AccessTokenService->getAccessToken($this, 1);
         } else {
             $msg = ErrorsHelper::getModelError($this);
             FileHelper::writeLog($logPath, '登录日志:会员注册失败错误'.json_encode($msg));
@@ -177,7 +179,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @throws \yii\base\Exception
      */
-    public function generateAccessToken()
+    public function generateAccessToken(): string
     {
         $this->access_token = Yii::$app->security->generateRandomString();
 
@@ -187,7 +189,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): User|IdentityInterface|null
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -195,12 +197,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): User|IdentityInterface|null
     {
         return static::findOne(['access_token' => $token]);
     }
 
-    public static function findUser($mobile, $username)
+    public static function findUser($mobile, $username): array|ActiveRecord|null
     {
         $query = static::find();
         if (!empty($mobile)) {
@@ -219,14 +221,14 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $username
      *
-     * @return static|null
+     * @return User|array|ActiveRecord
      */
-    public static function findByUsername($username)
+    public static function findByUsername($username): User|array|ActiveRecord
     {
         return static::find()->where(['username' => $username, 'status' => self::STATUS_ACTIVE])->one();
     }
 
-    public static function findByMobile($mobile)
+    public static function findByMobile($mobile): array|ActiveRecord|null
     {
         return static::find()->where(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE])->one();
     }
@@ -236,9 +238,9 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $token password reset token
      *
-     * @return static|null
+     * @return User|null
      */
-    public static function findByPasswordResetToken($token)
+    public static function findByPasswordResetToken($token): ?static
     {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
@@ -255,9 +257,9 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $token verify email token
      *
-     * @return static|null
+     * @return User
      */
-    public static function findByVerificationToken($token)
+    public static function findByVerificationToken($token): static
     {
         return static::findOne([
             'verification_token' => $token,
@@ -272,7 +274,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token)
+    public static function isPasswordResetTokenValid(string $token): bool
     {
         if (empty($token)) {
             return false;
@@ -295,7 +297,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthKey()
+    public function getAuthKey(): ?string
     {
         return $this->auth_key;
     }
@@ -303,7 +305,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): ?bool
     {
         return $this->getAuthKey() === $authKey;
     }
@@ -313,9 +315,9 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $password password to validate
      *
-     * @return bool if password provided is valid for current user
+     * @return bool if the password provided is valid for the current user
      */
-    public function validatePassword($password)
+    public function validatePassword(string $password): bool
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
@@ -324,45 +326,61 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates password hash from password and sets it to the model.
      *
      * @param string $password
+     * @throws Exception
      */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key.
+     * @throws ErrorException
      */
-    public function generateAuthKey()
+    public function generateAuthKey(): void
     {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+        try {
+            $this->auth_key = Yii::$app->security->generateRandomString();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Generates new password reset token.
+     * @throws ErrorException
      */
-    public function generatePasswordResetToken()
+    public function generatePasswordResetToken(): void
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
+        try {
+            $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Generates new token for email verification.
+     * @throws ErrorException
      */
-    public function generateEmailVerificationToken()
+    public function generateEmailVerificationToken(): void
     {
-        $this->verification_token = Yii::$app->security->generateRandomString().'_'.time();
+        try {
+            $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     /**
      * Removes password reset token.
      */
-    public function removePasswordResetToken()
+    public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;
     }
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
         // 去掉一些包含敏感信息的字段

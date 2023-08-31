@@ -14,12 +14,12 @@ use Yii;
 /**
  * This is the model class for table "dd_store_user".
  *
- * @property int $store_user_id
- * @property string $user_name
- * @property string $password
- * @property int $wxapp_id
- * @property int $create_time
- * @property int $update_time
+ * @public int $store_user_id
+ * @public string $user_name
+ * @public string $password
+ * @public int $wxapp_id
+ * @public int $create_time
+ * @public int $update_time
  */
 class DdStoreUser extends \yii\db\ActiveRecord
 {

@@ -15,21 +15,21 @@ use Yii;
 /**
  * This is the model class for table "dd_member_account".
  *
- * @property int $id
- * @property int|null $store_id 商户id
- * @property int|null $member_id 用户id
- * @property int|null $level 会员等级
- * @property float|null $user_money 当前余额
- * @property float|null $accumulate_money 累计余额
- * @property float|null $give_money 累计赠送余额
- * @property float|null $consume_money 累计消费金额
- * @property float|null $frozen_money 冻结金额
- * @property int|null $user_integral 当前积分
- * @property int|null $accumulate_integral 累计积分
- * @property int|null $give_integral 累计赠送积分
- * @property float|null $consume_integral 累计消费积分
- * @property int|null $frozen_integral 冻结积分
- * @property int|null $status 状态[-1:删除;0:禁用;1启用]
+ * @public int $id
+ * @public int|null $store_id 商户id
+ * @public int|null $member_id 用户id
+ * @public int|null $level 会员等级
+ * @public float|null $user_money 当前余额
+ * @public float|null $accumulate_money 累计余额
+ * @public float|null $give_money 累计赠送余额
+ * @public float|null $consume_money 累计消费金额
+ * @public float|null $frozen_money 冻结金额
+ * @public int|null $user_integral 当前积分
+ * @public int|null $accumulate_integral 累计积分
+ * @public int|null $give_integral 累计赠送积分
+ * @public float|null $consume_integral 累计消费积分
+ * @public int|null $frozen_integral 冻结积分
+ * @public int|null $status 状态[-1:删除;0:禁用;1启用]
  */
 class DdMemberAccount extends \yii\db\ActiveRecord
 {

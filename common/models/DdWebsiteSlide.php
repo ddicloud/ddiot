@@ -14,14 +14,14 @@ use Yii;
 /**
  * This is the model class for table "dd_website_slide".
  *
- * @property int $id
- * @property string|null $images
- * @property string|null $title
- * @property string|null $description
- * @property string|null $menuname
- * @property string|null $menuurl
- * @property string|null $createtime
- * @property string|null $updatetime
+ * @public int $id
+ * @public string|null $images
+ * @public string|null $title
+ * @public string|null $description
+ * @public string|null $menuname
+ * @public string|null $menuurl
+ * @public string|null $createtime
+ * @public string|null $updatetime
  */
 class DdWebsiteSlide extends \yii\db\ActiveRecord
 {

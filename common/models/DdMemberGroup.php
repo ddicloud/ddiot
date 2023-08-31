@@ -11,9 +11,9 @@ namespace common\models;
 /**
  * This is the model class for table "dd_member_group".
  *
- * @property string   $item_name
- * @property int|null $create_time
- * @property int|null $update_time
+ * @public string   $item_name
+ * @public int|null $create_time
+ * @public int|null $update_time
  */
 class DdMemberGroup extends \yii\db\ActiveRecord
 {

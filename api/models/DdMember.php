@@ -23,20 +23,20 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "dd_member".
  *
- * @property int         $member_id
- * @property string      $openid
- * @property string      $nickName
- * @property string      $avatarUrl
- * @property int         $gender
- * @property string      $country
- * @property string      $province
- * @property string      $city
- * @property int         $address_id
- * @property int         $wxapp_id
- * @property string|null $access_token
- * @property string|null $verification_token
- * @property int         $create_time
- * @property int         $update_time
+ * @public int         $member_id
+ * @public string      $openid
+ * @public string      $nickName
+ * @public string      $avatarUrl
+ * @public int         $gender
+ * @public string      $country
+ * @public string      $province
+ * @public string      $city
+ * @public int         $address_id
+ * @public int         $wxapp_id
+ * @public string|null $access_token
+ * @public string|null $verification_token
+ * @public int         $create_time
+ * @public int         $update_time
  */
 class DdMember extends ActiveRecord
 {
