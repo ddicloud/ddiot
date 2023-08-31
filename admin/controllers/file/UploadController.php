@@ -52,22 +52,18 @@ class UploadController extends AController
     }
 
 
-    public function actionImages(): void
+    public function actionImages(): array
     {
         try {
             $model = new Upload();
             $info = $model->upImage();
-            $info && is_array($info) ?
-                exit(Json::htmlEncode($info)) :
-                exit(Json::htmlEncode([
-                    'code' => 1,
-                    'msg' => 'error',
-                ]));
+            if($info && is_array($info)){
+                return ResultHelper::json(200, '获取成功',$info);
+            }else{
+                return ResultHelper::json(400, '上传错误');
+            }
         } catch (\Exception $e) {
-            exit(Json::htmlEncode([
-                'code' => 1,
-                'msg' => $e->getMessage(),
-            ]));
+            return ResultHelper::json(400, $e->getMessage());
         }
     }
 
