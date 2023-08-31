@@ -19,6 +19,8 @@ use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
 use Qcloud\Cos\Client;
 use Qiniu\Auth;
+use yii\base\ErrorException;
+use yii\helpers\ArrayHelper;
 use function Qiniu\base64_urlSafeEncode;
 use Qiniu\Config;
 use Qiniu\Storage\UploadManager;
@@ -29,10 +31,17 @@ class OssUpload extends Component
 {
     public mixed $type;
 
+    /**
+     * @throws ErrorException
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->type = Yii::$app->params['conf']['oss']['remote_type'];
+        try {
+            $this->type = ArrayHelper::getValue(Yii::$app->params, 'conf.oss.remote_type');
+        } catch (\Exception $e) {
+            throw new ErrorException($e->getMessage(),400);
+        }
     }
 
     public function attachment_set_attach_url(): string
