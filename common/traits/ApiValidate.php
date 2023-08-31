@@ -3,6 +3,7 @@
 namespace common\traits;
 
 use yii\base\DynamicModel;
+use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
 
 trait ApiValidate {
@@ -12,6 +13,7 @@ trait ApiValidate {
      * @param array $rules 验证规则数组
      * @return array|object[]|string[]|bool
      * @throws InvalidConfigException
+     * @throws ErrorException
      */
     public function validateParams(array $rules): array|bool
     {
@@ -24,7 +26,7 @@ trait ApiValidate {
         } else {
             // 验证失败，返回第一个错误信息
             $error = reset($validator->errors);
-            return \common\helpers\ResultHelper::json(400,$error[0]);
+            throw new ErrorException($error,400);
         }
     }
 }
