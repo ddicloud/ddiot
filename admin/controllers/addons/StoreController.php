@@ -108,7 +108,7 @@ class StoreController extends AController
         ]);
         $lables = StoreLabel::find()->indexBy('id')->asArray()->all();
         $detail = $BlocStore::find()->where(['store_id' => $id])->with(['label'])->asArray()->one();
-        $detail['extra'] = $detail['extra']? unserialize($detail['extra']):[];
+        $detail['extra'] = !empty($detail['extra']) ? unserialize($detail['extra']):[];
         $detail['county'] = (int) $detail['county'];
         $detail['province'] = (int) $detail['province'];
         $detail['provinceCityDistrict'] = [
