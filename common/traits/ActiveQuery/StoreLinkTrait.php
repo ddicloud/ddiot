@@ -34,7 +34,6 @@ trait StoreLinkTrait
     public function beforeSave($insert): bool|array
     {
         global $_GPC;
-
         $bloc_id =   $_GPC['bloc_id']??0;
         $name = $_GPC['name']??'';
         $logo = $_GPC['logo']??'';
