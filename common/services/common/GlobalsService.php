@@ -30,6 +30,7 @@ use diandi\addons\models\form\Wechatpay;
 use diandi\addons\models\form\Wxapp;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * 全局服务
@@ -39,21 +40,21 @@ use Yii;
 class GlobalsService extends BaseService
 {
     // 公司id
-    private $bloc_id = 1;
+    private int $bloc_id = 1;
 
     // 子公司id
-    private $store_id = 1;
+    private int $store_id = 1;
 
     // 集团id
-    private $global_bloc_id = 1;
+    private int $global_bloc_id = 1;
 
     // 集团主营商户
-    private $global_store_id = 1;
+    private int $global_store_id = 1;
 
     //模块标识
-    private $addons = 'system';
+    private string $addons = 'system';
 
-    public function initId($bloc_id, $store_id, $addons)
+    public function initId($bloc_id, $store_id, $addons): void
     {
         $this->setbloc_id($bloc_id);
         $this->setStore_id($store_id);
@@ -61,7 +62,7 @@ class GlobalsService extends BaseService
     }
 
     // 全局设置商家id
-    public function setbloc_id($id)
+    public function setbloc_id($id): void
     {
         $this->bloc_id = $id;
     }
@@ -128,7 +129,7 @@ class GlobalsService extends BaseService
         foreach ($lists as $key => $value) {
             if ($value['bloc_id'] == $bloc_id) {
                 $arr = $value['children'];
-            } elseif (!empty($value['children']) && $value['bloc_id'] != $bloc_id) {
+            } elseif (!empty($value['children'])) {
                 $this->getChildBlocs($value['children'], $bloc_id, $arr);
             }
         }
@@ -183,18 +184,18 @@ class GlobalsService extends BaseService
     }
 
     // 全局设置扩展
-    public function setAddons($id)
+    public function setAddons($id): void
     {
         $this->addons = $id;
     }
 
     // 全局获取扩展
-    public function getAddons()
+    public function getAddons(): string
     {
         return $this->addons;
     }
 
-    public function getBlocAll()
+    public function getBlocAll(): array
     {
         return Bloc::find()->where(['status' => 1])->asArray()->all();
     }
@@ -202,13 +203,12 @@ class GlobalsService extends BaseService
     /**
      * 获取全局配置信息.
      *
-     * @param int|null post
+     * @param int|null $bloc_id post
      *
-     * @return string
+     * @return array|string
      *
-     * @throws NotFoundHttpException
      */
-    public function getConf($bloc_id = 0)
+    public function getConf(?int $bloc_id = 0): array|string
     {
 
         $cacheKey = 'common.conf_' . $bloc_id;
@@ -381,7 +381,7 @@ class GlobalsService extends BaseService
     }
 
 
-    public function isSelf()
+    public function isSelf(): bool
     {
         $store_id = $this->store_id;
 
@@ -430,13 +430,11 @@ class GlobalsService extends BaseService
     /**
      * 获取公司与商户详细信息.
      *
-     * @param int|null post
+     * @param int|null $store_id post
      *
-     * @return string
-     *
-     * @throws NotFoundHttpException
+     * @return array|string
      */
-    public function getStoreDetail($store_id)
+    public function getStoreDetail(?int $store_id): array|string
     {
         $key = 'common.StoreDetail_' . intval($store_id);
         if (Yii::$app->cache->get($key)) {
