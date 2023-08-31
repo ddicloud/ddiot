@@ -63,7 +63,7 @@ class UploadController extends AController
                 return ResultHelper::json(400, '上传错误');
             }
         } catch (\Exception $e) {
-            return ResultHelper::json(400, $e->getMessage());
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
     }
 

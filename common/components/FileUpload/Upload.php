@@ -40,13 +40,13 @@ class Upload extends Model
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         $baseRules = [];
         return array_merge($baseRules, $this->_appendRules);
     }
 
-    public function upImage()
+    public function upImage(): array|bool
     {
         $model = new static();
         $model->file = UploadedFile::getInstanceByName('file');
@@ -70,6 +70,7 @@ class Upload extends Model
                 HelpersFileHelper::mkdirs($relativePath);
             }
             $Res = $model->file->saveAs($relativePath . $fileName);
+            $cloudOss = [];
             if ($Res) {
                 // 云上传
                 $Attachment = new OssUpload();
@@ -101,11 +102,16 @@ class Upload extends Model
      * ```.
      *
      * @param object $model \common\models\UploadValidate 验证上传文件
-     * @param string $path  文件保存路径
-     *
-     * @return bool|array
+     * @param string $path 文件保存路径
+     * @param int $is_chunk
+     * @param int $chunk_partSize
+     * @param int $chunk_partCount
+     * @param int $chunk_partIndex
+     * @param string $md5
+     * @param string $chunk_md5
+     * @return array
      */
-    public static function upFile($model, $path = '', $is_chunk = 0, $chunk_partSize = 5, $chunk_partCount = 0, $chunk_partIndex = 0, $md5 = '', $chunk_md5 = '')
+    public static function upFile(object $model, string $path = '', int $is_chunk = 0, int $chunk_partSize = 5, int $chunk_partCount = 0, int $chunk_partIndex = 0, string $md5 = '', string $chunk_md5 = ''): array
     {
         //文件上传存放的目录
         $upload_path = Yii::getAlias('@frontend/attachment/');
@@ -216,6 +222,8 @@ class Upload extends Model
                     'message' => '上传成功',
                     'data' => $result,
                 ];
+            }else{
+                return ResultHelper::json(400, '上传失败');
             }
         } else {
             //上传失败记录日志
@@ -230,7 +238,7 @@ class Upload extends Model
         }
     }
 
-    public static function mergeFile($file_name, $file_type, $file_size, $file_parts, $chunk_partSize, $auto_delete_local = true)
+    public static function mergeFile($file_name, $file_type, $file_size, $file_parts, $chunk_partSize, $auto_delete_local = true): array
     {
         set_time_limit(0);
 
