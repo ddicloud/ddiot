@@ -34,18 +34,19 @@ trait StoreLinkTrait
     public function beforeSave($insert): bool|array
     {
         global $_GPC;
-        $bloc_id =   $_GPC['bloc_id'];
-        $name = $_GPC['name'];
-        $logo = $_GPC['logo'];
-        $address = $_GPC['address'];
-        $longitude = $_GPC['longitude'];
-        $latitude = $_GPC['latitude'];
-        $mobile = $_GPC['mobile'];
-        $status = $_GPC['status'];
-        $lng_lat = $_GPC['lng_lat'];
-        $category = $_GPC['category'];
-        $provinceCityDistrict = $_GPC['provinceCityDistrict'];
-        $label_link = (array) $_GPC['label_link'];
+
+        $bloc_id =   $_GPC['bloc_id']??0;
+        $name = $_GPC['name']??'';
+        $logo = $_GPC['logo']??'';
+        $address = $_GPC['address']??'';
+        $longitude = $_GPC['longitude']??'';
+        $latitude = $_GPC['latitude']??'';
+        $mobile = $_GPC['mobile']??'';
+        $status = $_GPC['status']??0;
+        $lng_lat = $_GPC['lng_lat']??[];
+        $category = $_GPC['category']??[];
+        $provinceCityDistrict = $_GPC['provinceCityDistrict']??[];
+        $label_link = (array) $_GPC['label_link']??[];
         if ($insert) {
             try {
                 $user_id = $this->getUser();
