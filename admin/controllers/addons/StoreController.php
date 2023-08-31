@@ -42,7 +42,7 @@ class StoreController extends AController
 
     public $extras = [];
 
-    public function actions()
+    public function actions(): array
     {
         $this->bloc_id = Yii::$app->request->get('bloc_id', 0);
         $actions = parent::actions();
@@ -74,20 +74,18 @@ class StoreController extends AController
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function actionChildcate()
+    public function actionChildcate(): array
     {
-        if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
             $parent_id = $data['parent_id'];
             $cates = StoreCategory::findAll(['parent_id' => $parent_id]);
 
             return ResultHelper::json(200, '获取成功', $cates);
-        }
     }
 
-    public function actionCategory()
+    public function actionCategory(): array
     {
         $cates = StoreCategory::find()->select(['parent_id', 'category_id', 'name as label', 'category_id as value'])->asArray()->all();
         $list = ArrayHelper::itemsMerge($cates, 0, 'category_id', 'parent_id', 'children');
@@ -102,16 +100,14 @@ class StoreController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $BlocStore = new BlocStore([
             'extras' => $this->extras,
         ]);
         $lables = StoreLabel::find()->indexBy('id')->asArray()->all();
         $detail = $BlocStore::find()->where(['store_id' => $id])->with(['label'])->asArray()->one();
-        $detail['logo'] = $detail['logo'];
         $detail['extra'] = unserialize($detail['extra']);
         $detail['county'] = (int) $detail['county'];
         $detail['province'] = (int) $detail['province'];
@@ -157,8 +153,9 @@ class StoreController extends AController
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return array
+     * @throws HttpException
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         global $_GPC;
 
@@ -206,7 +203,7 @@ class StoreController extends AController
                     }
                 }
 
-                return $this->redirect(['view', 'id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
+                return ResultHelper::json(200, '获取成功',['id' => $model->store_id, 'bloc_id' => $model->bloc_id]);
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -232,7 +229,7 @@ class StoreController extends AController
 
     /**
      * Updates an existing BlocStore model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If the update is successful, the browser will be redirected to the 'view' page.
      *
      * @param int $id
      *
@@ -240,7 +237,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         global $_GPC;
 
@@ -288,7 +285,7 @@ class StoreController extends AController
         }
     }
 
-    public function actionStorelabel()
+    public function actionStorelabel(): array
     {
         $label = new StoreLabel();
         $lists = $label->find()->select(['name as text', 'id as value'])->asArray()->all();
@@ -296,7 +293,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $lists);
     }
 
-    public function actionBlocs()
+    public function actionBlocs(): array
     {
         $model = new Bloc();
 
@@ -307,7 +304,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionStorestatus()
+    public function actionStorestatus(): array
     {
         $list = StoreStatus::listData();
 
@@ -333,7 +330,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
         $bloc_id = $this->bloc_id;
@@ -349,9 +346,8 @@ class StoreController extends AController
      *
      * @return BlocStore the loaded model
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         $BlocStore = new BlocStore([
             'extras' => $this->extras,
@@ -363,7 +359,7 @@ class StoreController extends AController
         return ResultHelper::json(500, '请检查数据是否存在');
     }
 
-    public function actionStoreCreate()
+    public function actionStoreCreate(): array
     {
         global $_GPC;
         // 校验公司是否存储
