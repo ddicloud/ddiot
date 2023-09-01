@@ -189,7 +189,7 @@ class StoreService extends BaseService
             'lng' => $longitude,
             'lat' => $latitude,
         ]);
-
+        loggingHelper::writeLog('StoreService','upLinkStore','校验数据',$category);
         $storeData = [
             'category_id' => (int) $category[1]??0,
             'category_pid' => (int) $category[0]??0,
