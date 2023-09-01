@@ -31,7 +31,7 @@ class WebsiteArticleCategory extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['title', 'displayorder', 'type'], 'required'],

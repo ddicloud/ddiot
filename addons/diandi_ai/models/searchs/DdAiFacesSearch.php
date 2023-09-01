@@ -20,7 +20,7 @@ class DdAiFacesSearch extends DdAiFaces
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'ai_user_id', 'ai_group_id'], 'integer'],

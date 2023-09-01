@@ -36,7 +36,7 @@ class WebsiteConfig extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['label', 'created_at', 'updated_at', 'language'], 'required'],

@@ -16,7 +16,7 @@ class SysWorthSearch extends SysWorth
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id', 'solution_id', 'is_website'], 'integer'],

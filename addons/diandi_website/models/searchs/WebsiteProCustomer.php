@@ -23,7 +23,7 @@ class WebsiteProCustomer extends WebsiteProCustomerModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id', 'solution_id', 'is_website'], 'integer'],

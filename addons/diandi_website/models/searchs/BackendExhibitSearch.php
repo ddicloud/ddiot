@@ -16,7 +16,7 @@ class BackendExhibitSearch extends BackendExhibit
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id', 'solution_id'], 'integer'],

@@ -34,7 +34,7 @@ class BaiduConfig extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['bloc_id', 'store_id', 'create_time', 'update_time'], 'integer'],

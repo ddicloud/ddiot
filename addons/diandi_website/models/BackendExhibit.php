@@ -41,7 +41,7 @@ class BackendExhibit extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['title', 'solution_id', 'subtitle', 'icon', 'image', 'link', 'content'], 'required'],

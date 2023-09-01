@@ -24,7 +24,7 @@ class WebsiteArticle extends WebsiteArticleModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'ishot', 'pcate', 'ccate', 'displayorder', 'create_time', 'update_time', 'bloc_id', 'store_id', 'is_top'], 'integer'],

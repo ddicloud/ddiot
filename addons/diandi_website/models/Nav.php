@@ -42,7 +42,7 @@ class Nav extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'parent'], 'required'],

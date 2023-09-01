@@ -16,7 +16,7 @@ class WebsiteCorefunSon extends WebsiteCorefunSonModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id', 'corefun_id', 'sort'], 'integer'],

@@ -23,7 +23,7 @@ class WebsiteSlide extends WebsiteSlideModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'create_time', 'update_time', 'store_id', 'bloc_id'], 'integer'],

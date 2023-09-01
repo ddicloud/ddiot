@@ -13,6 +13,7 @@ namespace admin\models\searchs\auth;
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
 use admin\models\auth\AuthRoute as AuthRouteModel;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 
@@ -24,7 +25,7 @@ class AuthRoute extends AuthRouteModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'is_sys', 'pid', 'created_at', 'updated_at', 'route_type'], 'integer'],
@@ -35,21 +36,20 @@ class AuthRoute extends AuthRouteModel
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with a search query applied
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
-
+     * @return ArrayDataProvider|bool|ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
     {
         global $_GPC;
         $query = AuthRouteModel::find()->with(['addons']);
@@ -101,7 +101,7 @@ class AuthRoute extends AuthRouteModel
         //} 
 
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
             'totalCount' => $count ?? 0,
@@ -118,7 +118,5 @@ class AuthRoute extends AuthRouteModel
                 'pageSize' => $pageSize,
             ]
         ]);
-
-        return $provider;
     }
 }

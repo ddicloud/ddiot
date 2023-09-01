@@ -24,7 +24,7 @@ class DdArticleSearch extends DdArticle
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'ishot', 'pcate', 'ccate', 'incontent', 'displayorder', 'createtime', 'edittime', 'click'], 'integer'],
@@ -35,20 +35,20 @@ class DdArticleSearch extends DdArticle
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with a search query applied
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
+     * @return ArrayDataProvider|false
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool
     {
         global $_GPC;
         
@@ -109,11 +109,11 @@ class DdArticleSearch extends DdArticle
         //} 
 
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total' => $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -126,7 +126,5 @@ class DdArticleSearch extends DdArticle
                 'pageSize' => $pageSize,
             ]
         ]);
-
-        return $provider;
     }
 }

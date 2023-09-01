@@ -12,6 +12,7 @@ namespace admin\models\searchs;
 use api\models\DdMember;
 use common\components\DataProvider\ArrayDataProvider;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 /**
@@ -22,7 +23,7 @@ class DdMemberSearch extends DdMember
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['member_id', 'group_id', 'organization_id', 'level', 'store_id', 'bloc_id', 'gender', 'status', 'address_id', 'create_time', 'update_time'], 'integer'],
@@ -33,20 +34,20 @@ class DdMemberSearch extends DdMember
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied.
+     * Creates data provider instance with a search query applied.
      *
      * @param array $params
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
     {
         global $_GPC;
         $query = DdMember::find();
@@ -142,7 +143,7 @@ class DdMemberSearch extends DdMember
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
         //}
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
             'totalCount' => $count ?? 0,
@@ -159,7 +160,5 @@ class DdMemberSearch extends DdMember
                 'pageSize' => $pageSize,
             ],
         ]);
-
-        return $provider;
     }
 }

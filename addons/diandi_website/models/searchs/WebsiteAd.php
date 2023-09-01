@@ -16,7 +16,7 @@ class WebsiteAd extends WebsiteAdModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'type', 'category_id', 'created_at', 'updated_at'], 'integer'],

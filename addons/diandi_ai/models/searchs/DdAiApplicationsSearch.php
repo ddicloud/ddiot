@@ -20,7 +20,7 @@ class DdAiApplicationsSearch extends DdAiApplications
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id'], 'integer'],

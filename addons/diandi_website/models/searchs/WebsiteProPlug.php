@@ -22,7 +22,7 @@ class WebsiteProPlug extends WebsiteProPlugModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id'], 'integer'],

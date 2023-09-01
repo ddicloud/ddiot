@@ -25,7 +25,7 @@ class DdWebsiteSlideSearch extends DdWebsiteSlide
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id'], 'integer'],
@@ -36,20 +36,20 @@ class DdWebsiteSlideSearch extends DdWebsiteSlide
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with a search query applied
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
+     * @return ArrayDataProvider|ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|ActiveDataProvider
     {
         global $_GPC;
 
@@ -108,14 +108,14 @@ class DdWebsiteSlideSearch extends DdWebsiteSlide
 
            $value['createtime'] = date('Y-m-d H:i:s',$value['createtime']);
            $value['updatetime'] = date('Y-m-d H:i:s',$value['updatetime']);
-        } 
+        }
 
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total' => $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -129,8 +129,5 @@ class DdWebsiteSlideSearch extends DdWebsiteSlide
             ]
         ]);
 
-        return $provider;
-            
-        return $dataProvider;
     }
 }

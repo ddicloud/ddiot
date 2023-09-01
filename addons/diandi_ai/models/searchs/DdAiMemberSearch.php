@@ -20,7 +20,7 @@ class DdAiMemberSearch extends DdAiMember
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'face_group_id', 'gender', 'wxapp_id', 'create_time', 'update_time', 'ai_age'], 'integer'],

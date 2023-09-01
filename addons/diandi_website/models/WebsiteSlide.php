@@ -34,7 +34,7 @@ class WebsiteSlide extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['create_time', 'update_time', 'bloc_id', 'store_id', 'page_id', 'displayorder'], 'integer'],

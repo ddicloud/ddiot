@@ -22,7 +22,7 @@ class WebsiteArticleCategory extends WebsiteArticleCategoryModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'displayorder', 'pcate', 'bloc_id', 'store_id'], 'integer'],

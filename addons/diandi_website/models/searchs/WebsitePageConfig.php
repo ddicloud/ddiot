@@ -21,7 +21,7 @@ class WebsitePageConfig extends WebsitePageConfigModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id', 'create_time', 'update_time'], 'integer'],

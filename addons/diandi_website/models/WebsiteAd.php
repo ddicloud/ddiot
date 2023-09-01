@@ -37,7 +37,7 @@ class WebsiteAd extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['type', 'category_id', 'created_at', 'updated_at', 'bloc_id', 'store_id'], 'integer'],

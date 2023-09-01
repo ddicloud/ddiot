@@ -16,7 +16,7 @@ class WebsiteFeedback extends WebsiteFeedbackModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],

@@ -48,7 +48,7 @@ class DdAiFaces extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['ai_user_id', 'ai_group_id'], 'integer'],

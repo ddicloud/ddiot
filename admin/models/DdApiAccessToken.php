@@ -42,18 +42,18 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     const STATUS_ACTIVE = 1; //正常启用
 
     // 次数限制
-    public  $rateLimit;
+    public int  $rateLimit;
 
     // 时间范围
-    public  $timeLimit;
+    public int  $timeLimit;
  
-    public  $auth_key;
+    public int  $auth_key;
 
     
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user_access_token}}';
     }
@@ -61,7 +61,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -73,7 +73,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         ];
     }
 
-    public function getRateLimit($request, $action)
+    public function getRateLimit($request, $action): array
     {
         $this->rateLimit = Yii::$app->params['api']['rateLimit'];
         $this->timeLimit = Yii::$app->params['api']['timeLimit'];
@@ -81,7 +81,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         return [$this->rateLimit, $this->timeLimit];
     }
 
-    public function loadAllowance($request, $action)
+    public function loadAllowance($request, $action): array
     {
         $allowance = Yii::$app->cache->get($this->getCacheKey('api_rate_allowance'));
         $timestamp = Yii::$app->cache->get($this->getCacheKey('api_rate_timestamp'));
@@ -93,7 +93,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
         return [$allowance, $timestamp];
     }
 
-    public function saveAllowance($request, $action, $allowance, $timestamp)
+    public function saveAllowance($request, $action, $allowance, $timestamp): void
     {
         Yii::$app->cache->set($this->getCacheKey('api_rate_allowance'), $allowance, $this->timeLimit);
         Yii::$app->cache->set($this->getCacheKey('api_rate_timestamp'), $timestamp, $this->timeLimit);
@@ -102,7 +102,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['group_id', 'status', 'allowance', 'allowance_updated_at', 'create_time', 'updated_time'], 'integer'],
@@ -121,7 +121,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @throws UnauthorizedHttpException
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): mixed
     {
         
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -147,9 +147,9 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      * @param $token
      * @param null $group
      *
-     * @return AccessToken|\common\models\base\User|null
+     * @return DdApiAccessToken|null
      */
-    public static function findIdentityByRefreshToken($token, $group = null)
+    public static function findIdentityByRefreshToken($token, $group = null): ?DdApiAccessToken
     {
         return static::findOne(['group_id' => $group, 'refresh_token' => $token, 'status' => 1]);
     }
@@ -161,7 +161,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMember()
+    public function getMember(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::class, ['user_id' => 'user_id']);
     }
@@ -171,7 +171,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMemberGroup()
+    public function getMemberGroup(): \yii\db\ActiveQuery
     {
         return $this->hasOne(UserGroup::class, ['id' => 'group_id'])
             ->where(['type' => Yii::$app->id]);
@@ -180,7 +180,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): DdApiAccessToken|IdentityInterface|null
     {
         return static::findOne(['user_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -188,15 +188,15 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * @return int|string 当前用户ID
      */
-    public function getId()
+    public function getId(): int|string
     {
         return $this->user_id;
     }
 
     /**
-     * @return string 当前用户的（cookie）认证密钥
+     * @return int|string 当前用户的（cookie）认证密钥
      */
-    public function getAuthKey()
+    public function getAuthKey(): int|string
     {
         return $this->auth_key;
     }
@@ -204,9 +204,9 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * @param string $authKey
      *
-     * @return bool if auth key is valid for current user
+     * @return bool if an auth key is valid for current user
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
         return $this->getAuthKey() === $authKey;
     }
@@ -216,7 +216,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
      *
      * @return array
      */
-    public function getCacheKey($key)
+    public function getCacheKey($key): array
     {
         return [__CLASS__, $this->getId(), $key];
     }
@@ -224,7 +224,7 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',

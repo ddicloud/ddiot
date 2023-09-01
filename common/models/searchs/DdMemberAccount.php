@@ -12,6 +12,7 @@ namespace common\models\searchs;
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
 use common\models\DdMemberAccount as DdMemberAccountModel;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 
@@ -23,7 +24,7 @@ class DdMemberAccount extends DdMemberAccountModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id', 'member_id', 'level', 'user_integral', 'accumulate_integral', 'give_integral', 'frozen_integral', 'status', 'create_time', 'update_time'], 'integer'],
@@ -34,21 +35,20 @@ class DdMemberAccount extends DdMemberAccountModel
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with a search query applied
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
-
+     * @return ArrayDataProvider|false
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool
     {
         global $_GPC;
         $query = DdMemberAccountModel::find()->with(['member','store']);
@@ -108,13 +108,13 @@ class DdMemberAccount extends DdMemberAccountModel
         //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
         //} 
-            
 
-        $provider = new ArrayDataProvider([
+
+        return new ArrayDataProvider([
             'key'=>'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total'=> isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total'=> $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -127,8 +127,6 @@ class DdMemberAccount extends DdMemberAccountModel
                 'pageSize' => $pageSize,
             ]
         ]);
-        
-        return $provider;
         
     }
 }

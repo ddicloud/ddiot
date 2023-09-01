@@ -11,6 +11,7 @@ namespace admin\models\searchs;
 use admin\models\User;
 use common\components\DataProvider\ArrayDataProvider;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 /**
@@ -18,12 +19,12 @@ use yii\data\Pagination;
  */
 class adminUser extends User
 {
-    public $group_id;
+    public int $group_id = 0;
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id', 'status'], 'integer'],
@@ -34,20 +35,20 @@ class adminUser extends User
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied.
+     * Creates data provider instance with a search query applied.
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
+     * @return ArrayDataProvider|bool|ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
     {
         global $_GPC;
         $query = User::find()->joinWith('userGroup as userGroup');
@@ -91,7 +92,7 @@ class adminUser extends User
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
         //}
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
             'totalCount' => $count ?? 0,
@@ -108,7 +109,5 @@ class adminUser extends User
                 'pageSize' => $pageSize,
             ],
         ]);
-
-        return $provider;
     }
 }

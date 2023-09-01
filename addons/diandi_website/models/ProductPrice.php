@@ -41,7 +41,7 @@ class ProductPrice extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'des', 'price', 'show_price', 'fun', 'solution_id', 'back_color', 'is_recommend'], 'required'],

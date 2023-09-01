@@ -22,7 +22,7 @@ class DdMemberGroupSearch extends DdMemberGroup
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['item_name'], 'safe'],

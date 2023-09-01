@@ -38,7 +38,7 @@ class SysFun extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['cate_id', 'title', 'icon', 'des'], 'required'],

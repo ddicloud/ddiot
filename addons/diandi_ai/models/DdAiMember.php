@@ -88,7 +88,7 @@ class DdAiMember extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['face_group_id'], 'required'],

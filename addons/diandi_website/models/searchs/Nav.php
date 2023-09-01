@@ -24,7 +24,7 @@ class Nav extends NavModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'parent', 'order', 'is_show', 'store_id', 'bloc_id', 'create_time', 'update_time'], 'integer'],

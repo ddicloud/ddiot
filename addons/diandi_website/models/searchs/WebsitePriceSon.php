@@ -16,7 +16,7 @@ class WebsitePriceSon extends WebsitePriceSonModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id', 'is_have', 'sort', 'price_id'], 'integer'],

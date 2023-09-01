@@ -22,7 +22,7 @@ class WebsiteProH5Body extends WebsiteProH5BodyModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id'], 'integer'],

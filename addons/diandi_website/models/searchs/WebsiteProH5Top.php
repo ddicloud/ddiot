@@ -22,7 +22,7 @@ class WebsiteProH5Top extends WebsiteProH5TopModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'store_id', 'bloc_id'], 'integer'],

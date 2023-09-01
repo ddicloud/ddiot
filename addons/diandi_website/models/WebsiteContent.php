@@ -42,7 +42,7 @@ class WebsiteContent extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['language', 'category_id'], 'required'],

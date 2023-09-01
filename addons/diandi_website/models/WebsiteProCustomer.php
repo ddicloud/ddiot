@@ -39,7 +39,7 @@ class WebsiteProCustomer extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['store_id', 'bloc_id', 'solution_id', 'is_website'], 'integer'],

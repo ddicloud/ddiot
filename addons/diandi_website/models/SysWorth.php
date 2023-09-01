@@ -39,7 +39,7 @@ class SysWorth extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['title', 'icon', 'des'], 'required'],

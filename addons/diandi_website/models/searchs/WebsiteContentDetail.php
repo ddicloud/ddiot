@@ -16,7 +16,7 @@ class WebsiteContentDetail extends WebsiteContentDetailModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'content_id', 'created_at', 'updated_at'], 'integer'],

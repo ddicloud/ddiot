@@ -36,7 +36,7 @@ class WebsiteFeedback extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['created_at', 'updated_at'], 'integer'],

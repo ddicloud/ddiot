@@ -13,6 +13,7 @@ namespace common\models\searchs;
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
 use common\models\MemberOrganization;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 
@@ -24,7 +25,7 @@ class MemberOrganizationSearch extends MemberOrganization
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['group_id', 'group_pid', 'create_time', 'update_time'], 'integer'],
@@ -35,21 +36,20 @@ class MemberOrganizationSearch extends MemberOrganization
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with a search query applied
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
-
+     * @return ArrayDataProvider|false
      */
-    public function search($params)
+    public function search(array $params): ArrayDataProvider|bool
     {
         global $_GPC;
         $query = MemberOrganization::find();
@@ -96,11 +96,11 @@ class MemberOrganizationSearch extends MemberOrganization
         //} 
 
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key' => 'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'totalCount' => $count ?? 0,
+            'total' => $count ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -113,7 +113,5 @@ class MemberOrganizationSearch extends MemberOrganization
                 'pageSize' => $pageSize,
             ]
         ]);
-
-        return $provider;
     }
 }

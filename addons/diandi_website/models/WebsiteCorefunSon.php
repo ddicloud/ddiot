@@ -42,7 +42,7 @@ class WebsiteCorefunSon extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['store_id', 'bloc_id', 'corefun_id', 'sort'], 'integer'],

@@ -24,7 +24,7 @@ class SolutionCateSearch extends SolutionCate
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id'], 'integer'],

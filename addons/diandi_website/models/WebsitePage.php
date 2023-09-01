@@ -38,7 +38,7 @@ class WebsitePage extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['content'], 'required'],

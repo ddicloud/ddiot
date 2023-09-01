@@ -20,7 +20,7 @@ class DdAiGroupsSearch extends DdAiGroups
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'ai_group_status'], 'integer'],

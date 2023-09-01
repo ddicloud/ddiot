@@ -16,7 +16,7 @@ class WebsiteContent extends WebsiteContentModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'type', 'category_id', 'status', 'admin_user_id', 'hits', 'created_at', 'updated_at'], 'integer'],

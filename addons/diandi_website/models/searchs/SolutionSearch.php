@@ -16,7 +16,7 @@ class SolutionSearch extends Solution
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'bloc_id', 'store_id', 'cate_id'], 'integer'],
