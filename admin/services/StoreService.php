@@ -191,14 +191,14 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_id' => (int) $category[1],
-            'category_pid' => (int) $category[0],
+            'category_id' => (int) $category[1]??0,
+            'category_pid' => (int) $category[0]??0,
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => (int) $bloc_id,
-            'province' => (int) $provinceCityDistrict[0],
-            'city' => (int) $provinceCityDistrict[1],
-            'county' => (int) $provinceCityDistrict[2],
+            'province' => (int) $provinceCityDistrict[0]??0,
+            'city' => (int) $provinceCityDistrict[1]??0,
+            'county' => (int) $provinceCityDistrict[2]??0,
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
@@ -285,14 +285,14 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_id' => (int) $category[1],
-            'category_pid' => (int) $category[0],
+            'category_id' => (int) $category[1]??0,
+            'category_pid' => (int) $category[0]??0,
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => $bloc_id,
-            'province' => (int) $provinceCityDistrict[0],
-            'city' => (int) $provinceCityDistrict[1],
-            'county' => (int) $provinceCityDistrict[2],
+            'province' => (int) $provinceCityDistrict[0]??0,
+            'city' => (int) $provinceCityDistrict[1]??0,
+            'county' => (int) $provinceCityDistrict[2]??0,
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
