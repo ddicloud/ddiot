@@ -15,12 +15,12 @@ use yii\db\ActiveQuery;
 
 class CommonQuery extends ActiveQuery
 {
-    public $bloc_id;
+    public int $bloc_id;
 
-    public $store_id;
+    public int $store_id;
     
 
-    public function init()
+    public function init(): void
     {
         global $_GPC;
         parent::init();
@@ -28,14 +28,14 @@ class CommonQuery extends ActiveQuery
         $this->store_id = $_GPC['store_id'];
     }
 
-    public function findBloc($alias='')
+    public function findBloc($alias=''): static
     {
         $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
 
         return $this;
     }
 
-    public function findStore($alias='')
+    public function findStore($alias=''): static
     {
         $this->andWhere([($alias?$alias.'.':'').'store_id' => $this->store_id, ($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
 
@@ -44,35 +44,37 @@ class CommonQuery extends ActiveQuery
 
     /**
      * 根据用户授权进行检索
+     * @param string $alias
      * @return CommonQuery
      * @date 2023-03-03
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function findBlocs($alias='')
+    public function findBlocs(string $alias=''): static
     {
-        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
+        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('bloc_id')->column();
         
         $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
         return $this;
     }
 
-   
+
     /**
      * 根据用户授权的商户进行检索
+     * @param string $alias
      * @return CommonQuery
      * @date 2023-03-03
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function findStores($alias='')
+    public function findStores(string $alias=''): static
     {
-        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('bloc_id')->column();
+        $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('bloc_id')->column();
         
-        $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id])->select('store_id')->column();
+        $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('store_id')->column();
         
         $this->andWhere([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
