@@ -36,7 +36,7 @@ class MapController extends AController
     public function actionCitylist(): array
     {
         $region = new DdRegion();
-        $regionVal = Yii::$app->cache->get('region');
+        $regionVal = Yii::$app->cache->get('admin.region');
         if ($regionVal) {
             $citylist = $regionVal;
         } else {
@@ -44,10 +44,10 @@ class MapController extends AController
             foreach ($list as $key => &$value) {
                 $value['value'] = $value['id'];
             }
-            $citylist = [];
+
             $citylist = ArrayHelper::itemsMerge($list, $pid = 0, 'id', 'pid', 'children');
 
-            Yii::$app->cache->set('region', $citylist);
+            Yii::$app->cache->set('admin.region', $citylist);
         }
 
         return ResultHelper::json(200, '获取成功', $citylist);
