@@ -46,7 +46,8 @@
         "symfony/dependency-injection": "^5.4",
         "swoole/ide-helper": "^5.0",
         "simps/mqtt": "^1.4",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
