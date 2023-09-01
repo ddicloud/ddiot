@@ -43,8 +43,8 @@ trait StoreLinkTrait
         $mobile = isset($_GPC['mobile']) ??'';
         $status = isset($_GPC['status'])??0;
 //        $lng_lat = isset($_GPC['lng_lat'])??[];
-        $category = isset($_GPC['category'])??[];
-        $provinceCityDistrict = isset($_GPC['provinceCityDistrict'])??[];
+        $category = (array) (isset($_GPC['category'])??[]);
+        $provinceCityDistrict = (array) (isset($_GPC['provinceCityDistrict'])??[]);
         $label_link = isset($_GPC['label_link'])??[];
         if ($insert) {
             try {
