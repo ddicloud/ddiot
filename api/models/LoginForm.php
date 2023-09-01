@@ -22,7 +22,7 @@ class LoginForm extends Model
     public string $password  = '';
     public bool $rememberMe = true;
 
-    private mixed $_user;
+    private mixed $_user = null;
 
     /**
      * {@inheritdoc}
