@@ -98,13 +98,6 @@ return [
                 //     'message' => $response->statusText,
                 //     'data' => $response->data,
                 // ];
-                $data = $event->sender->data;
-                array_walk_recursive($data, function (&$value, $key) {
-                    if (is_string($value) && is_numeric($value)) {
-                        $floatValue = floatval($value);
-                        $value = $floatValue;
-                    }
-                });
                 $response->statusCode = 200;
             },
             //ps：components 中绑定事件，可以用两种方法
