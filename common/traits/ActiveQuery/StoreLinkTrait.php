@@ -34,18 +34,18 @@ trait StoreLinkTrait
     public function beforeSave($insert): bool|array
     {
         global $_GPC;
-        $bloc_id =  isset($_GPC['bloc_id']) ??0;
-        $name = isset($_GPC['name']) ??'';
-        $logo = isset($_GPC['logo']) ??'';
-        $address = isset($_GPC['address']) ??'';
-        $longitude = isset($_GPC['longitude']) ??'';
-        $latitude = isset($_GPC['latitude']) ??'';
-        $mobile = isset($_GPC['mobile']) ??'';
-        $status = isset($_GPC['status'])??0;
-//        $lng_lat = isset($_GPC['lng_lat'])??[];
-        $category = (array) (isset($_GPC['category'])??[]);
-        $provinceCityDistrict = (array) (isset($_GPC['provinceCityDistrict'])??[]);
-        $label_link = isset($_GPC['label_link'])??[];
+        $bloc_id =   $_GPC['bloc_id']??0;
+        $name = $_GPC['name']??'';
+        $logo = $_GPC['logo']??'';
+        $address = $_GPC['address']??'';
+        $longitude = $_GPC['longitude']??'';
+        $latitude = $_GPC['latitude']??'';
+        $mobile = $_GPC['mobile']??'';
+        $status = $_GPC['status']??0;
+        $lng_lat = $_GPC['lng_lat']??[];
+        $category = $_GPC['category']?(array)$_GPC['category']:[];
+        $provinceCityDistrict = $_GPC['provinceCityDistrict']?(array)$_GPC['provinceCityDistrict']:[];
+        $label_link = $_GPC['label_link']??[];
         if ($insert) {
             try {
                 $user_id = $this->getUser();
