@@ -17,9 +17,9 @@ use yii\helpers\ArrayHelper;
  */
 class LoginForm extends Model
 {
-    public string $username;
-    public string $mobile;
-    public string $password;
+    public string $username = '';
+    public string $mobile  = '';
+    public string $password  = '';
     public bool $rememberMe = true;
 
     private mixed $_user;
