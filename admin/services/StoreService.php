@@ -28,18 +28,18 @@ class StoreService extends BaseService
     /**
      * 用户创建店铺.注册后用户自主创建店铺
      *
-     * @param [type] $data   店铺数据
-     * @param [type] $mid    模块ID
+     * @param $data
+     * @param $mid
      * @param array $extras 商户扩展字段
      *
-     * @return
+     * @return BlocStore
+     * @throws HttpException
      * @date 2022-10-26
-     *
-     * @example
      *
      * @author Wang Chunsheng
      *
      * @since
+     * @example
      */
     public static function createStore($data, $mid, array $extras = []): BlocStore
     {
@@ -161,13 +161,13 @@ class StoreService extends BaseService
 
     /**
      * 更新关联店铺数据
-     * @param $store_id
-     * @param $bloc_id
-     * @param $category
-     * @param $provinceCityDistrict
-     * @param $name
-     * @param $logo
-     * @param $address
+     * @param int $store_id
+     * @param int $bloc_id
+     * @param array $category
+     * @param array $provinceCityDistrict
+     * @param string $name
+     * @param string $logo
+     * @param string $address
      * @param $longitude
      * @param $latitude
      * @param $mobile
@@ -180,7 +180,7 @@ class StoreService extends BaseService
      * @author Wang Chunsheng
      * @since
      */
-    public static function upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): ?BlocStore
+    public static function upLinkStore(int $store_id,int  $bloc_id,array $category,array $provinceCityDistrict,string $name,string $logo,string $address, $longitude, $latitude, $mobile, $status, $label_link = []): ?BlocStore
     {
         $model = BlocStore::findOne($store_id);
 
@@ -252,8 +252,8 @@ class StoreService extends BaseService
      * 新建店铺数据关联全局
      * @param $user_id
      * @param $bloc_id
-     * @param $category
-     * @param $provinceCityDistrict
+     * @param array $category
+     * @param array $provinceCityDistrict
      * @param $name
      * @param $logo
      * @param $address
@@ -269,7 +269,7 @@ class StoreService extends BaseService
      * @since
      * @example
      */
-    public static function addLinkStore($user_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): BlocStore
+    public static function addLinkStore($user_id, $bloc_id,array $category,array $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): BlocStore
     {
         if (empty($user_id)) {
             throw new \Exception('关联商户中，用户ID不能为空!');
