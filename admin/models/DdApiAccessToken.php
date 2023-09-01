@@ -42,12 +42,12 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     const STATUS_ACTIVE = 1; //正常启用
 
     // 次数限制
-    public int  $rateLimit;
+    public int  $rateLimit = 60;
 
     // 时间范围
-    public int  $timeLimit;
+    public int  $timeLimit = 60;
  
-    public int  $auth_key;
+    public int|string  $auth_key = '';
 
     
     /**
