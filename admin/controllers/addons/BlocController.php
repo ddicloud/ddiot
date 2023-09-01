@@ -182,7 +182,7 @@ class BlocController extends AController
 
 
         if ($model->load($data, '') && $model->save()) {
-            return ResultHelper::json(200, '创建成功', (array)$model);
+            return ResultHelper::json(200, '创建成功', $model->toArray());
         } else {
             $msg = ErrorsHelper::getModelError($model);
 
@@ -212,7 +212,7 @@ class BlocController extends AController
         $data['district'] = $data['provinceCityDistrict']['2'];
 
         if ($model->load($data, '') && $model->save()) {
-            return ResultHelper::json(200, '编辑成功', (array)$model);
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
         } else {
             $msg = ErrorsHelper::getModelError($model);
 

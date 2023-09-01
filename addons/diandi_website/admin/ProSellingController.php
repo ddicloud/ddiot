@@ -65,7 +65,11 @@ class ProSellingController extends AController
      */
     public function actionView($id)
     {
-        $view = $this->findModel($id);
+         try {
+            $view = $this->findModel($id)->toArray();
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
         // $view->image = ImageHelper::tomedia($view->image);
 
         return ResultHelper::json(200, '获取成功', $view);

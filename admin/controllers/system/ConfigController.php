@@ -78,7 +78,7 @@ class ConfigController extends AController
                 $settings->set('Weburl', $key, $value);
             }
 
-            return ResultHelper::json(200, '保存成功', (array)$model);
+            return ResultHelper::json(200, '保存成功', $model->toArray());
         } else {
             $set = $settings->getAllBySection('Weburl');
 
@@ -106,7 +106,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -132,7 +132,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -157,7 +157,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -183,7 +183,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -208,7 +208,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -233,7 +233,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -258,7 +258,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -283,7 +283,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -308,7 +308,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -332,7 +332,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 
@@ -356,7 +356,7 @@ class ConfigController extends AController
 
             $model->getConf($bloc_id);
 
-            return ResultHelper::json(200, '获取成功', (array)$model);
+            return ResultHelper::json(200, '获取成功', $model->toArray());
         }
     }
 }

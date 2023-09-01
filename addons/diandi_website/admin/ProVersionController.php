@@ -65,7 +65,11 @@ class ProVersionController extends AController
      */
     public function actionView($id)
     {
-        $view = $this->findModel($id);
+         try {
+            $view = $this->findModel($id)->toArray();
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
         // $view->image = ImageHelper::tomedia($view->image);
         // $view->b_image = ImageHelper::tomedia($view->b_image);
 

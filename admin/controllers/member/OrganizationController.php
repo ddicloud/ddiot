@@ -63,7 +63,11 @@ class OrganizationController extends AController
      */
     public function actionView($id): array
     {
-        $view = $this->findModel($id);
+         try {
+            $view = $this->findModel($id)->toArray();
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
         return ResultHelper::json(200, '获取成功', $view);
     }
@@ -81,7 +85,7 @@ class OrganizationController extends AController
         $data = Yii::$app->request->post();
 
         if ($model->load($data, '') && $model->save()) {
-            return ResultHelper::json(200, '创建成功', (array)$model);
+            return ResultHelper::json(200, '创建成功', $model->toArray());
         } else {
             $msg = ErrorsHelper::getModelError($model);
 

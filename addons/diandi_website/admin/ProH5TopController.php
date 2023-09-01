@@ -65,7 +65,11 @@ class ProH5TopController extends AController
      */
     public function actionView($id)
     {
-        $view = $this->findModel($id);
+         try {
+            $view = $this->findModel($id)->toArray();
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
         // $view->image = ImageHelper::tomedia($view->image);
         // $view->logo_a = ImageHelper::tomedia($view->logo_a);
         // $view->logo_b = ImageHelper::tomedia($view->logo_b);

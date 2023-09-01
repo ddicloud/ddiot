@@ -65,7 +65,11 @@ class ProH5BodyController extends AController
      */
     public function actionView($id)
     {
-        $view = $this->findModel($id);
+         try {
+            $view = $this->findModel($id)->toArray();
+        } catch (NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
         // $view->image_a = ImageHelper::tomedia($view->image_a);
         // $view->image_b = ImageHelper::tomedia($view->image_b);

@@ -298,7 +298,7 @@ class AController extends ActiveController
             return ResultHelper::json(500,$msg);
 
         }
-        return ResultHelper::json(200,'创建成功', (array)$model);
+        return ResultHelper::json(200,'创建成功', $model->toArray());
     }
 
     /**
@@ -321,7 +321,7 @@ class AController extends ActiveController
 
         }
 
-        return ResultHelper::json(200,'创建成功', (array)$model);
+        return ResultHelper::json(200,'创建成功', $model->toArray());
 
     }
 
