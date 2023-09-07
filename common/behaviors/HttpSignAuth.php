@@ -10,6 +10,7 @@ namespace common\behaviors;
 
 use Yii;
 use yii\base\Behavior;
+use yii\base\Controller as ControllerAlias;
 use yii\base\Exception;
 use yii\web\Controller;
 
@@ -18,31 +19,31 @@ use yii\web\Controller;
  */
 class HttpSignAuth extends Behavior
 {
-    public $privateKey = '12345678';
+    public string $privateKey = '12345678';
 
-    public $signParam = 'sign';
+    public string $signParam = 'sign';
 
-    public function events()
+    public function events(): array
     {
-        return [Controller::EVENT_BEFORE_ACTION => 'beforeAction'];
+        return [ControllerAlias::EVENT_BEFORE_ACTION => 'beforeAction'];
     }
 
-    public function beforeAction($event)
+    public function beforeAction($event): bool
     {
         //获取 sign
         $sign = Yii::$app->request->get($this->signParam, null);
         $getParams = Yii::$app->request->get();
         $postParams = Yii::$app->request->post();
         $params = array_merge($getParams, $postParams);
-        if (empty($sign) || !$this->checkSign($sign, $params)) {
-            // $error = ErrorCode::getError('auth_error');
-            // throw new Exception($error['msg'], $error['code']);
-        }
+//        if (empty($sign) || !$this->checkSign($sign, $params)) {
+//             $error = ErrorCode::getError('auth_error');
+//             throw new Exception($error['msg'], $error['code']);
+//        }
 
         return true;
     }
 
-    private function checkSign($sign, $params)
+    private function checkSign($sign, $params): bool
     {
         unset($params[$this->signParam]);
         ksort($params);

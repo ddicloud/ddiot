@@ -10,14 +10,22 @@ class Copy {
     const DEFAULT_PART_SIZE = 52428800;
     const MAX_PARTS     = 10000;
 
-    private $client;
-    private $copySource;
-    private $options;
-    private $partSize;
-    private $parts;
-    private $size;
-    private $commandList = [];
-    private $requestList = [];
+    private mixed $client;
+    private mixed $copySource;
+    private mixed $options;
+    private mixed $partSize;
+    private mixed $parts;
+    private mixed $size;
+    private array $commandList = [];
+    private array $requestList = [];
+    /**
+     * @var int|mixed
+     */
+    private mixed $concurrency;
+    /**
+     * @var int|mixed
+     */
+    private mixed $retry;
 
     public function __construct($client, $source, $options = array()) {
         $minPartSize = $options['PartSize'];
@@ -28,8 +36,8 @@ class Copy {
         $this->size = $source['ContentLength'];
         unset($source['ContentLength']);
         $this->partSize = $this->calculatePartSize($minPartSize);
-        $this->concurrency = isset($options['Concurrency']) ? $options['Concurrency'] : 10;
-        $this->retry = isset($options['Retry']) ? $options['Retry'] : 5;
+        $this->concurrency = $options['Concurrency'] ?? 10;
+        $this->retry = $options['Retry'] ?? 5;
     }
     public function copy() {
         $uploadId= $this->initiateMultipartUpload();
@@ -53,7 +61,8 @@ class Copy {
         );
 
     }
-    public function uploadParts($uploadId) {
+    public function uploadParts($uploadId)
+    {
         $copyRequests = function ($uploadId) {
             $offset = 0;
             $partNumber = 1;
@@ -75,6 +84,7 @@ class Copy {
                     'CopySource'=> $copySourcePath,
                     'CopySourceRange' => 'bytes='.((string)$offset).'-'.(string)($offset+$partSize - 1),
                 );
+
                 if(!isset($this->parts[$partNumber])) {
                     $command = $this->client->getCommand('uploadPartCopy', $params);
                     $request = $this->client->commandToRequestTransformer($command);
@@ -128,8 +138,7 @@ class Copy {
         $partSize = intval(ceil(($this->size / self::MAX_PARTS)));
         $partSize = max($minPartSize, $partSize);
         $partSize = min($partSize, self::MAX_PART_SIZE);
-        $partSize = max($partSize, self::MIN_PART_SIZE);
-        return $partSize;
+        return max($partSize, self::MIN_PART_SIZE);
     }
 
     private function initiateMultipartUpload() {

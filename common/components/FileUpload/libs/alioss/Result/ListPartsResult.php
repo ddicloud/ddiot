@@ -17,7 +17,7 @@ class ListPartsResult extends Result
      *
      * @return ListPartsInfo
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): ListPartsInfo
     {
         $content = $this->rawResponse->body;
         $xml = simplexml_load_string($content);

@@ -16,12 +16,15 @@ use common\helpers\StringHelper;
 class LocalCor
 {
     // 文件名称
-    public $file_name;
+    public string $file_name;
     // 文件类型
-    public $file_type;
+    public string $file_type;
     // 文件总大小
-    public $file_size;
+    public int $file_size;
 
+    /**
+     * @throws LocalException
+     */
     public function __construct($file_name, $file_size, $file_type)
     {
         if (empty($file_name)) {
@@ -49,7 +52,7 @@ class LocalCor
     //  'chunk_partIndex' => (int) $chunk_partIndex,
     //  'md5' => $md5,
     //  'chunk_md5' => $chunk_md5,
-    public function mergeParts($PartList, $path)
+    public function mergeParts($PartList, $path): array|string
     {
         $file_name = $this->file_name;
         list($name, $ext) = explode('.', $file_name);

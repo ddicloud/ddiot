@@ -12,7 +12,7 @@ use yii2mod\enum\helpers\BaseEnum as HelpersBaseEnum;
 
 class BaseEnum extends HelpersBaseEnum
 {
-    public static function getLabelByName($name)
+    public static function getLabelByName($name): bool|string|null
     {
         $list = self::getConstantsByName();
         if ($list[$name]) {

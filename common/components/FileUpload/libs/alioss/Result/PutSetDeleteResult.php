@@ -12,7 +12,7 @@ class PutSetDeleteResult extends Result
     /**
      * @return null
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): mixed
     {
         return null;
     }

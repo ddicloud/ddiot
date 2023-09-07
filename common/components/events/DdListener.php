@@ -11,7 +11,7 @@ namespace common\components\events;
 
 class DdListener
 {
-    public function onCall(DdHandleAddonsMethodEvent $event)
+    public function onCall(DdHandleAddonsMethodEvent $event): void
     {
         echo 'onCall'.PHP_EOL;
         // only respond to the calls to the 'bar' method

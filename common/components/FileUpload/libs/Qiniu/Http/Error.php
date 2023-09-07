@@ -3,8 +3,8 @@ namespace Qiniu\Http;
 
 final class Error
 {
-    private $url;
-    private $response;
+    private string $url = '';
+    private  $response;
 
     public function __construct($url, $response)
     {

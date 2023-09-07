@@ -9,9 +9,7 @@
 namespace common\components\oss;
 
 use Yii;
-use League\Flysystem\FilesystemInterface;
 use common\components\oss\events\StorageEvent;
-use common\components\oss\filesystem\FilesystemBuilderInterface;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;

@@ -14,25 +14,42 @@ class RangeDownload {
     private $progress;
     private $totalSize;
     private $resumableJson;
+    private array $partNumberList;
+    private int $downloadedSize;
+    /**
+     * @var int|mixed
+     */
+    private mixed $concurrency;
+    private mixed $saveAs;
+    /**
+     * @var mixed|string
+     */
+    private mixed $resumableTaskFile;
+    /**
+     * @var false|mixed
+     */
+    private mixed $resumableDownload;
+    /**
+     * @var array|mixed
+     */
+    private mixed $resumableJsonLocal;
 
     public function __construct( $client, $contentLength, $saveAs, $options = array() ) {
         $this->client = $client;
         $this->options = $options;
-        $this->partSize = isset( $options['PartSize'] ) ? $options['PartSize'] : self::DEFAULT_PART_SIZE;
-        $this->concurrency = isset( $options['Concurrency'] ) ? $options['Concurrency'] : 10;
-        $this->progress = isset( $options['Progress'] ) ? $options['Progress'] : function( $totalSize, $downloadedSize ) {
-        }
-        ;
+        $this->partSize = $options['PartSize'] ?? self::DEFAULT_PART_SIZE;
+        $this->concurrency = $options['Concurrency'] ?? 10;
+        $this->progress = $options['Progress'] ?? function ($totalSize, $downloadedSize) {
+        };
         $this->parts = [];
         $this->partNumberList = [];
         $this->downloadedSize = 0;
         $this->totalSize = $contentLength;
         $this->saveAs = $saveAs;
-        $this->resumableJson = [];
-        $this->resumableJson = isset( $options['ResumableJson'] ) ? $options['ResumableJson'] : [];
+        $this->resumableJson = $options['ResumableJson'] ?? [];
         unset( $options['ResumableJson'] );
-        $this->resumableTaskFile = isset( $options['ResumableTaskFile'] ) ? $options['ResumableTaskFile'] : $saveAs . '.cosresumabletask';
-        $this->resumableDownload = isset( $options['ResumableDownload'] ) ? $options['ResumableDownload'] : false;
+        $this->resumableTaskFile = $options['ResumableTaskFile'] ?? $saveAs . '.cosresumabletask';
+        $this->resumableDownload = $options['ResumableDownload'] ?? false;
     }
 
     public function performdownloading() {
@@ -77,7 +94,8 @@ class RangeDownload {
         return $rt;
     }
 
-    public function donwloadParts() {
+    public function donwloadParts(): void
+    {
         $uploadRequests = function () {
             $index = 1;
             $partSize = 0;

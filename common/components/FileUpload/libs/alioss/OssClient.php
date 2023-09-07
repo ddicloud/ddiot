@@ -68,10 +68,10 @@ class OssClient
      * @param string $accessKeySecret 从OSS获得的AccessKeySecret
      * @param string $endpoint 您选定的OSS数据中心访问域名，例如oss-cn-hangzhou.aliyuncs.com
      * @param boolean $isCName 是否对Bucket做了域名绑定，并且Endpoint参数填写的是自己的域名
-     * @param string $securityToken
+     * @param string|null $securityToken
      * @throws OssException
      */
-    public function __construct($accessKeyId, $accessKeySecret, $endpoint, $isCName = false, $securityToken = NULL)
+    public function __construct(string $accessKeyId, string $accessKeySecret, string $endpoint, bool $isCName = false, string $securityToken = NULL)
     {
         $accessKeyId = trim($accessKeyId);
         $accessKeySecret = trim($accessKeySecret);
@@ -96,11 +96,11 @@ class OssClient
     /**
      * 列举用户所有的Bucket[GetService], Endpoint类型为cname不能进行此操作
      *
-     * @param array $options
-     * @throws OssException
-     * @return BucketListInfo
+     * @param array|null $options
+     * @return BucketListInfo|array
+     * @throws OssException|RequestCore_Exception
      */
-    public function listBuckets($options = NULL)
+    public function listBuckets(array $options = NULL): BucketListInfo|array
     {
         if ($this->hostType === self::OSS_HOST_TYPE_CNAME) {
             throw new OssException("operation is not permitted with CName host");
@@ -119,12 +119,14 @@ class OssClient
      *
      * @param string $bucket
      * @param string $acl
-     * @param array $options
+     * @param null $options
      * @return null
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
-    public function createBucket($bucket, $acl = self::OSS_ACL_TYPE_PRIVATE, $options = NULL)
+    public function createBucket(string $bucket, string $acl = self::OSS_ACL_TYPE_PRIVATE, $options = NULL)
     {
-        $this->precheckCommon($bucket, NULL, $options, false);
+        $this->precheckCommon($bucket, NULL, (array)$options, false);
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
         $options[self::OSS_OBJECT] = '/';
@@ -140,12 +142,14 @@ class OssClient
      * 必须删除Bucket中的所有Object以及碎片后，Bucket才能成功删除。
      *
      * @param string $bucket
-     * @param array $options
+     * @param null $options
      * @return null
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
-    public function deleteBucket($bucket, $options = NULL)
+    public function deleteBucket(string $bucket, $options = NULL)
     {
-        $this->precheckCommon($bucket, NULL, $options, false);
+        $this->precheckCommon($bucket, NULL, (array)$options, false);
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
         $options[self::OSS_OBJECT] = '/';
@@ -158,11 +162,12 @@ class OssClient
      * 判断bucket是否存在
      *
      * @param string $bucket
-     * @return bool
-     * @throws OssException
+     * @return array|null
+     * @throws OssException|RequestCore_Exception
      */
-    public function doesBucketExist($bucket)
+    public function doesBucketExist(string $bucket): ?array
     {
+        $options = [];
         $this->precheckCommon($bucket, NULL, $options, false);
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
@@ -177,11 +182,11 @@ class OssClient
      * 获取bucket的ACL配置情况
      *
      * @param string $bucket
-     * @param array $options
-     * @throws OssException
-     * @return string
+     * @param array|null $options
+     * @return array|string
+     * @throws OssException|RequestCore_Exception
      */
-    public function getBucketAcl($bucket, $options = NULL)
+    public function getBucketAcl(string $bucket, array $options = NULL): array|string
     {
         $this->precheckCommon($bucket, NULL, $options, false);
         $options[self::OSS_BUCKET] = $bucket;
@@ -198,11 +203,11 @@ class OssClient
      *
      * @param string $bucket bucket名称
      * @param string $acl 读写权限，可选值 ['private', 'public-read', 'public-read-write']
-     * @param array $options 可以为空
-     * @throws OssException
+     * @param array|null $options 可以为空
      * @return null
+     *@throws OssException|RequestCore_Exception
      */
-    public function putBucketAcl($bucket, $acl, $options = NULL)
+    public function putBucketAcl(string $bucket, string $acl, array $options = NULL)
     {
         $this->precheckCommon($bucket, NULL, $options, false);
         $options[self::OSS_BUCKET] = $bucket;
@@ -220,10 +225,11 @@ class OssClient
      *
      * @param string $bucket
      * @param string $object
+     * @return array
      * @throws OssException
-     * @return string
+     * @throws RequestCore_Exception
      */
-    public function getObjectAcl($bucket, $object)
+    public function getObjectAcl(string $bucket, string $object): array
     {
         $options = array();
         $this->precheckCommon($bucket, $object, $options, true);
@@ -242,11 +248,12 @@ class OssClient
      * @param string $bucket bucket名称
      * @param string $object object名称
      * @param string $acl 读写权限，可选值 ['default', 'private', 'public-read', 'public-read-write']
-     * @throws OssException
      * @return null
+     *@throws OssException|RequestCore_Exception
      */
-    public function putObjectAcl($bucket, $object, $acl)
+    public function putObjectAcl(string $bucket, string $object, string $acl)
     {
+        $options = [];
         $this->precheckCommon($bucket, $object, $options, true);
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
@@ -262,11 +269,11 @@ class OssClient
      * 获取Bucket的访问日志配置情况
      *
      * @param string $bucket bucket名称
-     * @param array $options 可以为空
-     * @throws OssException
-     * @return LoggingConfig
+     * @param array|null $options 可以为空
+     * @return array|null
+     * @throws OssException|RequestCore_Exception
      */
-    public function getBucketLogging($bucket, $options = NULL)
+    public function getBucketLogging(string $bucket, array $options = NULL): ?array
     {
         $this->precheckCommon($bucket, NULL, $options, false);
         $options[self::OSS_BUCKET] = $bucket;
@@ -1500,7 +1507,7 @@ class OssClient
      * @param array $options
      * @param bool $isCheckObject
      */
-    private function precheckCommon($bucket, $object, &$options, $isCheckObject = true)
+    private function precheckCommon($bucket, $object, $options, $isCheckObject = true)
     {
         if ($isCheckObject) {
             $this->precheckObject($object);

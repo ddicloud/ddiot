@@ -19,7 +19,7 @@ namespace Alioss\Core;
  */
 class OssException extends \Exception
 {
-    private $details = array();
+    private array $details = array();
 
     function __construct($details)
     {
@@ -36,26 +36,26 @@ class OssException extends \Exception
 
     public function getHTTPStatus()
     {
-        return isset($this->details['status']) ? $this->details['status'] : '';
+        return $this->details['status'] ?? '';
     }
 
     public function getRequestId()
     {
-        return isset($this->details['request-id']) ? $this->details['request-id'] : '';
+        return $this->details['request-id'] ?? '';
     }
 
     public function getErrorCode()
     {
-        return isset($this->details['code']) ? $this->details['code'] : '';
+        return $this->details['code'] ?? '';
     }
 
     public function getErrorMessage()
     {
-        return isset($this->details['message']) ? $this->details['message'] : '';
+        return $this->details['message'] ?? '';
     }
 
     public function getDetails()
     {
-        return isset($this->details['body']) ? $this->details['body'] : '';
+        return $this->details['body'] ?? '';
     }
 }

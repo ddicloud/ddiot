@@ -22,10 +22,10 @@ class LoggingConfig implements XmlConfig
     }
 
     /**
-     * @param $strXml
-     * @return null
+     * @param string $strXml
+     * @return void
      */
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml): void
     {
         $xml = simplexml_load_string($strXml);
         if (!isset($xml->LoggingEnabled)) return;
@@ -45,7 +45,7 @@ class LoggingConfig implements XmlConfig
      *  序列化成xml字符串
      *
      */
-    public function serializeToXml()
+    public function serializeToXml(): bool|string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><BucketLoggingStatus></BucketLoggingStatus>');
         if (isset($this->targetBucket) && isset($this->targetPrefix)) {
@@ -65,22 +65,22 @@ class LoggingConfig implements XmlConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTargetBucket()
+    public function getTargetBucket(): ?string
     {
         return $this->targetBucket;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTargetPrefix()
+    public function getTargetPrefix(): ?string
     {
         return $this->targetPrefix;
     }
 
-    private $targetBucket = "";
-    private $targetPrefix = "";
+    private ?string $targetBucket = "";
+    private ?string $targetPrefix = "";
 
 }

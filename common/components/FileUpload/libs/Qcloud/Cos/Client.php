@@ -10,7 +10,9 @@
 namespace Qcloud\Cos;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Command\ResultInterface;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Command\Guzzle\Description;
@@ -20,6 +22,7 @@ use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7;
+use yii\base\ErrorException;
 
 /**
  * @method object AbortMultipartUpload(array $args) 舍弃一个分块上传且删除已上传的分片块
@@ -271,10 +274,15 @@ class Client extends GuzzleClient {
     public function __destruct() {
     }
 
-    public function __call($method, array $args) {
+    /**
+     * @param $name
+     * @param array $args
+     * @return ResultInterface|PromiseInterface
+     * @throws \Throwable
+     */
+    public function __call($name, array $args) {
         try {
-            $rt = parent::__call(ucfirst($method), $args);
-            return $rt;
+            return parent::__call(ucfirst($name), $args);
         } catch (\Exception $e) {
             $previous = $e->getPrevious();
             if ($previous !== null) {
@@ -285,7 +293,8 @@ class Client extends GuzzleClient {
         }
     }
 
-    public function getApi() {
+    public function getApi(): array
+    {
         return $this->api;
     }
 
@@ -293,18 +302,21 @@ class Client extends GuzzleClient {
         return $this->cosConfig;
     }
 
-    private function createPresignedUrl(RequestInterface $request, $expires) {
+    private function createPresignedUrl(RequestInterface $request, $expires): \Psr\Http\Message\UriInterface
+    {
         return $this->signature->createPresignedUrl($request, $expires);
     }
 
-    public function getPresignedUrl($method, $args, $expires = "+30 minutes") {
+    public function getPresignedUrl($method, $args, $expires = "+30 minutes"): \Psr\Http\Message\UriInterface
+    {
         $command = $this->getCommand($method, $args);
         $request = $this->commandToRequestTransformer($command);
         return $this->createPresignedUrl($request, $expires);
     }
 
 
-    public function getObjectUrl($bucket, $key, $expires = "+30 minutes", array $args = array()) {
+    public function getObjectUrl($bucket, $key, $expires = "+30 minutes", array $args = array()): string
+    {
         $command = $this->getCommand('GetObject', $args + array('Bucket' => $bucket, 'Key' => $key));
         $request = $this->commandToRequestTransformer($command);
         return $this->createPresignedUrl($request, $expires)->__toString();
@@ -319,7 +331,7 @@ class Client extends GuzzleClient {
     public function upload($bucket, $key, $body, $options = array()) {
         $body = Psr7\Utils::streamFor($body);
         $options['Retry'] = $this->cosConfig['retry'];
-        $options['PartSize'] = isset($options['PartSize']) ? $options['PartSize'] : MultipartUpload::DEFAULT_PART_SIZE;
+        $options['PartSize'] = $options['PartSize'] ?? MultipartUpload::DEFAULT_PART_SIZE;
         if ($body->getSize() < $options['PartSize']) {
             $rt = $this->putObject(array(
                     'Bucket' => $bucket,
@@ -338,10 +350,14 @@ class Client extends GuzzleClient {
         return $rt;
     }
 
-    public function download($bucket, $key, $saveAs, $options = array()) {
-        $options['PartSize'] = isset($options['PartSize']) ? $options['PartSize'] : RangeDownload::DEFAULT_PART_SIZE;
+    /**
+     * @throws ErrorException
+     */
+    public function download($bucket, $key, $saveAs, $options = array()): ?object
+    {
+        $options['PartSize'] = $options['PartSize'] ?? RangeDownload::DEFAULT_PART_SIZE;
         $contentLength = 0;
-        $versionId = isset($options['VersionId']) ? $options['VersionId'] : '';
+        $versionId = $options['VersionId'] ?? '';
 
         $rt = $this->headObject(array(
                 'Bucket'=>$bucket,
@@ -370,14 +386,18 @@ class Client extends GuzzleClient {
                     'Key' => $key,
                 ) + $options);
 
-            $rt = $rangeDownload->performDownloading();
+            try {
+                $rt = $rangeDownload->performDownloading();
+            } catch (\Exception $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
         return $rt;
     }
 
     public function resumeUpload($bucket, $key, $body, $uploadId, $options = array()) {
         $body = Psr7\Utils::streamFor($body);
-        $options['PartSize'] = isset($options['PartSize']) ? $options['PartSize'] : MultipartUpload::DEFAULT_PART_SIZE;
+        $options['PartSize'] = $options['PartSize'] ?? MultipartUpload::DEFAULT_PART_SIZE;
         $multipartUpload = new MultipartUpload($this, $body, array(
                 'Bucket' => $bucket,
                 'Key' => $key,
@@ -390,13 +410,13 @@ class Client extends GuzzleClient {
 
     public function copy($bucket, $key, $copySource, $options = array()) {
 
-        $options['PartSize'] = isset($options['PartSize']) ? $options['PartSize'] : Copy::DEFAULT_PART_SIZE;
+        $options['PartSize'] = $options['PartSize'] ?? Copy::DEFAULT_PART_SIZE;
 
         // set copysource client
         $sourceConfig = $this->rawCosConfig;
         $sourceConfig['region'] = $copySource['Region'];
         $cosSourceClient = new Client($sourceConfig);
-        $copySource['VersionId'] = isset($copySource['VersionId']) ? $copySource['VersionId'] : '';
+        $copySource['VersionId'] = $copySource['VersionId'] ?? '';
 
         $rt = $cosSourceClient->headObject(
             array('Bucket'=>$copySource['Bucket'],
@@ -426,7 +446,7 @@ class Client extends GuzzleClient {
         return $copy->copy();
     }
 
-    public function doesBucketExist($bucket, array $options = array())
+    public function doesBucketExist($bucket, array $options = array()): bool
     {
         try {
             $this->HeadBucket(array(
@@ -437,7 +457,7 @@ class Client extends GuzzleClient {
         }
     }
 
-    public function doesObjectExist($bucket, $key, array $options = array())
+    public function doesObjectExist($bucket, $key, array $options = array()): bool
     {
         try {
             $this->HeadObject(array(
@@ -449,7 +469,8 @@ class Client extends GuzzleClient {
         }
     }
     
-    public static function explodeKey($key) {
+    public static function explodeKey($key): string
+    {
         // Remove a leading slash if one is found
         $split_key = explode('/', $key && $key[0] == '/' ? substr($key, 1) : $key);
         // Remove empty element
@@ -457,20 +478,22 @@ class Client extends GuzzleClient {
             return !($var == '' || $var == null);
         });
         $final_key = implode("/", $split_key);
-        if (substr($key, -1)  == '/') {
+        if (str_ends_with($key, '/')) {
             $final_key = $final_key . '/';
         }
         return $final_key;
     }
 
 
-    public static function handleSignature($secretId, $secretKey, $signHost) {
+    public static function handleSignature($secretId, $secretKey, $signHost): \Closure
+    {
             return function (callable $handler) use ($secretId, $secretKey, $signHost) {
                     return new SignatureMiddleware($handler, $secretId, $secretKey, $signHost);
             };
     }
 
-    public static function handleErrors() {
+    public static function handleErrors(): \Closure
+    {
             return function (callable $handler) {
                     return new ExceptionMiddleware($handler);
             };

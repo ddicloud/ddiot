@@ -13,16 +13,17 @@ use common\helpers\loggingHelper;
 use Yii;
 use yii\base\BaseObject;
 use yii\queue\cli\LoopInterface;
+use yii\queue\Queue;
 
 class Job extends BaseObject implements \yii\queue\JobInterface
 {
-    public $bloc_id;
+    public int $bloc_id;
 
-    public $store_id;
+    public int $store_id;
 
-    public $addons;
+    public array $addons;
 
-    public function init()
+    public function init(): void
     {
         parent::init();
         Yii::$app->params['bloc_id'] = $this->bloc_id;
@@ -39,7 +40,7 @@ class Job extends BaseObject implements \yii\queue\JobInterface
 
     /**
      * @param Queue $queue which pushed and is handling the job
-     * @return void|mixed result of the job execution
+     * @return void result of the job execution
      */
     public function execute($queue)
     {

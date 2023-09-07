@@ -19,11 +19,8 @@ abstract class Result
      * @param $response ResponseCore
      * @throws OssException
      */
-    public function __construct($response)
+    public function __construct(ResponseCore $response)
     {
-        if ($response === null) {
-            throw new OssException("raw response is null");
-        }
         $this->rawResponse = $response;
         $this->parseResponse();
     }
@@ -33,11 +30,9 @@ abstract class Result
      *
      * @return string
      */
-    public function getRequestId()
+    public function getRequestId(): string
     {
-        if (isset($this->rawResponse) &&
-            isset($this->rawResponse->header) &&
-            isset($this->rawResponse->header['x-oss-request-id'])
+        if (isset($this->rawResponse->header['x-oss-request-id'])
         ) {
             return $this->rawResponse->header['x-oss-request-id'];
         } else {
@@ -60,14 +55,14 @@ abstract class Result
      *
      * @return mixed
      */
-    abstract protected function parseDataFromResponse();
+    abstract protected function parseDataFromResponse(): mixed;
 
     /**
      * 操作是否成功
      *
      * @return mixed
      */
-    public function isOK()
+    public function isOK(): mixed
     {
         return $this->isOk;
     }
@@ -75,7 +70,7 @@ abstract class Result
     /**
      * @throws OssException
      */
-    public function parseResponse()
+    public function parseResponse(): void
     {
         $this->isOk = $this->isResponseOk();
         if ($this->isOk) {
@@ -104,9 +99,9 @@ abstract class Result
      * @param $body
      * @return string
      */
-    private function retrieveErrorMessage($body)
+    private function retrieveErrorMessage($body): string
     {
-        if (empty($body) || false === strpos($body, '<?xml')) {
+        if (empty($body) || !str_contains($body, '<?xml')) {
             return '';
         }
         $xml = simplexml_load_string($body);
@@ -122,9 +117,9 @@ abstract class Result
      * @param $body
      * @return string
      */
-    private function retrieveErrorCode($body)
+    private function retrieveErrorCode($body): string
     {
-        if (empty($body) || false === strpos($body, '<?xml')) {
+        if (empty($body) || !str_contains($body, '<?xml')) {
             return '';
         }
         $xml = simplexml_load_string($body);
@@ -139,7 +134,7 @@ abstract class Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2) {
@@ -153,7 +148,7 @@ abstract class Result
      *
      * @return ResponseCore
      */
-    public function getRawResponse()
+    public function getRawResponse(): ResponseCore
     {
         return $this->rawResponse;
     }
@@ -161,15 +156,15 @@ abstract class Result
     /**
      * 标示请求是否成功
      */
-    protected $isOk = false;
+    protected bool $isOk = false;
     /**
      * 由子类解析过的数据
      */
-    protected $parsedData = null;
+    protected array|null $parsedData = null;
     /**
      * 存放auth函数返回的原始Response
      *
      * @var ResponseCore
      */
-    protected $rawResponse;
+    protected ResponseCore $rawResponse;
 }

@@ -18,41 +18,41 @@ class WechatUser extends Component
     /**
      * @var string
      */
-    public $id;
+    public string $id;
     /**
      * @var string
      */
-    public $nickname;
+    public string $nickname;
     /**
      * @var string
      */
-    public $name;
+    public string $name;
     /**
      * @var string
      */
-    public $email;
+    public string $email;
     /**
      * @var string
      */
-    public $avatar;
+    public string $avatar;
     /**
      * @var array
      */
-    public $original;
+    public array $original;
     /**
      * @var \Overtrue\Socialite\AccessToken
      */
-    public $token;
+    public \Overtrue\Socialite\AccessToken $token;
     /**
      * @var string
      */
-    public $provider;
+    public string $provider;
 
     /**
      * @return string
      */
-    public function getOpenId()
+    public function getOpenId(): string
     {
-        return isset($this->original['openid']) ? $this->original['openid'] : '';
+        return $this->original['openid'] ?? '';
     }
 }

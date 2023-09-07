@@ -7,16 +7,19 @@ use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Result;
 
-class ResultTransformer {
-    private $config;
-    private $operation;
+class ResultTransformer
+{
+    private array $config = [];
+    private string $operation = '';
 
-    public function __construct($config, $operation) {
+    public function __construct($config, $operation)
+    {
         $this->config = $config;
         $this->operation = $operation;
     }
 
-    public function writeDataToLocal(CommandInterface $command, RequestInterface $request, ResponseInterface $response) {
+    public function writeDataToLocal(CommandInterface $command, RequestInterface $request, ResponseInterface $response): void
+    {
         $action = $command->getName();
         if ($action == "GetObject" || $action == "GetSnapshot") {
             if (isset($command['SaveAs'])) {
@@ -35,11 +38,12 @@ class ResultTransformer {
         }
     }
 
-    public function metaDataTransformer(CommandInterface $command, ResponseInterface $response, Result $result) {
+    public function metaDataTransformer(CommandInterface $command, ResponseInterface $response, Result $result): Result
+    {
         $headers = $response->getHeaders();
         $metadata = array();
         foreach ($headers as $key => $value) {
-            if (strpos($key, "x-cos-meta-") === 0) {
+            if (str_starts_with($key, "x-cos-meta-")) {
                 $metadata[substr($key, 11)] = $value[0];
             }
         }
@@ -49,18 +53,20 @@ class ResultTransformer {
         return $result;
     }
 
-    public function extraHeadersTransformer(CommandInterface $command, RequestInterface $request, Result $result) {
+    public function extraHeadersTransformer(CommandInterface $command, RequestInterface $request, Result $result): Result
+    {
         if ($command['Key'] != null && $result['Key'] == null) {
             $result['Key'] = $command['Key'];
         }
         if ($command['Bucket'] != null && $result['Bucket'] == null) {
             $result['Bucket'] = $command['Bucket'];
         }
-        $result['Location'] = $request->getHeader("Host")[0] .  $request->getUri()->getPath();
+        $result['Location'] = $request->getHeader("Host")[0] . $request->getUri()->getPath();
         return $result;
     }
 
-    public function selectContentTransformer(CommandInterface $command, Result $result) {
+    public function selectContentTransformer(CommandInterface $command, Result $result): Result
+    {
         $action = $command->getName();
         if ($action == "SelectObjectContent") {
             $result['Data'] = $this->getSelectContents($result);
@@ -68,24 +74,25 @@ class ResultTransformer {
         return $result;
     }
 
-    public function ciContentInfoTransformer(CommandInterface $command, Result $result) {
+    public function ciContentInfoTransformer(CommandInterface $command, Result $result): Result
+    {
         $action = $command->getName();
         if ($action == "ImageInfo" || $action == "ImageExif" || $action == "ImageAve") {
             $length = intval($result['ContentLength']);
-            if($length > 0){
+            if ($length > 0) {
                 $result['Data'] = $this->geCiContentInfo($result, $length);
             }
         }
 
-        if ($action == "PutObject" && isset($command["PicOperations"]) &&  $command["PicOperations"]) {
+        if ($action == "PutObject" && isset($command["PicOperations"]) && $command["PicOperations"]) {
             $picOperations = json_decode($command["PicOperations"], true);
             $picRuleSize = isset($picOperations['rules']) && is_array($picOperations['rules']) ? sizeof($picOperations['rules']) : 0;
             $length = intval($result['ContentLength']);
-            if($length > 0){
+            if ($length > 0) {
                 $content = $this->geCiContentInfo($result, $length);
                 $obj = simplexml_load_string($content, "SimpleXMLElement", LIBXML_NOCDATA);
-                $xmlData = json_decode(json_encode($obj),true);
-                if ($picRuleSize == 1 && isset($xmlData['ProcessResults']['Object'])){
+                $xmlData = json_decode(json_encode($obj), true);
+                if ($picRuleSize == 1 && isset($xmlData['ProcessResults']['Object'])) {
                     $tmp = $xmlData['ProcessResults']['Object'];
                     unset($xmlData['ProcessResults']['Object']);
                     $xmlData['ProcessResults']['Object'][] = $tmp;
@@ -94,12 +101,12 @@ class ResultTransformer {
             }
         }
 
-        if ($action == "GetBucketGuetzli" ) {
+        if ($action == "GetBucketGuetzli") {
             $length = intval($result['ContentLength']);
-            if($length > 0){
+            if ($length > 0) {
                 $content = $this->geCiContentInfo($result, $length);
                 $obj = simplexml_load_string($content, "SimpleXMLElement", LIBXML_NOCDATA);
-                $arr = json_decode(json_encode($obj),true);
+                $arr = json_decode(json_encode($obj), true);
                 $result['GuetzliStatus'] = isset($arr[0]) ? $arr[0] : '';
             }
         }
@@ -111,10 +118,10 @@ class ResultTransformer {
         );
         if (key_exists($action, $xml2JsonActions)) {
             $length = intval($result['ContentLength']);
-            if($length > 0){
+            if ($length > 0) {
                 $content = $this->geCiContentInfo($result, $length);
                 $obj = simplexml_load_string($content, "SimpleXMLElement", LIBXML_NOCDATA);
-                $xmlData = json_decode(json_encode($obj),true);
+                $xmlData = json_decode(json_encode($obj), true);
                 $result['Response'] = $xmlData;
             }
         }
@@ -122,7 +129,8 @@ class ResultTransformer {
         return $result;
     }
 
-    public function geCiContentInfo($result, $length) {
+    public function geCiContentInfo($result, $length)
+    {
         $f = $result['Body'];
         $data = "";
         while (!$f->eof()) {
@@ -135,7 +143,8 @@ class ResultTransformer {
         return $data;
     }
 
-    public function getSelectContents($result) {
+    public function getSelectContents($result): \Generator
+    {
         $f = $result['RawData'];
         while (!$f->eof()) {
             $data = array();
@@ -151,9 +160,9 @@ class ResultTransformer {
             for ($offset = 0; $offset < $headers_length;) {
                 $key_length = (int)(unpack("C", $f->read(1))[1]);
                 $key = $f->read($key_length);
-    
+
                 $head_value_type = (int)(unpack("C", $f->read(1))[1]);
-    
+
                 $value_length = (int)(unpack("n", $f->read(2))[1]);
                 $value = $f->read($value_length);
                 $offset += 4 + $key_length + $value_length;
@@ -176,7 +185,9 @@ class ResultTransformer {
             yield $data;
         }
     }
-    public function __destruct() {
+
+    public function __destruct()
+    {
     }
 
 }

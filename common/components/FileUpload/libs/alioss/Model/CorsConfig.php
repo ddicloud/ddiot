@@ -11,6 +11,7 @@ namespace Alioss\Model;
 
 
 use Alioss\Core\OssException;
+use ErrorException;
 
 /**
  * Class CorsConfig
@@ -33,7 +34,7 @@ class CorsConfig implements XmlConfig
      *
      * @return CorsRule[]
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -45,7 +46,7 @@ class CorsConfig implements XmlConfig
      * @param CorsRule $rule
      * @throws OssException
      */
-    public function addRule($rule)
+    public function addRule(CorsRule $rule): void
     {
         if (count($this->rules) >= self::OSS_MAX_RULES) {
             throw new OssException("num of rules in the config exceeds self::OSS_MAX_RULES: " . strval(self::OSS_MAX_RULES));
@@ -57,10 +58,10 @@ class CorsConfig implements XmlConfig
      * 从xml数据中解析出CorsConfig
      *
      * @param string $strXml
-     * @throws OssException
      * @return null
+     *@throws OssException
      */
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml)
     {
         $xml = simplexml_load_string($strXml);
         if (!isset($xml->CORSRule)) return;
@@ -88,8 +89,9 @@ class CorsConfig implements XmlConfig
      * 生成xml字符串
      *
      * @return string
+     * @throws OssException
      */
-    public function serializeToXml()
+    public function serializeToXml(): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><CORSConfiguration></CORSConfiguration>');
         foreach ($this->rules as $rule) {
@@ -101,7 +103,11 @@ class CorsConfig implements XmlConfig
 
     public function __toString()
     {
-        return $this->serializeToXml();
+        try {
+            return $this->serializeToXml();
+        } catch (OssException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     const OSS_CORS_ALLOWED_ORIGIN = 'AllowedOrigin';
@@ -116,5 +122,5 @@ class CorsConfig implements XmlConfig
      *
      * @var CorsRule[]
      */
-    private $rules = array();
+    private array $rules = array();
 }

@@ -27,9 +27,9 @@ use Yii;
  */
 class NavService extends BaseService
 {
-    public static $module_names;
+    public static array $module_names;
 
-    public function getMenuTop($types)
+    public function getMenuTop($types): array|string
     {
         global $_GPC;
         // $lists[] = 'system';
@@ -53,7 +53,7 @@ class NavService extends BaseService
         return $lists;
     }
 
-    public function getMenu($location = '', $is_addons = false)
+    public function getMenu($location = '', $is_addons = false): array|bool|string
     {
         $allMenu = $this->allMenu($is_addons);
 
@@ -63,7 +63,6 @@ class NavService extends BaseService
 
         foreach ($menucate as $key => &$value) {
             $value['text'] = $value['title'];
-            $value['icon'] = $value['icon'];
             $value['targetType'] = 'top-nav';
             $mark = !empty($value['mark'])  ? $value['mark'] : '';
             $value['url'] = "system/welcome/{$mark}";

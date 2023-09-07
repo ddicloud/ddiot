@@ -19,15 +19,15 @@ namespace common\components\sign;
 class SignException extends \yii\web\HttpException
 {
     /**
-     * Constructor. 
+     * Constructor.
      * @param int $code error code
-     * @param string $message error message
-     * @param \Exception $previous The previous exception used for the exception chaining.
+     * @param null $message error message
+     * @param \Exception|null $previous The previous exception used for the exception chaining.
      */
     public function __construct($code = 0, $message = null, \Exception $previous = null)
     {
         // 未传$message 取错误映射表默认值
-        $errorMsg = isset(CodeConst::codeMap()[$code]) ? CodeConst::codeMap()[$code] : '';
+        $errorMsg = CodeConst::codeMap()[$code] ?? '';
         $message = $message ? $message : $errorMsg;
         parent::__construct(403, $message, $code, $previous);
     }

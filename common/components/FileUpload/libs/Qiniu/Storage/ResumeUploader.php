@@ -14,37 +14,38 @@ use Qiniu\Http\Error;
  */
 final class ResumeUploader
 {
-    private $upToken;
-    private $key;
-    private $inputStream;
-    private $size;
-    private $params;
-    private $mime;
-    private $contexts;
-    private $host;
-    private $currentUrl;
-    private $config;
+    private string $upToken;
+    private string $key;
+    private string $inputStream;
+    private int $size;
+    private array $params;
+    private string $mime;
+    private array $contexts;
+    private string $host;
+    private string $currentUrl;
+    private array $config;
 
     /**
      * 上传二进制流到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $inputStream 上传二进制流
-     * @param $size       上传流的大小
-     * @param $params     自定义变量
-     * @param $mime       上传数据的mimeType
-     *
+     * @param $upToken  string  上传凭证
+     * @param $key       string 上传文件名
+     * @param $inputStream string 上传二进制流
+     * @param $size      int 上传流的大小
+     * @param $params    array 自定义变量
+     * @param $mime      string 上传数据的mimeType
+     * @param $config
+     * @throws \Exception
      * @link http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
      */
     public function __construct(
-        $upToken,
-        $key,
-        $inputStream,
-        $size,
-        $params,
-        $mime,
-        $config
+        string $upToken,
+        string $key,
+        string $inputStream,
+        int    $size,
+        array  $params,
+        string $mime,
+               $config
     ) {
         $this->upToken = $upToken;
         $this->key = $key;
@@ -64,8 +65,9 @@ final class ResumeUploader
 
     /**
      * 上传操作
+     * @throws \Exception
      */
-    public function upload()
+    public function upload(): array
     {
         $uploaded = 0;
         while ($uploaded < $this->size) {
@@ -95,7 +97,7 @@ final class ResumeUploader
             if (! $response->ok() || !isset($ret['crc32'])|| $crc != $ret['crc32']) {
                 return array(null, new Error($this->currentUrl, $response));
             }
-            array_push($this->contexts, $ret['ctx']);
+            $this->contexts[] = $ret['ctx'];
             $uploaded += $blockSize;
         }
         return $this->makeFile();
@@ -104,13 +106,13 @@ final class ResumeUploader
     /**
      * 创建块
      */
-    private function makeBlock($block, $blockSize)
+    private function makeBlock($block, $blockSize): \Qiniu\Http\Response
     {
         $url = $this->host . '/mkblk/' . $blockSize;
         return $this->post($url, $block);
     }
 
-    private function fileUrl()
+    private function fileUrl(): string
     {
         $url = $this->host . '/mkfile/' . $this->size;
         $url .= '/mimeType/' . \Qiniu\base64_urlSafeEncode($this->mime);
@@ -129,7 +131,7 @@ final class ResumeUploader
     /**
      * 创建文件
      */
-    private function makeFile()
+    private function makeFile(): array
     {
         $url = $this->fileUrl();
         $body = implode(',', $this->contexts);
@@ -143,14 +145,14 @@ final class ResumeUploader
         return array($response->json(), null);
     }
 
-    private function post($url, $data)
+    private function post($url, $data): \Qiniu\Http\Response
     {
         $this->currentUrl = $url;
         $headers = array('Authorization' => 'UpToken ' . $this->upToken);
         return Client::post($url, $data, $headers);
     }
 
-    private function blockSize($uploaded)
+    private function blockSize($uploaded): int
     {
         if ($this->size < $uploaded + Config::BLOCK_SIZE) {
             return $this->size - $uploaded;

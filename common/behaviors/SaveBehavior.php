@@ -19,34 +19,34 @@ use yii\db\BaseActiveRecord;
  */
 class SaveBehavior extends Behavior
 {
-    public $createdAttribute = 'create_time';
+    public string $createdAttribute = 'create_time';
 
-    public $updatedAttribute = 'update_time';
+    public string $updatedAttribute = 'update_time';
 
-    public $adminAttribute = 'admin_id';
+    public string $adminAttribute = 'admin_id';
 
-    public $storeAttribute = 'store_id';
+    public string $storeAttribute = 'store_id';
 
-    public $blocAttribute = 'bloc_id';
+    public string $blocAttribute = 'bloc_id';
 
-    public $blocPAttribute = 'bloc_pid'; //上级公司
+    public string $blocPAttribute = 'bloc_pid'; //上级公司
 
-    public $globalBlocAttribute = 'global_bloc_id'; //上级公司
+    public string $globalBlocAttribute = 'global_bloc_id'; //上级公司
 
-    public $attributes = [];
+    public array $attributes = [];
 
-    public $noAttributes = [];
+    public array $noAttributes = [];
 
-    public $is_bloc = false; //是否是集团数据模型
+    public bool $is_bloc = false; //是否是集团数据模型
 
-    public $time_type = 'init'; //默认为init,可以设置为datetime
+    public string $time_type = 'init'; //默认为init,可以设置为datetime
 
-    public $value;
+    public mixed $value;
 
-    private $_map;
+    private array $_map = [];
 
 
-    public function init()
+    public function init(): void
     {
         global $_GPC;
 
@@ -92,13 +92,13 @@ class SaveBehavior extends Behavior
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
-    public function events()
+    public function events(): array
     {
         return array_fill_keys(array_keys($this->attributes), 'evaluateAttributes');
     }
 
 
-    public function evaluateAttributes($event)
+    public function evaluateAttributes($event): void
     {
         if (!empty($this->attributes[$event->name])) {
             $attributes = $this->attributes[$event->name];

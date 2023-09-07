@@ -36,7 +36,7 @@ class UploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%upload_file}}';
     }
@@ -44,7 +44,7 @@ class UploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['group_id', 'file_size', 'is_delete', 'bloc_id', 'create_time', 'store_id'], 'integer'],
@@ -57,7 +57,7 @@ class UploadFile extends \yii\db\ActiveRecord
         ];
     }
 
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -70,7 +70,7 @@ class UploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'file_id' => '文件ID',
@@ -93,27 +93,27 @@ class UploadFile extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBloc()
+    public function getBloc(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Bloc::className(), ['bloc_id' => 'bloc_id']);
     }
 
     /**
-     * Gets query for [[Group]].
+     * Gets a query for [[Group]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGroup()
+    public function getGroup(): \yii\db\ActiveQuery
     {
         return $this->hasOne(UploadFileGroup::className(), ['group_id' => 'group_id']);
     }
 
     /**
-     * Gets query for [[Store]].
+     * Gets a query for [[Store]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStore()
+    public function getStore(): \yii\db\ActiveQuery
     {
         return $this->hasOne(BlocStore::className(), ['store_id' => 'store_id']);
     }
@@ -123,7 +123,7 @@ class UploadFile extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUploadFileGroups()
+    public function getUploadFileGroups(): \yii\db\ActiveQuery
     {
         return $this->hasMany(UploadFileGroup::className(), ['file_id' => 'file_id']);
     }
@@ -133,7 +133,7 @@ class UploadFile extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUploadFileUseds()
+    public function getUploadFileUseds(): \yii\db\ActiveQuery
     {
         return $this->hasMany(UploadFileUsed::className(), ['file_id' => 'file_id']);
     }

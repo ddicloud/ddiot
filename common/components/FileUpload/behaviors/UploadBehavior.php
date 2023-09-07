@@ -9,9 +9,13 @@
 namespace common\components\oss\storage\behaviors;
 
 use common\components\oss\Storage;
+use ErrorException;
 use Yii;
 use yii\base\Behavior;
+use yii\base\InvalidConfigException;
+use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
 use yii\di\Instance;
 use yii\helpers\ArrayHelper;
 
@@ -22,72 +26,72 @@ use yii\helpers\ArrayHelper;
 class UploadBehavior extends Behavior
 {
     /**
-     * @var 拥有者
+     * @var
      */
-    public $owner;
+    public  $owner;
 
     /**
      * @var string 字段名
      */
-    public $attribute = 'file';
+    public string $attribute = 'file';
 
     /**
      * @var bool 多个文件上传
      */
-    public $multiple = false;
+    public bool $multiple = false;
 
     /**
      * @var string prefix
      */
-    public $attributePrefix;
+    public string $attributePrefix;
 
     /**
      * @var string 地址
      */
-    public $attributePathName = 'path';
+    public string $attributePathName = 'path';
 
     /**
      * @var string 文件基础地址
      */
-    public $attributeBaseUrlName = 'base_url';
+    public string $attributeBaseUrlName = 'base_url';
 
     /**
      * @var string 路径
      */
-    public $pathAttribute;
+    public string $pathAttribute;
 
     /**
      * @var string 基础路径字段
      */
-    public $baseUrlAttribute;
+    public string $baseUrlAttribute;
 
     /**
      * @var string 类型
      */
-    public $typeAttribute;
+    public string $typeAttribute;
 
     /**
      * @var string 大小
      */
-    public $sizeAttribute;
+    public string $sizeAttribute;
 
     /**
      * @var string 名称
      */
-    public $nameAttribute;
+    public string $nameAttribute;
 
     /**
      * @var string 订单
      */
-    public $orderAttribute;
+    public string $orderAttribute;
 
     /**
      * @var string 上传关系
      */
-    public $uploadRelation;
+    public string $uploadRelation;
 
     /**
-     * @var $uploadModel
+     * @var  ActiveRecord
      * Schema example:
      *      `id` INT NOT NULL AUTO_INCREMENT,
      *      `path` VARCHAR(1024) NOT NULL,
@@ -98,27 +102,25 @@ class UploadBehavior extends Behavior
      *      `order` INT NULL,
      *      `foreign_key_id` INT NOT NULL,
      */
-    public $uploadModel;
+    public ActiveRecord $uploadModel;
 
     /**
      * @var string 上传场景
      */
-    public $uploadModelScenario = 'default';
+    public string $uploadModelScenario = 'default';
 
     /**
      * @var mixed|string
      * Filestorage component name or Yii2 compatible object configuration
      */
-    public $filesStorage = 'fileStorage';
+    public mixed $filesStorage = 'fileStorage';
 
     /**
      * @var array 删除路径
      */
-    protected $deletePaths;
+    protected array $deletePaths;
 
-    /**
-     * @var \yiiplus\storage\Storage
-     */
+
     protected $storage;
 
     /**
@@ -126,23 +128,23 @@ class UploadBehavior extends Behavior
      *
      * @return array
      */
-    public function events()
+    public function events(): array
     {
         $multipleEvents = [
-            ActiveRecord::EVENT_AFTER_FIND => 'afterFindMultiple',
-            ActiveRecord::EVENT_AFTER_INSERT => 'afterInsertMultiple',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdateMultiple',
-            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDeleteMultiple',
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
+            BaseActiveRecord::EVENT_AFTER_FIND => 'afterFindMultiple',
+            BaseActiveRecord::EVENT_AFTER_INSERT => 'afterInsertMultiple',
+            BaseActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdateMultiple',
+            BaseActiveRecord::EVENT_BEFORE_DELETE => 'beforeDeleteMultiple',
+            BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
         ];
 
         $singleEvents = [
-            ActiveRecord::EVENT_AFTER_FIND => 'afterFindSingle',
-            ActiveRecord::EVENT_AFTER_VALIDATE => 'afterValidateSingle',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdateSingle',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdateSingle',
-            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDeleteSingle',
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
+            BaseActiveRecord::EVENT_AFTER_FIND => 'afterFindSingle',
+            Model::EVENT_AFTER_VALIDATE => 'afterValidateSingle',
+            BaseActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdateSingle',
+            BaseActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdateSingle',
+            BaseActiveRecord::EVENT_BEFORE_DELETE => 'beforeDeleteSingle',
+            BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
         ];
 
         return $this->multiple ? $multipleEvents : $singleEvents;
@@ -153,7 +155,7 @@ class UploadBehavior extends Behavior
      *
      * @return array
      */
-    public function fields()
+    public function fields(): array
     {
         $fields = [
             $this->attributePathName ? : 'path' => $this->pathAttribute,
@@ -177,21 +179,31 @@ class UploadBehavior extends Behavior
      * 验证后
      *
      * @return void
+     * @throws ErrorException
      */
-    public function afterValidateSingle()
+    public function afterValidateSingle(): void
     {
-        $this->loadModel($this->owner, $this->owner->{$this->attribute});
+        try {
+            $this->loadModel($this->owner, $this->owner->{$this->attribute});
+        } catch (ErrorException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 插入后事件
      *
      * @return void
+     * @throws ErrorException
      */
-    public function afterInsertMultiple()
+    public function afterInsertMultiple(): void
     {
         if ($this->owner->{$this->attribute}) {
-            $this->saveFilesToRelation($this->owner->{$this->attribute});
+            try {
+                $this->saveFilesToRelation($this->owner->{$this->attribute});
+            } catch (ErrorException $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
     }
 
@@ -200,7 +212,7 @@ class UploadBehavior extends Behavior
      *
      * @throws \Exception
      */
-    public function afterUpdateMultiple()
+    public function afterUpdateMultiple(): void
     {
         $filesPaths = ArrayHelper::getColumn($this->getUploaded(), 'path');
         $models = $this->owner->getRelation($this->uploadRelation)->all();
@@ -227,8 +239,9 @@ class UploadBehavior extends Behavior
      * 更新前
      *
      * @return void
+     * @throws ErrorException
      */
-    public function beforeUpdateSingle()
+    public function beforeUpdateSingle(): void
     {
         $this->deletePaths = $this->owner->getOldAttribute($this->getAttributeField('path'));
     }
@@ -237,12 +250,19 @@ class UploadBehavior extends Behavior
      * 更新后
      *
      * @return void
+     * @throws ErrorException
      */
-    public function afterUpdateSingle()
+    public function afterUpdateSingle(): void
     {
-        $path = $this->owner->getAttribute($this->getAttributeField('path'));
-        if (!empty($this->deletePaths) && $this->deletePaths !== $path) {
-            $this->deleteFiles();
+        try {
+            $path = $this->owner->getAttribute($this->getAttributeField('path'));
+
+            if (!empty($this->deletePaths) && $this->deletePaths !== $path) {
+                $this->deleteFiles();
+            }
+        } catch (ErrorException $e) {
+            throw new ErrorException($e->getMessage());
+
         }
     }
 
@@ -251,7 +271,7 @@ class UploadBehavior extends Behavior
      *
      * @return void
      */
-    public function beforeDeleteMultiple()
+    public function beforeDeleteMultiple(): void
     {
         $this->deletePaths = ArrayHelper::getColumn($this->getUploaded(), 'path');
     }
@@ -260,29 +280,41 @@ class UploadBehavior extends Behavior
      * 删除前
      *
      * @return void
+     * @throws ErrorException
      */
-    public function beforeDeleteSingle()
+    public function beforeDeleteSingle(): void
     {
-        $this->deletePaths = $this->owner->getAttribute($this->getAttributeField('path'));
+        try {
+            $this->deletePaths = $this->owner->getAttribute($this->getAttributeField('path'));
+        } catch (ErrorException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 删除后
      *
      * @return void
+     * @throws ErrorException
      */
-    public function afterDelete()
+    public function afterDelete(): void
     {
         $this->deletePaths = is_array($this->deletePaths) ? array_filter($this->deletePaths) : $this->deletePaths;
-        $this->deleteFiles();
+        try {
+            $this->deleteFiles();
+        } catch (ErrorException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 查询后
      *
      * @return void
+     * @throws ErrorException
+     * @throws \Exception
      */
-    public function afterFindMultiple()
+    public function afterFindMultiple(): void
     {
         $models = $this->owner->{$this->uploadRelation};
         $fields = $this->fields();
@@ -307,14 +339,20 @@ class UploadBehavior extends Behavior
      * 查询后
      *
      * @return void
+     * @throws InvalidConfigException
+     * @throws ErrorException
      */
-    public function afterFindSingle()
+    public function afterFindSingle(): void
     {
         $file = array_map(function ($attribute) {
             return $this->owner->getAttribute($attribute);
         }, $this->fields());
         if ($file['path'] !== null && $file['base_url'] === null){
-            $file['base_url'] = $this->getStorage()->baseUrl;
+            try {
+                $file['base_url'] = $this->getStorage()->baseUrl;
+            } catch (ErrorException $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
         if (array_key_exists('path', $file) && $file['path']) {
             $this->owner->{$this->attribute} = $this->enrichFileData($file);
@@ -324,9 +362,9 @@ class UploadBehavior extends Behavior
     /**
      * 获取上传模型
      *
-     * @return string
+     * @return string|ActiveRecord
      */
-    public function getUploadModelClass()
+    public function getUploadModelClass(): string|ActiveRecord
     {
         if (!$this->uploadModel) {
             $this->uploadModel = $this->getUploadRelation()->modelClass;
@@ -338,8 +376,9 @@ class UploadBehavior extends Behavior
      * 保存文件关系
      *
      * @param array $files
+     * @throws ErrorException
      */
-    protected function saveFilesToRelation($files)
+    protected function saveFilesToRelation(array $files): void
     {
         $modelClass = $this->getUploadModelClass();
         foreach ($files as $file) {
@@ -357,8 +396,9 @@ class UploadBehavior extends Behavior
      * 更新文件关系
      *
      * @param array $files
+     * @throws ErrorException
      */
-    protected function updateFilesInRelation($files)
+    protected function updateFilesInRelation(array $files): void
     {
         $modelClass = $this->getUploadModelClass();
         foreach ($files as $file) {
@@ -374,13 +414,17 @@ class UploadBehavior extends Behavior
     /**
      * 获取上传
      *
-     * @return \yiiplus\storage\Storage
-     * @throws \yii\base\InvalidConfigException
+     *
+     * @throws ErrorException
      */
     protected function getStorage()
     {
         if (!$this->storage) {
-            $this->storage = Instance::ensure($this->filesStorage, Storage::className());
+            try {
+                $this->storage = Instance::ensure($this->filesStorage, Storage::className());
+            } catch (InvalidConfigException $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
         return $this->storage;
 
@@ -391,7 +435,7 @@ class UploadBehavior extends Behavior
      *
      * @return array
      */
-    protected function getUploaded()
+    protected function getUploaded(): array
     {
         $files = $this->owner->{$this->attribute};
         return $files ?: [];
@@ -402,7 +446,7 @@ class UploadBehavior extends Behavior
      *
      * @return \yii\db\ActiveQuery|\yii\db\ActiveQueryInterface
      */
-    protected function getUploadRelation()
+    protected function getUploadRelation(): \yii\db\ActiveQueryInterface|\yii\db\ActiveQuery
     {
         return $this->owner->getRelation($this->uploadRelation);
     }
@@ -413,13 +457,18 @@ class UploadBehavior extends Behavior
      * @param $model \yii\db\ActiveRecord
      * @param $data
      * @return \yii\db\ActiveRecord
+     * @throws ErrorException
      */
-    protected function loadModel(&$model, $data)
+    protected function loadModel(ActiveRecord &$model, $data): ActiveRecord
     {
         $attributes = array_flip($model->attributes());
         foreach ($this->fields() as $dataField => $modelField) {
             if ($modelField && array_key_exists($modelField, $attributes)) {
-                $model->{$modelField} =  ArrayHelper::getValue($data, $dataField);
+                try {
+                    $model->{$modelField} = ArrayHelper::getValue($data, $dataField);
+                } catch (\Exception $e) {
+                    throw new ErrorException($e->getMessage());
+                }
             }
         }
         return $model;
@@ -430,16 +479,22 @@ class UploadBehavior extends Behavior
      *
      * @param $type
      * @return mixed
+     * @throws ErrorException
      */
-    protected function getAttributeField($type)
+    protected function getAttributeField($type): mixed
     {
-        return ArrayHelper::getValue($this->fields(), $type, false);
+        try {
+            return ArrayHelper::getValue($this->fields(), $type, false);
+        } catch (\Exception $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 删除文件
      *
      * @return bool|void
+     * @throws ErrorException
      */
     protected function deleteFiles()
     {
@@ -457,8 +512,9 @@ class UploadBehavior extends Behavior
      *
      * @param $file
      * @return mixed
+     * @throws ErrorException
      */
-    protected function enrichFileData($file)
+    protected function enrichFileData($file): mixed
     {
         $fs = $this->getStorage()->getFilesystem();
         if ($file['path'] && $fs->has($file['path'])) {

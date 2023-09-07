@@ -29,27 +29,27 @@ class UploadValidate extends Model
     /**
      * @var string 表单字段名
      */
-    public $file;
+    public string $file;
     /**
      * @var array|string 扩展名
      */
-    public $extensions;
+    public mixed $extensions;
     /**
      * @var int 文件大小 最大值  单位字节
      */
-    public $max_size = 60 * 1024 * 1024;
+    public mixed $max_size = 60 * 1024 * 1024;
     /**
      * @var int 文件大小 最小值  单位字节
      */
-    public $min_size = 1;
+    public mixed $min_size = 1;
     /**
      * @var array|string  MIME TYPE
      */
-    public $mime_type;
+    public mixed $mime_type;
     /**
      * @var string 上传失败后返回信息
      */
-    public $message = '上传失败';
+    public mixed $message = '上传失败';
     
     /**
      * UploadValidate constructor.

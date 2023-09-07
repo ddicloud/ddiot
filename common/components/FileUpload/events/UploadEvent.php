@@ -18,15 +18,15 @@ class UploadEvent extends Event
     /**
      * @var mixed 文件系统
      */
-    public $filesystem;
+    public mixed $filesystem;
 
     /**
      * @var string 路径
      */
-    public $path;
+    public string $path;
 
     /**
-     * @var 文件
+     * @var array
      */
-    public $file;
+    public array $file;
 }

@@ -4,9 +4,9 @@ namespace Qcloud\Cos\ImageParamTemplate;
 
 class CIParamTransformation extends ImageTemplate{
 
-    private $tranParams;
-    private $tranString;
-    private $spilt;
+    private array $tranParams;
+    private string $tranString;
+    private mixed $spilt;
 
     public function __construct($spilt = "|") {
         parent::__construct();
@@ -15,25 +15,29 @@ class CIParamTransformation extends ImageTemplate{
         $this->tranString = "";
     }
 
-    public function addRule(ImageTemplate $template) {
+    public function addRule(ImageTemplate $template): void
+    {
         if($template->queryString()){
             $this->tranParams[] = $template->queryString();
         }
     }
 
-    public function queryString() {
+    public function queryString(): string
+    {
         if($this->tranParams) {
             $this->tranString = implode($this->spilt, $this->tranParams);
         }
         return $this->tranString;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->tranParams = array();
         $this->tranString = "";
     }
 
-    public function defineRule($value) {
+    public function defineRule($value): void
+    {
         $this->tranParams[] = $value;
     }
 }

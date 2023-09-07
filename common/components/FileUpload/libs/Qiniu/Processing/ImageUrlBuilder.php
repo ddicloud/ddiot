@@ -15,48 +15,49 @@ final class ImageUrlBuilder
      *
      * @var array
      */
-    protected $modeArr = array(0, 1, 2, 3, 4, 5);
+    protected array $modeArr = array(0, 1, 2, 3, 4, 5);
 
     /**
      * format合法值
      *
      * @var array
      */
-    protected $formatArr = array('psd', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'bmp');
+    protected array $formatArr = array('psd', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'bmp');
 
     /**
      * 水印图片位置合法值
      *
      * @var array
      */
-    protected $gravityArr = array('NorthWest', 'North', 'NorthEast',
+    protected array $gravityArr = array('NorthWest', 'North', 'NorthEast',
         'West', 'Center', 'East', 'SouthWest', 'South', 'SouthEast');
 
     /**
      * 缩略图链接拼接
      *
-     * @param  string $url 图片链接
-     * @param  int $mode 缩略模式
-     * @param  int $width 宽度
-     * @param  int $height 长度
-     * @param  string $format 输出类型
-     * @param  int $quality 图片质量
-     * @param  int $interlace 是否支持渐进显示
-     * @param  int $ignoreError 忽略结果
+     * @param string $url 图片链接
+     * @param int $mode 缩略模式
+     * @param int $width 宽度
+     * @param int $height 长度
+     * @param string|null $format 输出类型
+     * @param int|null $quality 图片质量
+     * @param int|null $interlace 是否支持渐进显示
+     * @param int $ignoreError 忽略结果
      * @return string
      * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     public function thumbnail(
-        $url,
-        $mode,
-        $width,
-        $height,
-        $format = null,
-        $interlace = null,
-        $quality = null,
-        $ignoreError = 1
-    ) {
+        string $url,
+        int    $mode,
+        int    $width,
+        int    $height,
+        string $format = null,
+        int    $interlace = null,
+        int    $quality = null,
+        int $ignoreError = 1
+    ): string
+    {
     
         // url合法效验
         if (! $this->isUrl($url)) {
@@ -105,26 +106,27 @@ final class ImageUrlBuilder
     /**
      * 图片水印
      *
-     * @param  string $url 图片链接
-     * @param  string $image 水印图片链接
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @param  numeric $watermarkScale 自适应原图的短边比例
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
+     * @param string $url 图片链接
+     * @param string $image 水印图片链接
+     * @param numeric $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param numeric|null $dx 横轴边距
+     * @param numeric|null $dy 纵轴边距
+     * @param numeric|null $watermarkScale 自适应原图的短边比例
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     public function waterImg(
-        $url,
-        $image,
-        $dissolve = 100,
-        $gravity = 'SouthEast',
-        $dx = null,
-        $dy = null,
-        $watermarkScale = null
-    ) {
+        string           $url,
+        string           $image,
+        float|int|string $dissolve = 100,
+        string           $gravity = 'SouthEast',
+        float|int|string $dx = null,
+        float|int|string $dy = null,
+        float|int|string $watermarkScale = null
+    ): string
+    {
         // url合法效验
         if (! $this->isUrl($url)) {
             return $url;
@@ -159,8 +161,7 @@ final class ImageUrlBuilder
         }
 
         // 拼接自适应原图的短边比例
-        if (! is_null($watermarkScale)
-            && is_numeric($watermarkScale)
+        if (is_numeric($watermarkScale)
             && $watermarkScale > 0
             && $watermarkScale < 1
         ) {
@@ -174,30 +175,31 @@ final class ImageUrlBuilder
     /**
      * 文字水印
      *
-     * @param  string $url 图片链接
-     * @param  string $text 文字
-     * @param  string $font 文字字体
-     * @param  string $fontSize 文字字号
-     * @param  string $fontColor 文字颜色
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
+     * @param string $url 图片链接
+     * @param string $text 文字
+     * @param string $font 文字字体
+     * @param int|string $fontSize 文字字号
+     * @param string|null $fontColor 文字颜色
+     * @param numeric $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param numeric|null $dx 横轴边距
+     * @param numeric|null $dy 纵轴边距
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     public function waterText(
-        $url,
-        $text,
-        $font = '黑体',
-        $fontSize = 0,
-        $fontColor = null,
-        $dissolve = 100,
-        $gravity = 'SouthEast',
-        $dx = null,
-        $dy = null
-    ) {
+        string           $url,
+        string           $text,
+        string           $font = '黑体',
+        int|string       $fontSize = 0,
+        string           $fontColor = null,
+        float|int|string $dissolve = 100,
+        string           $gravity = 'SouthEast',
+        float|int|string $dx = null,
+        float|int|string $dy = null
+    ): string
+    {
         // url合法效验
         if (! $this->isUrl($url)) {
             return $url;
@@ -213,8 +215,7 @@ final class ImageUrlBuilder
         }
 
         // 拼接文字颜色
-        if (! is_null($fontColor)
-            && $fontColor
+        if ($fontColor
         ) {
             $waterStr .= 'fill/' . \Qiniu\base64_urlSafeEncode($fontColor) . '/';
         }
@@ -252,16 +253,15 @@ final class ImageUrlBuilder
     /**
      * 效验url合法性
      *
-     * @param  string $url url链接
-     * @return string
+     * @param string $url url链接
+     * @return bool|string
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
-    protected function isUrl($url)
+    protected function isUrl(string $url): bool|string
     {
         $urlArr = parse_url($url);
 
-        return $urlArr['scheme']
-            && in_array($urlArr['scheme'], array('http', 'https'))
+        return in_array($urlArr['scheme'], array('http', 'https'))
             && $urlArr['host']
             && $urlArr['path'];
     }
@@ -269,11 +269,11 @@ final class ImageUrlBuilder
     /**
      * 检测是否有query
      *
-     * @param  string $url url链接
-     * @return string
+     * @param string $url url链接
+     * @return bool|string
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
-    protected function hasQuery($url)
+    protected function hasQuery(string $url): bool|string
     {
         $urlArr = parse_url($url);
 

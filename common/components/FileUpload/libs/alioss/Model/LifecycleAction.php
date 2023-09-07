@@ -15,7 +15,7 @@ class LifecycleAction
      * @param string $timeSpec
      * @param string $timeValue
      */
-    public function __construct($action, $timeSpec, $timeValue)
+    public function __construct(string $action, string $timeSpec, string $timeValue)
     {
         $this->action = $action;
         $this->timeSpec = $timeSpec;
@@ -23,9 +23,9 @@ class LifecycleAction
     }
 
     /**
-     * @return LifecycleAction
+     * @return string
      */
-    public function getAction()
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -33,7 +33,7 @@ class LifecycleAction
     /**
      * @param string $action
      */
-    public function setAction($action)
+    public function setAction(string $action): void
     {
         $this->action = $action;
     }
@@ -49,7 +49,7 @@ class LifecycleAction
     /**
      * @param string $timeSpec
      */
-    public function setTimeSpec($timeSpec)
+    public function setTimeSpec(string $timeSpec): void
     {
         $this->timeSpec = $timeSpec;
     }
@@ -57,7 +57,7 @@ class LifecycleAction
     /**
      * @return string
      */
-    public function getTimeValue()
+    public function getTimeValue(): string
     {
         return $this->timeValue;
     }
@@ -65,7 +65,7 @@ class LifecycleAction
     /**
      * @param string $timeValue
      */
-    public function setTimeValue($timeValue)
+    public function setTimeValue(string $timeValue): void
     {
         $this->timeValue = $timeValue;
     }
@@ -75,14 +75,14 @@ class LifecycleAction
      *
      * @param \SimpleXMLElement $xmlRule
      */
-    public function appendToXml(&$xmlRule)
+    public function appendToXml(\SimpleXMLElement &$xmlRule): void
     {
         $xmlAction = $xmlRule->addChild($this->action);
         $xmlAction->addChild($this->timeSpec, $this->timeValue);
     }
 
-    private $action;
-    private $timeSpec;
-    private $timeValue;
+    private string $action;
+    private string $timeSpec;
+    private string $timeValue;
 
 }

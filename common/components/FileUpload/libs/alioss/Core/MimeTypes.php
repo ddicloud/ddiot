@@ -20,9 +20,9 @@ class MimeTypes
      *
      * @param string $name 缺省名
      *
-     * @return string content-type
+     * @return string|null content-type
      */
-    public static function getMimetype($name)
+    public static function getMimetype(string $name): ?string
     {
         $parts = explode('.', $name);
         if (count($parts) > 1) {
@@ -35,7 +35,7 @@ class MimeTypes
         return null;
     }
 
-    private static $mime_types = [
+    private static array $mime_types = [
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
         'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',

@@ -15,7 +15,7 @@ class HeaderResult extends Result
      *
      * @return array
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): array
     {
         return empty($this->rawResponse->header) ? array() : $this->rawResponse->header;
     }

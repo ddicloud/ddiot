@@ -16,9 +16,7 @@ use yii\base\Event;
  */
 class StorageEvent extends Event
 {
-    /**
-     * @var \League\Flysystem\FilesystemInterface
-     */
+
     public $filesystem;
 
     /**

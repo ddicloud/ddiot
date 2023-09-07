@@ -29,17 +29,17 @@ class Sign extends ActionFilter
     /**
      * var string key 密钥.
      */
-    public $key;
+    public string $key;
 
     /**
      * var array optional 需要过滤的方法.
      */
-    public $optional = ['*'];
+    public array $optional = ['*'];
 
     /**
      * 需要进行验签的环境.
      */
-    private $needSignEnvironment = ['beta', 'production'];
+    private array $needSignEnvironment = ['beta', 'production'];
 
 
 
@@ -66,14 +66,11 @@ class Sign extends ActionFilter
      *
      * @return string
      */
-    public static function generateSecret()
+    public static function generateSecret(): string
     {
         global $_GPC;
         $apiConf = new Api();
         $apiConf->getConf($_GPC['bloc_id']);
-        if (empty($apiConf)) {
-            throw new SignException(CodeConst::CODE_90000);
-        }
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
             'app_secret' => $apiConf['app_secret'],
             'app_id' => $apiConf['app_id'],
@@ -87,14 +84,15 @@ class Sign extends ActionFilter
      *
      * @param $params
      *
+     * @return true
      * @throws SignException
      */
-    public function validateSign($params)
+    public function validateSign($params): bool
     {
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
         // 验证签名(若通用型签名及固定商户签名均不满足，抛出异常)
-        if (!isset($params['sign']) || empty($params['sign'])) {
+        if (empty($params['sign'])) {
             throw new SignException(CodeConst::CODE_90001);
         }
 
@@ -122,28 +120,27 @@ class Sign extends ActionFilter
      *
      * @param $param
      *
-     * @return array 去掉空值与签名参数后的新签名参数组
+     * @return string 去掉空值与签名参数后的新签名参数组
      */
-    public function paramFilter($param)
+    public function paramFilter($param): string
     {
         $paraFilter = $param;
         unset($paraFilter['sign']); // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
         ksort($paraFilter); // 对数组根据键名升序排序
         reset($paraFilter); // 函数将内部指针指向数组中的第一个元素，并输出
-        $data = http_build_query($paraFilter);
-
-        return $data;
+        return http_build_query($paraFilter);
     }
 
     /**
      * 生成md5签名字符串.
      *
      * @param $preStr string 需要签名的字符串
-     *
+     * @param string $appId
      * @return string 签名结果
+     * @throws SignException
      */
-    public function md5Sign($preStr, $appId = '')
+    public function md5Sign(string $preStr, string $appId = ''): string
     {
         // 生成sign  字符串和密钥拼接
         $str = $preStr . '&key=' . self::generateSecret();
@@ -159,7 +156,7 @@ class Sign extends ActionFilter
      *
      * @return mixed
      */
-    public static function getPrefixOfDomain()
+    public static function getPrefixOfDomain(): mixed
     {
         $url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
         preg_match("#//(.*?)\.#i", $url, $match);

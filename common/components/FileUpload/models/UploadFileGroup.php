@@ -22,8 +22,6 @@ use Yii;
  * @property int $bloc_id 公司ID
  * @property int $create_time 创建时间
  *
- * @property DiandiBloc $bloc
- * @property DiandiStore $store
  * @property UploadFile[] $uploadFiles
  */
 class UploadFileGroup extends \yii\db\ActiveRecord
@@ -31,7 +29,7 @@ class UploadFileGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%upload_file_group}}';
     }
@@ -39,7 +37,7 @@ class UploadFileGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'store_id', 'bloc_id', 'create_time'], 'integer'],
@@ -51,7 +49,7 @@ class UploadFileGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'group_id' => '分组ID',
@@ -67,17 +65,17 @@ class UploadFileGroup extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBloc()
+    public function getBloc(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Bloc::className(), ['bloc_id' => 'bloc_id']);
     }
 
     /**
-     * Gets query for [[Store]].
+     * Gets a query for [[Store]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStore()
+    public function getStore(): \yii\db\ActiveQuery
     {
         return $this->hasOne(BlocStore::className(), ['store_id' => 'store_id']);
     }
@@ -87,7 +85,7 @@ class UploadFileGroup extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUploadFiles()
+    public function getUploadFiles(): \yii\db\ActiveQuery
     {
         return $this->hasMany(UploadFile::className(), ['group_id' => 'group_id']);
     }

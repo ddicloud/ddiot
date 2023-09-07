@@ -27,19 +27,19 @@ final class Auth
         return $this->accessKey;
     }
 
-    public function sign($data)
+    public function sign($data): string
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
         return $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
     }
 
-    public function signWithData($data)
+    public function signWithData($data): string
     {
         $data = \Qiniu\base64_urlSafeEncode($data);
         return $this->sign($data) . ':' . $data;
     }
 
-    public function signRequest($urlString, $body, $contentType = null)
+    public function signRequest($urlString, $body, $contentType = null): string
     {
         $url = parse_url($urlString);
         $data = '';
@@ -57,13 +57,13 @@ final class Auth
         return $this->sign($data);
     }
 
-    public function verifyCallback($contentType, $originAuthorization, $url, $body)
+    public function verifyCallback($contentType, $originAuthorization, $url, $body): bool
     {
         $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return $originAuthorization === $authorization;
     }
 
-    public function privateDownloadUrl($baseUrl, $expires = 3600)
+    public function privateDownloadUrl($baseUrl, $expires = 3600): string
     {
         $deadline = time() + $expires;
 
@@ -86,7 +86,8 @@ final class Auth
         $policy = null,
         $strictPolicy = true,
         Zone $zone = null
-    ) {
+    ): string
+    {
         $deadline = time() + $expires;
         $scope = $bucket;
         if ($key !== null) {
@@ -114,7 +115,7 @@ final class Auth
      *上传策略，参数规格详见
      *http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html
      */
-    private static $policyFields = array(
+    private static array $policyFields = array(
         'callbackUrl',
         'callbackBody',
         'callbackHost',
@@ -142,13 +143,13 @@ final class Auth
         'upHosts',
     );
 
-    private static $deprecatedPolicyFields = array(
+    private static array $deprecatedPolicyFields = array(
         'asyncOps',
     );
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
     {
-        if ($originPolicy === null || !is_array($originPolicy)) {
+        if (!is_array($originPolicy)) {
             return array();
         }
         foreach ($originPolicy as $key => $value) {
@@ -162,7 +163,7 @@ final class Auth
         return $policy;
     }
 
-    public function authorization($url, $body = null, $contentType = null)
+    public function authorization($url, $body = null, $contentType = null): array
     {
         $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return array('Authorization' => $authorization);

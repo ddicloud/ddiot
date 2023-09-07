@@ -2,10 +2,12 @@
 
 namespace Alioss\Result;
 
+use Alioss\Core\OssException;
 use Alioss\Core\OssUtil;
 use Alioss\Model\ObjectInfo;
 use Alioss\Model\ObjectListInfo;
 use Alioss\Model\PrefixInfo;
+use yii\base\ErrorException;
 
 /**
  * Class ListObjectsResult
@@ -17,10 +19,13 @@ class ListObjectsResult extends Result
      * 解析ListObjects接口返回的xml数据
      *
      * return ObjectListInfo
+     * @throws ErrorException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): ObjectListInfo
     {
-        $xml = new \SimpleXMLElement($this->rawResponse->body);
+        try {
+            $xml = new \SimpleXMLElement($this->rawResponse->body);
+
         $encodingType = isset($xml->EncodingType) ? strval($xml->EncodingType) : "";
         $objectList = $this->parseObjectList($xml, $encodingType);
         $prefixList = $this->parsePrefixList($xml, $encodingType);
@@ -36,9 +41,15 @@ class ListObjectsResult extends Result
         $nextMarker = isset($xml->NextMarker) ? strval($xml->NextMarker) : "";
         $nextMarker = OssUtil::decodeKey($nextMarker, $encodingType);
         return new ObjectListInfo($bucketName, $prefix, $marker, $nextMarker, $maxKeys, $delimiter, $isTruncated, $objectList, $prefixList);
+        } catch (\Exception $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
-    private function parseObjectList($xml, $encodingType)
+    /**
+     * @throws OssException
+     */
+    private function parseObjectList($xml, $encodingType): array
     {
         $retList = array();
         if (isset($xml->Contents)) {
@@ -56,7 +67,10 @@ class ListObjectsResult extends Result
         return $retList;
     }
 
-    private function parsePrefixList($xml, $encodingType)
+    /**
+     * @throws OssException
+     */
+    private function parsePrefixList($xml, $encodingType): array
     {
         $retList = array();
         if (isset($xml->CommonPrefixes)) {

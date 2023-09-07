@@ -13,15 +13,15 @@ namespace Qiniu\Http;
  */
 final class Response
 {
-    public $statusCode;
-    public $headers;
-    public $body;
-    public $error;
-    private $jsonData;
-    public $duration;
+    public int $statusCode;
+    public array $headers;
+    public ?string $body;
+    public mixed $error;
+    private mixed $jsonData;
+    public float $duration;
 
     /** @var array Mapping of status codes to reason phrases */
-    private static $statusTexts = [
+    private static array $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',

@@ -18,7 +18,7 @@ class UploadInfo
      * @param string $uploadId
      * @param string $initiated
      */
-    public function __construct($key, $uploadId, $initiated)
+    public function __construct(string $key, string $uploadId, string $initiated)
     {
         $this->key = $key;
         $this->uploadId = $uploadId;
@@ -28,7 +28,7 @@ class UploadInfo
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -36,7 +36,7 @@ class UploadInfo
     /**
      * @return string
      */
-    public function getUploadId()
+    public function getUploadId(): string
     {
         return $this->uploadId;
     }
@@ -44,12 +44,12 @@ class UploadInfo
     /**
      * @return string
      */
-    public function getInitiated()
+    public function getInitiated(): string
     {
         return $this->initiated;
     }
 
-    private $key = "";
-    private $uploadId = "";
-    private $initiated = "";
+    private string $key = "";
+    private string $uploadId = "";
+    private string $initiated = "";
 }

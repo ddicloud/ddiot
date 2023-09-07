@@ -26,14 +26,14 @@ class DdQueueEvent extends BaseObject implements \yii\queue\JobInterface
      *
      * @var
      */
-    public $data;
+    public array $data;
 
     /**
      * @param \yii\queue\Queue $queue
-     * @return mixed|void
+     * @return void
      * @throws \yii\base\InvalidConfigException
      */
-    public function execute($queue)
+    public function execute($queue): void
     {
         
 

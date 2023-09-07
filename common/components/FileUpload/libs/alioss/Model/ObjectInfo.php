@@ -26,7 +26,7 @@ class ObjectInfo
      * @param int $size
      * @param string $storageClass
      */
-    public function __construct($key, $lastModified, $eTag, $type, $size, $storageClass)
+    public function __construct(string $key, string $lastModified, string $eTag, string $type, int $size, string $storageClass)
     {
         $this->key = $key;
         $this->lastModified = $lastModified;
@@ -39,7 +39,7 @@ class ObjectInfo
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -47,7 +47,7 @@ class ObjectInfo
     /**
      * @return string
      */
-    public function getLastModified()
+    public function getLastModified(): string
     {
         return $this->lastModified;
     }
@@ -55,7 +55,7 @@ class ObjectInfo
     /**
      * @return string
      */
-    public function getETag()
+    public function getETag(): string
     {
         return $this->eTag;
     }
@@ -63,7 +63,7 @@ class ObjectInfo
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -71,7 +71,7 @@ class ObjectInfo
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -79,15 +79,15 @@ class ObjectInfo
     /**
      * @return string
      */
-    public function getStorageClass()
+    public function getStorageClass(): string
     {
         return $this->storageClass;
     }
 
-    private $key = "";
-    private $lastModified = "";
-    private $eTag = "";
-    private $type = "";
-    private $size = 0;
-    private $storageClass = "";
+    private string $key = "";
+    private string $lastModified = "";
+    private string $eTag = "";
+    private $type;
+    private int $size = 0;
+    private string $storageClass = "";
 }

@@ -11,15 +11,18 @@ class ImageStyleTemplate extends ImageTemplate
         $this->style = "";
     }
 
-    public function setStyle($styleName) {
+    public function setStyle($styleName): void
+    {
         $this->style = "style/" . $styleName;
     }
 
-    public function getStyle() {
+    public function getStyle(): string
+    {
         return $this->style;
     }
 
-    public function queryString() {
+    public function queryString(): string
+    {
         $res = "";
         if($this->style) {
             $res = $this->style;
@@ -27,7 +30,8 @@ class ImageStyleTemplate extends ImageTemplate
         return $res;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->style = "";
     }
 }

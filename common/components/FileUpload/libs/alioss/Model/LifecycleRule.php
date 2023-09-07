@@ -16,7 +16,7 @@ class LifecycleRule
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -24,7 +24,7 @@ class LifecycleRule
     /**
      * @param string $id 规则ID
      */
-    public function setId($id)
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -34,7 +34,7 @@ class LifecycleRule
      *
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
@@ -44,7 +44,7 @@ class LifecycleRule
      *
      * @param string $prefix 文件前缀
      */
-    public function setPrefix($prefix)
+    public function setPrefix(string $prefix): void
     {
         $this->prefix = $prefix;
     }
@@ -54,7 +54,7 @@ class LifecycleRule
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -64,7 +64,7 @@ class LifecycleRule
      *
      * @param string $status
      */
-    public function setStatus($status)
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
@@ -73,7 +73,7 @@ class LifecycleRule
      *
      * @return LifecycleAction[]
      */
-    public function getActions()
+    public function getActions(): array
     {
         return $this->actions;
     }
@@ -81,7 +81,7 @@ class LifecycleRule
     /**
      * @param LifecycleAction[] $actions
      */
-    public function setActions($actions)
+    public function setActions(array $actions): void
     {
         $this->actions = $actions;
     }
@@ -95,7 +95,7 @@ class LifecycleRule
      * @param string $status 规则状态，可选[self::LIFECYCLE_STATUS_ENABLED, self::LIFECYCLE_STATUS_DISABLED]
      * @param LifecycleAction[] $actions
      */
-    public function __construct($id, $prefix, $status, $actions)
+    public function __construct(string $id, string $prefix, string $status, array $actions)
     {
         $this->id = $id;
         $this->prefix = $prefix;
@@ -106,7 +106,7 @@ class LifecycleRule
     /**
      * @param \SimpleXMLElement $xmlRule
      */
-    public function appendToXml(&$xmlRule)
+    public function appendToXml(\SimpleXMLElement &$xmlRule): void
     {
         $xmlRule->addChild('ID', $this->id);
         $xmlRule->addChild('Prefix', $this->prefix);
@@ -116,10 +116,10 @@ class LifecycleRule
         }
     }
 
-    private $id;
-    private $prefix;
-    private $status;
-    private $actions = array();
+    private string $id;
+    private string $prefix;
+    private string $status;
+    private array $actions = array();
 
     const LIFECYCLE_STATUS_ENABLED = 'Enabled';
     const LIFECYCLE_STATUS_DISABLED = 'Disabled';

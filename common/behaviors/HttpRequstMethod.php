@@ -13,6 +13,8 @@ use common\models\UserBloc;
 use diandi\admin\models\AuthAssignmentGroup;
 use Yii;
 use yii\base\Behavior;
+use yii\base\ErrorException;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
@@ -29,31 +31,31 @@ class HttpRequstMethod extends Behavior
      *
      * @var yii\web\Request
      */
-    private $request;
+    private  $request;
 
-    public $bloc_id;
+    public int $bloc_id;
 
-    public $store_id;
+    public int $store_id;
 
-    public $admin_id;
+    public int $admin_id;
 
-    private static $_data = [];
+    private static array $_data = [];
 
-    private $_queryParams = [];
+    private array $_queryParams = [];
 
     /**
      * 运用传说中的依赖注入 注入 yii\web\Request.
      *
-     * @param array           $config
+     * @param array $config
      * @param yii\web\Request $request
      */
-    public function __construct(Request $request, $config = [])
+    public function __construct(Request $request, array $config = [])
     {
         $this->request = $request;
         parent::__construct($config);
     }
 
-    public function init()
+    public function init(): void
     {
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
@@ -141,23 +143,33 @@ class HttpRequstMethod extends Behavior
         return Yii::$app->request->queryParams;
     }
 
+    /**
+     * @throws ErrorException
+     */
     public function request($name = null)
     {
         $request = \Yii::$app->request;
         if (!self::$_data) {
-            self::$_data = ArrayHelper::merge(
-                $request->getBodyParams(),
-                $request->getQueryParams()
-            );
+            try {
+                self::$_data = ArrayHelper::merge(
+                    $request->getBodyParams(),
+                    $request->getQueryParams()
+                );
+            } catch (InvalidConfigException $e) {
+                throw new ErrorException($e->getMessage());
+            }
         }
 
         return self::$_data[$name] ?? self::$_data;
     }
 
-    public function checkDataAuth()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function checkDataAuth(): void
     {
         // // 校验当前登录用户的数据权限
-        $user_id = Yii::$app->user->identity->id;
+        $user_id = Yii::$app->user->identity->id??0;
         if (!empty($user_id)) {
             $defaultRoles = Yii::$app->authManager->defaultRoles;
             $groupHave = AuthAssignmentGroup::find()->where([

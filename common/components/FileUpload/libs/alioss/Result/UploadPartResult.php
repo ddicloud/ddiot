@@ -16,7 +16,7 @@ class UploadPartResult extends Result
      * @return string
      * @throws OssException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): mixed
     {
         $header = $this->rawResponse->header;
         if (isset($header["etag"])) {

@@ -19,11 +19,11 @@ class UEditorAction extends Action
     /**
      * @var array
      */
-    public $config = [];
+    public array $config = [];
 
-    public $action = '';
+    public string $action = '';
 
-    public function init()
+    public function init(): void
     {
         //close csrf
         Yii::$app->request->enableCsrfValidation = false;
@@ -40,7 +40,7 @@ class UEditorAction extends Action
         parent::init();
     }
 
-    public function run()
+    public function run(): array
     {
         // if (Yii::$app->request->get('callback', false)) {
         //     Yii::$app->response->format = Response::FORMAT_JSONP;
@@ -55,7 +55,7 @@ class UEditorAction extends Action
     /**
      * 处理action.
      */
-    protected function handleAction()
+    protected function handleAction(): array
     {
         $action = $this->action;
 
@@ -74,7 +74,7 @@ class UEditorAction extends Action
             case 'uploadfile':
                 $result = $this->actionUpload();
                 //处理返回的URL
-                if (substr($result['url'], 0, 1) != '/') {
+                if (!str_starts_with($result['url'], '/')) {
                     $result['url'] = '/' . $result['url'];
                 }
                 $result['url'] = Yii::getAlias('@web' . $result['url']);
@@ -106,6 +106,7 @@ class UEditorAction extends Action
      * 上传.
      *
      * @return array
+     * @throws \Exception
      */
     protected function actionUpload()
     {

@@ -10,10 +10,10 @@ namespace Qiniu\Http;
 
 final class Request
 {
-    public $url;
-    public $headers;
-    public $body;
-    public $method;
+    public string  $url;
+    public array $headers;
+    public mixed $body;
+    public string $method;
 
     public function __construct($method, $url, array $headers = [], $body = null)
     {

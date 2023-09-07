@@ -32,7 +32,7 @@ class OssUtil
      * @param array $options 关联数组
      * @return string 返回诸如 key1=value1&key2=value2
      */
-    public static function toQueryString($options = array())
+    public static function toQueryString(array $options = array()): string
     {
         $temp = array();
         uksort($options, 'strnatcasecmp');
@@ -50,7 +50,7 @@ class OssUtil
      * @param string $subject
      * @return string
      */
-    public static function sReplace($subject)
+    public static function sReplace(string $subject): string
     {
         $search = array('<', '>', '&', '\'', '"');
         $replace = array('&lt;', '&gt;', '&amp;', '&apos;', '&quot;');
@@ -63,7 +63,7 @@ class OssUtil
      * @param $str
      * @return int
      */
-    public static function chkChinese($str)
+    public static function chkChinese($str): int
     {
         return preg_match('/[\x80-\xff]./', $str);
     }
@@ -74,20 +74,18 @@ class OssUtil
      * @param string $str
      * @return boolean false UTF-8编码  TRUE GB2312编码
      */
-    public static function isGb2312($str)
+    public static function isGb2312(string $str): bool
     {
         for ($i = 0; $i < strlen($str); $i++) {
             $v = ord($str[$i]);
-            if ($v > 127) {
-                if (($v >= 228) && ($v <= 233)) {
-                    if (($i + 2) >= (strlen($str) - 1)) return true;  // not enough characters
-                    $v1 = ord($str[$i + 1]);
-                    $v2 = ord($str[$i + 2]);
-                    if (($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191))
-                        return false;
-                    else
-                        return true;
-                }
+            if (($v >= 228) && ($v <= 233)) {
+                if (($i + 2) >= (strlen($str) - 1)) return true;  // not enough characters
+                $v1 = ord($str[$i + 1]);
+                $v2 = ord($str[$i + 2]);
+                if (($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191))
+                    return false;
+                else
+                    return true;
             }
         }
         return false;
@@ -100,24 +98,22 @@ class OssUtil
      * @param boolean $gbk
      * @return boolean
      */
-    public static function checkChar($str, $gbk = true)
+    public static function checkChar(string $str, bool $gbk = true): bool
     {
         for ($i = 0; $i < strlen($str); $i++) {
             $v = ord($str[$i]);
-            if ($v > 127) {
-                if (($v >= 228) && ($v <= 233)) {
-                    if (($i + 2) >= (strlen($str) - 1)) return $gbk ? true : FALSE;  // not enough characters
-                    $v1 = ord($str[$i + 1]);
-                    $v2 = ord($str[$i + 2]);
-                    if ($gbk) {
-                        return (($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191)) ? FALSE : TRUE;//GBK
-                    } else {
-                        return (($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191)) ? TRUE : FALSE;
-                    }
+            if (($v >= 228) && ($v <= 233)) {
+                if (($i + 2) >= (strlen($str) - 1)) return (bool)$gbk;  // not enough characters
+                $v1 = ord($str[$i + 1]);
+                $v2 = ord($str[$i + 2]);
+                if ($gbk) {
+                    return !((($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191)));//GBK
+                } else {
+                    return ($v1 >= 128) && ($v1 <= 191) && ($v2 >= 128) && ($v2 <= 191);
                 }
             }
         }
-        return $gbk ? TRUE : FALSE;
+        return (bool)$gbk;
     }
 
     /**
@@ -130,7 +126,7 @@ class OssUtil
      * @param string $bucket Bucket名称
      * @return boolean
      */
-    public static function validateBucket($bucket)
+    public static function validateBucket(string $bucket): bool
     {
         $pattern = '/^[a-z0-9][a-z0-9-]{2,62}$/';
         if (!preg_match($pattern, $bucket)) {
@@ -149,7 +145,7 @@ class OssUtil
      * @param string $object Object名称
      * @return boolean
      */
-    public static function validateObject($object)
+    public static function validateObject(string $object): bool
     {
         $pattern = '/^.{1,1023}$/';
         if (empty($object) || !preg_match($pattern, $object) ||
@@ -168,9 +164,9 @@ class OssUtil
      * @param string $findMe
      * @return bool
      */
-    public static function startsWith($str, $findMe)
+    public static function startsWith(string $str, string $findMe): bool
     {
-        if (strpos($str, $findMe) === 0) {
+        if (str_starts_with($str, $findMe)) {
             return true;
         } else {
             return false;
@@ -181,10 +177,10 @@ class OssUtil
      * 检验$options
      *
      * @param array $options
-     * @throws OssException
-     * @return boolean
+     * @return void
+     *@throws OssException
      */
-    public static function validateOptions($options)
+    public static function validateOptions(array $options): void
     {
         //$options
         if ($options != NULL && !is_array($options)) {
@@ -198,7 +194,7 @@ class OssUtil
      * @param $content string
      * @throws OssException
      */
-    public static function validateContent($content)
+    public static function validateContent(string $content): void
     {
         if (empty($content)) {
             throw new OssException("http body content is invalid");
@@ -208,12 +204,12 @@ class OssUtil
     /**
      * 校验BUCKET/OBJECT/OBJECT GROUP是否为空
      *
-     * @param  string $name
-     * @param  string $errMsg
-     * @throws OssException
+     * @param string $name
+     * @param string $errMsg
      * @return void
+     *@throws OssException
      */
-    public static function throwOssExceptionWithMessageIfEmpty($name, $errMsg)
+    public static function throwOssExceptionWithMessageIfEmpty(string $name, string $errMsg): void
     {
         if (empty($name)) {
             throw new OssException($errMsg);
@@ -226,7 +222,7 @@ class OssUtil
      * @param $filename
      * @param $size
      */
-    public static function generateFile($filename, $size)
+    public static function generateFile($filename, $size): void
     {
         if (file_exists($filename) && $size == filesize($filename)) {
             echo $filename . " already exists, no need to create again. ";
@@ -269,7 +265,7 @@ BBB;
      * @param $to_pos
      * @return string
      */
-    public static function getMd5SumForFile($filename, $from_pos, $to_pos)
+    public static function getMd5SumForFile($filename, $from_pos, $to_pos): string
     {
         $content_md5 = "";
         if (($to_pos - $from_pos) > self::OSS_MAX_PART_SIZE) {
@@ -307,8 +303,7 @@ BBB;
             }
         }
         fclose($fh);
-        $content_md5 = base64_encode(md5($data, true));
-        return $content_md5;
+        return base64_encode(md5($data, true));
     }
 
     /**
@@ -316,7 +311,7 @@ BBB;
      *
      * @return bool
      */
-    public static function isWin()
+    public static function isWin(): bool
     {
         return strtoupper(substr(PHP_OS, 0, 3)) == "WIN";
     }
@@ -327,7 +322,7 @@ BBB;
      * @param $file_path
      * @return string
      */
-    public static function encodePath($file_path)
+    public static function encodePath($file_path): string
     {
         if (self::chkChinese($file_path) && self::isWin()) {
             $file_path = iconv('utf-8', 'gbk', $file_path);
@@ -341,7 +336,7 @@ BBB;
      * @param string $endpoint 需要做判断的endpoint
      * @return boolean
      */
-    public static function isIPFormat($endpoint)
+    public static function isIPFormat(string $endpoint): bool
     {
         $ip_array = explode(":", $endpoint);
         $hostname = $ip_array[0];
@@ -360,7 +355,7 @@ BBB;
      * @param bool $quiet
      * @return string
      */
-    public static function createDeleteObjectsXmlBody($objects, $quiet)
+    public static function createDeleteObjectsXmlBody(array $objects, bool $quiet): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Delete></Delete>');
         $xml->addChild('Quiet', $quiet);
@@ -378,7 +373,7 @@ BBB;
      * @param array[] $listParts
      * @return string
      */
-    public static function createCompleteMultipartUploadXmlBody($listParts)
+    public static function createCompleteMultipartUploadXmlBody(array $listParts): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><CompleteMultipartUpload></CompleteMultipartUpload>');
         foreach ($listParts as $node) {
@@ -397,7 +392,7 @@ BBB;
      * @param bool $recursive
      * @return string[]
      */
-    public static function readDir($dir, $exclude = ".|..|.svn|.git", $recursive = false)
+    public static function readDir($dir, string $exclude = ".|..|.svn|.git", bool $recursive = false): array
     {
         $file_list_array = array();
         $base_path = $dir;
@@ -439,8 +434,9 @@ BBB;
      * @param string $key
      * @param string $encoding
      * @return string
+     * @throws OssException
      */
-    public static function decodeKey($key, $encoding)
+    public static function decodeKey(string $key, string $encoding): string
     {
         if ($encoding == "") {
             return $key;

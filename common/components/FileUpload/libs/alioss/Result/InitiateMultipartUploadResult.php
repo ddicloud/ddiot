@@ -24,7 +24,7 @@ class InitiateMultipartUploadResult extends Result
      * @throws OssException
      * @return string
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): string
     {
         $content = $this->rawResponse->body;
         $xml = simplexml_load_string($content);

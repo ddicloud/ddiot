@@ -16,7 +16,7 @@ class GetLoggingResult extends Result
      *
      * @return LoggingConfig
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): LoggingConfig
     {
         $content = $this->rawResponse->body;
         $config = new LoggingConfig();
@@ -30,7 +30,7 @@ class GetLoggingResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

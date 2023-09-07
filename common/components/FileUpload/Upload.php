@@ -28,10 +28,10 @@ use yii\web\UploadedFile;
  */
 class Upload extends Model
 {
-    public $file;
-    private $_appendRules;
+    public string $file;
+    private array $_appendRules;
 
-    public function init()
+    public function init(): void
     {
         parent::init();
         $extensions = Yii::$app->params['webuploader']['baseConfig']['accept']['extensions'];

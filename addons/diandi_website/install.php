@@ -18,5 +18,5 @@ use common\components\addons\AddonsInstall;
  */
 class Install extends AddonsInstall
 {
-    public $addons = 'diandi_website';
+    public string $addons = 'diandi_website';
 }

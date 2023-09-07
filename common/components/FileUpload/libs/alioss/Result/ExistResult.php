@@ -12,9 +12,9 @@ class ExistResult extends Result
     /**
      * @return bool
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): bool
     {
-        return intval($this->rawResponse->status) === 200 ? true : false;
+        return intval($this->rawResponse->status) === 200;
     }
 
     /**
@@ -23,7 +23,7 @@ class ExistResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

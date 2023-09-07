@@ -13,13 +13,21 @@ use Psr\Http\Message\RequestInterface;
 
 class Signature {
     // string: access key.
-    private $accessKey;
+    private string $accessKey;
 
     // string: secret key.
-    private $secretKey;
+    private string $secretKey;
 
     // bool: host trigger
-    private $signHost;
+    private string $signHost;
+    /**
+     * @var mixed|null
+     */
+    private mixed $token;
+    /**
+     * @var array|string[]
+     */
+    private array $signHeader;
 
     public function __construct( $accessKey, $secretKey, $signHost, $token = null ) {
         $this->accessKey = $accessKey;
@@ -57,7 +65,8 @@ class Signature {
     public function __destruct() {
     }
 
-    public function needCheckHeader( $header ) {
+    public function needCheckHeader( $header ): bool
+    {
         if ( startWith( $header, 'x-cos-' ) ) {
             return true;
         }
@@ -67,12 +76,14 @@ class Signature {
         return false;
     }
 
-    public function signRequest( RequestInterface $request ) {
+    public function signRequest( RequestInterface $request ): RequestInterface
+    {
         $authorization = $this->createAuthorization( $request );
         return $request->withHeader( 'Authorization', $authorization );
     }
 
-    public function createAuthorization( RequestInterface $request, $expires = '+30 minutes' ) {
+    public function createAuthorization( RequestInterface $request, $expires = '+30 minutes' ): string
+    {
         if ( is_null( $expires ) || !strtotime( $expires )) {
             $expires = '+30 minutes';
         }
@@ -118,13 +129,13 @@ class Signature {
         $stringToSign = "sha1\n$signTime\n$sha1edHttpString\n";
         $signKey = hash_hmac( 'sha1', $signTime, trim($this->secretKey) );
         $signature = hash_hmac( 'sha1', $stringToSign, $signKey );
-        $authorization = 'q-sign-algorithm=sha1&q-ak='. trim($this->accessKey) .
+        return 'q-sign-algorithm=sha1&q-ak='. trim($this->accessKey) .
         "&q-sign-time=$signTime&q-key-time=$signTime&q-header-list=$headerList&q-url-param-list=$urlParamList&" .
         "q-signature=$signature";
-        return $authorization;
     }
 
-    public function createPresignedUrl( RequestInterface $request, $expires = '+30 minutes' ) {
+    public function createPresignedUrl( RequestInterface $request, $expires = '+30 minutes' ): \Psr\Http\Message\UriInterface
+    {
         $authorization = $this->createAuthorization( $request, $expires);
         $uri = $request->getUri();
         $query = 'sign='.urlencode( $authorization ) . '&' . $uri->getQuery();

@@ -3,11 +3,11 @@
 namespace Qcloud\Cos\ImageParamTemplate;
 
 class BlindWatermarkTemplate extends ImageTemplate {
-    private $markType;
-    private $type;
-    private $image;
-    private $text;
-    private $level;
+    private int $markType;
+    private string $type;
+    private string $image;
+    private string $text;
+    private string $level;
 
     public function __construct() {
         parent::__construct();
@@ -19,44 +19,54 @@ class BlindWatermarkTemplate extends ImageTemplate {
 
     }
 
-    public function setPick() {
+    public function setPick(): void
+    {
         $this->markType = 4;
     }
 
-    public function setType($value) {
+    public function setType($value): void
+    {
         $this->type = "/type/" . $value;
     }
 
-    public function setImage($value) {
+    public function setImage($value): void
+    {
         $this->image = "/image/" . $this->ciBase64($value);
     }
 
-    public function setText($value) {
+    public function setText($value): void
+    {
         $this->text = "/text/" . $this->ciBase64($value);
     }
 
-    public function setLevel($value) {
+    public function setLevel($value): void
+    {
         $this->level = "/level/" . $value;
     }
 
-    public function getType() {
+    public function getType(): string
+    {
         return $this->type;
     }
 
-    public function getImage() {
+    public function getImage(): string
+    {
         return $this->image;
     }
 
-    public function getText() {
+    public function getText(): string
+    {
         return $this->text;
     }
 
-    public function getLevel() {
+    public function getLevel(): string
+    {
         return $this->level;
     }
 
 
-    public function queryString() {
+    public function queryString(): string
+    {
         $head = "watermark/$this->markType";
         $res = "";
         if($this->type){
@@ -77,7 +87,8 @@ class BlindWatermarkTemplate extends ImageTemplate {
         return $res;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->markType = 3;
         $this->type = "";
         $this->image = "";

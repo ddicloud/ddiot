@@ -15,13 +15,13 @@ interface XmlConfig
      * @param string $strXml
      * @return null
      */
-    public function parseFromXml($strXml);
+    public function parseFromXml(string $strXml);
 
     /**
      * 接口定义，实现此接口的类，都需要实现把子类序列化成xml字符串的接口
      *
      * @return string
      */
-    public function serializeToXml();
+    public function serializeToXml(): string;
 
 }

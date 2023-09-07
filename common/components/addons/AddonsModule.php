@@ -20,7 +20,10 @@ use yii\web\HttpException;
 
 class AddonsModule extends Module
 {
-    public function init()
+    /**
+     * @throws HttpException
+     */
+    public function init(): void
     {
         global $_GPC;
 
@@ -64,24 +67,6 @@ class AddonsModule extends Module
                     'value' => 'zh-CN',
                 ]));
                 break;
-            case 'app-api':
-                $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
-                $cookies = Yii::$app->response->cookies;
-                // 添加一个cookie
-                $cookies->add(new \yii\web\Cookie([
-                    'name' => 'language',
-                    'value' => 'zh-CN',
-                ]));
-                break;
-            case 'app-swoole':
-                $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
-                $cookies = Yii::$app->response->cookies;
-                // 添加一个cookie
-                $cookies->add(new \yii\web\Cookie([
-                    'name' => 'language',
-                    'value' => 'zh-CN',
-                ]));
-                break;
             case 'app-frontend':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/frontend.php');
                 break;
@@ -100,6 +85,8 @@ class AddonsModule extends Module
                     }
                 }
                 break;
+            case 'app-api':
+            case 'app-swoole':
             default:
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
@@ -121,7 +108,7 @@ class AddonsModule extends Module
         if (!empty($config['components'])) {
             // 遍历子模块独立配置的组件部分，并继承应用程序的组件配置
             foreach ($config['components'] as $k => $component) {
-                if (isset($component['class']) && isset($components[$k]) == false) {
+                if (isset($component['class']) && !isset($components[$k])) {
                     continue;
                 }
                 $config['components'][$k] = array_merge($components[$k], $component);
@@ -136,7 +123,7 @@ class AddonsModule extends Module
         }
     }
 
-    public function getMenus()
+    public function getMenus(): array
     {
         $modules = DdAddons::findOne(['identifie' => $this->id]);
         $callback = function ($menu) {
@@ -171,7 +158,7 @@ class AddonsModule extends Module
         return ArrayHelper::arraySort($menus, 'order', 'asc');
     }
 
-    public function initWechat()
+    public function initWechat(): void
     {
         global $_GPC;
         $store_id = $_GPC['store_id'];
@@ -264,9 +251,7 @@ class AddonsModule extends Module
         $params = Yii::$app->params;
 
         foreach ($params as $key => $value) {
-            if (isset($config['params'][$key])) {
-                $config['params'][$key] = $config['params'][$key];
-            } else {
+            if (!isset($config['params'][$key])) {
                 $config['params'][$key] = $value;
             }
         }

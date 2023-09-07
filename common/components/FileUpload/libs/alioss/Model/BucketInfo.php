@@ -25,7 +25,7 @@ class BucketInfo
      * @param string $name
      * @param string $createDate
      */
-    public function __construct($location, $name, $createDate)
+    public function __construct(string $location, string $name, string $createDate)
     {
         $this->location = $location;
         $this->name = $name;
@@ -37,7 +37,7 @@ class BucketInfo
      *
      * @return string
      */
-    public function getLocation()
+    public function getLocation(): string
     {
         return $this->location;
     }
@@ -47,7 +47,7 @@ class BucketInfo
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -57,7 +57,7 @@ class BucketInfo
      *
      * @return string
      */
-    public function getCreateDate()
+    public function getCreateDate(): string
     {
         return $this->createDate;
     }
@@ -67,19 +67,19 @@ class BucketInfo
      *
      * @var string
      */
-    private $location;
+    private string $location;
     /**
      * bucket的名称
      *
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * bucket的创建事件
      *
      * @var string
      */
-    private $createDate;
+    private string $createDate;
 
 }

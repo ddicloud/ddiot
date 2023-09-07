@@ -2,6 +2,7 @@
 
 namespace Alioss\Result;
 
+use Alioss\Core\OssException;
 use Alioss\Core\OssUtil;
 use Alioss\Model\ListMultipartUploadInfo;
 use Alioss\Model\UploadInfo;
@@ -17,8 +18,9 @@ class ListMultipartUploadResult extends Result
      * 解析从ListMultipartUpload接口的返回数据
      *
      * @return ListMultipartUploadInfo
+     * @throws OssException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): ListMultipartUploadInfo
     {
         $content = $this->rawResponse->body;
         $xml = simplexml_load_string($content);

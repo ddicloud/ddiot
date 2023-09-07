@@ -13,7 +13,7 @@ use Psr\Http\Message\RequestInterface;
 
 class SignatureMiddleware {
     private $nextHandler;
-    protected $signature;
+    protected Signature $signature;
 
     /**
      * @param callable $nextHandler Next handler to invoke.

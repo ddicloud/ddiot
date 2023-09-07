@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Processing;
 
 use Qiniu\Config;
@@ -14,29 +15,34 @@ use Qiniu\Processing\Operation;
 final class PersistentFop
 {
     /**
-     * @var 账号管理密钥对，Auth对象
+     * 账号管理密钥对，Auth对象
+     * @var
      */
-    private $auth;
+    private mixed $auth;
 
     /**
-     * @var 操作资源所在空间
+     * 操作资源所在空间
+     * @var
      */
-    private $bucket;
+    private mixed $bucket;
 
     /**
-     * @var 多媒体处理队列，详见 https://portal.qiniu.com/mps/pipeline
+     * 多媒体处理队列，详见
+     * @var  https://portal.qiniu.com/mps/pipeline
      */
-    private $pipeline;
+    private mixed $pipeline;
 
     /**
-     * @var 持久化处理结果通知URL
+     * 持久化处理结果通知URL
+     * @var
      */
-    private $notify_url;
+    private mixed $notify_url;
 
     /**
-     * @var boolean 是否强制覆盖已有的重名文件
+     * 是否强制覆盖已有的重名文件
+     * @var boolean
      */
-    private $force;
+    private mixed $force;
 
 
     public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
@@ -51,15 +57,15 @@ final class PersistentFop
     /**
      * 对资源文件进行异步持久化处理
      *
-     * @param $key   待处理的源文件
-     * @param $fops  string|array  待处理的pfop操作，多个pfop操作以array的形式传入。
+     * @param $key  string  待处理的源文件
+     * @param $fops  array|string  待处理的pfop操作，多个pfop操作以array的形式传入。
      *                eg. avthumb/mp3/ab/192k, vframe/jpg/offset/7/w/480/h/360
      *
      * @return array 返回持久化处理的persistentId, 和返回的错误。
      *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */
-    public function execute($key, $fops)
+    public function execute(string $key, array|string $fops): array
     {
         if (is_array($fops)) {
             $fops = implode(';', $fops);
@@ -83,7 +89,7 @@ final class PersistentFop
         return array($id, null);
     }
 
-    public static function status($id)
+    public static function status($id): array
     {
         $url = Config::API_HOST . "/status/get/prefop?id=$id";
         $response = Client::get($url);

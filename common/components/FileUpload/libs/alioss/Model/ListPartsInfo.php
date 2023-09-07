@@ -20,7 +20,7 @@ class ListPartsInfo
      * @param string $isTruncated
      * @param array $listPart
      */
-    public function __construct($bucket, $key, $uploadId, $nextPartNumberMarker, $maxParts, $isTruncated, array $listPart)
+    public function __construct(string $bucket, string $key, string $uploadId, int $nextPartNumberMarker, int $maxParts, string $isTruncated, array $listPart)
     {
         $this->bucket = $bucket;
         $this->key = $key;
@@ -34,7 +34,7 @@ class ListPartsInfo
     /**
      * @return string
      */
-    public function getBucket()
+    public function getBucket(): string
     {
         return $this->bucket;
     }
@@ -42,7 +42,7 @@ class ListPartsInfo
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -50,7 +50,7 @@ class ListPartsInfo
     /**
      * @return string
      */
-    public function getUploadId()
+    public function getUploadId(): string
     {
         return $this->uploadId;
     }
@@ -58,7 +58,7 @@ class ListPartsInfo
     /**
      * @return int
      */
-    public function getNextPartNumberMarker()
+    public function getNextPartNumberMarker(): int
     {
         return $this->nextPartNumberMarker;
     }
@@ -66,7 +66,7 @@ class ListPartsInfo
     /**
      * @return int
      */
-    public function getMaxParts()
+    public function getMaxParts(): int
     {
         return $this->maxParts;
     }
@@ -74,7 +74,7 @@ class ListPartsInfo
     /**
      * @return string
      */
-    public function getIsTruncated()
+    public function getIsTruncated(): string
     {
         return $this->isTruncated;
     }
@@ -82,16 +82,16 @@ class ListPartsInfo
     /**
      * @return array
      */
-    public function getListPart()
+    public function getListPart(): array
     {
         return $this->listPart;
     }
 
-    private $bucket = "";
-    private $key = "";
-    private $uploadId = "";
-    private $nextPartNumberMarker = 0;
-    private $maxParts = 0;
-    private $isTruncated = "";
-    private $listPart = array();
+    private string $bucket = "";
+    private string $key = "";
+    private string $uploadId = "";
+    private int $nextPartNumberMarker = 0;
+    private int $maxParts = 0;
+    private string $isTruncated = "";
+    private array $listPart = array();
 }

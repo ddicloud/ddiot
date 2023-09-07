@@ -4,6 +4,7 @@ namespace Alioss\Model;
 
 
 use Alioss\Core\OssException;
+use ErrorException;
 
 /**
  * Class CnameConfig
@@ -43,13 +44,16 @@ class CnameConfig implements XmlConfig
      *    }
      *  }
      */
-    public function getCnames()
+    public function getCnames(): array
     {
         return $this->cnameList;
     }
 
 
-    public function addCname($cname)
+    /**
+     * @throws OssException
+     */
+    public function addCname($cname): void
     {
         if (count($this->cnameList) >= self::OSS_MAX_RULES) {
             throw new OssException(
@@ -58,7 +62,7 @@ class CnameConfig implements XmlConfig
         $this->cnameList[] = array('Domain' => $cname);
     }
 
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml): void
     {
         $xml = simplexml_load_string($strXml);
         if (!isset($xml->Cname)) return;
@@ -71,29 +75,44 @@ class CnameConfig implements XmlConfig
         }
     }
 
-    public function serializeToXml()
+    /**
+     * @throws ErrorException
+     */
+    public function serializeToXml(): bool|string
     {
         $strXml = <<<EOF
 <?xml version="1.0" encoding="utf-8"?>
 <BucketCnameConfiguration>
 </BucketCnameConfiguration>
 EOF;
-        $xml = new \SimpleXMLElement($strXml);
-        foreach ($this->cnameList as $cname) {
-            $node = $xml->addChild('Cname');
-            foreach ($cname as $key => $value) {
-                $node->addChild($key, $value);
+        try {
+            $xml = new \SimpleXMLElement($strXml);
+            foreach ($this->cnameList as $cname) {
+                $node = $xml->addChild('Cname');
+                foreach ($cname as $key => $value) {
+                    $node->addChild($key, $value);
+                }
             }
+            return $xml->asXML();
+        } catch (\Exception $e) {
+            throw new ErrorException($e->getMessage());
         }
-        return $xml->asXML();
+
     }
 
+    /**
+     * @throws ErrorException
+     */
     public function __toString()
     {
-        return $this->serializeToXml();
+        try {
+            return $this->serializeToXml();
+        } catch (ErrorException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     const OSS_MAX_RULES = 10;
 
-    private $cnameList = array();
+    private array $cnameList = array();
 }

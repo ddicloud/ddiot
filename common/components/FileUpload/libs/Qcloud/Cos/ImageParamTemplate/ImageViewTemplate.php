@@ -7,11 +7,11 @@ namespace Qcloud\Cos\ImageParamTemplate;
  */
 class ImageViewTemplate extends ImageTemplate
 {
-    private $mode;
-    private $width;
-    private $height;
-    private $format;
-    private $quality;
+    private string $mode;
+    private string $width;
+    private string $height;
+    private string $format;
+    private string $quality;
 
 
     public function __construct() {
@@ -23,23 +23,28 @@ class ImageViewTemplate extends ImageTemplate
         $this->quality = "";
     }
 
-    public function setMode($value) {
+    public function setMode($value): void
+    {
         $this->mode = "/" . $value;
     }
 
-    public function setWidth($value) {
+    public function setWidth($value): void
+    {
         $this->width = "/w/" . $value;
     }
 
-    public function setHeight($value) {
+    public function setHeight($value): void
+    {
         $this->height = "/h/" . $value;
     }
 
-    public function setFormat($value) {
+    public function setFormat($value): void
+    {
         $this->format = "/format/" . $value;
     }
 
-    public function setQuality($qualityType, $qualityValue, $force = 0) {
+    public function setQuality($qualityType, $qualityValue, $force = 0): void
+    {
         if($qualityType == 1){
             $this->quality = "/q/$qualityValue" ;
             if($force){
@@ -52,27 +57,33 @@ class ImageViewTemplate extends ImageTemplate
         }
     }
 
-    public function getMode() {
+    public function getMode(): string
+    {
         return $this->mode;
     }
 
-    public function getWidth() {
+    public function getWidth(): string
+    {
         return $this->width;
     }
 
-    public function getHeight() {
+    public function getHeight(): string
+    {
         return $this->height;
     }
 
-    public function getFormat() {
+    public function getFormat(): string
+    {
         return $this->format;
     }
 
-    public function getQuality() {
+    public function getQuality(): string
+    {
         return $this->quality;
     }
 
-    public function queryString() {
+    public function queryString(): string
+    {
         $head = "imageView2";
         $res = "";
         if($this->mode) {
@@ -96,7 +107,8 @@ class ImageViewTemplate extends ImageTemplate
         return $res;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->mode = "";
         $this->width = "";
         $this->height = "";

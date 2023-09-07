@@ -8,9 +8,9 @@ use Qiniu\Http\Error;
 final class Operation
 {
 
-    private $auth;
-    private $token_expire;
-    private $domain;
+    private mixed $auth;
+    private mixed $token_expire;
+    private string $domain;
 
     public function __construct($domain, $auth = null, $token_expire = 3600)
     {
@@ -23,15 +23,15 @@ final class Operation
     /**
      * 对资源文件进行处理
      *
-     * @param $key   待处理的资源文件名
-     * @param $fops   string|array  fop操作，多次fop操作以array的形式传入。
+     * @param $key   string 待处理的资源文件名
+     * @param $fops   array|string  fop操作，多次fop操作以array的形式传入。
      *                eg. imageView2/1/w/200/h/200, imageMogr2/thumbnail/!75px
      *
      * @return array 文件处理后的结果及错误。
      *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */
-    public function execute($key, $fops)
+    public function execute(string $key, array|string $fops): array
     {
         $url = $this->buildUrl($key, $fops);
         $resp = Client::get($url);
@@ -44,7 +44,7 @@ final class Operation
         return array($resp->body, null);
     }
 
-    public function buildUrl($key, $fops, $protocol = 'http')
+    public function buildUrl($key, $fops, $protocol = 'http'): string
     {
         if (is_array($fops)) {
             $fops = implode('|', $fops);

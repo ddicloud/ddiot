@@ -16,7 +16,7 @@ class PartInfo
      * @param string $eTag
      * @param int $size
      */
-    public function __construct($partNumber, $lastModified, $eTag, $size)
+    public function __construct(int $partNumber, string $lastModified, string $eTag, int $size)
     {
         $this->partNumber = $partNumber;
         $this->lastModified = $lastModified;
@@ -27,7 +27,7 @@ class PartInfo
     /**
      * @return int
      */
-    public function getPartNumber()
+    public function getPartNumber(): int
     {
         return $this->partNumber;
     }
@@ -35,7 +35,7 @@ class PartInfo
     /**
      * @return string
      */
-    public function getLastModified()
+    public function getLastModified(): string
     {
         return $this->lastModified;
     }
@@ -43,7 +43,7 @@ class PartInfo
     /**
      * @return string
      */
-    public function getETag()
+    public function getETag(): string
     {
         return $this->eTag;
     }
@@ -51,13 +51,13 @@ class PartInfo
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    private $partNumber = 0;
-    private $lastModified = "";
-    private $eTag = "";
-    private $size = 0;
+    private int $partNumber = 0;
+    private string $lastModified = "";
+    private string $eTag = "";
+    private int $size = 0;
 }

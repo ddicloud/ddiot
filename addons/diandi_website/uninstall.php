@@ -17,5 +17,5 @@ use common\components\addons\AddonsUninstall;
  */
 class UnInstall extends AddonsUninstall
 {
-    public $addons = 'diandi_website';
+    public string $addons = 'diandi_website';
 }

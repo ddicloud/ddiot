@@ -9,7 +9,7 @@ class GetCnameResult extends Result
     /**
      * @return CnameConfig
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): CnameConfig
     {
         $content = $this->rawResponse->body;
         $config = new CnameConfig();
@@ -23,7 +23,7 @@ class GetCnameResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

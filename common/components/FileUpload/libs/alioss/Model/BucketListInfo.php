@@ -25,7 +25,7 @@ class BucketListInfo
      *
      * @return BucketInfo[]
      */
-    public function getBucketList()
+    public function getBucketList(): array
     {
         return $this->bucketList;
     }
@@ -35,5 +35,5 @@ class BucketListInfo
      *
      * @var array
      */
-    private $bucketList = array();
+    private array $bucketList = array();
 }

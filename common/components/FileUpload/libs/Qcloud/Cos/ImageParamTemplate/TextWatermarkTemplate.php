@@ -7,16 +7,16 @@ namespace Qcloud\Cos\ImageParamTemplate;
  */
 class TextWatermarkTemplate extends ImageTemplate
 {
-    private $text;
-    private $font;
-    private $fontsize;
-    private $fill;
-    private $dissolve;
-    private $gravity;
-    private $dx;
-    private $dy;
-    private $batch;
-    private $degree;
+    private string $text;
+    private string $font;
+    private string $fontsize;
+    private string $fill;
+    private string $dissolve;
+    private string $gravity;
+    private string $dx;
+    private string $dy;
+    private string $batch;
+    private string $degree;
 
     public function __construct() {
         parent::__construct();
@@ -32,87 +32,108 @@ class TextWatermarkTemplate extends ImageTemplate
         $this->degree = "";
     }
 
-    public function setText($value) {
+    public function setText($value): void
+    {
         $this->text = "/text/" . $this->ciBase64($value);
     }
 
-    public function setFont($value) {
+    public function setFont($value): void
+    {
         $this->font = "/font/" . $this->ciBase64($value);
     }
 
-    public function setFontsize($value) {
+    public function setFontsize($value): void
+    {
         $this->fontsize = "/fontsize/" . $value;
     }
 
-    public function setFill($value) {
+    public function setFill($value): void
+    {
         $this->fill = "/fill/" . $this->ciBase64($value);
     }
 
-    public function setDissolve($value) {
+    public function setDissolve($value): void
+    {
         $this->dissolve = "/dissolve/" . $value;
     }
 
-    public function setGravity($value) {
+    public function setGravity($value): void
+    {
         $this->gravity = "/gravity/" . $value;
     }
 
-    public function setDx($value) {
+    public function setDx($value): void
+    {
         $this->dx = "/dx/" . $value;
     }
 
-    public function setDy($value) {
+    public function setDy($value): void
+    {
         $this->dy = "/dy/" . $value;
     }
 
-    public function setBatch($value) {
+    public function setBatch($value): void
+    {
         $this->batch = "/batch/" . $value;
     }
 
-    public function setDegree($value) {
+    public function setDegree($value): void
+    {
         $this->degree = "/degree/" . $value;
     }
 
-    public function getText() {
+    public function getText(): string
+    {
         return $this->text;
     }
 
-    public function getFont() {
+    public function getFont(): string
+    {
         return $this->font;
     }
 
-    public function getFontsize() {
+    public function getFontsize(): string
+    {
         return $this->fontsize;
     }
 
-    public function getFill() {
+    public function getFill(): string
+    {
         return $this->fill;
     }
 
-    public function getDissolve() {
+    public function getDissolve(): string
+    {
         return $this->dissolve;
     }
 
-    public function getGravity() {
+    public function getGravity(): string
+    {
         return $this->gravity;
     }
 
-    public function getDx() {
+    public function getDx(): string
+    {
         return $this->dx;
     }
 
-    public function getDy() {
+    public function getDy(): string
+    {
         return $this->dy;
     }
 
-    public function getBatch() {
+    public function getBatch(): string
+    {
         return $this->batch;
     }
 
-    public function getDegree() {
+    public function getDegree(): string
+    {
         return $this->degree;
     }
 
-    public function queryString() {
+    public function queryString(): string
+    {
         $head = "watermark/2";
         $res = "";
         if($this->text) {
@@ -151,7 +172,8 @@ class TextWatermarkTemplate extends ImageTemplate
         return $res;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->text = "";
         $this->font = "";
         $this->fontsize = "";

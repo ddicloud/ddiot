@@ -28,7 +28,7 @@ class DdUploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%upload_file}}';
     }
@@ -36,7 +36,7 @@ class DdUploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['group_id', 'file_size', 'is_delete', 'create_time'], 'integer'],
@@ -49,7 +49,7 @@ class DdUploadFile extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'file_id' => 'File ID',

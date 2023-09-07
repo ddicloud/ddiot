@@ -46,11 +46,11 @@ class Uploader
     /**
      * 构造函数.
      *
-     * @param $fileField  表单名称
-     * @param $config 配置项
+     * @param string $fileField  表单名称
+     * @param array $config 配置项
      * @param string $type 是否解析base64编码，可省略。若开启，则$fileField代表的是base64编码的字符串表单名
      */
-    public function __construct($fileField, $config, $type = 'upload')
+    public function __construct(string $fileField, array $config, string $type = 'upload')
     {
         $this->fileField = $fileField;
         $this->config = $config;
@@ -68,9 +68,9 @@ class Uploader
     /**
      * 上传文件的主处理方法.
      *
-     * @return mixed
+     * @return void
      */
-    private function upFile()
+    private function upFile(): void
     {
         $file = $this->file = $_FILES[$this->fileField];
         if (!$file) {
@@ -135,9 +135,9 @@ class Uploader
     /**
      * 处理base64编码的图片上传.
      *
-     * @return mixed
+     * @return void
      */
-    private function upBase64()
+    private function upBase64(): void
     {
         $base64Data = $_POST[$this->fileField];
         $img = base64_decode($base64Data);
@@ -179,15 +179,15 @@ class Uploader
     /**
      * 拉取远程图片.
      *
-     * @return mixed
+     * @return void
      */
-    private function saveRemote()
+    private function saveRemote(): void
     {
         $imgUrl = htmlspecialchars($this->fileField);
         $imgUrl = str_replace('&amp;', '&', $imgUrl);
 
         //http开头验证
-        if (strpos($imgUrl, 'http') !== 0) {
+        if (!str_starts_with($imgUrl, 'http')) {
             $this->stateInfo = $this->getStateInfo('ERROR_HTTP_LINK');
 
             return;
@@ -260,7 +260,7 @@ class Uploader
      *
      * @return string
      */
-    private function getStateInfo($errCode)
+    private function getStateInfo($errCode): string
     {
         return !$this->stateMap[$errCode] ? $this->stateMap['ERROR_UNKNOWN'] : $this->stateMap[$errCode];
     }
@@ -270,7 +270,7 @@ class Uploader
      *
      * @return string
      */
-    private function getFileExt()
+    private function getFileExt(): string
     {
         return strtolower(strrchr($this->oriName, '.'));
     }
@@ -280,7 +280,7 @@ class Uploader
      *
      * @return string
      */
-    private function getFullName()
+    private function getFullName(): string
     {
         //替换日期事件
         $t = time();
@@ -316,7 +316,7 @@ class Uploader
      *
      * @return string
      */
-    private function getFileName()
+    private function getFileName(): string
     {
         return substr($this->filePath, strrpos($this->filePath, '/') + 1);
     }
@@ -326,11 +326,11 @@ class Uploader
      *
      * @return string
      */
-    private function getFilePath()
+    private function getFilePath(): string
     {
         $fullname = $this->fullName;
 
-        if (substr($fullname, 0, 1) != '/') {
+        if (!str_starts_with($fullname, '/')) {
             $fullname = '/'.$fullname;
         }
 
@@ -342,7 +342,7 @@ class Uploader
      *
      * @return bool
      */
-    private function checkType()
+    private function checkType(): bool
     {
         return in_array($this->getFileExt(), $this->config['allowFiles']);
     }
@@ -352,7 +352,7 @@ class Uploader
      *
      * @return bool
      */
-    private function checkSize()
+    private function checkSize(): bool
     {
         return $this->fileSize <= ($this->config['maxSize']);
     }
@@ -362,7 +362,7 @@ class Uploader
      *
      * @return array
      */
-    public function getFileInfo()
+    public function getFileInfo(): array
     {
         return [
             'state' => $this->stateInfo,

@@ -24,7 +24,7 @@ class ListMultipartUploadInfo
      * @param string $isTruncated
      * @param array $uploads
      */
-    public function __construct($bucket, $keyMarker, $uploadIdMarker, $nextKeyMarker, $nextUploadIdMarker, $delimiter, $prefix, $maxUploads, $isTruncated, array $uploads)
+    public function __construct(string $bucket, string $keyMarker, string $uploadIdMarker, string $nextKeyMarker, string $nextUploadIdMarker, string $delimiter, string $prefix, int $maxUploads, string $isTruncated, array $uploads)
     {
         $this->bucket = $bucket;
         $this->keyMarker = $keyMarker;
@@ -43,7 +43,7 @@ class ListMultipartUploadInfo
      *
      * @return string
      */
-    public function getBucket()
+    public function getBucket(): string
     {
         return $this->bucket;
     }
@@ -51,7 +51,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getKeyMarker()
+    public function getKeyMarker(): string
     {
         return $this->keyMarker;
     }
@@ -60,7 +60,7 @@ class ListMultipartUploadInfo
      *
      * @return string
      */
-    public function getUploadIdMarker()
+    public function getUploadIdMarker(): string
     {
         return $this->uploadIdMarker;
     }
@@ -68,7 +68,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getNextKeyMarker()
+    public function getNextKeyMarker(): string
     {
         return $this->nextKeyMarker;
     }
@@ -76,7 +76,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getNextUploadIdMarker()
+    public function getNextUploadIdMarker(): string
     {
         return $this->nextUploadIdMarker;
     }
@@ -84,7 +84,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getDelimiter()
+    public function getDelimiter(): string
     {
         return $this->delimiter;
     }
@@ -92,7 +92,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
@@ -100,7 +100,7 @@ class ListMultipartUploadInfo
     /**
      * @return int
      */
-    public function getMaxUploads()
+    public function getMaxUploads(): int
     {
         return $this->maxUploads;
     }
@@ -108,7 +108,7 @@ class ListMultipartUploadInfo
     /**
      * @return string
      */
-    public function getIsTruncated()
+    public function getIsTruncated(): string
     {
         return $this->isTruncated;
     }
@@ -116,19 +116,19 @@ class ListMultipartUploadInfo
     /**
      * @return UploadInfo[]
      */
-    public function getUploads()
+    public function getUploads(): array
     {
         return $this->uploads;
     }
 
-    private $bucket = "";
-    private $keyMarker = "";
-    private $uploadIdMarker = "";
-    private $nextKeyMarker = "";
-    private $nextUploadIdMarker = "";
-    private $delimiter = "";
-    private $prefix = "";
-    private $maxUploads = 0;
-    private $isTruncated = "false";
-    private $uploads = array();
+    private string $bucket = "";
+    private string $keyMarker = "";
+    private string $uploadIdMarker = "";
+    private string $nextKeyMarker = "";
+    private string $nextUploadIdMarker = "";
+    private string $delimiter = "";
+    private string $prefix = "";
+    private int $maxUploads = 0;
+    private string $isTruncated = "false";
+    private array $uploads = array();
 }

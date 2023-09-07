@@ -13,12 +13,12 @@ use yii\base\Component;
 
 class ArrayDataProvider extends \yii\data\ArrayDataProvider
 {
-    public $total;
+    public int $total = 0;
     
     /*
      *  @inheritdoc
      */
-    protected function prepareModels()
+    protected function prepareModels(): array
     {
         if (($models = $this->allModels) === null) {
             return [];
@@ -38,7 +38,7 @@ class ArrayDataProvider extends \yii\data\ArrayDataProvider
     /*
      *       @inheritdoc
      */
-    protected function prepareTotalCount()
+    protected function prepareTotalCount(): int
     {
         return $this->getTotalCount();
     }

@@ -23,36 +23,40 @@ class File extends BaseObject
     /**
      * @string 文件路径
      */
-    protected $path;
+    protected mixed $path;
 
     /**
-     * @var 文件扩展
+     * 文件扩展
+     * @var string
      */
-    protected $extension;
+    protected string $extension;
 
     /**
-     * @var 文件大小
+     * 文件大小
+     * @var int
      */
-    protected $size;
+    protected int $size;
 
     /**
-     * @var 文件类型
+     * 文件类型
+     * @var string
      */
-    protected $mimeType;
+    protected string $mimeType;
 
     /**
-     * @var 路径信息
+     * 路径信息
+     * @var array
      */
-    protected $pathinfo;
+    protected array $pathinfo;
 
     /**
      * 上传文件
      *
-     * @param $file string|\yii\web\UploadedFile
-     * @return self
+     * @param $file UploadedFile|string
+     * @return object|array|string
      * @throws InvalidConfigException
      */
-    public static function create($file)
+    public static function create(UploadedFile|string $file): object|array|string
     {
         if (is_a($file, self::className())) {
             return $file;
@@ -84,7 +88,7 @@ class File extends BaseObject
      * @return self[]
      * @throws \yii\base\InvalidConfigException
      */
-    public static function createAll(array $files)
+    public static function createAll(array $files): array
     {
         $result = [];
         foreach ($files as $file) {
@@ -98,7 +102,7 @@ class File extends BaseObject
      *
      * @throws InvalidConfigException
      */
-    public function init()
+    public function init(): void
     {
         if ($this->path === null) {
             throw new InvalidConfigException;
@@ -110,7 +114,7 @@ class File extends BaseObject
      *
      * @return mixed
      */
-    public function getPath()
+    public function getPath(): mixed
     {
         return $this->path;
     }
@@ -118,9 +122,9 @@ class File extends BaseObject
     /**
      * 获取文件大小
      *
-     * @return mixed
+     * @return int|bool
      */
-    public function getSize()
+    public function getSize(): int|bool
     {
         if (!$this->size) {
             $this->size = filesize($this->path);
@@ -134,7 +138,7 @@ class File extends BaseObject
      * @return string
      * @throws InvalidConfigException
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         if (!$this->mimeType) {
             $this->mimeType = FileHelper::getMimeType($this->path);
@@ -145,13 +149,10 @@ class File extends BaseObject
     /**
      * 获取文件扩展
      *
-     * @return mixed|null
+     * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
-        if ($this->extension === null) {
-            $this->extension = $this->getPathInfo('extension');
-        }
 
         return $this->extension;
     }
@@ -160,8 +161,9 @@ class File extends BaseObject
      * 获取文件类型
      *
      * @return mixed
+     * @throws InvalidConfigException
      */
-    public function getExtensionByMimeType()
+    public function getExtensionByMimeType(): mixed
     {
         $extensions = FileHelper::getExtensionsByMimeType($this->getMimeType());
         return array_shift($extensions);
@@ -173,11 +175,8 @@ class File extends BaseObject
      * @param bool $part
      * @return mixed|null
      */
-    public function getPathInfo($part = false)
+    public function getPathInfo(bool $part = false): mixed
     {
-        if ($this->pathinfo === null) {
-            $this->pathinfo = pathinfo($this->path);
-        }
         if ($part !== false) {
             return array_key_exists($part, $this->pathinfo) ? $this->pathinfo[$part] : null;
         }
@@ -189,7 +188,7 @@ class File extends BaseObject
      *
      * @param $path
      */
-    public function setPath($path)
+    public function setPath($path): void
     {
         $this->path = $path;
     }
@@ -199,7 +198,7 @@ class File extends BaseObject
      *
      * @param $extension
      */
-    public function setExtension($extension)
+    public function setExtension($extension): void
     {
         $this->extension = $extension;
     }
@@ -209,7 +208,7 @@ class File extends BaseObject
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return $this->error !== false;
     }

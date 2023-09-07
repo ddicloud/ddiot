@@ -16,30 +16,16 @@ use diandi\addons\models\enums\RegisterLevelStatus;
 class RegisterLevel extends BaseService
 {
 
-    public static function isRegister($userInfo, $bloc_id)
+    public static function isRegister($userInfo, $bloc_id): bool
     {
         global  $_GPC;
         $group_bloc_id = Bloc::find()->where(['bloc_id' => $bloc_id])->select(['group_bloc_id'])->scalar();
         $register_level = Bloc::find()->where(['bloc_id' => $group_bloc_id])->select(['register_level'])->scalar();
 
-        switch ($register_level) {
-            case RegisterLevelStatus::GROUP:
-
-                return  $userInfo && $userInfo['bloc_id'] == $group_bloc_id;
-
-                break;
-            case RegisterLevelStatus::BLOC:
-                return  $userInfo  && $userInfo['bloc_id'] == $bloc_id;
-
-                break;
-            case RegisterLevelStatus::STORE:
-                return  $userInfo && $userInfo['store_id'] == $_GPC['store_id'];
-
-                break;
-            default:
-                return  $userInfo && $userInfo['bloc_id'] == $group_bloc_id;
-
-                break;
-        }
+        return match ($register_level) {
+            RegisterLevelStatus::BLOC => $userInfo && $userInfo['bloc_id'] == $bloc_id,
+            RegisterLevelStatus::STORE => $userInfo && $userInfo['store_id'] == $_GPC['store_id'],
+            default => $userInfo && $userInfo['bloc_id'] == $group_bloc_id,
+        };
     }
 }

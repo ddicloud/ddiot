@@ -24,12 +24,12 @@ function region_map($region)
     return $region;
 }
 
-function encodeKey($key)
+function encodeKey($key): array|string
 {
     return str_replace('%2F', '/', rawurlencode($key));
 }
 
-function endWith($haystack, $needle)
+function endWith($haystack, $needle): bool
 {
     $length = strlen($needle);
     if ($length == 0) {
@@ -38,7 +38,7 @@ function endWith($haystack, $needle)
     return (substr($haystack, -$length) === $needle);
 }
 
-function startWith($haystack, $needle)
+function startWith($haystack, $needle): bool
 {
     $length = strlen($needle);
     if ($length == 0) {
@@ -62,8 +62,8 @@ function headersMap($command, $request)
 }
 
 if (!function_exists('str_contains')) {
-    function str_contains($haystack, $needle)
+    function str_contains($haystack, $needle): bool
     {
-        return strpos($haystack, $needle) !== false;
+        return str_contains($haystack, $needle);
     }
 }

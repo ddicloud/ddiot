@@ -12,15 +12,15 @@ class RefererConfig implements XmlConfig
 {
     /**
      * @param string $strXml
-     * @return null
+     * @return void
      */
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml): void
     {
         $xml = simplexml_load_string($strXml);
         if (!isset($xml->AllowEmptyReferer)) return;
         if (!isset($xml->RefererList)) return;
         $this->allowEmptyReferer =
-            (strval($xml->AllowEmptyReferer) === 'TRUE' || strval($xml->AllowEmptyReferer) === 'true') ? true : false;
+            strval($xml->AllowEmptyReferer) === 'TRUE' || strval($xml->AllowEmptyReferer) === 'true';
 
         foreach ($xml->RefererList->Referer as $key => $refer) {
             $this->refererList[] = strval($refer);
@@ -33,7 +33,7 @@ class RefererConfig implements XmlConfig
      *
      * @return string
      */
-    public function serializeToXml()
+    public function serializeToXml(): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><RefererConfiguration></RefererConfiguration>');
         if ($this->allowEmptyReferer) {
@@ -59,7 +59,7 @@ class RefererConfig implements XmlConfig
     /**
      * @param boolean $allowEmptyReferer
      */
-    public function setAllowEmptyReferer($allowEmptyReferer)
+    public function setAllowEmptyReferer(bool $allowEmptyReferer): void
     {
         $this->allowEmptyReferer = $allowEmptyReferer;
     }
@@ -67,7 +67,7 @@ class RefererConfig implements XmlConfig
     /**
      * @param string $referer
      */
-    public function addReferer($referer)
+    public function addReferer(string $referer): void
     {
         $this->refererList[] = $referer;
     }
@@ -75,7 +75,7 @@ class RefererConfig implements XmlConfig
     /**
      * @return boolean
      */
-    public function isAllowEmptyReferer()
+    public function isAllowEmptyReferer(): bool
     {
         return $this->allowEmptyReferer;
     }
@@ -83,11 +83,11 @@ class RefererConfig implements XmlConfig
     /**
      * @return array
      */
-    public function getRefererList()
+    public function getRefererList(): array
     {
         return $this->refererList;
     }
 
-    private $allowEmptyReferer = true;
-    private $refererList = array();
+    private bool $allowEmptyReferer = true;
+    private array $refererList = array();
 }

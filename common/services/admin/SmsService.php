@@ -33,12 +33,12 @@ class SmsService extends BaseService
      *
      * @var bool
      */
-    public $queueSwitch = false;
+    public bool $queueSwitch = false;
 
     /**
      * @var array
      */
-    protected $config = [];
+    protected array $config = [];
 
     public function __construct()
     {

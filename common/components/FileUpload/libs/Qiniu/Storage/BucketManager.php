@@ -14,8 +14,8 @@ use Qiniu\Http\Error;
  */
 final class BucketManager
 {
-    private $auth;
-    private $zone;
+    private Auth $auth;
+    private Zone $zone;
 
     public function __construct(Auth $auth, Zone $zone = null)
     {
@@ -30,7 +30,7 @@ final class BucketManager
      *
      * @return string[] 包含所有空间名
      */
-    public function buckets()
+    public function buckets(): array
     {
         return $this->rsGet('/buckets');
     }
@@ -38,11 +38,11 @@ final class BucketManager
     /**
      * 列取空间的文件列表
      *
-     * @param $bucket     空间名
-     * @param $prefix     列举前缀
-     * @param $marker     列举标识符
-     * @param $limit      单次列举个数限制
-     * @param $delimiter  指定目录分隔符
+     * @param $bucket   string  空间名
+     * @param $prefix    string|null 列举前缀
+     * @param $marker    string|null 列举标识符
+     * @param $limit      int 单次列举个数限制
+     * @param $delimiter  string|null 指定目录分隔符
      *
      * @return array    包含文件信息的数组，类似：[
      *                                              {
@@ -55,7 +55,7 @@ final class BucketManager
      *                                            ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
      */
-    public function listFiles($bucket, $prefix = null, $marker = null, $limit = 1000, $delimiter = null)
+    public function listFiles(string $bucket, string $prefix = null, string $marker = null, int $limit = 1000, string $delimiter = null): array
     {
         $query = array('bucket' => $bucket);
         \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
@@ -74,8 +74,8 @@ final class BucketManager
     /**
      * 获取资源的元信息，但不返回文件内容
      *
-     * @param $bucket     待获取信息资源所在的空间
-     * @param $key        待获取资源的文件名
+     * @param $bucket   string  待获取信息资源所在的空间
+     * @param $key       string 待获取资源的文件名
      *
      * @return array    包含文件信息的数组，类似：
      *                                              [
@@ -87,7 +87,7 @@ final class BucketManager
      *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
      */
-    public function stat($bucket, $key)
+    public function stat(string $bucket, string $key): array
     {
         $path = '/stat/' . \Qiniu\entry($bucket, $key);
         return $this->rsGet($path);
@@ -96,13 +96,13 @@ final class BucketManager
     /**
      * 删除指定资源
      *
-     * @param $bucket     待删除资源所在的空间
-     * @param $key        待删除资源的文件名
+     * @param $bucket   string  待删除资源所在的空间
+     * @param $key       string 待删除资源的文件名
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
      */
-    public function delete($bucket, $key)
+    public function delete(string $bucket, $key): mixed
     {
         $path = '/delete/' . \Qiniu\entry($bucket, $key);
         list(, $error) = $this->rsPost($path);
@@ -113,13 +113,13 @@ final class BucketManager
     /**
      * 给资源进行重命名，本质为move操作。
      *
-     * @param $bucket     待操作资源所在空间
-     * @param $oldname    待操作资源文件名
-     * @param $newname    目标资源文件名
+     * @param $bucket   string  待操作资源所在空间
+     * @param $oldname    string 待操作资源文件名
+     * @param $newname    string 目标资源文件名
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function rename($bucket, $oldname, $newname)
+    public function rename(string $bucket, string $oldname, string $newname)
     {
         return $this->move($bucket, $oldname, $bucket, $newname);
     }
@@ -127,10 +127,10 @@ final class BucketManager
     /**
      * 给资源进行重命名，本质为move操作。
      *
-     * @param $from_bucket     待操作资源所在空间
-     * @param $from_key        待操作资源文件名
-     * @param $to_bucket       目标资源空间名
-     * @param $to_key          目标资源文件名
+     * @param $from_bucket  string   待操作资源所在空间
+     * @param $from_key     string   待操作资源文件名
+     * @param $to_bucket    string   目标资源空间名
+     * @param $to_key       string   目标资源文件名
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
@@ -147,15 +147,15 @@ final class BucketManager
     /**
      * 将资源从一个空间到另一个空间
      *
-     * @param $from_bucket     待操作资源所在空间
-     * @param $from_key        待操作资源文件名
-     * @param $to_bucket       目标资源空间名
-     * @param $to_key          目标资源文件名
+     * @param $from_bucket  string   待操作资源所在空间
+     * @param $from_key     string   待操作资源文件名
+     * @param $to_bucket    string   目标资源空间名
+     * @param $to_key       string   目标资源文件名
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
-    public function move($from_bucket, $from_key, $to_bucket, $to_key)
+    public function move(string $from_bucket, string $from_key, string $to_bucket, string $to_key): mixed
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
@@ -167,14 +167,14 @@ final class BucketManager
     /**
      * 主动修改指定资源的文件类型
      *
-     * @param $bucket     待操作资源所在空间
-     * @param $key        待操作资源文件名
-     * @param $mime       待操作文件目标mimeType
+     * @param $bucket string    待操作资源所在空间
+     * @param $key    string    待操作资源文件名
+     * @param $mime   string    待操作文件目标mimeType
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/chgm.html
      */
-    public function changeMime($bucket, $key, $mime)
+    public function changeMime(string $bucket, string $key, string $mime): mixed
     {
         $resource = \Qiniu\entry($bucket, $key);
         $encode_mime = \Qiniu\base64_urlSafeEncode($mime);
@@ -186,9 +186,9 @@ final class BucketManager
     /**
      * 从指定URL抓取资源，并将该资源存储到指定空间中
      *
-     * @param $url        指定的URL
-     * @param $bucket     目标资源空间
-     * @param $key        目标资源文件名
+     * @param $url     string   指定的URL
+     * @param $bucket  string   目标资源空间
+     * @param $key     string|null   目标资源文件名
      *
      * @return array    包含已拉取的文件信息。
      *                         成功时：  [
@@ -205,7 +205,7 @@ final class BucketManager
      *                                  ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
      */
-    public function fetch($url, $bucket, $key = null)
+    public function fetch(string $url, string $bucket, string $key = null): array
     {
 
         $resource = \Qiniu\base64_urlSafeEncode($url);
@@ -222,13 +222,13 @@ final class BucketManager
     /**
      * 从镜像源站抓取资源到空间中，如果空间中已经存在，则覆盖该资源
      *
-     * @param $bucket     待获取资源所在的空间
-     * @param $key        代获取资源文件名
+     * @param $bucket  string   待获取资源所在的空间
+     * @param $key     string   代获取资源文件名
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/prefetch.html
      */
-    public function prefetch($bucket, $key)
+    public function prefetch(string $bucket, string $key): mixed
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/prefetch/' . $resource;
@@ -244,7 +244,7 @@ final class BucketManager
     /**
      * 在单次请求中进行多个资源管理操作
      *
-     * @param $operations     资源管理操作数组
+     * @param $operations   array  资源管理操作数组
      *
      * @return array 每个资源的处理情况，结果类似：
      *              [
@@ -257,31 +257,31 @@ final class BucketManager
      *               ]
      * @link http://developer.qiniu.com/docs/v6/api/reference/rs/batch.html
      */
-    public function batch($operations)
+    public function batch(array $operations): array
     {
         $params = 'op=' . implode('&op=', $operations);
         return $this->rsPost('/batch', $params);
     }
 
-    private function rsPost($path, $body = null)
+    private function rsPost($path, $body = null): array
     {
         $url = Config::RS_HOST . $path;
         return $this->post($url, $body);
     }
 
-    private function rsGet($path)
+    private function rsGet($path): array
     {
         $url = Config::RS_HOST . $path;
         return $this->get($url);
     }
 
-    private function ioPost($path, $body = null)
+    private function ioPost($path, $body = null): array
     {
         $url = Config::IO_HOST . $path;
         return $this->post($url, $body);
     }
 
-    private function get($url)
+    private function get($url): array
     {
         $headers = $this->auth->authorization($url);
         $ret = Client::get($url, $headers);
@@ -291,7 +291,7 @@ final class BucketManager
         return array($ret->json(), null);
     }
 
-    private function post($url, $body)
+    private function post($url, $body): array
     {
         $headers = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
         $ret = Client::post($url, $body, $headers);
@@ -302,45 +302,45 @@ final class BucketManager
         return array($r, null);
     }
 
-    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket): array
     {
         return self::twoKeyBatch('copy', $source_bucket, $key_pairs, $target_bucket);
     }
 
 
-    public static function buildBatchRename($bucket, $key_pairs)
+    public static function buildBatchRename($bucket, $key_pairs): array
     {
         return self::buildBatchMove($bucket, $key_pairs, $bucket);
     }
 
 
-    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket): array
     {
         return self::twoKeyBatch('move', $source_bucket, $key_pairs, $target_bucket);
     }
 
 
-    public static function buildBatchDelete($bucket, $keys)
+    public static function buildBatchDelete($bucket, $keys): array
     {
         return self::oneKeyBatch('delete', $bucket, $keys);
     }
 
 
-    public static function buildBatchStat($bucket, $keys)
+    public static function buildBatchStat($bucket, $keys): array
     {
         return self::oneKeyBatch('stat', $bucket, $keys);
     }
 
-    private static function oneKeyBatch($operation, $bucket, $keys)
+    private static function oneKeyBatch($operation, $bucket, $keys): array
     {
         $data = array();
         foreach ($keys as $key) {
-            array_push($data, $operation . '/' . \Qiniu\entry($bucket, $key));
+            $data[] = $operation . '/' . \Qiniu\entry($bucket, $key);
         }
         return $data;
     }
 
-    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket)
+    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket): array
     {
         if ($target_bucket === null) {
             $target_bucket = $source_bucket;
@@ -349,7 +349,7 @@ final class BucketManager
         foreach ($key_pairs as $from_key => $to_key) {
             $from = \Qiniu\entry($source_bucket, $from_key);
             $to = \Qiniu\entry($target_bucket, $to_key);
-            array_push($data, $operation . '/' . $from . '/' . $to);
+            $data[] = $operation . '/' . $from . '/' . $to;
         }
         return $data;
     }

@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class DdDispatcher extends EventDispatcher
 {
     // 批量派遣
-    public function dispatchs(array $events,$event)
+    public function dispatchs(array $events,$event): void
     {
         foreach ($events as $key => $value) {
             $this->dispatch($value,$event);

@@ -15,10 +15,10 @@ class WebsiteConfig implements XmlConfig
 {
     /**
      * WebsiteConfig constructor.
-     * @param  string $indexDocument
-     * @param  string $errorDocument
+     * @param string $indexDocument
+     * @param string $errorDocument
      */
-    public function __construct($indexDocument = "", $errorDocument = "")
+    public function __construct(string $indexDocument = "", string $errorDocument = "")
     {
         $this->indexDocument = $indexDocument;
         $this->errorDocument = $errorDocument;
@@ -28,13 +28,13 @@ class WebsiteConfig implements XmlConfig
      * @param string $strXml
      * @return null
      */
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml)
     {
         $xml = simplexml_load_string($strXml);
-        if (isset($xml->IndexDocument) && isset($xml->IndexDocument->Suffix)) {
+        if (isset($xml->IndexDocument->Suffix)) {
             $this->indexDocument = strval($xml->IndexDocument->Suffix);
         }
-        if (isset($xml->ErrorDocument) && isset($xml->ErrorDocument->Key)) {
+        if (isset($xml->ErrorDocument->Key)) {
             $this->errorDocument = strval($xml->ErrorDocument->Key);
         }
     }
@@ -43,9 +43,8 @@ class WebsiteConfig implements XmlConfig
      * 把WebsiteConfig序列化成xml
      *
      * @return string
-     * @throws OssException
      */
-    public function serializeToXml()
+    public function serializeToXml(): string
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><WebsiteConfiguration></WebsiteConfiguration>');
         $index_document_part = $xml->addChild('IndexDocument');
@@ -58,7 +57,7 @@ class WebsiteConfig implements XmlConfig
     /**
      * @return string
      */
-    public function getIndexDocument()
+    public function getIndexDocument(): string
     {
         return $this->indexDocument;
     }
@@ -66,11 +65,11 @@ class WebsiteConfig implements XmlConfig
     /**
      * @return string
      */
-    public function getErrorDocument()
+    public function getErrorDocument(): string
     {
         return $this->errorDocument;
     }
 
-    private $indexDocument = "";
-    private $errorDocument = "";
+    private string $indexDocument = "";
+    private string $errorDocument = "";
 }

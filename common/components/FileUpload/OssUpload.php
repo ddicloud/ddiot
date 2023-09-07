@@ -78,7 +78,7 @@ class OssUpload extends Component
         if (Yii::$app->params['conf']['oss']['remote_type'] == ATTACH_OSS) {
             $buckets = $this->attachment_alioss_buctkets(Yii::$app->params['conf']['oss']['Aliyunoss_accessKeyId'], Yii::$app->params['conf']['oss']['Aliyunoss_accessKeySecret']);
             $host_name = Yii::$app->params['conf']['oss']['Aliyunoss_resource'] ? '-internal.aliyuncs.com' : '.aliyuncs.com';
-            $endpoint = 'http://' . Yii::$app->params['conf']['oss']['Aliyunoss_endPoint'] . $host_name;
+            $endpoint = 'https://' . Yii::$app->params['conf']['oss']['Aliyunoss_endPoint'] . $host_name;
             try {
                 $ossClient = new OssClient(Yii::$app->params['conf']['oss']['Aliyunoss_accessKeyId'], Yii::$app->params['conf']['oss']['Aliyunoss_accessKeySecret'], $endpoint);
                 $filePath = Yii::getAlias('@' . ATTACHMENT_ROOT . '/' . $filename);
@@ -97,7 +97,11 @@ class OssUpload extends Component
                 'scope' => Yii::$app->params['conf']['oss']['qiniu']['bucket'] . ':' . $filename,
             ]));
             $uploadtoken = $auth->uploadToken(Yii::$app->params['conf']['oss']['qiniu']['bucket'], $filename, 3600, $putpolicy);
-            list($ret, $err) = $uploadmgr->putFile($uploadtoken, $filename, ATTACHMENT_ROOT . '/' . $filename);
+            try {
+                list($ret, $err) = $uploadmgr->putFile($uploadtoken, $filename, ATTACHMENT_ROOT . '/' . $filename);
+            } catch (\Exception $e) {
+                return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            }
             if ($auto_delete_local) {
                 $this->file_delete($filename);
             }

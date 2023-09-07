@@ -37,14 +37,14 @@ class AccessTokenService extends BaseService
      *
      * @var bool
      */
-    public $cache = true;
+    public bool $cache = true;
 
     /**
      * 缓存过期时间.
      *
      * @var int
      */
-    public $timeout;
+    public int $timeout;
 
     /**
      * 获取token.

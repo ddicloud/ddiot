@@ -28,14 +28,14 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return sprintf('%u', $array[1]);
     }
 
-   /**
+    /**
      * 计算输入流的crc32检验码
      *
-     * @param $data 待计算校验码的字符串
+     * @param string $data array 待计算校验码的字符串
      *
      * @return string 输入字符串的crc32校验码
      */
-    function crc32_data($data)
+    function crc32_data(string $data): string
     {
         $hash = hash('crc32b', $data);
         $array = unpack('N', pack('H*', $hash));
@@ -50,7 +50,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @return string 编码后的字符串
      * @link http://developer.qiniu.com/docs/v6/api/overview/appendix.html#urlsafe-base64
      */
-    function base64_urlSafeEncode($data)
+    function base64_urlSafeEncode($data): string
     {
         $find = array('+', '/');
         $replace = array('-', '_');
@@ -64,7 +64,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      *
      * @return string 解码后的字符串
      */
-    function base64_urlSafeDecode($str)
+    function base64_urlSafeDecode($str): string
     {
         $find = array('-', '_');
         $replace = array('+', '/');
@@ -78,13 +78,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param string $json    JSON data to parse
      * @param bool $assoc     When true, returned objects will be converted
      *                        into associative arrays.
-     * @param int    $depth   User specified recursion depth.
+     * @param int $depth   User specified recursion depth.
      *
      * @return mixed
      * @throws \InvalidArgumentException if the JSON cannot be parsed.
      * @link http://www.php.net/manual/en/function.json-decode.php
      */
-    function json_decode($json, $assoc = false, $depth = 512)
+    function json_decode(string $json, bool $assoc = false, int $depth = 512): mixed
     {
         static $jsonErrors = array(
             JSON_ERROR_DEPTH => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
@@ -103,9 +103,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
             $last = json_last_error();
             throw new \InvalidArgumentException(
                 'Unable to parse JSON data: '
-                . (isset($jsonErrors[$last])
-                    ? $jsonErrors[$last]
-                    : 'Unknown error')
+                . ($jsonErrors[$last] ?? 'Unknown error')
             );
         }
 
@@ -115,13 +113,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
    /**
      * 计算七牛API中的数据格式
      *
-     * @param $bucket 待操作的空间名
-     * @param $key 待操作的文件名
+     * @param $bucket string 待操作的空间名
+     * @param $key string 待操作的文件名
      *
      * @return string  符合七牛API规格的数据格式
      * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
      */
-    function entry($bucket, $key)
+    function entry(string $bucket, string $key): string
     {
         $en = $bucket;
         if (!empty($key)) {
@@ -133,13 +131,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * array 辅助方法，无值时不set
      *
-     * @param $array 待操作array
-     * @param $key key
-     * @param $value value 为null时 不设置
+     * @param $array array 待操作
+     * @param $key string key
+     * @param $value string value 为null时 不设置
      *
      * @return array 原来的array，便于连续操作
      */
-    function setWithoutEmpty(&$array, $key, $value)
+    function setWithoutEmpty(array &$array, string $key, string $value): array
     {
         if (!empty($value)) {
             $array[$key] = $value;
@@ -150,28 +148,29 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 缩略图链接拼接
      *
-     * @param  string $url 图片链接
-     * @param  int $mode 缩略模式
-     * @param  int $width 宽度
-     * @param  int $height 长度
-     * @param  string $format 输出类型
-     * @param  int $quality 图片质量
-     * @param  int $interlace 是否支持渐进显示
-     * @param  int $ignoreError 忽略结果
+     * @param string $url 图片链接
+     * @param int $mode 缩略模式
+     * @param int $width 宽度
+     * @param int $height 长度
+     * @param string|null $format 输出类型
+     * @param int|null $quality 图片质量
+     * @param int|null $interlace 是否支持渐进显示
+     * @param int $ignoreError 忽略结果
      * @return string
      * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function thumbnail(
-        $url,
-        $mode,
-        $width,
-        $height,
-        $format = null,
-        $quality = null,
-        $interlace = null,
-        $ignoreError = 1
-    ) {
+        string $url,
+        int    $mode,
+        int    $width,
+        int    $height,
+        string $format = null,
+        int    $quality = null,
+        int    $interlace = null,
+        int $ignoreError = 1
+    ): string
+    {
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -183,26 +182,27 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 图片水印
      *
-     * @param  string $url 图片链接
-     * @param  string $image 水印图片链接
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @param  numeric $watermarkScale 自适应原图的短边比例
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
+     * @param string $url 图片链接
+     * @param string $image 水印图片链接
+     * @param numeric $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param numeric|null $dx 横轴边距
+     * @param numeric|null $dy 纵轴边距
+     * @param numeric|null $watermarkScale 自适应原图的短边比例
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function waterImg(
-        $url,
-        $image,
-        $dissolve = 100,
-        $gravity = 'SouthEast',
-        $dx = null,
-        $dy = null,
-        $watermarkScale = null
-    ) {
+        string           $url,
+        string           $image,
+        float|int|string $dissolve = 100,
+        string           $gravity = 'SouthEast',
+        float|int|string $dx = null,
+        float|int|string $dy = null,
+        float|int|string $watermarkScale = null
+    ): string
+    {
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -214,30 +214,31 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 文字水印
      *
-     * @param  string $url 图片链接
-     * @param  string $text 文字
-     * @param  string $font 文字字体
-     * @param  string $fontSize 文字字号
-     * @param  string $fontColor 文字颜色
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
+     * @param string $url 图片链接
+     * @param string $text 文字
+     * @param string $font 文字字体
+     * @param int|string $fontSize 文字字号
+     * @param string|null $fontColor 文字颜色
+     * @param numeric $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param numeric|null $dx 横轴边距
+     * @param numeric|null $dy 纵轴边距
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function waterText(
-        $url,
-        $text,
-        $font = '黑体',
-        $fontSize = 0,
-        $fontColor = null,
-        $dissolve = 100,
-        $gravity = 'SouthEast',
-        $dx = null,
-        $dy = null
-    ) {
+        string           $url,
+        string           $text,
+        string           $font = '黑体',
+        int|string       $fontSize = 0,
+        string           $fontColor = null,
+        float|int|string $dissolve = 100,
+        string           $gravity = 'SouthEast',
+        float|int|string $dx = null,
+        float|int|string $dy = null
+    ): string
+    {
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;

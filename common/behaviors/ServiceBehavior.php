@@ -12,6 +12,8 @@ namespace common\behaviors;
 use common\helpers\loggingHelper;
 use Yii;
 use yii\base\Behavior;
+use yii\base\ErrorException;
+use yii\base\InvalidConfigException;
 
 /**
  * @author Skilly
@@ -21,15 +23,15 @@ class ServiceBehavior extends Behavior
     // 定义事件名
     const EVENT_ADDONS_SERVICE = 'serviceEvents';
 
-    public $addons = '';
+    public string $addons = '';
 
-    public $serviceClassName = '';
+    public string $serviceClassName = '';
 
-    public $action = '';
+    public string $action = '';
 
-    public $params = [];
+    public array $params = [];
 
-    public function init()
+    public function init(): void
     {
         global $_GPC;
         // if ($this->addons || $this->serviceClassName || $this->action || $this->params) {
@@ -37,7 +39,7 @@ class ServiceBehavior extends Behavior
     }
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
-    public function events()
+    public function events(): array
     {
         return [
             self::EVENT_ADDONS_SERVICE => 'serviceEvents',
@@ -54,16 +56,16 @@ class ServiceBehavior extends Behavior
         $namespace = 'addons\\'.$this->addons.'\\services\\';
         $serviceClassName = $this->serviceClassName;
 
-        $service = Yii::createObject([
-            'class' => $namespace.$serviceClassName,
-        ]);
-        $action = $this->action;
+
         try {
-            $Res = call_user_func_array([$service, $action], $this->params);
-            
-            return $Res;
-        } catch (\Exception $e) {
-            throw $e;
+            $service = Yii::createObject([
+                'class' => $namespace . $serviceClassName,
+            ]);
+            $action = $this->action;
+            return call_user_func_array([$service, $action], $this->params);
+        } catch (InvalidConfigException $e) {
+            throw new ErrorException($e->getMessage());
         }
+
     }
 }

@@ -17,7 +17,7 @@ class CorsRule
      *
      * @param string $allowedOrigin
      */
-    public function addAllowedOrigin($allowedOrigin)
+    public function addAllowedOrigin(string $allowedOrigin): void
     {
         if (!empty($allowedOrigin)) {
             $this->allowedOrigins[] = $allowedOrigin;
@@ -29,7 +29,7 @@ class CorsRule
      *
      * @param string $allowedMethod
      */
-    public function addAllowedMethod($allowedMethod)
+    public function addAllowedMethod(string $allowedMethod): void
     {
         if (!empty($allowedMethod)) {
             $this->allowedMethods[] = $allowedMethod;
@@ -41,7 +41,7 @@ class CorsRule
      *
      * @param string $allowedHeader
      */
-    public function addAllowedHeader($allowedHeader)
+    public function addAllowedHeader(string $allowedHeader): void
     {
         if (!empty($allowedHeader)) {
             $this->allowedHeaders[] = $allowedHeader;
@@ -53,7 +53,7 @@ class CorsRule
      *
      * @param string $exposeHeader
      */
-    public function addExposeHeader($exposeHeader)
+    public function addExposeHeader(string $exposeHeader): void
     {
         if (!empty($exposeHeader)) {
             $this->exposeHeaders[] = $exposeHeader;
@@ -61,9 +61,9 @@ class CorsRule
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMaxAgeSeconds()
+    public function getMaxAgeSeconds(): ?int
     {
         return $this->maxAgeSeconds;
     }
@@ -71,7 +71,7 @@ class CorsRule
     /**
      * @param int $maxAgeSeconds
      */
-    public function setMaxAgeSeconds($maxAgeSeconds)
+    public function setMaxAgeSeconds(int $maxAgeSeconds): void
     {
         $this->maxAgeSeconds = $maxAgeSeconds;
     }
@@ -81,7 +81,7 @@ class CorsRule
      *
      * @return string[]
      */
-    public function getAllowedHeaders()
+    public function getAllowedHeaders(): array
     {
         return $this->allowedHeaders;
     }
@@ -91,7 +91,7 @@ class CorsRule
      *
      * @return string[]
      */
-    public function getAllowedOrigins()
+    public function getAllowedOrigins(): array
     {
         return $this->allowedOrigins;
     }
@@ -101,7 +101,7 @@ class CorsRule
      *
      * @return string[]
      */
-    public function getAllowedMethods()
+    public function getAllowedMethods(): array
     {
         return $this->allowedMethods;
     }
@@ -111,7 +111,7 @@ class CorsRule
      *
      * @return string[]
      */
-    public function getExposeHeaders()
+    public function getExposeHeaders(): array
     {
         return $this->exposeHeaders;
     }
@@ -122,7 +122,7 @@ class CorsRule
      * @param \SimpleXMLElement $xmlRule
      * @throws OssException
      */
-    public function appendToXml(&$xmlRule)
+    public function appendToXml(\SimpleXMLElement &$xmlRule): void
     {
         if (!isset($this->maxAgeSeconds)) {
             throw new OssException("maxAgeSeconds is not set in the Rule");
@@ -142,9 +142,9 @@ class CorsRule
         $xmlRule->addChild(CorsConfig::OSS_CORS_MAX_AGE_SECONDS, strval($this->maxAgeSeconds));
     }
 
-    private $allowedHeaders = array();
-    private $allowedOrigins = array();
-    private $allowedMethods = array();
-    private $exposeHeaders = array();
-    private $maxAgeSeconds = null;
+    private array $allowedHeaders = array();
+    private array $allowedOrigins = array();
+    private array $allowedMethods = array();
+    private array $exposeHeaders = array();
+    private ?int $maxAgeSeconds = null;
 }

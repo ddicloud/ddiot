@@ -20,9 +20,9 @@ class Regions
      *
      * @param string $name 缺省名
      *
-     * @return string content-type
+     * @return string|null content-type
      */
-    public static function getRegionEnd($name)
+    public static function getRegionEnd(string $name): ?string
     {
         if (isset(self::$region_end_point[$name])) {
             return self::$region_end_point[$name];
@@ -31,7 +31,7 @@ class Regions
         return null;
     }
 
-    private static $region_end_point = [
+    private static array $region_end_point = [
          'oss-cn-hangzhou' => '华东1（杭州）',
          'oss-cn-shanghai' => '华东2（上海）',
          'oss-cn-qingdao' => '华北1（青岛）',

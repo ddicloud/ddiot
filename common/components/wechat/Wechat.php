@@ -10,12 +10,15 @@
 namespace common\components\wechat;
 
 use common\helpers\FileHelper;
+use Overtrue\Socialite\User;
 use Yii;
 use yii\base\Component;
 use EasyWeChat\Factory;
+use yii\base\InvalidRouteException;
+use Yii\web\Response;
 
 /**
- * Class Wechat.
+ * Class WeChat.
  *
  *
  * @property \EasyWeChat\OfficialAccount\Application $app           微信SDK实例
@@ -33,26 +36,26 @@ class Wechat extends Component
      *
      * @var array
      */
-    public $userOptions = [];
+    public array $userOptions = [];
 
     /**
-     * wechat user info will be stored in session under this key.
+     * WeChat user info will be stored in session under this key.
      *
      * @var string
      */
-    public $sessionParam = '_wechatUser';
+    public string $sessionParam = '_wechatUser';
 
     /**
      * returnUrl param stored in session.
      *
      * @var string
      */
-    public $returnUrlParam = '_wechatReturnUrl';
+    public string $returnUrlParam = '_wechatReturnUrl';
 
     /**
      * @var array
      */
-    public $rebinds = [];
+    public array $rebinds = [];
 
     /**
      * 微信SDK.
@@ -111,15 +114,15 @@ class Wechat extends Component
     /**
      * @return $this|Yii\web\Response
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\InvalidConfigException|\yii\base\InvalidRouteException
      */
-    public function authorizeRequired()
+    public function authorizeRequired(): Yii\web\Response|static
     {
         if (Yii::$app->request->get('code')) {
             // callback and authorize
             return $this->authorize($this->app->oauth->user());
         } else {
-            // redirect to wechat authorize page
+            // redirect to WeChat authorize page
             $this->setReturnUrl(Yii::$app->request->getUrl());
 
             return Yii::$app->response->redirect($this->app->oauth->redirect(Yii::$app->request->absoluteUrl)->getTargetUrl());
@@ -127,11 +130,12 @@ class Wechat extends Component
     }
 
     /**
-     * @param \Overtrue\Socialite\User $user
+     * @param User $user
      *
-     * @return yii\web\Response
+     * @return Response
+     * @throws InvalidRouteException
      */
-    public function authorize(\Overtrue\Socialite\User $user)
+    public function authorize(\Overtrue\Socialite\User $user): Yii\web\Response
     {
         Yii::$app->session->set($this->sessionParam, $user->toJSON());
 
@@ -143,7 +147,7 @@ class Wechat extends Component
      *
      * @return bool
      */
-    public function isAuthorized()
+    public function isAuthorized(): bool
     {
         $hasSession = Yii::$app->session->has($this->sessionParam);
         $sessionVal = Yii::$app->session->get($this->sessionParam);
@@ -152,9 +156,9 @@ class Wechat extends Component
     }
 
     /**
-     * @param string|array $url
+     * @param array|string $url
      */
-    public function setReturnUrl($url)
+    public function setReturnUrl(array|string $url): void
     {
         Yii::$app->session->set($this->returnUrlParam, $url);
     }
@@ -164,7 +168,7 @@ class Wechat extends Component
      *
      * @return mixed|string|null
      */
-    public function getReturnUrl($defaultUrl = null)
+    public function getReturnUrl($defaultUrl = null): mixed
     {
         $url = Yii::$app->session->get($this->returnUrlParam, $defaultUrl);
         if (is_array($url)) {
@@ -183,7 +187,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OfficialAccount\Application
      */
-    public function getApp()
+    public function getApp(): Factory|\EasyWeChat\OfficialAccount\Application
     {
         if (!self::$_app instanceof \EasyWeChat\OfficialAccount\Application) {
             self::$_app = Factory::officialAccount(Yii::$app->params['wechatConfig']);
@@ -198,7 +202,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\Payment\Application
      */
-    public function getPayment()
+    public function getPayment(): Factory|\EasyWeChat\Payment\Application
     {
         $logPath =  Yii::getAlias("@runtime/wechat/getPayment/" . date('ymd') . ".log");
         FileHelper::writeLog($logPath, '开始回调看配置' . json_encode(Yii::$app->params['wechatPaymentConfig']));
@@ -216,7 +220,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\MiniProgram\Application
      */
-    public function getMiniProgram()
+    public function getMiniProgram(): \EasyWeChat\MiniProgram\Application|Factory
     {
         if (!self::$_miniProgram instanceof \EasyWeChat\MiniProgram\Application) {
             self::$_miniProgram = Factory::miniProgram(Yii::$app->params['wechatMiniProgramConfig']);
@@ -231,7 +235,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenPlatform\Application
      */
-    public function getOpenPlatform()
+    public function getOpenPlatform(): \EasyWeChat\OpenPlatform\Application|Factory
     {
         if (!self::$_openPlatform instanceof \EasyWeChat\OpenPlatform\Application) {
             self::$_openPlatform = Factory::openPlatform(Yii::$app->params['wechatOpenPlatformConfig']);
@@ -246,7 +250,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\Work\Application
      */
-    public function getWork()
+    public function getWork(): \EasyWeChat\Work\Application|Factory
     {
         if (!self::$_work instanceof \EasyWeChat\Work\Application) {
             self::$_work = Factory::work(Yii::$app->params['wechatWorkConfig']);
@@ -261,7 +265,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenWork\Application
      */
-    public function getOpenWork()
+    public function getOpenWork(): \EasyWeChat\OpenWork\Application|Factory
     {
         if (!self::$_openWork instanceof \EasyWeChat\OpenWork\Application) {
             self::$_openWork = Factory::openWork(Yii::$app->params['wechatOpenWorkConfig']);
@@ -276,7 +280,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenWork\Application
      */
-    public function getMicroMerchant()
+    public function getMicroMerchant(): \EasyWeChat\OpenWork\Application|Factory
     {
         if (!self::$_microMerchant instanceof \EasyWeChat\MicroMerchant\Application) {
             self::$_microMerchant = Factory::microMerchant(Yii::$app->params['wechatMicroMerchantConfig']);
@@ -293,7 +297,7 @@ class Wechat extends Component
      *
      * @return mixed
      */
-    public function rebind($app)
+    public function rebind($app): mixed
     {
         foreach ($this->rebinds as $key => $class) {
             $app->rebind($key, new $class());
@@ -307,7 +311,7 @@ class Wechat extends Component
      *
      * @return WechatUser
      */
-    public function getUser()
+    public function getUser(): WechatUser
     {
         if (!$this->isAuthorized()) {
             return new WechatUser();
@@ -329,7 +333,7 @@ class Wechat extends Component
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \Exception|\Throwable
      */
     public function __get($name)
     {
@@ -341,12 +345,12 @@ class Wechat extends Component
     }
 
     /**
-     * check if client is wechat.
+     * check if a client is WeChat.
      *
      * @return bool
      */
-    public function getIsWechat()
+    public function getIsWechat(): bool
     {
-        return strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false;
+        return str_contains($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger');
     }
 }

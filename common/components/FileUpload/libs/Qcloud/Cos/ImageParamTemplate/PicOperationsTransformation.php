@@ -11,11 +11,13 @@ class PicOperationsTransformation {
         $this->rules = array();
     }
 
-    public function setIsPicInfo($value) {
+    public function setIsPicInfo($value): void
+    {
         $this->isPicInfo = $value;
     }
 
-    public function addRule(ImageTemplate $template, $fileid = "", $bucket = "") {
+    public function addRule(ImageTemplate $template, $fileid = "", $bucket = ""): void
+    {
         $rule = $template->queryString();
         if($rule){
             $item = array();
@@ -30,15 +32,18 @@ class PicOperationsTransformation {
         }
     }
 
-    public function getIsPicInfo() {
+    public function getIsPicInfo(): int
+    {
         return $this->isPicInfo;
     }
 
-    public function getRules() {
+    public function getRules(): array
+    {
         return $this->rules;
     }
 
-    public function queryString() {
+    public function queryString(): bool|string
+    {
         $res = "";
         $picOperations = array();
        if($this->isPicInfo){
@@ -53,7 +58,8 @@ class PicOperationsTransformation {
        return $res;
     }
 
-    public function resetRule() {
+    public function resetRule(): void
+    {
         $this->isPicInfo = 0;
         $this->rules = array();
     }

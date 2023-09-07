@@ -14,13 +14,13 @@ use Qiniu\Http\Response;
 
 final class Client
 {
-    public static function get($url, array $headers = array())
+    public static function get($url, array $headers = array()): \Qiniu\Http\Response
     {
         $request = new Request('GET', $url, $headers);
         return self::sendRequest($request);
     }
 
-    public static function post($url, $body, array $headers = array())
+    public static function post($url, $body, array $headers = array()): \Qiniu\Http\Response
     {
         $request = new Request('POST', $url, $headers, $body);
         return self::sendRequest($request);
@@ -34,27 +34,28 @@ final class Client
         $fileBody,
         $mimeType = null,
         array $headers = array()
-    ) {
+    ): \Qiniu\Http\Response
+    {
         $data = array();
         $mimeBoundary = md5(microtime());
 
         foreach ($fields as $key => $val) {
-            array_push($data, '--' . $mimeBoundary);
-            array_push($data, "Content-Disposition: form-data; name=\"$key\"");
-            array_push($data, '');
-            array_push($data, $val);
+            $data[] = '--' . $mimeBoundary;
+            $data[] = "Content-Disposition: form-data; name=\"$key\"";
+            $data[] = '';
+            $data[] = $val;
         }
 
-        array_push($data, '--' . $mimeBoundary);
+        $data[] = '--' . $mimeBoundary;
         $mimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
         $fileName = self::escapeQuotes($fileName);
-        array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
-        array_push($data, "Content-Type: $mimeType");
-        array_push($data, '');
-        array_push($data, $fileBody);
+        $data[] = "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"";
+        $data[] = "Content-Type: $mimeType";
+        $data[] = '';
+        $data[] = $fileBody;
 
-        array_push($data, '--' . $mimeBoundary . '--');
-        array_push($data, '');
+        $data[] = '--' . $mimeBoundary . '--';
+        $data[] = '';
 
         $body = implode("\r\n", $data);
         $contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
@@ -63,7 +64,7 @@ final class Client
         return self::sendRequest($request);
     }
 
-    private static function userAgent()
+    private static function userAgent(): string
     {
         $sdkInfo = "QiniuPHP/" . Config::SDK_VER;
 
@@ -74,11 +75,10 @@ final class Client
 
         $phpVer = phpversion();
 
-        $ua = "$sdkInfo $envInfo PHP/$phpVer";
-        return $ua;
+        return "$sdkInfo $envInfo PHP/$phpVer";
     }
 
-    public static function sendRequest($request)
+    public static function sendRequest($request): \Qiniu\Http\Response
     {
         $t1 = microtime(true);
         $ch = curl_init();
@@ -101,7 +101,7 @@ final class Client
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
-                array_push($headers, "$key: $val");
+                $headers[] = "$key: $val";
             }
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
@@ -128,7 +128,7 @@ final class Client
         return new Response($code, $duration, $headers, $body, null);
     }
 
-    private static function parseHeaders($raw)
+    private static function parseHeaders($raw): array
     {
         $headers = array();
         $headerLines = explode("\r\n", $raw);
@@ -142,7 +142,7 @@ final class Client
         return $headers;
     }
 
-    private static function escapeQuotes($str)
+    private static function escapeQuotes($str): array|string
     {
         $find = array("\\", "\"");
         $replace = array("\\\\", "\\\"");

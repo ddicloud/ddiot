@@ -37,7 +37,8 @@ class BodyLocation extends AbstractLocation
         CommandInterface $command,
         RequestInterface $request,
         Parameter $param
-    ) {
+    ): MessageInterface
+    {
         $value = $request->getBody()->getContents();
         if ('' !== $value) {
             throw new \RuntimeException('Only one "body" location may exist per operation');

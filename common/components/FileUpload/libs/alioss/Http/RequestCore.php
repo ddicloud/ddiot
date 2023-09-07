@@ -24,12 +24,12 @@ class RequestCore
     /**
      * The URL being requested.
      */
-    public $request_url;
+    public ?string $request_url;
 
     /**
      * The headers being sent in the request.
      */
-    public $request_headers;
+    public array $request_headers;
 
     /**
      * The body being sent in the request.
@@ -215,12 +215,12 @@ class RequestCore
     /**
      * Constructs a new instance of this class.
      *
-     * @param string $url (Optional) The URL to request or service endpoint to query.
-     * @param string $proxy (Optional) The faux-url to use for proxy settings. Takes the following format: `proxy://user:pass@hostname:port`
-     * @param array $helpers (Optional) An associative array of classnames to use for request, and response functionality. Gets passed in automatically by the calling class.
+     * @param string|null $url (Optional) The URL to request or service endpoint to query.
+     * @param string|null $proxy (Optional) The faux-url to use for proxy settings. Takes the following format: `proxy://user:pass@hostname:port`
+     * @param array|null $helpers (Optional) An associative array of classnames to use for request, and response functionality. Gets passed in automatically by the calling class.
      * @return $this A reference to the current instance.
      */
-    public function __construct($url = null, $proxy = null, $helpers = null)
+    public function __construct(string $url = null, string $proxy = null, array $helpers = null)
     {
         // Set some default values.
         $this->request_url = $url;
@@ -229,12 +229,12 @@ class RequestCore
         $this->request_body = '';
 
         // Set a new Request class if one was set.
-        if (isset($helpers['request']) && !empty($helpers['request'])) {
+        if (!empty($helpers['request'])) {
             $this->request_class = $helpers['request'];
         }
 
         // Set a new Request class if one was set.
-        if (isset($helpers['response']) && !empty($helpers['response'])) {
+        if (!empty($helpers['response'])) {
             $this->response_class = $helpers['response'];
         }
 
@@ -274,7 +274,7 @@ class RequestCore
      * @param string $pass (Required) The password to authenticate with.
      * @return $this A reference to the current instance.
      */
-    public function set_credentials($user, $pass)
+    public function set_credentials(string $user, string $pass): static
     {
         $this->username = $user;
         $this->password = $pass;
@@ -288,7 +288,7 @@ class RequestCore
      * @param mixed $value (Required) The value to assign to the custom HTTP header.
      * @return $this A reference to the current instance.
      */
-    public function add_header($key, $value)
+    public function add_header(string $key, mixed $value): static
     {
         $this->request_headers[$key] = $value;
         return $this;
@@ -300,7 +300,7 @@ class RequestCore
      * @param string $key (Required) The custom HTTP header to set.
      * @return $this A reference to the current instance.
      */
-    public function remove_header($key)
+    public function remove_header(string $key): static
     {
         if (isset($this->request_headers[$key])) {
             unset($this->request_headers[$key]);
@@ -314,7 +314,7 @@ class RequestCore
      * @param string $method (Required) One of the following constants: <HTTP_GET>, <HTTP_POST>, <HTTP_PUT>, <HTTP_HEAD>, <HTTP_DELETE>.
      * @return $this A reference to the current instance.
      */
-    public function set_method($method)
+    public function set_method(string $method): static
     {
         $this->method = strtoupper($method);
         return $this;
@@ -326,7 +326,7 @@ class RequestCore
      * @param string $ua (Required) The useragent string to use.
      * @return $this A reference to the current instance.
      */
-    public function set_useragent($ua)
+    public function set_useragent(string $ua): static
     {
         $this->useragent = $ua;
         return $this;
@@ -338,7 +338,7 @@ class RequestCore
      * @param string $body (Required) The textual content to send along in the body of the request.
      * @return $this A reference to the current instance.
      */
-    public function set_body($body)
+    public function set_body(string $body): static
     {
         $this->request_body = $body;
         return $this;
@@ -350,7 +350,7 @@ class RequestCore
      * @param string $url (Required) The URL to make the request to.
      * @return $this A reference to the current instance.
      */
-    public function set_request_url($url)
+    public function set_request_url(string $url): static
     {
         $this->request_url = $url;
         return $this;
@@ -363,7 +363,7 @@ class RequestCore
      * @param array $curlopts (Optional) A set of key-value pairs that set `CURLOPT` options. These will merge with the existing CURLOPTs, and ones passed here will override the defaults. Keys should be the `CURLOPT_*` constants, not strings.
      * @return $this A reference to the current instance.
      */
-    public function set_curlopts($curlopts)
+    public function set_curlopts(array $curlopts): static
     {
         $this->curlopts = $curlopts;
         return $this;
@@ -375,7 +375,7 @@ class RequestCore
      * @param integer $size (Required) The length in bytes to read from the stream.
      * @return $this A reference to the current instance.
      */
-    public function set_read_stream_size($size)
+    public function set_read_stream_size(int $size): static
     {
         $this->read_stream_size = $size;
 
@@ -388,10 +388,10 @@ class RequestCore
      * <php:ftell()>.
      *
      * @param resource $resource (Required) The readable resource to read from.
-     * @param integer $size (Optional) The size of the stream to read.
+     * @param integer|null $size (Optional) The size of the stream to read.
      * @return $this A reference to the current instance.
      */
-    public function set_read_stream($resource, $size = null)
+    public function set_read_stream($resource, int $size = null): static
     {
         if (!isset($size) || $size < 0) {
             $stats = fstat($resource);
@@ -416,7 +416,7 @@ class RequestCore
      * @param string $location (Required) The readable location to read from.
      * @return $this A reference to the current instance.
      */
-    public function set_read_file($location)
+    public function set_read_file(string $location): static
     {
         $this->read_file = $location;
         $read_file_handle = fopen($location, 'r');
@@ -430,7 +430,7 @@ class RequestCore
      * @param resource $resource (Required) The writeable resource to write to.
      * @return $this A reference to the current instance.
      */
-    public function set_write_stream($resource)
+    public function set_write_stream($resource): static
     {
         $this->write_stream = $resource;
 
@@ -443,7 +443,7 @@ class RequestCore
      * @param string $location (Required) The writeable location to write to.
      * @return $this A reference to the current instance.
      */
-    public function set_write_file($location)
+    public function set_write_file(string $location): static
     {
         $this->write_file = $location;
         $write_file_handle = fopen($location, 'w');
@@ -457,12 +457,12 @@ class RequestCore
      * @param string $proxy (Required) The faux-url to use for proxy settings. Takes the following format: `proxy://user:pass@hostname:port`
      * @return $this A reference to the current instance.
      */
-    public function set_proxy($proxy)
+    public function set_proxy(string $proxy): static
     {
         $proxy = parse_url($proxy);
-        $proxy['user'] = isset($proxy['user']) ? $proxy['user'] : null;
-        $proxy['pass'] = isset($proxy['pass']) ? $proxy['pass'] : null;
-        $proxy['port'] = isset($proxy['port']) ? $proxy['port'] : null;
+        $proxy['user'] = $proxy['user'] ?? null;
+        $proxy['pass'] = $proxy['pass'] ?? null;
+        $proxy['port'] = $proxy['port'] ?? null;
         $this->proxy = $proxy;
         return $this;
     }
@@ -473,9 +473,9 @@ class RequestCore
      * @param integer $position (Required) The byte-position of the stream to begin reading from.
      * @return $this A reference to the current instance.
      */
-    public function set_seek_position($position)
+    public function set_seek_position(int $position): static
     {
-        $this->seek_position = isset($position) ? (integer)$position : null;
+        $this->seek_position = (integer)$position;
 
         return $this;
     }
@@ -492,13 +492,13 @@ class RequestCore
      *    <li><code>$length</code> - <code>integer</code> - Required - The length in kilobytes of the data chunk that was transferred.</li>
      * </ul>
      *
-     * @param string|array|function $callback (Required) The callback function is called by <php:call_user_func()>, so you can pass the following values: <ul>
+     * @param string $callback
      *    <li>The name of a global function to execute, passed as a string.</li>
      *    <li>A method to execute, passed as <code>array('ClassName', 'MethodName')</code>.</li>
      *    <li>An anonymous function (PHP 5.3+).</li></ul>
      * @return $this A reference to the current instance.
      */
-    public function register_streaming_read_callback($callback)
+    public function register_streaming_read_callback(string $callback): static
     {
         $this->registered_streaming_read_callback = $callback;
 
@@ -516,13 +516,13 @@ class RequestCore
      *    <li><code>$length</code> - <code>integer</code> - Required - The length in kilobytes of the data chunk that was transferred.</li>
      * </ul>
      *
-     * @param string|array|function $callback (Required) The callback function is called by <php:call_user_func()>, so you can pass the following values: <ul>
+     * @param array|string| $callback (Required) The callback function is called by <php:call_user_func()>, so you can pass the following values: <ul>
      *    <li>The name of a global function to execute, passed as a string.</li>
      *    <li>A method to execute, passed as <code>array('ClassName', 'MethodName')</code>.</li>
      *    <li>An anonymous function (PHP 5.3+).</li></ul>
      * @return $this A reference to the current instance.
      */
-    public function register_streaming_write_callback($callback)
+    public function register_streaming_write_callback(array|string $callback): static
     {
         $this->registered_streaming_write_callback = $callback;
 
@@ -539,9 +539,10 @@ class RequestCore
      * @param resource $curl_handle (Required) The cURL handle for the request.
      * @param resource $file_handle (Required) The open file handle resource.
      * @param integer $length (Required) The maximum number of bytes to read.
-     * @return binary Binary data from a stream.
+     * @return string
+     * @throws RequestCore_Exception
      */
-    public function streaming_read_callback($curl_handle, $file_handle, $length)
+    public function streaming_read_callback($curl_handle, $file_handle, int $length): string
     {
         // Once we've sent as much as we're supposed to send...
         if ($this->read_stream_read >= $this->read_stream_size) {
@@ -576,7 +577,7 @@ class RequestCore
      * @param binary $data (Required) The data to write.
      * @return integer The number of bytes written.
      */
-    public function streaming_write_callback($curl_handle, $data)
+    public function streaming_write_callback($curl_handle, $data): int
     {
         $length = strlen($data);
         $written_total = 0;
@@ -604,8 +605,8 @@ class RequestCore
      * Prepares and adds the details of the cURL request. This can be passed along to a <php:curl_multi_exec()>
      * function.
      *
-     * @return resource The handle for the cURL object.
-     *
+     * @return \CurlHandle|false|resource
+     * @throws RequestCore_Exception
      */
     public function prep_request()
     {
@@ -746,11 +747,11 @@ class RequestCore
      * data stored in the `curl_handle` and `response` properties unless replacement data is passed in via
      * parameters.
      *
-     * @param resource $curl_handle (Optional) The reference to the already executed cURL request.
-     * @param string $response (Optional) The actual response content itself that needs to be parsed.
-     * @return ResponseCore A <ResponseCore> object containing a parsed HTTP response.
+     * @param null $curl_handle (Optional) The reference to the already executed cURL request.
+     * @param string|null $response (Optional) The actual response content itself that needs to be parsed.
+     * @return bool|ResponseCore A <ResponseCore> object containing a parsed HTTP response.
      */
-    public function process_response($curl_handle = null, $response = null)
+    public function process_response($curl_handle = null, string $response = null): bool|ResponseCore
     {
         // Accept a custom one if it's passed.
         if ($curl_handle && $response) {
@@ -777,7 +778,7 @@ class RequestCore
             $header_assoc = array();
             foreach ($this->response_headers as $header) {
                 $kv = explode(': ', $header);
-                $header_assoc[strtolower($kv[0])] = isset($kv[1]) ? $kv[1] : '';
+                $header_assoc[strtolower($kv[0])] = $kv[1] ?? '';
             }
 
             // Reset the headers to the appropriate property.
@@ -799,9 +800,10 @@ class RequestCore
      * Sends the request, calling necessary utility functions to update built-in properties.
      *
      * @param boolean $parse (Optional) Whether to parse the response with ResponseCore or not.
-     * @return string The resulting unparsed data from the request.
+     * @return bool|string|ResponseCore The resulting unparsed data from the request.
+     * @throws RequestCore_Exception
      */
-    public function send_request($parse = false)
+    public function send_request(bool $parse = false): bool|string|ResponseCore
     {
         set_time_limit(0);
 
@@ -827,12 +829,13 @@ class RequestCore
      * Sends the request using <php:curl_multi_exec()>, enabling parallel requests. Uses the "rolling" method.
      *
      * @param array $handles (Required) An indexed array of cURL handles to process simultaneously.
-     * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+     * @param array|null $opt (Optional) An associative array of parameters that can have the following keys: <ul>
      *    <li><code>callback</code> - <code>string|array</code> - Optional - The string name of a function to pass the response data to. If this is a method, pass an array where the <code>[0]</code> index is the class and the <code>[1]</code> index is the method name.</li>
      *    <li><code>limit</code> - <code>integer</code> - Optional - The number of simultaneous requests to make. This can be useful for scaling around slow server responses. Defaults to trusting cURLs judgement as to how many to use.</li></ul>
      * @return array Post-processed cURL responses.
+     * @throws RequestCore_Exception
      */
-    public function send_multi_request($handles, $opt = null)
+    public function send_multi_request(array $handles, array $opt = null): array
     {
         set_time_limit(0);
 
@@ -842,7 +845,7 @@ class RequestCore
         if (!$opt) $opt = array();
 
         // Initialize any missing options
-        $limit = isset($opt['limit']) ? $opt['limit'] : -1;
+        $limit = $opt['limit'] ?? -1;
 
         // Initialize
         $handle_list = $handles;
@@ -911,10 +914,10 @@ class RequestCore
     /**
      * Get the HTTP response headers from the request.
      *
-     * @param string $header (Optional) A specific header value to return. Defaults to all headers.
+     * @param string|null $header (Optional) A specific header value to return. Defaults to all headers.
      * @return string|array All or selected header values.
      */
-    public function get_response_header($header = null)
+    public function get_response_header(string $header = null): array|string
     {
         if ($header) {
             return $this->response_headers[strtolower($header)];
@@ -927,7 +930,7 @@ class RequestCore
      *
      * @return string The response body.
      */
-    public function get_response_body()
+    public function get_response_body(): string
     {
         return $this->response_body;
     }

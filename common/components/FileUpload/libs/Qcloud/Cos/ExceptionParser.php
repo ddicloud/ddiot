@@ -10,7 +10,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ExceptionParser {
 
-    public function parse(RequestInterface $request, ResponseInterface $response) {
+    public function parse(RequestInterface $request, ResponseInterface $response): array
+    {
         $data = array(
             'code'       => null,
             'message'    => null,
@@ -41,11 +42,12 @@ class ExceptionParser {
     /**
      * Parses additional exception information from the response headers
      *
-     * @param RequestInterface $request  Request that was issued
-     * @param Response         $response The response from the request
-     * @param array            $data     The current set of exception data
+     * @param RequestInterface $request Request that was issued
+     * @param ResponseInterface $response The response from the request
+     * @param array $data The current set of exception data
      */
-    protected function parseHeaders(RequestInterface $request, ResponseInterface $response, array &$data) {
+    protected function parseHeaders(RequestInterface $request, ResponseInterface $response, array &$data): void
+    {
         $data['message'] = $response->getStatusCode() . ' ' . $response->getReasonPhrase();
         $requestId = $response->getHeader('x-cos-request-id');
         if (isset($requestId[0])) {
@@ -81,7 +83,8 @@ class ExceptionParser {
      * @param \SimpleXMLElement $body The response body as XML
      * @param array             $data The current set of exception data
      */
-    protected function parseBody(\SimpleXMLElement $body, array &$data) {
+    protected function parseBody(\SimpleXMLElement $body, array &$data): void
+    {
         $data['parsed'] = $body;
 
         $namespaces = $body->getDocNamespaces();

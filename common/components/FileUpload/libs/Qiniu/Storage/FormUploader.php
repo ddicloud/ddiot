@@ -3,6 +3,7 @@ namespace Qiniu\Storage;
 
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use function Qiniu\crc32_data;
 
 final class FormUploader
 {
@@ -10,13 +11,14 @@ final class FormUploader
     /**
      * 上传二进制流到七牛, 内部使用
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $data       上传二进制流
-     * @param $params     自定义变量，规格参考
+     * @param $upToken  string  上传凭证
+     * @param string $key string|null  上传文件名
+     * @param $data     string  上传二进制流
+     * @param $config
+     * @param $params   array  自定义变量，规格参考
      *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
+     * @param $mime     string  上传数据的mimeType
+     * @param $checkCrc  bool 是否校验crc32
      *
      * @return array    包含已上传文件的信息，类似：
      *                                              [
@@ -25,23 +27,24 @@ final class FormUploader
      *                                              ]
      */
     public static function put(
-        $upToken,
-        $key,
-        $data,
+        string $upToken,
+        string $key,
+        string $data,
         $config,
-        $params,
-        $mime,
-        $checkCrc
-    ) {
+        array  $params,
+        string $mime,
+        bool $checkCrc
+    ): array
+    {
         $fields = array('token' => $upToken);
-        if ($key === null) {
+        if (empty($key)) {
             $fname = 'filename';
         } else {
             $fname = $key;
             $fields['key'] = $key;
         }
         if ($checkCrc) {
-            $fields['crc32'] = \Qiniu\crc32_data($data);
+            $fields['crc32'] = crc32_data($data);
         }
         if ($params) {
             foreach ($params as $k => $v) {
@@ -64,13 +67,13 @@ final class FormUploader
     /**
      * 上传文件到七牛，内部使用
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $filePath   上传文件的路径
-     * @param $params     自定义变量，规格参考
+     * @param $upToken   string 上传凭证
+     * @param $key       string 上传文件名
+     * @param $filePath  string 上传文件的路径
+     * @param $params    array 自定义变量，规格参考
      *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
+     * @param $mime      string 上传数据的mimeType
+     * @param $checkCrc  bool 是否校验crc32
      *
      * @return array    包含已上传文件的信息，类似：
      *                                              [
@@ -79,19 +82,18 @@ final class FormUploader
      *                                              ]
      */
     public static function putFile(
-        $upToken,
-        $key,
-        $filePath,
+        string $upToken,
+        string $key,
+        string $filePath,
         $config,
-        $params,
-        $mime,
-        $checkCrc
-    ) {
+        array  $params,
+        string $mime,
+        bool $checkCrc
+    ): array
+    {
 
         $fields = array('token' => $upToken, 'file' => self::createFile($filePath, $mime));
-        if ($key !== null) {
-            $fields['key'] = $key;
-        }
+
         if ($checkCrc) {
             $fields['crc32'] = \Qiniu\crc32_file($filePath);
         }
@@ -115,7 +117,7 @@ final class FormUploader
         return array($response->json(), null);
     }
 
-    private static function createFile($filename, $mime)
+    private static function createFile($filename, $mime): \CURLFile|string
     {
         // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
         // See: https://wiki.php.net/rfc/curl-file-upload

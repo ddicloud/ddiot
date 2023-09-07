@@ -15,9 +15,6 @@ use Yii;
 
 class DdEvent extends Event
 {
-    public $_addons;
-
-  
-
+    public string $_addons = '';
     
 }

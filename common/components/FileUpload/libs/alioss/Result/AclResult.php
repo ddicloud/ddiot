@@ -24,7 +24,7 @@ class AclResult extends Result
      * @return string
      * @throws OssException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): string
     {
         $content = $this->rawResponse->body;
         if (empty($content)) {

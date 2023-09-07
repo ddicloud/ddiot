@@ -11,6 +11,7 @@
 namespace common\components\SenangPay;
 
 use common\helpers\ResultHelper;
+use ErrorException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -21,7 +22,7 @@ class SenangPay
      *
      * @var string
      */
-    private static $senangPayUrl = 'https://api.senangpay.my/';
+    private static string $senangPayUrl = 'https://api.senangpay.my/';
 
 
     /**
@@ -32,42 +33,42 @@ class SenangPay
      * @author Wang Chunsheng
      * @since
      */
-    private static $testPayUrl = 'https://sandbox.senangpay.my/';
+    private static string $testPayUrl = 'https://sandbox.senangpay.my/';
 
 
     /**
      * 当前环境 0代表测试环境1代表正式环境
-     * @var [number]
+     * @var int
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static $env;
+    public static int $env;
 
     /**
      * senangPay Merchant ID.
      *
      * @var string
      */
-    private static $merchantId;
+    private static string $merchantId;
 
     /**
      * senangPay Secret Key.
      *
      * @var string
      */
-    private static $secretKey;
+    private static string $secretKey;
 
     /**
      * 请求头部
-     * @var [type]
+     * @var array
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    private static $header = [];
+    private static array $header = [];
 
     const    PREAUTH_BY_TOKEN = 'apiv1/preauth_by_token'; //预授权接口
     const    PREAUTH_CAPTURE  =  'apiv1/preauth_capture'; //预授权 – 捕获
@@ -85,11 +86,9 @@ class SenangPay
      *
      * @param string $merchantId
      * @param string $secretKey
-     * @param string|null $senangPayUrl
-     *
-     * @return string
-     **/
-    public function __construct($merchantId, $secretKey, $env = 0)
+     * @param int $env
+     */
+    public function __construct(string $merchantId, string $secretKey, int $env = 0)
     {
         self::$secretKey = $secretKey;
         self::$merchantId = $merchantId;
@@ -97,19 +96,19 @@ class SenangPay
         $this->setHeader($merchantId, $secretKey);
     }
 
-    public function setHeader($merchantId, $secretKey)
+    public function setHeader($merchantId, $secretKey): void
     {
         self::$header =  [
             'auth' => [$merchantId, $secretKey]
         ];
     }
 
-    public function setEnv($env)
+    public function setEnv($env): void
     {
         self::$env = $env;
     }
 
-    public function getEnv($env)
+    public function getEnv($env): int
     {
         return self::$env;
     }
@@ -119,7 +118,7 @@ class SenangPay
      *
      * @return string|null
      **/
-    public function getMerchantId()
+    public function getMerchantId(): ?string
     {
         return self::$merchantId;
     }
@@ -138,7 +137,7 @@ class SenangPay
         return $data;
     }
 
-    public static function getUrl()
+    public static function getUrl(): string
     {
         if ((int) self::$env === 1) {
             return  self::$senangPayUrl;
@@ -154,7 +153,7 @@ class SenangPay
      * @param $data
      * @param array $headers 请求头部
      *
-     * @return array|void
+     * @return array
      * @throws GuzzleException
      * @date 2022-05-11
      *
@@ -164,7 +163,7 @@ class SenangPay
      *
      * @since
      */
-    public static function postHttp($url, $data, array $headers = [])
+    public static function postHttp($url, $data, array $headers = []): array
     {
         $base_uri = self::getUrl();
         $headers = array_merge(self::$header, $headers);
@@ -191,12 +190,12 @@ class SenangPay
     /**
      * 统一请求
      *
-     * @param [type] $datas   请求参数
-     * @param [type] $url     请求地址
-     * @param array  $params  地址栏的参数
-     * @param array  $headers 请求头部
+     * @param $url
+     * @param $data
+     * @param array $headers 请求头部
      *
-     * @return void
+     * @return array
+     * @throws GuzzleException
      * @date 2022-05-11
      *
      * @example
@@ -205,7 +204,7 @@ class SenangPay
      *
      * @since
      */
-    public static function getHttp($url, $data, $headers = [])
+    public static function getHttp($url, $data, array $headers = []): array
     {
         $base_uri = self::getUrl();
 
@@ -247,46 +246,55 @@ class SenangPay
 
     /**
      * 预授权接口 post
-     * @return void
+     * @return array
+     * @throws ErrorException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function preauthByToken()
+    public function preauthByToken(): array
     {
         $url = self::PREAUTH_BY_TOKEN;
         $data = self::createData([]);
-        $Res  =  self::postHttp($url, $data);
-        return $Res;
+        try {
+            return self::postHttp($url, $data);
+        } catch (GuzzleException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 预授权 – 捕获 post
-     * @return void
+     * @return array
      * @date 2023-07-05
-     * @example
+     * @throws ErrorException
      * @author Wang Chunsheng
      * @since
+     * @example
      */
-    public function preauthCapture()
+    public function preauthCapture(): array
     {
         $url = self::PREAUTH_CAPTURE;
         $data = self::createData([]);
-        $Res  =  self::postHttp($url, $data);
-        return $Res;
+        try {
+            return self::postHttp($url, $data);
+        } catch (GuzzleException $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
      * 查询交易状态
      * @param [type] $transaction_reference
-     * @return void
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-06
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function queryTransactionStatus($transaction_reference)
+    public function queryTransactionStatus($transaction_reference): array
     {
         // merchant_id:889167583736038
         // order_id:25527336
@@ -296,19 +304,20 @@ class SenangPay
             'merchant_id' => self::$merchantId,
             'transaction_reference' => $transaction_reference
         ]);
-        $Res  =  self::getHttp($url, $data);
-        return $Res;
+        return self::getHttp($url, $data);
     }
 
     /**
      * 查看订单状态 GET
-     * @return void
+     * @param $order_id
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function queryOrderStatus($order_id)
+    public function queryOrderStatus($order_id): array
     {
         // merchant_id:889167583736038
         // order_id:25527336
@@ -318,22 +327,21 @@ class SenangPay
             'merchant_id' => self::$merchantId,
             'order_id' => $order_id
         ]);
-        $Res  =  self::getHttp($url, $data);
-        return $Res;
+        return self::getHttp($url, $data);
     }
 
     /**
      * 获取交易列表 GET
-     * @param [type] $merchant_id
-     * @param [type] $timestamp_start
-     * @param [type] $timestamp_end
-     * @return void
+     * @param $timestamp_start
+     * @param $timestamp_end
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function getTransactionList($timestamp_start, $timestamp_end)
+    public function getTransactionList($timestamp_start, $timestamp_end): array
     {
         // merchant_id:889167583736038
         // timestamp_start:1685946990
@@ -346,19 +354,25 @@ class SenangPay
             'timestamp_start' => $timestamp_start,
             'timestamp_end' => $timestamp_end
         ]);
-        $Res  =  self::getHttp($url, $data);
-        return $Res;
+        return self::getHttp($url, $data);
     }
 
     /**
      * 信用卡支付 GET
-     * @return void
+     * @param $name
+     * @param $email
+     * @param $detail
+     * @param $phone
+     * @param $order_id
+     * @param $amount
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function payCc($name, $email, $detail, $phone, $order_id, $amount)
+    public function payCc($name, $email, $detail, $phone, $order_id, $amount): array
     {
         $url = self::PAY_CC;
         $data = self::createData([
@@ -375,31 +389,40 @@ class SenangPay
 
     /** post
      * 启用和禁用信用卡
-     * @return void
+     * @param $token
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function updateTokenStatus($token)
+    public function updateTokenStatus($token): array
     {
         $url = self::UPDATE_TOKEN_STATUS;
         $data = self::createData([
             'token' => $token
         ]);
-        $Res  =  self::postHttp($url, $data);
-        return $Res;
+        return self::postHttp($url, $data);
     }
 
     /**
      * 付款接口 post
+     * @param $payment_method
+     * @param $fpx_bank_code
+     * @param $customer_name
+     * @param $customer_email
+     * @param $order_id
+     * @param $amount
+     * @param $detail
      * @return array|null
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function payment($payment_method, $fpx_bank_code, $customer_name, $customer_email, $order_id, $amount, $detail)
+    public function payment($payment_method, $fpx_bank_code, $customer_name, $customer_email, $order_id, $amount, $detail): ?array
     {
         $url = self::PAYMENT;
         $url = 'https://sandbox.senangpay.my/apiv1/get_transaction_list' . $url;
@@ -413,28 +436,27 @@ class SenangPay
             'amount' => $amount,
             'detail' => $detail
         ]);
-        $Res  =  self::postHttp($url, $data);
-        return $Res;
+        return self::postHttp($url, $data);
     }
 
     /**
      * 银行列表 get
-     * @return void
+     * @param $fpx_bank_list
+     * @return array
+     * @throws GuzzleException
      * @date 2023-07-05
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public function fpxBankList($fpx_bank_list)
+    public function fpxBankList($fpx_bank_list): array
     {
         $url = self::FPX_BANK_LIST;
         $data = self::createData([
             'fpx_bank_list' => $fpx_bank_list
         ]);
-        $Res  =  self::getHttp($url, $data);
-        return $Res;
+        return self::getHttp($url, $data);
     }
-
 
 
     /**
@@ -443,28 +465,28 @@ class SenangPay
      * @param string $detail
      * @param float $amount
      * @param string $orderId
-     *
+     * @param $status_id
+     * @param $transaction_id
+     * @param $msg
      * @return string|null
-     **/
-    public function createHash($detail, $amount, $orderId, $status_id, $transaction_id, $msg)
+     */
+    public function createHash(string $detail, float $amount, string $orderId, $status_id, $transaction_id, $msg): ?string
     {
         // Construct string from data
         $stringData = self::$secretKey .  urldecode($status_id) . urldecode($orderId) . urldecode($transaction_id) . urldecode($msg);
 
 
         // generate md5 hash for stringData
-        $hashString = md5($stringData);
-
-        return $hashString;
+        return md5($stringData);
     }
 
     /**
      * callback function for callback url
      *
-     * @param Type $var Description
-     * @return bool
-     **/
-    public function callback(array $data = [])
+     * @param array $data
+     * @return bool|array
+     */
+    public function callback(array $data = []): bool|array
     {
         $statusId = urldecode($data['status_id']);
         $orderId = urldecode($data['order_id']);

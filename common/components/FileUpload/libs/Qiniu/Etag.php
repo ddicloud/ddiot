@@ -18,12 +18,12 @@ final class Etag
         return call_user_func_array('pack', array_merge(array($v), (array)$a));
     }
 
-    private static function blockCount($fsize)
+    private static function blockCount($fsize): float|int
     {
         return (($fsize + (Config::BLOCK_SIZE - 1)) / Config::BLOCK_SIZE);
     }
 
-    private static function calcSha1($data)
+    private static function calcSha1($data): array
     {
         $sha1Str = sha1($data, true);
         $err = error_get_last();
@@ -35,7 +35,7 @@ final class Etag
     }
 
 
-    public static function sum($filename)
+    public static function sum($filename): array
     {
         $fhandler = fopen($filename, 'r');
         $err = error_get_last();
@@ -53,16 +53,12 @@ final class Etag
         $sha1Buf = array();
 
         if ($blockCnt <= 1) {
-            array_push($sha1Buf, 0x16);
+            $sha1Buf[] = 0x16;
             $fdata = fread($fhandler, Config::BLOCK_SIZE);
-            if ($err !== null) {
-                fclose($fhandler);
-                return array(null, $err);
-            }
             list($sha1Code, ) = self::calcSha1($fdata);
             $sha1Buf = array_merge($sha1Buf, $sha1Code);
         } else {
-            array_push($sha1Buf, 0x96);
+            $sha1Buf[] = 0x96;
             $sha1BlockBuf = array();
             for ($i=0; $i < $blockCnt; $i++) {
                 $fdata = fread($fhandler, Config::BLOCK_SIZE);

@@ -10,10 +10,11 @@ namespace Qiniu;
 
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use yii\base\ErrorException;
 
 final class Zone
 {
-    public $ioHost;            // 七牛源站Host
+    public mixed $ioHost;            // 七牛源站Host
     public $upHost;
     public $upHostBackup;
 
@@ -32,20 +33,28 @@ final class Zone
         }
     }
 
-    public function getUpHostByToken($uptoken)
+    public function getUpHostByToken($uptoken): array
     {
-        list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
+        try {
+            list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
+        } catch (\Exception $e) {
+        }
         list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
         return array($upHosts[0], $err);
     }
 
-    public function getBackupUpHostByToken($uptoken)
+    public function getBackupUpHostByToken($uptoken): array
     {
-        list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
+        try {
+            list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
+            list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
 
-        $upHost = isset($upHosts[1]) ? $upHosts[1] : $upHosts[0];
-        return array($upHost, $err);
+            $upHost = $upHosts[1] ?? $upHosts[0];
+            return array($upHost, $err);
+        } catch (\Exception $e) {
+            throw new ErrorException($e->getMessage());
+        }
+
     }
 
     public function getIoHost($ak, $bucket)
@@ -55,7 +64,7 @@ final class Zone
         return $ioHosts[0];
     }
 
-    public function getUpHosts($ak, $bucket)
+    public function getUpHosts($ak, $bucket): array
     {
         list($bucketHosts, $err) = $this->getBucketHosts($ak, $bucket);
         if ($err !== null) {
@@ -66,7 +75,10 @@ final class Zone
         return array($upHosts, null);
     }
 
-    private function unmarshalUpToken($uptoken)
+    /**
+     * @throws \Exception
+     */
+    private function unmarshalUpToken($uptoken): array
     {
         $token = explode(':', $uptoken);
         if (count($token) !== 3) {
@@ -88,7 +100,7 @@ final class Zone
         return array($ak, $bucket);
     }
 
-    public function getBucketHosts($ak, $bucket)
+    public function getBucketHosts($ak, $bucket): array
     {
         $key = $this->scheme . ":$ak:$bucket";
 
@@ -131,14 +143,14 @@ final class Zone
         return $ret;
     }
 
-    private function setBucketHostsToCache($key, $val)
+    private function setBucketHostsToCache($key, $val): void
     {
         $this->hostCache[$key] = $val;
         $this->hostCacheToFile();
         return;
     }
 
-    private function hostCacheFromFile()
+    private function hostCacheFromFile(): void
     {
 
         $path = $this->hostCacheFilePath();
@@ -151,14 +163,14 @@ final class Zone
         return;
     }
 
-    private function hostCacheToFile()
+    private function hostCacheToFile(): void
     {
         $path = $this->hostCacheFilePath();
         file_put_contents($path, json_encode($this->hostCache), LOCK_EX);
         return;
     }
 
-    private function hostCacheFilePath()
+    private function hostCacheFilePath(): string
     {
         return sys_get_temp_dir() . '/.qiniu_phpsdk_hostscache.json';
     }
@@ -179,7 +191,7 @@ final class Zone
      *    }
      *  }
      **/
-    private function bucketHosts($ak, $bucket)
+    private function bucketHosts($ak, $bucket): array
     {
         $url = Config::UC_HOST . '/v1/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);

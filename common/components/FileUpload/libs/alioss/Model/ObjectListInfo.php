@@ -25,7 +25,7 @@ class ObjectListInfo
      * @param array $objectList
      * @param array $prefixList
      */
-    public function __construct($bucketName, $prefix, $marker, $nextMarker, $maxKeys, $delimiter, $isTruncated, array $objectList, array $prefixList)
+    public function __construct(string $bucketName, string $prefix, string $marker, string $nextMarker, string $maxKeys, string $delimiter, $isTruncated, array $objectList, array $prefixList)
     {
         $this->bucketName = $bucketName;
         $this->prefix = $prefix;
@@ -41,7 +41,7 @@ class ObjectListInfo
     /**
      * @return string
      */
-    public function getBucketName()
+    public function getBucketName(): string
     {
         return $this->bucketName;
     }
@@ -49,7 +49,7 @@ class ObjectListInfo
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
@@ -57,7 +57,7 @@ class ObjectListInfo
     /**
      * @return string
      */
-    public function getMarker()
+    public function getMarker(): string
     {
         return $this->marker;
     }
@@ -65,7 +65,7 @@ class ObjectListInfo
     /**
      * @return int
      */
-    public function getMaxKeys()
+    public function getMaxKeys(): int|string
     {
         return $this->maxKeys;
     }
@@ -73,7 +73,7 @@ class ObjectListInfo
     /**
      * @return string
      */
-    public function getDelimiter()
+    public function getDelimiter(): string
     {
         return $this->delimiter;
     }
@@ -81,7 +81,7 @@ class ObjectListInfo
     /**
      * @return mixed
      */
-    public function getIsTruncated()
+    public function getIsTruncated(): mixed
     {
         return $this->isTruncated;
     }
@@ -91,7 +91,7 @@ class ObjectListInfo
      *
      * @return ObjectInfo[]
      */
-    public function getObjectList()
+    public function getObjectList(): array
     {
         return $this->objectList;
     }
@@ -101,7 +101,7 @@ class ObjectListInfo
      *
      * @return PrefixInfo[]
      */
-    public function getPrefixList()
+    public function getPrefixList(): array
     {
         return $this->prefixList;
     }
@@ -109,18 +109,18 @@ class ObjectListInfo
     /**
      * @return string
      */
-    public function getNextMarker()
+    public function getNextMarker(): string
     {
         return $this->nextMarker;
     }
 
-    private $bucketName = "";
-    private $prefix = "";
-    private $marker = "";
-    private $nextMarker = "";
-    private $maxKeys = 0;
-    private $delimiter = "";
-    private $isTruncated = null;
-    private $objectList = array();
-    private $prefixList = array();
+    private string $bucketName = "";
+    private string $prefix = "";
+    private string $marker = "";
+    private string $nextMarker = "";
+    private  $maxKeys = 0;
+    private string $delimiter = "";
+    private string |null $isTruncated = null;
+    private array $objectList = array();
+    private array $prefixList = array();
 }

@@ -4,40 +4,42 @@ namespace Qcloud\Cos\Exception;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Qiniu\Http\Response;
 
 class ServiceResponseException extends \RuntimeException {
 
     /**
-     * @var Response Response
+     * @var Response|ResponseInterface Response
      */
-    protected $response;
+    protected Response|ResponseInterface $response;
 
     /**
      * @var RequestInterface Request
      */
-    protected $request;
+    protected RequestInterface $request;
 
     /**
      * @var string Request ID
      */
-    protected $requestId;
+    protected string $requestId;
 
     /**
      * @var string Exception type (client / server)
      */
-    protected $exceptionType;
+    protected string $exceptionType;
 
     /**
      * @var string Exception code
      */
-    protected $exceptionCode;
+    protected string $exceptionCode;
 
     /**
      * Set the exception code
      *
      * @param string $code Exception code
      */
-    public function setExceptionCode($code) {
+    public function setExceptionCode(string $code): void
+    {
         $this->exceptionCode = $code;
     }
 
@@ -46,7 +48,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return string|null
      */
-    public function getExceptionCode() {
+    public function getExceptionCode(): ?string
+    {
         return $this->exceptionCode;
     }
 
@@ -55,16 +58,18 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @param string $type Exception type
      */
-    public function setExceptionType($type) {
+    public function setExceptionType(string $type): void
+    {
         $this->exceptionType = $type;
     }
 
     /**
-     * Get the exception type (one of client or server)
+     * Get the exception type (one of clients or server)
      *
      * @return string|null
      */
-    public function getExceptionType() {
+    public function getExceptionType(): ?string
+    {
         return $this->exceptionType;
     }
 
@@ -73,7 +78,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @param string $id Request ID
      */
-    public function setRequestId($id) {
+    public function setRequestId(string $id): void
+    {
         $this->requestId = $id;
     }
 
@@ -82,25 +88,28 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return string|null
      */
-    public function getRequestId() {
+    public function getRequestId(): ?string
+    {
         return $this->requestId;
     }
 
     /**
      * Set the associated response
      *
-     * @param Response $response
+     * @param ResponseInterface $response
      */
-    public function setResponse(ResponseInterface $response) {
+    public function setResponse(ResponseInterface $response): void
+    {
         $this->response = $response;
     }
 
     /**
      * Get the associated response object
      *
-     * @return Response|null
+     * @return Response|ResponseInterface|null
      */
-    public function getResponse() {
+    public function getResponse(): Response|ResponseInterface|null
+    {
         return $this->response;
     }
 
@@ -109,7 +118,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @param RequestInterface $request
      */
-    public function setRequest(RequestInterface $request) {
+    public function setRequest(RequestInterface $request): void
+    {
         $this->request = $request;
     }
 
@@ -118,7 +128,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return RequestInterface|null
      */
-    public function getRequest() {
+    public function getRequest(): ?RequestInterface
+    {
         return $this->request;
     }
 
@@ -127,8 +138,9 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return int|null
      */
-    public function getStatusCode() {
-        return $this->response ? $this->response->getStatusCode() : null;
+    public function getStatusCode(): ?int
+    {
+        return $this->response?->getStatusCode();
     }
 
     /**
@@ -145,9 +157,7 @@ class ServiceResponseException extends \RuntimeException {
             . 'Cos Error Message: ' . $this->getMessage();
 
         // Add the User-Agent if available
-        if ($this->request) {
-            $message .= ', ' . 'User-Agent: ' . $this->request->getHeader('User-Agent')[0];
-        }
+        $message .= ', ' . 'User-Agent: ' . $this->request->getHeader('User-Agent')[0];
 
         return $message;
     }
@@ -161,7 +171,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return string|null Returns null if no response was received
      */
-    public function getCosRequestId() {
+    public function getCosRequestId(): ?string
+    {
         return $this->requestId;
     }
 
@@ -172,7 +183,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return string|null Returns null if no response was received
      */
-    public function getCosErrorType() {
+    public function getCosErrorType(): ?string
+    {
         return $this->exceptionType;
     }
 
@@ -183,7 +195,8 @@ class ServiceResponseException extends \RuntimeException {
      *
      * @return string|null Returns null if no response was received
      */
-    public function getCosErrorCode() {
+    public function getCosErrorCode(): ?string
+    {
         return $this->exceptionCode;
     }
 }

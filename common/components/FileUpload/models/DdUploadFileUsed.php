@@ -26,7 +26,7 @@ class DdUploadFileUsed extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%upload_file_used}}';
     }
@@ -34,7 +34,7 @@ class DdUploadFileUsed extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['file_id', 'from_id', 'create_time','bloc_id', 'store_id','user_id'], 'integer'],
@@ -46,7 +46,7 @@ class DdUploadFileUsed extends \yii\db\ActiveRecord
       /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -62,7 +62,7 @@ class DdUploadFileUsed extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'user_id' => 'user_id',

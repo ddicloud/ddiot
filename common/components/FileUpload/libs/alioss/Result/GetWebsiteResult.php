@@ -15,7 +15,7 @@ class GetWebsiteResult extends Result
      *
      * @return WebsiteConfig
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): WebsiteConfig
     {
         $content = $this->rawResponse->body;
         $config = new WebsiteConfig();
@@ -29,7 +29,7 @@ class GetWebsiteResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

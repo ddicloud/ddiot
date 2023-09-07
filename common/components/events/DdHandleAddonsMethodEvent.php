@@ -23,11 +23,11 @@ use common\components\events\eventObjs\DdEvent;
  */
 class DdHandleAddonsMethodEvent extends DdEvent
 {
-    protected $subject;
-    protected $method;
-    protected $arguments;
-    protected $returnValue;
-    protected $isProcessed = false;
+    protected object $subject;
+    protected string $method;
+    protected array $arguments;
+    protected array $returnValue;
+    protected bool $isProcessed = false;
 
     public function __construct($subject, $method, $arguments)
     {

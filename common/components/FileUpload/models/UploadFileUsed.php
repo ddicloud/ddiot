@@ -23,7 +23,7 @@ class UploadFileUsed extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user_upload_file}}';
     }
@@ -31,18 +31,18 @@ class UploadFileUsed extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['file_id', 'bloc_id', 'store_id', 'create_time'], 'integer'],
-            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => UploadFile::className(), 'targetAttribute' => ['file_id' => 'file_id']],
+            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => UploadFile::class, 'targetAttribute' => ['file_id' => 'file_id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'used_id' => '用户id',
@@ -54,11 +54,11 @@ class UploadFileUsed extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[File]].
+     * Gets a query for [[File]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getFile()
+    public function getFile(): \yii\db\ActiveQuery
     {
         return $this->hasOne(UploadFile::className(), ['file_id' => 'file_id']);
     }

@@ -23,10 +23,9 @@ class LifecycleConfig implements XmlConfig
      * 从xml数据中解析出LifecycleConfig
      *
      * @param string $strXml
-     * @throws OssException
      * @return null
      */
-    public function parseFromXml($strXml)
+    public function parseFromXml(string $strXml)
     {
         $this->rules = array();
         $xml = simplexml_load_string($strXml);
@@ -59,7 +58,7 @@ class LifecycleConfig implements XmlConfig
      *
      * @return string
      */
-    public function serializeToXml()
+    public function serializeToXml(): string
     {
 
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><LifecycleConfiguration></LifecycleConfiguration>');
@@ -75,13 +74,9 @@ class LifecycleConfig implements XmlConfig
      * 添加LifecycleRule
      *
      * @param LifecycleRule $lifecycleRule
-     * @throws OssException
      */
-    public function addRule($lifecycleRule)
+    public function addRule(LifecycleRule $lifecycleRule): void
     {
-        if (!isset($lifecycleRule)) {
-            throw new OssException("lifecycleRule is null");
-        }
         $this->rules[] = $lifecycleRule;
     }
 
@@ -100,7 +95,7 @@ class LifecycleConfig implements XmlConfig
      *
      * @return LifecycleRule[]
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -108,7 +103,7 @@ class LifecycleConfig implements XmlConfig
     /**
      * @var LifecycleRule[]
      */
-    private $rules;
+    private array $rules;
 }
 
 

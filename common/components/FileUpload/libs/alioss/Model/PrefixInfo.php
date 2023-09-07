@@ -19,7 +19,7 @@ class PrefixInfo
      * PrefixInfo constructor.
      * @param string $prefix
      */
-    public function __construct($prefix)
+    public function __construct(string $prefix)
     {
         $this->prefix = $prefix;
     }
@@ -27,10 +27,10 @@ class PrefixInfo
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
 
-    private $prefix;
+    private string $prefix;
 }

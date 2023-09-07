@@ -13,11 +13,10 @@ use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
-use Psr\Http\Message\UriInterface;
 
 class CommandToRequestTransformer {
-    private $config;
-    private $operation;
+    private array $config;
+    private string $operation;
 
     public function __construct( $config, $operation ) {
         $this->config = $config;
@@ -49,7 +48,7 @@ class CommandToRequestTransformer {
         $bucketname = $command['Bucket'];
 
         $appId = $this->config['appId'];
-        if ( $appId != null && endWith( $bucketname, '-'.$appId ) == False ) {
+        if ( $appId != null && !endWith($bucketname, '-' . $appId)) {
             $bucketname = $bucketname.'-'.$appId;
         }
         $command['Bucket'] = $bucketname;
@@ -60,7 +59,7 @@ class CommandToRequestTransformer {
 
         // Hoststyle is used by default
         // Pathstyle
-        if ( $this->config['pathStyle'] != true ) {
+        if (!$this->config['pathStyle']) {
             if ( isset( $operation['parameters']['Bucket'] ) && $command->hasParam( 'Bucket' ) ) {
                 $uri = str_replace( '{Bucket}', '', $uri );
             }
@@ -104,8 +103,7 @@ class CommandToRequestTransformer {
         }
         $uri = $uri->withQuery( $query );
         $request = $request->withUri( $uri );
-        $request = $request->withHeader( 'Host', $origin_host );
-        return $request;
+        return $request->withHeader( 'Host', $origin_host );
     }
 
     // format upload body
@@ -141,7 +139,7 @@ class CommandToRequestTransformer {
             if ( isset( $operation['parameters']['ContentMD5'] ) &&
             isset( $command['ContentMD5'] ) ) {
                 $value = $command['ContentMD5'];
-                if ( $value != false ) {
+                if ($value) {
                     $request = $this->addMd5( $request );
                 }
             }
@@ -176,9 +174,7 @@ class CommandToRequestTransformer {
                     $request = $request->withHeader( 'x-cos-meta-' . $key, $value );
                 }
             }
-            $request = headersMap( $command, $request );
-
-            return $request;
+            return headersMap( $command, $request );
         }
 
         // count md5
@@ -251,7 +247,7 @@ class CommandToRequestTransformer {
             if (key_exists($action, $ciActions)) {
                 $bucketname = $command['Bucket'];
                 $appId = $this->config['appId'];
-                if ( $appId != null && endWith( $bucketname, '-'.$appId ) == False ) {
+                if ( $appId != null && !endWith($bucketname, '-' . $appId)) {
                     $bucketname = $bucketname.'-'.$appId;
                 }
                 $command['Bucket'] = $bucketname;

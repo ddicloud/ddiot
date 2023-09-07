@@ -27,7 +27,7 @@ class DdUploadGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%upload_group}}';
     }
@@ -35,7 +35,7 @@ class DdUploadGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['sort', 'wxapp_id', 'create_time', 'update_time'], 'integer'],
@@ -47,7 +47,7 @@ class DdUploadGroup extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'group_id' => 'Group ID',

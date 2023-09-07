@@ -16,7 +16,7 @@ class AppendResult extends Result
      * @return int
      * @throws OssException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): int
     {
         $header = $this->rawResponse->header;
         if (isset($header["x-oss-next-append-position"])) {

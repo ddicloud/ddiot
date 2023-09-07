@@ -18,6 +18,15 @@ class MultipartUpload {
     private $progress;
     private $totalSize;
     private $uploadedSize;
+    /**
+     * @var int|mixed
+     */
+    private mixed $concurrency;
+    private array $partNumberList;
+    /**
+     * @var mixed|true
+     */
+    private mixed $needMd5;
 
     public function __construct($client, $body, $options = array()) {
         $minPartSize = $options['PartSize'];
@@ -26,14 +35,15 @@ class MultipartUpload {
         $this->client = $client;
         $this->options = $options;
         $this->partSize = $this->calculatePartSize($minPartSize);
-        $this->concurrency = isset($options['Concurrency']) ? $options['Concurrency'] : 10;
-        $this->progress = isset($options['Progress']) ? $options['Progress'] : function($totalSize, $uploadedSize) {};
+        $this->concurrency = $options['Concurrency'] ?? 10;
+        $this->progress = $options['Progress'] ?? function ($totalSize, $uploadedSize) {
+        };
         $this->parts = [];
         $this->partNumberList = [];
         $this->uploadedSize = 0;
         $this->totalSize = $this->body->getSize();
-        $this->needMd5 = isset($options['ContentMD5']) ? $options['ContentMD5'] : true;
-        $this->retry = isset($options['Retry']) ? $options['Retry'] : 3;
+        $this->needMd5 = $options['ContentMD5'] ?? true;
+        $this->retry = $options['Retry'] ?? 3;
     }
     public function performUploading() {
         $uploadId= $this->initiateMultipartUpload();
@@ -51,7 +61,8 @@ class MultipartUpload {
         );
 
     }
-    public function uploadParts($uploadId) {
+    public function uploadParts($uploadId): void
+    {
         $uploadRequests = function ($uploadId) {
             $partNumber = 1;
             $index = 1;
@@ -83,7 +94,7 @@ class MultipartUpload {
                     'Body' => $body,
                     'ContentMD5' => $this->needMd5
                 );
-                if ($this->needMd5 == false) {
+                if (!$this->needMd5) {
                     unset($params["ContentMD5"]);
                 }
                 if (!isset($this->parts[$partNumber])) {
@@ -147,8 +158,7 @@ class MultipartUpload {
         $partSize = intval(ceil(($this->body->getSize() / self::MAX_PARTS)));
         $partSize = max($minPartSize, $partSize);
         $partSize = min($partSize, self::MAX_PART_SIZE);
-        $partSize = max($partSize, self::MIN_PART_SIZE);
-        return $partSize;
+        return max($partSize, self::MIN_PART_SIZE);
     }
 
     private function initiateMultipartUpload() {

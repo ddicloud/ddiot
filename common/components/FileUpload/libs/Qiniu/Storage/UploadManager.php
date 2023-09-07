@@ -13,7 +13,7 @@ use Qiniu\Storage\FormUploader;
  */
 final class UploadManager
 {
-    private $config;
+    private ?Config $config;
 
     public function __construct(Config $config = null)
     {
@@ -26,13 +26,13 @@ final class UploadManager
     /**
      * 上传二进制流到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $data       上传二进制流
-     * @param $params     自定义变量，规格参考
+     * @param $upToken  string  上传凭证
+     * @param $key      string  上传文件名
+     * @param $data      string 上传二进制流
+     * @param $params    array|null 自定义变量，规格参考
      *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
+     * @param $mime      string 上传数据的mimeType
+     * @param $checkCrc  bool 是否校验crc32
      *
      * @return array    包含已上传文件的信息，类似：
      *                                              [
@@ -41,13 +41,14 @@ final class UploadManager
      *                                              ]
      */
     public function put(
-        $upToken,
-        $key,
-        $data,
-        $params = null,
-        $mime = 'application/octet-stream',
-        $checkCrc = false
-    ) {
+        string $upToken,
+        string $key,
+        string $data,
+        array  $params = null,
+        string $mime = 'application/octet-stream',
+        bool $checkCrc = false
+    ): array
+    {
         $params = self::trimParams($params);
         return FormUploader::put(
             $upToken,
@@ -126,7 +127,7 @@ final class UploadManager
         return $ret;
     }
 
-    public static function trimParams($params)
+    public static function trimParams($params): ?array
     {
         if ($params === null) {
             return null;

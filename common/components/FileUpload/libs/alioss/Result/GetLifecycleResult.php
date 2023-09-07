@@ -16,7 +16,7 @@ class GetLifecycleResult extends Result
      *
      * @return LifecycleConfig
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): LifecycleConfig
     {
         $content = $this->rawResponse->body;
         $config = new LifecycleConfig();
@@ -30,7 +30,7 @@ class GetLifecycleResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

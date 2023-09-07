@@ -2,18 +2,25 @@
 
 namespace Alioss\Result;
 
+use Alioss\Core\OssException;
 use Alioss\Model\CorsConfig;
+use ErrorException;
 
 class GetCorsResult extends Result
 {
     /**
      * @return CorsConfig
+     * @throws ErrorException
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): CorsConfig
     {
         $content = $this->rawResponse->body;
         $config = new CorsConfig();
-        $config->parseFromXml($content);
+        try {
+            $config->parseFromXml($content);
+        } catch (OssException $e) {
+            throw new ErrorException($e->getMessage());
+        }
         return $config;
     }
 
@@ -23,7 +30,7 @@ class GetCorsResult extends Result
      *
      * @return bool
      */
-    protected function isResponseOk()
+    protected function isResponseOk(): bool
     {
         $status = $this->rawResponse->status;
         if ((int)(intval($status) / 100) == 2 || (int)(intval($status)) === 404) {

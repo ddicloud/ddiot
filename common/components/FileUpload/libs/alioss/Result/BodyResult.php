@@ -12,7 +12,7 @@ class BodyResult extends Result
     /**
      * @return string
      */
-    protected function parseDataFromResponse()
+    protected function parseDataFromResponse(): string
     {
         return empty($this->rawResponse->body) ? "" : $this->rawResponse->body;
     }

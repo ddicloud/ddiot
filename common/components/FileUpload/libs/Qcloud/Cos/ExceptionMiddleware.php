@@ -10,8 +10,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class ExceptionMiddleware {
     private $nextHandler;
-    protected $parser;
-    protected $defaultException;
+    protected ExceptionParser $parser;
+    protected string $defaultException;
 
     /**
      * @param callable $nextHandler Next handler to invoke.
@@ -28,7 +28,8 @@ class ExceptionMiddleware {
      *
      * @return PromiseInterface
      */
-    public function __invoke(RequestInterface $request, array $options) {
+    public function __invoke(RequestInterface $request, array $options): PromiseInterface
+    {
         $fn = $this->nextHandler;
         return $fn($request, $options)->then(
                     function (ResponseInterface $response) use ($request) {
@@ -37,7 +38,8 @@ class ExceptionMiddleware {
 		);
 	}
 
-	public function handle(RequestInterface $request, ResponseInterface $response) {
+	public function handle(RequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
 		$code = $response->getStatusCode();
 		if ($code < 400) {
 			return $response;
@@ -47,7 +49,7 @@ class ExceptionMiddleware {
         $parts = $this->parser->parse($request, $response);
 
         $className = 'Qcloud\\Cos\\Exception\\' . $parts['code'];
-        if (substr($className, -9) !== 'Exception') {
+        if (!str_ends_with($className, 'Exception')) {
             $className .= 'Exception';
         }
 
