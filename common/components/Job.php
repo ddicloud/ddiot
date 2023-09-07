@@ -12,7 +12,6 @@ namespace common\components;
 use common\helpers\loggingHelper;
 use Yii;
 use yii\base\BaseObject;
-use yii\queue\cli\LoopInterface;
 use yii\queue\Queue;
 
 class Job extends BaseObject implements \yii\queue\JobInterface

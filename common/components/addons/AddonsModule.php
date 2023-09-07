@@ -38,7 +38,7 @@ class AddonsModule extends Module
 
         $store_id = Yii::$app->params['store_id'];
 
-        $requestedRoute = $this->module->requestedRoute;
+        $requestedRoute = $this->module->requestedRoute??'';
         FileHelper::writeLog($logPath, '请求地址', [$requestedRoute, $this->module]);
 
         if (empty($store_id) && Yii::$app->id == 'app-api' && !StringHelper::strExists($requestedRoute, 'notify') && !StringHelper::strExists($requestedRoute, 'admin/auth')) {
