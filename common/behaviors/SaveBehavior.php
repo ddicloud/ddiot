@@ -41,7 +41,7 @@ class SaveBehavior extends Behavior
 
     public string $time_type = 'init'; //默认为init,可以设置为datetime
 
-    public mixed $value;
+    public mixed $value = '';
 
     private array $_map = [];
 
