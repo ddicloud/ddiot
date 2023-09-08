@@ -85,6 +85,7 @@ class adminUser extends User
 
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
+            ->asArray()
             ->all();
 
         //foreach ($list as $key => &$value) {
