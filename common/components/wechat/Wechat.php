@@ -39,7 +39,7 @@ class Wechat extends Component
     public array $userOptions = [];
 
     /**
-     * WeChat user info will be stored in session under this key.
+     * WeChat's user info will be stored in session under this key.
      *
      * @var string
      */
@@ -185,9 +185,9 @@ class Wechat extends Component
     /**
      * 获取 EasyWeChat 微信实例.
      *
-     * @return Factory|\EasyWeChat\OfficialAccount\Application
+     * @return mixed
      */
-    public function getApp(): Factory|\EasyWeChat\OfficialAccount\Application
+    public function getApp(): mixed
     {
         if (!self::$_app instanceof \EasyWeChat\OfficialAccount\Application) {
             self::$_app = Factory::officialAccount(Yii::$app->params['wechatConfig']);
@@ -202,7 +202,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\Payment\Application
      */
-    public function getPayment(): Factory|\EasyWeChat\Payment\Application
+    public function getPayment(): mixed
     {
         $logPath =  Yii::getAlias("@runtime/wechat/getPayment/" . date('ymd') . ".log");
         FileHelper::writeLog($logPath, '开始回调看配置' . json_encode(Yii::$app->params['wechatPaymentConfig']));
@@ -220,7 +220,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\MiniProgram\Application
      */
-    public function getMiniProgram(): \EasyWeChat\MiniProgram\Application|Factory
+    public function getMiniProgram(): mixed
     {
         if (!self::$_miniProgram instanceof \EasyWeChat\MiniProgram\Application) {
             self::$_miniProgram = Factory::miniProgram(Yii::$app->params['wechatMiniProgramConfig']);
@@ -235,7 +235,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenPlatform\Application
      */
-    public function getOpenPlatform(): \EasyWeChat\OpenPlatform\Application|Factory
+    public function getOpenPlatform(): mixed
     {
         if (!self::$_openPlatform instanceof \EasyWeChat\OpenPlatform\Application) {
             self::$_openPlatform = Factory::openPlatform(Yii::$app->params['wechatOpenPlatformConfig']);
@@ -250,7 +250,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\Work\Application
      */
-    public function getWork(): \EasyWeChat\Work\Application|Factory
+    public function getWork(): mixed
     {
         if (!self::$_work instanceof \EasyWeChat\Work\Application) {
             self::$_work = Factory::work(Yii::$app->params['wechatWorkConfig']);
@@ -265,7 +265,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenWork\Application
      */
-    public function getOpenWork(): \EasyWeChat\OpenWork\Application|Factory
+    public function getOpenWork(): mixed
     {
         if (!self::$_openWork instanceof \EasyWeChat\OpenWork\Application) {
             self::$_openWork = Factory::openWork(Yii::$app->params['wechatOpenWorkConfig']);
@@ -280,7 +280,7 @@ class Wechat extends Component
      *
      * @return Factory|\EasyWeChat\OpenWork\Application
      */
-    public function getMicroMerchant(): \EasyWeChat\OpenWork\Application|Factory
+    public function getMicroMerchant(): mixed
     {
         if (!self::$_microMerchant instanceof \EasyWeChat\MicroMerchant\Application) {
             self::$_microMerchant = Factory::microMerchant(Yii::$app->params['wechatMicroMerchantConfig']);
