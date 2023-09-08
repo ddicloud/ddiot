@@ -70,6 +70,13 @@ class adminUser extends User
             'is_login' => $this->is_login,
             'userGroup.group_id' => $this->group_id,
         ]);
+
+        if(!empty($this->group_id)){
+            $query->andFilterWhere([
+                'userGroup.group_id' => $this->group_id,
+            ]);
+        }
+
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);
         $count = $query->count();
