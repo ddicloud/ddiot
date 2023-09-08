@@ -68,7 +68,7 @@ class adminUser extends User
             'bloc_id' => $this->bloc_id,
             'status' => $this->status,
             'is_login' => $this->is_login,
-            'userGroup.group_id' => $this->group_id,
+            'userGroup.group_id' => (int) $this->group_id,
         ]);
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);
