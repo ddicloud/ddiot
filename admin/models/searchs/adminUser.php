@@ -19,7 +19,7 @@ use yii\data\Pagination;
  */
 class adminUser extends User
 {
-    public int $group_id = 0;
+    public mixed $group_id = 0;
 
     /**
      * {@inheritdoc}
