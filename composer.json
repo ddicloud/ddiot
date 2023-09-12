@@ -32,7 +32,6 @@
         "yii-diandi/yii2-region": "^1.0",
         "2amigos/qrcode-library": "^2.0",
         "hashids/hashids": "^4.0",
-        "overtrue/wechat": "~4.0",
         "yii-diandi/yii2-migration": "^2.0",
         "yiisoft/yii2": "2.0.48.1",
         "yii-diandi/yii2-addons": "^4.1",
@@ -47,7 +46,8 @@
         "swoole/ide-helper": "^5.0",
         "simps/mqtt": "^1.4",
         "ext-openssl": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "w7corp/easywechat": "^5.30"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
