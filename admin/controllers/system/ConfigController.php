@@ -91,9 +91,10 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Baidu();
-        $bloc_id = $_GPC['Baidu']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Baidu']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -117,9 +118,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechatpay();
-        $bloc_id = $_GPC['Wechatpay']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Wechatpay']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -142,9 +144,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Sms();
-        $bloc_id = $_GPC['Sms']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Sms']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -168,9 +171,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Email();
-        $bloc_id = $_GPC['Email']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Email']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -193,9 +197,9 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wxapp();
-        $bloc_id = $_GPC['Wxapp']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Wxapp']['bloc_id'];
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -218,9 +222,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Wechat();
-        $bloc_id = $_GPC['Wechat']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Wechat']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -243,9 +248,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Microapp();
-        $bloc_id = $_GPC['Microapp']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Microapp']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -268,9 +274,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new App();
-        $bloc_id = $_GPC['App']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['App']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -293,9 +300,10 @@ class ConfigController extends AController
         global $_GPC;
 
         $model = new Map();
-        $bloc_id = $_GPC['Map']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Map']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -317,9 +325,10 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Oss();
-        $bloc_id = $_GPC['Oss']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Oss']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -341,9 +350,10 @@ class ConfigController extends AController
     {
         global $_GPC;
         $model = new Api();
-        $bloc_id = $_GPC['Api']['bloc_id'];
 
         if (Yii::$app->request->isPost) {
+            $bloc_id = $_GPC['Api']['bloc_id'];
+
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
