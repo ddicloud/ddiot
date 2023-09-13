@@ -12,7 +12,7 @@
 $config = [
     'components' => [
         'fans' => [
-            'class' => 'app\modules\wechat\components\Fans'
+            'class' => 'api\modules\wechat\components\Fans'
         ]
     ],
     'params' => [

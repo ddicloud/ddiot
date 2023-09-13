@@ -12,7 +12,7 @@
 $config = [
     'components' => [
         'fans' => [
-            'class' => 'app\modules\officialaccount\components\Fans'
+            'class' => 'api\modules\officialaccount\components\Fans'
         ]
     ],
     'params' => [
