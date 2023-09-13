@@ -47,7 +47,7 @@
         "simps/mqtt": "^1.4",
         "ext-openssl": "*",
         "ext-pdo": "*",
-        "w7corp/easywechat": "^5.30"
+        "yii-diandi/yii2-easywechat": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -91,13 +91,9 @@
         }
     },
     "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
-        },
         "0": {
             "type": "composer",
-            "url": "https://asset-packagist.cn"
+            "url": "https://packagist.org"
         }
     }
 }
