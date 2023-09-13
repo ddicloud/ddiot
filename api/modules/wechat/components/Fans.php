@@ -75,7 +75,7 @@ class Fans extends BaseObject
 
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);
-            $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member, 1);
+            $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member);
 
             Yii::$app->cache->set($keys, $userinfo);
             FileHelper::writeLog($logPath, '登录日志:有缓存数据' . json_encode($userinfo));
