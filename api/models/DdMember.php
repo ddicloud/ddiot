@@ -223,7 +223,7 @@ class DdMember extends ActiveRecord
     /**
      * {}
      */
-    public static function findIdentity($id): DdMember
+    public static function findIdentity($id): ?DdMember
     {
         return static::findOne(['member_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
