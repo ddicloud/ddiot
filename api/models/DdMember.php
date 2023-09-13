@@ -139,70 +139,72 @@ class DdMember extends ActiveRecord
         //     return ResultHelper::json(401, '用户名已存在，请修改');
         // }
 
-        $this->username = $username;
-        $this->mobile = $mobile;
-        $this->level = 1;
-        $this->group_id = 1;
-        $num = rand(1, 10);
-        $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
+
 
         try {
+            $this->username = $username;
+            $this->mobile = $mobile;
+            $this->level = 1;
+            $this->group_id = 1;
+            $num = rand(1, 10);
+            $this->avatarUrl = 'public/avatar' . $num . '.jpeg';
             $this->setPassword($password);
             $this->generateAuthKey();
             $this->generateEmailVerificationToken();
             $this->generatePasswordResetToken();
+            if ($this->save()) {
+                $member_id = $this->getId();
+                // 更新用户邀请码
+
+                $isHave = DdMemberAccount::find()->where(['member_id' => $member_id])->asArray()->one();
+                FileHelper::writeLog($logPath, '登录日志:获取用户ID' . json_encode([
+                        'member_id' => $member_id,
+                        'member_ids' => $this->getId(),
+                        'isHave' => $isHave,
+                        'this' => $this,
+                    ]));
+
+                if (!empty($member_id) && empty($isHave)) {
+                    /* 写入用户初始资产 */
+                    $DdMemberAccount = new DdMemberAccount();
+                    $DdMemberAccount->member_id = $member_id;
+                    $DdMemberAccount->status = 1;
+                    $DdMemberAccount->level = 1;
+                    $DdMemberAccount->user_money = 0;
+                    $DdMemberAccount->accumulate_money = 0;
+                    $DdMemberAccount->give_money = 0;
+                    $DdMemberAccount->consume_money = 0;
+                    $DdMemberAccount->frozen_money = 0;
+                    $DdMemberAccount->consume_integral = 0;
+                    $DdMemberAccount->credit1 = 0;
+                    $DdMemberAccount->credit2 = 0;
+                    $DdMemberAccount->credit3 = 0;
+                    $DdMemberAccount->credit4 = 0;
+
+                    $DdMemberAccount->credit5 = 0;
+
+                    $DdMemberAccount->save();
+
+                    $msg = ErrorsHelper::getModelError($DdMemberAccount);
+                    if($msg){
+                        throw new ErrorException($msg,400);
+                    }
+                }
+
+                /* 写入用户apitoken */
+                $service = Yii::$app->service;
+                $service->namespace = 'api';
+                $member = $service->AccessTokenService->getAccessToken($this, 1);
+                return ResultHelper::json(200,'注册成功',$member);
+
+            } else {
+                $msg = ErrorsHelper::getModelError($this);
+                FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
+
+                return ResultHelper::json(401, $msg);
+            }
         } catch (ErrorException|Exception $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
-        }
-
-        if ($this->save()) {
-            $member_id = $this->getId();
-            // 更新用户邀请码
-
-            $isHave = DdMemberAccount::find()->where(['member_id' => $member_id])->asArray()->one();
-            FileHelper::writeLog($logPath, '登录日志:获取用户ID' . json_encode([
-                'member_id' => $member_id,
-                'member_ids' => $this->getId(),
-                'isHave' => $isHave,
-                'this' => $this,
-            ]));
-
-            if (!empty($member_id) && empty($isHave)) {
-                /* 写入用户初始资产 */
-                $DdMemberAccount = new DdMemberAccount();
-                $DdMemberAccount->member_id = $member_id;
-                $DdMemberAccount->status = 1;
-                $DdMemberAccount->level = 1;
-                $DdMemberAccount->user_money = 0;
-                $DdMemberAccount->accumulate_money = 0;
-                $DdMemberAccount->give_money = 0;
-                $DdMemberAccount->consume_money = 0;
-                $DdMemberAccount->frozen_money = 0;
-                $DdMemberAccount->consume_integral = 0;
-                $DdMemberAccount->credit1 = 0;
-                $DdMemberAccount->credit2 = 0;
-                $DdMemberAccount->credit3 = 0;
-                $DdMemberAccount->credit4 = 0;
-
-                $DdMemberAccount->credit5 = 0;
-
-                $DdMemberAccount->save();
-
-                $msg = ErrorsHelper::getModelError($DdMemberAccount);
-                FileHelper::writeLog($logPath, '登录日志:用户资产写入失败' . json_encode($msg));
-            }
-
-            /* 写入用户apitoken */
-            $service = Yii::$app->service;
-            $service->namespace = 'api';
-            $member = $service->AccessTokenService->getAccessToken($this, 1);
-            return ResultHelper::json(200,'注册成功',$member);
-
-        } else {
-            $msg = ErrorsHelper::getModelError($this);
-            FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
-
-            return ResultHelper::json(401, $msg);
         }
     }
 
