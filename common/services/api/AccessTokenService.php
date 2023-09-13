@@ -44,7 +44,7 @@ class AccessTokenService extends BaseService
      *
      * @var int
      */
-    public int $timeout;
+    public int $timeout = 7200;
 
     /**
      * 获取token.
