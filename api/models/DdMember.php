@@ -112,8 +112,9 @@ class DdMember extends ActiveRecord
 
         if (!$this->validate()) {
             FileHelper::writeLog($logPath, '登录日志:会员注册校验失败' . json_encode($this->validate()));
-
-            return $this->validate();
+            return ResultHelper::json(400,'会员注册校验失败',[
+                'err'=>$this->validate()
+            ]);
         }
 
         /* 查看用户名是否重复 */
@@ -151,7 +152,7 @@ class DdMember extends ActiveRecord
             $this->generateEmailVerificationToken();
             $this->generatePasswordResetToken();
         } catch (ErrorException|Exception $e) {
-            throw new ErrorException($e->getMessage(),400);
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
 
         if ($this->save()) {
@@ -194,7 +195,9 @@ class DdMember extends ActiveRecord
             /* 写入用户apitoken */
             $service = Yii::$app->service;
             $service->namespace = 'api';
-            return $service->AccessTokenService->getAccessToken($this, 1);
+            $member = $service->AccessTokenService->getAccessToken($this, 1);
+            return ResultHelper::json(200,'注册成功',$member);
+
         } else {
             $msg = ErrorsHelper::getModelError($this);
             FileHelper::writeLog($logPath, '登录日志:ddmember会员注册失败错误' . json_encode($msg));
