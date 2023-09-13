@@ -26,6 +26,7 @@ use yii\web\UnauthorizedHttpException;
  * @public int|null    $member_id     用户id
  * @public string|null $openid        授权对象openid
  * @public string|null $group         组别
+ * @public int         $group_id      用户组ID
  * @public int|null    $status        状态[-1:删除;0:禁用;1启用]
  * @public int|null    $create_time   创建时间
  * @public int|null    $updated_time  修改时间
@@ -43,6 +44,12 @@ class DdApiAccessToken extends ActiveRecord implements IdentityInterface, RateLi
     public int $timeLimit = 60;
 
     public string $auth_key = '';
+
+    public int $status = 0;
+
+    public int $group_id = 1;
+
+
 
     /**
      * {@inheritdoc}

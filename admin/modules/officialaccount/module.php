@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-04-08 00:13:41
  */
 
-namespace api\modules\officialaccount;
+namespace admin\modules\officialaccount;
 
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;

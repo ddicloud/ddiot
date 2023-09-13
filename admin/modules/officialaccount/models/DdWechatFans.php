@@ -8,10 +8,9 @@
  */
 
 
-namespace api\modules\officialaccount\models;
+namespace admin\modules\officialaccount\models;
 
 use common\traits\ActiveQuery\StoreTrait;
-use Yii;
 
 /**
  * This is the model class for table "dd_wxapp_fans".

@@ -9,18 +9,18 @@
 
 namespace api\modules\officialaccount\components;
 
+use admin\modules\officialaccount\models\DdWechatFans;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
-use api\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\loggingHelper;
 use common\helpers\StringHelper;
-use yii\base\ErrorException;
-use yii\base\Exception;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\ErrorException;
+use yii\base\Exception;
 
 class Fans extends BaseObject
 {

@@ -9,17 +9,17 @@
 
 namespace app\modules\officialaccount\components;
 
+use admin\modules\officialaccount\models\DdWechatFans;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
-use api\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\StringHelper;
-use yii\db\ActiveRecord;
-use function GuzzleHttp\json_decode;
 use Yii;
 use yii\base\BaseObject;
+use yii\db\ActiveRecord;
+use function GuzzleHttp\json_decode;
 
 class Fans extends BaseObject
 {

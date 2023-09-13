@@ -7,7 +7,7 @@
  * @Last Modified time: 2020-12-30 03:11:26
  */
 
-namespace api\modules\officialaccount\controllers;
+namespace admin\modules\officialaccount\controllers;
 
 use Yii;
 use admin\controllers\AController;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2020-09-07 10:18:05
  */
 
-namespace api\modules\officialaccount\controllers;
+namespace admin\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
 use common\helpers\ResultHelper;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-04-10 15:36:49
  */
 
-namespace api\modules\officialaccount\controllers;
+namespace admin\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
 use common\helpers\ArrayHelper;

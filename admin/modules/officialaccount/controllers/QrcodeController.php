@@ -6,7 +6,7 @@
  * @Last Modified time: 2020-11-13 01:12:55
  */
 
-namespace api\modules\officialaccount\controllers;
+namespace admin\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
 use common\helpers\FileHelper;

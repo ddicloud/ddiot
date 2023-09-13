@@ -9,16 +9,19 @@
 
 namespace common\services\api;
 
+use api\modules\officialaccount\models\DdWechatFans;
 use api\models\DdApiAccessToken;
 use api\models\DdMember;
-use api\modules\officialaccount\models\DdWechatFans;
 use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;
+use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\services\BaseService;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\web\UnprocessableEntityHttpException;
 
@@ -34,25 +37,28 @@ class AccessTokenService extends BaseService
      *
      * @var bool
      */
-    public $cache = true;
+    public bool $cache = true;
 
     /**
      * 缓存过期时间.
      *
      * @var int
      */
-    public $timeout;
+    public int $timeout;
 
     /**
      * 获取token.
      *
+     * @param DdMember $member
+     * @param $group_id
      * @param int $cycle_index 重新获取次数
      *
      * @return array
      *
-     * @throws \yii\base\Exception
+     * @throws UnprocessableEntityHttpException
+     * @throws Exception
      */
-    public function getAccessToken(DdMember $member, $group_id, $cycle_index = 1)
+    public function getAccessToken(DdMember $member, $group_id, int $cycle_index = 1): array
     {
         $model = $this->findModel($member->id, $group_id);
         $member_id = $member->id;
@@ -130,18 +136,22 @@ class AccessTokenService extends BaseService
     /**
      * 忘记密码.
      *
-     * @param int|null post
-     *
-     * @return string
-     *
-     * @throws NotFoundHttpException
+     * @param DdMember $member
+     * @param $mobile
+     * @param $password
+     * @return array|object[]|string|string[]
      */
-    public function forgetpassword(DdMember $member, $mobile, $password)
+    public function forgetpassword(DdMember $member, $mobile, $password): array|string
     {
-        $member->generatePasswordResetToken();
-        $member->setPassword($password);
-        $member->generateAuthKey();
-        $member->generateEmailVerificationToken();
+        try {
+            $member->generatePasswordResetToken();
+            $member->setPassword($password);
+            $member->generateAuthKey();
+            $member->generateEmailVerificationToken();
+        } catch (ErrorException|Exception $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
+
 
         return  $member->save(false);
     }
@@ -149,13 +159,12 @@ class AccessTokenService extends BaseService
     /**
      * 判断access-token有效期.
      *
-     * @param int|null post
+     * @param string $token post
      *
-     * @return 到期：true
+     * @return  true
      *
-     * @throws NotFoundHttpException
      */
-    public static function isPeriod($token, $type = null)
+    public static function isPeriod(string $token, $type = null): bool
     {
         loggingHelper::writeLog('AccessTokenService', 'isPeriod', '重复获取', [
             'token' => $token
@@ -182,13 +191,11 @@ class AccessTokenService extends BaseService
     /**
      * 判断refresh_token有效期.
      *
-     * @param int|null post
+     * @param int|null $token post
      *
-     * @return 到期：true
      *
-     * @throws NotFoundHttpException
      */
-    public static function isPeriodRefToken($token, $type = null)
+    public static function isPeriodRefToken(?int $token, $type = null): bool
     {
         // 判断验证token有效性是否开启
         if (Yii::$app->params['user.refreshTokenValidity'] === true) {
@@ -207,13 +214,13 @@ class AccessTokenService extends BaseService
     /**
      * 修改accesstoken.
      *
-     * @param int|null post
-     *
+     * @param int|null $member_id post
+     * @param int $group_id
      * @return string
      *
-     * @throws NotFoundHttpException
+     * @throws \Exception
      */
-    public function RefreshToken($member_id, $group_id = 1)
+    public function RefreshToken(?int $member_id, int $group_id = 1): string
     {
         $model = $this->findModel($member_id, $group_id);
 
@@ -232,9 +239,9 @@ class AccessTokenService extends BaseService
      *
      * @return array|mixed|ActiveRecord|null
      */
-    public function getTokenToCache($token, $type)
+    public function getTokenToCache($token, $type): mixed
     {
-        if ($this->cache == false) {
+        if (!$this->cache) {
             return $this->findByAccessToken($token);
         }
 
@@ -251,8 +258,9 @@ class AccessTokenService extends BaseService
      * 禁用token.
      *
      * @param $access_token
+     * @return bool
      */
-    public function disableByAccessToken($access_token)
+    public function disableByAccessToken($access_token): bool
     {
         $this->cache === true && Yii::$app->cache->delete($this->getCacheKey($access_token));
 
@@ -270,9 +278,9 @@ class AccessTokenService extends BaseService
      *
      * @param $token
      *
-     * @return array|ActiveRecord|AccessToken|null
+     * @return array|ActiveRecord|DdApiAccessToken|null
      */
-    public function findByAccessToken($token)
+    public function findByAccessToken($token): DdApiAccessToken|array|ActiveRecord|null
     {
         return DdApiAccessToken::find()
             ->where(['access_token' => $token, 'status' => 1])
@@ -284,9 +292,9 @@ class AccessTokenService extends BaseService
      *
      * @param $token
      *
-     * @return array|ActiveRecord|AccessToken|null
+     * @return int
      */
-    public function upLoginNum($token)
+    public function upLoginNum($token): int
     {
         return DdApiAccessToken::updateAllCounters(['login_num' => 1], ['access_token' => $token]);
     }
@@ -296,7 +304,7 @@ class AccessTokenService extends BaseService
      *
      * @return string
      */
-    protected function getCacheKey($access_token)
+    protected function getCacheKey($access_token): string
     {
         return $access_token;
     }
@@ -305,10 +313,10 @@ class AccessTokenService extends BaseService
      * 返回模型.
      *
      * @param $member_id
-     *
-     * @return array|AccessToken|ActiveRecord|null
+     * @param $group_id
+     * @return array|DdApiAccessToken|ActiveRecord|null
      */
-    protected function findModel($member_id, $group_id)
+    protected function findModel($member_id, $group_id): DdApiAccessToken|array|ActiveRecord|null
     {
         if (empty(($model = DdApiAccessToken::find()->where([
             'member_id' => $member_id,

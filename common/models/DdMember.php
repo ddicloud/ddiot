@@ -8,7 +8,7 @@
 
 namespace common\models;
 
-use api\modules\officialaccount\models\DdWechatFans;
+use admin\modules\officialaccount\models\DdWechatFans;
 use api\modules\wechat\models\DdWxappFans;
 use common\helpers\HashidsHelper;
 

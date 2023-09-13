@@ -8,7 +8,7 @@
 
 namespace api\modules\officialaccount\services;
 
-use api\modules\officialaccount\models\DdWechatFans;
+use admin\modules\officialaccount\models\DdWechatFans;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\loggingHelper;

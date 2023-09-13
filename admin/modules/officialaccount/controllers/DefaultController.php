@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\officialaccount\controllers;
+namespace admin\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
