@@ -127,7 +127,8 @@ class AccessTokenService extends BaseService
 
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
-        $keys = $member_id.'_userinfo';
+        $openid = $member->openid;
+        $keys = $openid.'_userinfo';
         Yii::$app->cache->delete($keys);
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
 
