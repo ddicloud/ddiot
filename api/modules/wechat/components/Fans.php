@@ -69,7 +69,6 @@ class Fans extends BaseObject
         ]));
 
 
-        // 去掉注册级别限制条件
         if ($isHave) {
             FileHelper::writeLog($logPath, '登录日志:已有数据');
 
@@ -116,7 +115,7 @@ class Fans extends BaseObject
 
             $res = $DdMember->signup($nickname, $mobile, $password,$openid);
 
-            if ($res['code'] && $res['code'] != 200) {
+            if (isset($res['code']) && $res['code'] != 200) {
                 return ResultHelper::json($res['code'], $res['message']);
             }
 
@@ -126,9 +125,6 @@ class Fans extends BaseObject
             $member_id = isset($res['member']) ? $res['member']['member_id']:0;
             FileHelper::writeLog($logPath, '登录日志:获取用户id' . json_encode($member_id));
 
-            $DdMember->updateAll([
-                'openid' => $openid,
-            ], ['member_id' => $member_id]);
             DdApiAccessToken::updateAll(['openid' => $openid], ['member_id' => $member_id]);
             FileHelper::writeLog($logPath, '登录日志:注册fans' . json_encode($member_id));
 
@@ -158,12 +154,13 @@ class Fans extends BaseObject
 
             $DdWxappFans = new DdWxappFans();
             if ($DdWxappFans->load($dataFans, '') && $DdWxappFans->save()) {
-                $res['fans'] = $dataFans;
-                $res['wxappFans'] = $dataFans;
-                FileHelper::writeLog($logPath, '登录日志:组装fans002' . json_encode($res));
-                Yii::$app->cache->set($keys, $res);
+                $arr = $res['data'];//数组返回200，取data
+                $arr['fans'] = $dataFans;
+                $arr['wxappFans'] = $dataFans;
+                FileHelper::writeLog($logPath, '登录日志:组装fans002' . json_encode($arr));
+                Yii::$app->cache->set($keys, $arr);
 
-                return $res;
+                return $arr;
             } else {
                 $errors = ErrorsHelper::getModelError($DdWxappFans);
                 FileHelper::writeLog($logPath, '登录日志：写入错误' . json_encode($errors));
