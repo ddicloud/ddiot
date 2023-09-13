@@ -49,7 +49,7 @@ class AccessTokenService extends BaseService
     /**
      * 获取token.
      *
-     * @param DdMember $member
+     * @param ?DdMember $member
      * @param $group_id
      * @param int $cycle_index 重新获取次数
      *
@@ -59,7 +59,7 @@ class AccessTokenService extends BaseService
      * @throws Exception
      * @throws \Exception
      */
-    public function getAccessToken(DdMember $member, $group_id, int $cycle_index = 1): array
+    public function getAccessToken(?DdMember $member, $group_id, int $cycle_index = 1): array
     {
         $model = $this->findModel($member->id, $group_id);
         $member_id = $member->id;
