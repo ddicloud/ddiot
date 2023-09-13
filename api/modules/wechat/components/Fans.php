@@ -137,7 +137,7 @@ class Fans extends BaseObject
                 'avatarUrl' => $users['avatarUrl'],
                 'openid' => $users['openid'],
                 'nickname' => $nickname,
-                'groupid' => $res['member']['group_id'],
+                'groupid' =>isset($res['member'])? $res['member']['group_id']:1,
                 'fans_info' => $users['openid'],
                 'unionid' => !empty($users['unionid']) ? $users['unionid'] : '',
                 'gender' => $users['gender'],
