@@ -17,7 +17,7 @@ trait BlocLinkTrait
     /**
      * @throws ErrorException
      */
-    public function beforeSave($insert): true
+    public function beforeSave($insert): bool
     {
         global $_GPC;
         $invitation_code = $_GPC['invitation_code'];
