@@ -75,7 +75,7 @@ class Fans extends BaseObject
 
             $fans = $this->fansByopenid($openid);
             $member = $DdMember::findIdentity($fans['user_id']);
-            if(!empty($member)){
+            if(!empty($member->toArray())){
                 return ResultHelper::json(400,'用户不存在',$member->toArray());
             }
             $userinfo = Yii::$app->service->apiAccessTokenService->getAccessToken($member);
