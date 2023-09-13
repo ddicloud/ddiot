@@ -42,7 +42,7 @@ class Fans extends BaseObject
         FileHelper::writeLog($logPath, '登录日志:用户信息sign' . json_encode($users));
 
         $openid = $users['openid'];
-        $nickname = $users['nickName'];
+        $nickname = $users['nickName']??'';
         $keys = $openid . '_userinfo';
         $mobile = $users['mobile'] ?? '';
         FileHelper::writeLog($logPath, '登录日志:用户信息openid' . json_encode($openid));
