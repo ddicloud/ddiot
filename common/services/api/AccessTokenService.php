@@ -191,11 +191,11 @@ class AccessTokenService extends BaseService
     /**
      * 判断refresh_token有效期.
      *
-     * @param int|null $token post
+     * @param string $token post
      *
      *
      */
-    public static function isPeriodRefToken(?int $token, $type = null): bool
+    public static function isPeriodRefToken(string $token, $type = null): bool
     {
         // 判断验证token有效性是否开启
         if (Yii::$app->params['user.refreshTokenValidity'] === true) {
@@ -234,12 +234,10 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * @param $token
-     * @param $type
-     *
+     * @param string $token
      * @return array|mixed|ActiveRecord|null
      */
-    public function getTokenToCache($token, $type): mixed
+    public function getTokenToCache(string $token): mixed
     {
         if (!$this->cache) {
             return $this->findByAccessToken($token);
@@ -257,10 +255,10 @@ class AccessTokenService extends BaseService
     /**
      * 禁用token.
      *
-     * @param $access_token
+     * @param string $access_token
      * @return bool
      */
-    public function disableByAccessToken($access_token): bool
+    public function disableByAccessToken(string $access_token): bool
     {
         $this->cache === true && Yii::$app->cache->delete($this->getCacheKey($access_token));
 
