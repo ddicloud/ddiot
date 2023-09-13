@@ -23,6 +23,7 @@ use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\UnprocessableEntityHttpException;
 
 /**
@@ -218,20 +219,26 @@ class AccessTokenService extends BaseService
      *
      * @param int|null $member_id post
      * @param int $group_id
-     * @return string
+     * @return array|object[]|string|string[]
      *
      * @throws \Exception
      */
-    public function RefreshToken(?int $member_id, int $group_id = 1): string
+    public function RefreshToken(?int $member_id, int $group_id = 1): array|string
     {
         $model = $this->findModel($member_id, $group_id);
 
         !empty($model->access_token) && Yii::$app->cache->delete($this->getCacheKey($model->access_token));
         $model->access_token = StringHelper::uuid('sha1').'_'.time();
-        if ($model->save()) {
-            return $model->access_token;
-        } else {
-            return '修改失败';
+        try {
+            if ($model->update()) {
+                return $model->access_token;
+            } else {
+                return '修改失败';
+            }
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
     }
 
