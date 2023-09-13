@@ -25,8 +25,9 @@ class StringHelper extends BaseStringHelper
      *
      * @throws \Exception
      */
-    public static function uuid($type = 'time', $name = 'php.net')
+    public static function uuid(string $type = 'time', string $name = 'php.net'): string
     {
+        $uuid = '';
         switch ($type) {
                 // 生成版本1（基于时间的）UUID对象
             case  'time':
@@ -50,7 +51,7 @@ class StringHelper extends BaseStringHelper
                 break;
                 // php自带的唯一id
             case  'uniqid':
-                return md5(uniqid(md5(microtime(true) . self::randomNum(8)), true));
+                $uuid = md5(uniqid(md5(microtime(true) . self::randomNum(8)), true));
 
                 break;
         }
@@ -63,9 +64,9 @@ class StringHelper extends BaseStringHelper
      *
      * @param $value
      *
-     * @return false|int
+     * @return float|bool|int|string
      */
-    public static function dateToInt($value)
+    public static function dateToInt($value): float|bool|int|string
     {
         if (empty($value)) {
             return $value;
@@ -82,10 +83,10 @@ class StringHelper extends BaseStringHelper
      * 时间戳转日期
      *
      * @param $value
-     *
+     * @param string $format
      * @return false|int
      */
-    public static function intToDate($value, $format = 'Y-m-d H:i:s')
+    public static function intToDate($value, string $format = 'Y-m-d H:i:s'): bool|int
     {
         if (empty($value)) {
             return date($format);
@@ -102,10 +103,11 @@ class StringHelper extends BaseStringHelper
      * 获取缩略图地址
      *
      * @param string $url
-     * @param int    $width
-     * @param int    $height
+     * @param int $width
+     * @param int $height
+     * @return string
      */
-    public static function getThumbUrl($url, $width, $height)
+    public static function getThumbUrl(string $url, int $width, int $height): string
     {
         $url = str_replace('attachment/images', 'attachment/thumb', $url);
 
@@ -116,10 +118,11 @@ class StringHelper extends BaseStringHelper
      * 创建缩略图地址
      *
      * @param string $url
-     * @param int    $width
-     * @param int    $height
+     * @param int $width
+     * @param int $height
+     * @return string
      */
-    public static function createThumbUrl($url, $width, $height)
+    public static function createThumbUrl(string $url, int $width, int $height): string
     {
         $url = explode('/', $url);
         $nameArr = explode('.', end($url));
@@ -132,10 +135,10 @@ class StringHelper extends BaseStringHelper
      * 获取压缩图片地址
      *
      * @param $url
-     *
+     * @param string $alias
      * @return string
      */
-    public static function getAliasUrl($url, $alias = 'compress')
+    public static function getAliasUrl($url, string $alias = 'compress'): string
     {
         $url = explode('/', $url);
         $nameArr = explode('.', end($url));
@@ -153,7 +156,7 @@ class StringHelper extends BaseStringHelper
      *
      * @return array
      */
-    public static function parseAttr($string)
+    public static function parseAttr($string): array
     {
         $array = preg_split('/[,;\r\n]+/', trim($string, ",;\r\n"));
         if (strpos($string, ':')) {
@@ -178,12 +181,12 @@ class StringHelper extends BaseStringHelper
      * @return bool
      *              true | false
      */
-    public static function strExists($string, $find)
+    public static function strExists($string, $find): bool
     {
-        return !(strpos($string, $find) === false);
+        return !(!str_contains($string, $find));
     }
 
-    public static function subtext($text, $length)
+    public static function subtext($text, $length): string
     {
         if (mb_strlen($text, 'utf8') > $length) {
             return mb_substr($text, 0, $length, 'utf8') . '...';
@@ -196,14 +199,14 @@ class StringHelper extends BaseStringHelper
      * 字符串截取，支持中文和其他编码
      *
      * @param [string] $str     [字符串]
-     * @param int      $start   [起始位置]
-     * @param int      $length  [截取长度]
-     * @param string   $charset [字符串编码]
-     * @param bool     $suffix  [是否有省略号]
+     * @param int $start [起始位置]
+     * @param int $length [截取长度]
+     * @param string $charset [字符串编码]
+     * @param bool $suffix [是否有省略号]
      *
-     * @return [type] [description]
+     * @return bool|string [type] [description]
      */
-    public static function msubstr($str, $start = 0, $length = 15, $charset = 'utf-8', $suffix = false)
+    public static function msubstr($str, int $start = 0, int $length = 15, string $charset = 'utf-8', bool $suffix = false): bool|string
     {
         if (function_exists('mb_substr')) {
             return mb_substr($str, $start, $length, $charset);
@@ -226,7 +229,7 @@ class StringHelper extends BaseStringHelper
     /**
      * @计算中文字符串长度，只支持UTF8编码
      */
-    public static function utf8_strlen($string = null)
+    public static function utf8_strlen($string = null): int
     {
         preg_match_all('/./us', $string, $match);
 
@@ -236,10 +239,10 @@ class StringHelper extends BaseStringHelper
     /**
      * 中英混合字符串长度判断.
      *
-     * @param unknown_type $str
-     * @param unknown_type $charset
+     * @param string $str
+     * @param string $charset
      */
-    public static function strLength($str, $charset = 'utf-8')
+    public static function strLength(string $str, string $charset = 'utf-8'): float
     {
         if ($charset == 'utf-8') {
             $str = iconv('utf-8', 'gb2312', $str);
@@ -261,10 +264,12 @@ class StringHelper extends BaseStringHelper
     /**
      * 中英混合的字符串截取.
      *
-     * @param string       $sourcestr
-     * @param unknown_type $cutlength
+     * @param string $sourcestr
+     * @param int $cutlength
+     * @param string $suffix
+     * @return string
      */
-    public static function cut_str($sourcestr, $cutlength, $suffix = '...')
+    public static function cut_str(string $sourcestr, int $cutlength, string $suffix = '...'): string
     {
         $returnstr = '';
         $i = 0;
@@ -299,16 +304,14 @@ class StringHelper extends BaseStringHelper
     }
 
     // 保留位数处理
-    public static function currency_format($currency, $decimals = 2)
+    public static function currency_format($currency, $decimals = 2): array|string
     {
         $currency = floatval($currency);
         if (empty($currency)) {
             return '0.00';
         }
         $currency = number_format($currency, $decimals);
-        $currency = str_replace(',', '', $currency);
-
-        return $currency;
+        return str_replace(',', '', $currency);
     }
 
     /**
@@ -316,19 +319,20 @@ class StringHelper extends BaseStringHelper
      *
      * @param string $string     必需。规定要使用的 XML 字符串
      * @param string $class_name 可选。规定新对象的 class
-     * @param int    $options    可选。规定附加的 Libxml 参数
+     * @param int $options    可选。规定附加的 Libxml 参数
      * @param string $ns
-     * @param bool   $is_prefix
+     * @param bool $is_prefix
      *
      * @return bool|\SimpleXMLElement
      */
     public static function simplexmlLoadString(
-        $string,
-        $class_name = 'SimpleXMLElement',
-        $options = 0,
-        $ns = '',
-        $is_prefix = false
-    ) {
+        string $string,
+        string $class_name = 'SimpleXMLElement',
+        int    $options = 0,
+        string $ns = '',
+        bool $is_prefix = false
+    ): \SimpleXMLElement|bool
+    {
         libxml_disable_entity_loader(true);
         if (preg_match('/(\<\!DOCTYPE|\<\!ENTITY)/i', $string)) {
             return false;
@@ -342,9 +346,9 @@ class StringHelper extends BaseStringHelper
      *
      * @param $string
      *
-     * @return mixed
+     * @return array
      */
-    public static function strToChineseCharacters($string)
+    public static function strToChineseCharacters($string): array
     {
         preg_match_all("/[\x{4e00}-\x{9fa5}]+/u", $string, $chinese);
 
@@ -356,9 +360,9 @@ class StringHelper extends BaseStringHelper
      *
      * @param $str
      *
-     * @return mixed
+     * @return string
      */
-    public static function strUcwords($str)
+    public static function strUcwords($str): string
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $str)));
     }
@@ -370,7 +374,7 @@ class StringHelper extends BaseStringHelper
      *
      * @return string
      */
-    public static function toUnderScore($str)
+    public static function toUnderScore($str): string
     {
         $array = [];
         for ($i = 0; $i < strlen($str); ++$i) {
@@ -393,11 +397,11 @@ class StringHelper extends BaseStringHelper
      *
      * @param string $fileName 文件名
      * @param string $type     字符类型
-     * @param int    $length   长度
+     * @param int $length   长度
      *
      * @return bool|string
      */
-    public static function clipping($fileName, $type = '.', $length = 0)
+    public static function clipping(string $fileName, string $type = '.', int $length = 0): bool|string
     {
         return substr(strtolower(strrchr($fileName, $type)), $length);
     }
@@ -410,7 +414,7 @@ class StringHelper extends BaseStringHelper
      *
      * @return string
      */
-    public static function random($length, $numeric = false)
+    public static function random($length, bool $numeric = false): string
     {
         $seed = base_convert(md5(microtime() . $_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
         $seed = $numeric ? (str_replace('0', '', $seed) . '012340567890') : ($seed . 'zZ' . strtoupper($seed));
@@ -434,15 +438,15 @@ class StringHelper extends BaseStringHelper
      * 获取数字随机字符串.
      *
      * @param bool $prefix 判断是否需求前缀
-     * @param int  $length 长度
+     * @param int $length 长度
      *
      * @return string
      */
-    public static function randomNum($prefix = false, $length = 8)
+    public static function randomNum(bool $prefix = false, int $length = 8): string
     {
         $str = $prefix ?? '';
 
-        return $str . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, $length);
+        return $str . substr(implode('', array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, $length);
     }
 
     /**
@@ -453,9 +457,9 @@ class StringHelper extends BaseStringHelper
      * @param $subject
      * @param null $count
      *
-     * @return mixed
+     * @return array|string
      */
-    public static function replace($search, $replace, $subject, &$count = null)
+    public static function replace($search, $replace, $subject, &$count = null): array|string
     {
         return str_replace($search, $replace, $subject, $count);
     }
@@ -465,7 +469,7 @@ class StringHelper extends BaseStringHelper
      *
      * @return bool
      */
-    public static function isWindowsOS()
+    public static function isWindowsOS(): bool
     {
         return strncmp(PHP_OS, 'WIN', 3) === 0;
     }
@@ -474,14 +478,14 @@ class StringHelper extends BaseStringHelper
      * 将一个字符串部分字符用*替代隐藏.
      *
      * @param string $string 待转换的字符串
-     * @param int    $bengin 起始位置，从0开始计数，当$type=4时，表示左侧保留长度
-     * @param int    $len    需要转换成*的字符个数，当$type=4时，表示右侧保留长度
-     * @param int    $type   转换类型：0，从左向右隐藏；1，从右向左隐藏；2，从指定字符位置分割前由右向左隐藏；3，从指定字符位置分割后由左向右隐藏；4，保留首末指定字符串
+     * @param int $bengin 起始位置，从0开始计数，当$type=4时，表示左侧保留长度
+     * @param int $len    需要转换成*的字符个数，当$type=4时，表示右侧保留长度
+     * @param int $type   转换类型：0，从左向右隐藏；1，从右向左隐藏；2，从指定字符位置分割前由右向左隐藏；3，从指定字符位置分割后由左向右隐藏；4，保留首末指定字符串
      * @param string $glue   分割符
      *
      * @return bool|string
      */
-    public static function hideStr($string, $bengin = 0, $len = 4, $type = 0, $glue = '@')
+    public static function hideStr(string $string, int $bengin = 0, int $len = 4, int $type = 0, string $glue = '@'): bool|string
     {
         if (empty($string)) {
             return false;
@@ -552,13 +556,13 @@ class StringHelper extends BaseStringHelper
      * 第二个参数：生成的类型（支持数组，字符串格式，默认为数组）；
      * 第三个参数：生成的电话号码中间是否有空格（默认为有空格）.
      *
-     * @param int|null post
+     * @param int|null $count post
+     * @param string $type
+     * @param bool $white_space
+     * @return array|string
      *
-     * @return string
-     *
-     * @throws NotFoundHttpException
      */
-    public static function generate_mobile($count, $type = 'array', $white_space = false)
+    public static function generate_mobile(?int $count, string $type = 'array', bool $white_space = false): array|string
     {
         $arr = [
             130, 131, 132, 133, 134, 135, 136, 137, 138, 139,
@@ -567,6 +571,7 @@ class StringHelper extends BaseStringHelper
             176, 177, 178,
             180, 181, 182, 183, 184, 185, 186, 187, 188, 189,
         ];
+        $tmp = [];
         for ($i = 0; $i < $count; ++$i) {
             $tmp[] = $arr[array_rand($arr)] . ' ' . mt_rand(1000, 9999) . ' ' . mt_rand(1000, 9999);
         }
@@ -585,9 +590,9 @@ class StringHelper extends BaseStringHelper
      *
      * @param int $num 目标数字
      */
-    public static function number2chinese($num)
+    public static function number2chinese(int $num)
     {
-        if (is_int($num) && $num < 100) {
+        if ($num < 100) {
             $char = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
             $unit = ['', '十', '百', '千', '万'];
             $return = '';
@@ -631,12 +636,12 @@ class StringHelper extends BaseStringHelper
         return simplexml_load_string($string, $class_name, $options, $ns, $is_prefix);
     }
 
-    public static function getXml($result)
+    public static function getXml($result): array|string
     {
-        if (substr($result, 0, 5) != '<xml>') {
+        if (!str_starts_with($result, '<xml>')) {
             return $result;
         }
-        $results = json_decode(json_encode(self::isimplexml_load_string($result, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        $results = json_decode(json: json_encode(self::isimplexml_load_string($result, 'SimpleXMLElement', LIBXML_NOCDATA)), associative: true);
         if (!is_array($results)) {
             return 'xml结构错误';
         }
@@ -653,11 +658,11 @@ class StringHelper extends BaseStringHelper
      * @auth xieyang
      * @date 2018年5月10日 13:51:23
      *
-     * @param string
+     * @param string $query
      *
-     * @return mixed
+     * @return array
      */
-    public static function convertUrlArray($query)
+    public static function convertUrlArray(string $query): array
     {
         $queryParts = explode('&', $query);
         $params = [];
@@ -675,23 +680,21 @@ class StringHelper extends BaseStringHelper
      * @auth xieyang
      * @date 2018年5月10日 13:51:31
      *
-     * @param string
+     * @param array $array_query
      *
-     * @return mixed
+     * @return string
      */
-    public static function getUrlString($array_query)
+    public static function getUrlString(array $array_query): string
     {
         $tmp = [];
         foreach ($array_query as $k => $param) {
             $tmp[] = $k . '=' . $param;
         }
-        $params = implode('&', $tmp);
-
-        return $params;
+        return implode('&', $tmp);
     }
 
     // 生成随机的昵称
-    public static function getname($name_count = 1)
+    public static function getname($name_count = 1): array
     {
         $firstname_arr = [
             '赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜',
@@ -736,7 +739,7 @@ class StringHelper extends BaseStringHelper
         return $temp;
     }
 
-    public static function haveEmojiChar($str)
+    public static function haveEmojiChar($str): bool
     {
         $mbLen = mb_strlen($str);
 
@@ -753,7 +756,7 @@ class StringHelper extends BaseStringHelper
         return false;
     }
 
-    public static function removeEmojiChar($str)
+    public static function removeEmojiChar($str): string
     {
         $mbLen = mb_strlen($str);
 
