@@ -106,7 +106,7 @@ class DdMember extends ActiveRecord
      * @return array|bool|object[]|string[]
      * @throws ErrorException
      */
-    public function signup($username, $mobile, $password): array|bool
+    public function signup($username, $mobile, $password,$openid=''): array|bool
     {
         $logPath = Yii::getAlias('@runtime/DdMember/signup/' . date('ymd') . '.log');
 
@@ -144,6 +144,7 @@ class DdMember extends ActiveRecord
         try {
             $this->username = $username;
             $this->mobile = $mobile;
+            $this->openid = $openid;
             $this->level = 1;
             $this->group_id = 1;
             $num = rand(1, 10);

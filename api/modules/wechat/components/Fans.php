@@ -114,7 +114,7 @@ class Fans extends BaseObject
 
             FileHelper::writeLog($logPath, '登录日志:处理好以后的昵称：' . $nickname);
 
-            $res = $DdMember->signup($nickname, $mobile, $password);
+            $res = $DdMember->signup($nickname, $mobile, $password,$openid);
 
             if ($res['code'] && $res['code'] != 200) {
                 return ResultHelper::json($res['code'], $res['message']);
