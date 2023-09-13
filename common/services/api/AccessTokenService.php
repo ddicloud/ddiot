@@ -57,6 +57,7 @@ class AccessTokenService extends BaseService
      *
      * @throws UnprocessableEntityHttpException
      * @throws Exception
+     * @throws \Exception
      */
     public function getAccessToken(DdMember $member, $group_id, int $cycle_index = 1): array
     {
@@ -126,7 +127,7 @@ class AccessTokenService extends BaseService
 
         $this->upLoginNum($result['access_token']);
         // 写入缓存 暂时解决方案
-        $keys = $member['openid'].'_userinfo';
+        $keys = $member_id.'_userinfo';
         Yii::$app->cache->delete($keys);
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
 
