@@ -91,6 +91,10 @@
         }
     },
     "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        },
         "0": {
             "type": "composer",
             "url": "https://packagist.org"
