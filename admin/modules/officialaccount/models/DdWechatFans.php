@@ -42,7 +42,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
      *
      * @var array
      */
-    public static $followStatus = [
+    public static array $followStatus = [
         self::FOLLOW_ON  => '已关注',
         self::FOLLOW_OFF => '未关注',
     ];
@@ -50,7 +50,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%wechat_fans}}';
     }
@@ -58,7 +58,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'openid', 'nickname', 'fans_info'], 'required'],
@@ -74,7 +74,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * 行为
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -87,7 +87,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     }
 
     // 根据用户id获取信息
-    public static function getFansByUid($user_id)
+    public static function getFansByUid($user_id): ?DdWechatFans
     {
         return  self::findOne(['user_id' => $user_id]);
     }
@@ -95,7 +95,7 @@ class DdWechatFans extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'fanid' => '粉丝id',
