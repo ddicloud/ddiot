@@ -186,7 +186,7 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['enums'],
+                    'controller' => ['Enums'],
                     'pluralize' => false,
                     'extraPatterns' => [
                         'GET storesbloc' => 'storesbloc',
