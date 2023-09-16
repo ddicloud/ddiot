@@ -48,7 +48,8 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "yii-diandi/yii2-easywechat": "^1.1",
-        "ext-libxml": "*"
+        "ext-libxml": "*",
+       "ext-swoole": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
