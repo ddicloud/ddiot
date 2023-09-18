@@ -173,7 +173,7 @@ class ResultTransformer
                     $data['EventType'] = $value;
                 }
                 if ($key == ":error-code") {
-                    $data['ErrorCode'] = $value;
+                    $data['errorCode'] = $value;
                 }
                 if ($key == ":error-message") {
                     $data['ErrorMessage'] = $value;

@@ -36,7 +36,7 @@ class HttpSignAuth extends Behavior
         $postParams = Yii::$app->request->post();
         $params = array_merge($getParams, $postParams);
 //        if (empty($sign) || !$this->checkSign($sign, $params)) {
-//             $error = ErrorCode::getError('auth_error');
+//             $error = errorCode::getError('auth_error');
 //             throw new Exception($error['msg'], $error['code']);
 //        }
 
