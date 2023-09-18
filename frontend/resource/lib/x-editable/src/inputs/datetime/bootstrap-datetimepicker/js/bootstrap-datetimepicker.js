@@ -948,7 +948,7 @@
 				new_date.setUTCDate(day);
 				test = function(){ return new_month != new_date.getUTCMonth(); };
 			}
-			// Common date-resetting loop -- if date is beyond end of month, make it
+			// common date-resetting loop -- if date is beyond end of month, make it
 			// end of month
 			while (test()){
 				new_date.setUTCDate(--day);

@@ -48,7 +48,7 @@ class Upload extends BaseObject
     public $filename;
     /**
      * @var array additional file document contents.
-     * Common GridFS columns:
+     * common GridFS columns:
      *
      * - metadata: array, additional data associated with the file.
      * - aliases: array, an array of aliases.
