@@ -77,7 +77,7 @@ class SmsService extends BaseService
      * 发送短信
      *
      * ```php
-     *       Yii::$app->services->sms->send($mobile, $code, $usage, $member_id)
+     *       Yii::$App->services->sms->send($mobile, $code, $usage, $member_id)
      * ```
      *
      * @param int    $mobile    手机号码
@@ -223,7 +223,7 @@ class SmsService extends BaseService
     //             ->andWhere(['between', 'created_at', $start_time, $end_time])
     //             ->andWhere(['status' => StatusEnum::ENABLED])
     //             ->andWhere(['>', 'error_code', 399])
-    //             ->andFilterWhere(['merchant_id' => Yii::$app->services->merchant->getId()])
+    //             ->andFilterWhere(['merchant_id' => Yii::$App->services->merchant->getId()])
     //             ->groupBy(['time'])
     //             ->asArray()
     //             ->all();

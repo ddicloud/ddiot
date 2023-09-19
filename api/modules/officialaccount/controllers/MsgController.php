@@ -176,7 +176,7 @@ class MsgController extends AController
                 $FansService->follow($message['FromUserName']);
 
                 // 判断是否是二维码关注
-                // if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
+                // if ($qrResult = Yii::$App->wechatService->qrcodeStat->scan($message)) {
                 //     $message['Content'] = $qrResult;
                 //     $MessageService->setMessage($message);
 
@@ -196,7 +196,7 @@ class MsgController extends AController
                 break;
             // 二维码扫描事件
             case 'SCAN':
-                // if ($qrResult = Yii::$app->wechatService->qrcodeStat->scan($message)) {
+                // if ($qrResult = Yii::$App->wechatService->qrcodeStat->scan($message)) {
                 //     $message['Content'] = $qrResult;
                 //     $MessageService->setMessage($message);
 

@@ -91,7 +91,7 @@ class Generator extends \yii\gii\Generator
     {
         return [
             'moduleID' => 'This refers to the ID of the module, e.g., <code>admin</code>.',
-            'moduleClass' => 'This is the fully qualified class name of the module, e.g., <code>app\modules\admin\site</code>.',
+            'moduleClass' => 'This is the fully qualified class name of the module, e.g., <code>App\modules\admin\site</code>.',
             'identifie' => '作者英文名称在前，然后用下划线隔开，例如：diandi_shop',
         ];
     }
@@ -224,7 +224,7 @@ EOD;
             $this->addError('moduleClass', 'Module class must be properly namespaced.');
         }
         if (empty($this->moduleClass) || substr_compare($this->moduleClass, '\\', -1, 1) === 0) {
-            $this->addError('moduleClass', 'Module class name must not be empty. Please enter a fully qualified class name. e.g. "app\\modules\\admin\\Module".');
+            $this->addError('moduleClass', 'Module class name must not be empty. Please enter a fully qualified class name. e.g. "App\\modules\\admin\\Module".');
         }
     }
 

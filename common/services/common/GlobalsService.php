@@ -157,7 +157,7 @@ class GlobalsService extends BaseService
         $key = 'common.globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
-        if (isset($globalBloc['bloc_id']) && !empty($globalBloc['bloc_id']) && Yii::$app->id == 'app-backend') {
+        if (isset($globalBloc['bloc_id']) && !empty($globalBloc['bloc_id']) && Yii::$app->id == 'App-backend') {
             return $globalBloc['bloc_id'];
         }
 
@@ -176,7 +176,7 @@ class GlobalsService extends BaseService
         $key = 'common.globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
-        if (isset($globalBloc['store_id']) && !empty($globalBloc['store_id']) && Yii::$app->id == 'app-backend') {
+        if (isset($globalBloc['store_id']) && !empty($globalBloc['store_id']) && Yii::$app->id == 'App-backend') {
             return $globalBloc['store_id'];
         }
 
@@ -254,7 +254,7 @@ class GlobalsService extends BaseService
             $conf['wechat'] = $WechatConf;
             // app配置
             $AppConf->getConf($bloc_id);
-            $conf['app'] = $AppConf;
+            $conf['App'] = $AppConf;
             // 抖音小程序
             $MicroappConf->getConf($bloc_id);
             $conf['microapp'] = $MicroappConf;
@@ -310,10 +310,10 @@ class GlobalsService extends BaseService
                 $conf['email'] = $EmailConf;
             }
 
-            if (empty($conf['app']['id'])) {
+            if (empty($conf['App']['id'])) {
                 // 邮件配置
                 $AppConf->getConf($global_bloc_id);
-                $conf['app'] = $AppConf;
+                $conf['App'] = $AppConf;
             }
 
             if (empty($conf['microapp']['id'])) {
@@ -358,9 +358,9 @@ class GlobalsService extends BaseService
             $conf['email'] = Yii::$app->settings->getAllBySection('Email');
         }
 
-        if (empty($conf['app']['id'])) {
-            // app
-            $conf['app'] = Yii::$app->settings->getAllBySection('App');
+        if (empty($conf['App']['id'])) {
+            // App
+            $conf['App'] = Yii::$app->settings->getAllBySection('App');
         }
 
         if (empty($conf['microapp']['id'])) {

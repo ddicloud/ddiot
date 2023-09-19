@@ -19,7 +19,7 @@ class CacheHelper extends RedisCache
     // public function init()
     // {
     //     parent::init();
-    //     $this->duration = Yii::$app->params['cache']['duration'];
+    //     $this->duration = Yii::$App->params['cache']['duration'];
     // }
 
     

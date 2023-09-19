@@ -128,7 +128,7 @@ class module extends \yii\base\Module
         }
         
         // 将新的配置设置到应用程序
-        // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$app
+        // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$App
         Yii::configure(Yii::$app, $config);
     }
 }

@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 /* @var $model \app\models\forms\ConfigurationForm */
 /* @var $this \yii\web\View */
 
-$this->title = Yii::t('app', '中国电信');
+$this->title = Yii::t('App', '中国电信');
 ?>
 <?php echo $this->renderAjax('_tab'); ?>
 
@@ -29,7 +29,7 @@ $this->title = Yii::t('app', '中国电信');
 
                 <?php echo $form->field($model, 'licenseKey'); ?>
                 <?php echo $form->field($model, 'secret_key'); ?>
-                <?php echo Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+                <?php echo Html::submitButton(Yii::t('App', 'Save'), ['class' => 'btn btn-success']) ?>
 
                 <?php ActiveForm::end(); ?>
 

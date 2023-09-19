@@ -37,7 +37,7 @@ use yii\mongodb\Query;
  *
  * ```json
  * {
- *     "category": "app",
+ *     "category": "App",
  *     "language": "de",
  *     "messages": {
  *         {
@@ -58,7 +58,7 @@ use yii\mongodb\Query;
  *
  * ```json
  * {
- *     "category": "app",
+ *     "category": "App",
  *     "language": "de",
  *     "messages": {
  *         "Hello world!": "Hallo Welt!",

@@ -44,7 +44,7 @@ class ResultHelper
 
     public static function serverJson($status, $msg, $data = []): array
     {
-        if (Yii::$app->id != 'app-console') {
+        if (Yii::$app->id != 'App-console') {
             Yii::$app->response->format = Response::FORMAT_JSON;
         }
 
@@ -81,7 +81,7 @@ class ResultHelper
      */
     protected static function baseJson(int $code, string $message, array $data): array
     {
-        if (Yii::$app->id != 'app-console') {
+        if (Yii::$app->id != 'App-console') {
             Yii::$app->response->format = Response::FORMAT_JSON;
         }
 

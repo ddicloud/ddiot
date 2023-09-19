@@ -90,7 +90,7 @@ return [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@diandi/admin/messages',
                 ],
-                'app' => [
+                'App' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
                 ],

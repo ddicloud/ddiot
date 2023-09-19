@@ -30,7 +30,7 @@ use yii\helpers\Inflector;
 class Generator extends \yii\gii\Generator
 {
     public $db = 'mongodb';
-    public $ns = 'app\models';
+    public $ns = 'App\models';
     public $collectionName;
     public $databaseName;
     public $attributeList;
@@ -100,7 +100,7 @@ class Generator extends \yii\gii\Generator
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>App\models</code>',
             'db' => 'This is the ID of the MongoDB application component.',
             'collectionName' => 'This is the name of the MongoDB collection that the new ActiveRecord class is associated with, e.g. <code>post</code>.',
             'databaseName' => 'This is the name of the MongoDB database, which contains the collection that the new ActiveRecord class is associated with.

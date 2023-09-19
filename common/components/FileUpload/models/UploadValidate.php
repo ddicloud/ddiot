@@ -54,7 +54,7 @@ class UploadValidate extends Model
     /**
      * UploadValidate constructor.
      *
-     * @param string $config_name `@app/config/params.php` 文件上传验证配置项名称
+     * @param string $config_name `@App/config/params.php` 文件上传验证配置项名称
      */
     public function __construct($config_name)
     {

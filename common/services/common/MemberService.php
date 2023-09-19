@@ -31,9 +31,9 @@ class MemberService extends BaseService
 
     public function setAccessToken($token)
     {
-        if (Yii::$app->id == 'app-admin') {
+        if (Yii::$app->id == 'App-admin') {
             $this->member_id =  ModelsDdApiAccessToken::find()->where(['access_token' => $token])->select('user_id')->scalar();
-        } else if (Yii::$app->id == 'app-api') {
+        } else if (Yii::$app->id == 'App-api') {
             $this->member_id = DdApiAccessToken::find()->where(['access_token' => $token])->select('member_id')->scalar();
         }
     }

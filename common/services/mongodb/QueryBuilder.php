@@ -32,7 +32,7 @@ use yii\helpers\ArrayHelper;
  *         ['status' => [1, 2, 3]]
  *     ],
  * ];
- * print_r(Yii::$app->mongodb->getQueryBuilder()->buildCondition($condition));
+ * print_r(Yii::$App->mongodb->getQueryBuilder()->buildCondition($condition));
  * // outputs :
  * [
  *     '$or' => [

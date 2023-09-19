@@ -14,7 +14,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-admin',
+    'id' => 'App-admin',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         // 初始化模块依赖的扩展
@@ -119,7 +119,7 @@ return [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@diandi/admin/messages',
                 ],
-                'app' => [
+                'App' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
                 ],
@@ -322,7 +322,7 @@ return [
                         'POST,GET wxapp' => 'wxapp',
                         'POST,GET wechat' => 'wechat',
                         'POST,GET microapp' => 'microapp',
-                        'POST,GET app' => 'app',
+                        'POST,GET App' => 'App',
                         'POST,GET map' => 'map',
                         'POST,GET oss' => 'oss',
                         'POST,GET api' => 'api',

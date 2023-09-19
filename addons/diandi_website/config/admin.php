@@ -121,7 +121,7 @@ return [
     ],
     [
         'class' => 'yii\rest\UrlRule',
-        'controller' => ['diandi_website/pro-app'],
+        'controller' => ['diandi_website/pro-App'],
         'pluralize' => false,
         'extraPatterns' => [
             'GET index' => 'index',

@@ -5460,7 +5460,7 @@ vjs.Flash = vjs.MediaTechController.extend({
     // Issues that remain include hiding the element and requestFullScreen in Firefox specifically
 
     // There's on particularly annoying issue with this method which is that Firefox throws a security error on an offsite Flash object loaded into a dynamically created iFrame.
-    // Even though the iframe was inserted into a page on the web, Firefox + Flash considers it a local app trying to access an internet file.
+    // Even though the iframe was inserted into a page on the web, Firefox + Flash considers it a local App trying to access an internet file.
     // I tried mulitple ways of setting the iframe src attribute but couldn't find a src that worked well. Tried a real/fake source, in/out of domain.
     // Also tried a method from stackoverflow that caused a security error in all browsers. http://stackoverflow.com/questions/2486901/how-to-set-document-domain-for-a-dynamically-generated-iframe
     // In the end the solution I found to work was setting the iframe window.location.href right before doing a document.write of the Flash object.

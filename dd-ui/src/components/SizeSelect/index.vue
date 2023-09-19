@@ -32,7 +32,7 @@ export default {
   methods: {
     handleSetSize(size) {
       this.$ELEMENT.size = size
-      this.$store.dispatch('app/setSize', size)
+      this.$store.dispatch('App/setSize', size)
       this.refreshView()
       this.$message({
         message: 'Switch Size Success',

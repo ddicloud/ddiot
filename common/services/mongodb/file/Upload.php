@@ -26,7 +26,7 @@ use yii\helpers\StringHelper;
  * Usage example:
  *
  * ```php
- * $document = Yii::$app->mongodb->getFileCollection()->createUpload()
+ * $document = Yii::$App->mongodb->getFileCollection()->createUpload()
  *     ->addContent('Part 1')
  *     ->addContent('Part 2')
  *     // ...

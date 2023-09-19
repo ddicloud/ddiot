@@ -42,10 +42,10 @@ class UEditorAction extends Action
 
     public function run(): array
     {
-        // if (Yii::$app->request->get('callback', false)) {
-        //     Yii::$app->response->format = Response::FORMAT_JSONP;
+        // if (Yii::$App->request->get('callback', false)) {
+        //     Yii::$App->response->format = Response::FORMAT_JSONP;
         // } else {
-        //     Yii::$app->response->format = Response::FORMAT_JSON;
+        //     Yii::$App->response->format = Response::FORMAT_JSON;
         // }
         Yii::$app->response->format = Response::FORMAT_JSON;
 

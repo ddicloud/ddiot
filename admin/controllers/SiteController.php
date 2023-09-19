@@ -63,8 +63,8 @@ class SiteController extends AController
 
             // if($user['is_login']==1 && $user['last_time']+60*5<time()){
 
-            //     Yii::$app->user->logout();
-            //     Yii::$app->session->setFlash('success', '该账户已在其他浏览器登录');
+            //     Yii::$App->user->logout();
+            //     Yii::$App->session->setFlash('success', '该账户已在其他浏览器登录');
             //     return $this->goHome();
             // }
             // 记录最后登录的时间
@@ -108,7 +108,7 @@ class SiteController extends AController
             'email' => $_GPC['email'],
             'password' => $_GPC['password'],
         ];
-        // p($model->load(Yii::$app->request->post()),$model->signup());
+        // p($model->load(Yii::$App->request->post()),$model->signup());
         if ($model->load($data, '') && $model->signup()) {
             return ResultHelper::json(200, '感谢您的注册，请验证您的邮箱');
         } else {

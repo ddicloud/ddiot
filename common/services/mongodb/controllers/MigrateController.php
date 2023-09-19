@@ -66,7 +66,7 @@ use yii\helpers\ArrayHelper;
  *         'mongodb-migrate' => [
  *             'class' => 'yii\mongodb\console\controllers\MigrateController',
  *             'migrationNamespaces' => [
- *                 'app\migrations',
+ *                 'App\migrations',
  *                 'some\extension\migrations',
  *             ],
  *             //'migrationPath' => null, // allows to disable not namespaced migration completely

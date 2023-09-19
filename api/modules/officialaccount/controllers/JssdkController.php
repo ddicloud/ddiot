@@ -72,9 +72,9 @@ class JssdkController extends AController
         }
 
         $openTagList = [
-            'wx-open-launch-app'
+            'wx-open-launch-App'
         ];
-        // $app->jssdk->buildConfig(array $APIs, $debug = false, $beta = false, $json = true, array $openTagList = []);
+        // $App->jssdk->buildConfig(array $APIs, $debug = false, $beta = false, $json = true, array $openTagList = []);
         $configs = $app->jssdk->buildConfig($APIs, false, false, false, $openTagList);
 
         return ResultHelper::json(200, '获取成功', $configs);

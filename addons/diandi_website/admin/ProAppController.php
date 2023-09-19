@@ -27,7 +27,7 @@ class ProAppController extends AController
     public $modelClass = '';
 
     /**
-     * @SWG\Get(path="/diandi_website/pro-app/index",
+     * @SWG\Get(path="/diandi_website/pro-App/index",
      *    tags={"应用中心"},
      *    summary="列表详情",
      *     @SWG\Response(
@@ -51,7 +51,7 @@ class ProAppController extends AController
     }
 
     /**
-     * @SWG\Get(path="/diandi_website/pro-app/view",
+     * @SWG\Get(path="/diandi_website/pro-App/view",
      *    tags={"应用中心"},
      *    summary="详情",
      *     @SWG\Response(
@@ -76,7 +76,7 @@ class ProAppController extends AController
     }
 
     /**
-     * @SWG\Post(path="/diandi_website/pro-app/create",
+     * @SWG\Post(path="/diandi_website/pro-App/create",
      *    tags={"应用中心"},
      *    summary="添加",
      *     @SWG\Response(
@@ -148,7 +148,7 @@ class ProAppController extends AController
     }
 
     /**
-     * @SWG\Post(path="/diandi_website/pro-app/update",
+     * @SWG\Post(path="/diandi_website/pro-App/update",
      *    tags={"应用中心"},
      *    summary="更新",
      *     @SWG\Response(
@@ -220,7 +220,7 @@ class ProAppController extends AController
     }
 
     /**
-     * @SWG\Get(path="/diandi_website/pro-app/delete",
+     * @SWG\Get(path="/diandi_website/pro-App/delete",
      *    tags={"应用中心"},
      *    summary="删除",
      *     @SWG\Response(

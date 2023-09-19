@@ -49,7 +49,7 @@ class StoreService extends BaseService
             $where['category_id'] = $category_id;
         }
 
-        // $global_store_id = intval(Yii::$app->params['global_store_id']);
+        // $global_store_id = intval(Yii::$App->params['global_store_id']);
         // if (!empty($global_store_id)) {
         //     $whereNot = ['!=', 'store_id', $global_store_id];
         // }

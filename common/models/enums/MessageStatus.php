@@ -31,7 +31,7 @@ class MessageStatus extends BaseEnum
     // 官方动态
     const OFFICIAL = 5;
 
-    public static $messageCategory = 'app';
+    public static $messageCategory = 'App';
 
     /**
      * @var array

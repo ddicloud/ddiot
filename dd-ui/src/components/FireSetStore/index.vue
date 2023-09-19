@@ -106,7 +106,7 @@ export default {
       const that = this
       fetchList(data).then(res => {
         console.log('切换商户成功', data.store_id)
-        that.$store.dispatch('app/setBlocs', data)
+        that.$store.dispatch('App/setBlocs', data)
         this.$nextTick(() => {
           this.$router.replace({
             path: '/redirect' + this.$route.fullPath

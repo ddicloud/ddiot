@@ -264,7 +264,7 @@ export default {
       }
       if (data.store_id) {
         getView(data.store_id).then((res) => {
-          that.$store.dispatch("app/setBlocs", res.data);
+          that.$store.dispatch("App/setBlocs", res.data);
           that.$store.dispatch("elForm/changeSetting", {
             key: "attachmentUrl",
             value: res.data.config.attachmentUrl,
@@ -274,12 +274,12 @@ export default {
         // 如果是单商户模式
         // 提醒他后台需要设置默认的商户权限
         if (modeType === "unit") {
-          that.$store.dispatch("app/setBlocs", {
+          that.$store.dispatch("App/setBlocs", {
             store_id: store_id,
             bloc_id: bloc_id,
             name: siteName,
           });
-        } 
+        }
         // else {
         //   // 如果是多商户模式
         //   // 提醒他切换到对应的商户后操作

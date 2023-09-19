@@ -54,7 +54,7 @@ class FormController extends AController
         $mail->setHtmlBody('邮件内容，这里可以使用 HTML 代码具体发送的内容');
         $mail->send(); //发送
         //你也可以在 compose() 方法中传递一些视图所需参数，这些参数可以在视图文件中使用
-        //     Yii::$app->mailer->compose('模板文件名称',['key' => $value])
+        //     Yii::$App->mailer->compose('模板文件名称',['key' => $value])
         //     ->setFrom('from@domain.com')
         // 　　->setTo('to@domain.com')
         // 　　 ->setSubject('Message subject')

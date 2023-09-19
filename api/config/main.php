@@ -14,7 +14,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-api',
+    'id' => 'App-api',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',

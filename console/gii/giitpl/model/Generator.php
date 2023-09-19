@@ -45,7 +45,7 @@ class Generator extends \yii\gii\Generator
     const JUNCTION_RELATION_VIA_MODEL = 'model';
 
     public $db = 'db';
-    public $ns = 'app\models';
+    public $ns = 'App\models';
     public $tableName;
     public $modelClass;
     public $baseClass = 'yii\db\ActiveRecord';
@@ -58,7 +58,7 @@ class Generator extends \yii\gii\Generator
     public $singularize = false;
     public $useSchemaName = true;
     public $generateQuery = false;
-    public $queryNs = 'app\models';
+    public $queryNs = 'App\models';
     public $queryClass;
     public $queryBaseClass = 'yii\db\ActiveQuery';
 
@@ -136,7 +136,7 @@ class Generator extends \yii\gii\Generator
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>App\models</code>',
             'db' => 'This is the ID of the DB application component.',
             'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
@@ -171,7 +171,7 @@ class Generator extends \yii\gii\Generator
             'useSchemaName' => 'This indicates whether to include the schema name in the ActiveRecord class
                 when it\'s auto generated. Only non default schema would be used.',
             'generateQuery' => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
-            'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
+            'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>App\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',

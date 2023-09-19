@@ -47,7 +47,7 @@ module.exports = {
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
+    // provide the App's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
@@ -112,7 +112,7 @@ module.exports = {
           },
           elementUI: {
             name: 'chunk-elementUI', // split elementUI into a single package
-            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            priority: 20, // the weight needs to be larger than libs and App or it will be packaged into libs or App
             test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
           },
           commons: {

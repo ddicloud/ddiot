@@ -28,21 +28,21 @@ use yii\base\BaseObject;
  * For example:
  *
  * ```php
- * $result = Yii::$app->mongodb->createCommand(['listIndexes' => 'some_collection'])->execute();
+ * $result = Yii::$App->mongodb->createCommand(['listIndexes' => 'some_collection'])->execute();
  * ```
  *
  * To execute a 'find' command, which return cursor, call [[query()]].
  * For example:
  *
  * ```php
- * $cursor = Yii::$app->mongodb->createCommand(['projection' => ['name' => true]])->query('some_collection');
+ * $cursor = Yii::$App->mongodb->createCommand(['projection' => ['name' => true]])->query('some_collection');
  * ```
  *
  * To execute batch (bulk) operations, call [[executeBatch()]].
  * For example:
  *
  * ```php
- * Yii::$app->mongodb->createCommand()
+ * Yii::$App->mongodb->createCommand()
  *     ->addInsert(['name' => 'new'])
  *     ->addUpdate(['name' => 'existing'], ['name' => 'updated'])
  *     ->addDelete(['name' => 'old'])

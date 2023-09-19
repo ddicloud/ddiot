@@ -34,7 +34,7 @@ class EmailService extends BaseService
      * 发送邮件
      *
      * ```php
-     *        Yii::$app->service->commonEmailService->send($user, $email, $subject, $template)
+     *        Yii::$App->service->commonEmailService->send($user, $email, $subject, $template)
      * ```
      * @param object $user 用户信息
      * @param string $email 邮箱

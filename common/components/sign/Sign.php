@@ -51,11 +51,11 @@ class Sign extends ActionFilter
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        // in_array(\Yii::$app->params['server_name'], $this->needSignEnvironment
+        // in_array(\Yii::$App->params['server_name'], $this->needSignEnvironment
         // all代表全部需要，*代表全部不需要
         if ((in_array('all', $this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*', $this->optional)) {
             $this->validateSign(
-                // ArrayHelper::merge(\Yii::$app->request->bodyParams, \Yii::$app->request->get(), \Yii::$app->request->post())
+                // ArrayHelper::merge(\Yii::$App->request->bodyParams, \Yii::$App->request->get(), \Yii::$App->request->post())
                 \Yii::$app->request->post()
             );
         }

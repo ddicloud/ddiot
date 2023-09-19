@@ -143,7 +143,7 @@ class MimeTypes
         'css' => 'text/css',
         'rtx' => 'text/richtext',
         'tsv' => 'text/tab-separated-values',
-        'jad' => 'text/vnd.sun.j2me.app-descriptor',
+        'jad' => 'text/vnd.sun.j2me.App-descriptor',
         'wml' => 'text/vnd.wap.wml',
         'wmls' => 'text/vnd.wap.wmlscript',
         'etx' => 'text/x-setext',

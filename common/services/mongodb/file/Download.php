@@ -22,13 +22,13 @@ use yii\helpers\StringHelper;
  * Usage example:
  *
  * ```php
- * Yii::$app->mongodb->getFileCollection()->createDownload($document['_id'])->toFile('/path/to/file.dat');
+ * Yii::$App->mongodb->getFileCollection()->createDownload($document['_id'])->toFile('/path/to/file.dat');
  * ```
  *
  * You can use `Download::substr()` to read a specific part of the file:
  *
  * ```php
- * $filePart = Yii::$app->mongodb->getFileCollection()->createDownload($document['_id'])->substr(256, 1024);
+ * $filePart = Yii::$App->mongodb->getFileCollection()->createDownload($document['_id'])->substr(256, 1024);
  * ```
  *
  * @property string $bytes File content. This property is read-only.

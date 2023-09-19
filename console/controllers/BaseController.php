@@ -50,7 +50,7 @@ class BaseController extends \yii\console\Controller
 
     public function options($actionID)
     {
-        return ['addons', 'bloc_id', 'store_id', 'app'];
+        return ['addons', 'bloc_id', 'store_id', 'App'];
     }
 
     public function optionAliases()
@@ -59,7 +59,7 @@ class BaseController extends \yii\console\Controller
             'addons' => 'addons',
             'bloc_id' => 'bloc_id',
             'store_id' => 'store_id',
-            'app' => 'app',
+            'App' => 'App',
         ];
     }
 

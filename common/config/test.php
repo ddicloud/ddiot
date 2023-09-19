@@ -1,6 +1,6 @@
 <?php
 return [
-    'id' => 'app-common-tests',
+    'id' => 'App-common-tests',
     'basePath' => dirname(__DIR__),
     'components' => [
         'user' => [

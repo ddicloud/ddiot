@@ -335,7 +335,7 @@ class StoreService extends BaseService
                         throw new \Exception('保存用户数据失败!');
                     }
                 }
-                // $user_id = Yii::$app->user->identity->user_id;
+                // $user_id = Yii::$App->user->identity->user_id;
                 // 初始权限
                 UserService::addUserBloc($user_id, $bloc_id, $store_id, 0);
                 $tempData = [

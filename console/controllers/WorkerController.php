@@ -18,7 +18,7 @@ use yii\console\Controller;
 class WorkerController extends Controller
 {
     // public function actionListen($queueName='default',$attempt=10,$memeory=128,$sleep=3 ,$delay=0){
-    //     Worker::listen(\Yii::$app->queue,$queueName,$attempt,$memeory,$sleep,$delay);
+    //     Worker::listen(\Yii::$App->queue,$queueName,$attempt,$memeory,$sleep,$delay);
     // }
 
     public function index()

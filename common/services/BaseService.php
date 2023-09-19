@@ -25,16 +25,16 @@ use yii\base\Component;
  *
  * 使用方式有二种:
  * 1）直接调取某个方法，其中的common为common全局，标识的为命名空间前缀。
- *    Yii::$app->service->commonClassName->method();
+ *    Yii::$App->service->commonClassName->method();
  *    实际调用的是  类 common\services\ClassName 方法为method;
  *
  *    也可以自定义一些，比如高级模板中的frontend,调用某个方法为:
- *    Yii::$app->service->frontendClassName->method();
+ *    Yii::$App->service->frontendClassName->method();
  *    实际调用的是  类 frontend\services\ClassName 方法为method;
  *
  *
  * 2）使用属性namespace切换到某个命名空间，同一请求，后续的servce都是属于该命名空间。
- *    $service = Yii:$app->service;
+ *    $service = Yii:$App->service;
  *    $service->namespace = 'frontend';
  *    $service->ClassName->method();
  *    实际调用的是  类 frontend\services\ClassName 方法为method;

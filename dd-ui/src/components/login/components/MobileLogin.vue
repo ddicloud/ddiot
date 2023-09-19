@@ -264,7 +264,7 @@ export default {
       }
       if (data.store_id) {
         getView(data.store_id).then((res) => {
-          that.$store.dispatch('app/setBlocs', res.data)
+          that.$store.dispatch('App/setBlocs', res.data)
           that.$store.dispatch('elForm/changeSetting', {
             key: 'attachmentUrl',
             value: res.data.config.attachmentUrl

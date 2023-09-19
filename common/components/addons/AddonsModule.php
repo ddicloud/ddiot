@@ -41,7 +41,7 @@ class AddonsModule extends Module
         $requestedRoute = $this->module->requestedRoute??'';
         FileHelper::writeLog($logPath, '请求地址', [$requestedRoute, $this->module]);
 
-        if (empty($store_id) && Yii::$app->id == 'app-api' && !StringHelper::strExists($requestedRoute, 'notify') && !StringHelper::strExists($requestedRoute, 'admin/auth')) {
+        if (empty($store_id) && Yii::$app->id == 'App-api' && !StringHelper::strExists($requestedRoute, 'notify') && !StringHelper::strExists($requestedRoute, 'admin/auth')) {
             throw new HttpException(400, '请选择商户后操作');
         }
 
@@ -57,7 +57,7 @@ class AddonsModule extends Module
         $appId = Yii::$app->id;
         $configPath = '';
         switch ($appId) {
-            case 'app-backend':
+            case 'App-backend':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/backend.php');
                 Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
@@ -67,11 +67,11 @@ class AddonsModule extends Module
                     'value' => 'zh-CN',
                 ]));
                 break;
-            case 'app-frontend':
+            case 'App-frontend':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/frontend.php');
                 break;
-            case 'app-console':
-                $runtimePath = Yii::getAlias('@app/runtime/' . $module . '/swoole');
+            case 'App-console':
+                $runtimePath = Yii::getAlias('@App/runtime/' . $module . '/swoole');
                 // define('SWOOLE_RUNTIME', $runtimePath);
                 FileHelper::mkdirs($runtimePath);
                 if (is_dir($runtimePath)) {
@@ -85,8 +85,8 @@ class AddonsModule extends Module
                     }
                 }
                 break;
-            case 'app-api':
-            case 'app-swoole':
+            case 'App-api':
+            case 'App-swoole':
             default:
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
@@ -117,7 +117,7 @@ class AddonsModule extends Module
             Yii::$app->setComponents($config['components']);
         }
 
-        if (in_array($appId, ['app-swoole', 'app-api', 'app-frontend'])) {
+        if (in_array($appId, ['App-swoole', 'App-api', 'App-frontend'])) {
             // 初始化公众号配置信息
             $this->initWechat();
         }
@@ -256,7 +256,7 @@ class AddonsModule extends Module
             }
         }
         // 将新的配置设置到应用程序
-        // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$app
+        // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$App
         \Yii::configure(\Yii::$app, $config);
     }
 }

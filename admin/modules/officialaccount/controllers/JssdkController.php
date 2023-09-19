@@ -104,7 +104,7 @@ class JssdkController extends AController
         }
 
 
-        // $app->jssdk->buildConfig(array $APIs, $debug = false, $beta = false, $json = true, array $openTagList = []);
+        // $App->jssdk->buildConfig(array $APIs, $debug = false, $beta = false, $json = true, array $openTagList = []);
         $configs = $app->jssdk->buildConfig($APIs,false,false,false);
         
         return ResultHelper::json(200,'获取成功',$configs);

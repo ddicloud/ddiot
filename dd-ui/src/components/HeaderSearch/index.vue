@@ -235,7 +235,7 @@ export default {
             key: 'attachmentUrl',
             value: res.data.config.attachmentUrl
           })
-          that.$store.dispatch('app/setBlocs', res.data)
+          that.$store.dispatch('App/setBlocs', res.data)
           this.$nextTick(() => {
             this.$router.replace({
               path: '/redirect' + this.$route.fullPath

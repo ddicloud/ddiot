@@ -20,7 +20,7 @@ use Yii;
  * For example:
  *
  * ```php
- * $collection = Yii::$app->mongodb->getCollection('customer');
+ * $collection = Yii::$App->mongodb->getCollection('customer');
  * $collection->insert(['name' => 'John Smith', 'status' => 1]);
  * ```
  *
@@ -80,7 +80,7 @@ class Collection extends BaseObject
      * Example:
      *
      * ```php
-     * $collection = Yii::$app->mongo->getCollection('customer');
+     * $collection = Yii::$App->mongo->getCollection('customer');
      * $collection->createIndexes([
      *     [
      *         'key' => ['name'],
@@ -397,7 +397,7 @@ class Collection extends BaseObject
      * For example:
      *
      * ```php
-     * $customerCollection = Yii::$app->mongo->getCollection('customer');
+     * $customerCollection = Yii::$App->mongo->getCollection('customer');
      * $resultCollectionName = $customerCollection->mapReduce(
      *     'function () {emit(this.status, this.amount)}',
      *     'function (key, values) {return Array.sum(values)}',

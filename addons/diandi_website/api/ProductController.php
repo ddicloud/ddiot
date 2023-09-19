@@ -448,7 +448,7 @@ class ProductController extends AController
     }
 
     /**
-     * @SWG\Get(path="/diandi_website/product/app-list",
+     * @SWG\Get(path="/diandi_website/product/App-list",
      *    tags={"产品"},
      *    summary="应用中心列表 - (后台：应用中心)",
      *     @SWG\Response(
@@ -497,7 +497,7 @@ class ProductController extends AController
         return $this->_json(ProductService::getApp($this->getPageInfo()));
     }
     /**
-     * @SWG\Get(path="/diandi_website/product/app-view",
+     * @SWG\Get(path="/diandi_website/product/App-view",
      *    tags={"产品"},
      *    summary="应用中心详情 - (后台：应用中心)",
      *     @SWG\Response(

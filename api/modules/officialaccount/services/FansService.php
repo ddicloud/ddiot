@@ -97,7 +97,7 @@ class FansService extends BaseService
         global $_GPC;
         // 获取全部列表
         $fans_list = Yii::$app->wechat->app->user->list();
-        // Yii::$app->debris->getWechatError($fans_list);
+        // Yii::$App->debris->getWechatError($fans_list);
         $fans_count = $fans_list['total'];
 
         $total_page = ceil($fans_count / 500);

@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      this.$store.dispatch('App/closeSideBar', { withoutAnimation: false })
     },
     hidePanel() {
       this.$refs['settings'].hidePanel()
