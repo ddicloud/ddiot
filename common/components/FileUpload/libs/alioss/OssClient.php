@@ -1616,7 +1616,7 @@ class OssClient
         //验证ACL
         $this->authPrecheckAcl($options);
         // 获得当次请求使用的协议头，是https还是http
-        $scheme = $this->useSSL ? 'https://' : 'http://';
+        $scheme = $this->useSSL ? 'https://' : 'Http://';
         // 获得当次请求使用的hostname，如果是公共域名或者专有域名，bucket拼在前面构成三级域名
         $hostname = $this->generateHostname($options);
         $string_to_sign = '';
@@ -2056,8 +2056,8 @@ class OssClient
     private function checkEndpoint($endpoint, $isCName)
     {
         $ret_endpoint = null;
-        if (strpos($endpoint, 'http://') === 0) {
-            $ret_endpoint = substr($endpoint, strlen('http://'));
+        if (strpos($endpoint, 'Http://') === 0) {
+            $ret_endpoint = substr($endpoint, strlen('Http://'));
         } elseif (strpos($endpoint, 'https://') === 0) {
             $ret_endpoint = substr($endpoint, strlen('https://'));
             $this->useSSL = true;

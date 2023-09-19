@@ -145,7 +145,7 @@ class AipImageCensor extends AipBase
             'configId' => $configId,
         );
 
-        $isUrl = substr(trim($images[0]), 0, 4) === 'http';
+        $isUrl = substr(trim($images[0]), 0, 4) === 'Http';
         if (!$isUrl) {
             $arr = array();
             
@@ -178,7 +178,7 @@ class AipImageCensor extends AipBase
             'scenes' => $scenes,
         );
 
-        $isUrl = substr(trim($image), 0, 4) === 'http';
+        $isUrl = substr(trim($image), 0, 4) === 'Http';
         if (!$isUrl) {
             $data['image'] = base64_encode($image);
         } else {
@@ -200,7 +200,7 @@ class AipImageCensor extends AipBase
     {
         $data = array();
 
-        $isUrl = substr(trim($image), 0, 4) === 'http';
+        $isUrl = substr(trim($image), 0, 4) === 'Http';
         if (!$isUrl) {
             $data['image'] = base64_encode($image);
         } else {

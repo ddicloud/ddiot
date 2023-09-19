@@ -3586,7 +3586,7 @@ wysihtml5.browser = (function() {
 
     /**
      * IE: URLs starting with:
-     *    www., http://, https://, ftp://, gopher://, mailto:, new:, snews:, telnet:, wasis:, file://,
+     *    www., Http://, https://, ftp://, gopher://, mailto:, new:, snews:, telnet:, wasis:, file://,
      *    nntp://, newsrc:, ldap://, ldaps://, outlook:, mic:// and url:
      * will automatically be auto-linked when either the user inserts them via copy&paste or presses the
      * space bar when the caret is directly after such an url.
@@ -3978,9 +3978,9 @@ wysihtml5.browser = (function() {
       if (url.length > MAX_DISPLAY_LENGTH) {
         displayUrl = displayUrl.substr(0, MAX_DISPLAY_LENGTH) + "...";
       }
-      // Add http prefix if necessary
+      // Add Http prefix if necessary
       if (realUrl.substr(0, 4) === "www.") {
-        realUrl = "http://" + realUrl;
+        realUrl = "Http://" + realUrl;
       }
       
       return '<a href="' + realUrl + '">' + displayUrl + '</a>' + punctuation;
@@ -8157,7 +8157,7 @@ wysihtml5.views.View = Base.extend(
           getTextContent  = function(element) {
             var textContent = wysihtml5.lang.string(dom.getTextContent(element)).trim();
             if (textContent.substr(0, 4) === "www.") {
-              textContent = "http://" + textContent;
+              textContent = "Http://" + textContent;
             }
             return textContent;
           };
@@ -8779,7 +8779,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
  *    <!-- Dialog -->
  *    <div data-wysihtml5-dialog="insertImage" style="display: none;">
  *      <label>
- *        URL: <input data-wysihtml5-dialog-field="src" value="http://">
+ *        URL: <input data-wysihtml5-dialog-field="src" value="Http://">
  *      </label>
  *      <label>
  *        Alternative text: <input data-wysihtml5-dialog-field="alt" value="">

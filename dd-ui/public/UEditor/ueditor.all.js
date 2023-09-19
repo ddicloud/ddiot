@@ -14,27 +14,27 @@
 
     // editor.js
     UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
-    
+
     var baidu = window.baidu || {};
-    
+
     window.baidu = baidu;
-    
+
     window.UE = baidu.editor =  window.UE || {};
-    
+
     UE.plugins = {};
-    
+
     UE.commands = {};
-    
+
     UE.instants = {};
-    
+
     UE.I18N = {};
-    
+
     UE._customizeUI = {};
-    
+
     UE.version = "1.4.3";
-    
+
     var dom = UE.dom = {};
-    
+
     // core/browser.js
     /**
      * 浏览器判断模块
@@ -42,7 +42,7 @@
      * @module UE.browser
      * @since 1.2.6.1
      */
-    
+
     /**
      * 提供浏览器检测的模块
      * @unfile
@@ -62,7 +62,7 @@
              * ```
              */
             ie		:  /(msie\s|trident.*rv:)([\w.]+)/.test(agent),
-    
+
             /**
              * @property {boolean} opera 检测当前浏览器是否为Opera
              * @example
@@ -73,7 +73,7 @@
              * ```
              */
             opera	: ( !!opera && opera.version ),
-    
+
             /**
              * @property {boolean} webkit 检测当前浏览器是否是webkit内核的浏览器
              * @example
@@ -84,7 +84,7 @@
              * ```
              */
             webkit	: ( agent.indexOf( ' applewebkit/' ) > -1 ),
-    
+
             /**
              * @property {boolean} mac 检测当前浏览器是否是运行在mac平台下
              * @example
@@ -95,7 +95,7 @@
              * ```
              */
             mac	: ( agent.indexOf( 'macintosh' ) > -1 ),
-    
+
             /**
              * @property {boolean} quirks 检测当前浏览器是否处于“怪异模式”下
              * @example
@@ -107,7 +107,7 @@
              */
             quirks : ( document.compatMode == 'BackCompat' )
         };
-    
+
         /**
         * @property {boolean} gecko 检测当前浏览器内核是否是gecko内核
         * @example
@@ -118,12 +118,12 @@
         * ```
         */
         browser.gecko =( navigator.product == 'Gecko' && !browser.webkit && !browser.opera && !browser.ie);
-    
+
         var version = 0;
-    
+
         // Internet Explorer 6.0+
         if ( browser.ie ){
-    
+
             var v1 =  agent.match(/(?:msie\s([\w.]+))/);
             var v2 = agent.match(/(?:trident.*rv:([\w.]+))/);
             if(v1 && v2 && v1[1] && v2[1]){
@@ -135,7 +135,7 @@
             }else{
                 version = 0;
             }
-    
+
             browser.ie11Compat = document.documentMode == 11;
             /**
              * @property { boolean } ie9Compat 检测浏览器模式是否为 IE9 兼容模式
@@ -148,7 +148,7 @@
              * ```
              */
             browser.ie9Compat = document.documentMode == 9;
-    
+
             /**
              * @property { boolean } ie8 检测浏览器是否是IE8浏览器
              * @warning 如果浏览器不是IE， 则该值为undefined
@@ -160,7 +160,7 @@
              * ```
              */
             browser.ie8 = !!document.documentMode;
-    
+
             /**
              * @property { boolean } ie8Compat 检测浏览器模式是否为 IE8 兼容模式
              * @warning 如果浏览器不是IE， 则该值为undefined
@@ -172,7 +172,7 @@
              * ```
              */
             browser.ie8Compat = document.documentMode == 8;
-    
+
             /**
              * @property { boolean } ie7Compat 检测浏览器模式是否为 IE7 兼容模式
              * @warning 如果浏览器不是IE， 则该值为undefined
@@ -185,7 +185,7 @@
              */
             browser.ie7Compat = ( ( version == 7 && !document.documentMode )
                     || document.documentMode == 7 );
-    
+
             /**
              * @property { boolean } ie6Compat 检测浏览器模式是否为 IE6 模式 或者怪异模式
              * @warning 如果浏览器不是IE， 则该值为undefined
@@ -197,17 +197,17 @@
              * ```
              */
             browser.ie6Compat = ( version < 7 || browser.quirks );
-    
+
             browser.ie9above = version > 8;
-    
+
             browser.ie9below = version < 9;
-    
+
             browser.ie11above = version > 10;
-    
+
             browser.ie11below = version < 11;
-    
+
         }
-    
+
         // Gecko.
         if ( browser.gecko ){
             var geckoRelease = agent.match( /rv:([\d\.]+)/ );
@@ -217,7 +217,7 @@
                 version = geckoRelease[0] * 10000 + ( geckoRelease[1] || 0 ) * 100 + ( geckoRelease[2] || 0 ) * 1;
             }
         }
-    
+
         /**
          * @property { Number } chrome 检测当前浏览器是否为Chrome, 如果是，则返回Chrome的大版本号
          * @warning 如果浏览器不是chrome， 则该值为undefined
@@ -231,7 +231,7 @@
         if (/chrome\/(\d+\.\d)/i.test(agent)) {
             browser.chrome = + RegExp['\x241'];
         }
-    
+
         /**
          * @property { Number } safari 检测当前浏览器是否为Safari, 如果是，则返回Safari的大版本号
          * @warning 如果浏览器不是safari， 则该值为undefined
@@ -245,16 +245,16 @@
         if(/(\d+\.\d)?(?:\.\d)?\s+safari\/?(\d+\.\d+)?/i.test(agent) && !/chrome/i.test(agent)){
             browser.safari = + (RegExp['\x241'] || RegExp['\x242']);
         }
-    
-    
+
+
         // Opera 9.50+
         if ( browser.opera )
             version = parseFloat( opera.version() );
-    
+
         // WebKit 522+ (Safari 3+)
         if ( browser.webkit )
             version = parseFloat( agent.match( / applewebkit\/(\d+)/ )[1] );
-    
+
         /**
          * @property { Number } version 检测当前浏览器版本号
          * @remind
@@ -269,7 +269,7 @@
          * ```
          */
         browser.version = version;
-    
+
         /**
          * @property { boolean } isCompatible 检测当前浏览器是否能够与UEditor良好兼容
          * @example
@@ -294,7 +294,7 @@
         webkit = browser.webkit,
         gecko = browser.gecko,
         opera = browser.opera;
-    
+
     // core/utils.js
     /**
      * 工具函数包
@@ -302,15 +302,15 @@
      * @module UE.utils
      * @since 1.2.6.1
      */
-    
+
     /**
      * UEditor封装使用的静态工具函数
      * @module UE.utils
      * @unfile
      */
-    
+
     var utils = UE.utils = {
-    
+
         /**
          * 用给定的迭代器遍历对象
          * @method each
@@ -331,7 +331,7 @@
          * } );
          * ```
          */
-    
+
         /**
          * 用给定的迭代器遍历数组或类数组对象
          * @method each
@@ -365,7 +365,7 @@
                 }
             }
         },
-    
+
         /**
          * 以给定对象作为原型创建一个新对象
          * @method makeInstance
@@ -388,7 +388,7 @@
             noop.prototype = null;
             return obj;
         },
-    
+
         /**
          * 将source对象中的属性扩展到target对象上
          * @method extend
@@ -410,7 +410,7 @@
          *
          * ```
          */
-    
+
         /**
          * 将source对象中的属性扩展到target对象上， 根据指定的isKeepTarget值决定是否保留目标对象中与
          * 源对象属性名相同的属性值。
@@ -442,7 +442,7 @@
             }
             return t;
         },
-    
+
         /**
          * 将给定的多个对象的属性复制到目标对象target上
          * @method extend2
@@ -478,7 +478,7 @@
             }
             return t;
         },
-    
+
         /**
          * 模拟继承机制， 使得subClass继承自superClass
          * @method inherits
@@ -516,7 +516,7 @@
             subClass.prototype = newP;
             return (newP.constructor = subClass);
         },
-    
+
         /**
          * 用指定的context对象作为函数fn的上下文
          * @method bind
@@ -548,7 +548,7 @@
                 return fn.apply(context, arguments);
             };
         },
-    
+
         /**
          * 创建延迟指定时间后执行的函数fn
          * @method defer
@@ -572,7 +572,7 @@
          * testDefer();
          * ```
          */
-    
+
         /**
          * 创建延迟指定时间后执行的函数fn, 如果在延迟时间内再次执行该方法， 将会根据指定的exclusion的值，
          * 决定是否取消前一次函数的执行， 如果exclusion的值为true， 则取消执行，反之，将继续执行前一个方法。
@@ -607,7 +607,7 @@
                 timerID = setTimeout(fn, delay);
             };
         },
-    
+
         /**
          * 获取元素item在数组array中首次出现的位置, 如果未找到item， 则返回-1
          * @method indexOf
@@ -624,7 +624,7 @@
          * console.log( UE.utils.indexOf( arr, item ) );
          * ```
          */
-    
+
         /**
          * 获取元素item数组array中首次出现的位置, 如果未找到item， 则返回-1。通过start的值可以指定搜索的起始位置。
          * @method indexOf
@@ -653,7 +653,7 @@
             });
             return index;
         },
-    
+
         /**
          * 移除数组array中所有的元素item
          * @method removeItem
@@ -678,7 +678,7 @@
                 }
             }
         },
-    
+
         /**
          * 删除字符串str的首尾空格
          * @method trim
@@ -703,7 +703,7 @@
         trim:function (str) {
             return str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, '');
         },
-    
+
         /**
          * 将字符串str以','分隔成数组后，将该数组转换成哈希对象， 其生成的hash对象的key为数组中的元素， value为1
          * @method listToMap
@@ -718,7 +718,7 @@
          *
          * ```
          */
-    
+
         /**
          * 将字符串数组转换成哈希对象， 其生成的hash对象的key为数组中的元素， value为1
          * @method listToMap
@@ -741,7 +741,7 @@
             }
             return obj;
         },
-    
+
         /**
          * 将str中的html符号转义,将转义“'，&，<，"，>”五个字符
          * @method unhtml
@@ -769,7 +769,7 @@
                         "'":'&#39;'
                     }[a]
                 }
-    
+
             }) : '';
         },
         /**
@@ -787,10 +787,10 @@
                     '>':'&gt;',
                     "'":'&#39;'
                 }[a]
-    
+
             }) : '';
         },
-    
+
         /**
          * 将str中的转义字符还原成html字符
          * @see UE.utils.unhtml(String);
@@ -819,7 +819,7 @@
                 }[m]
             }) : '';
         },
-    
+
         /**
          * 将css样式转换为驼峰的形式
          * @method cssStyleToDomStyle
@@ -840,14 +840,14 @@
                 cache = {
                     'float':test.cssFloat != undefined ? 'cssFloat' : test.styleFloat != undefined ? 'styleFloat' : 'float'
                 };
-    
+
             return function (cssName) {
                 return cache[cssName] || (cache[cssName] = cssName.toLowerCase().replace(/-./g, function (match) {
                     return match.charAt(1).toUpperCase();
                 }));
             };
         }(),
-    
+
         /**
          * 动态加载文件到doc中
          * @method loadFile
@@ -865,7 +865,7 @@
          *
          * ```
          */
-    
+
         /**
          * 动态加载文件到doc中，加载成功后执行的回调函数fn
          * @method loadFile
@@ -890,7 +890,7 @@
          */
         loadFile:function () {
             var tmpList = [];
-    
+
             function getItem(doc, obj) {
                 try {
                     for (var i = 0, ci; ci = tmpList[i++];) {
@@ -901,9 +901,9 @@
                 } catch (e) {
                     return null;
                 }
-    
+
             }
-    
+
             return function (doc, obj, fn) {
                 var item = getItem(doc, obj);
                 if (item) {
@@ -954,7 +954,7 @@
                 doc.getElementsByTagName("head")[0].appendChild(element);
             }
         }(),
-    
+
         /**
          * 判断obj对象是否为空
          * @method isEmptyObject
@@ -991,7 +991,7 @@
             for (var key in obj) if (obj.hasOwnProperty(key)) return false;
             return true;
         },
-    
+
         /**
          * 把rgb格式的颜色值转换成16进制格式
          * @method fixColor
@@ -1039,7 +1039,7 @@
                 }
                 return str;
             });
-    
+
             function opt(obj, name) {
                 if (!obj) {
                     return '';
@@ -1057,21 +1057,21 @@
                 }
                 return val;
             }
-    
+
             val += opt(padding, 'padding') + opt(margin, 'margin');
             return val.replace(/^[ \n\r\t;]*|[ \n\r\t]*$/, '').replace(/;([ \n\r\t]+)|\1;/g, ';')
                 .replace(/(&((l|g)t|quot|#39))?;{2,}/g, function (a, b) {
                     return b ? b + ";;" : ';'
                 });
         },
-    
+
         /**
          * 克隆对象
          * @method clone
          * @param { Object } source 源对象
          * @return { Object } source的一个副本
          */
-    
+
         /**
          * 深度克隆对象，将source的属性克隆到target对象， 会覆盖target重名的属性。
          * @method clone
@@ -1095,7 +1095,7 @@
             }
             return target;
         },
-    
+
         /**
          * 把cm／pt为单位的值转换为px为单位的值
          * @method transUnitToPx
@@ -1130,7 +1130,7 @@
             }
             return val + (val ? 'px' : '');
         },
-    
+
         /**
          * 在dom树ready之后执行给定的回调函数
          * @method domReady
@@ -1148,16 +1148,16 @@
          * ```
          */
         domReady:function () {
-    
+
             var fnArr = [];
-    
+
             function doReady(doc) {
                 //确保onready只执行一次
                 doc.isReady = true;
                 for (var ci; ci = fnArr.pop(); ci()) {
                 }
             }
-    
+
             return function (onready, win) {
                 win = win || window;
                 var doc = win.document;
@@ -1190,10 +1190,10 @@
                         }, false);
                     }
                 }
-    
+
             }
         }(),
-    
+
         /**
          * 动态添加css样式
          * @method cssRule
@@ -1228,7 +1228,7 @@
                 }
                 return false;
             }
-    
+
             //添加样式
             if(index!== undefined){
                 sheetStyle =  doc.styleSheets[index];
@@ -1247,7 +1247,7 @@
             }
             doc = doc || document;
             node = doc.getElementById(key);
-    
+
             //清除样式
             if(style === ''){
                 if(node){
@@ -1256,7 +1256,7 @@
                 }
                 return false;
             }
-    
+
             //添加样式
             if(node){
                 node.innerHTML = style;
@@ -1323,23 +1323,23 @@
             return obj;
         },
         str2json : function(s){
-    
+
             if (!utils.isString(s)) return null;
             if (window.JSON) {
                 return JSON.parse(s);
             } else {
                 return (new Function("return " + utils.trim(s || '')))();
             }
-    
+
         },
         json2str : (function(){
-    
+
             if (window.JSON) {
-    
+
                 return JSON.stringify;
-    
+
             } else {
-    
+
                 var escapeMap = {
                     "\b": '\\b',
                     "\t": '\\t',
@@ -1349,7 +1349,7 @@
                     '"' : '\\"',
                     "\\": '\\\\'
                 };
-    
+
                 function encodeString(source) {
                     if (/["\\\x00-\x1f]/.test(source)) {
                         source = source.replace(
@@ -1367,15 +1367,15 @@
                     }
                     return '"' + source + '"';
                 }
-    
+
                 function encodeArray(source) {
                     var result = ["["],
                         l = source.length,
                         preComma, i, item;
-    
+
                     for (i = 0; i < l; i++) {
                         item = source[i];
-    
+
                         switch (typeof item) {
                             case "undefined":
                             case "function":
@@ -1392,11 +1392,11 @@
                     result.push("]");
                     return result.join("");
                 }
-    
+
                 function pad(source) {
                     return source < 10 ? '0' + source : source;
                 }
-    
+
                 function encodeDate(source){
                     return '"' + source.getFullYear() + "-"
                     + pad(source.getMonth() + 1) + "-"
@@ -1405,21 +1405,21 @@
                     + pad(source.getMinutes()) + ":"
                     + pad(source.getSeconds()) + '"';
                 }
-    
+
                 return function (value) {
                     switch (typeof value) {
                         case 'undefined':
                             return 'undefined';
-    
+
                         case 'number':
                             return isFinite(value) ? String(value) : "null";
-    
+
                         case 'string':
                             return encodeString(value);
-    
+
                         case 'boolean':
                             return String(value);
-    
+
                         default:
                             if (value === null) {
                                 return 'null';
@@ -1432,7 +1432,7 @@
                                     encode = utils.json2str,
                                     preComma,
                                     item;
-    
+
                                 for (var key in value) {
                                     if (Object.prototype.hasOwnProperty.call(value, key)) {
                                         item = value[key];
@@ -1456,9 +1456,9 @@
                     }
                 };
             }
-    
+
         })()
-    
+
     };
     /**
      * 判断给定的对象是否是字符串
@@ -1466,35 +1466,35 @@
      * @param { * } object 需要判断的对象
      * @return { Boolean } 给定的对象是否是字符串
      */
-    
+
     /**
      * 判断给定的对象是否是数组
      * @method isArray
      * @param { * } object 需要判断的对象
      * @return { Boolean } 给定的对象是否是数组
      */
-    
+
     /**
      * 判断给定的对象是否是一个Function
      * @method isFunction
      * @param { * } object 需要判断的对象
      * @return { Boolean } 给定的对象是否是Function
      */
-    
+
     /**
      * 判断给定的对象是否是Number
      * @method isNumber
      * @param { * } object 需要判断的对象
      * @return { Boolean } 给定的对象是否是Number
      */
-    
+
     /**
      * 判断给定的对象是否是一个正则表达式
      * @method isRegExp
      * @param { * } object 需要判断的对象
      * @return { Boolean } 给定的对象是否是正则表达式
      */
-    
+
     /**
      * 判断给定的对象是否是一个普通对象
      * @method isObject
@@ -1506,8 +1506,8 @@
             return Object.prototype.toString.apply(obj) == '[object ' + v + ']';
         }
     });
-    
-    
+
+
     // core/EventBase.js
     /**
      * UE采用的事件基类
@@ -1516,13 +1516,13 @@
      * @class EventBase
      * @since 1.2.6.1
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @unfile
      * @module UE
      */
-    
+
     /**
      * UE采用的事件基类，继承此类的对应类将获取addListener,removeListener,fireEvent方法。
      * 在UE中，Editor以及所有ui实例都继承了该类，故可以在对应的ui对象以及editor对象上使用上述方法。
@@ -1530,7 +1530,7 @@
      * @module UE
      * @class EventBase
      */
-    
+
     /**
      * 通过此构造器，子类可以继承EventBase获取事件监听的方法
      * @constructor
@@ -1540,9 +1540,9 @@
      * ```
      */
     var EventBase = UE.EventBase = function () {};
-    
+
     EventBase.prototype = {
-    
+
         /**
          * 注册事件监听器
          * @method addListener
@@ -1571,7 +1571,7 @@
                 getListener(this, ti, true).push(listener);
             }
         },
-    
+
         on : function(types, listener){
           return this.addListener(types,listener);
         },
@@ -1598,7 +1598,7 @@
                 utils.removeItem(getListener(this, ti) || [], listener);
             }
         },
-    
+
         /**
          * 触发事件
          * @method fireEvent
@@ -1610,7 +1610,7 @@
          * editor.fireEvent("selectionchange");
          * ```
          */
-    
+
         /**
          * 触发事件
          * @method fireEvent
@@ -1675,9 +1675,9 @@
         return ( ( allListeners = ( obj.__allListeners || force && ( obj.__allListeners = {} ) ) )
             && ( allListeners[type] || force && ( allListeners[type] = [] ) ) );
     }
-    
-    
-    
+
+
+
     // core/dtd.js
     ///import editor.js
     ///import core/dom/dom.js
@@ -1706,7 +1706,7 @@
             I = X( _({p:1}), H ),
             J = X( _({iframe:1}), H, B ),
             K = _({img:1,embed:1,noscript:1,br:1,kbd:1,center:1,button:1,basefont:1,h5:1,h4:1,samp:1,h6:1,ol:1,h1:1,h3:1,h2:1,form:1,font:1,'#':1,select:1,menu:1,ins:1,abbr:1,label:1,code:1,table:1,script:1,cite:1,input:1,iframe:1,strong:1,textarea:1,noframes:1,big:1,small:1,span:1,hr:1,sub:1,bdo:1,'var':1,div:1,object:1,sup:1,strike:1,dir:1,map:1,dl:1,applet:1,del:1,isindex:1,fieldset:1,ul:1,b:1,acronym:1,a:1,blockquote:1,i:1,u:1,s:1,tt:1,address:1,q:1,pre:1,p:1,em:1,dfn:1}),
-    
+
             L = X( _({a:0}), J ),//a不能被切开，所以把他
             M = _({tr:1}),
             N = _({'#':1}),
@@ -1718,49 +1718,49 @@
             T = X( S, R ),
             U = _({head:1,body:1}),
             V = _({html:1});
-    
+
         var block = _({address:1,blockquote:1,center:1,dir:1,div:1,dl:1,fieldset:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,hr:1,isindex:1,menu:1,noframes:1,ol:1,p:1,pre:1,table:1,ul:1}),
-    
+
             empty =  _({area:1,base:1,basefont:1,br:1,col:1,command:1,dialog:1,embed:1,hr:1,img:1,input:1,isindex:1,keygen:1,link:1,meta:1,param:1,source:1,track:1,wbr:1});
-    
+
         return  _({
-    
+
             // $ 表示自定的属性
-    
+
             // body外的元素列表.
             $nonBodyContent: X( V, U, S ),
-    
+
             //块结构元素列表
             $block : block,
-    
+
             //内联元素列表
             $inline : L,
-    
+
             $inlineWithA : X(_({a:1}),L),
-    
+
             $body : X( _({script:1,style:1}), block ),
-    
+
             $cdata : _({script:1,style:1}),
-    
+
             //自闭和元素
             $empty : empty,
-    
+
             //不是自闭合，但不能让range选中里边
             $nonChild : _({iframe:1,textarea:1}),
             //列表元素列表
             $listItem : _({dd:1,dt:1,li:1}),
-    
+
             //列表根元素列表
             $list: _({ul:1,ol:1,dl:1}),
-    
+
             //不能认为是空的元素
             $isNotEmpty : _({table:1,ul:1,ol:1,dl:1,iframe:1,area:1,base:1,col:1,hr:1,img:1,embed:1,input:1,link:1,meta:1,param:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1}),
-    
+
             //如果没有子节点就可以删除的元素列表，像span,a
             $removeEmpty : _({a:1,abbr:1,acronym:1,address:1,b:1,bdo:1,big:1,cite:1,code:1,del:1,dfn:1,em:1,font:1,i:1,ins:1,label:1,kbd:1,q:1,s:1,samp:1,small:1,span:1,strike:1,strong:1,sub:1,sup:1,tt:1,u:1,'var':1}),
-    
+
             $removeEmptyBlock : _({'p':1,'div':1}),
-    
+
             //在table元素里的元素列表
             $tableContent : _({caption:1,col:1,colgroup:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1,table:1}),
             //不转换的标签
@@ -1858,8 +1858,8 @@
             dfn : L
         });
     })();
-    
-    
+
+
     // core/domUtils.js
     /**
      * Dom操作工具包
@@ -1867,7 +1867,7 @@
      * @module UE.dom.domUtils
      * @since 1.2.6.1
      */
-    
+
     /**
      * Dom操作工具包
      * @unfile
@@ -1918,7 +1918,7 @@
         NODE_TEXT:3,
         NODE_COMMENT:8,
         NODE_DOCUMENT_FRAGMENT:11,
-    
+
         //位置关系
         POSITION_IDENTICAL:0,
         POSITION_DISCONNECTED:1,
@@ -2029,7 +2029,7 @@
             // domUtils.POSITION_FOLLOWING
             return  2;
         },
-    
+
         /**
          * 检测节点node在父节点中的索引位置
          * @method getNodeIndex
@@ -2037,7 +2037,7 @@
          * @return { Number } 该节点在父节点中的位置
          * @see UE.dom.domUtils.getNodeIndex(Node,Boolean)
          */
-    
+
         /**
          * 检测节点node在父节点中的索引位置， 根据给定的mergeTextNode参数决定是否要合并多个连续的文本节点为一个节点
          * @method getNodeIndex
@@ -2075,7 +2075,7 @@
             }
             return i;
         },
-    
+
         /**
          * 检测节点node是否在给定的document对象上
          * @method inDoc
@@ -2123,7 +2123,7 @@
          * console.log( filterNode === null );
          * ```
          */
-    
+
         /**
          * 根据给定的过滤规则filterFn， 查找符合该过滤规则的node节点的第一个祖先节点，
          * 如果includeSelf的值为true，则查找的起点是给定的节点node， 否则， 起点是node的父节点
@@ -2184,7 +2184,7 @@
          * console.log( node.tagName );
          * ```
          */
-    
+
         /**
          * 查找node的节点名为tagName的祖先节点， 如果includeSelf的值为true，则查找的起点是给定的节点node，
          * 否则， 起点是node的父节点。
@@ -2218,7 +2218,7 @@
          * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
          * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
          */
-    
+
         /**
          * 查找节点node的祖先节点集合， 如果includeSelf的值为true，
          * 则返回的结果集中允许出现当前给定的节点， 否则， 该节点不会出现在其结果集中。
@@ -2234,7 +2234,7 @@
             }
             return closerFirst ? parents : parents.reverse();
         },
-    
+
         /**
          * 在节点node后面插入新节点newNode
          * @method insertAfter
@@ -2246,7 +2246,7 @@
             return node.nextSibling ? node.parentNode.insertBefore(newNode, node.nextSibling):
                 node.parentNode.appendChild(newNode);
         },
-    
+
         /**
          * 删除节点node及其下属的所有节点
          * @method remove
@@ -2264,7 +2264,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 删除节点node，并根据keepChildren的值决定是否保留子节点
          * @method remove
@@ -2296,7 +2296,7 @@
             }
             return node;
         },
-    
+
         /**
          * 取得node节点的下一个兄弟节点， 如果该节点其后没有兄弟节点， 则递归查找其父节点之后的第一个兄弟节点，
          * 直到找到满足条件的节点或者递归到BODY节点之后才会结束。
@@ -2336,7 +2336,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 取得node节点的下一个兄弟节点， 如果startFromChild的值为ture，则先获取其子节点，
          * 如果有子节点则直接返回第一个子节点；如果没有子节点或者startFromChild的值为false，
@@ -2422,7 +2422,7 @@
             while (i++, parentsA[i] === parentsB[i]) {
             }
             return i == 0 ? null : parentsA[i - 1];
-    
+
         },
         /**
          * 清除node节点左右连续为空的兄弟inline节点
@@ -2451,7 +2451,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
          * 则忽略对右边兄弟节点的操作。
@@ -2461,7 +2461,7 @@
          * 则这些兄弟节点将被删除
          * @see UE.dom.domUtils.clearEmptySibling(Node)
          */
-    
+
         /**
          * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
          * 则忽略对右边兄弟节点的操作， 如果ignorePre的值为true，则忽略对左边兄弟节点的操作。
@@ -2517,7 +2517,7 @@
             }
             return retval;
         },
-    
+
         /**
          * 检测文本节点textNode是否为空节点（包括空格、换行、占位符等字符）
          * @method  isWhitespace
@@ -2573,7 +2573,7 @@
          * });
          * ```
          */
-    
+
         /**
          * 为元素element绑定原生DOM事件，type为事件类型，handler为处理函数
          * @method on
@@ -2588,7 +2588,7 @@
          * ```
          */
         on:function (element, type, handler) {
-    
+
             var types = utils.isArray(type) ? type : utils.trim(type).split(/\s+/),
                 k = types.length;
             if (k) while (k--) {
@@ -2611,8 +2611,8 @@
                                 return handler.call(evt.srcElement, evt || window.event);
                             };
                         }
-    
-    
+
+
                         element.attachEvent('on' + type, handler._d[key]);
                     }
                 }
@@ -2632,7 +2632,7 @@
          * });
          * ```
          */
-    
+
         /**
          * 解除DOM事件绑定
          * @method un
@@ -2668,7 +2668,7 @@
                 }
             }
         },
-    
+
         /**
          * 比较节点nodeA与节点nodeB是否具有相同的标签名、属性名以及属性值
          * @method  isSameElement
@@ -2743,7 +2743,7 @@
             }
             return true;
         },
-    
+
         /**
          * 判断节点nodeA与节点nodeB的元素的style属性是否一致
          * @method isSameStyle
@@ -2941,9 +2941,9 @@
                 node = node.nextSibling;
             }
             return 1;
-    
+
         },
-    
+
         /**
          * 删除node节点下首尾两端的空白文本子节点
          * @method trimWhiteTextNode
@@ -2977,7 +2977,7 @@
             remove('firstChild');
             remove('lastChild');
         },
-    
+
         /**
          * 合并node节点下相同的子节点
          * @name mergeChild
@@ -3024,7 +3024,7 @@
                 }
             }
         },
-    
+
         /**
          * 原生方法getElementsByTagName的封装
          * @method getElementsByTagName
@@ -3046,7 +3046,7 @@
                         arr.push(ci);
                 }
             }
-    
+
             return arr;
         },
         /**
@@ -3120,7 +3120,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 合并节点node的左右兄弟节点， 可以根据给定的条件选择是否忽略合并左节点。
          * @method mergeSibling
@@ -3138,7 +3138,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 合并节点node的左右兄弟节点，可以根据给定的条件选择是否忽略合并左右节点。
          * @method mergeSibling
@@ -3175,7 +3175,7 @@
             !ignorePre && merge('previousSibling', 'firstChild', node);
             !ignoreNext && merge('nextSibling', 'lastChild', node);
         },
-    
+
         /**
          * 设置节点node及其子节点不会被选中
          * @method unSelectable
@@ -3235,7 +3235,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 删除节点node上的指定属性名称的属性
          * @method  removeAttributes
@@ -3344,7 +3344,7 @@
             }
             return node;
         },
-    
+
         /**
          * 获取元素element经过计算后的样式值
          * @method getComputedStyle
@@ -3370,7 +3370,7 @@
         getComputedStyle:function (element, styleName) {
             //一下的属性单独处理
             var pros = 'width height top left';
-    
+
             if(pros.indexOf(styleName) > -1){
                 return element['offset' + styleName.replace(/^\w/,function(s){return s.toUpperCase()})] + 'px';
             }
@@ -3394,7 +3394,7 @@
                 var value = domUtils.getStyle(element, styleName) ||
                     (window.getComputedStyle ? domUtils.getWindow(element).getComputedStyle(element, '').getPropertyValue(styleName) :
                         ( element.currentStyle || element.style )[utils.cssStyleToDomStyle(styleName)]);
-    
+
             } catch (e) {
                 return "";
             }
@@ -3420,7 +3420,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 删除元素element指定的className
          * @method removeClasses
@@ -3475,7 +3475,7 @@
          * <script>
          * ```
          */
-    
+
         /**
          * 给元素element添加className
          * @method addClass
@@ -3528,7 +3528,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 判断元素element是否包含给定的样式类名className
          * @method hasClass
@@ -3562,7 +3562,7 @@
             }
             return i - 1 == className.length;
         },
-    
+
         /**
          * 阻止事件默认行为
          * @method preventDefault
@@ -3610,8 +3610,8 @@
                     element.style.removeAttribute (utils.cssStyleToDomStyle(name));
                 }
             }
-    
-    
+
+
             if (!element.style.cssText) {
                 domUtils.removeAttributes(element, ['style']);
             }
@@ -3736,7 +3736,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 根据给定的过滤规则， 获取符合条件的子节点的数量
          * @method getChildCount
@@ -3774,7 +3774,7 @@
             }
             return count;
         },
-    
+
         /**
          * 判断给定节点是否为空节点
          * @method isEmptyNode
@@ -3880,7 +3880,7 @@
                 tmpRange.setStartBefore(start);
                 start = tmpRange.startContainer;
             }
-    
+
             while (start && domUtils.isFillChar(start)) {
                 tmp = start;
                 start = start.previousSibling
@@ -3916,7 +3916,7 @@
             }
             return flag && !domUtils.isBody(tmpRange.startContainer) ? 1 : 0;
         },
-    
+
         /**
          * 判断给定的元素是否是一个空元素
          * @method isEmptyBlock
@@ -3932,7 +3932,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 根据指定的判断规则判断给定的元素是否是一个空元素
          * @method isEmptyBlock
@@ -3948,7 +3948,7 @@
             if(node.nodeType != 1)
                 return 0;
             reg = reg || new RegExp('[ \xa0\t\r\n' + domUtils.fillChar + ']', 'g');
-    
+
             if (node[browser.ie ? 'innerText' : 'textContent'].replace(reg, '').length > 0) {
                 return 0;
             }
@@ -3959,7 +3959,7 @@
             }
             return 1;
         },
-    
+
         /**
          * 移动元素使得该元素的位置移动指定的偏移量的距离
          * @method setViewportOffset
@@ -3999,7 +3999,7 @@
                 element.style.top = top + offsetTop + 'px';
             }
         },
-    
+
         /**
          * 用“填充字符”填充节点
          * @method fillNode
@@ -4029,7 +4029,7 @@
             node.innerHTML = '';
             node.appendChild(tmpNode);
         },
-    
+
         /**
          * 把节点src的所有子节点追加到另一个节点tag上去
          * @method moveChild
@@ -4060,7 +4060,7 @@
          * </script>
          * ```
          */
-    
+
         /**
          * 把节点src的所有子节点移动到另一个节点tag上去, 可以通过dir参数控制附加的行为是“追加”还是“插入顶部”
          * @method moveChild
@@ -4101,7 +4101,7 @@
                 }
             }
         },
-    
+
         /**
          * 判断节点的标签上是否不存在任何属性
          * @method hasNoAttributes
@@ -4126,7 +4126,7 @@
         hasNoAttributes:function (node) {
             return browser.ie ? /^<\w+\s*?>/.test(node.outerHTML) : node.attributes.length == 0;
         },
-    
+
         /**
          * 检测节点是否是UEditor所使用的辅助节点
          * @method isCustomeNode
@@ -4138,7 +4138,7 @@
         isCustomeNode:function (node) {
             return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
         },
-    
+
         /**
          * 检测节点的标签是否是给定的标签
          * @method isTagNode
@@ -4160,7 +4160,7 @@
         isTagNode:function (node, tagNames) {
             return node.nodeType == 1 && new RegExp('\\b' + node.tagName + '\\b','i').test(tagNames)
         },
-    
+
         /**
          * 给定一个节点数组，在通过指定的过滤器过滤后， 获取其中满足过滤条件的第一个节点
          * @method filterNodeList
@@ -4178,7 +4178,7 @@
          * } ) );
          * ```
          */
-    
+
         /**
          * 给定一个节点数组nodeList和一组标签名tagNames， 获取其中能够匹配标签名的节点集合中的第一个节点
          * @method filterNodeList
@@ -4194,7 +4194,7 @@
          * console.log( UE.dom.domUtils.filterNodeList( divNodes, 'a span' ) );
          * ```
          */
-    
+
         /**
          * 给定一个节点数组，在通过指定的过滤器过滤后， 如果参数forAll为true， 则会返回所有满足过滤
          * 条件的节点集合， 否则， 返回满足条件的节点集合中的第一个节点
@@ -4240,7 +4240,7 @@
             });
             return results.length  == 0 ? null : results.length == 1 || !forAll ? results[0] : results
         },
-    
+
         /**
          * 查询给定的range选区是否在给定的node节点内，且在该节点的最末尾
          * @method isInNodeEndBoundary
@@ -4278,7 +4278,7 @@
         fillHtml :  browser.ie11below ? '&nbsp;' : '<br/>'
     };
     var fillCharReg = new RegExp(domUtils.fillChar, 'g');
-    
+
     // core/Range.js
     /**
      * Range封装
@@ -4287,26 +4287,26 @@
      * @class Range
      * @since 1.2.6.1
      */
-    
+
     /**
      * dom操作封装
      * @unfile
      * @module UE.dom
      */
-    
+
     /**
      * Range实现类，本类是UEditor底层核心类，封装不同浏览器之间的Range操作。
      * @unfile
      * @module UE.dom
      * @class Range
      */
-    
-    
+
+
     (function () {
         var guid = 0,
             fillChar = domUtils.fillChar,
             fillData;
-    
+
         /**
          * 更新range的collapse状态
          * @param  {Range}   range    range对象
@@ -4317,7 +4317,7 @@
                     range.startContainer === range.endContainer &&
                     range.startOffset == range.endOffset;
         }
-    
+
         function selectOneNode(rng){
             return !rng.collapsed && rng.startContainer.nodeType == 1 && rng.startContainer === rng.endContainer && rng.endOffset - rng.startOffset == 1
         }
@@ -4343,7 +4343,7 @@
             updateCollapse(range);
             return range;
         }
-    
+
         function execContentsAction(range, action) {
             //调整边界
             //range.includeBookmark();
@@ -4441,37 +4441,37 @@
             tmpEnd && domUtils.remove(tmpEnd);
             return frag;
         }
-    
+
         /**
          * 创建一个跟document绑定的空的Range实例
          * @constructor
          * @param { Document } document 新建的选区所属的文档对象
          */
-    
+
         /**
          * @property { Node } startContainer 当前Range的开始边界的容器节点, 可以是一个元素节点或者是文本节点
          */
-    
+
         /**
          * @property { Node } startOffset 当前Range的开始边界容器节点的偏移量, 如果是元素节点，
          *                              该值就是childNodes中的第几个节点， 如果是文本节点就是文本内容的第几个字符
          */
-    
+
         /**
          * @property { Node } endContainer 当前Range的结束边界的容器节点, 可以是一个元素节点或者是文本节点
          */
-    
+
         /**
          * @property { Node } endOffset 当前Range的结束边界容器节点的偏移量, 如果是元素节点，
          *                              该值就是childNodes中的第几个节点， 如果是文本节点就是文本内容的第几个字符
          */
-    
+
         /**
          * @property { Boolean } collapsed 当前Range是否闭合
          * @default true
          * @remind Range是闭合的时候， startContainer === endContainer && startOffset === endOffset
          */
-    
+
         /**
          * @property { Document } document 当前Range所属的Document对象
          * @remind 不同range的的document属性可以是不同的
@@ -4485,7 +4485,7 @@
             me.document = document;
             me.collapsed = true;
         };
-    
+
         /**
          * 删除fillData
          * @param doc
@@ -4512,7 +4512,7 @@
             } catch (e) {
             }
         }
-    
+
         /**
          * @param node
          * @param dir
@@ -4526,9 +4526,9 @@
                 node = tmpNode;
             }
         }
-    
+
         Range.prototype = {
-    
+
             /**
              * 克隆选区的内容到一个DocumentFragment里
              * @method cloneContents
@@ -4556,7 +4556,7 @@
             cloneContents:function () {
                 return this.collapsed ? null : execContentsAction(this, 0);
             },
-    
+
             /**
              * 删除当前选区范围中的所有内容
              * @method deleteContents
@@ -4606,7 +4606,7 @@
                 }
                 return this;
             },
-    
+
             /**
              * 将当前选区的内容提取到一个DocumentFragment里
              * @method extractContents
@@ -4651,7 +4651,7 @@
             extractContents:function () {
                 return this.collapsed ? null : execContentsAction(this, 2);
             },
-    
+
             /**
              * 设置Range的开始容器节点和偏移量
              * @method  setStart
@@ -4697,7 +4697,7 @@
             setStart:function (node, offset) {
                 return setEndPoint(true, node, offset, this);
             },
-    
+
             /**
              * 设置Range的结束容器和偏移量
              * @method  setEnd
@@ -4709,7 +4709,7 @@
             setEnd:function (node, offset) {
                 return setEndPoint(false, node, offset, this);
             },
-    
+
             /**
              * 将Range开始位置设置到node节点之后
              * @method  setStartAfter
@@ -4735,7 +4735,7 @@
             setStartAfter:function (node) {
                 return this.setStart(node.parentNode, domUtils.getNodeIndex(node) + 1);
             },
-    
+
             /**
              * 将Range开始位置设置到node节点之前
              * @method  setStartBefore
@@ -4747,7 +4747,7 @@
             setStartBefore:function (node) {
                 return this.setStart(node.parentNode, domUtils.getNodeIndex(node));
             },
-    
+
             /**
              * 将Range结束位置设置到node节点之后
              * @method  setEndAfter
@@ -4774,7 +4774,7 @@
             setEndAfter:function (node) {
                 return this.setEnd(node.parentNode, domUtils.getNodeIndex(node) + 1);
             },
-    
+
             /**
              * 将Range结束位置设置到node节点之前
              * @method  setEndBefore
@@ -4786,7 +4786,7 @@
             setEndBefore:function (node) {
                 return this.setEnd(node.parentNode, domUtils.getNodeIndex(node));
             },
-    
+
             /**
              * 设置Range的开始位置到node节点内的第一个子节点之前
              * @method  setStartAtFirst
@@ -4814,7 +4814,7 @@
             setStartAtFirst:function (node) {
                 return this.setStart(node, 0);
             },
-    
+
             /**
              * 设置Range的开始位置到node节点内的最后一个节点之后
              * @method setStartAtLast
@@ -4827,7 +4827,7 @@
             setStartAtLast:function (node) {
                 return this.setStart(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
             },
-    
+
             /**
              * 设置Range的结束位置到node节点内的第一个节点之前
              * @method  setEndAtFirst
@@ -4840,7 +4840,7 @@
             setEndAtFirst:function (node) {
                 return this.setEnd(node, 0);
             },
-    
+
             /**
              * 设置Range的结束位置到node节点内的最后一个节点之后
              * @method  setEndAtLast
@@ -4853,7 +4853,7 @@
             setEndAtLast:function (node) {
                 return this.setEnd(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
             },
-    
+
             /**
              * 选中给定节点
              * @method  selectNode
@@ -4880,7 +4880,7 @@
             selectNode:function (node) {
                 return this.setStartBefore(node).setEndAfter(node);
             },
-    
+
             /**
              * 选中给定节点内部的所有节点
              * @method  selectNodeContents
@@ -4907,7 +4907,7 @@
             selectNodeContents:function (node) {
                 return this.setStart(node, 0).setEndAtLast(node);
             },
-    
+
             /**
              * clone当前Range对象
              * @method  cloneRange
@@ -4917,9 +4917,9 @@
             cloneRange:function () {
                 var me = this;
                 return new Range(me.document).setStart(me.startContainer, me.startOffset).setEnd(me.endContainer, me.endOffset);
-    
+
             },
-    
+
             /**
              * 向当前选区的结束处闭合选区
              * @method  collapse
@@ -4941,7 +4941,7 @@
              * </script>
              * ```
              */
-    
+
             /**
              * 闭合当前选区，根据给定的toStart参数项决定是向当前选区开始处闭合还是向结束处闭合，
              * 如果toStart的值为true，则向开始位置闭合， 反之，向结束位置闭合。
@@ -4978,7 +4978,7 @@
                 me.collapsed = true;
                 return me;
             },
-    
+
             /**
              * 调整range的开始位置和结束位置，使其"收缩"到最小的位置
              * @method  shrinkBoundary
@@ -5008,7 +5008,7 @@
              * [<b><i>xxxx</i>xxxxxxx</b>] => <b><i>[xxxx</i>xxxxxxx]</b>
              * ```
              */
-    
+
             /**
              * 调整range的开始位置和结束位置，使其"收缩"到最小的位置，
              * 如果ignoreEnd的值为true，则忽略对结束位置的调整
@@ -5041,7 +5041,7 @@
                 }
                 return me;
             },
-    
+
             /**
              * 获取离当前选区内包含的所有节点最近的公共祖先节点，
              * @method  getCommonAncestor
@@ -5062,7 +5062,7 @@
              * </script>
              * ```
              */
-    
+
             /**
              * 获取当前选区所包含的所有节点的公共祖先节点， 可以根据给定的参数 includeSelf 决定获取到
              * 的公共祖先节点是否可以是当前选区的startContainer或endContainer节点， 如果 includeSelf
@@ -5091,7 +5091,7 @@
              * </body>
              * ```
              */
-    
+
             /**
              * 获取当前选区所包含的所有节点的公共祖先节点， 可以根据给定的参数 includeSelf 决定获取到
              * 的公共祖先节点是否可以是当前选区的startContainer或endContainer节点， 如果 includeSelf
@@ -5137,7 +5137,7 @@
                 }
                 return domUtils.getCommonAncestor(start, end);
             },
-    
+
             /**
              * 调整当前Range的开始和结束边界容器，如果是容器节点是文本节点,就调整到包含该文本节点的父节点上
              * @method trimBoundary
@@ -5159,7 +5159,7 @@
              * </script>
              * ```
              */
-    
+
             /**
              * 调整当前Range的开始和结束边界容器，如果是容器节点是文本节点,就调整到包含该文本节点的父节点上，
              * 可以根据 ignoreEnd 参数的值决定是否调整对结束边界的调整
@@ -5224,14 +5224,14 @@
                 }
                 return this;
             },
-    
+
             /**
              * 如果选区在文本的边界上，就扩展选区到文本的父节点上, 如果当前选区是闭合的， 则什么也不做
              * @method txtToElmBoundary
              * @remind 该操作不会修改dom节点
              * @return { UE.dom.Range } 当前range对象
              */
-    
+
             /**
              * 如果选区在文本的边界上，就扩展选区到文本的父节点上, 如果当前选区是闭合的， 则根据参数项
              * ignoreCollapsed 的值决定是否执行该调整
@@ -5256,14 +5256,14 @@
                         }
                     }
                 }
-    
+
                 if (ignoreCollapsed || !this.collapsed) {
                     adjust(this, 'start');
                     adjust(this, 'end');
                 }
                 return this;
             },
-    
+
             /**
              * 在当前选区的开始位置前插入节点，新插入的节点会被该range包含
              * @method  insertNode
@@ -5291,14 +5291,14 @@
                 }
                 return this.setStartBefore(first);
             },
-    
+
             /**
              * 闭合选区到当前选区的开始位置， 并且定位光标到闭合后的位置
              * @method  setCursor
              * @return { UE.dom.Range } 当前range对象
              * @see UE.dom.Range:collapse()
              */
-    
+
             /**
              * 闭合选区，可以根据参数toEnd的值控制选区是向前闭合还是向后闭合， 并且定位光标到闭合后的位置。
              * @method  setCursor
@@ -5310,7 +5310,7 @@
             setCursor:function (toEnd, noFillData) {
                 return this.collapse(!toEnd).select(noFillData);
             },
-    
+
             /**
              * 创建当前range的一个书签，记录下当前range的位置，方便当dom树改变时，还能找回原来的选区位置
              * @method createBookmark
@@ -5326,7 +5326,7 @@
                 startNode.style.cssText = 'display:none;line-height:0px;';
                 startNode.appendChild(this.document.createTextNode('\u200D'));
                 startNode.id = '_baidu_bookmark_start_' + (same ? '' : guid++);
-    
+
                 if (!this.collapsed) {
                     endNode = startNode.cloneNode(true);
                     endNode.id = '_baidu_bookmark_end_' + (same ? '' : guid++);
@@ -5342,7 +5342,7 @@
                     id:serialize
                 }
             },
-    
+
             /**
              *  调整当前range的边界到书签位置，并删除该书签对象所标记的位置内的节点
              *  @method  moveToBookmark
@@ -5363,14 +5363,14 @@
                 }
                 return this;
             },
-    
+
             /**
              * 调整range的边界，使其"放大"到最近的父节点
              * @method  enlarge
              * @remind 会引起选区的变化
              * @return { UE.dom.Range } 当前range对象
              */
-    
+
             /**
              * 调整range的边界，使其"放大"到最近的父节点，根据参数 toBlock 的取值， 可以
              * 要求扩大之后的父节点是block节点
@@ -5433,7 +5433,7 @@
                     }
                     domUtils.remove(tmp);
                 }
-    
+
                 // 扩展边界到最大
                 if (!this.collapsed) {
                     while (this.startOffset == 0) {
@@ -5480,7 +5480,7 @@
                         this.startOffset == this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length &&
                         this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length
                         ) {
-    
+
                         this.setStartAfter(this.startContainer);
                     }
                     while (!domUtils.isBody(this.endContainer) && !this.endOffset &&
@@ -5491,7 +5491,7 @@
                 }
                 return this;
             },
-    
+
             /**
              * 给range选区中的内容添加给定的inline标签
              * @method applyInlineStyle
@@ -5501,7 +5501,7 @@
              * <p>xxxx[xxxx]x</p>  ==>  range.applyInlineStyle("strong")  ==>  <p>xxxx[<strong>xxxx</strong>]x</p>
              * ```
              */
-    
+
             /**
              * 给range选区中的内容添加给定的inline标签， 并且为标签附加上一些初始化属性。
              * @method applyInlineStyle
@@ -5587,7 +5587,7 @@
                 }
                 return this.moveToBookmark(bookmark);
             },
-    
+
             /**
              * 移除当前选区内指定的inline标签，但保留其中的内容
              * @method removeInlineStyle
@@ -5598,7 +5598,7 @@
              * xx[x<span>xxx<em>yyy</em>zz]z</span>  => range.removeInlineStyle(["em"])  => xx[x<span>xxxyyyzz]z</span>
              * ```
              */
-    
+
             /**
              * 移除当前选区内指定的一组inline标签，但保留其中的内容
              * @method removeInlineStyle
@@ -5666,7 +5666,7 @@
                 }
                 return this.moveToBookmark(bookmark);
             },
-    
+
             /**
              * 获取当前选中的自闭合的节点
              * @method  getClosedNode
@@ -5685,7 +5685,7 @@
                 }
                 return node;
             },
-    
+
             /**
              * 在页面上高亮range所表示的选区
              * @method select
@@ -5743,7 +5743,7 @@
                 return this;
             } : function (notInsertFillData) {
                 function checkOffset(rng){
-    
+
                     function check(node,offset,dir){
                         if(node.nodeType == 3 && node.nodeValue.length < offset){
                             rng[dir + 'Offset'] = node.nodeValue.length
@@ -5777,7 +5777,7 @@
                         var start = this.startContainer,child = start;
                         if(start.nodeType == 1){
                             child = start.childNodes[this.startOffset];
-    
+
                         }
                         if( !(start.nodeType == 3 && this.startOffset)  &&
                             (child ?
@@ -5816,7 +5816,7 @@
                             }
                             child && this.setStartBefore(child).collapse(true)
                         }
-    
+
                     }
                     //是createAddress最后一位算的不准，现在这里进行微调
                     checkOffset(this);
@@ -5826,14 +5826,14 @@
                 }
                 return this;
             },
-    
+
             /**
              * 滚动到当前range开始的位置
              * @method scrollToView
              * @param { Window } win 当前range对象所属的window对象
              * @return { UE.dom.Range } 当前Range对象
              */
-    
+
             /**
              * 滚动到距离当前range开始位置 offset 的位置处
              * @method scrollToView
@@ -5852,7 +5852,7 @@
                 domUtils.remove(span);
                 return me;
             },
-    
+
             /**
              * 判断当前选区内容是否占位符
              * @private
@@ -5868,7 +5868,7 @@
                 }
                 return false;
             },
-    
+
             /**
              * 保存
              * @method createAddress
@@ -5895,7 +5895,7 @@
              */
             createAddress : function(ignoreEnd,ignoreTxt){
                 var addr = {},me = this;
-    
+
                 function getAddress(isStart){
                     var node = isStart ? me.startContainer : me.endContainer;
                     var parents = domUtils.findParents(node,true,function(node){return !domUtils.isBody(node)}),
@@ -5904,7 +5904,7 @@
                         addrs.push(domUtils.getNodeIndex(ci,ignoreTxt));
                     }
                     var firstIndex = 0;
-    
+
                     if(ignoreTxt){
                         if(node.nodeType == 3){
                             var tmpNode = node.previousSibling;
@@ -5936,7 +5936,7 @@
                                 }
                             }
                         }
-    
+
                     }else{
                         firstIndex = isStart ? domUtils.isFillChar(node) ? 0 : me.startOffset  : me.endOffset
                     }
@@ -5952,7 +5952,7 @@
                 }
                 return addr;
             },
-    
+
             /**
              * 保存
              * @method createAddress
@@ -6012,7 +6012,7 @@
                 !ignoreEnd && addr.endAddress &&  getNode(addr.endAddress);
                 return me;
             },
-    
+
             /**
              * 判断给定的Range对象是否和当前Range对象表示的是同一个选区
              * @method equals
@@ -6027,9 +6027,9 @@
                     }
                 }
                 return true;
-    
+
             },
-    
+
             /**
              * 遍历range内的节点。每当遍历一个节点时， 都会执行参数项 doFn 指定的函数， 该函数的接受当前遍历的节点
              * 作为其参数。
@@ -6066,7 +6066,7 @@
              * </script>
              * ```
              */
-    
+
             /**
              * 遍历range内的节点。
              * 每当遍历一个节点时， 都会执行参数项 doFn 指定的函数， 该函数的接受当前遍历的节点
@@ -6125,7 +6125,7 @@
             }
         };
     })();
-    
+
     // core/Selection.js
     /**
      * 选集
@@ -6134,7 +6134,7 @@
      * @class Selection
      * @since 1.2.6.1
      */
-    
+
     /**
      * 选区集合
      * @unfile
@@ -6142,7 +6142,7 @@
      * @class Selection
      */
     (function () {
-    
+
         function getBoundaryInformation( range, start ) {
             var getIndex = domUtils.getNodeIndex;
             range = range.duplicate();
@@ -6180,7 +6180,7 @@
                     child = siblings[siblings.length - 1];
                     return  {container:child, offset:child.nodeValue.length};
                 }
-    
+
                 var i = siblings.length;
                 while ( distance > 0 ){
                     distance -= siblings[ --i ].nodeValue.length;
@@ -6206,7 +6206,7 @@
             }
             return  {container:child, offset:position > 0 ? -distance : child.nodeValue.length + distance}
         }
-    
+
         /**
          * 将ieRange转换为Range对象
          * @param {Range}   ieRange    ieRange对象
@@ -6226,7 +6226,7 @@
             }
             return range;
         }
-    
+
         /**
          * 获得ieRange
          * @param {Selection} sel    Selection对象
@@ -6246,7 +6246,7 @@
             }
             return null;
         }
-    
+
         var Selection = dom.Selection = function ( doc ) {
             var me = this, iframe;
             me.document = doc;
@@ -6267,15 +6267,15 @@
             }
             iframe = doc = null;
         };
-    
+
         Selection.prototype = {
-    
+
             rangeInBody : function(rng,txtRange){
                 var node = browser.ie9below || txtRange ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
-    
+
                 return node === this.document.body || domUtils.inDoc(node,this.document);
             },
-    
+
             /**
              * 获取原生seleciton对象
              * @method getNative
@@ -6293,7 +6293,7 @@
                     return null;
                 }
             },
-    
+
             /**
              * 获得ieRange
              * @method getIERange
@@ -6312,7 +6312,7 @@
                 }
                 return ieRange;
             },
-    
+
             /**
              * 缓存当前选区的range和选区的开始节点
              * @method cache
@@ -6323,7 +6323,7 @@
                 this._cachedStartElement = this.getStart();
                 this._cachedStartElementPath = this.getStartElementPath();
             },
-    
+
             /**
              * 获取选区开始位置的父节点到body
              * @method getStartElementPath
@@ -6343,7 +6343,7 @@
                 }
                 return [];
             },
-    
+
             /**
              * 清空缓存
              * @method clear
@@ -6351,7 +6351,7 @@
             clear:function () {
                 this._cachedStartElementPath = this._cachedRange = this._cachedStartElement = null;
             },
-    
+
             /**
              * 编辑器是否得到了选区
              * @method isFocus
@@ -6359,7 +6359,7 @@
             isFocus:function () {
                 try {
                     if(browser.ie9below){
-    
+
                         var nativeRange = _getIERange(this);
                         return !!(nativeRange && this.rangeInBody(nativeRange));
                     }else{
@@ -6368,9 +6368,9 @@
                 } catch ( e ) {
                     return false;
                 }
-    
+
             },
-    
+
             /**
              * 获取选区对应的Range
              * @method getRange
@@ -6396,12 +6396,12 @@
                         range.collapse( true );
                     }
                 }
-    
+
                 if ( me._cachedRange != null ) {
                     return this._cachedRange;
                 }
                 var range = new baidu.editor.dom.Range( me.document );
-    
+
                 if ( browser.ie9below ) {
                     var nativeRange = me.getIERange();
                     if ( nativeRange ) {
@@ -6411,7 +6411,7 @@
                         }catch(e){
                             optimze( range );
                         }
-    
+
                     } else {
                         optimze( range );
                     }
@@ -6434,7 +6434,7 @@
                 }
                 return this._bakRange = range;
             },
-    
+
             /**
              * 获取开始元素，用于状态反射
              * @method getStart
@@ -6484,7 +6484,7 @@
                 }
                 return start;
             },
-    
+
             /**
              * 得到选区中的文本
              * @method getText
@@ -6502,7 +6502,7 @@
                 }
                 return '';
             },
-    
+
             /**
              * 清除选区
              * @method clearRange
@@ -6516,7 +6516,7 @@
             }
         };
     })();
-    
+
     // core/Editor.js
     /**
      * 编辑器主类，包含编辑器提供的大部分公用接口
@@ -6525,23 +6525,23 @@
      * @class Editor
      * @since 1.2.6.1
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @unfile
      * @module UE
      */
-    
+
     /**
      * UEditor的核心类，为用户提供与编辑器交互的接口。
      * @unfile
      * @module UE
      * @class Editor
      */
-    
+
     (function () {
         var uid = 0, _selectionChangeTimer;
-    
+
         /**
          * 获取编辑器的html内容，赋值到编辑器所在表单的textarea文本域里面
          * @private
@@ -6581,20 +6581,20 @@
             for (var pi in UE.plugins) {
                 UE.plugins[pi].call(me);
             }
-    
+
         }
         function checkCurLang(I18N){
             for(var lang in I18N){
                 return lang
             }
         }
-    
+
         function langReadied(me){
             me.langIsReady = true;
-    
+
             me.fireEvent("langReady");
         }
-    
+
         /**
          * 编辑器准备就绪后会触发该事件
          * @module UE
@@ -6719,8 +6719,8 @@
          * @class Editor
          * @event contentChange
          */
-    
-    
+
+
         /**
          * 以默认参数构建一个编辑器实例
          * @constructor
@@ -6732,7 +6732,7 @@
          * ```
          * @see UE.Config
          */
-    
+
         /**
          * 以给定的参数集合创建一个编辑器实例，对于未指定的参数，将应用默认参数。
          * @constructor
@@ -6756,16 +6756,16 @@
             me.outputRules = [];
             //设置默认的常用属性
             me.setOpt(Editor.defaultOptions(me));
-    
+
             /* 尝试异步加载后台配置 */
             me.loadServerConfig();
-    
+
             if(!utils.isEmptyObject(UE.I18N)){
                 //修改默认的语言类型
                 me.options.lang = checkCurLang(UE.I18N);
                 UE.plugin.load(me);
                 langReadied(me);
-    
+
             }else{
                 utils.loadFile(document, {
                     src: me.options.langPath + me.options.lang + "/" + me.options.lang + ".js",
@@ -6777,7 +6777,7 @@
                     langReadied(me);
                 });
             }
-    
+
             UE.instants['ueditorInstant' + me.uid] = me;
         };
         Editor.prototype = {
@@ -6804,7 +6804,7 @@
                     me.isReady ? fn.apply(me) : me.addListener('ready', fn);
                 }
             },
-    
+
             /**
              * 该方法是提供给插件里面使用，设置配置项默认值
              * @method setOpt
@@ -6817,7 +6817,7 @@
              * editor.setOpt( 'initContent', '欢迎使用编辑器' );
              * ```
              */
-    
+
             /**
              * 该方法是提供给插件里面使用，以{key:value}集合的方式设置插件内用到的配置项默认值
              * @method setOpt
@@ -6852,7 +6852,7 @@
              * ```
              */
             destroy: function () {
-    
+
                 var me = this;
                 me.fireEvent('destroy');
                 var container = me.container.parentNode;
@@ -6863,7 +6863,7 @@
                 } else {
                     textarea.style.display = ''
                 }
-    
+
                 textarea.style.width = me.iframe.offsetWidth + 'px';
                 textarea.style.height = me.iframe.offsetHeight + 'px';
                 textarea.value = me.getContent();
@@ -6879,7 +6879,7 @@
                 }
                 UE.delEditor(key);
             },
-    
+
             /**
              * 渲染编辑器的DOM到指定容器
              * @method render
@@ -6887,7 +6887,7 @@
              * @remind 执行该方法,会触发ready事件
              * @warning 必须且只能调用一次
              */
-    
+
             /**
              * 渲染编辑器的DOM到指定容器
              * @method render
@@ -6915,16 +6915,16 @@
                     }else{
                         options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
                     }
-    
+
                     container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth-
                         getStyleValue("padding-left")- getStyleValue("padding-right") +'px';
                     container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : options.initialFrameHeight -
                         getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
-    
+
                     container.style.zIndex = options.zIndex;
-    
+
                     var html = ( ie && browser.version < 9  ? '' : '<!DOCTYPE html>') +
-                        '<html xmlns=\'http://www.w3.org/1999/xhtml\' class=\'view\' ><head>' +
+                        '<html xmlns=\'Http://www.w3.org/1999/xhtml\' class=\'view\' ><head>' +
                         '<style type=\'text/css\'>' +
                         //设置四周的留边
                         '.view{padding:0;word-wrap:break-word;cursor:text;height:90%;}\n' +
@@ -6964,7 +6964,7 @@
                     })
                 }
             },
-    
+
             /**
              * 编辑器初始化
              * @method _setup
@@ -6972,7 +6972,7 @@
              * @param { Element } doc 编辑器Iframe中的文档对象
              */
             _setup: function (doc) {
-    
+
                 var me = this,
                     options = me.options;
                 if (ie) {
@@ -7021,9 +7021,9 @@
                     } else
                         this.setContent(options.initialContent, false, true);
                 }
-    
+
                 //编辑器不能为空内容
-    
+
                 if (domUtils.isEmptyNode(me.body)) {
                     me.body.innerHTML = '<p>' + (browser.ie ? '' : '<br/>') + '</p>';
                 }
@@ -7041,7 +7041,7 @@
                 if (options.fullscreen && me.ui) {
                     me.ui.setFullScreen(true);
                 }
-    
+
                 try {
                     me.document.execCommand('2D-position', false, false);
                 } catch (e) {
@@ -7054,7 +7054,7 @@
                     me.document.execCommand('enableObjectResizing', false, false);
                 } catch (e) {
                 }
-    
+
                 //挂接快捷键
                 me._bindshortcutKeys();
                 me.isReady = 1;
@@ -7071,7 +7071,7 @@
                             } catch (e) {
                                 me._bakNativeRange = null;
                             }
-    
+
                         } else {
                             try {
                                 me._bakRange && me._bakRange.select();
@@ -7091,11 +7091,11 @@
                         me.body.style.height = me.iframe.offsetHeight - 20 + 'px'
                     }, 100)
                 }
-    
+
                 !options.isShow && me.setHide();
                 options.readonly && me.setDisabled();
             },
-    
+
             /**
              * 同步数据到编辑器所在的form
              * 从编辑器的容器节点向上查找form元素，若找到，就同步编辑内容到找到的form里，为提交数据做准备，主要用于是手动提交的情况
@@ -7107,7 +7107,7 @@
              * form.sumbit(); //form变量已经指向了form元素
              * ```
              */
-    
+
             /**
              * 根据传入的formId，在页面上查找要同步数据的表单，若找到，就同步编辑内容到找到的form里，为提交数据做准备
              * 后台取得数据的键值，该键值默认使用给定的编辑器容器的name属性，如果没有name属性则使用参数项里给定的“textarea”项
@@ -7122,7 +7122,7 @@
                         }, true);
                 form && setValue(form, me);
             },
-    
+
             /**
              * 设置编辑器高度
              * @method setHeight
@@ -7141,7 +7141,7 @@
                 this.body.style.height = height + 'px';
                 !notSetHeight && this.trigger('setHeight')
             },
-    
+
             /**
              * 为编辑器的编辑命令提供快捷键
              * 这个接口是为插件扩展提供的接口,主要是为新添加的插件，如果需要添加快捷键，所提供的接口
@@ -7174,7 +7174,7 @@
                 }
                 utils.extend(this.shortcutkeys, obj)
             },
-    
+
             /**
              * 对编辑器设置keydown事件监听，绑定快捷键和命令，当快捷键组合触发成功，会响应对应的命令
              * @method _bindshortcutKeys
@@ -7202,11 +7202,11 @@
                                 }
                             }
                         }
-    
+
                     }
                 });
             },
-    
+
             /**
              * 获取编辑器的内容
              * @method getContent
@@ -7218,7 +7218,7 @@
              * var content = editor.getContent(); //返回值:<p>1<strong>2<em>34</em>5</strong>6</p>
              * ```
              */
-    
+
             /**
              * 获取编辑器的内容。 可以通过参数定义编辑器内置的判空规则
              * @method getContent
@@ -7252,7 +7252,7 @@
                 me.fireEvent('aftergetcontent', cmd,root);
                 return  root.toHtml(formatter);
             },
-    
+
             /**
              * 取得完整的html代码，可以直接显示成完整的html文档
              * @method getAllHtml
@@ -7275,13 +7275,13 @@
                     utils.each(me.document.getElementsByTagName('script'), function (si) {
                         headHtmlForIE9 += si.outerHTML;
                     });
-    
+
                 }
-                return '<html><head>' + (me.options.charset ? '<meta http-equiv="Content-Type" content="text/html; charset=' + me.options.charset + '"/>' : '')
+                return '<html><head>' + (me.options.charset ? '<meta Http-equiv="Content-Type" content="text/html; charset=' + me.options.charset + '"/>' : '')
                     + (headHtmlForIE9 || me.document.getElementsByTagName('head')[0].innerHTML) + headHtml.join('\n') + '</head>'
                     + '<body ' + (ie && browser.version < 9 ? 'class="view"' : '') + '>' + me.getContent(null, null, true) + '</body></html>';
             },
-    
+
             /**
              * 得到编辑器的纯文本内容，但会保留段落格式
              * @method getPlainTxt
@@ -7304,7 +7304,7 @@
                 //取出来的空格会有c2a0会变成乱码，处理这种情况\u00a0
                 return html.replace(reg, '').replace(/\u00a0/g, ' ').replace(/&nbsp;/g, ' ');
             },
-    
+
             /**
              * 获取编辑器中的纯文本内容,没有段落格式
              * @method getContentTxt
@@ -7320,7 +7320,7 @@
                 //取出来的空格会有c2a0会变成乱码，处理这种情况\u00a0
                 return this.body[browser.ie ? 'innerText' : 'textContent'].replace(reg, '').replace(/\u00a0/g, ' ');
             },
-    
+
             /**
              * 设置编辑器的内容，可修改编辑器当前的html内容
              * @method setContent
@@ -7332,7 +7332,7 @@
              * editor.getContent('<p>test</p>');
              * ```
              */
-    
+
             /**
              * 设置编辑器的内容，可修改编辑器当前的html内容
              * @method setContent
@@ -7348,21 +7348,21 @@
              */
             setContent: function (html, isAppendTo, notFireSelectionchange) {
                 var me = this;
-    
+
                 me.fireEvent('beforesetcontent', html);
                 var root = UE.htmlparser(html);
                 me.filterInputRule(root);
                 html = root.toHtml();
-    
+
                 me.body.innerHTML = (isAppendTo ? me.body.innerHTML : '') + html;
-    
-    
+
+
                 function isCdataDiv(node){
                     return  node.tagName == 'DIV' && node.getAttribute('cdata_tag');
                 }
                 //给文本或者inline节点套p标签
                 if (me.options.enterTag == 'p') {
-    
+
                     var child = this.body.firstChild, tmpNode;
                     if (!child || child.nodeType == 1 &&
                         (dtd.$cdata[child.tagName] || isCdataDiv(child) ||
@@ -7370,7 +7370,7 @@
                             )
                         && child === this.body.lastChild) {
                         this.body.innerHTML = '<p>' + (browser.ie ? '&nbsp;' : '<br/>') + '</p>' + this.body.innerHTML;
-    
+
                     } else {
                         var p = me.document.createElement('p');
                         while (child) {
@@ -7394,7 +7394,7 @@
                 }
                 me.fireEvent('aftersetcontent');
                 me.fireEvent('contentchange');
-    
+
                 !notFireSelectionchange && me._selectionChange();
                 //清除保存的选区
                 me._bakRange = me._bakIERange = me._bakNativeRange = null;
@@ -7407,7 +7407,7 @@
                     me.form && setValue(me.form,me);
                 }
             },
-    
+
             /**
              * 让编辑器获得焦点，默认focus到编辑器头部
              * @method focus
@@ -7416,7 +7416,7 @@
              * editor.focus()
              * ```
              */
-    
+
             /**
              * 让编辑器获得焦点，toEnd确定focus位置
              * @method focus
@@ -7443,20 +7443,20 @@
                         rng.setCursor(true);
                     } else {
                         if(!rng.collapsed && domUtils.isBody(rng.startContainer) && rng.startOffset == 0){
-    
+
                             var node = me.body.firstChild;
                             if(node && node.nodeType == 1 && !dtd.$empty[node.tagName]){
                                 rng.setStartAtFirst(node).collapse(true);
                             }
                         }
-    
+
                         rng.select(true);
-    
+
                     }
                     this.fireEvent('focus selectionchange');
                 } catch (e) {
                 }
-    
+
             },
             isFocus:function(){
                 return this.selection.isFocus();
@@ -7472,7 +7472,7 @@
                 }else{
                     sel.removeAllRanges()
                 }
-    
+
                 //this.fireEvent('blur selectionchange');
             },
             /**
@@ -7528,8 +7528,8 @@
     //            if ( !me.selection.isFocus() ){
     //                return;
     //            }
-    
-    
+
+
                 var hackForMouseUp = false;
                 var mouseX, mouseY;
                 if (browser.ie && browser.version < 9 && evt && evt.type == 'mouseup') {
@@ -7576,7 +7576,7 @@
                     }
                 }, delay || 50);
             },
-    
+
             /**
              * 执行编辑命令
              * @method _callCmdFn
@@ -7597,7 +7597,7 @@
                     return cmdFn.apply(this, args);
                 }
             },
-    
+
             /**
              * 执行编辑命令cmdName，完成富文本编辑效果
              * @method execCommand
@@ -7636,7 +7636,7 @@
                 (!me.__hasEnterExecCommand && !cmd.ignoreContentChange && !me._ignoreContentChange) && me._selectionChange();
                 return result;
             },
-    
+
             /**
              * 根据传入的command命令，查选编辑器当前的选区，返回命令的状态
              * @method  queryCommandState
@@ -7652,7 +7652,7 @@
             queryCommandState: function (cmdName) {
                 return this._callCmdFn('queryCommandState', arguments);
             },
-    
+
             /**
              * 根据传入的command命令，查选编辑器当前的选区，根据命令返回相关的值
              * @method queryCommandValue
@@ -7666,7 +7666,7 @@
             queryCommandValue: function (cmdName) {
                 return this._callCmdFn('queryCommandValue', arguments);
             },
-    
+
             /**
              * 检查编辑区域中是否有内容
              * @method  hasContents
@@ -7678,7 +7678,7 @@
              * editor.hasContents()
              * ```
              */
-    
+
             /**
              * 检查编辑区域中是否有内容，若包含参数tags中的节点类型，直接返回true
              * @method  hasContents
@@ -7712,7 +7712,7 @@
                 }
                 return false;
             },
-    
+
             /**
              * 重置编辑器，可用来做多个tab使用同一个编辑器实例
              * @method  reset
@@ -7725,7 +7725,7 @@
             reset: function () {
                 this.fireEvent('reset');
             },
-    
+
             /**
              * 设置当前编辑区域可以编辑
              * @method setEnabled
@@ -7761,11 +7761,11 @@
             enable: function () {
                 return this.setEnabled();
             },
-    
+
             /** 设置当前编辑区域不可编辑
              * @method setDisabled
              */
-    
+
             /** 设置当前编辑区域不可编辑,except中的命令除外
              * @method setDisabled
              * @param { String } except 例外命令的字符串
@@ -7775,7 +7775,7 @@
              * editor.setDisabled('bold'); //禁用工具栏中除加粗之外的所有功能
              * ```
              */
-    
+
             /** 设置当前编辑区域不可编辑,except中的命令除外
              * @method setDisabled
              * @param { Array } except 例外命令的字符串数组，数组中的命令仍然可以执行
@@ -7813,7 +7813,7 @@
             disable: function (except) {
                 return this.setDisabled(except);
             },
-    
+
             /**
              * 设置默认内容
              * @method _setDefaultContent
@@ -7832,15 +7832,15 @@
                         }, 0)
                     }
                 }
-    
+
                 return function (cont) {
                     var me = this;
                     me.body.innerHTML = '<p id="initContent">' + cont + '</p>';
-    
+
                     me.addListener('firstBeforeExecCommand focus', clear);
                 }
             }(),
-    
+
             /**
              * 显示编辑器
              * @method setShow
@@ -7865,7 +7865,7 @@
                     }, 100);
                     me.container.style.display = '';
                 }
-    
+
             },
             show: function () {
                 return this.setShow();
@@ -7888,7 +7888,7 @@
             hide: function () {
                 return this.setHide();
             },
-    
+
             /**
              * 根据指定的路径，获取对应的语言资源
              * @method getLang
@@ -7915,7 +7915,7 @@
                 }
                 return lang;
             },
-    
+
             /**
              * 计算编辑器html内容字符串的长度
              * @method  getContentLength
@@ -7948,7 +7948,7 @@
                 }
                 return count;
             },
-    
+
             /**
              * 注册输入过滤规则
              * @method  addInputRule
@@ -7965,7 +7965,7 @@
             addInputRule: function (rule) {
                 this.inputRules.push(rule);
             },
-    
+
             /**
              * 执行注册的过滤规则
              * @method  filterInputRule
@@ -7982,7 +7982,7 @@
                     ci.call(this, root)
                 }
             },
-    
+
             /**
              * 注册输出过滤规则
              * @method  addOutputRule
@@ -7999,7 +7999,7 @@
             addOutputRule: function (rule) {
                 this.outputRules.push(rule)
             },
-    
+
             /**
              * 根据输出过滤规则，过滤编辑器内容
              * @method  filterOutputRule
@@ -8016,7 +8016,7 @@
                     ci.call(this, root)
                 }
             },
-    
+
             /**
              * 根据action名称获取请求的路径
              * @method  getActionUrl
@@ -8034,11 +8034,11 @@
                 var actionName = this.getOpt(action) || action,
                     imageUrl = this.getOpt('imageUrl'),
                     serverUrl = this.getOpt('serverUrl');
-    
+
                 if(!serverUrl && imageUrl) {
                     serverUrl = imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2');
                 }
-    
+
                 if(serverUrl) {
                     serverUrl = serverUrl + (serverUrl.indexOf('?') == -1 ? '?':'&') + 'action=' + (actionName || '');
                     return utils.formatUrl(serverUrl);
@@ -8049,12 +8049,12 @@
         };
         utils.inherits(Editor, EventBase);
     })();
-    
-    
+
+
     // core/Editor.defaultoptions.js
     //维护编辑器一下默认的不在插件中的配置项
     UE.Editor.defaultOptions = function(editor){
-    
+
         var _url = editor.options.UEDITOR_HOME_URL;
         return {
             isShow: true,
@@ -8083,10 +8083,10 @@
             fileNameFormat: '{time}{rand:6}'
         }
     };
-    
+
     // core/loadconfig.js
     (function(){
-    
+
         UE.Editor.prototype.loadServerConfig = function(){
             var me = this;
             setTimeout(function(){
@@ -8095,10 +8095,10 @@
                     console.log('配置内容',me.options.headers)
                     var configUrl = me.getActionUrl('config'),
                         isJsonp = false // utils.isCrossDomainUrl(configUrl);
-    
+
                     /* 发出ajax请求 */
                     me._serverConfigLoaded = false;
-    
+
                     configUrl && UE.ajax.request(configUrl,{
                         'method': 'GET',
                         'data':me.options.headers,
@@ -8125,7 +8125,7 @@
                     showErrorMsg(me.getLang('loadconfigError'));
                 }
             });
-    
+
             function showErrorMsg(msg) {
                 console && console.error(msg);
                 // me.fireEvent('showMessage', {
@@ -8134,12 +8134,12 @@
                 // });
             }
         };
-    
+
         UE.Editor.prototype.isServerConfigLoaded = function(){
             var me = this;
             return me._serverConfigLoaded || false;
         };
-    
+
         UE.Editor.prototype.afterConfigReady = function(handler){
             if (!handler || !utils.isFunction(handler)) return;
             var me = this;
@@ -8147,30 +8147,30 @@
                 handler.apply(me, arguments);
                 me.removeListener('serverConfigLoaded', readyHandler);
             };
-    
+
             if (me.isServerConfigLoaded()) {
                 handler.call(me, 'serverConfigLoaded');
             } else {
                 me.addListener('serverConfigLoaded', readyHandler);
             }
         };
-    
+
     })();
-    
-    
+
+
     // core/ajax.js
     /**
      * @file
      * @module UE.ajax
      * @since 1.2.6.1
      */
-    
+
     /**
      * 提供对ajax请求的支持
      * @module UE.ajax
      */
     UE.ajax = function() {
-    
+
         //创建一个ajaxRequest对象
         var fnStr = 'XMLHttpRequest()';
         try {
@@ -8184,8 +8184,8 @@
             }
         }
         var creatAjaxRequest = new Function('return new ' + fnStr);
-    
-    
+
+
         /**
          * 将json参数转化成适合ajax提交的参数列表
          * @param json
@@ -8209,7 +8209,7 @@
             }
             return strArr.join("&");
         }
-    
+
         function doAjax(url, ajaxOptions) {
             var xhr = creatAjaxRequest(),
             //是否超时
@@ -8225,14 +8225,14 @@
                     onerror:function() {
                     }
                 };
-    
+
             if (typeof url === "object") {
                 ajaxOptions = url;
                 url = ajaxOptions.url;
             }
             if (!xhr || !url) return;
             var ajaxOpts = ajaxOptions ? utils.extend(defaultAjaxOptions,ajaxOptions) : defaultAjaxOptions;
-    
+
             var submitStr = json2str(ajaxOpts);  // { name:"Jim",city:"Beijing" } --> "name=Jim&city=Beijing"
             //如果用户直接通过data参数传递json对象过来，则也要将此json对象转化为字符串
             if (!utils.isEmptyObject(ajaxOpts.data)){
@@ -8246,7 +8246,7 @@
                     clearTimeout(timerID);
                 }
             }, ajaxOpts.timeout);
-    
+
             var method = ajaxOpts.method.toUpperCase();
             var str = url + (url.indexOf("?")==-1?"?":"&") + (method=="POST"?"":submitStr+ "&noCache=" + +new Date);
             xhr.open(method, str, ajaxOpts.async);
@@ -8266,9 +8266,9 @@
                 xhr.send(null);
             }
         }
-    
+
         function doJsonp(url, opts) {
-    
+
             var successhandler = opts.onsuccess || function(){},
                 scr = document.createElement('SCRIPT'),
                 options = opts || {},
@@ -8279,7 +8279,7 @@
                 timer,
                 reg = new RegExp('(\\?|&)' + callbackField + '=([^&]*)'),
                 matches;
-    
+
             if (utils.isFunction(successhandler)) {
                 callbackFnName = 'bd__editor__' + Math.floor(Math.random() * 2147483648).toString(36);
                 window[callbackFnName] = getCallBack(0);
@@ -8290,13 +8290,13 @@
                     callbackFnName = matches[2];
                 }
             }
-    
+
             url = url.replace(reg, '\x241' + callbackField + '=' + callbackFnName);
-    
+
             if (url.search(reg) < 0) {
                 url += (url.indexOf('?') < 0 ? '?' : '&') + callbackField + '=' + callbackFnName;
             }
-    
+
             var queryStr = json2str(opts);  // { name:"Jim",city:"Beijing" } --> "name=Jim&city=Beijing"
             //如果用户直接通过data参数传递json对象过来，则也要将此json对象转化为字符串
             if (!utils.isEmptyObject(opts.data)){
@@ -8305,13 +8305,13 @@
             if (queryStr) {
                 url = url.replace(/\?/, '?' + queryStr + '&');
             }
-    
+
             scr.onerror = getCallBack(1);
             if( timeOut ){
                 timer = setTimeout(getCallBack(1), timeOut);
             }
             createScriptTag(scr, url, charset);
-    
+
             function createScriptTag(scr, url, charset) {
                 scr.setAttribute('type', 'text/javascript');
                 scr.setAttribute('defer', 'defer');
@@ -8319,7 +8319,7 @@
                 scr.setAttribute('src', url);
                 document.getElementsByTagName('head')[0].appendChild(scr);
             }
-    
+
             function getCallBack(onTimeOut){
                 return function(){
                     try {
@@ -8344,7 +8344,7 @@
                 }
             }
         }
-    
+
         return {
             /**
              * 根据给定的参数项，向指定的url发起一个ajax请求。 ajax请求完成后，会根据请求结果调用相应回调： 如果请求
@@ -8384,7 +8384,7 @@
              * } );
              * ```
              */
-    
+
             /**
              * 根据给定的参数项发起一个ajax请求， 参数项里必须包含一个url地址。 ajax请求完成后，会根据请求结果调用相应回调： 如果请求
              * 成功， 则调用onsuccess回调， 失败则调用 onerror 回调。
@@ -8418,23 +8418,23 @@
                 doJsonp(url, opts);
             }
         };
-    
-    
+
+
     }();
-    
-    
+
+
     // core/filterword.js
     /**
      * UE过滤word的静态方法
      * @file
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @module UE
      */
-    
-    
+
+
     /**
      * 根据传入html字符串过滤word
      * @module UE
@@ -8448,7 +8448,7 @@
      * ```
      */
     var filterWord = UE.filterWord = function () {
-    
+
         //是否是word过来的内容
         function isWordDocument( str ) {
             return /(class="?Mso|style="[^"]*\bmso\-|w:WordDocument|<(v|o):|lang=)/ig.test( str );
@@ -8460,7 +8460,7 @@
             } );
             return v;
         }
-    
+
         function filterPasteWord( str ) {
             return str.replace(/[\t\r\n]+/g,' ')
                     .replace( /<!--[\s\S]*?-->/ig, "" )
@@ -8508,12 +8508,12 @@
                                     return utils.transUnitToPx(str)
                                 })
                                 .split( /;\s*/g );
-    
+
                         for ( var i = 0,v; v = s[i];i++ ) {
-    
+
                             var name, value,
                                 parts = v.split( ":" );
-    
+
                             if ( parts.length == 2 ) {
                                 name = parts[0].toLowerCase();
                                 value = parts[1].toLowerCase();
@@ -8523,7 +8523,7 @@
                                 ){
                                     continue;
                                 }
-    
+
                                 switch ( name ) {
                                     case "mso-padding-alt":
                                     case "mso-padding-top-alt":
@@ -8547,33 +8547,33 @@
                                     case "horiz-align":
                                         n[i] = "text-align:" + value;
                                         continue;
-    
+
                                     case "vert-align":
                                         n[i] = "vertical-align:" + value;
                                         continue;
-    
+
                                     case "font-color":
                                     case "mso-foreground":
                                         n[i] = "color:" + value;
                                         continue;
-    
+
                                     case "mso-background":
                                     case "mso-highlight":
                                         n[i] = "background:" + value;
                                         continue;
-    
+
                                     case "mso-default-height":
                                         n[i] = "min-height:" + transUnit( value );
                                         continue;
-    
+
                                     case "mso-default-width":
                                         n[i] = "min-width:" + transUnit( value );
                                         continue;
-    
+
                                     case "mso-padding-between-alt":
                                         n[i] = "border-collapse:separate;border-spacing:" + transUnit( value );
                                         continue;
-    
+
                                     case "text-line-through":
                                         if ( (value == "single") || (value == "double") ) {
                                             n[i] = "text-decoration:line-through";
@@ -8590,30 +8590,30 @@
                                         if ( !/[1-9]/.test( value ) ) {
                                             continue;
                                         }
-    
+
                                 }
-    
+
                                 if ( /^(mso|column|font-emph|lang|layout|line-break|list-image|nav|panose|punct|row|ruby|sep|size|src|tab-|table-border|text-(?:decor|trans)|top-bar|version|vnd|word-break)/.test( name )
                                     ||
                                     /text\-indent|padding|margin/.test(name) && /\-[\d.]+/.test(value)
                                 ) {
                                     continue;
                                 }
-    
+
                                 n[i] = name + ":" + parts[1];
                             }
                         }
                         return tag + (n.length ? ' style="' + n.join( ';').replace(/;{2,}/g,';') + '"' : '');
                     })
-    
-    
+
+
         }
-    
+
         return function ( html ) {
             return (isWordDocument( html ) ? filterPasteWord( html ) : html);
         };
     }();
-    
+
     // core/node.js
     /**
      * 编辑器模拟的节点类
@@ -8622,22 +8622,22 @@
      * @class uNode
      * @since 1.2.6.1
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @unfile
      * @module UE
      */
-    
+
     (function () {
-    
+
         /**
          * 编辑器模拟的节点类
          * @unfile
          * @module UE
          * @class uNode
          */
-    
+
         /**
          * 通过一个键值对，创建一个uNode对象
          * @constructor
@@ -8659,7 +8659,7 @@
             this.attrs = obj.attrs || {};
             this.children = obj.children;
         };
-    
+
         var notTransAttrs = {
             'href':1,
             'src':1,
@@ -8667,27 +8667,27 @@
             '_href':1,
             'cdata_data':1
         };
-    
+
         var notTransTagName = {
             style:1,
             script:1
         };
-    
+
         var indentChar = '    ',
             breakChar = '\n';
-    
+
         function insertLine(arr, current, begin) {
             arr.push(breakChar);
             return current + (begin ? 1 : -1);
         }
-    
+
         function insertIndent(arr, current) {
             //插入缩进
             for (var i = 0; i < current; i++) {
                 arr.push(indentChar);
             }
         }
-    
+
         //创建uNode的静态方法
         //支持标签和html
         uNode.createElement = function (html) {
@@ -8730,7 +8730,7 @@
             }
             return arr;
         }
-    
+
         function isText(node, arr) {
             if(node.parentNode.tagName == 'pre'){
                 //源码模式下输入html标签，不能做转换处理，直接输出
@@ -8738,9 +8738,9 @@
             }else{
                 arr.push(notTransTagName[node.parentNode.tagName] ? utils.html(node.data) : node.data.replace(/[ ]{2}/g,' &nbsp;'))
             }
-    
+
         }
-    
+
         function isElement(node, arr, formatter, current) {
             var attrhtml = '';
             if (node.attrs) {
@@ -8767,7 +8767,7 @@
                     current = insertLine(arr, current, true);
                     insertIndent(arr, current)
                 }
-    
+
             }
             if (node.children && node.children.length) {
                 for (var i = 0, ci; ci = node.children[i++];) {
@@ -8780,7 +8780,7 @@
             }
             if (!dtd.$empty[node.tagName]) {
                 if (formatter && !dtd.$inlineWithA[node.tagName]  && node.tagName != 'pre') {
-    
+
                     if(node.children && node.children.length){
                         current = insertLine(arr, current);
                         insertIndent(arr, current)
@@ -8788,13 +8788,13 @@
                 }
                 arr.push('<\/' + node.tagName + '>');
             }
-    
+
         }
-    
+
         function isComment(node, arr) {
             arr.push('<!--' + node.data + '-->');
         }
-    
+
         function getNodeById(root, id) {
             var node;
             if (root.type == 'element' && root.getAttr('id') == id) {
@@ -8808,7 +8808,7 @@
                 }
             }
         }
-    
+
         function getNodesByTagName(node, tagName, arr) {
             if (node.type == 'element' && node.tagName == tagName) {
                 arr.push(node);
@@ -8834,10 +8834,10 @@
             }else{
                 fn(root)
             }
-    
+
         }
         uNode.prototype = {
-    
+
             /**
              * 当前节点对象，转换成html文本
              * @method toHtml
@@ -8847,7 +8847,7 @@
              * node.toHtml();
              * ```
              */
-    
+
             /**
              * 当前节点对象，转换成html文本
              * @method toHtml
@@ -8863,7 +8863,7 @@
                 nodeToHtml(this, arr, formatter, 0);
                 return arr.join('')
             },
-    
+
             /**
              * 获取节点的html内容
              * @method innerHTML
@@ -8874,7 +8874,7 @@
              * var htmlstr = node.innerHTML();
              * ```
              */
-    
+
             /**
              * 设置节点的html内容
              * @method innerHTML
@@ -8911,7 +8911,7 @@
                     return tmpRoot.toHtml();
                 }
             },
-    
+
             /**
              * 获取节点的纯文本内容
              * @method innerText
@@ -8922,7 +8922,7 @@
              * var textStr = node.innerText();
              * ```
              */
-    
+
             /**
              * 设置节点的纯文本内容
              * @method innerText
@@ -8951,7 +8951,7 @@
                     return this.toHtml().replace(/<[^>]+>/g, '');
                 }
             },
-    
+
             /**
              * 获取当前对象的data属性
              * @method getData
@@ -8966,7 +8966,7 @@
                     return '';
                 return this.data
             },
-    
+
             /**
              * 获取当前节点下的第一个子节点
              * @method firstChild
@@ -8982,7 +8982,7 @@
     //            }
                 return this.children ? this.children[0] : null;
             },
-    
+
             /**
              * 获取当前节点下的最后一个子节点
              * @method lastChild
@@ -8998,7 +8998,7 @@
     //            }
                 return this.children ? this.children[this.children.length - 1] : null;
             },
-    
+
             /**
              * 获取和当前节点有相同父亲节点的前一个节点
              * @method previousSibling
@@ -9015,9 +9015,9 @@
                        return i == 0 ? null : parent.children[i-1];
                     }
                 }
-    
+
             },
-    
+
             /**
              * 获取和当前节点有相同父亲节点的后一个节点
              * @method nextSibling
@@ -9035,7 +9035,7 @@
                     }
                 }
             },
-    
+
             /**
              * 用新的节点替换当前节点
              * @method replaceChild
@@ -9062,7 +9062,7 @@
                     }
                 }
             },
-    
+
             /**
              * 在节点的子节点列表最后位置插入一个节点
              * @method appendChild
@@ -9091,10 +9091,10 @@
                     node.parentNode = this;
                     return node;
                 }
-    
-    
+
+
             },
-    
+
             /**
              * 在传入节点的前面插入一个节点
              * @method insertBefore
@@ -9118,10 +9118,10 @@
                             return target;
                         }
                     }
-    
+
                 }
             },
-    
+
             /**
              * 在传入节点的后面插入一个节点
              * @method insertAfter
@@ -9144,11 +9144,11 @@
                             target.parentNode = this;
                             return target;
                         }
-    
+
                     }
                 }
             },
-    
+
             /**
              * 从当前节点的子节点列表中，移除节点
              * @method removeChild
@@ -9170,7 +9170,7 @@
                                 for(var j= 0,cj;cj=ci.children[j];j++){
                                     this.children.splice(i+j,0,cj);
                                     cj.parentNode = this;
-    
+
                                 }
                             }
                             return ci;
@@ -9178,7 +9178,7 @@
                     }
                 }
             },
-    
+
             /**
              * 获取当前节点所代表的元素属性，即获取attrs对象下的属性值
              * @method getAttr
@@ -9192,7 +9192,7 @@
             getAttr:function (attrName) {
                 return this.attrs && this.attrs[attrName.toLowerCase()]
             },
-    
+
             /**
              * 设置当前节点所代表的元素属性，即设置attrs对象下的属性值
              * @method setAttr
@@ -9226,10 +9226,10 @@
                     } else {
                         this.attrs[attrName.toLowerCase()] = attrVal;
                     }
-    
+
                 }
             },
-    
+
             /**
              * 获取当前节点在父节点下的位置索引
              * @method getIndex
@@ -9248,7 +9248,7 @@
                 }
                 return -1;
             },
-    
+
             /**
              * 在当前节点下，根据id查找节点
              * @method getNodeById
@@ -9269,7 +9269,7 @@
                     }
                 }
             },
-    
+
             /**
              * 在当前节点下，根据元素名称查找节点列表
              * @method getNodesByTagName
@@ -9292,7 +9292,7 @@
                 });
                 return arr;
             },
-    
+
             /**
              * 根据样式名称，获取节点的样式值
              * @method getStyle
@@ -9315,7 +9315,7 @@
                 }
                 return '';
             },
-    
+
             /**
              * 给节点设置样式
              * @method setStyle
@@ -9333,9 +9333,9 @@
                     if (val) {
                         cssStyle = name + ':' + utils.unhtml(val) + ';' + cssStyle
                     }
-    
+
                 }
-    
+
                 var cssStyle = this.getAttr('style');
                 if (!cssStyle) {
                     cssStyle = '';
@@ -9349,7 +9349,7 @@
                 }
                 this.setAttr('style', utils.trim(cssStyle))
             },
-    
+
             /**
              * 传入一个函数，递归遍历当前节点下的所有节点
              * @method traversal
@@ -9369,8 +9369,8 @@
             }
         }
     })();
-    
-    
+
+
     // core/htmlparser.js
     /**
      * html字符串转换成uNode节点
@@ -9378,13 +9378,13 @@
      * @module UE
      * @since 1.2.6.1
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @unfile
      * @module UE
      */
-    
+
     /**
      * html字符串转换成uNode节点的静态方法
      * @method htmlparser
@@ -9396,13 +9396,13 @@
      * var root = UE.htmlparser('<p><b>htmlparser</b></p>', true);
      * ```
      */
-    
+
     var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
         //todo 原来的方式  [^"'<>\/] 有\/就不能配对上 <TD vAlign=top background=../AAA.JPG> 这样的标签了
         //先去掉了，加上的原因忘了，这里先记录
         var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\s\/<>]+)\s*((?:(?:"[^"]*")|(?:'[^']*')|[^"'<>])*)\/?>))/g,
             re_attr = /([\w\-:.]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g;
-    
+
         //ie下取得的html可能会有\n存在，要去掉，在处理replace(/[\t\r\n]*/g,'');代码高量的\n不能去除
         var allowEmptyTags = {
             b:1,code:1,i:1,u:1,strike:1,s:1,tt:1,strong:1,q:1,samp:1,em:1,span:1,
@@ -9418,12 +9418,12 @@
                 return a.replace(new RegExp('^[\\r\\n'+(ignoreBlank?'':' ')+']+'),'').replace(new RegExp('[\\r\\n'+(ignoreBlank?'':' ')+']+$'),'');
             });
         }
-    
+
         var notTransAttrs = {
             'href':1,
             'src':1
         };
-    
+
         var uNode = UE.uNode,
             needParentNode = {
                 'td':'tr',
@@ -9442,20 +9442,20 @@
                 'ol':'li',
                 'ul':'li'
             };
-    
+
         function text(parent, data) {
-    
+
             if(needChild[parent.tagName]){
                 var tmpNode = uNode.createElement(needChild[parent.tagName]);
                 parent.appendChild(tmpNode);
                 tmpNode.appendChild(uNode.createText(data));
                 parent = tmpNode;
             }else{
-    
+
                 parent.appendChild(uNode.createText(data));
             }
         }
-    
+
         function element(parent, tagName, htmlattr) {
             var needParentTag;
             if (needParentTag = needParentNode[tagName]) {
@@ -9500,7 +9500,7 @@
             //如果是自闭合节点返回父亲节点
             return  dtd.$empty[tagName] ? parent : elm
         }
-    
+
         function comment(parent, data) {
             parent.children.push(new uNode({
                 type:'comment',
@@ -9508,7 +9508,7 @@
                 parentNode:parent
             }));
         }
-    
+
         var match, currentIndex = 0, nextIndex = 0;
         //设置根节点
         var root = new uNode({
@@ -9516,7 +9516,7 @@
             children:[]
         });
         var currentParent = root;
-    
+
         while (match = re_tag.exec(htmlstr)) {
             currentIndex = match.index;
             try{
@@ -9525,15 +9525,15 @@
                     text(currentParent, htmlstr.slice(nextIndex, currentIndex));
                 }
                 if (match[3]) {
-    
+
                     if(dtd.$cdata[currentParent.tagName]){
                         text(currentParent, match[0]);
                     }else{
                         //start tag
                         currentParent = element(currentParent, match[3].toLowerCase(), match[4]);
                     }
-    
-    
+
+
                 } else if (match[1]) {
                     if(currentParent.type != 'root'){
                         if(dtd.$cdata[currentParent.tagName] && !dtd.$cdata[match[1]]){
@@ -9550,17 +9550,17 @@
                             //end tag
                             currentParent = currentParent.parentNode;
                         }
-    
+
                     }
-    
+
                 } else if (match[2]) {
                     //comment
                     comment(currentParent, match[2])
                 }
             }catch(e){}
-    
+
             nextIndex = re_tag.lastIndex;
-    
+
         }
         //如果结束是文本，就有可能丢掉，所以这里手动判断一下
         //例如 <li>sdfsdfsdf<li>sdfsdfsdfsdf
@@ -9569,20 +9569,20 @@
         }
         return root;
     };
-    
-    
+
+
     // core/filternode.js
     /**
      * UE过滤节点的静态方法
      * @file
      */
-    
+
     /**
      * UEditor公用空间，UEditor所有的功能都挂载在该空间下
      * @module UE
      */
-    
-    
+
+
     /**
      * 根据传入节点和过滤规则过滤相应节点
      * @module UE
@@ -9626,8 +9626,8 @@
                                    }
                                }
                            }
-    
-    
+
+
                        }else{
                            var attrs = val['$'];
                            if(attrs && node.attrs){
@@ -9648,7 +9648,7 @@
                                    if(tmpVal){
                                        tmpAttrs[a] = tmpVal;
                                    }
-    
+
                                }
                                node.attrs = tmpAttrs;
                            }
@@ -9681,7 +9681,7 @@
                 case 'comment':
                     node.parentNode.removeChild(node)
             }
-    
+
         }
         return function(root,rules){
             if(utils.isEmptyObject(rules)){
@@ -9702,7 +9702,7 @@
             return root;
         }
     }();
-    
+
     // core/plugin.js
     /**
      * Created with JetBrains PhpStorm.
@@ -9766,11 +9766,11 @@
                                 }
                             })
                         }
-    
+
                     }else if(plugin.afterDisabled){
                         plugin.afterDisabled.call(editor)
                     }
-    
+
                 });
                 //向下兼容
                 utils.each(UE.plugins,function(plugin){
@@ -9785,43 +9785,43 @@
             }
         }
     }();
-    
+
     // core/keymap.js
     var keymap = UE.keymap  = {
         'Backspace' : 8,
         'Tab' : 9,
         'Enter' : 13,
-    
+
         'Shift':16,
         'Control':17,
         'Alt':18,
         'CapsLock':20,
-    
+
         'Esc':27,
-    
+
         'Spacebar':32,
-    
+
         'PageUp':33,
         'PageDown':34,
         'End':35,
         'Home':36,
-    
+
         'Left':37,
         'Up':38,
         'Right':39,
         'Down':40,
-    
+
         'Insert':45,
-    
+
         'Del':46,
-    
+
         'NumLock':144,
-    
+
         'Cmd':91,
-    
+
         '=':187,
         '-':189,
-    
+
         "b":66,
         'i':73,
         //回退
@@ -9830,67 +9830,67 @@
         //粘贴
         'v' : 86,
         'x' : 88,
-    
+
         's' : 83,
-    
+
         'n' : 78
     };
-    
+
     // core/localstorage.js
     //存储媒介封装
     var LocalStorage = UE.LocalStorage = (function () {
-    
+
         var storage = window.localStorage || getUserData() || null,
             LOCAL_FILE = 'localStorage';
-    
+
         return {
-    
+
             saveLocalData: function (key, data) {
-    
+
                 if (storage && data) {
                     storage.setItem(key, data);
                     return true;
                 }
-    
+
                 return false;
-    
+
             },
-    
+
             getLocalData: function (key) {
-    
+
                 if (storage) {
                     return storage.getItem(key);
                 }
-    
+
                 return null;
-    
+
             },
-    
+
             removeItem: function (key) {
-    
+
                 storage && storage.removeItem(key);
-    
+
             }
-    
+
         };
-    
+
         function getUserData() {
-    
+
             var container = document.createElement("div");
             container.style.display = "none";
-    
+
             if (!container.addBehavior) {
                 return null;
             }
-    
+
             container.addBehavior("#default#userdata");
-    
+
             return {
-    
+
                 getItem: function (key) {
-    
+
                     var result = null;
-    
+
                     try {
                         document.body.appendChild(container);
                         container.load(LOCAL_FILE);
@@ -9898,20 +9898,20 @@
                         document.body.removeChild(container);
                     } catch (e) {
                     }
-    
+
                     return result;
-    
+
                 },
-    
+
                 setItem: function (key, value) {
-    
+
                     document.body.appendChild(container);
                     container.setAttribute(key, value);
                     container.save(LOCAL_FILE);
                     document.body.removeChild(container);
-    
+
                 },
-    
+
                 //// 暂时没有用到
                 //clear: function () {
                 //
@@ -9923,26 +9923,26 @@
                 //    document.body.removeChild(container);
                 //
                 //},
-    
+
                 removeItem: function (key) {
-    
+
                     document.body.appendChild(container);
                     container.removeAttribute(key);
                     container.save(LOCAL_FILE);
                     document.body.removeChild(container);
-    
+
                 }
-    
+
             };
-    
+
         }
-    
+
     })();
-    
+
     (function () {
-    
+
         var ROOTKEY = 'ueditor_preference';
-    
+
         UE.Editor.prototype.setPreferences = function(key,value){
             var obj = {};
             if (utils.isString(key)) {
@@ -9958,7 +9958,7 @@
             }
             data && LocalStorage.saveLocalData(ROOTKEY, utils.json2str(data));
         };
-    
+
         UE.Editor.prototype.getPreferences = function(key){
             var data = LocalStorage.getLocalData(ROOTKEY);
             if (data && (data = utils.str2json(data))) {
@@ -9966,7 +9966,7 @@
             }
             return null;
         };
-    
+
         UE.Editor.prototype.removePreferences = function (key) {
             var data = LocalStorage.getLocalData(ROOTKEY);
             if (data && (data = utils.str2json(data))) {
@@ -9975,14 +9975,14 @@
             }
             data && LocalStorage.saveLocalData(ROOTKEY, utils.json2str(data));
         };
-    
+
     })();
-    
-    
+
+
     // plugins/defaultfilter.js
     ///import core
     ///plugin 编辑器默认的过滤转换机制
-    
+
     UE.plugins['defaultfilter'] = function () {
         var me = this;
         me.setOpt({
@@ -10144,24 +10144,24 @@
                                 node.parentNode.removeChild(node)
                             }
                     }
-    
+
                 }
     //            if(node.type == 'comment'){
     //                node.parentNode.removeChild(node);
     //            }
             })
-    
+
         });
-    
+
         //从编辑器出去的内容处理
         me.addOutputRule(function (root) {
-    
+
             var val;
             root.traversal(function (node) {
                 if (node.type == 'element') {
-    
+
                     if (me.options.autoClearEmptyNode && dtd.$inline[node.tagName] && !dtd.$empty[node.tagName] && (!node.attrs || utils.isEmptyObject(node.attrs))) {
-    
+
                         if (!node.firstChild()) node.parentNode.removeChild(node);
                         else if (node.tagName == 'span' && (!node.attrs || utils.isEmptyObject(node.attrs))) {
                             node.parentNode.removeChild(node, true)
@@ -10198,25 +10198,25 @@
                                     '_src': ''
                                 })
                             }
-    
-    
+
+
                     }
                 }
-    
+
             })
-    
-    
+
+
         });
     };
-    
-    
+
+
     // plugins/inserthtml.js
     /**
      * 插入html字符串插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 插入html代码
      * @command inserthtml
@@ -10238,7 +10238,7 @@
      * //结果 <p>xxxx</p><p>xxxx</p></p>xxx</p>
      * ```
      */
-    
+
     UE.commands['inserthtml'] = {
         execCommand: function (command,html,notNeedFilter){
             var me = this,
@@ -10253,7 +10253,7 @@
             range = me.selection.getRange();
             div = range.document.createElement( 'div' );
             div.style.display = 'inline';
-    
+
             if (!notNeedFilter) {
                 var root = UE.htmlparser(html);
                 //如果给了过滤规则就先进行过滤
@@ -10265,7 +10265,7 @@
                 html = root.toHtml()
             }
             div.innerHTML = utils.trim( html );
-    
+
             if ( !range.collapsed ) {
                 var tmpNode = range.startContainer;
                 if(domUtils.isFillChar(tmpNode)){
@@ -10291,7 +10291,7 @@
                         if(range.endOffset == (tmpNode.nodeType == 3 ? tmpNode.nodeValue.length : tmpNode.childNodes.length) && domUtils.isBoundaryNode(tmpNode,'lastChild')){
                             me.body.innerHTML = '<p>'+(browser.ie ? '' : '<br/>')+'</p>';
                             range.setStart(me.body.firstChild,0).collapse(true)
-    
+
                         }
                     }
                 }
@@ -10306,10 +10306,10 @@
                         domUtils.remove(child);
                     }
                 }
-    
+
             }
-    
-    
+
+
             var child,parent,pre,tmp,hadBreak = 0, nextNode;
             //如果当前位置选中了fillchar要干掉，要不会产生空行
             if(range.inFillChar()){
@@ -10334,7 +10334,7 @@
                         range.insertNode( child).collapse();
                         last = child;
                         child = next;
-    
+
                     }
                     if(child){
                         if(/^(ol|ul)$/i.test(child.tagName)){
@@ -10361,7 +10361,7 @@
                     domUtils.remove(li)
                 }
                 if(last){
-    
+
                     range.setStartAfter(last).collapse(true).select(true)
                 }
             }else{
@@ -10374,14 +10374,14 @@
                             child = nextNode;
                         }
                         if(p.firstChild){
-    
+
                             child = p
                         }
                     }
                     range.insertNode( child );
                     nextNode = child.nextSibling;
                     if ( !hadBreak && child.nodeType == domUtils.NODE_ELEMENT && domUtils.isBlockElm( child ) ){
-    
+
                         parent = domUtils.findParent( child,function ( node ){ return domUtils.isBlockElm( node ); } );
                         if ( parent && parent.tagName.toLowerCase() != 'body' && !(dtd[parent.tagName][child.nodeName] && child.parentNode === parent)){
                             if(!dtd[parent.tagName][child.nodeName]){
@@ -10391,11 +10391,11 @@
                                 while (tmp !== parent){
                                     pre = tmp;
                                     tmp = tmp.parentNode;
-    
+
                                 }
                             }
-    
-    
+
+
                             domUtils.breakParent( child, pre || tmp );
                             //去掉break后前一个多余的节点  <p>|<[p> ==> <p></p><div></div><p>|</p>
                             var pre = child.previousSibling;
@@ -10404,7 +10404,7 @@
                                 domUtils.remove(pre);
                             }
                             //trace:2012,在非ie的情况，切开后剩下的节点有可能不能点入光标添加br占位
-    
+
                             if(!browser.ie &&
                                 (next = child.nextSibling) &&
                                 domUtils.isBlockElm(next) &&
@@ -10417,16 +10417,16 @@
                     }
                     var next = child.nextSibling;
                     if(!div.firstChild && next && domUtils.isBlockElm(next)){
-    
+
                         range.setStart(next,0).collapse(true);
                         break;
                     }
                     range.setEndAfter( child ).collapse();
-    
+
                 }
-    
+
                 child = range.startContainer;
-    
+
                 if(nextNode && domUtils.isBr(nextNode)){
                     domUtils.remove(nextNode)
                 }
@@ -10435,30 +10435,30 @@
                     if(nextNode = child.nextSibling){
                         domUtils.remove(child);
                         if(nextNode.nodeType == 1 && dtd.$block[nextNode.tagName]){
-    
+
                             range.setStart(nextNode,0).collapse(true).shrinkBoundary()
                         }
                     }else{
-    
+
                         try{
                             child.innerHTML = browser.ie ? domUtils.fillChar : '<br/>';
                         }catch(e){
                             range.setStartBefore(child);
                             domUtils.remove(child)
                         }
-    
+
                     }
-    
+
                 }
                 //加上true因为在删除表情等时会删两次，第一次是删的fillData
                 try{
                     range.select(true);
                 }catch(e){}
-    
+
             }
-    
-    
-    
+
+
+
             setTimeout(function(){
                 range = me.selection.getRange();
                 range.scrollToView(me.autoHeightEnabled,me.autoHeightEnabled ? domUtils.getXY(me.iframe).y:0);
@@ -10466,15 +10466,15 @@
             },200);
         }
     };
-    
-    
+
+
     // plugins/autotypeset.js
     /**
      * 自动排版
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 对当前编辑器的内容执行自动排版， 排版的行为根据config配置文件里的“autotypeset”选项进行控制。
      * @command autotypeset
@@ -10485,9 +10485,9 @@
      * editor.execCommand( 'autotypeset' );
      * ```
      */
-    
+
     UE.plugins['autotypeset'] = function(){
-    
+
         this.setOpt({'autotypeset': {
             mergeEmptyline: true,           //合并空行
             removeClass: true,              //去掉冗余的class
@@ -10505,7 +10505,7 @@
             bdc2sb: false,
             tobdc: false
         }});
-    
+
         var me = this,
             opt = me.options.autotypeset,
             remainClass = {
@@ -10528,9 +10528,9 @@
         if(!opt){
             return;
         }
-    
+
         readLocalOpts();
-    
+
         function isLine(node,notEmpty){
             if(!node || node.nodeType == 3)
                 return 0;
@@ -10543,12 +10543,12 @@
                 ){
                     return 0;
                 }
-    
+
                 return notEmpty ? !domUtils.isEmptyBlock(node) : domUtils.isEmptyBlock(node,new RegExp('[\\s'+domUtils.fillChar
                     +']','g'));
             }
         }
-    
+
         function removeNotAttributeSpan(node){
             if(!node.style.cssText){
                 domUtils.removeAttributes(node,['style']);
@@ -10558,7 +10558,7 @@
             }
         }
         function autotype(type,html){
-    
+
             var me = this,cont;
             if(html){
                 if(!opt.pasteFilter){
@@ -10570,26 +10570,26 @@
                 cont = me.document.body;
             }
             var nodes = domUtils.getElementsByTagName(cont,'*');
-    
+
             // 行首缩进，段落方向，段间距，段内间距
             for(var i=0,ci;ci=nodes[i++];){
-    
+
                 if(me.fireEvent('excludeNodeinautotype',ci) === true){
                     continue;
                 }
                  //font-size
                 if(opt.clearFontSize && ci.style.fontSize){
                     domUtils.removeStyle(ci,'font-size');
-    
+
                     removeNotAttributeSpan(ci);
-    
+
                 }
                 //font-family
                 if(opt.clearFontFamily && ci.style.fontFamily){
                     domUtils.removeStyle(ci,'font-family');
                     removeNotAttributeSpan(ci);
                 }
-    
+
                 if(isLine(ci)){
                     //合并空行
                     if(opt.mergeEmptyline ){
@@ -10602,7 +10602,7 @@
                             }
                             domUtils.remove(tmpNode);
                         }
-    
+
                     }
                      //去掉空行，保留占位的空行
                     if(opt.removeEmptyline && domUtils.inDoc(ci,cont) && !remainTag[ci.parentNode.tagName.toLowerCase()] ){
@@ -10614,9 +10614,9 @@
                         }
                         domUtils.remove(ci);
                         continue;
-    
+
                     }
-    
+
                 }
                 if(isLine(ci,true) && ci.tagName != 'SPAN'){
                     if(opt.indent){
@@ -10627,18 +10627,18 @@
                     }
                     // if(opt.lineHeight)
                     //     ci.style.lineHeight = opt.lineHeight + 'cm';
-    
+
                 }
-    
+
                 //去掉class,保留的class不去掉
                 if(opt.removeClass && ci.className && !remainClass[ci.className.toLowerCase()]){
-    
+
                     if(highlightCont && highlightCont.contains(ci)){
                          continue;
                     }
                     domUtils.removeAttributes(ci,['class']);
                 }
-    
+
                 //表情不处理
                 if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
                     if(html){
@@ -10666,11 +10666,11 @@
                                         }else{
                                             domUtils.setStyle(tmpNode,'text-align','');
                                         }
-    
-    
+
+
                                     }
-    
-    
+
+
                                 }
                                 domUtils.setStyle(img,'float', opt.imageBlockLine);
                                 break;
@@ -10686,25 +10686,25 @@
                                     }
                                     var pNode = me.document.createElement('p');
                                     domUtils.setAttributes(pNode,{
-    
+
                                         style:'text-align:center'
                                     });
                                     tmpNode.parentNode.insertBefore(pNode,tmpNode);
                                     pNode.appendChild(tmpNode);
                                     domUtils.setStyle(tmpNode,'float','');
-    
+
                                 }
-    
-    
+
+
                         }
                     } else {
                         var range = me.selection.getRange();
                         range.selectNode(ci).select();
                         me.execCommand('imagefloat', opt.imageBlockLine);
                     }
-    
+
                 }
-    
+
                 //去掉冗余的标签
                 if(opt.removeEmptyNode){
                     if(opt.removeTagNames[ci.tagName.toLowerCase()] && domUtils.hasNoAttributes(ci) && domUtils.isEmptyBlock(ci)){
@@ -10737,7 +10737,7 @@
         if(opt.pasteFilter){
             me.addListener('beforepaste',autotype);
         }
-    
+
         function DBC2SB(str) {
             var result = '';
             for (var i = 0; i < str.length; i++) {
@@ -10771,12 +10771,12 @@
             }
             return tmp;
         }
-    
+
         function readLocalOpts() {
             var cookieOpt = me.getPreferences('autotypeset');
             utils.extend(me.options.autotypeset, cookieOpt);
         }
-    
+
         me.commands['autotypeset'] = {
             execCommand:function () {
                 me.removeListener('beforepaste',autotype);
@@ -10785,20 +10785,20 @@
                 }
                 autotype.call(me)
             }
-    
+
         };
-    
+
     };
-    
-    
-    
+
+
+
     // plugins/autosubmit.js
     /**
      * 快捷键提交
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 提交表单
      * @command autosubmit
@@ -10809,7 +10809,7 @@
      * editor.execCommand( 'autosubmit' );
      * ```
      */
-    
+
     UE.plugin.register('autosubmit',function(){
         return {
             shortcutkey:{
@@ -10832,7 +10832,7 @@
             }
         }
     });
-    
+
     // plugins/background.js
     /**
      * 背景插件，为UEditor提供设置背景功能
@@ -10844,7 +10844,7 @@
             cssRuleId = 'editor_background',
             isSetColored,
             reg = new RegExp('body[\\s]*\\{(.+)\\}', 'i');
-    
+
         function stringToObj(str) {
             var obj = {}, styles = str.split(';');
             utils.each(styles, function (v) {
@@ -10854,7 +10854,7 @@
             });
             return obj;
         }
-    
+
         function setBackground(obj) {
             if (obj) {
                 var styles = [];
@@ -10869,7 +10869,7 @@
             }
         }
         //重写editor.hasContent方法
-    
+
         var orgFn = me.hasContents;
         me.hasContents = function(){
             if(me.queryCommandValue('background')){
@@ -10941,14 +10941,14 @@
             }
         }
     });
-    
+
     // plugins/image.js
     /**
      * 图片插入、排版插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 图片对齐方式
      * @command imagefloat
@@ -10962,7 +10962,7 @@
      * editor.execCommand( 'imagefloat', 'center' );
      * ```
      */
-    
+
     /**
      * 如果选区所在位置是图片区域
      * @command imagefloat
@@ -10974,7 +10974,7 @@
      * editor.queryCommandValue( 'imagefloat' );
      * ```
      */
-    
+
     UE.commands['imagefloat'] = {
         execCommand:function (cmd, align) {
             var me = this,
@@ -11007,17 +11007,17 @@
                                     } else {
                                         domUtils.setStyle(tmpNode, 'text-align', '');
                                     }
-    
-    
+
+
                                 }
-    
+
                                 range.selectNode(img).select();
                             }
                             domUtils.setStyle(img, 'float', align == 'none' ? '' : align);
                             if(align == 'none'){
                                 domUtils.removeAttributes(img,'align');
                             }
-    
+
                             break;
                         case 'center':
                             if (me.queryCommandValue('imagefloat') != 'center') {
@@ -11036,9 +11036,9 @@
                                 pN = me.document.createElement('div');
                                 pN.appendChild(tmpNode);
                                 domUtils.setStyle(tmpNode, 'float', '');
-    
+
                                 me.execCommand('insertHtml', '<p id="_img_parent_tmp" style="text-align:center">' + pN.innerHTML + '</p>');
-    
+
                                 tmpNode = me.document.getElementById('_img_parent_tmp');
                                 tmpNode.removeAttribute('id');
                                 tmpNode = tmpNode.firstChild;
@@ -11048,12 +11048,12 @@
                                 if (next && domUtils.isEmptyNode(next)) {
                                     domUtils.remove(next);
                                 }
-    
+
                             }
-    
+
                             break;
                     }
-    
+
                 }
             }
         },
@@ -11066,7 +11066,7 @@
             startNode = range.getClosedNode();
             if (startNode && startNode.nodeType == 1 && startNode.tagName == 'IMG') {
                 floatStyle = domUtils.getComputedStyle(startNode, 'float') || startNode.getAttribute('align');
-    
+
                 if (floatStyle == 'none') {
                     floatStyle = domUtils.getComputedStyle(startNode.parentNode, 'text-align') == 'center' ? 'center' : floatStyle;
                 }
@@ -11077,15 +11077,15 @@
                 }[floatStyle] ? floatStyle : 'none';
             }
             return 'none';
-    
-    
+
+
         },
         queryCommandState:function () {
             var range = this.selection.getRange(),
                 startNode;
-    
+
             if (range.collapsed)  return -1;
-    
+
             startNode = range.getClosedNode();
             if (startNode && startNode.nodeType == 1 && startNode.tagName == 'IMG') {
                 return 0;
@@ -11093,8 +11093,8 @@
             return -1;
         }
     };
-    
-    
+
+
     /**
      * 插入图片
      * @command insertimage
@@ -11124,7 +11124,7 @@
      * }] );
      * ```
      */
-    
+
     UE.commands['insertimage'] = {
         execCommand:function (cmd, opt) {
             console.log('列表数据处理',opt)
@@ -11135,34 +11135,34 @@
             var me = this,
                 range = me.selection.getRange(),
                 img = range.getClosedNode();
-    
+
             if(me.fireEvent('beforeinsertimage', opt) === true){
                 return;
             }
-    
+
             function unhtmlData(imgCi) {
-    
+
                 utils.each('width,height,border,hspace,vspace'.split(','), function (item) {
-    
+
                     if (imgCi[item]) {
                         imgCi[item] = parseInt(imgCi[item], 10) || 0;
                     }
                 });
-    
+
                 utils.each('src,_src'.split(','), function (item) {
-    
+
                     if (imgCi[item]) {
                         imgCi[item] = utils.unhtmlForUrl(imgCi[item]);
                     }
                 });
                 utils.each('title,alt'.split(','), function (item) {
-    
+
                     if (imgCi[item]) {
                         imgCi[item] = utils.unhtml(imgCi[item]);
                     }
                 });
             }
-    
+
             if (img && /img/i.test(img.tagName) && (img.className != "edui-faked-video" || img.className.indexOf("edui-upload-video")!=-1) && !img.getAttribute("word_img")) {
                 var first = opt.shift();
                 var floatStyle = first['floatStyle'];
@@ -11176,13 +11176,13 @@
                     range.setStartAfter(img).setCursor(false, true);
                     me.execCommand('insertimage', opt);
                 }
-    
+
             } else {
                 var html = [], str = '', ci;
                 ci = opt[0];
                 if (opt.length == 1) {
                     unhtmlData(ci);
-    
+
                     str = '<img src="' + ci.src + '" ' + (ci._src ? ' _src="' + ci._src + '" ' : '') +
                         (ci.width ? 'width="' + ci.width + '" ' : '') +
                         (ci.height ? ' height="' + ci.height + '" ' : '') +
@@ -11196,7 +11196,7 @@
                         str = '<p style="text-align: center">' + str + '</p>';
                     }
                     html.push(str);
-    
+
                 } else {
                     for (var i = 0; ci = opt[i++];) {
                         unhtmlData(ci);
@@ -11209,22 +11209,22 @@
                         html.push(str);
                     }
                 }
-    
+
                 me.execCommand('insertHtml', html.join(''));
             }
-    
+
             me.fireEvent('afterinsertimage', opt)
         }
     };
-    
-    
+
+
     // plugins/justify.js
     /**
      * 段落格式
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 段落对齐方式
      * @command justify
@@ -11247,7 +11247,7 @@
      * editor.queryCommandValue( 'justify' );
      * ```
      */
-    
+
     UE.plugins['justify']=function(){
         var me=this,
             block = domUtils.isBlockElm,
@@ -11262,7 +11262,7 @@
                     filterFn = function (node) {
                         return node.nodeType == 1 ? node.tagName.toLowerCase() != 'br' && !domUtils.isBookmarkNode(node) : !domUtils.isWhitespace(node);
                     };
-    
+
                 range.enlarge(true);
                 var bookmark2 = range.createBookmark(),
                     current = domUtils.getNextDomNode(bookmark2.start, false, filterFn),
@@ -11297,12 +11297,12 @@
                 }
                 return range.moveToBookmark(bookmark2).moveToBookmark(bookmark);
             };
-    
+
         UE.commands['justify'] = {
             execCommand:function (cmdName, align) {
                 var range = this.selection.getRange(),
                     txt;
-    
+
                 //闭合时单独处理
                 if (range.collapsed) {
                     txt = this.document.createTextNode('p');
@@ -11313,10 +11313,10 @@
                     range.setStartBefore(txt).collapse(true);
                     domUtils.remove(txt);
                 }
-    
+
                 range.select();
-    
-    
+
+
                 return true;
             },
             queryCommandValue:function () {
@@ -11327,21 +11327,21 @@
             queryCommandState:function () {
                 var start = this.selection.getStart(),
                     cell = start && domUtils.findParentByTagName(start, ["td", "th","caption"], true);
-    
+
                 return cell? -1:0;
             }
-    
+
         };
     };
-    
-    
+
+
     // plugins/font.js
     /**
      * 字体颜色,背景色,字号,字体,下划线,删除线
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 字体颜色
      * @command forecolor
@@ -11364,7 +11364,7 @@
      * editor.queryCommandValue( 'forecolor' );
      * ```
      */
-    
+
     /**
      * 字体背景颜色
      * @command backcolor
@@ -11387,7 +11387,7 @@
      * editor.queryCommandValue( 'backcolor' );
      * ```
      */
-    
+
     /**
      * 字体大小
      * @command fontsize
@@ -11410,7 +11410,7 @@
      * editor.queryCommandValue( 'fontsize' );
      * ```
      */
-    
+
     /**
      * 字体样式
      * @command fontfamily
@@ -11433,7 +11433,7 @@
      * editor.queryCommandValue( 'fontfamily' );
      * ```
      */
-    
+
     /**
      * 字体下划线,与删除线互斥
      * @command underline
@@ -11444,7 +11444,7 @@
      * editor.execCommand( 'underline' );
      * ```
      */
-    
+
     /**
      * 字体删除线,与下划线互斥
      * @command strikethrough
@@ -11455,7 +11455,7 @@
      * editor.execCommand( 'strikethrough' );
      * ```
      */
-    
+
     /**
      * 字体边框
      * @command fontborder
@@ -11466,7 +11466,7 @@
      * editor.execCommand( 'fontborder' );
      * ```
      */
-    
+
     UE.plugins['font'] = function () {
         var me = this,
             fonts = {
@@ -11484,7 +11484,7 @@
                 'backcolor': 'background-color',
                 'fontsize': 'font-size',
                 'fontfamily': 'font-family'
-    
+
             };
         me.setOpt({
             'fontfamily': [
@@ -11502,7 +11502,7 @@
             ],
             'fontsize': [10, 11, 12, 14, 16, 18, 20, 24, 36]
         });
-    
+
         function mergeWithParent(node){
             var parent;
             while(parent = node.parentNode){
@@ -11512,12 +11512,12 @@
                     parent.style.cssText += node.style.cssText;
                     domUtils.remove(node,true);
                     node = parent;
-    
+
                 }else{
                     break;
                 }
             }
-    
+
         }
         function mergeChild(rng,cmdName,value){
             if(needSetChild[cmdName]){
@@ -11540,7 +11540,7 @@
                     }
                 }
             }
-    
+
         }
         function mergesibling(rng,cmdName,value) {
             var collapsed = rng.collapsed,
@@ -11583,8 +11583,8 @@
                         next = span.nextSibling;
                     }
                 }
-    
-    
+
+
                 mergeWithParent(span);
                 if(browser.ie && browser.version > 8 ){
                     //拷贝父亲们的特别的属性,这里只做背景颜色的处理
@@ -11593,12 +11593,12 @@
                         span.style.backgroundColor = parent.style.backgroundColor;
                     }
                 }
-    
+
             });
             rng.moveToBookmark(bk);
             mergeChild(rng,cmdName,value)
         }
-    
+
         me.addInputRule(function (root) {
             utils.each(root.getNodesByTagName('u s del font strike'), function (node) {
                 if (node.tagName == 'font') {
@@ -11698,13 +11698,13 @@
                         var me = this,
                             range = this.selection.getRange(),
                             text;
-    
+
                         if (value == 'default') {
-    
+
                             if (range.collapsed) {
                                 text = me.document.createTextNode('font');
                                 range.insertNode(text).select();
-    
+
                             }
                             me.execCommand('removeFormat', 'span,a', style);
                             if (text) {
@@ -11719,12 +11719,12 @@
                                     me.execCommand('removeFormat', 'span,a', style);
                                 }
                                 range = me.selection.getRange();
-    
+
                                 range.applyInlineStyle('span', {'style': style + ':' + value});
                                 mergesibling(range, cmdName,value);
                                 range.select();
                             } else {
-    
+
                                 var span = domUtils.findParentByTagName(range.startContainer, 'span', true);
                                 text = me.document.createTextNode('font');
                                 if (span && !span.children.length && !span[browser.ie ? 'innerText' : 'textContent'].replace(fillCharReg, '').length) {
@@ -11733,20 +11733,20 @@
                                     if (needCmd[cmd]) {
                                         range.selectNode(text).select();
                                         me.execCommand('removeFormat', 'span,a', style, null);
-    
+
                                         span = domUtils.findParentByTagName(text, 'span', true);
                                         range.setStartBefore(text);
-    
+
                                     }
                                     span && (span.style.cssText += ';' + style + ':' + value);
                                     range.collapse(true).select();
-    
-    
+
+
                                 } else {
                                     range.insertNode(text);
                                     range.selectNode(text).select();
                                     span = range.document.createElement('span');
-    
+
                                     if (needCmd[cmd]) {
                                         //a标签内的不处理跳过
                                         if (domUtils.findParentByTagName(text, 'a', true)) {
@@ -11756,10 +11756,10 @@
                                         }
                                         me.execCommand('removeFormat', 'span,a', style);
                                     }
-    
+
                                     span.style.cssText = style + ':' + value;
-    
-    
+
+
                                     text.parentNode.insertBefore(span, text);
                                     //修复，span套span 但样式不继承的问题
                                     if (!browser.ie || browser.ie && browser.version == 9) {
@@ -11772,8 +11772,8 @@
                                             spanParent = spanParent.parentNode;
                                         }
                                     }
-    
-    
+
+
                                     if (opera) {
                                         setTimeout(function () {
                                             range.setStart(span, 0).collapse(true);
@@ -11785,20 +11785,20 @@
                                         mergesibling(range,cmdName,value);
                                         range.select();
                                     }
-    
+
                                     //trace:981
                                     //domUtils.mergeToParent(span)
                                 }
                                 domUtils.remove(text);
                             }
-    
-    
+
+
                         }
                         return true;
                     },
                     queryCommandValue: function (cmdName) {
                         var startNode = this.selection.getStart();
-    
+
                         //trace:946
                         if (cmdName == 'underline' || cmdName == 'strikethrough') {
                             var tmpNode = startNode, value;
@@ -11809,7 +11809,7 @@
                                         return value;
                                     }
                                 }
-    
+
                                 tmpNode = tmpNode.parentNode;
                             }
                             return 'none';
@@ -11818,7 +11818,7 @@
                             var tmp = startNode, val;
                             while (tmp && dtd.$inline[tmp.tagName]) {
                                 if (val = domUtils.getComputedStyle(tmp, 'border')) {
-    
+
                                     if (/1px/.test(val) && /solid/.test(val)) {
                                         return val;
                                     }
@@ -11827,21 +11827,21 @@
                             }
                             return ''
                         }
-    
+
                         if( cmdName == 'FontSize' ) {
                             var styleVal = domUtils.getComputedStyle(startNode, style),
                                 tmp = /^([\d\.]+)(\w+)$/.exec( styleVal );
-    
+
                             if( tmp ) {
-    
+
                                 return Math.floor( tmp[1] ) + tmp[2];
-    
+
                             }
-    
+
                             return styleVal;
-    
+
                         }
-    
+
                         return  domUtils.getComputedStyle(startNode, style);
                     },
                     queryCommandState: function (cmdName) {
@@ -11852,22 +11852,22 @@
                             return /1px/.test(val) && /solid/.test(val)
                         } else {
                             return  cmdName == 'underline' ? /underline/.test(val) : /line\-through/.test(val);
-    
+
                         }
-    
+
                     }
                 };
             })(p, fonts[p]);
         }
     };
-    
+
     // plugins/link.js
     /**
      * 超链接
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 插入超链接
      * @command link
@@ -11894,7 +11894,7 @@
      * editor.queryCommandValue( 'link' );
      * ```
      */
-    
+
     /**
      * 取消超链接
      * @command unlink
@@ -11905,11 +11905,11 @@
      * editor.execCommand( 'unlink');
      * ```
      */
-    
+
     UE.plugins['link'] = function(){
         function optimize( range ) {
             var start = range.startContainer,end = range.endContainer;
-    
+
             if ( start = domUtils.findParentByTagName( start, 'a', true ) ) {
                 range.setStartBefore( start );
             }
@@ -11917,8 +11917,8 @@
                 range.setEndAfter( end );
             }
         }
-    
-    
+
+
         UE.commands['unlink'] = {
             execCommand : function() {
                 var range = this.selection.getRange(),
@@ -11933,7 +11933,7 @@
             queryCommandState : function(){
                 return !this.highlight && this.queryCommandValue('link') ?  0 : -1;
             }
-    
+
         };
         function doLink(range,opt,me){
             var rngClone = range.cloneRange(),
@@ -11944,36 +11944,36 @@
                 start = start.childNodes[range.startOffset];
                 if(start && start.nodeType == 1 && start.tagName == 'A' && /^(?:https?|ftp|file)\s*:\s*\/\//.test(start[browser.ie?'innerText':'textContent'])){
                     start[browser.ie ? 'innerText' : 'textContent'] =  utils.html(opt.textValue||opt.href);
-    
+
                 }
             }
             if( !rngClone.collapsed || link){
                 range.removeInlineStyle( 'a' );
                 rngClone = range.cloneRange();
             }
-    
+
             if ( rngClone.collapsed ) {
                 var a = range.document.createElement( 'a'),
                     text = '';
                 if(opt.textValue){
-    
+
                     text =   utils.html(opt.textValue);
                     delete opt.textValue;
                 }else{
                     text =   utils.html(opt.href);
-    
+
                 }
                 domUtils.setAttributes( a, opt );
                 start =  domUtils.findParentByTagName( rngClone.startContainer, 'a', true );
                 if(start && domUtils.isInNodeEndBoundary(rngClone,start)){
                     range.setStartAfter(start).collapse(true);
-    
+
                 }
                 a[browser.ie ? 'innerText' : 'textContent'] = text;
                 range.insertNode(a).selectNode( a );
             } else {
                 range.applyInlineStyle( 'a', opt );
-    
+
             }
         }
         UE.commands['link'] = {
@@ -11985,7 +11985,7 @@
                 doLink(range=this.selection.getRange(),opt,this);
                 //闭合都不加占位符，如果加了会在a后边多个占位符节点，导致a是图片背景组成的列表，出现空白问题
                 range.collapse().select(true);
-    
+
             },
             queryCommandValue : function() {
                 var range = this.selection.getRange(),
@@ -11995,9 +11995,9 @@
                     //在ie下getstart()取值偏上了
                     node = range.startContainer;
                     node = node.nodeType == 1 ? node : node.parentNode;
-    
+
                     if ( node && (node = domUtils.findParentByTagName( node, 'a', true )) && ! domUtils.isInNodeEndBoundary(range,node)) {
-    
+
                         return node;
                     }
                 } else {
@@ -12008,10 +12008,10 @@
                         common = range.getCommonAncestor();
                     node = domUtils.findParentByTagName( common, 'a', true );
                     if ( !node && common.nodeType == 1){
-    
+
                         var as = common.getElementsByTagName( 'a' ),
                             ps,pe;
-    
+
                         for ( var i = 0,ci; ci = as[i++]; ) {
                             ps = domUtils.getPosition( ci, start ),pe = domUtils.getPosition( ci,end);
                             if ( (ps & domUtils.POSITION_FOLLOWING || ps & domUtils.POSITION_CONTAINS)
@@ -12025,7 +12025,7 @@
                     }
                     return node;
                 }
-    
+
             },
             queryCommandState : function() {
                 //判断如果是视频的话连接不可用
@@ -12036,7 +12036,7 @@
             }
         };
     };
-    
+
     // plugins/iframe.js
     ///import core
     ///import plugins\inserthtml.js
@@ -12044,21 +12044,21 @@
     ///commandsName  InsertFrame
     ///commandsTitle  插入Iframe
     ///commandsDialog  dialogs\insertframe
-    
+
     UE.plugins['insertframe'] = function() {
        var me =this;
         function deleteIframe(){
             me._iframe && delete me._iframe;
         }
-    
+
         me.addListener("selectionchange",function(){
             deleteIframe();
         });
-    
+
     };
-    
-    
-    
+
+
+
     // plugins/scrawl.js
     ///import core
     ///commands 涂鸦
@@ -12070,15 +12070,15 @@
             return ( browser.ie && browser.version  <= 8 ) ? -1 :0;
         }
     };
-    
-    
+
+
     // plugins/removeformat.js
     /**
      * 清除格式
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 清除文字样式
      * @command removeformat
@@ -12092,7 +12092,7 @@
      * editor.execCommand( 'removeformat', 'strong','color','width' );
      * ```
      */
-    
+
     UE.plugins['removeformat'] = function(){
         var me = this;
         me.setOpt({
@@ -12101,7 +12101,7 @@
         });
         me.commands['removeformat'] = {
             execCommand : function( cmdName, tags, style, attrs,notIncludeA ) {
-    
+
                 var tagReg = new RegExp( '^(?:' + (tags || this.options.removeFormatTags).replace( /,/g, '|' ) + ')$', 'i' ) ,
                     removeFormatAttributes = style ? [] : (attrs || this.options.removeFormatAttributes).split( ',' ),
                     range = new dom.Range( this.document ),
@@ -12109,7 +12109,7 @@
                     filter = function( node ) {
                         return node.nodeType == 1;
                     };
-    
+
                 function isRedundantSpan (node) {
                     if (node.nodeType == 3 || node.tagName.toLowerCase() != 'span'){
                         return 0;
@@ -12130,35 +12130,35 @@
                     return !node.attributes.length;
                 }
                 function doRemove( range ) {
-    
+
                     var bookmark1 = range.createBookmark();
                     if ( range.collapsed ) {
                         range.enlarge( true );
                     }
-    
+
                     //不能把a标签切了
                     if(!notIncludeA){
                         var aNode = domUtils.findParentByTagName(range.startContainer,'a',true);
                         if(aNode){
                             range.setStartBefore(aNode);
                         }
-    
+
                         aNode = domUtils.findParentByTagName(range.endContainer,'a',true);
                         if(aNode){
                             range.setEndAfter(aNode);
                         }
-    
+
                     }
-    
-    
+
+
                     bookmark = range.createBookmark();
-    
+
                     node = bookmark.start;
-    
+
                     //切开始
                     while ( (parent = node.parentNode) && !domUtils.isBlockElm( parent ) ) {
                         domUtils.breakParent( node, parent );
-    
+
                         domUtils.clearEmptySibling( node );
                     }
                     if ( bookmark.end ) {
@@ -12168,7 +12168,7 @@
                             domUtils.breakParent( node, parent );
                             domUtils.clearEmptySibling( node );
                         }
-    
+
                         //开始去除样式
                         var current = domUtils.getNextDomNode( bookmark.start, false, filter ),
                             next;
@@ -12176,9 +12176,9 @@
                             if ( current == bookmark.end ) {
                                 break;
                             }
-    
+
                             next = domUtils.getNextDomNode( current, true, filter );
-    
+
                             if ( !dtd.$empty[current.tagName.toLowerCase()] && !domUtils.isBookmarkNode( current ) ) {
                                 if ( tagReg.test( current.tagName ) ) {
                                     if ( style ) {
@@ -12197,7 +12197,7 @@
                                             domUtils.remove( current, true );
                                         }
                                     }
-    
+
                                 }
                             }
                             current = next;
@@ -12229,41 +12229,41 @@
                         domUtils.remove(node);
                         node = tmp;
                     }
-    
+
                     if(!collapsed){
                         node = range.endContainer;
                         while(node.nodeType == 1 && domUtils.isEmptyNode(node) && dtd.$removeEmpty[node.tagName]){
                             tmp = node.parentNode;
                             range.setEndBefore(node);
                             domUtils.remove(node);
-    
+
                             node = tmp;
                         }
-    
-    
+
+
                     }
                 }
-    
-    
-    
+
+
+
                 range = this.selection.getRange();
                 doRemove( range );
                 range.select();
-    
+
             }
-    
+
         };
-    
+
     };
-    
-    
+
+
     // plugins/blockquote.js
     /**
      * 添加引用
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 添加引用
      * @command blockquote
@@ -12274,7 +12274,7 @@
      * editor.execCommand( 'blockquote' );
      * ```
      */
-    
+
     /**
      * 添加引用
      * @command blockquote
@@ -12288,8 +12288,8 @@
      * } );
      * ```
      */
-    
-    
+
+
     UE.plugins['blockquote'] = function(){
         var me = this;
         function getObj(editor){
@@ -12301,26 +12301,26 @@
                     obj = getObj(this),
                     blockquote = dtd.blockquote,
                     bookmark = range.createBookmark();
-    
+
                 if ( obj ) {
-    
+
                         var start = range.startContainer,
                             startBlock = domUtils.isBlockElm(start) ? start : domUtils.findParent(start,function(node){return domUtils.isBlockElm(node)}),
-    
+
                             end = range.endContainer,
                             endBlock = domUtils.isBlockElm(end) ? end :  domUtils.findParent(end,function(node){return domUtils.isBlockElm(node)});
-    
+
                         //处理一下li
                         startBlock = domUtils.findParentByTagName(startBlock,'li',true) || startBlock;
                         endBlock = domUtils.findParentByTagName(endBlock,'li',true) || endBlock;
-    
-    
+
+
                         if(startBlock.tagName == 'LI' || startBlock.tagName == 'TD' || startBlock === obj || domUtils.isBody(startBlock)){
                             domUtils.remove(obj,true);
                         }else{
                             domUtils.breakParent(startBlock,obj);
                         }
-    
+
                         if(startBlock !== endBlock){
                             obj = domUtils.findParentByTagName(endBlock,'blockquote');
                             if(obj){
@@ -12329,10 +12329,10 @@
                                 }else{
                                     domUtils.breakParent(endBlock,obj);
                                 }
-    
+
                             }
                         }
-    
+
                         var blockquotes = domUtils.getElementsByTagName(this.document,'blockquote');
                         for(var i=0,bi;bi=blockquotes[i++];){
                             if(!bi.childNodes.length){
@@ -12341,17 +12341,17 @@
                                 domUtils.remove(bi,true);
                             }
                         }
-    
-    
-    
-    
+
+
+
+
                 } else {
-    
+
                     var tmpRange = range.cloneRange(),
                         node = tmpRange.startContainer.nodeType == 1 ? tmpRange.startContainer : tmpRange.startContainer.parentNode,
                         preNode = node,
                         doEnd = 1;
-    
+
                     //调整开始
                     while ( 1 ) {
                         if ( domUtils.isBody(node) ) {
@@ -12365,7 +12365,7 @@
                             }else{
                                 tmpRange.setStart(node,0);
                             }
-    
+
                             break;
                         }
                         if ( !blockquote[node.tagName] ) {
@@ -12376,39 +12376,39 @@
                             }
                             break;
                         }
-    
+
                         preNode = node;
                         node = node.parentNode;
                     }
-    
+
                     //调整结束
                     if ( doEnd ) {
                         preNode = node =  node = tmpRange.endContainer.nodeType == 1 ? tmpRange.endContainer : tmpRange.endContainer.parentNode;
                         while ( 1 ) {
-    
+
                             if ( domUtils.isBody( node ) ) {
                                 if ( preNode !== node ) {
-    
+
                                     tmpRange.setEndAfter( preNode );
-    
+
                                 } else {
                                     tmpRange.setEnd( node, node.childNodes.length );
                                 }
-    
+
                                 break;
                             }
                             if ( !blockquote[node.tagName] ) {
                                 tmpRange.setEndAfter( preNode );
                                 break;
                             }
-    
+
                             preNode = node;
                             node = node.parentNode;
                         }
-    
+
                     }
-    
-    
+
+
                     node = range.document.createElement( 'blockquote' );
                     domUtils.setAttributes( node, attrs );
                     node.appendChild( tmpRange.extractContents() );
@@ -12420,7 +12420,7 @@
                             domUtils.remove(ci,true);
                         }
                     }
-    
+
                 }
                 range.moveToBookmark( bookmark ).select();
             },
@@ -12429,16 +12429,16 @@
             }
         };
     };
-    
-    
-    
+
+
+
     // plugins/convertcase.js
     /**
      * 大小写转换
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 把选区内文本变大写，与“tolowercase”命令互斥
      * @command touppercase
@@ -12449,7 +12449,7 @@
      * editor.execCommand( 'touppercase' );
      * ```
      */
-    
+
     /**
      * 把选区内文本变小写，与“touppercase”命令互斥
      * @command tolowercase
@@ -12475,7 +12475,7 @@
                 },
                 curNode = domUtils.getNextDomNode( bk.start, false, filterFn );
             while ( curNode && (domUtils.getPosition( curNode, bkEnd ) & domUtils.POSITION_PRECEDING) ) {
-    
+
                 if ( curNode.nodeType == 3 ) {
                     curNode.nodeValue = curNode.nodeValue[cmd == 'touppercase' ? 'toUpperCase' : 'toLowerCase']();
                 }
@@ -12483,21 +12483,21 @@
                 if(curNode === bkEnd){
                     break;
                 }
-    
+
             }
             rng.moveToBookmark(bk).select();
         }
     };
-    
-    
-    
+
+
+
     // plugins/indent.js
     /**
      * 首行缩进
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 缩进
      * @command indent
@@ -12517,17 +12517,17 @@
             var pN = domUtils.filterNodeList(this.selection.getStartElementPath(),'p h1 h2 h3 h4 h5 h6');
             return pN && pN.style.textIndent && parseInt(pN.style.textIndent) ?  1 : 0;
         }
-    
+
     };
-    
-    
+
+
     // plugins/print.js
     /**
      * 打印
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 打印
      * @command print
@@ -12544,16 +12544,16 @@
         },
         notNeedUndo : 1
     };
-    
-    
-    
+
+
+
     // plugins/preview.js
     /**
      * 预览
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 预览
      * @command preview
@@ -12576,15 +12576,15 @@
         },
         notNeedUndo : 1
     };
-    
-    
+
+
     // plugins/selectall.js
     /**
      * 全选
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 选中所有内容
      * @command selectall
@@ -12614,22 +12614,22 @@
             },
             notNeedUndo : 1
         };
-    
-    
+
+
         //快捷键
         me.addshortcutkey({
              "selectAll" : "ctrl+65"
         });
     };
-    
-    
+
+
     // plugins/paragraph.js
     /**
      * 段落样式
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 段落格式
      * @command paragraph
@@ -12644,7 +12644,7 @@
      * }' );
      * ```
      */
-    
+
     /**
      * 返回选区内节点标签名
      * @command paragraph
@@ -12656,19 +12656,19 @@
      * editor.queryCommandValue( 'Paragraph' );
      * ```
      */
-    
+
     UE.plugins['paragraph'] = function() {
         var me = this,
             block = domUtils.isBlockElm,
             notExchange = ['TD','LI','PRE'],
-    
+
             doParagraph = function(range,style,attrs,sourceCmdName){
                 var bookmark = range.createBookmark(),
                     filterFn = function( node ) {
                         return   node.nodeType == 1 ? node.tagName.toLowerCase() != 'br' &&  !domUtils.isBookmarkNode(node) : !domUtils.isWhitespace( node );
                     },
                     para;
-    
+
                 range.enlarge( true );
                 var bookmark2 = range.createBookmark(),
                     current = domUtils.getNextDomNode( bookmark2.start, false, filterFn ),
@@ -12684,7 +12684,7 @@
                             } );
                         }
                         tmpRange.setEndAfter( tmpNode );
-                        
+
                         para = range.document.createElement( style );
                         if(attrs){
                             domUtils.setAttributes(para,attrs);
@@ -12696,11 +12696,11 @@
                         //需要内容占位
                         if(domUtils.isEmptyNode(para)){
                             domUtils.fillChar(range.document,para);
-                            
+
                         }
-    
+
                         tmpRange.insertNode( para );
-    
+
                         var parent = para.parentNode;
                         //如果para上一级是一个block元素且不是body,td就删除它
                         if ( block( parent ) && !domUtils.isBody( para.parentNode ) && utils.indexOf(notExchange,parent.tagName)==-1) {
@@ -12714,7 +12714,7 @@
                                 parent.style.textIndent && !para.style.textIndent && (para.style.textIndent = parent.style.textIndent);
                                 parent.style.padding && !para.style.padding && (para.style.padding = parent.style.padding);
                             }
-    
+
                             //trace:1706 选择的就是h1-6要删除
                             if(attrs && /h\d/i.test(parent.tagName) && !/h\d/i.test(para.tagName) ){
                                 domUtils.setAttributes(parent,attrs);
@@ -12726,15 +12726,15 @@
                             }else{
                                 domUtils.remove( para.parentNode, true );
                             }
-    
+
                         }
                         if(  utils.indexOf(notExchange,parent.tagName)!=-1){
                             current = parent;
                         }else{
                            current = para;
                         }
-    
-    
+
+
                         current = domUtils.getNextDomNode( current, false, filterFn );
                     } else {
                         current = domUtils.getNextDomNode( current, true, filterFn );
@@ -12761,21 +12761,21 @@
                             domUtils.remove(node);
                         }
                     }
-    
+
                 }
                 range = doParagraph(range,style,attrs,sourceCmdName);
                 if(txt){
                     range.setStartBefore(txt).collapse(true);
                     pN = txt.parentNode;
-    
+
                     domUtils.remove(txt);
-    
+
                     if(domUtils.isBlockElm(pN)&&domUtils.isEmptyNode(pN)){
                         domUtils.fillNode(this.document,pN);
                     }
-    
+
                 }
-    
+
                 if(browser.gecko && range.collapsed && range.startContainer.nodeType == 1){
                     var child = range.startContainer.childNodes[range.startOffset];
                     if(child && child.nodeType == 1 && child.tagName.toLowerCase() == style){
@@ -12784,8 +12784,8 @@
                 }
                 //trace:1097 原来有true，原因忘了，但去了就不能清除多余的占位符了
                 range.select();
-    
-    
+
+
                 return true;
             },
             queryCommandValue : function() {
@@ -12794,8 +12794,8 @@
             }
         };
     };
-    
-    
+
+
     // plugins/directionality.js
     /**
      * 设置文字输入的方向的插件
@@ -12817,17 +12817,17 @@
     //                }
     //            }
                 return domUtils.filterNodeList(editor.selection.getStartElementPath(),function(n){return n && n.nodeType == 1 && n.getAttribute('dir')});
-    
+
             },
             doDirectionality = function(range,editor,forward){
-                
+
                 var bookmark,
                     filterFn = function( node ) {
                         return   node.nodeType == 1 ? !domUtils.isBookmarkNode(node) : !domUtils.isWhitespace(node);
                     },
-    
+
                     obj = getObj( editor );
-    
+
                 if ( obj && range.collapsed ) {
                     obj.setAttribute( 'dir', forward );
                     return range;
@@ -12862,7 +12862,7 @@
                             tmpRange.insertNode( p );
                             current = p;
                         }
-    
+
                         current = domUtils.getNextDomNode( current, false, filterFn );
                     } else {
                         current = domUtils.getNextDomNode( current, true, filterFn );
@@ -12870,7 +12870,7 @@
                 }
                 return range.moveToBookmark( bookmark2 ).moveToBookmark( bookmark );
             };
-    
+
         /**
          * 文字输入方向
          * @command directionality
@@ -12882,7 +12882,7 @@
          * editor.execCommand( 'directionality', 'ltr');
          * ```
          */
-    
+
         /**
          * 查询当前选区的文字输入方向
          * @command directionality
@@ -12907,7 +12907,7 @@
                     range.setStartBefore(txt).collapse(true);
                     domUtils.remove(txt);
                 }
-    
+
                 range.select();
                 return true;
             },
@@ -12917,16 +12917,16 @@
             }
         };
     })();
-    
-    
-    
+
+
+
     // plugins/horizontal.js
     /**
      * 插入分割线插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 插入分割线
      * @command horizontal
@@ -12947,7 +12947,7 @@
                     var range = me.selection.getRange(),
                         start = range.startContainer;
                     if(start.nodeType == 1 && !start.childNodes[range.startOffset] ){
-    
+
                         var tmp;
                         if(tmp = start.childNodes[range.startOffset - 1]){
                             if(tmp.nodeType == 1 && tmp.tagName == 'HR'){
@@ -12955,7 +12955,7 @@
                                     tmp = me.document.createElement('p');
                                     range.insertNode(tmp);
                                     range.setStart(tmp,0).setCursor();
-    
+
                                 }else{
                                     tmp = me.document.createElement('br');
                                     range.insertNode(tmp);
@@ -12963,11 +12963,11 @@
                                 }
                             }
                         }
-    
+
                     }
                     return true;
                 }
-    
+
             },
             //边界在table里不能加分隔线
             queryCommandState : function() {
@@ -13018,22 +13018,22 @@
                     rng.select();
                     domUtils.preventDefault(evt);
                     return true;
-    
+
                 }
             }
-    
+
         })
     };
-    
-    
-    
+
+
+
     // plugins/time.js
     /**
      * 插入时间和日期
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 插入时间，默认格式：12:59:59
      * @command time
@@ -13044,7 +13044,7 @@
      * editor.execCommand( 'time');
      * ```
      */
-    
+
     /**
      * 插入日期，默认格式：2013-08-30
      * @command date
@@ -13058,7 +13058,7 @@
     UE.commands['time'] = UE.commands["date"] = {
         execCommand : function(cmd, format){
             var date = new Date;
-    
+
             function formatTime(date, format) {
                 var hh = ('0' + date.getHours()).slice(-2),
                     ii = ('0' + date.getMinutes()).slice(-2),
@@ -13074,19 +13074,19 @@
                 format = format || 'yyyy-mm-dd';
                 return format.replace(/yyyy/ig, yyyy).replace(/yy/ig, yy).replace(/mm/ig, mm).replace(/dd/ig, dd);
             }
-    
+
             this.execCommand('insertHtml',cmd == "time" ? formatTime(date, format):formatDate(date, format) );
         }
     };
-    
-    
+
+
     // plugins/rowspacing.js
     /**
      * 段前段后间距插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 设置段间距
      * @command rowspacing
@@ -13099,13 +13099,13 @@
      * editor.execCommand( 'rowspacing', '10', 'top' );
      * ```
      */
-    
+
     UE.plugins['rowspacing'] = function(){
         var me = this;
         me.setOpt({
             'rowspacingtop':['5', '10', '15', '20', '25'],
             'rowspacingbottom':['5', '10', '15', '20', '25']
-    
+
         });
         me.commands['rowspacing'] =  {
             execCommand : function( cmdName,value,dir ) {
@@ -13121,14 +13121,14 @@
                     return !value ? 0 : value;
                 }
                 return 0;
-    
+
             }
         };
     };
-    
-    
-    
-    
+
+
+
+
     // plugins/lineheight.js
     /**
      * 设置行内间距
@@ -13138,7 +13138,7 @@
     UE.plugins['lineheight'] = function(){
         var me = this;
         me.setOpt({'lineheight':['1', '1.5','1.75','2', '3', '4', '5']});
-    
+
         /**
          * 行距
          * @command lineheight
@@ -13161,7 +13161,7 @@
          * editor.queryCommandValue( 'lineheight' );
          * ```
          */
-    
+
         me.commands['lineheight'] =  {
             execCommand : function( cmdName,value ) {
                 this.execCommand('paragraph','p',{style:'line-height:'+ (value == "1" ? "normal" : value + 'em') });
@@ -13176,17 +13176,17 @@
             }
         };
     };
-    
-    
-    
-    
+
+
+
+
     // plugins/insertcode.js
     /**
      * 插入代码插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     UE.plugins['insertcode'] = function() {
         var me = this;
         me.ready(function(){
@@ -13219,7 +13219,7 @@
                 'vb':'Vb',
                 'xml':'Xml'
         });
-    
+
         /**
          * 插入代码
          * @command insertcode
@@ -13231,7 +13231,7 @@
          * editor.execCommand( 'insertcode', 'javascript' );
          * ```
          */
-    
+
         /**
          * 如果选区所在位置是插入插入代码区域，返回代码的语言
          * @command insertcode
@@ -13243,7 +13243,7 @@
          * editor.queryCommandValue( 'insertcode' );
          * ```
          */
-    
+
         me.commands['insertcode'] = {
             execCommand : function(cmd,lang){
                 var me = this,
@@ -13259,10 +13259,10 @@
                         var frag = rng.extractContents();
                         var div = me.document.createElement('div');
                         div.appendChild(frag);
-    
+
                         utils.each(UE.filterNode(UE.htmlparser(div.innerHTML.replace(/[\r\t]/g,'')),me.options.filterTxtRules).children,function(node){
                             if(browser.ie && browser.ie11below && browser.version > 8){
-    
+
                                 if(node.type =='element'){
                                     if(node.tagName == 'br'){
                                         code += '\n'
@@ -13290,7 +13290,7 @@
                                 }
                             }else{
                                 if(browser.ie && browser.ie11below){
-    
+
                                     if(node.type =='element'){
                                         if(node.tagName == 'br'){
                                             code += '<br>'
@@ -13316,7 +13316,7 @@
                                     if(!node.nextSibling() && /<br>$/.test(code)){
                                         code = code.replace(/<br>$/,'');
                                     }
-    
+
                                 }else{
                                     code += (node.type == 'element' ? (dtd.$empty[node.tagName] ?  '' : node.innerText()) : node.data);
                                     if(!/br\/?\s*>$/.test(code)){
@@ -13325,19 +13325,19 @@
                                         code += '<br>'
                                     }
                                 }
-    
+
                             }
-    
+
                         });
                     }
                     me.execCommand('inserthtml','<pre id="coder"class="brush:'+lang+';toolbar:false">'+code+'</pre>',true);
-    
+
                     pre = me.document.getElementById('coder');
                     domUtils.removeAttributes(pre,'id');
                     var tmpNode = pre.previousSibling;
-    
+
                     if(tmpNode && (tmpNode.nodeType == 3 && tmpNode.nodeValue.length == 1 && browser.ie && browser.version == 6 ||  domUtils.isEmptyBlock(tmpNode))){
-    
+
                         domUtils.remove(tmpNode)
                     }
                     var rng = me.selection.getRange();
@@ -13347,9 +13347,9 @@
                         rng.selectNodeContents(pre).select()
                     }
                 }
-    
-    
-    
+
+
+
             },
             queryCommandValue : function(){
                 var path = this.selection.getStartElementPath();
@@ -13364,7 +13364,7 @@
                 return lang;
             }
         };
-    
+
         me.addInputRule(function(root){
            utils.each(root.getNodesByTagName('pre'),function(pre){
                var brs = pre.getNodesByTagName('br');
@@ -13402,11 +13402,11 @@
                        }else{
                            code += (!dtd.$empty[n.tagName] ? '' : n.innerText());
                        }
-    
+
                    }
-    
+
                 });
-    
+
                 pre.innerText(code.replace(/(&nbsp;|\n)+$/,''))
             })
         });
@@ -13430,7 +13430,7 @@
         var orgQuery = me.queryCommandState;
         me.queryCommandState = function(cmd){
             var me = this;
-    
+
             if(!me.notNeedCodeQuery[cmd.toLowerCase()] && me.selection && me.queryCommandValue('insertcode')){
                 return -1;
             }
@@ -13474,7 +13474,7 @@
                             if(match && match[1]){
                                 str += match[1]
                             }
-    
+
                         }
                         if(str){
                             str = me.document.createTextNode(str);
@@ -13484,7 +13484,7 @@
                     rng.collapse(true).select(true);
                 }else{
                     if(browser.version > 8){
-    
+
                         var txt = me.document.createTextNode('\n');
                         var start = rng.startContainer;
                         if(rng.startOffset == 0){
@@ -13503,7 +13503,7 @@
                             }
                             rng.insertNode(fillchar).setStart(fillchar,0).collapse(true).select(true)
                         }
-    
+
                     }else{
                         var tmpNode = me.document.createElement('br');
                         rng.insertNode(tmpNode);
@@ -13530,45 +13530,45 @@
                                 if(match && match[1]){
                                     str += match[1]
                                 }
-    
+
                             }
-    
+
                             str = me.document.createTextNode(str);
                             rng.insertNode(str).setStartAfter(str);
                         }
                         rng.collapse(true).select();
                     }
-    
-    
+
+
                 }
                 me.fireEvent('saveScene');
                 return true;
             }
-    
-    
+
+
         });
-    
+
         me.addListener('tabkeydown',function(cmd,evt){
             var rng = me.selection.getRange();
             var pre = domUtils.findParentByTagName(rng.startContainer,'pre',true);
             if(pre){
                 me.fireEvent('saveScene');
                 if(evt.shiftKey){
-    
+
                 }else{
                     if(!rng.collapsed){
                         var bk = rng.createBookmark();
                         var start = bk.start.previousSibling;
-    
+
                         while(start){
                             if(pre.firstChild === start && !domUtils.isBr(start)){
                                 pre.insertBefore(me.document.createTextNode('    '),start);
-    
+
                                 break;
                             }
                             if(domUtils.isBr(start)){
                                 pre.insertBefore(me.document.createTextNode('    '),start.nextSibling);
-    
+
                                 break;
                             }
                             start = start.previousSibling;
@@ -13577,7 +13577,7 @@
                         start = bk.start.nextSibling;
                         if(pre.firstChild === bk.start){
                             pre.insertBefore(me.document.createTextNode('    '),start.nextSibling)
-    
+
                         }
                         while(start && start !== end){
                             if(domUtils.isBr(start) && start.nextSibling){
@@ -13586,7 +13586,7 @@
                                 }
                                 pre.insertBefore(me.document.createTextNode('    '),start.nextSibling)
                             }
-    
+
                             start = start.nextSibling;
                         }
                         rng.moveToBookmark(bk).select();
@@ -13595,16 +13595,16 @@
                         rng.insertNode(tmpNode).setStartAfter(tmpNode).collapse(true).select(true);
                     }
                 }
-    
-    
+
+
                 me.fireEvent('saveScene');
                 return true;
             }
-    
-    
+
+
         });
-    
-    
+
+
         me.addListener('beforeinserthtml',function(evtName,html){
             var me = this,
                 rng = me.selection.getRange(),
@@ -13615,7 +13615,7 @@
                 }
                 var htmlstr = '';
                 if(browser.ie && browser.version > 8){
-    
+
                     utils.each(UE.filterNode(UE.htmlparser(html),me.options.filterTxtRules).children,function(node){
                         if(node.type =='element'){
                             if(node.tagName == 'br'){
@@ -13647,7 +13647,7 @@
                     rng.insertNode(tmpNode).selectNode(tmpNode).select();
                 }else{
                     var frag = me.document.createDocumentFragment();
-    
+
                     utils.each(UE.filterNode(UE.htmlparser(html),me.options.filterTxtRules).children,function(node){
                         if(node.type =='element'){
                             if(node.tagName == 'br'){
@@ -13656,15 +13656,15 @@
                                 utils.each(node.children,function(cn){
                                     if(cn.type =='element'){
                                         if(cn.tagName == 'br'){
-    
+
                                             frag.appendChild(me.document.createElement('br'))
                                         }else if(!dtd.$empty[node.tagName]){
                                             frag.appendChild(me.document.createTextNode(utils.html(cn.innerText().replace(/&nbsp;/g,' '))));
-    
+
                                         }
                                     }else{
                                         frag.appendChild(me.document.createTextNode(utils.html( cn.data.replace(/&nbsp;/g,' '))));
-    
+
                                     }
                                 })
                                 if(frag.lastChild.nodeName != 'BR'){
@@ -13677,13 +13677,13 @@
                         if(!node.nextSibling() && frag.lastChild.nodeName == 'BR'){
                            frag.removeChild(frag.lastChild)
                         }
-    
-    
+
+
                     });
                     rng.insertNode(frag).select();
-    
+
                 }
-    
+
                 return true;
             }
         });
@@ -13701,7 +13701,7 @@
                         me.execCommand('insertparagraph');
                         domUtils.preventDefault(evt)
                     }
-    
+
                 }
             }
         });
@@ -13721,15 +13721,15 @@
             }
         })
     };
-    
-    
+
+
     // plugins/cleardoc.js
     /**
      * 清空文档插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 清空文档
      * @command cleardoc
@@ -13741,7 +13741,7 @@
      * editor.execCommand('cleardoc');
      * ```
      */
-    
+
     UE.commands['cleardoc'] = {
         execCommand : function( cmdName) {
             var me = this,
@@ -13757,12 +13757,12 @@
             setTimeout(function(){
                 me.fireEvent("clearDoc");
             },0);
-    
+
         }
     };
-    
-    
-    
+
+
+
     // plugins/anchor.js
     /**
      * 锚点插件，为UEditor提供插入锚点支持
@@ -13770,7 +13770,7 @@
      * @since 1.2.6.1
      */
     UE.plugin.register('anchor', function (){
-    
+
         return {
             bindEvents:{
                 'ready':function(){
@@ -13804,10 +13804,10 @@
                            'class' : 'anchorclass'
                        });
                        a.setAttr('name')
-    
+
                    }
                })
-    
+
            },
            commands:{
                /**
@@ -13849,8 +13849,8 @@
            }
         }
     });
-    
-    
+
+
     // plugins/wordcount.js
     ///import core
     ///commands 字数统计
@@ -13863,7 +13863,7 @@
      * Time: 下午8:18
      * To change this template use File | Settings | File Templates.
      */
-    
+
     UE.plugins['wordcount'] = function(){
         var me = this;
         me.setOpt('wordCount',true);
@@ -13885,8 +13885,8 @@
             })
         });
     };
-    
-    
+
+
     // plugins/pagebreak.js
     /**
      * 分页功能插件
@@ -13897,11 +13897,11 @@
         var me = this,
             notBreakTags = ['td'];
         me.setOpt('pageBreakTag','_ueditor_page_break_tag_');
-    
+
         function fillNode(node){
             if(domUtils.isEmptyBlock(node)){
                 var firstChild = node.firstChild,tmpNode;
-    
+
                 while(firstChild && firstChild.nodeType == 1 && domUtils.isEmptyBlock(firstChild)){
                     tmpNode = firstChild;
                     firstChild = firstChild.firstChild;
@@ -13911,7 +13911,7 @@
             }
         }
         //分页符样式添加
-    
+
         me.ready(function(){
             utils.cssRule('pagebreak','.pagebreak{display:block;clear:both !important;cursor:default !important;width: 100% !important;margin:0;}',me.document);
         });
@@ -13935,9 +13935,9 @@
                     n.parentNode.removeChild(n);
                 }
             })
-    
+
         });
-    
+
         /**
          * 插入分页符
          * @command pagebreak
@@ -13951,7 +13951,7 @@
          * editor.execCommand( 'pagebreak'); //插入一个hr标签，带有样式类名pagebreak
          * ```
          */
-    
+
         me.commands['pagebreak'] = {
             execCommand:function () {
                 var range = me.selection.getRange(),hr = me.document.createElement('hr');
@@ -13963,7 +13963,7 @@
                 domUtils.unSelectable(hr);
                 //table单独处理
                 var node = domUtils.findParentByTagName(range.startContainer, notBreakTags, true),
-    
+
                     parents = [], pN;
                 if (node) {
                     switch (node.tagName) {
@@ -13980,23 +13980,23 @@
     //                            }
                                 table.parentNode.insertBefore(hr, table);
                                 parents = domUtils.findParents(hr, true);
-    
+
                             } else {
                                 pN.parentNode.insertBefore(hr, pN);
                                 parents = domUtils.findParents(hr);
-    
+
                             }
                             pN = parents[1];
                             if (hr !== pN) {
                                 domUtils.breakParent(hr, pN);
-    
+
                             }
                             //table要重写绑定一下拖拽
                             me.fireEvent('afteradjusttable',me.document);
                     }
-    
+
                 } else {
-    
+
                     if (!range.collapsed) {
                         range.deleteContents();
                         var start = range.startContainer;
@@ -14005,10 +14005,10 @@
                             domUtils.remove(start);
                             start = range.startContainer;
                         }
-    
+
                     }
                     range.insertNode(hr);
-    
+
                     var pN = hr.parentNode, nextNode;
                     while (!domUtils.isBody(pN)) {
                         domUtils.breakParent(hr, pN);
@@ -14025,10 +14025,10 @@
                     }else{
                         pre && fillNode(pre);
                     }
-    
+
                     if(!nextNode){
                         var p = me.document.createElement('p');
-    
+
                         hr.parentNode.appendChild(p);
                         domUtils.fillNode(me.document,p);
                         range.setStart(p,0).collapse(true);
@@ -14040,22 +14040,22 @@
                         }
                         range.setEndAfter(hr).collapse(false);
                     }
-    
+
                     range.select(true);
-    
+
                 }
-    
+
             }
         };
     };
-    
+
     // plugins/wordimage.js
     ///import core
     ///commands 本地图片引导上传
     ///commandsName  WordImage
     ///commandsTitle  本地图片引导上传
     ///commandsDialog  dialogs\wordimage
-    
+
     UE.plugin.register('wordimage',function(){
         var me = this,
             images = [];
@@ -14103,18 +14103,18 @@
             }
         }
     });
-    
+
     // plugins/dragdrop.js
     UE.plugins['dragdrop'] = function (){
-    
+
         var me = this;
         me.ready(function(){
             domUtils.on(this.body,'dragend',function(){
                 var rng = me.selection.getRange();
                 var node = rng.getClosedNode()||me.selection.getStart();
-    
+
                 if(node && node.tagName == 'IMG'){
-    
+
                     var pre = node.previousSibling,next;
                     while(next = node.nextSibling){
                         if(next.nodeType == 1 && next.tagName == 'SPAN' && !next.firstChild){
@@ -14123,8 +14123,8 @@
                             break;
                         }
                     }
-    
-    
+
+
                     if((pre && pre.nodeType == 1 && !domUtils.isEmptyBlock(pre) || !pre) && (!next || next && !domUtils.isEmptyBlock(next))){
                         if(pre && pre.tagName == 'P' && !domUtils.isEmptyBlock(pre)){
                             pre.appendChild(node);
@@ -14133,7 +14133,7 @@
                         }else  if(next && next.tagName == 'P' && !domUtils.isEmptyBlock(next)){
                             next.insertBefore(node,next.firstChild);
                         }
-    
+
                         if(pre && pre.tagName == 'P' && domUtils.isEmptyBlock(pre)){
                             domUtils.remove(pre)
                         }
@@ -14142,11 +14142,11 @@
                         }
                         rng.selectNode(node).select();
                         me.fireEvent('saveScene');
-    
+
                     }
-    
+
                 }
-    
+
             })
         });
         me.addListener('keyup', function(type, evt) {
@@ -14161,15 +14161,15 @@
             }
         })
     };
-    
-    
+
+
     // plugins/undo.js
     /**
      * undo redo
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 撤销上一次执行的命令
      * @command undo
@@ -14180,7 +14180,7 @@
      * editor.execCommand( 'undo' );
      * ```
      */
-    
+
     /**
      * 重做上一次执行的命令
      * @command redo
@@ -14191,7 +14191,7 @@
      * editor.execCommand( 'redo' );
      * ```
      */
-    
+
     UE.plugins['undo'] = function () {
         var saveSceneTimer;
         var me = this,
@@ -14211,7 +14211,7 @@
             }
             return 1;
         }
-    
+
         function compareRangeAddress(rngAddrA, rngAddrB) {
             if (rngAddrA.collapsed != rngAddrB.collapsed) {
                 return 0;
@@ -14221,7 +14221,7 @@
             }
             return 1;
         }
-    
+
         function UndoManager() {
             this.list = [];
             this.index = 0;
@@ -14253,7 +14253,7 @@
                     this.restore(++this.index);
                 }
             };
-    
+
             this.restore = function () {
                 var me = this.editor;
                 var scene = this.list[this.index];
@@ -14273,18 +14273,18 @@
                         }
                     })
                 }
-    
+
                 try{
                     var rng = new dom.Range(me.document).moveToAddress(scene.address);
                     rng.select(noNeedFillCharTags[rng.startContainer.nodeName.toLowerCase()]);
                 }catch(e){}
-    
+
                 this.update();
                 this.clearKey();
                 //不能把自己reset了
                 me.fireEvent('reset', true);
             };
-    
+
             this.getScene = function () {
                 var me = this.editor;
                 var rng = me.selection.getRange(),
@@ -14299,7 +14299,7 @@
                 //这个会引起回退时导致空格丢失的情况
     //            browser.ie && (cont = cont.replace(/>&nbsp;</g, '><').replace(/\s*</g, '<').replace(/>\s*/g, '>'));
                 me.fireEvent('aftergetscene');
-    
+
                 return {
                     address:rngAddress,
                     content:cont
@@ -14309,7 +14309,7 @@
                 clearTimeout(saveSceneTimer);
                 var currentScene = this.getScene(notSetCursor),
                     lastScene = this.list[this.index];
-    
+
                 if(lastScene && lastScene.content != currentScene.content){
                     me.trigger('contentchange')
                 }
@@ -14329,7 +14329,7 @@
                 this.clearKey();
                 //跟新undo/redo状态
                 this.update();
-    
+
             };
             this.update = function () {
                 this.hasRedo = !!this.list[this.index + 1];
@@ -14347,21 +14347,21 @@
                 lastKeyCode = null;
             };
         }
-    
+
         me.undoManger = new UndoManager();
         me.undoManger.editor = me;
         function saveScene() {
             this.undoManger.save();
         }
-    
+
         me.addListener('saveScene', function () {
             var args = Array.prototype.splice.call(arguments,1);
             this.undoManger.save.apply(this.undoManger,args);
         });
-    
+
     //    me.addListener('beforeexeccommand', saveScene);
     //    me.addListener('afterexeccommand', saveScene);
-    
+
         me.addListener('reset', function (type, exclude) {
             if (!exclude) {
                 this.undoManger.reset();
@@ -14376,12 +14376,12 @@
             },
             notNeedUndo:1
         };
-    
+
         var keys = {
                 //  /*Backspace*/ 8:1, /*Delete*/ 46:1,
                 /*Shift*/ 16:1, /*Ctrl*/ 17:1, /*Alt*/ 18:1,
                 37:1, 38:1, 39:1, 40:1
-    
+
             },
             keycont = 0,
             lastKeyCode;
@@ -14399,17 +14399,17 @@
         me.addshortcutkey({
             "Undo":"ctrl+90", //undo
             "Redo":"ctrl+89" //redo
-    
+
         });
         var isCollapsed = true;
         me.addListener('keydown', function (type, evt) {
-    
+
             var me = this;
             var keyCode = evt.keyCode || evt.which;
             if (!keys[keyCode] && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
                 if (inputType)
                     return;
-    
+
                 if(!me.selection.getRange().collapsed){
                     me.undoManger.save(false,true);
                     isCollapsed = false;
@@ -14435,7 +14435,7 @@
                     }
                     save(me);
                 },200);
-    
+
                 lastKeyCode = keyCode;
                 keycont++;
                 if (keycont >= maxInputCount ) {
@@ -14462,28 +14462,28 @@
             me.__hasEnterExecCommand = false;
         }
     };
-    
-    
+
+
     // plugins/copy.js
     UE.plugin.register('copy', function () {
-    
+
         var me = this;
-    
+
         function initZeroClipboard() {
-    
+
             ZeroClipboard.config({
                 debug: false,
                 swfPath: me.options.UEDITOR_HOME_URL + 'third-party/zeroclipboard/ZeroClipboard.swf'
             });
-    
+
             var client = me.zeroclipboard = new ZeroClipboard();
-    
+
             // 复制内容
             client.on('copy', function (e) {
                 var client = e.client,
                     rng = me.selection.getRange(),
                     div = document.createElement('div');
-    
+
                 div.appendChild(rng.cloneContents());
                 client.setText(div.innerText || div.textContent);
                 client.setHtml(div.innerHTML);
@@ -14503,7 +14503,7 @@
                 ZeroClipboard.destroy();
             });
         }
-    
+
         return {
             bindEvents: {
                 'ready': function () {
@@ -14534,8 +14534,8 @@
             }
         }
     });
-    
-    
+
+
     // plugins/paste.js
     ///import core
     ///import plugins/inserthtml.js
@@ -14568,9 +14568,9 @@
             pastebin.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;left:-1000px;white-space:nowrap;top:" +
                 //要在现在光标平行的位置加入，否则会出现跳动的问题
                 domUtils.getXY(bk.start).y + 'px';
-    
+
             range.selectNodeContents(pastebin).select(true);
-    
+
             setTimeout(function () {
                 if (browser.webkit) {
                     for (var i = 0, pastebins = doc.querySelectorAll('#baidu_pastebin'), pi; pi = pastebins[i++];) {
@@ -14590,15 +14590,15 @@
                 callback(pastebin);
             }, 0);
         }
-    
+
         var me = this;
-    
+
         me.setOpt({
             retainOnlyLabelPasted : false
         });
-    
+
         var txtContent, htmlContent, address;
-    
+
         function getPureHtml(html){
             return html.replace(/<(\/?)([\w\-]+)([^>]*)>/gi, function (a, b, tagName, attrs) {
                 tagName = tagName.toLowerCase();
@@ -14621,10 +14621,10 @@
                 }[tagName]) {
                     return ''
                 } else {
-    
+
                     return '<' + b + tagName + ' ' + utils.trim(attrs) + '>'
                 }
-    
+
             });
         }
         function filter(div) {
@@ -14637,9 +14637,9 @@
                         domUtils.remove(ni);
                     }
                 }
-    
+
                 if (browser.webkit) {
-    
+
                     var brs = div.querySelectorAll('div br');
                     for (var i = 0, bi; bi = brs[i++];) {
                         var pN = bi.parentNode;
@@ -14657,12 +14657,12 @@
                         }
                         domUtils.remove(di);
                     }
-    
+
                     var metas = div.querySelectorAll('meta');
                     for (var i = 0, ci; ci = metas[i++];) {
                         domUtils.remove(ci);
                     }
-    
+
                     var brs = div.querySelectorAll('br');
                     for (i = 0; ci = brs[i++];) {
                         if (/^apple-/i.test(ci.className)) {
@@ -14682,10 +14682,10 @@
                         domUtils.remove(ci, true);
                     }
                 }
-    
+
                 //ie下使用innerHTML会产生多余的\r\n字符，也会产生&nbsp;这里过滤掉
                 html = div.innerHTML;//.replace(/>(?:(\s|&nbsp;)*?)</g,'><');
-    
+
                 //过滤word粘贴过来的冗余属性
                 html = UE.filterWord(html);
                 //取消了忽略空白的第二个参数，粘贴过来的有些是有空白的，会被套上相关的标签
@@ -14724,22 +14724,22 @@
                     txtContent = root.toHtml();
                     //完全模式
                     htmlContent = html.html;
-    
+
                     address = me.selection.getRange().createAddress(true);
                     me.execCommand('insertHtml', me.getOpt('retainOnlyLabelPasted') === true ?  getPureHtml(htmlContent) : htmlContent, true);
                 }
                 me.fireEvent("afterpaste", html);
             }
         }
-    
+
         me.addListener('pasteTransfer', function (cmd, plainType) {
-    
+
             if (address && txtContent && htmlContent && txtContent != htmlContent) {
                 var range = me.selection.getRange();
                 range.moveToAddress(address, true);
-    
+
                 if (!range.collapsed) {
-    
+
                     while (!domUtils.isBody(range.startContainer)
                         ) {
                         var start = range.startContainer;
@@ -14750,7 +14750,7 @@
                                 continue;
                             }
                             var pre = start.previousSibling;
-    
+
                             if(pre && pre.nodeType == 3 && new RegExp('^[\n\r\t '+domUtils.fillChar+']*$').test(pre.nodeValue)){
                                 range.setStartBefore(pre)
                             }
@@ -14760,7 +14760,7 @@
                         }else{
                             break;
                         }
-    
+
                     }
                     while (!domUtils.isBody(range.endContainer)
                         ) {
@@ -14781,11 +14781,11 @@
                         }else{
                             break;
                         }
-    
+
                     }
-    
+
                 }
-    
+
                 range.deleteContents();
                 range.select(true);
                 me.__hasEnterExecCommand = true;
@@ -14807,7 +14807,7 @@
                 address.endAddress = tmpAddress.startAddress;
             }
         });
-    
+
         me.addListener('ready', function () {
             domUtils.on(me.body, 'cut', function () {
                 var range = me.selection.getRange();
@@ -14815,7 +14815,7 @@
                     me.undoManger.save();
                 }
             });
-    
+
             //ie下beforepaste在点击右键时也会触发，所以用监控键盘才处理
             domUtils.on(me.body, browser.ie || browser.opera ? 'keydown' : 'paste', function (e) {
                 if ((browser.ie || browser.opera) && ((!e.ctrlKey && !e.metaKey) || e.keyCode != '86')) {
@@ -14825,9 +14825,9 @@
                     filter(div);
                 });
             });
-    
+
         });
-    
+
         me.commands['paste'] = {
             execCommand: function (cmd) {
                 if (browser.ie) {
@@ -14841,16 +14841,16 @@
             }
         }
     };
-    
-    
-    
+
+
+
     // plugins/puretxtpaste.js
     /**
      * 纯文本粘贴插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     UE.plugins['pasteplain'] = function(){
         var me = this;
         me.setOpt({
@@ -14910,7 +14910,7 @@
         });
         //暂时这里支持一下老版本的属性
         var pasteplain = me.options.pasteplain;
-    
+
         /**
          * 启用或取消纯文本粘贴模式
          * @command pasteplain
@@ -14921,7 +14921,7 @@
          * editor.queryCommandState( 'pasteplain' );
          * ```
          */
-    
+
         /**
          * 查询当前是否处于纯文本粘贴模式
          * @command pasteplain
@@ -14943,14 +14943,14 @@
             notNeedUndo : 1
         };
     };
-    
+
     // plugins/list.js
     /**
      * 有序列表,无序列表插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     UE.plugins['list'] = function () {
         var me = this,
             notExchange = {
@@ -14968,7 +14968,7 @@
             'dash'  : 'dash',
             'dot':'dot'
         };
-    
+
         me.setOpt( {
             'autoTransWordToList':false,
             'insertorderedlist':{
@@ -15008,14 +15008,14 @@
             'UL':listToArray(me.options.insertunorderedlist)
         };
         var liiconpath = me.options.listiconpath;
-    
+
         //根据用户配置，调整customStyle
         for(var s in customStyle){
             if(!me.options.insertorderedlist.hasOwnProperty(s) && !me.options.insertunorderedlist.hasOwnProperty(s)){
                 delete customStyle[s];
             }
         }
-    
+
         me.ready(function () {
             var customCss = [];
             for(var p in customStyle){
@@ -15094,20 +15094,20 @@
                             }
                         }
                     }
-    
+
                 })
             })
         });
-    
+
         function getStyle(node){
             var cls = node.className;
             if(domUtils.hasClass(node,/custom_/)){
                 return cls.match(/custom_(\w+)/)[1]
             }
             return domUtils.getStyle(node, 'list-style-type')
-    
+
         }
-    
+
         me.addListener('beforepaste',function(type,html){
             var me = this,
                 rng = me.selection.getRange(),li;
@@ -15136,14 +15136,14 @@
                     var currentStyle = listStyle[list.tagName][index];
                     if(customStyle[currentStyle]){
                         n.setAttr('class', 'custom_' + currentStyle)
-    
+
                     }else{
                         n.setStyle('list-style-type',currentStyle)
                     }
                 })
-    
+
             }
-    
+
             html.html = root.toHtml();
         });
         //导出时，去掉p标签
@@ -15164,7 +15164,7 @@
                             br.parentNode = li;
                             newChildrens.push(br);
                         }
-    
+
                         index = newChildrens.length;
                     }
                 });
@@ -15188,7 +15188,7 @@
                         }else{
                             i++;
                         }
-    
+
                     }
                 }
                 if(tmpP.firstChild() && !tmpP.parentNode || !li.firstChild()){
@@ -15233,18 +15233,18 @@
                             return p;
                         }
                     }
-    
+
                 }
                 utils.each(root.getNodesByTagName('p'),function(node){
                     if(node.getAttr('class') != 'MsoListParagraph'){
                         return
                     }
-    
+
                     //word粘贴过来的会带有margin要去掉,但这样也可能会误命中一些央视
                     node.setStyle('margin','');
                     node.setStyle('margin-left','');
                     node.setAttr('class','');
-    
+
                     function appendLi(list,p,type){
                         if(list.tagName == 'ol'){
                             if(browser.ie){
@@ -15258,15 +15258,15 @@
                         }else{
                             p.removeChild(p.firstChild())
                         }
-    
+
                         var li = UE.uNode.createElement('li');
                         li.appendChild(p);
                         list.appendChild(li);
                     }
                     var tmp = node,type,cacheNode = node;
-    
+
                     if(node.parentNode.tagName != 'li' && (type = checkListType(node.innerText(),node))){
-    
+
                         var list = UE.uNode.createElement(me.options.insertorderedlist.hasOwnProperty(type) ? 'ol' : 'ul');
                         if(customStyle[type]){
                             list.setAttr('class','custom_'+type)
@@ -15291,20 +15291,20 @@
                     }
                 })
             }
-    
+
         });
-    
+
         //调整索引标签
         me.addListener('contentchange',function(){
             adjustListStyle(me.document)
         });
-    
+
         function adjustListStyle(doc,ignore){
             utils.each(domUtils.getElementsByTagName(doc,'ol ul'),function(node){
-    
+
                 if(!domUtils.inDoc(node,doc))
                     return;
-    
+
                 var parent = node.parentNode;
                 if(parent.tagName == node.tagName){
                     var nodeStyleType = getStyle(node) || (node.tagName == 'OL' ? 'decimal' : 'disc'),
@@ -15314,7 +15314,7 @@
                         styleIndex = styleIndex + 1 == listStyle[node.tagName].length ? 0 : styleIndex + 1;
                         setListStyle(node,listStyle[node.tagName][styleIndex])
                     }
-    
+
                 }
                 var index = 0,type = 2;
                 if( domUtils.hasClass(node,/custom_/)){
@@ -15326,7 +15326,7 @@
                         type = 3;
                     }
                 }
-    
+
                 var style = domUtils.getStyle(node, 'list-style-type');
                 style && (node.style.cssText = 'list-style-type:' + style);
                 node.className = utils.trim(node.className.replace(/list-paddingleft-\w+/,'')) + ' list-paddingleft-' + type;
@@ -15398,7 +15398,7 @@
                 adjustListStyle(list.ownerDocument,true)
             }
         }
-    
+
         function setListStyle(list,style){
             if(customStyle[style]){
                 list.className = 'custom_' + style;
@@ -15417,7 +15417,7 @@
                 domUtils.remove(tmpNode);
             }
         }
-    
+
         me.addListener('keydown', function (type, evt) {
             function preventAndSave() {
                 evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
@@ -15458,9 +15458,9 @@
                     end = range.collapsed ? start : findList(range.endContainer,function (node) {
                         return node.tagName == 'TABLE';
                     });
-    
+
                 if (start && end && start === end) {
-    
+
                     if (!range.collapsed) {
                         start = domUtils.findParentByTagName(range.startContainer, 'li', true);
                         end = domUtils.findParentByTagName(range.endContainer, 'li', true);
@@ -15468,23 +15468,23 @@
                             range.deleteContents();
                             li = domUtils.findParentByTagName(range.startContainer, 'li', true);
                             if (li && domUtils.isEmptyBlock(li)) {
-    
+
                                 pre = li.previousSibling;
                                 next = li.nextSibling;
                                 p = me.document.createElement('p');
-    
+
                                 domUtils.fillNode(me.document, p);
                                 parentList = li.parentNode;
                                 if (pre && next) {
                                     range.setStart(next, 0).collapse(true).select(true);
                                     domUtils.remove(li);
-    
+
                                 } else {
                                     if (!pre && !next || !pre) {
-    
+
                                         parentList.parentNode.insertBefore(p, parentList);
-    
-    
+
+
                                     } else {
                                         li.parentNode.parentNode.insertBefore(p, parentList.nextSibling);
                                     }
@@ -15493,31 +15493,31 @@
                                         domUtils.remove(parentList);
                                     }
                                     range.setStart(p, 0).setCursor();
-    
-    
+
+
                                 }
                                 preventAndSave();
                                 return;
-    
+
                             }
                         } else {
                             var tmpRange = range.cloneRange(),
                                 bk = tmpRange.collapse(false).createBookmark();
-    
+
                             range.deleteContents();
                             tmpRange.moveToBookmark(bk);
                             var li = domUtils.findParentByTagName(tmpRange.startContainer, 'li', true);
-    
+
                             clearEmptySibling(li);
                             tmpRange.select();
                             preventAndSave();
                             return;
                         }
                     }
-    
-    
+
+
                     li = domUtils.findParentByTagName(range.startContainer, 'li', true);
-    
+
                     if (li) {
                         if (domUtils.isEmptyBlock(li)) {
                             bk = range.createBookmark();
@@ -15526,7 +15526,7 @@
                                 domUtils.breakParent(li, parentList);
                                 clearEmptySibling(li);
                             } else {
-    
+
                                 parentList.parentNode.insertBefore(li, parentList.nextSibling);
                                 if (domUtils.isEmptyNode(parentList)) {
                                     domUtils.remove(parentList);
@@ -15534,7 +15534,7 @@
                             }
                             //嵌套不处理
                             if (!dtd.$list[li.parentNode.tagName]) {
-    
+
                                 if (!domUtils.isBlockElm(li.firstChild)) {
                                     p = me.document.createElement('p');
                                     li.parentNode.insertBefore(p, li);
@@ -15547,33 +15547,33 @@
                                 }
                             }
                             range.moveToBookmark(bk).select();
-    
-    
+
+
                         } else {
                             var first = li.firstChild;
                             if (!first || !domUtils.isBlockElm(first)) {
                                 var p = me.document.createElement('p');
-    
+
                                 !li.firstChild && domUtils.fillNode(me.document, p);
                                 while (li.firstChild) {
-    
+
                                     p.appendChild(li.firstChild);
                                 }
                                 li.appendChild(p);
                                 first = p;
                             }
-    
+
                             var span = me.document.createElement('span');
-    
+
                             range.insertNode(span);
                             domUtils.breakParent(span, li);
-    
+
                             var nextLi = span.nextSibling;
                             first = nextLi.firstChild;
-    
+
                             if (!first) {
                                 p = me.document.createElement('p');
-    
+
                                 domUtils.fillNode(me.document, p);
                                 nextLi.appendChild(p);
                                 first = p;
@@ -15582,7 +15582,7 @@
                                 first.innerHTML = '';
                                 domUtils.fillNode(me.document, first);
                             }
-    
+
                             range.setStart(first, 0).collapse(true).shrinkBoundary().select();
                             domUtils.remove(span);
                             var pre = nextLi.previousSibling;
@@ -15590,16 +15590,16 @@
                                 pre.innerHTML = '<p></p>';
                                 domUtils.fillNode(me.document, pre.firstChild);
                             }
-    
+
                         }
     //                        }
                         preventAndSave();
                     }
-    
-    
+
+
                 }
-    
-    
+
+
             }
             if (keyCode == 8) {
                 //修中ie中li下的问题
@@ -15620,7 +15620,7 @@
                             domUtils.preventDefault(evt);
                             return;
                         }
-    
+
                         if (li && (pre = li.previousSibling)) {
                             if (keyCode == 46 && li.childNodes.length) {
                                 return;
@@ -15641,7 +15641,7 @@
                                         pre.appendChild(li.firstChild);
                                     }
                                 } else {
-    
+
                                     span = me.document.createElement('span');
                                     range.insertNode(span);
                                     //判断pre是否是空的节点,如果是<p><br/></p>类型的空节点，干掉p标签防止它占位
@@ -15650,9 +15650,9 @@
                                     }
                                     domUtils.moveChild(li, pre);
                                     range.setStartBefore(span).collapse(true).select(true);
-    
+
                                     domUtils.remove(span);
-    
+
                                 }
                             } else {
                                 if (domUtils.isEmptyNode(li)) {
@@ -15672,10 +15672,10 @@
                             me.fireEvent('saveScene');
                             domUtils.preventDefault(evt);
                             return;
-    
+
                         }
                         //trace:980
-    
+
                         if (li && !li.previousSibling) {
                             var parentList = li.parentNode;
                             var bk = range.createBookmark();
@@ -15685,34 +15685,34 @@
                                     domUtils.remove(parentList)
                                 }
                             }else{
-    
+
                                 while(li.firstChild){
                                     parentList.parentNode.insertBefore(li.firstChild,parentList);
                                 }
-    
+
                                 domUtils.remove(li);
                                 if(domUtils.isEmptyNode(parentList)){
                                     domUtils.remove(parentList)
                                 }
-    
+
                             }
                             range.moveToBookmark(bk).setCursor(false,true);
                             me.fireEvent('contentchange');
                             me.fireEvent('saveScene');
                             domUtils.preventDefault(evt);
                             return;
-    
+
                         }
-    
-    
+
+
                     }
-    
-    
+
+
                 }
-    
+
             }
         });
-    
+
         me.addListener('keyup',function(type, evt){
             var keyCode = evt.keyCode || evt.which;
             if (keyCode == 8) {
@@ -15724,9 +15724,9 @@
         });
         //处理tab键
         me.addListener('tabkeydown',function(){
-    
+
             var range = me.selection.getRange();
-    
+
             //控制级数
             function checkLevel(li){
                 if(me.options.maxListLevel != -1){
@@ -15744,7 +15744,7 @@
             //todo 后续改进
             var li = domUtils.findParentByTagName(range.startContainer, 'li', true);
             if(li){
-    
+
                 var bk;
                 if(range.collapsed){
                     if(checkLevel(li))
@@ -15814,7 +15814,7 @@
                     return true;
                 }
             }
-    
+
         });
         function getLi(start){
             while(start && !domUtils.isBody(start)){
@@ -15827,7 +15827,7 @@
                 start = start.parentNode;
             }
         }
-    
+
         /**
          * 有序列表，与“insertunorderedlist”命令互斥
          * @command insertorderedlist
@@ -15861,7 +15861,7 @@
          * editor.queryCommandValue( 'insertorderedlist' );
          * ```
          */
-    
+
         /**
          * 无序列表，与“insertorderedlist”命令互斥
          * @command insertunorderedlist
@@ -15895,11 +15895,11 @@
          * editor.queryCommandValue( 'insertunorderedlist' );
          * ```
          */
-    
+
         me.commands['insertorderedlist'] =
         me.commands['insertunorderedlist'] = {
                 execCommand:function (command, style) {
-    
+
                     if (!style) {
                         style = command.toLowerCase() == 'insertorderedlist' ? 'decimal' : 'disc';
                     }
@@ -15920,14 +15920,14 @@
                         modifyEnd = 0,
                         startParent, endParent,
                         list, tmp;
-    
+
                     if (start || end) {
                         start && (startParent = start.parentNode);
                         if (!bko.end) {
                             end = start;
                         }
                         end && (endParent = end.parentNode);
-    
+
                         if (startParent === endParent) {
                             while (start !== end) {
                                 tmp = start;
@@ -15972,12 +15972,12 @@
                                         tmpFrag.appendChild(ci);
                                     }else{
                                         while (ci.firstChild) {
-    
+
                                             tmpFrag.appendChild(ci.firstChild);
                                             domUtils.remove(ci);
                                         }
                                     }
-    
+
                                 }
                                 tmp.parentNode.insertBefore(tmpFrag, tmp);
                             } else {
@@ -15986,7 +15986,7 @@
                                 list.appendChild(frag);
                                 tmp.parentNode.insertBefore(list, tmp);
                             }
-    
+
                             domUtils.remove(tmp);
                             list && adjustList(list, tag, style);
                             range.moveToBookmark(bko).select();
@@ -16016,7 +16016,7 @@
                                     }
                                     domUtils.remove(start);
                                 }
-    
+
                                 start = tmp;
                             }
                             startParent.parentNode.insertBefore(frag, startParent.nextSibling);
@@ -16028,7 +16028,7 @@
                             }
                             modifyStart = 1;
                         }
-    
+
                         if (end && domUtils.inDoc(endParent, me.document)) {
                             //结束
                             start = endParent.firstChild;
@@ -16060,7 +16060,7 @@
                                 'tmpDiv':1
                             });
                             domUtils.moveChild(end, tmpDiv);
-    
+
                             frag.appendChild(tmpDiv);
                             domUtils.remove(end);
                             endParent.parentNode.insertBefore(frag, endParent);
@@ -16068,13 +16068,13 @@
                             if (domUtils.isEmptyNode(endParent)) {
                                 domUtils.remove(endParent);
                             }
-    
+
                             modifyEnd = 1;
                         }
-    
-    
+
+
                     }
-    
+
                     if (!modifyStart) {
                         range.setStartBefore(me.document.getElementById(bko.start));
                     }
@@ -16084,17 +16084,17 @@
                     range.enlarge(true, function (node) {
                         return notExchange[node.tagName];
                     });
-    
+
                     frag = me.document.createDocumentFragment();
-    
+
                     var bk = range.createBookmark(),
                         current = domUtils.getNextDomNode(bk.start, false, filterFn),
                         tmpRange = range.cloneRange(),
                         tmpNode,
                         block = domUtils.isBlockElm;
-    
+
                     while (current && current !== bk.end && (domUtils.getPosition(current, bk.end) & domUtils.POSITION_PRECEDING)) {
-    
+
                         if (current.nodeType == 3 || dtd.li[current.tagName]) {
                             if (current.nodeType == 1 && dtd.$list[current.tagName]) {
                                 while (current.firstChild) {
@@ -16104,18 +16104,18 @@
                                 domUtils.remove(current);
                                 current = tmpNode;
                                 continue;
-    
+
                             }
                             tmpNode = current;
                             tmpRange.setStartBefore(current);
-    
+
                             while (current && current !== bk.end && (!block(current) || domUtils.isBookmarkNode(current) )) {
                                 tmpNode = current;
                                 current = domUtils.getNextDomNode(current, false, null, function (node) {
                                     return !notExchange[node.tagName];
                                 });
                             }
-    
+
                             if (current && block(current)) {
                                 tmp = domUtils.getNextDomNode(tmpNode, false, filterFn);
                                 if (tmp && domUtils.isBookmarkNode(tmp)) {
@@ -16124,11 +16124,11 @@
                                 }
                             }
                             tmpRange.setEndAfter(tmpNode);
-    
+
                             current = domUtils.getNextDomNode(tmpNode, false, filterFn);
-    
+
                             var li = range.document.createElement('li');
-    
+
                             li.appendChild(tmpRange.extractContents());
                             if(domUtils.isEmptyNode(li)){
                                 var tmpNode = range.document.createElement('p');
@@ -16156,7 +16156,7 @@
                         }
                     }
                     range.moveToBookmark(bko).select();
-    
+
                 },
                 queryCommandState:function (command) {
                     var tag = command.toLowerCase() == 'insertorderedlist' ? 'ol' : 'ul';
@@ -16170,7 +16170,7 @@
                         };
                     }
                     return 0;
-    
+
                 },
                 queryCommandValue:function (command) {
                     var tag = command.toLowerCase() == 'insertorderedlist' ? 'ol' : 'ul';
@@ -16190,16 +16190,16 @@
                 }
             };
     };
-    
-    
-    
+
+
+
     // plugins/source.js
     /**
      * 源码编辑插件
      * @file
      * @since 1.2.6.1
      */
-    
+
     (function (){
         var sourceEditors = {
             textarea: function (editor, holder){
@@ -16244,7 +16244,7 @@
                 };
             },
             codemirror: function (editor, holder){
-    
+
                 var codeEditor = window.CodeMirror(holder, {
                     mode: "text/html",
                     tabMode: "indent",
@@ -16276,7 +16276,7 @@
                 };
             }
         };
-    
+
         UE.plugins['source'] = function (){
             var me = this;
             var opt = this.options;
@@ -16284,19 +16284,19 @@
             var sourceEditor;
             var orgSetContent;
             opt.sourceEditor = browser.ie  ? 'textarea' : (opt.sourceEditor || 'codemirror');
-    
+
             me.setOpt({
                 sourceEditorFirst:false
             });
             function createSourceEditor(holder){
                 return sourceEditors[opt.sourceEditor == 'codemirror' && window.CodeMirror ? 'codemirror' : 'textarea'](me, holder);
             }
-    
+
             var bakCssText;
             //解决在源码模式下getContent不能得到最新的内容问题
             var oldGetContent,
                 bakAddress;
-    
+
             /**
              * 切换源码模式和编辑模式
              * @command source
@@ -16307,7 +16307,7 @@
              * editor.execCommand( 'source');
              * ```
              */
-    
+
             /**
              * 查询当前编辑区域的状态是源码模式还是可视化模式
              * @command source
@@ -16319,10 +16319,10 @@
              * editor.queryCommandState( 'source' );
              * ```
              */
-    
+
             me.commands['source'] = {
                 execCommand: function (){
-    
+
                     sourceMode = !sourceMode;
                     if (sourceMode) {
                         bakAddress = me.selection.getRange().createAddress(false,true);
@@ -16330,11 +16330,11 @@
                         if(browser.gecko){
                             me.body.contentEditable = false;
                         }
-    
+
                         bakCssText = me.iframe.style.cssText;
                         me.iframe.style.cssText += 'position:absolute;left:-32768px;top:-32768px;';
-    
-    
+
+
                         me.fireEvent('beforegetcontent');
                         var root = UE.htmlparser(me.body.innerHTML);
                         me.filterOutputRule(root);
@@ -16352,21 +16352,21 @@
                                     break;
                                     case 'pre':
                                         node.innerText(node.innerText().replace(/&nbsp;/g,' '))
-    
+
                                 }
                             }
                         });
-    
+
                         me.fireEvent('aftergetcontent');
-    
+
                         var content = root.toHtml(true);
-    
+
                         sourceEditor = createSourceEditor(me.iframe.parentNode);
-    
+
                         sourceEditor.setContent(content);
-    
+
                         orgSetContent = me.setContent;
-    
+
                         me.setContent = function(html){
                             //这里暂时不触发事件，防止报错
                             var root = UE.htmlparser(html);
@@ -16374,7 +16374,7 @@
                             html = root.toHtml();
                             sourceEditor.setContent(html);
                         };
-    
+
                         setTimeout(function (){
                             sourceEditor.select();
                             me.addListener('fullscreenchanged', function(){
@@ -16383,7 +16383,7 @@
                                 }catch(e){}
                             });
                         });
-    
+
                         //重置getContent，源码模式下取值也能是最新的数据
                         oldGetContent = me.getContent;
                         me.getContent = function (){
@@ -16399,9 +16399,9 @@
                             }
                             return a.replace(/(^[\n\r\t]*)|([\n\r\t]*$)/g,'')
                         });
-    
+
                         me.setContent = orgSetContent;
-    
+
                         me.setContent(cont);
                         sourceEditor.dispose();
                         sourceEditor = null;
@@ -16413,19 +16413,19 @@
                             me.body.innerHTML = '<p>'+(browser.ie?'':'<br/>')+'</p>';
                             first = me.body.firstChild;
                         }
-    
-    
+
+
                         //要在ifm为显示时ff才能取到selection,否则报错
                         //这里不能比较位置了
                         me.undoManger && me.undoManger.save(true);
-    
+
                         if(browser.gecko){
-    
+
                             var input = document.createElement('input');
                             input.style.cssText = 'position:absolute;left:0;top:-32768px';
-    
+
                             document.body.appendChild(input);
-    
+
                             me.body.contentEditable = false;
                             setTimeout(function(){
                                 domUtils.setViewportOffset(input, { left: -32768, top: 0 });
@@ -16435,14 +16435,14 @@
                                     me.selection.getRange().moveToAddress(bakAddress).select(true);
                                     domUtils.remove(input);
                                 });
-    
+
                             });
                         }else{
                             //ie下有可能报错，比如在代码顶头的情况
                             try{
                                 me.selection.getRange().moveToAddress(bakAddress).select(true);
                             }catch(e){}
-    
+
                         }
                     }
                     this.fireEvent('sourcemodechanged', sourceMode);
@@ -16453,7 +16453,7 @@
                 notNeedUndo : 1
             };
             var oldQueryCommandState = me.queryCommandState;
-    
+
             me.queryCommandState = function (cmdName){
                 cmdName = cmdName.toLowerCase();
                 if (sourceMode) {
@@ -16465,9 +16465,9 @@
                 }
                 return oldQueryCommandState.apply(this, arguments);
             };
-    
+
             if(opt.sourceEditor == "codemirror"){
-    
+
                 me.addListener("ready",function(){
                     utils.loadFile(document,{
                         src : opt.codeMirrorJsUrl || opt.UEDITOR_HOME_URL + "third-party/codemirror/codemirror.js",
@@ -16487,14 +16487,14 @@
                         type : "text/css",
                         href : opt.codeMirrorCssUrl || opt.UEDITOR_HOME_URL + "third-party/codemirror/codemirror.css"
                     });
-    
+
                 });
             }
-    
+
         };
-    
+
     })();
-    
+
     // plugins/enterkey.js
     ///import core
     ///import plugins/undo.js
@@ -16510,16 +16510,16 @@
             me = this,
             tag = me.options.enterTag;
         me.addListener('keyup', function(type, evt) {
-    
+
             var keyCode = evt.keyCode || evt.which;
             if (keyCode == 13) {
                 var range = me.selection.getRange(),
                     start = range.startContainer,
                     doSave;
-    
+
                 //修正在h1-h6里边回车后不能嵌套p的问题
                 if (!browser.ie) {
-    
+
                     if (/h\d/i.test(hTag)) {
                         if (browser.gecko) {
                             var h = domUtils.findParentByTagName(start, [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6','blockquote','caption','table'], true);
@@ -16544,10 +16544,10 @@
                                     doSave = 1;
                                 }
                                 domUtils.remove(tmp);
-    
+
                             }
                         }
-    
+
                         if (me.undoManger && doSave) {
                             me.undoManger.save();
                         }
@@ -16559,7 +16559,7 @@
                 }
             }
         });
-    
+
         me.addListener('keydown', function(type, evt) {
             var keyCode = evt.keyCode || evt.which;
             if (keyCode == 13) {//回车
@@ -16569,10 +16569,10 @@
                 }
                 me.fireEvent('saveScene',true,true);
                 hTag = '';
-    
-    
+
+
                 var range = me.selection.getRange();
-    
+
                 if (!range.collapsed) {
                     //跨td不能删
                     var start = range.startContainer,
@@ -16585,35 +16585,35 @@
                     }
                 }
                 if (tag == 'p') {
-    
-    
+
+
                     if (!browser.ie) {
-    
+
                         start = domUtils.findParentByTagName(range.startContainer, ['ol','ul','p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6','blockquote','caption'], true);
-    
+
                         //opera下执行formatblock会在table的场景下有问题，回车在opera原生支持很好，所以暂时在opera去掉调用这个原生的command
                         //trace:2431
                         if (!start && !browser.opera) {
-    
+
                             me.document.execCommand('formatBlock', false, '<p>');
-    
+
                             if (browser.gecko) {
                                 range = me.selection.getRange();
                                 start = domUtils.findParentByTagName(range.startContainer, 'p', true);
                                 start && domUtils.removeDirtyAttr(start);
                             }
-    
-    
+
+
                         } else {
                             hTag = start.tagName;
                             start.tagName.toLowerCase() == 'p' && browser.gecko && domUtils.removeDirtyAttr(start);
                         }
-    
+
                     }
-    
+
                 } else {
                     evt.preventDefault ? evt.preventDefault() : ( evt.returnValue = false);
-    
+
                     if (!range.collapsed) {
                         range.deleteContents();
                         start = range.startContainer;
@@ -16640,18 +16640,18 @@
                             if (start === range.startContainer.childNodes[range.startOffset]) {
                                 br = range.document.createElement('br');
                                 range.insertNode(br).setCursor();
-    
+
                             } else {
                                 range.setStart(start, 0).setCursor();
                             }
-    
-    
+
+
                         } else {
                             br = range.document.createElement('br');
                             range.insertNode(br).setStartAfter(br).setCursor();
                         }
-    
-    
+
+
                     } else {
                         br = range.document.createElement('br');
                         range.insertNode(br);
@@ -16663,16 +16663,16 @@
                             range.setStartAfter(br);
                         }
                         range.setCursor();
-    
+
                     }
-    
+
                 }
-    
+
             }
         });
     };
-    
-    
+
+
     // plugins/keystrokes.js
     /* 处理特殊键的兼容性问题 */
     UE.plugins['keystrokes'] = function() {
@@ -16681,7 +16681,7 @@
         me.addListener('keydown', function(type, evt) {
             var keyCode = evt.keyCode || evt.which,
                 rng = me.selection.getRange();
-    
+
             //处理全选的情况
             if(!rng.collapsed && !(evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) && (keyCode >= 65 && keyCode <=90
                 || keyCode >= 48 && keyCode <= 57 ||
@@ -16691,7 +16691,7 @@
                         46:1
                     }[keyCode])
                 ){
-    
+
                 var tmpNode = rng.startContainer;
                 if(domUtils.isFillChar(tmpNode)){
                     rng.setStartBefore(tmpNode)
@@ -16723,7 +16723,7 @@
                     }
                 }
             }
-    
+
             //处理backspace
             if (keyCode == keymap.Backspace) {
                 rng = me.selection.getRange();
@@ -16735,7 +16735,7 @@
                 //避免按两次删除才能生效的问题
                 if(rng.collapsed && rng.inFillChar()){
                     start = rng.startContainer;
-    
+
                     if(domUtils.isFillChar(start)){
                         rng.setStartBefore(start).shrinkBoundary(true).collapse(true);
                         domUtils.remove(start)
@@ -16745,7 +16745,7 @@
                         rng.collapse(true).select(true)
                     }
                 }
-    
+
                 //解决选中control元素不能删除的问题
                 if (start = rng.getClosedNode()) {
                     me.fireEvent('saveScene');
@@ -16765,7 +16765,7 @@
                         return;
                     }
                 }
-    
+
             }
             //处理tab键的逻辑
             if (keyCode == keymap.Tab) {
@@ -16792,7 +16792,7 @@
                 } else {
                     var filterFn = function(node) {
                         return domUtils.isBlockElm(node) && !excludeTagNameForTabKey[node.tagName.toLowerCase()]
-    
+
                     };
                     //普通的情况
                     start = domUtils.findParent(range.startContainer, filterFn,true);
@@ -16869,8 +16869,8 @@
                         rng.insertNode(tmpNode).setStart(tmpNode,0).setCursor(false,true);
                     }
                 }
-    
-    
+
+
                 //chrome下如果删除了inline标签，浏览器会有记忆，在输入文字还是会套上刚才删除的标签，所以这里再选一次就不会了
                 if( !collapsed && (rng.startContainer.nodeType == 3 || rng.startContainer.nodeType == 1 && domUtils.isEmptyBlock(rng.startContainer))){
                     if(browser.ie){
@@ -16881,23 +16881,23 @@
                     }else{
                         rng.select()
                     }
-    
+
                 }
             }
-    
-    
+
+
         })
     };
-    
+
     // plugins/fiximgclick.js
     ///import core
     ///commands 修复chrome下图片不能点击的问题，出现八个角可改变大小
     ///commandsName  FixImgClick
     ///commandsTitle  修复chrome下图片不能点击的问题，出现八个角可改变大小
     //修复chrome下图片不能点击的问题，出现八个角可改变大小
-    
+
     UE.plugins['fiximgclick'] = (function () {
-    
+
         var elementUpdated = false;
         function Scale() {
             this.editor = null;
@@ -16907,7 +16907,7 @@
             this.prePos = {x: 0, y: 0};
             this.startPos = {x: 0, y: 0};
         }
-    
+
         (function () {
             var rect = [
                 //[left, top, width, height]
@@ -16920,24 +16920,24 @@
                 [0, 0, 0, 1],
                 [0, 0, 1, 1]
             ];
-    
+
             Scale.prototype = {
                 init: function (editor) {
                     var me = this;
                     me.editor = editor;
                     me.startPos = this.prePos = {x: 0, y: 0};
                     me.dragId = -1;
-    
+
                     var hands = [],
                         cover = me.cover = document.createElement('div'),
                         resizer = me.resizer = document.createElement('div');
-    
+
                     cover.id = me.editor.ui.id + '_imagescale_cover';
                     cover.style.cssText = 'position:absolute;display:none;z-index:' + (me.editor.options.zIndex) + ';filter:alpha(opacity=0); opacity:0;background:#CCC;';
                     domUtils.on(cover, 'mousedown click', function () {
                         me.hide();
                     });
-    
+
                     for (i = 0; i < 8; i++) {
                         hands.push('<span class="edui-editor-imagescale-hand' + i + '"></span>');
                     }
@@ -16945,10 +16945,10 @@
                     resizer.className = 'edui-editor-imagescale';
                     resizer.innerHTML = hands.join('');
                     resizer.style.cssText += ';display:none;border:1px solid #3b77ff;z-index:' + (me.editor.options.zIndex) + ';';
-    
+
                     me.editor.ui.getDom().appendChild(cover);
                     me.editor.ui.getDom().appendChild(resizer);
-    
+
                     me.initStyle();
                     me.initEvents();
                 },
@@ -16966,7 +16966,7 @@
                 },
                 initEvents: function () {
                     var me = this;
-    
+
                     me.startPos.x = me.startPos.y = 0;
                     me.isDraging = false;
                 },
@@ -16989,7 +16989,7 @@
                                 me.prePos.y = e.clientY;
                                 elementUpdated = true;
                                 me.updateTargetElement();
-    
+
                             }
                             break;
                         case 'mouseup':
@@ -17005,7 +17005,7 @@
                                 elementUpdated = false;
                                 me.editor.fireEvent('contentchange');
                             }
-    
+
                             break;
                         default:
                             break;
@@ -17024,7 +17024,7 @@
                 updateContainerStyle: function (dir, offset) {
                     var me = this,
                         dom = me.resizer, tmp;
-    
+
                     if (rect[dir][0] != 0) {
                         tmp = parseInt(dom.style.left) + offset.x;
                         dom.style.left = me._validScaledProp('left', tmp) + 'px';
@@ -17045,7 +17045,7 @@
                 _validScaledProp: function (prop, value) {
                     var ele = this.resizer,
                         wrap = document;
-    
+
                     value = isNaN(value) ? 0 : value;
                     switch (prop) {
                         case 'left':
@@ -17065,7 +17065,7 @@
                     var me = this,
                         editorPos = domUtils.getXY(me.editor.ui.getDom()),
                         iframePos = domUtils.getXY(me.editor.iframe);
-    
+
                     domUtils.setStyles(me.cover, {
                         'width': me.editor.iframe.offsetWidth + 'px',
                         'height': me.editor.iframe.offsetHeight + 'px',
@@ -17079,10 +17079,10 @@
                     var me = this;
                     me.resizer.style.display = 'block';
                     if(targetObj) me.attachTo(targetObj);
-    
+
                     domUtils.on(this.resizer, 'mousedown', me.proxy(me._eventHandler, me));
                     domUtils.on(me.doc, 'mouseup', me.proxy(me._eventHandler, me));
-    
+
                     me.showCover();
                     me.editor.fireEvent('afterscaleshow', me);
                     me.editor.fireEvent('saveScene');
@@ -17091,7 +17091,7 @@
                     var me = this;
                     me.hideCover();
                     me.resizer.style.display = 'none';
-    
+
                     domUtils.un(me.resizer, 'mousedown', me.proxy(me._eventHandler, me));
                     domUtils.un(me.doc, 'mouseup', me.proxy(me._eventHandler, me));
                     me.editor.fireEvent('afterscalehide', me);
@@ -17108,7 +17108,7 @@
                         imgPos = domUtils.getXY(target),
                         iframePos = domUtils.getXY(me.editor.iframe),
                         editorPos = domUtils.getXY(resizer.parentNode);
-    
+
                     domUtils.setStyles(resizer, {
                         'width': target.width + 'px',
                         'height': target.height + 'px',
@@ -17118,31 +17118,31 @@
                 }
             }
         })();
-    
+
         return function () {
             var me = this,
                 imageScale;
-    
+
             me.setOpt('imageScaleEnabled', true);
-    
+
             if ( !browser.ie && me.options.imageScaleEnabled) {
                 me.addListener('click', function (type, e) {
-    
+
                     var range = me.selection.getRange(),
                         img = range.getClosedNode();
-    
+
                     if (img && img.tagName == 'IMG' && me.body.contentEditable!="false") {
-    
+
                         if (img.className.indexOf("edui-faked-music") != -1 ||
                             img.getAttribute("anchorname") ||
                             domUtils.hasClass(img, 'loadingclass') ||
                             domUtils.hasClass(img, 'loaderrorclass')) { return }
-    
+
                         if (!imageScale) {
                             imageScale = new Scale();
                             imageScale.init(me);
                             me.ui.getDom().appendChild(imageScale.resizer);
-    
+
                             var _keyDownHandler = function (e) {
                                 imageScale.hide();
                                 if(imageScale.target) me.selection.getRange().selectNode(imageScale.target).select();
@@ -17152,7 +17152,7 @@
                                     _keyDownHandler(e);
                                 }
                             }, timer;
-    
+
                             me.addListener('afterscaleshow', function (e) {
                                 me.addListener('beforekeydown', _keyDownHandler);
                                 me.addListener('beforemousedown', _mouseDownHandler);
@@ -17194,7 +17194,7 @@
                     }
                 });
             }
-    
+
             if (browser.webkit) {
                 me.addListener('click', function (type, e) {
                     if (e.target.tagName == 'IMG' && me.body.contentEditable!="false") {
@@ -17205,7 +17205,7 @@
             }
         }
     })();
-    
+
     // plugins/autolink.js
     ///import core
     ///commands 为非ie浏览器自动添加a标签
@@ -17215,12 +17215,12 @@
      * @description 为非ie浏览器自动添加a标签
      * @author zhanyi
      */
-    
+
     UE.plugin.register('autolink',function(){
         var cont = 0;
-    
+
         return !browser.ie ? {
-    
+
                 bindEvents:{
                     'reset' : function(){
                         cont = 0;
@@ -17228,14 +17228,14 @@
                     'keydown':function(type, evt) {
                         var me = this;
                         var keyCode = evt.keyCode || evt.which;
-    
+
                         if (keyCode == 32 || keyCode == 13) {
-    
+
                             var sel = me.selection.getNative(),
                                 range = sel.getRangeAt(0).cloneRange(),
                                 offset,
                                 charCode;
-    
+
                             var start = range.startContainer;
                             while (start.nodeType == 1 && range.startOffset > 0) {
                                 start = range.startContainer.childNodes[range.startOffset - 1];
@@ -17246,11 +17246,11 @@
                                 range.collapse(true);
                                 start = range.startContainer;
                             }
-    
+
                             do{
                                 if (range.startOffset == 0) {
                                     start = range.startContainer.previousSibling;
-    
+
                                     while (start && start.nodeType == 1) {
                                         start = start.lastChild;
                                     }
@@ -17265,7 +17265,7 @@
                                 range.setStart(start, offset - 1);
                                 charCode = range.toString().charCodeAt(0);
                             } while (charCode != 160 && charCode != 32);
-    
+
                             if (range.toString().replace(new RegExp(domUtils.fillChar, 'g'), '').match(/(?:https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.)/i)) {
                                 while(range.toString().length){
                                     if(/^(?:https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.)/i.test(range.toString())){
@@ -17281,27 +17281,27 @@
                                                 return;
                                             }
                                             start = start.parentNode;
-    
+
                                         }
                                         range.setStart(next,0);
-    
+
                                     }
-    
+
                                 }
                                 //range的开始边界已经在a标签里的不再处理
                                 if(domUtils.findParentByTagName(range.startContainer,'a',true)){
                                     return;
                                 }
                                 var a = me.document.createElement('a'),text = me.document.createTextNode(' '),href;
-    
+
                                 me.undoManger && me.undoManger.save();
                                 a.appendChild(range.extractContents());
                                 a.href = a.innerHTML = a.innerHTML.replace(/<[^>]+>/g,'');
                                 href = a.getAttribute("href").replace(new RegExp(domUtils.fillChar,'g'),'');
-                                href = /^(?:https?:\/\/)/ig.test(href) ? href : "http://"+ href;
+                                href = /^(?:https?:\/\/)/ig.test(href) ? href : "Http://"+ href;
                                 a.setAttribute('_src',utils.html(href));
                                 a.href = utils.html(href);
-    
+
                                 range.insertNode(a);
                                 a.parentNode.insertBefore(text, a.nextSibling);
                                 range.setStart(text, 0);
@@ -17327,7 +17327,7 @@
                     return node;
                 }
                 var lastChild = node.lastChild;
-    
+
                 while(lastChild){
                     if(lastChild.nodeName == 'A'){
                         return lastChild;
@@ -17347,7 +17347,7 @@
                 if(keyCodes[keyCode]){
                     var rng = me.selection.getRange();
                     var start = rng.startContainer;
-    
+
                     if(keyCode == 13){
                         while(start && !domUtils.isBody(start) && !domUtils.isBlockElm(start)){
                             start = start.parentNode;
@@ -17372,19 +17372,19 @@
                         start = domUtils.findParentByTagName(start,'a',true);
                         if(start && !start.getAttribute('_href')){
                             var bk = rng.createBookmark();
-    
+
                             domUtils.remove(start,true);
                             rng.moveToBookmark(bk).select(true)
                         }
                     }
-    
+
                 }
-    
-    
+
+
             });
         }
     );
-    
+
     // plugins/autoheight.js
     ///import core
     ///commands 当输入内容超过编辑器高度时，编辑器自动增高
@@ -17401,20 +17401,20 @@
         if (!me.autoHeightEnabled) {
             return;
         }
-    
+
         var bakOverflow,
             lastHeight = 0,
             options = me.options,
             currentHeight,
             timer;
-    
+
         function adjustHeight() {
             var me = this;
             clearTimeout(timer);
             if(isFullscreen)return;
             if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
                 timer = setTimeout(function(){
-    
+
                     var node = me.body.lastChild;
                     while(node && node.nodeType != 1){
                         node = node.previousSibling;
@@ -17431,8 +17431,8 @@
                         }
                         domUtils.removeStyle(node,'clear');
                     }
-    
-    
+
+
                 },50)
             }
         }
@@ -17454,23 +17454,23 @@
             doc.body.style.overflowY = 'hidden';
             me.addListener('contentchange afterinserthtml keyup mouseup',adjustHeight);
             //ff不给事件算得不对
-    
+
             setTimeout(function () {
                 adjustHeight.call(me);
             }, browser.gecko ? 100 : 0);
             me.fireEvent('autoheightchanged', me.autoHeightEnabled);
         };
         me.disableAutoHeight = function () {
-    
+
             me.body.style.overflowY = bakOverflow || '';
-    
+
             me.removeListener('contentchange', adjustHeight);
             me.removeListener('keyup', adjustHeight);
             me.removeListener('mouseup', adjustHeight);
             me.autoHeightEnabled = false;
             me.fireEvent('autoheightchanged', me.autoHeightEnabled);
         };
-    
+
         me.on('setHeight',function(){
             me.disableAutoHeight()
         });
@@ -17484,7 +17484,7 @@
                     //trace:3681
                     adjustHeight.call(me);
                 }, 100);
-    
+
             });
             //修复内容过多时，回到顶部，顶部内容被工具栏遮挡问题
             var lastScrollY;
@@ -17497,12 +17497,12 @@
                 }
             }
         });
-    
-    
+
+
     };
-    
-    
-    
+
+
+
     // plugins/autofloat.js
     ///import core
     ///commands 悬浮工具栏
@@ -17520,8 +17520,8 @@
         });
         var optsAutoFloatEnabled = me.options.autoFloatEnabled !== false,
             topOffset = me.options.topOffset;
-    
-    
+
+
         //如果不固定toolbar的位置，则直接退出
         if(!optsAutoFloatEnabled){
             return;
@@ -17529,7 +17529,7 @@
         var uiUtils = UE.ui.uiUtils,
             LteIE6 = browser.ie && browser.version <= 6,
             quirks = browser.quirks;
-    
+
         function checkHasUI(){
             if(!UE.ui){
                 alert(lang.autofloatMsg);
@@ -17576,10 +17576,10 @@
             if(placeHolder.parentNode){
                 placeHolder.parentNode.removeChild(placeHolder);
             }
-    
+
             toolbarBox.style.cssText = bakCssText;
         }
-    
+
         function updateFloating(){
             var rect3 = getPosition(me.container);
             var offset=me.options.toolbarTopOffset||0;
@@ -17592,12 +17592,12 @@
         var defer_updateFloating = utils.defer(function(){
             updateFloating();
         },browser.ie ? 200 : 100,true);
-    
+
         me.addListener('destroy',function(){
             domUtils.un(window, ['scroll','resize'], updateFloating);
             me.removeListener('keydown', defer_updateFloating);
         });
-    
+
         me.addListener('ready', function(){
             if(checkHasUI(me)){
                 //加载了ui组件，但在new时，没有加载ui，导致编辑器实例上没有ui类，所以这里做判断
@@ -17614,7 +17614,7 @@
                 }
                 domUtils.on(window, ['scroll','resize'], updateFloating);
                 me.addListener('keydown', defer_updateFloating);
-    
+
                 me.addListener('beforefullscreenchange', function (t, enabled){
                     if (enabled) {
                         unsetFloating();
@@ -17634,23 +17634,23 @@
                     setTimeout(function(){
                         updateFloating();
                     },0);
-    
+
                 })
             }
         });
     };
-    
-    
+
+
     // plugins/video.js
     /**
      * video插件， 为UEditor提供视频插入支持
      * @file
      * @since 1.2.6.1
      */
-    
+
     UE.plugins['video'] = function (){
         var me =this;
-    
+
         /**
          * 创建插入视频字符窜
          * @param url 视频地址
@@ -17661,14 +17661,14 @@
          * @param addParagraph  是否需要添加P 标签
          */
         function creatInsertStr(url,width,height,id,align,classname,type){
-    
+
             url = utils.unhtmlForUrl(url);
             align = utils.unhtml(align);
             classname = utils.unhtml(classname).trim();
-    
+
             width = parseInt(width, 10) || 0;
             height = parseInt(height, 10) || 0;
-    
+
             var str;
             switch (type){
                 case 'image':
@@ -17676,7 +17676,7 @@
                         ' src="' + me.options.UEDITOR_HOME_URL+'themes/default/images/spacer.gif" style="background:url('+me.options.UEDITOR_HOME_URL+'themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
                     break;
                 case 'embed':
-                    str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                    str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="Http://www.macromedia.com/go/getflashplayer"' +
                         ' src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
                         ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
                     break;
@@ -17690,7 +17690,7 @@
             }
             return str;
         }
-    
+
         function switchImgAndVideo(root,img2video){
             utils.each(root.getNodesByTagName(img2video ? 'img' : 'embed video'),function(node){
                 var className = node.getAttr('class');
@@ -17704,14 +17704,14 @@
                 }
             })
         }
-    
+
         me.addOutputRule(function(root){
             switchImgAndVideo(root,true)
         });
         me.addInputRule(function(root){
             switchImgAndVideo(root)
         });
-    
+
         /**
          * 插入视频
          * @command insertvideo
@@ -17734,7 +17734,7 @@
          * editor.execCommand( 'insertvideo', videoAttr );
          * ```
          */
-    
+
         /**
          * 插入视频
          * @command insertvideo
@@ -17764,7 +17764,7 @@
          * editor.execCommand( 'insertvideo', [ videoAttr1, videoAttr2 ] );
          * ```
          */
-    
+
         /**
          * 查询当前光标所在处是否是一个视频
          * @command insertvideo
@@ -17803,8 +17803,8 @@
             }
         };
     };
-    
-    
+
+
     // plugins/table.core.js
     /**
      * Created with JetBrains WebStorm.
@@ -17826,7 +17826,7 @@
             this.cellsRange = {};
             this.update(table);
         };
-    
+
         //===以下为静态工具方法===
         UETable.removeSelectedClass = function (cells) {
             utils.each(cells, function (cell) {
@@ -17854,7 +17854,7 @@
             if (!cell)return 0;
             return parseInt(domUtils.getComputedStyle(cell, "width"), 10);
         };
-    
+
         /**
          * 获取单元格或者单元格组的“对齐”状态。 如果当前的检测对象是一个单元格组， 只有在满足所有单元格的 水平和竖直 对齐属性都相同的
          * 条件时才会返回其状态值，否则将返回null； 如果当前只检测了一个单元格， 则直接返回当前单元格的对齐状态；
@@ -17862,55 +17862,55 @@
          * @return { align: 'left' || 'right' || 'center', valign: 'top' || 'middle' || 'bottom' } 或者 null
          */
         UETable.getTableCellAlignState = function ( cells ) {
-    
+
             !utils.isArray( cells ) && ( cells = [cells] );
-    
+
             var result = {},
                 status = ['align', 'valign'],
                 tempStatus = null,
                 isSame = true;//状态是否相同
-    
+
             utils.each( cells, function( cellNode ){
-    
+
                 utils.each( status, function( currentState ){
-    
+
                     tempStatus = cellNode.getAttribute( currentState );
-    
+
                     if( !result[ currentState ] && tempStatus ) {
                         result[ currentState ] = tempStatus;
                     } else if( !result[ currentState ] || ( tempStatus !== result[ currentState ] ) ) {
                         isSame = false;
                         return false;
                     }
-    
+
                 } );
-    
+
                 return isSame;
-    
+
             });
-    
+
             return isSame ? result : null;
-    
+
         };
-    
+
         /**
          * 根据当前选区获取相关的table信息
          * @return {Object}
          */
         UETable.getTableItemsByRange = function (editor) {
             var start = editor.selection.getStart();
-    
+
             //ff下会选中bookmark
             if( start && start.id && start.id.indexOf('_baidu_bookmark_start_') === 0 && start.nextSibling) {
                 start = start.nextSibling;
             }
-    
+
             //在table或者td边缘有可能存在选中tr的情况
             var cell = start && domUtils.findParentByTagName(start, ["td", "th"], true),
                 tr = cell && cell.parentNode,
                 caption = start && domUtils.findParentByTagName(start, 'caption', true),
                 table = caption ? caption.parentNode : tr && tr.parentNode.parentNode;
-    
+
             return {
                 cell:cell,
                 tr:tr,
@@ -17925,7 +17925,7 @@
             }
             return null;
         };
-    
+
         UETable.getDefaultValue = function (editor, table) {
             var borderMap = {
                     thin:'0px',
@@ -17977,7 +17977,7 @@
             }
             return tdOrTable.ueTable;
         };
-    
+
         UETable.cloneCell = function(cell,ignoreMerge,keepPro){
             if (!cell || utils.isString(cell)) {
                 return this.table.ownerDocument.createElement(cell || 'td');
@@ -17991,7 +17991,7 @@
             //去掉宽高
             !keepPro && domUtils.removeAttributes(tmpCell,'width height');
             !keepPro && domUtils.removeAttributes(tmpCell,'style');
-    
+
             tmpCell.style.borderLeftStyle = "";
             tmpCell.style.borderTopStyle = "";
             tmpCell.style.borderLeftColor = cell.style.borderRightColor;
@@ -18001,7 +18001,7 @@
             flag && domUtils.addClass(cell, "selectTdClass");
             return tmpCell;
         }
-    
+
         UETable.prototype = {
             getMaxRows:function () {
                 var rows = this.table.rows, maxLen = 1;
@@ -18031,7 +18031,7 @@
                                     cellRows['row_' + (i + k)]++
                                 }
                             }
-    
+
                         }
                     }
                     cellsNum += cellRows['row_' + i] || 0;
@@ -18040,7 +18040,7 @@
                 return maxLen;
             },
             getCellColIndex:function (cell) {
-    
+
             },
             /**
              * 获取当前cell旁边的单元格，
@@ -18055,7 +18055,7 @@
                         range = this.cellsRange;
                     //首行或者首列没有前置单元格
                     if ((!right && (!len ? !cellInfo.colIndex : !range.beginColIndex)) || (right && (!len ? (cellInfo.colIndex == (this.colsNum - 1)) : (range.endColIndex == this.colsNum - 1)))) return null;
-    
+
                     previewRowIndex = !len ? cellInfo.rowIndex : range.beginRowIndex;
                     previewColIndex = !right ? ( !len ? (cellInfo.colIndex < 1 ? 0 : (cellInfo.colIndex - 1)) : range.beginColIndex - 1)
                         : ( !len ? cellInfo.colIndex + 1 : range.endColIndex + 1);
@@ -18080,7 +18080,7 @@
                     }
                 }
                 return nextCell;
-    
+
             },
             /**
              * 获取视觉上的后置单元格
@@ -18095,7 +18095,7 @@
                         range = this.cellsRange;
                     //末行或者末列没有后置单元格
                     if ((!bottom && (cellInfo.rowIndex == 0)) || (bottom && (!len ? (cellInfo.rowIndex + cellInfo.rowSpan > this.rowsNum - 1) : (range.endRowIndex == this.rowsNum - 1)))) return null;
-    
+
                     nextRowIndex = !bottom ? ( !len ? cellInfo.rowIndex - 1 : range.beginRowIndex - 1)
                         : ( !len ? (cellInfo.rowIndex + cellInfo.rowSpan) : range.endRowIndex + 1);
                     nextColIndex = !len ? cellInfo.colIndex : range.beginColIndex;
@@ -18349,7 +18349,7 @@
                         };
                     }
                 }
-    
+
                 try {
                     var me = this,
                         cellAInfo = me.getCellInfo(cellA);
@@ -18367,7 +18367,7 @@
                         beginColIndex = Math.min(cellAInfo.colIndex, cellBInfo.colIndex),
                         endRowIndex = Math.max(cellAInfo.rowIndex + cellAInfo.rowSpan - 1, cellBInfo.rowIndex + cellBInfo.rowSpan - 1),
                         endColIndex = Math.max(cellAInfo.colIndex + cellAInfo.colSpan - 1, cellBInfo.colIndex + cellBInfo.colSpan - 1);
-    
+
                     return checkRange(beginRowIndex, beginColIndex, endRowIndex, endColIndex);
                 } catch (e) {
                     //throw e;
@@ -18428,7 +18428,7 @@
                     ths = table.getElementsByTagName("th"),
                     rows = range.endRowIndex - range.beginRowIndex + 1;
                 return  !ths.length ? rows == this.rowsNum : rows == this.rowsNum || (rows == this.rowsNum - 1);
-    
+
             },
             /**
              * 获取视觉上的前置单元格，默认是左边，top传入时
@@ -18443,7 +18443,7 @@
                         range = this.cellsRange;
                     //末行或者末列没有后置单元格
                     if ((!bottom && (cellInfo.rowIndex == 0)) || (bottom && (!len ? (cellInfo.rowIndex + cellInfo.rowSpan > this.rowsNum - 1) : (range.endRowIndex == this.rowsNum - 1)))) return null;
-    
+
                     nextRowIndex = !bottom ? ( !len ? cellInfo.rowIndex - 1 : range.beginRowIndex - 1)
                         : ( !len ? (cellInfo.rowIndex + cellInfo.rowSpan) : range.endRowIndex + 1);
                     nextColIndex = !len ? cellInfo.colIndex : range.beginColIndex;
@@ -18460,7 +18460,7 @@
                         range = this.cellsRange;
                     //首行或者首列没有前置单元格
                     if ((!top && (!len ? !cellInfo.colIndex : !range.beginColIndex)) || (top && (!len ? (cellInfo.rowIndex > (this.colsNum - 1)) : (range.endColIndex == this.colsNum - 1)))) return null;
-    
+
                     previewRowIndex = !top ? ( !len ? cellInfo.rowIndex : range.beginRowIndex )
                         : ( !len ? (cellInfo.rowIndex < 1 ? 0 : (cellInfo.rowIndex - 1)) : range.beginRowIndex);
                     previewColIndex = !top ? ( !len ? (cellInfo.colIndex < 1 ? 0 : (cellInfo.colIndex - 1)) : range.beginColIndex - 1)
@@ -18526,14 +18526,14 @@
                 //由于合并操作可以在任意时刻进行，所以无法通过鼠标位置等信息实时生成range，只能通过缓存实例中的cellsRange对象来访问
                 var range = this.cellsRange,
                     leftTopCell = this.getCell(range.beginRowIndex, this.indexTable[range.beginRowIndex][range.beginColIndex].cellIndex);
-    
+
                 if (leftTopCell.tagName == "TH" && range.endRowIndex !== range.beginRowIndex) {
                     var index = this.indexTable,
                         info = this.getCellInfo(leftTopCell);
                     leftTopCell = this.getCell(1, index[1][info.colIndex].cellIndex);
                     range = this.getCellsRange(leftTopCell, this.getCell(index[this.rowsNum - 1][info.colIndex].rowIndex, index[this.rowsNum - 1][info.colIndex].cellIndex));
                 }
-    
+
                 // 删除剩余的Cells
                 var cells = this.getCells(range);
                 for(var i= 0,ci;ci=cells[i++];){
@@ -18550,7 +18550,7 @@
                 if (leftTopCell.rowSpan == this.rowsNum && leftTopCell.colSpan != 1) {
                     leftTopCell.colSpan = 1;
                 }
-    
+
                 if (leftTopCell.colSpan == this.colsNum && leftTopCell.rowSpan != 1) {
                     var rowIndex = leftTopCell.parentNode.rowIndex;
                     //解决IE下的表格操作问题
@@ -18576,7 +18576,7 @@
                     table = this.table,
                     row = table.insertRow(rowIndex), cell,
                     isInsertTitle = typeof sourceCell == 'string' && sourceCell.toUpperCase() == 'TH';
-    
+
                 function replaceTdToTh(colIndex, cell, tableRow) {
                     if (colIndex == 0) {
                         var tr = tableRow.nextSibling || tableRow.previousSibling,
@@ -18596,7 +18596,7 @@
                         }
                     }
                 }
-    
+
                 //首行直接插入,无需考虑部分单元格被rowspan的情况
                 if (rowIndex == 0 || rowIndex == this.rowsNum) {
                     for (var colIndex = 0; colIndex < numCols; colIndex++) {
@@ -18694,7 +18694,7 @@
                     tableRow, cell,
                     backWidth = parseInt((this.table.offsetWidth - (this.colsNum + 1) * 20 - (this.colsNum + 1)) / (this.colsNum + 1), 10),
                     isInsertTitleCol = typeof sourceCell == 'string' && sourceCell.toUpperCase() == 'TH';
-    
+
                 function replaceTdToTh(rowIndex, cell, tableRow) {
                     if (rowIndex == 0) {
                         var th = cell.nextSibling || cell.previousSibling;
@@ -18713,7 +18713,7 @@
                         }
                     }
                 }
-    
+
                 var preCell;
                 if (colIndex == 0 || colIndex == this.colsNum) {
                     for (; rowIndex < rowsNum; rowIndex++) {
@@ -18739,7 +18739,7 @@
                         } else {
                             tableRow = this.table.rows[rowIndex];
                             preCell = tableRow.cells[cellInfo.cellIndex];
-    
+
                             cell = this.cloneCell(sourceCell, true);//tableRow.insertCell(cellInfo.cellIndex);
                             this.setCellContent(cell);
                             cell.setAttribute('vAlign', cell.getAttribute('vAlign'));
@@ -18838,7 +18838,7 @@
             },
             splitToCols:function (cell) {
                 var backWidth = (cell.offsetWidth / cell.colSpan - 22).toFixed(0),
-    
+
                     cellInfo = this.getCellInfo(cell),
                     rowIndex = cellInfo.rowIndex,
                     colIndex = cellInfo.colIndex,
@@ -18899,7 +18899,7 @@
                     }
                 });
                 return last;
-    
+
             },
             selectRow:function (rowIndex) {
                 var indexRow = this.indexTable[rowIndex],
@@ -18940,13 +18940,13 @@
                     cell.style.backgroundColor = "";
                 })
             }
-    
-    
+
+
         };
         function showError(e) {
         }
     })();
-    
+
     // plugins/table.cmds.js
     /**
      * Created with JetBrains PhpStorm.
@@ -18970,8 +18970,8 @@
             getUETable = function (tdOrTable) {
                 return UT.getUETable(tdOrTable);
             };
-    
-    
+
+
         UE.commands['inserttable'] = {
             queryCommandState: function () {
                 return getTableItemsByRange(this).table ? -1 : 0;
@@ -18991,7 +18991,7 @@
                     //禁止指定table-width
                     return '<table><tbody>' + html.join('') + '</tbody></table>'
                 }
-    
+
                 if (!opt) {
                     opt = utils.extend({}, {
                         numCols: this.options.defaultCols,
@@ -19005,17 +19005,17 @@
                     firstParentBlock = domUtils.findParent(start, function (node) {
                         return domUtils.isBlockElm(node);
                     }, true) || me.body;
-    
+
                 var defaultValue = getDefaultValue(me),
                     tableWidth = firstParentBlock.offsetWidth,
                     tdWidth = Math.floor(tableWidth / opt.numCols - defaultValue.tdPadding * 2 - defaultValue.tdBorder);
-    
+
                 //todo其他属性
                 !opt.tdvalign && (opt.tdvalign = me.options.tdvalign);
                 me.execCommand("inserthtml", createTable(opt, tdWidth));
             }
         };
-    
+
         UE.commands['insertparagraphbeforetable'] = {
             queryCommandState: function () {
                 return getTableItemsByRange(this).cell ? 0 : -1;
@@ -19030,7 +19030,7 @@
                 }
             }
         };
-    
+
         UE.commands['deletetable'] = {
             queryCommandState: function () {
                 var rng = this.selection.getRange();
@@ -19056,9 +19056,9 @@
                     }
                     rng.setCursor(false, true)
                     this.fireEvent("tablehasdeleted")
-    
+
                 }
-    
+
             }
         };
         UE.commands['cellalign'] = {
@@ -19104,7 +19104,7 @@
                     var range = this.selection.getRange();
                     range.setStart(caption, 0).setCursor();
                 }
-    
+
             }
         };
         UE.commands['deletecaption'] = {
@@ -19124,7 +19124,7 @@
                     var range = this.selection.getRange();
                     range.setStart(table.rows[0].cells[0], 0).setCursor();
                 }
-    
+
             }
         };
         UE.commands['inserttitle'] = {
@@ -19203,25 +19203,25 @@
                 this.selection.getRange().setStart(td, 0).setCursor(false, true);
             }
         };
-    
+
         UE.commands["mergeright"] = {
             queryCommandState: function (cmd) {
                 var tableItems = getTableItemsByRange(this),
                     table = tableItems.table,
                     cell = tableItems.cell;
-    
+
                 if (!table || !cell) return -1;
                 var ut = getUETable(table);
                 if (ut.selectedTds.length) return -1;
-    
+
                 var cellInfo = ut.getCellInfo(cell),
                     rightColIndex = cellInfo.colIndex + cellInfo.colSpan;
                 if (rightColIndex >= ut.colsNum) return -1; // 如果处于最右边则不能向右合并
-    
+
                 var rightCellInfo = ut.indexTable[cellInfo.rowIndex][rightColIndex],
                     rightCell = table.rows[rightCellInfo.rowIndex].cells[rightCellInfo.cellIndex];
                 if (!rightCell || cell.tagName != rightCell.tagName) return -1; // TH和TD不能相互合并
-    
+
                 // 当且仅当两个Cell的开始列号和结束列号一致时能进行合并
                 return (rightCellInfo.rowIndex == cellInfo.rowIndex && rightCellInfo.rowSpan == cellInfo.rowSpan) ? 0 : -1;
             },
@@ -19239,19 +19239,19 @@
                 var tableItems = getTableItemsByRange(this),
                     table = tableItems.table,
                     cell = tableItems.cell;
-    
+
                 if (!table || !cell) return -1;
                 var ut = getUETable(table);
                 if (ut.selectedTds.length)return -1;
-    
+
                 var cellInfo = ut.getCellInfo(cell),
                     downRowIndex = cellInfo.rowIndex + cellInfo.rowSpan;
                 if (downRowIndex >= ut.rowsNum) return -1; // 如果处于最下边则不能向下合并
-    
+
                 var downCellInfo = ut.indexTable[downRowIndex][cellInfo.colIndex],
                     downCell = table.rows[downCellInfo.rowIndex].cells[downCellInfo.cellIndex];
                 if (!downCell || cell.tagName != downCell.tagName) return -1; // TH和TD不能相互合并
-    
+
                 // 当且仅当两个Cell的开始列号和结束列号一致时能进行合并
                 return (downCellInfo.colIndex == cellInfo.colIndex && downCellInfo.colSpan == cellInfo.colSpan) ? 0 : -1;
             },
@@ -19281,8 +19281,8 @@
                     }
                     rng.select();
                 }
-    
-    
+
+
             }
         };
         UE.commands["insertrow"] = {
@@ -19393,7 +19393,7 @@
                 var cell = getTableItemsByRange(this).cell,
                     ut = getUETable(cell),
                     cellInfo = ut.getCellInfo(cell);
-    
+
                 //ut.insertCol(!ut.selectedTds.length ? cellInfo.colIndex:ut.cellsRange.beginColIndex);
                 if (!ut.selectedTds.length) {
                     ut.insertCol(cellInfo.colIndex, cell);
@@ -19430,7 +19430,7 @@
                 rng.moveToBookmark(bk).select();
             }
         };
-    
+
         UE.commands["deletecol"] = {
             queryCommandState: function () {
                 var tableItems = getTableItemsByRange(this);
@@ -19452,7 +19452,7 @@
                 }
                 var table = ut.table,
                     rng = this.selection.getRange();
-    
+
                 if (!table.getElementsByTagName('td').length) {
                     var nextSibling = table.nextSibling;
                     domUtils.remove(table);
@@ -19526,10 +19526,10 @@
                     ut = getUETable(cell);
                 ut.splitToCols(cell);
                 rng.moveToBookmark(bk).select();
-    
+
             }
         };
-    
+
         UE.commands["adaptbytext"] =
             UE.commands["adaptbywindow"] = {
                 queryCommandState: function () {
@@ -19551,7 +19551,7 @@
                     }
                 }
             };
-    
+
         //平均分配各列
         UE.commands['averagedistributecol'] = {
             queryCommandState: function () {
@@ -19562,12 +19562,12 @@
             execCommand: function (cmd) {
                 var me = this,
                     ut = getUETableBySelected(me);
-    
+
                 function getAverageWidth() {
                     var tb = ut.table,
                         averageWidth, sumWidth = 0, colsNum = 0,
                         tbAttr = getDefaultValue(me, tb);
-    
+
                     if (ut.isFullRow()) {
                         sumWidth = tb.offsetWidth;
                         colsNum = ut.colsNum;
@@ -19585,20 +19585,20 @@
                     averageWidth = Math.ceil(sumWidth / colsNum) - tbAttr.tdBorder * 2 - tbAttr.tdPadding * 2;
                     return averageWidth;
                 }
-    
+
                 function setAverageWidth(averageWidth) {
                     utils.each(domUtils.getElementsByTagName(ut.table, "th"), function (node) {
                         node.setAttribute("width", "");
                     });
                     var cells = ut.isFullRow() ? domUtils.getElementsByTagName(ut.table, "td") : ut.selectedTds;
-    
+
                     utils.each(cells, function (node) {
                         if (node.colSpan == 1) {
                             node.setAttribute("width", averageWidth);
                         }
                     });
                 }
-    
+
                 if (ut && ut.selectedTds.length) {
                     setAverageWidth(getAverageWidth());
                 }
@@ -19615,25 +19615,25 @@
             execCommand: function (cmd) {
                 var me = this,
                     ut = getUETableBySelected(me);
-    
+
                 function getAverageHeight() {
                     var averageHeight, rowNum, sumHeight = 0,
                         tb = ut.table,
                         tbAttr = getDefaultValue(me, tb),
                         tdpadding = parseInt(domUtils.getComputedStyle(tb.getElementsByTagName('td')[0], "padding-top"));
-    
+
                     if (ut.isFullCol()) {
                         var captionArr = domUtils.getElementsByTagName(tb, "caption"),
                             thArr = domUtils.getElementsByTagName(tb, "th"),
                             captionHeight, thHeight;
-    
+
                         if (captionArr.length > 0) {
                             captionHeight = captionArr[0].offsetHeight;
                         }
                         if (thArr.length > 0) {
                             thHeight = thArr[0].offsetHeight;
                         }
-    
+
                         sumHeight = tb.offsetHeight - (captionHeight || 0) - (thHeight || 0);
                         rowNum = thArr.length == 0 ? ut.rowsNum : (ut.rowsNum - 1);
                     } else {
@@ -19655,7 +19655,7 @@
                     }
                     return averageHeight;
                 }
-    
+
                 function setAverageHeight(averageHeight) {
                     var cells = ut.isFullCol() ? domUtils.getElementsByTagName(ut.table, "td") : ut.selectedTds;
                     utils.each(cells, function (node) {
@@ -19664,13 +19664,13 @@
                         }
                     });
                 }
-    
+
                 if (ut && ut.selectedTds.length) {
                     setAverageHeight(getAverageHeight());
                 }
             }
         };
-    
+
         //单元格对齐方式
         UE.commands['cellalignment'] = {
             queryCommandState: function () {
@@ -19679,7 +19679,7 @@
             execCommand: function (cmd, data) {
                 var me = this,
                     ut = getUETableBySelected(me);
-    
+
                 if (!ut) {
                     var start = me.selection.getStart(),
                         cell = start && domUtils.findParentByTagName(start, ["td", "th", "caption"], true);
@@ -19701,28 +19701,28 @@
              * @see UE.UETable.getTableCellAlignState
              */
             queryCommandValue: function (cmd) {
-    
+
                 var activeMenuCell = getTableItemsByRange( this).cell;
-    
+
                 if( !activeMenuCell ) {
                     activeMenuCell = getSelectedArr(this)[0];
                 }
-    
+
                 if (!activeMenuCell) {
-    
+
                     return null;
-    
+
                 } else {
-    
+
                     //获取同时选中的其他单元格
                     var cells = UE.UETable.getUETable(activeMenuCell).selectedTds;
-    
+
                     !cells.length && ( cells = activeMenuCell );
-    
+
                     return UE.UETable.getTableCellAlignState(cells);
-    
+
                 }
-    
+
             }
         };
         //表格对齐方式
@@ -19737,13 +19737,13 @@
                 var me = this,
                     start = me.selection.getStart(),
                     table = start && domUtils.findParentByTagName(start, ["table"], true);
-    
+
                 if (table) {
                     table.setAttribute("align",value);
                 }
             }
         };
-    
+
         //表格属性
         UE.commands['edittable'] = {
             queryCommandState: function () {
@@ -19771,7 +19771,7 @@
             execCommand: function (cmd, bkColor) {
                 var me = this,
                     ut = getUETableBySelected(me);
-    
+
                 if (!ut) {
                     var start = me.selection.getStart(),
                         cell = start && domUtils.findParentByTagName(start, ["td", "th", "caption"], true);
@@ -19785,7 +19785,7 @@
                 }
             }
         };
-    
+
         UE.commands["settablebackground"] = {
             queryCommandState: function () {
                 return getSelectedArr(this).length > 1 ? 0 : -1;
@@ -19797,7 +19797,7 @@
                 ut.setBackground(cells, value);
             }
         };
-    
+
         UE.commands["cleartablebackground"] = {
             queryCommandState: function () {
                 var cells = getSelectedArr(this);
@@ -19813,7 +19813,7 @@
                 ut.removeBackground(cells);
             }
         };
-    
+
         UE.commands["interlacetable"] = UE.commands["uninterlacetable"] = {
             queryCommandState: function (cmd) {
                 var table = getTableItemsByRange(this).table;
@@ -19868,12 +19868,12 @@
                 })
             }, 0);
         }
-    
+
         function getTableWidth(editor, needIEHack, defaultValue) {
             var body = editor.body;
             return body.offsetWidth - (needIEHack ? parseInt(domUtils.getComputedStyle(body, 'margin-left'), 10) * 2 : 0) - defaultValue.tableBorder * 2 - (editor.options.offsetWidth || 0);
         }
-    
+
         function getSelectedArr(editor) {
             var cell = getTableItemsByRange(editor).cell;
             if (cell) {
@@ -19884,8 +19884,8 @@
             }
         }
     })();
-    
-    
+
+
     // plugins/table.action.js
     /**
      * Created with JetBrains PhpStorm.
@@ -19926,7 +19926,7 @@
             removeSelectedClass = function (cells) {
                 return UT.removeSelectedClass(cells);
             };
-    
+
         function showError(e) {
     //        throw e;
         }
@@ -19944,10 +19944,10 @@
                 }else{
                     return orgGetText.call(me.selection)
                 }
-    
+
             }
         })
-    
+
         //处理拖动及框选相关方法
         var startTd = null, //鼠标按下时的锚点td
             currentTd = null, //当前鼠标经过时的td
@@ -19957,11 +19957,11 @@
             dragOver = false,
             dragLine = null, //模拟的拖动线
             dragTd = null;    //发生拖动的目标td
-    
+
         var mousedown = false,
         //todo 判断混乱模式
             needIEHack = true;
-    
+
         me.setOpt({
             'maxColNum':20,
             'maxRowNum':100,
@@ -20014,18 +20014,18 @@
                     'table tr.firstRow th{border-top-width:2px;}' +
                     '.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }' +
                     'td p{margin:0;padding:0;}', me.document);
-    
+
             var tableCopyList, isFullCol, isFullRow;
             //注册del/backspace事件
             me.addListener('keydown', function (cmd, evt) {
                 var me = this;
                 var keyCode = evt.keyCode || evt.which;
-    
+
                 if (keyCode == 8) {
-    
+
                     var ut = getUETableBySelected(me);
                     if (ut && ut.selectedTds.length) {
-    
+
                         if (ut.isFullCol()) {
                             me.execCommand('deletecol')
                         } else if (ut.isFullRow()) {
@@ -20035,7 +20035,7 @@
                         }
                         domUtils.preventDefault(evt);
                     }
-    
+
                     var caption = domUtils.findParentByTagName(me.selection.getStart(), 'caption', true),
                         range = me.selection.getRange();
                     if (range.collapsed && caption && isEmptyBlock(caption)) {
@@ -20047,11 +20047,11 @@
                         }
                         me.fireEvent('saveScene');
                     }
-    
+
                 }
-    
+
                 if (keyCode == 46) {
-    
+
                     ut = getUETableBySelected(me);
                     if (ut) {
                         me.fireEvent('saveScene');
@@ -20060,18 +20060,18 @@
                         }
                         me.fireEvent('saveScene');
                         domUtils.preventDefault(evt);
-    
+
                     }
-    
+
                 }
                 if (keyCode == 13) {
-    
+
                     var rng = me.selection.getRange(),
                         caption = domUtils.findParentByTagName(rng.startContainer, 'caption', true);
                     if (caption) {
                         var table = domUtils.findParentByTagName(caption, 'table');
                         if (!rng.collapsed) {
-    
+
                             rng.deleteContents();
                             me.fireEvent('saveScene');
                         } else {
@@ -20094,12 +20094,12 @@
                                     me.execCommand('insertparagraphbeforetable');
                                     domUtils.preventDefault(evt);
                                 }
-    
+
                             }
                         }
                     }
                 }
-    
+
                 if ((evt.ctrlKey || evt.metaKey) && evt.keyCode == '67') {
                     tableCopyList = null;
                     var ut = getUETableBySelected(me);
@@ -20116,7 +20116,7 @@
                             } else {
                                 tableCopyList[tableCopyList.length - 1].push(ut.cloneCell(ci,null,true));
                             }
-    
+
                         }
                     }
                 }
@@ -20125,7 +20125,7 @@
                 toggleDraggableState(this, false, "", null);
                 if (dragButton)domUtils.remove(dragButton);
             });
-    
+
             me.addListener('beforepaste', function (cmd, html) {
                 var me = this;
                 var rng = me.selection.getRange();
@@ -20203,7 +20203,7 @@
                                     } else {
                                         var cloneTd = cj.cloneNode(true);
                                         domUtils.removeAttributes(cloneTd, ['class', 'rowSpan', 'colSpan']);
-    
+
                                         preNode.parentNode.appendChild(cloneTd)
                                     }
                                 }
@@ -20232,7 +20232,7 @@
                                 cloneTd.rowSpan = 1;
                             }
                         }
-    
+
                         var defaultValue = getDefaultValue(me),
                             width = me.body.offsetWidth -
                                 (needIEHack ? parseInt(domUtils.getComputedStyle(me.body, 'margin-left'), 10) * 2 : 0) - defaultValue.tableBorder * 2 - (me.options.offsetWidth || 0);
@@ -20271,7 +20271,7 @@
                     html.html = div.innerHTML;
                 }
             });
-    
+
             me.addListener('afterpaste', function () {
                 utils.each(domUtils.getElementsByTagName(me.body, "table"), function (table) {
                     if (table.offsetWidth > me.body.offsetWidth) {
@@ -20295,14 +20295,14 @@
                             cell.style.wordBreak = "break-all";
                         }
                     }
-    
+
                 }, 100);
             });
             me.addListener("selectionchange", function () {
                 toggleDraggableState(me, false, "", null);
             });
-    
-    
+
+
             //内容变化时触发索引更新
             //todo 可否考虑标记检测，如果不涉及表格的变化就不进行索引重建和更新
             me.addListener("contentchange", function () {
@@ -20406,12 +20406,12 @@
                         }
                     };
                 });
-    
+
                 switchBorderColor(me, true);
             });
-    
+
             domUtils.on(me.document, "mousemove", mouseMoveEvent);
-    
+
             domUtils.on(me.document, "mouseout", function (evt) {
                 var target = evt.target || evt.srcElement;
                 if (target.tagName == "TABLE") {
@@ -20443,7 +20443,7 @@
                     domUtils.removeClasses( rows[i], classList );
                 }
             });
-    
+
             me.addListener("mousedown", mouseDownEvent);
             me.addListener("mouseup", mouseUpEvent);
             //拖动的时候触发mouseup
@@ -20457,7 +20457,7 @@
                     }
                 });
             });
-    
+
             var currentRowIndex = 0;
             me.addListener("mousedown", function () {
                 currentRowIndex = 0;
@@ -20495,7 +20495,7 @@
                     }
                     return true;
                 }
-    
+
             });
             browser.ie && me.addListener('selectionchange', function () {
                 toggleDraggableState(this, false, "", null);
@@ -20513,7 +20513,7 @@
                 if (!ut) return;
                 notCtrlKey && ut.clearSelected();
             });
-    
+
             me.addListener("beforegetcontent", function () {
                 switchBorderColor(this, false);
                 browser.ie && utils.each(this.document.getElementsByTagName('caption'), function (ci) {
@@ -20547,14 +20547,14 @@
                     });
                 }
             });
-    
+
             //重写execCommand命令，用于处理框选时的处理
             var oldExecCommand = me.execCommand;
             me.execCommand = function (cmd, datatat) {
-    
+
                 var me = this,
                     args = arguments;
-    
+
                 cmd = cmd.toLowerCase();
                 var ut = getUETableBySelected(me), tds,
                     range = new dom.Range(me.document),
@@ -20579,7 +20579,7 @@
                                 me._ignoreContentChange = true;
                                 result = oldExecCommand.apply(me, arguments);
                                 me._ignoreContentChange = false;
-    
+
                             }
                             lastState = me.queryCommandState(cmd);
                             lastValue = me.queryCommandValue(cmd);
@@ -20598,8 +20598,8 @@
                 }
                 return result;
             };
-    
-    
+
+
         });
         /**
          * 删除obj的宽高style，改成属性宽高
@@ -20610,21 +20610,21 @@
             removeStyle(obj, "width", true);
             removeStyle(obj, "height", true);
         }
-    
+
         function removeStyle(obj, styleName, replaceToProperty) {
             if (obj.style[styleName]) {
                 replaceToProperty && obj.setAttribute(styleName, parseInt(obj.style[styleName], 10));
                 obj.style[styleName] = "";
             }
         }
-    
+
         function getParentTdOrTh(ele) {
             if (ele.tagName == "TD" || ele.tagName == "TH") return ele;
             var td;
             if (td = domUtils.findParentByTagName(ele, "td", true) || domUtils.findParentByTagName(ele, "th", true)) return td;
             return null;
         }
-    
+
         function isEmptyBlock(node) {
             var reg = new RegExp(domUtils.fillChar, 'g');
             if (node[browser.ie ? 'innerText' : 'textContent'].replace(/^\s*$/, '').replace(reg, '').length > 0) {
@@ -20637,8 +20637,8 @@
             }
             return 1;
         }
-    
-    
+
+
         function mouseCoords(evt) {
             if (evt.pageX || evt.pageY) {
                 return { x:evt.pageX, y:evt.pageY };
@@ -20648,24 +20648,24 @@
                 y:evt.clientY + me.document.body.scrollTop - me.document.body.clientTop
             };
         }
-    
+
         function mouseMoveEvent(evt) {
-    
+
             if( isEditorDisabled() ) {
                 return;
             }
-    
+
             try {
-    
+
                 //普通状态下鼠标移动
                 var target = getParentTdOrTh(evt.target || evt.srcElement),
                     pos;
-    
+
                 //区分用户的行为是拖动还是双击
                 if( isInResizeBuffer  ) {
-    
+
                     me.body.style.webkitUserSelect = 'none';
-    
+
                     if( Math.abs( userActionStatus.x - evt.clientX ) > offsetOfTableCell || Math.abs( userActionStatus.y - evt.clientY ) > offsetOfTableCell ) {
                         clearTableDragTimer();
                         isInResizeBuffer = false;
@@ -20674,7 +20674,7 @@
                         tableBorderDrag(evt);
                     }
                 }
-    
+
                 //修改单元格大小时的鼠标移动
                 if (onDrag && dragTd) {
                     singleClickState = 0;
@@ -20697,7 +20697,7 @@
                     pos = mouseCoords(evt);
                     var state = getRelation(target, pos),
                         table = domUtils.findParentByTagName(target, "table", true);
-    
+
                     if (inTableSide(table, target, evt, true)) {
                         if (me.fireEvent("excludetable", table) === true) return;
                         me.body.style.cursor = "url(" + me.options.cursorpath + "h.png),pointer";
@@ -20713,19 +20713,19 @@
                         }
                         //位于第一行的顶部或者第一列的左边时不可拖动
                         toggleDraggableState(me, target ? !!state : false, target ? state : '', pos, target);
-    
+
                     }
                 } else {
                     toggleDragButton(false, table, me);
                 }
-    
+
             } catch (e) {
                 showError(e);
             }
         }
-    
+
         var dragButtonTimer;
-    
+
         function toggleDragButton(show, table, editor) {
             if (!show) {
                 if (dragOver)return;
@@ -20736,7 +20736,7 @@
                 createDragButton(table, editor);
             }
         }
-    
+
         function createDragButton(table, editor) {
             var pos = domUtils.getXY(table),
                 doc = table.ownerDocument;
@@ -20762,7 +20762,7 @@
                 domUtils.preventDefault(evt);
             });
             var timer;
-    
+
             function doClick(evt, button) {
                 // 部分浏览器下需要清理
                 clearTimeout(timer);
@@ -20770,7 +20770,7 @@
                     editor.fireEvent("tableClicked", table, button);
                 }, 300);
             }
-    
+
             function doDblClick(evt) {
                 clearTimeout(timer);
                 var ut = getUETable(table),
@@ -20780,11 +20780,11 @@
                 editor.selection.getRange().setStart(start, 0).setCursor(false, true);
                 ut.setSelected(range);
             }
-    
+
             doc.body.appendChild(dragButton);
         }
-    
-    
+
+
     //    function inPosition(table, pos) {
     //        var tablePos = domUtils.getXY(table),
     //            width = table.offsetWidth,
@@ -20795,11 +20795,11 @@
     //            return "bottomRight";
     //        }
     //    }
-    
+
         function inTableSide(table, cell, evt, top) {
             var pos = mouseCoords(evt),
                 state = getRelation(cell, pos);
-    
+
             if (top) {
                 var caption = table.getElementsByTagName("caption")[0],
                     capHeight = caption ? caption.offsetHeight : 0;
@@ -20808,7 +20808,7 @@
                 return (state == "h1") && ((pos.x - domUtils.getXY(table).x) < 8);
             }
         }
-    
+
         /**
          * 获取拖动时允许的X轴坐标
          * @param dragTd
@@ -20822,14 +20822,14 @@
                     mouseX = mouseCoords(evt).x,
                     left = (preTd ? domUtils.getXY(preTd).x : domUtils.getXY(ut.table).x) + 20 ,
                     right = nextTd ? domUtils.getXY(nextTd).x + nextTd.offsetWidth - 20 : (me.body.offsetWidth + 5 || parseInt(domUtils.getComputedStyle(me.body, "width"), 10));
-    
+
                 left += cellMinWidth;
                 right -= cellMinWidth;
-    
+
                 return mouseX < left ? left : mouseX > right ? right : mouseX;
             }
         }
-    
+
         /**
          * 获取拖动时允许的Y轴坐标
          */
@@ -20842,7 +20842,7 @@
                 showError(e);
             }
         }
-    
+
         /**
          * 移动状态切换
          */
@@ -20862,22 +20862,22 @@
                 showError(e);
             }
         }
-    
+
         /**
          * 获取与UETable相关的resize line
          * @param uetable UETable对象
          */
         function getResizeLineByUETable() {
-    
+
             var lineId = '_UETableResizeLine',
                 line = this.document.getElementById( lineId );
-    
+
             if( !line ) {
                 line = this.document.createElement("div");
                 line.id = lineId;
                 line.contnetEditable = false;
                 line.setAttribute("unselectable", "on");
-    
+
                 var styles = {
                     width: 2*cellBorderWidth + 1 + 'px',
                     position: 'absolute',
@@ -20886,27 +20886,27 @@
                     background: 'red',
                     display: 'none'
                 };
-    
+
                 //切换状态
                 line.onmouseout = function(){
                     this.style.display = 'none';
                 };
-    
+
                 utils.extend( line.style, styles );
-    
+
                 this.document.body.appendChild( line );
-    
+
             }
-    
+
             return line;
-    
+
         }
-    
+
         /**
          * 更新resize-line
          */
         function updateResizeLine( cell, uetable ) {
-    
+
             var line = getResizeLineByUETable.call( this ),
                 table = uetable.table,
                 styles = {
@@ -20915,22 +20915,22 @@
                     display: 'block',
                     height: table.offsetHeight + 'px'
                 };
-    
+
             utils.extend( line.style, styles );
-    
+
         }
-    
+
         /**
          * 显示resize-line
          */
         function showResizeLine( cell ) {
-    
+
             var uetable = getUETable( cell );
-    
+
             updateResizeLine.call( this, cell, uetable );
-    
+
         }
-    
+
         /**
          * 获取鼠标与当前单元格的相对位置
          * @param ele
@@ -20938,11 +20938,11 @@
          */
         function getRelation(ele, mousePos) {
             var elePos = domUtils.getXY(ele);
-    
+
             if( !elePos ) {
                 return '';
             }
-    
+
             if (elePos.x + ele.offsetWidth - mousePos.x < cellBorderWidth) {
                 return "h";
             }
@@ -20957,23 +20957,23 @@
             }
             return '';
         }
-    
+
         function mouseDownEvent(type, evt) {
-    
+
             if( isEditorDisabled() ) {
                 return ;
             }
-    
+
             userActionStatus = {
                 x: evt.clientX,
                 y: evt.clientY
             };
-    
+
             //右键菜单单独处理
             if (evt.button == 2) {
                 var ut = getUETableBySelected(me),
                     flag = false;
-    
+
                 if (ut) {
                     var td = getTargetTd(me, evt);
                     utils.each(ut.selectedTds, function (ti) {
@@ -20989,21 +20989,21 @@
                         setTimeout(function () {
                             me.selection.getRange().setStart(td, 0).setCursor(false, true);
                         }, 0);
-    
+
                     }
                 }
             } else {
                 tableClickHander( evt );
             }
-    
+
         }
-    
+
         //清除表格的计时器
         function clearTableTimer() {
             tabTimer && clearTimeout( tabTimer );
             tabTimer = null;
         }
-    
+
         //双击收缩
         function tableDbclickHandler(evt) {
             singleClickState = 0;
@@ -21012,9 +21012,9 @@
             if (target) {
                 var h;
                 if (h = getRelation(target, mouseCoords(evt))) {
-    
+
                     hideDragLine( me );
-    
+
                     if (h == 'h1') {
                         h = 'h';
                         if (inTableSide(domUtils.findParentByTagName(target, "table"), target, evt)) {
@@ -21031,55 +21031,55 @@
                         var ut = getUETable(target),
                             table = ut.table,
                             cells = getCellsByMoveBorder( target, table, true );
-    
+
                         cells = extractArray( cells, 'left' );
-    
+
                         ut.width = ut.offsetWidth;
-    
+
                         var oldWidth = [],
                             newWidth = [];
-    
+
                         utils.each( cells, function( cell ){
-    
+
                             oldWidth.push( cell.offsetWidth );
-    
+
                         } );
-    
+
                         utils.each( cells, function( cell ){
-    
+
                             cell.removeAttribute("width");
-    
+
                         } );
-    
+
                         window.setTimeout( function(){
-    
+
                             //是否允许改变
                             var changeable = true;
-    
+
                             utils.each( cells, function( cell, index ){
-    
+
                                 var width = cell.offsetWidth;
-    
+
                                 if( width > oldWidth[index] ) {
                                     changeable = false;
                                     return false;
                                 }
-    
+
                                 newWidth.push( width );
-    
+
                             } );
-    
+
                             var change = changeable ? newWidth : oldWidth;
-    
+
                             utils.each( cells, function( cell, index ){
-    
+
                                 cell.width = change[index] - getTabcellSpace();
-    
+
                             } );
-    
-    
+
+
                         }, 0 );
-    
+
     //                    minWidth -= cellMinWidth;
     //
     //                    table.removeAttribute("width");
@@ -21087,14 +21087,14 @@
     //                        cell.style.width = "";
     //                        cell.width -= minWidth;
     //                    });
-    
+
                     }
                 }
             }
         }
-    
+
         function tableClickHander( evt ) {
-    
+
             removeSelectedClass(domUtils.getElementsByTagName(me.body, "td th"));
             //trace:3113
             //选中单元格，点击table外部，不会清掉table上挂的ueTable,会引起getUETableBySelected方法返回值
@@ -21106,7 +21106,7 @@
             var table = domUtils.findParentByTagName(startTd, "table", true);
             ut = getUETable(table);
             ut && ut.clearSelected();
-    
+
             //判断当前鼠标状态
             if (!onBorder) {
                 me.document.body.style.webkitUserSelect = '';
@@ -21116,75 +21116,75 @@
                 //边框上的动作处理
                 borderActionHandler( evt );
             }
-    
-    
+
+
         }
-    
+
         //处理表格边框上的动作, 这里做延时处理，避免两种动作互相影响
         function borderActionHandler( evt ) {
-    
+
             if ( browser.ie ) {
                 evt = reconstruct(evt );
             }
-    
+
             clearTableDragTimer();
-    
+
             //是否正在等待resize的缓冲中
             isInResizeBuffer = true;
-    
+
             tableDragTimer = setTimeout(function(){
                 tableBorderDrag( evt );
             }, dblclickTime);
-    
+
         }
-    
+
         function extractArray( originArr, key ) {
-    
+
             var result = [],
                 tmp = null;
-    
+
             for( var i = 0, len = originArr.length; i<len; i++ ) {
-    
+
                 tmp = originArr[ i ][ key ];
-    
+
                 if( tmp ) {
                     result.push( tmp );
                 }
-    
+
             }
-    
+
             return result;
-    
+
         }
-    
+
         function clearTableDragTimer() {
             tableDragTimer && clearTimeout(tableDragTimer);
             tableDragTimer = null;
         }
-    
+
         function reconstruct( obj ) {
-    
+
             var attrs = ['pageX', 'pageY', 'clientX', 'clientY', 'srcElement', 'target'],
                 newObj = {};
-    
+
             if( obj ) {
-    
+
                 for( var i = 0, key, val; key = attrs[i]; i++ ) {
                     val=obj[ key ];
                     val && (newObj[ key ] = val);
                 }
-    
+
             }
-    
+
             return newObj;
-    
+
         }
-    
+
         //边框拖动
         function tableBorderDrag( evt ) {
-    
+
             isInResizeBuffer = false;
-    
+
             startTd = evt.target || evt.srcElement;
             if( !startTd ) return;
             var state = getRelation(startTd, mouseCoords(evt));
@@ -21201,46 +21201,46 @@
             onDrag = state;
             dragTd = startTd;
         }
-    
+
         function mouseUpEvent(type, evt) {
-    
+
             if( isEditorDisabled() ) {
                 return ;
             }
-    
+
             clearTableDragTimer();
-    
+
             isInResizeBuffer = false;
-    
+
             if( onBorder ) {
                 singleClickState = ++singleClickState % 3;
-    
+
                 userActionStatus = {
                     x: evt.clientX,
                     y: evt.clientY
                 };
-    
+
                 tableResizeTimer = setTimeout(function(){
                     singleClickState > 0 && singleClickState--;
                 }, dblclickTime );
-    
+
                 if( singleClickState === 2 ) {
-    
+
                     singleClickState = 0;
                     tableDbclickHandler(evt);
                     return;
-    
+
                 }
-    
+
             }
-    
+
             if (evt.button == 2)return;
             var me = this;
             //清除表格上原生跨选问题
             var range = me.selection.getRange(),
                 start = domUtils.findParentByTagName(range.startContainer, 'table', true),
                 end = domUtils.findParentByTagName(range.endContainer, 'table', true);
-    
+
             if (start || end) {
                 if (start === end) {
                     start = domUtils.findParentByTagName(range.startContainer, ['td', 'th', 'caption'], true);
@@ -21256,17 +21256,17 @@
             me.document.body.style.webkitUserSelect = '';
             //拖拽状态下的mouseUP
             if ( onDrag && dragTd ) {
-    
+
                 me.selection.getNative()[browser.ie9below ? 'empty' : 'removeAllRanges']();
-    
+
                 singleClickState = 0;
                 dragLine = me.document.getElementById('ue_tableDragLine');
-    
+
                 // trace 3973
                 if (dragLine) {
                     var dragTdPos = domUtils.getXY(dragTd),
                         dragLinePos = domUtils.getXY(dragLine);
-    
+
                     switch (onDrag) {
                         case "h":
                             changeColWidth(dragTd, dragLinePos.x - dragTdPos.x);
@@ -21278,7 +21278,7 @@
                     }
                     onDrag = "";
                     dragTd = null;
-    
+
                     hideDragLine(me);
                     me.fireEvent('saveScene');
                     return;
@@ -21319,13 +21319,13 @@
             }
             me._selectionChange(250, evt);
         }
-    
+
         function mouseOverEvent(type, evt) {
-    
+
             if( isEditorDisabled() ) {
                 return;
             }
-    
+
             var me = this,
                 tar = evt.target || evt.srcElement;
             currentTd = domUtils.findParentByTagName(tar, "td", true) || domUtils.findParentByTagName(tar, "th", true);
@@ -21343,11 +21343,11 @@
                     me.document.body.style.webkitUserSelect = '';
                     ut.clearSelected();
                 }
-    
+
             }
             evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
         }
-    
+
         function setCellHeight(cell, height, backHeight) {
             var lineHight = parseInt(domUtils.getComputedStyle(cell, "line-height"), 10),
                 tmpHeight = backHeight + height;
@@ -21355,53 +21355,53 @@
             if (cell.style.height) cell.style.height = "";
             cell.rowSpan == 1 ? cell.setAttribute("height", height) : (cell.removeAttribute && cell.removeAttribute("height"));
         }
-    
+
         function getWidth(cell) {
             if (!cell)return 0;
             return parseInt(domUtils.getComputedStyle(cell, "width"), 10);
         }
-    
+
         function changeColWidth(cell, changeValue) {
-    
+
             var ut = getUETable(cell);
             if (ut) {
-    
+
                 //根据当前移动的边框获取相关的单元格
                 var table = ut.table,
                     cells = getCellsByMoveBorder( cell, table );
-    
+
                 table.style.width = "";
                 table.removeAttribute("width");
-    
+
                 //修正改变量
                 changeValue = correctChangeValue( changeValue, cell, cells );
-    
+
                 if (cell.nextSibling) {
-    
+
                     var i=0;
-    
+
                     utils.each( cells, function( cellGroup ){
-    
+
                         cellGroup.left.width = (+cellGroup.left.width)+changeValue;
                         cellGroup.right && ( cellGroup.right.width = (+cellGroup.right.width)-changeValue );
-    
+
                     } );
-    
+
                 } else {
-    
+
                     utils.each( cells, function( cellGroup ){
                         cellGroup.left.width -= -changeValue;
                     } );
-    
+
                 }
             }
-    
+
         }
-    
+
         function isEditorDisabled() {
             return me.body.contentEditable === "false";
         }
-    
+
         function changeRowHeight(td, changeValue) {
             if (Math.abs(changeValue) < 10) return;
             var ut = getUETable(td);
@@ -21413,29 +21413,29 @@
                     setCellHeight(cell, changeValue, backHeight);
                 }
             }
-    
+
         }
-    
+
         /**
          * 获取调整单元格大小的相关单元格
          * @isContainMergeCell 返回的结果中是否包含发生合并后的单元格
          */
         function getCellsByMoveBorder( cell, table, isContainMergeCell ) {
-    
+
             if( !table ) {
                 table = domUtils.findParentByTagName( cell, 'table' );
             }
-    
+
             if( !table ) {
                 return null;
             }
-    
+
             //获取到该单元格所在行的序列号
             var index = domUtils.getNodeIndex( cell ),
                 temp = cell,
                 rows = table.rows,
                 colIndex = 0;
-    
+
             while( temp ) {
                 //获取到当前单元格在未发生单元格合并时的序列
                 if( temp.nodeType === 1 ) {
@@ -21443,202 +21443,202 @@
                 }
                 temp = temp.previousSibling;
             }
-    
+
             temp = null;
-    
+
             //记录想关的单元格
             var borderCells = [];
-    
+
             utils.each(rows, function( tabRow ){
-    
+
                 var cells = tabRow.cells,
                     currIndex = 0;
-    
+
                 utils.each( cells, function( tabCell ){
-    
+
                     currIndex += (tabCell.colSpan || 1);
-    
+
                     if( currIndex === colIndex ) {
-    
+
                         borderCells.push({
                             left: tabCell,
                             right: tabCell.nextSibling || null
                         });
-    
+
                         return false;
-    
+
                     } else if( currIndex > colIndex ) {
-    
+
                         if( isContainMergeCell ) {
                             borderCells.push({
                                 left: tabCell
                             });
                         }
-    
+
                         return false;
                     }
-    
-    
+
+
                 } );
-    
+
             });
-    
+
             return borderCells;
-    
+
         }
-    
-    
+
+
         /**
          * 通过给定的单元格集合获取最小的单元格width
          */
         function getMinWidthByTableCells( cells ) {
-    
+
             var minWidth = Number.MAX_VALUE;
-    
+
             for( var i = 0, curCell; curCell = cells[ i ] ; i++ ) {
-    
+
                 minWidth = Math.min( minWidth, curCell.width || getTableCellWidth( curCell ) );
-    
+
             }
-    
+
             return minWidth;
-    
+
         }
-    
+
         function correctChangeValue( changeValue, relatedCell, cells ) {
-    
+
             //为单元格的paading预留空间
             changeValue -= getTabcellSpace();
-    
+
             if( changeValue < 0 ) {
                 return 0;
             }
-    
+
             changeValue -= getTableCellWidth( relatedCell );
-    
+
             //确定方向
             var direction = changeValue < 0 ? 'left':'right';
-    
+
             changeValue = Math.abs(changeValue);
-    
+
             //只关心非最后一个单元格就可以
             utils.each( cells, function( cellGroup ){
-    
+
                 var curCell = cellGroup[direction];
-    
+
                 //为单元格保留最小空间
                 if( curCell ) {
                     changeValue = Math.min( changeValue, getTableCellWidth( curCell )-cellMinWidth );
                 }
-    
-    
+
+
             } );
-    
-    
+
+
             //修正越界
             changeValue = changeValue < 0 ? 0 : changeValue;
-    
+
             return direction === 'left' ? -changeValue : changeValue;
-    
+
         }
-    
+
         function getTableCellWidth( cell ) {
-    
+
             var width = 0,
                 //偏移纠正量
                 offset = 0,
                 width = cell.offsetWidth - getTabcellSpace();
-    
+
             //最后一个节点纠正一下
             if( !cell.nextSibling ) {
-    
+
                 width -= getTableCellOffset( cell );
-    
+
             }
-    
+
             width = width < 0 ? 0 : width;
-    
+
             try {
                 cell.width = width;
             } catch(e) {
             }
-    
+
             return width;
-    
+
         }
-    
+
         /**
          * 获取单元格所在表格的最末单元格的偏移量
          */
         function getTableCellOffset( cell ) {
-    
+
             tab = domUtils.findParentByTagName( cell, "table", false);
-    
+
             if( tab.offsetVal === undefined ) {
-    
+
                 var prev = cell.previousSibling;
-    
+
                 if( prev ) {
-    
+
                     //最后一个单元格和前一个单元格的width diff结果 如果恰好为一个border width， 则条件成立
                     tab.offsetVal = cell.offsetWidth - prev.offsetWidth === UT.borderWidth ? UT.borderWidth : 0;
-    
+
                 } else {
                     tab.offsetVal = 0;
                 }
-    
+
             }
-    
+
             return tab.offsetVal;
-    
+
         }
-    
+
         function getTabcellSpace() {
-    
+
             if( UT.tabcellSpace === undefined ) {
-    
+
                 var cell = null,
                     tab = me.document.createElement("table"),
                     tbody = me.document.createElement("tbody"),
                     trow = me.document.createElement("tr"),
                     tabcell = me.document.createElement("td"),
                     mirror = null;
-    
+
                 tabcell.style.cssText = 'border: 0;';
                 tabcell.width = 1;
-    
+
                 trow.appendChild( tabcell );
                 trow.appendChild( mirror = tabcell.cloneNode( false ) );
-    
+
                 tbody.appendChild( trow );
-    
+
                 tab.appendChild( tbody );
-    
+
                 tab.style.cssText = "visibility: hidden;";
-    
+
                 me.body.appendChild( tab );
-    
+
                 UT.paddingSpace = tabcell.offsetWidth - 1;
-    
+
                 var tmpTabWidth = tab.offsetWidth;
-    
+
                 tabcell.style.cssText = '';
                 mirror.style.cssText = '';
-    
+
                 UT.borderWidth = ( tab.offsetWidth - tmpTabWidth ) / 3;
-    
+
                 UT.tabcellSpace = UT.paddingSpace + UT.borderWidth;
-    
+
                 me.body.removeChild( tab );
-    
+
             }
-    
+
             getTabcellSpace = function(){ return UT.tabcellSpace; };
-    
+
             return UT.tabcellSpace;
-    
+
         }
-    
+
         function getDragLine(editor, doc) {
             if (mousedown)return;
             dragLine = editor.document.createElement("div");
@@ -21653,7 +21653,7 @@
             });
             editor.body.appendChild(dragLine);
         }
-    
+
         function hideDragLine(editor) {
             if (mousedown)return;
             var line;
@@ -21661,7 +21661,7 @@
                 domUtils.remove(line)
             }
         }
-    
+
         /**
          * 依据state（v|h）在cell位置显示横线
          * @param state
@@ -21688,7 +21688,7 @@
                 default:
             }
         }
-    
+
         /**
          * 当表格边框颜色为白色时设置为虚线,true为添加虚线
          * @param editor
@@ -21707,63 +21707,63 @@
                         domUtils.removeClasses(node, "noBorderTable")
                     }
                 }
-    
+
             }
         }
-    
+
         function getTableWidth(editor, needIEHack, defaultValue) {
             var body = editor.body;
             return body.offsetWidth - (needIEHack ? parseInt(domUtils.getComputedStyle(body, 'margin-left'), 10) * 2 : 0) - defaultValue.tableBorder * 2 - (editor.options.offsetWidth || 0);
         }
-    
+
         /**
          * 获取当前拖动的单元格
          */
         function getTargetTd(editor, evt) {
-    
+
             var target = domUtils.findParentByTagName(evt.target || evt.srcElement, ["td", "th"], true),
                 dir = null;
-    
+
             if( !target ) {
                 return null;
             }
-    
+
             dir = getRelation( target, mouseCoords( evt ) );
-    
+
             //如果有前一个节点， 需要做一个修正， 否则可能会得到一个错误的td
-    
+
             if( !target ) {
                 return null;
             }
-    
+
             if( dir === 'h1' && target.previousSibling ) {
-    
+
                 var position = domUtils.getXY( target),
                     cellWidth = target.offsetWidth;
-    
+
                 if( Math.abs( position.x + cellWidth - evt.clientX ) > cellWidth / 3 ) {
                     target = target.previousSibling;
                 }
-    
+
             } else if( dir === 'v1' && target.parentNode.previousSibling ) {
-    
+
                 var position = domUtils.getXY( target),
                     cellHeight = target.offsetHeight;
-    
+
                 if( Math.abs( position.y + cellHeight - evt.clientY ) > cellHeight / 3 ) {
                     target = target.parentNode.previousSibling.firstChild;
                 }
-    
+
             }
-    
-    
+
+
             //排除了非td内部以及用于代码高亮部分的td
             return target && !(editor.fireEvent("excludetable", target) === true) ? target : null;
         }
-    
+
     };
-    
-    
+
+
     // plugins/table.sort.js
     /**
      * Created with JetBrains PhpStorm.
@@ -21772,7 +21772,7 @@
      * Time: 上午10:20
      * To change this template use File | Settings | File Templates.
      */
-    
+
     UE.UETable.prototype.sortTable = function (sortByCellIndex, compareFn) {
         var table = this.table,
             rows = table.rows,
@@ -21792,7 +21792,7 @@
                 trArray[i] = rows[i];
             }
         }
-    
+
         var Fn = {
             'reversecurrent': function(td1,td2){
                 return 1;
@@ -21822,10 +21822,10 @@
                 return (value2||0) - (value1||0);
             }
         };
-    
+
         //对表格设置排序的标记data-sort-type
         table.setAttribute('data-sort-type', compareFn && typeof compareFn === "string" && Fn[compareFn] ? compareFn:'');
-    
+
         //th不参与排序
         flag && trArray.splice(0, 1);
         trArray = utils.sort(trArray,function (tr1, tr2) {
@@ -21852,7 +21852,7 @@
             tbody.insertBefore(fragment,rows[lastRowIndex- range.endRowIndex + range.beginRowIndex - 1])
         }
     };
-    
+
     UE.plugins['tablesort'] = function () {
         var me = this,
             UT = UE.UETable,
@@ -21862,15 +21862,15 @@
             getTableItemsByRange = function (editor) {
                 return UT.getTableItemsByRange(editor);
             };
-    
-    
+
+
         me.ready(function () {
             //添加表格可排序的样式
             utils.cssRule('tablesort',
                 'table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;' +
                     '   background-image:url(' + me.options.themePath + me.options.theme + '/images/sortable.png);}',
                 me.document);
-    
+
             //做单元格合并操作时,清除可排序标识
             me.addListener("afterexeccommand", function (type, cmd) {
                 if( cmd == 'mergeright' || cmd == 'mergedown' || cmd == 'mergecells') {
@@ -21878,9 +21878,9 @@
                 }
             });
         });
-    
-    
-    
+
+
+
         //表格排序
         UE.commands['sorttable'] = {
             queryCommandState: function () {
@@ -21909,7 +21909,7 @@
                 }catch(e){}
             }
         };
-    
+
         //设置表格可排序,清除表格可排序
         UE.commands["enablesort"] = UE.commands["disablesort"] = {
             queryCommandState: function (cmd) {
@@ -21920,7 +21920,7 @@
                         if(cells[i].getAttribute('colspan')>1 || cells[i].getAttribute('rowspan')>1) return -1;
                     }
                 }
-    
+
                 return !table ? -1: cmd=='enablesort' ^ table.getAttribute('data-sort')!='sortEnabled' ? -1:0;
             },
             execCommand: function (cmd) {
@@ -21930,8 +21930,8 @@
             }
         };
     };
-    
-    
+
+
     // plugins/contextmenu.js
     ///import core
     ///commands 右键菜单
@@ -21943,7 +21943,7 @@
      * @name baidu.editor.plugins.contextmenu
      * @author zhanyi
      */
-    
+
     UE.plugins['contextmenu'] = function () {
         var me = this;
         me.setOpt('enableContextMenu',true);
@@ -22297,9 +22297,9 @@
             return;
         }
         var uiUtils = UE.ui.uiUtils;
-    
+
         me.addListener( 'contextmenu', function ( type, evt ) {
-    
+
             var offset = uiUtils.getViewportOffsetByEvent( evt );
             me.fireEvent( 'beforeselectionchange' );
             if ( menu ) {
@@ -22366,12 +22366,12 @@
                                 }
                             } );
                         }
-    
+
                     } else {
                         //有可能commmand没有加载右键不能出来，或者没有command也想能展示出来添加query方法
                         if ( (me.commands[item.cmdName] || UE.commands[item.cmdName] || item.query) &&
                                 (item.query ? item.query.call(me) : me.queryCommandState( item.cmdName )) > -1 ) {
-    
+
                             contextItems.push( {
                                 'label':item.label || me.getLang( "contextMenu." + item.cmdName ),
                                 className:'edui-for-' + (item.icon ? item.icon : item.cmdName + (item.value || '')),
@@ -22382,15 +22382,15 @@
                                 }
                             } );
                         }
-    
+
                     }
-    
+
                 })( ti );
             }
             if ( contextItems[contextItems.length - 1] == '-' ) {
                 contextItems.pop();
             }
-    
+
             menu = new UE.ui.Menu( {
                 items:contextItems,
                 className:"edui-contextmenu",
@@ -22398,9 +22398,9 @@
             } );
             menu.render();
             menu.showAt( offset );
-    
+
             me.fireEvent("aftershowcontextmenu",menu);
-    
+
             domUtils.preventDefault( evt );
             if ( browser.ie ) {
                 var ieRange;
@@ -22415,7 +22415,7 @@
                 }
             }
         });
-    
+
         // 添加复制的flash按钮
         me.addListener('aftershowcontextmenu', function(type, menu) {
             if (me.zeroclipboard) {
@@ -22427,10 +22427,10 @@
                 }
             }
         });
-    
+
     };
-    
-    
+
+
     // plugins/shortcutmenu.js
     ///import core
     ///commands       弹出菜单
@@ -22442,16 +22442,16 @@
      * @name baidu.editor.plugins.popupmenu
      * @author xuheng
      */
-    
+
     UE.plugins['shortcutmenu'] = function () {
         var me = this,
             menu,
             items = me.options.shortcutMenu || [];
-    
+
         if (!items.length) {
             return;
         }
-    
+
         me.addListener ('contextmenu mouseup' , function (type , e) {
             var me = this,
                 customEvt = {
@@ -22462,11 +22462,11 @@
                     clientX : e.clientX ,
                     clientY : e.clientY
                 };
-    
+
             setTimeout (function () {
                 var rng = me.selection.getRange ();
                 if (rng.collapsed === false || type == "contextmenu") {
-    
+
                     if (!menu) {
                         menu = new baidu.editor.ui.ShortCutMenu ({
                             editor : me ,
@@ -22474,15 +22474,15 @@
                             theme : me.options.theme ,
                             className : 'edui-shortcutmenu'
                         });
-    
+
                         menu.render ();
                         me.fireEvent ("afterrendershortcutmenu" , menu);
                     }
-    
+
                     menu.show (customEvt , !!UE.plugins['contextmenu']);
                 }
             });
-    
+
             if (type == 'contextmenu') {
                 domUtils.preventDefault (e);
                 if (browser.ie9below) {
@@ -22495,33 +22495,33 @@
                     if (ieRange.item) {
                         var range = new dom.Range (me.document);
                         range.selectNode (ieRange.item (0)).select (true , true);
-    
+
                     }
                 }
             }
         });
-    
+
         me.addListener ('keydown' , function (type) {
             if (type == "keydown") {
                 menu && !menu.isHidden && menu.hide ();
             }
-    
+
         });
-    
+
     };
-    
-    
-    
-    
+
+
+
+
     // plugins/basestyle.js
     /**
      * B、I、sub、super命令支持
      * @file
      * @since 1.2.6.1
      */
-    
+
     UE.plugins['basestyle'] = function(){
-    
+
         /**
          * 字体加粗
          * @command bold
@@ -22539,8 +22539,8 @@
          * editor.execCommand( 'bold' );
          * ```
          */
-    
-    
+
+
         /**
          * 字体倾斜
          * @command italic
@@ -22558,7 +22558,7 @@
          * editor.execCommand( 'italic' );
          * ```
          */
-    
+
         /**
          * 下标文本，与“superscript”命令互斥
          * @command subscript
@@ -22576,7 +22576,7 @@
          * editor.execCommand( 'subscript' );
          * ```
          */
-    
+
         /**
          * 上标文本，与“subscript”命令互斥
          * @command superscript
@@ -22661,9 +22661,9 @@
             })( style, basestyles[style] );
         }
     };
-    
-    
-    
+
+
+
     // plugins/elementpath.js
     /**
      * 选取路径命令
@@ -22707,16 +22707,16 @@
             }
         };
     };
-    
-    
-    
+
+
+
     // plugins/formatmatch.js
     /**
      * 格式刷，只格式inline的
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 格式刷
      * @command formatmatch
@@ -22731,40 +22731,40 @@
      * ```
      */
     UE.plugins['formatmatch'] = function(){
-    
+
         var me = this,
             list = [],img,
             flag = 0;
-    
+
          me.addListener('reset',function(){
              list = [];
              flag = 0;
          });
-    
+
         function addList(type,evt){
-            
+
             if(browser.webkit){
                 var target = evt.target.tagName == 'IMG' ? evt.target : null;
             }
-    
+
             function addFormat(range){
-    
+
                 if(text){
                     range.selectNode(text);
                 }
                 return range.applyInlineStyle(list[list.length-1].tagName,null,list);
-    
+
             }
-    
+
             me.undoManger && me.undoManger.save();
-    
+
             var range = me.selection.getRange(),
                 imgT = target || range.getClosedNode();
             if(img && imgT && imgT.tagName == 'IMG'){
                 //trace:964
-    
+
                 imgT.style.cssText += ';float:' + (img.style.cssFloat || img.style.styleFloat ||'none') + ';display:' + (img.style.display||'inline');
-    
+
                 img = null;
             }else{
                 if(!img){
@@ -22772,8 +22772,8 @@
                     if(collapsed){
                         var text = me.document.createTextNode('match');
                         range.insertNode(text).select();
-    
-    
+
+
                     }
                     me.__hasEnterExecCommand = true;
                     //不能把block上的属性干掉
@@ -22790,34 +22790,34 @@
                     }
                     if(text){
                         range.setStartBefore(text).collapse(true);
-    
+
                     }
                     range.select();
                     text && domUtils.remove(text);
                 }
-    
+
             }
-    
-    
-    
-    
+
+
+
+
             me.undoManger && me.undoManger.save();
             me.removeListener('mouseup',addList);
             flag = 0;
         }
-    
+
         me.commands['formatmatch'] = {
             execCommand : function( cmdName ) {
-              
+
                 if(flag){
                     flag = 0;
                     list = [];
                      me.removeListener('mouseup',addList);
                     return;
                 }
-    
-    
-                  
+
+
+
                 var range = me.selection.getRange();
                 img = range.getClosedNode();
                 if(!img || img.tagName != 'IMG'){
@@ -22833,13 +22833,13 @@
                            break;
                        }
                    }
-    
+
                 }
-    
+
                 me.addListener('mouseup',addList);
                 flag = 1;
-    
-    
+
+
             },
             queryCommandState : function() {
                 return flag;
@@ -22847,9 +22847,9 @@
             notNeedUndo : 1
         };
     };
-    
-    
-    
+
+
+
     // plugins/searchreplace.js
     ///import core
     ///commands 查找替换
@@ -22860,22 +22860,22 @@
      * @description 查找替换
      * @author zhanyi
      */
-    
+
     UE.plugin.register('searchreplace',function(){
         var me = this;
-    
+
         var _blockElm = {'table':1,'tbody':1,'tr':1,'ol':1,'ul':1};
-    
+
         function findTextInString(textContent,opt,currentIndex){
             var str = opt.searchStr;
             if(opt.dir == -1){
                 textContent = textContent.split('').reverse().join('');
                 str = str.split('').reverse().join('');
                 currentIndex = textContent.length - currentIndex;
-    
+
             }
             var reg = new RegExp(str,'g' + (opt.casesensitive ? '' : 'i')),match;
-    
+
             while(match = reg.exec(textContent)){
                 if(match.index >= currentIndex){
                     return opt.dir == -1 ? textContent.length - match.index - opt.searchStr.length : match.index;
@@ -22906,7 +22906,7 @@
                 if(node){
                     currentIndex = opt.dir == -1 ? (node.nodeType == 3 ? node.nodeValue : node[browser.ie ? 'innerText' : 'textContent']).length : 0;
                 }
-    
+
             }
         }
         function findNTextInBlockElm(node,index,str){
@@ -22935,20 +22935,20 @@
                     }
                 }
                 currentNode = domUtils.getNextDomNode(currentNode);
-    
+
             }
         }
-    
+
         function searchReplace(me,opt){
-    
+
             var rng = me.selection.getRange(),
                 startBlockNode,
                 searchStr = opt.searchStr,
                 span = me.document.createElement('span');
             span.innerHTML = '$$ueditor_searchreplace_key$$';
-    
+
             rng.shrinkBoundary(true);
-    
+
             //判断是不是第一次选中
             if(!rng.collapsed){
                 rng.select();
@@ -22961,11 +22961,11 @@
                     }else{
                         rng.collapse(opt.dir == -1)
                     }
-    
+
                 }
             }
-    
-    
+
+
             rng.insertNode(span);
             rng.enlargeToBlockElm(true);
             startBlockNode = rng.startContainer;
@@ -22977,7 +22977,7 @@
                 var rngStart = findNTextInBlockElm(result.node,result.index,searchStr);
                 var rngEnd = findNTextInBlockElm(result.node,result.index + searchStr.length,searchStr);
                 rng.setStart(rngStart.node,rngStart.index).setEnd(rngEnd.node,rngEnd.index);
-    
+
                 if(opt.replaceStr !== undefined){
                     replaceText(rng,opt.replaceStr)
                 }
@@ -22986,13 +22986,13 @@
             }else{
                 rng.setCursor()
             }
-    
+
         }
         function replaceText(rng,str){
-    
+
             str = me.document.createTextNode(str);
             rng.deleteContents().insertNode(str);
-    
+
         }
         return {
             commands:{
@@ -23005,7 +23005,7 @@
                         },true);
                         var num = 0;
                         if(opt.all){
-    
+
                             var rng = me.selection.getRange(),
                                 first = me.body.firstChild;
                             if(first && first.nodeType == 1){
@@ -23034,9 +23034,9 @@
                             if(num){
                                 me.fireEvent('saveScene');
                             }
-    
+
                         }
-    
+
                         return num;
                     },
                     notNeedUndo:1
@@ -23044,14 +23044,14 @@
             }
         }
     });
-    
+
     // plugins/customstyle.js
     /**
      * 自定义样式
      * @file
      * @since 1.2.6.1
      */
-    
+
     /**
      * 根据config配置文件里“customstyle”选项的值对匹配的标签执行样式替换。
      * @command customstyle
@@ -23096,9 +23096,9 @@
                         }else{
                             domUtils.remove(node,true);
                         }
-    
+
                     } else {
-    
+
                         var common = domUtils.getCommonAncestor(bk.start, bk.end),
                                 nodes = domUtils.getElementsByTagName(common, tagName);
                         if(new RegExp(tagName,'i').test(common.tagName)){
@@ -23123,11 +23123,11 @@
                             return node.getAttribute('label') == obj.label;
                         }, true);
                         if (node) {
-    
+
                             domUtils.remove(node, true);
-    
+
                         }
-    
+
                     }
                     range.moveToBookmark(bk).select();
                 } else {
@@ -23145,21 +23145,21 @@
                             range.setStart(pNode, 0).setCursor();
                         }
                     } else {
-    
+
                         range = me.selection.getRange();
                         if (range.collapsed) {
                             node = me.document.createElement(tagName);
                             domUtils.setAttributes(node, tmpObj);
                             range.insertNode(node).setStart(node, 0).setCursor();
-    
+
                             return;
                         }
-    
+
                         bk = range.createBookmark();
                         range.applyInlineStyle(tagName, tmpObj).moveToBookmark(bk).select();
                     }
                 }
-    
+
             },
             queryCommandValue : function() {
                 var parent = domUtils.filterNodeList(
@@ -23172,7 +23172,7 @@
         //当去掉customstyle是，如果是块元素，用p代替
         me.addListener('keyup', function(type, evt) {
             var keyCode = evt.keyCode || evt.which;
-    
+
             if (keyCode == 32 || keyCode == 13) {
                 var range = me.selection.getRange();
                 if (range.collapsed) {
@@ -23185,14 +23185,14 @@
                             domUtils.fillNode(me.document, p);
                             domUtils.remove(node);
                             range.setStart(p, 0).setCursor();
-    
-    
+
+
                     }
                 }
             }
         });
     };
-    
+
     // plugins/catchremoteimage.js
     ///import core
     ///commands 远程图片抓取
@@ -23204,24 +23204,24 @@
     UE.plugins['catchremoteimage'] = function () {
         var me = this,
             ajax = UE.ajax;
-    
+
         /* 设置默认值 */
         if (me.options.catchRemoteImageEnable === false) return;
         me.setOpt({
             catchRemoteImageEnable: false
         });
-    
+
         me.addListener("afterpaste", function () {
             me.fireEvent("catchRemoteImage");
         });
-    
+
         me.addListener("catchRemoteImage", function () {
-    
+
             var catcherLocalDomain = me.getOpt('catcherLocalDomain'),
                 catcherActionUrl = me.getActionUrl(me.getOpt('catcherActionName')),
                 catcherUrlPrefix = me.getOpt('catcherUrlPrefix'),
                 catcherFieldName = me.getOpt('catcherFieldName');
-    
+
             var remoteImages = [],
                 imgs = domUtils.getElementsByTagName(me.document, "img"),
                 test = function (src, urls) {
@@ -23237,7 +23237,7 @@
                     }
                     return false;
                 };
-    
+
             for (var i = 0, ci; ci = imgs[i++];) {
                 if (ci.getAttribute("word_img")) {
                     continue;
@@ -23247,7 +23247,7 @@
                     remoteImages.push(src);
                 }
             }
-    
+
             if (remoteImages.length) {
                 catchremoteimage(remoteImages, {
                     //成功抓取
@@ -23257,10 +23257,10 @@
                         } catch (e) {
                             return;
                         }
-    
+
                         /* 获取源路径和新路径 */
                         var i, j, ci, cj, oldSrc, newSrc, list = info.list;
-    
+
                         for (i = 0; ci = imgs[i++];) {
                             oldSrc = ci.getAttribute("_src") || ci.src || "";
                             for (j = 0; cj = list[j++];) {
@@ -23282,7 +23282,7 @@
                     }
                 });
             }
-    
+
             function catchremoteimage(imgs, callbacks) {
                 var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '',
                     url = utils.formatUrl(catcherActionUrl + (catcherActionUrl.indexOf('?') == -1 ? '?':'&') + params),
@@ -23297,10 +23297,10 @@
                 opt[catcherFieldName] = imgs;
                 ajax.request(url, opt);
             }
-    
+
         });
     };
-    
+
     // plugins/snapscreen.js
     /**
      * 截屏插件，为UEditor提供插入支持
@@ -23308,21 +23308,21 @@
      * @since 1.4.2
      */
     UE.plugin.register('snapscreen', function (){
-    
+
         var me = this;
         var snapplugin;
-    
+
         function getLocation(url){
             var search,
                 a = document.createElement('a'),
                 params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
-    
+
             a.href = url;
             if (browser.ie) {
                 a.href = a.href;
             }
-    
-    
+
+
             search = a.search;
             if (params) {
                 search = search + (search.indexOf('?') == -1 ? '?':'&')+ params;
@@ -23334,7 +23334,7 @@
                 'path': a.pathname + search ||  + a.hash
             }
         }
-    
+
         return {
             commands:{
                 /**
@@ -23351,7 +23351,7 @@
                     execCommand:function (cmd) {
                         var url, local, res;
                         var lang = me.getLang("snapScreen_plugin");
-    
+
                         if(!snapplugin){
                             var container = me.container;
                             var doc = me.container.ownerDocument || me.container.document;
@@ -23364,7 +23364,7 @@
                             snapplugin.setAttribute("height","0");
                             container.appendChild(snapplugin);
                         }
-    
+
                         function onSuccess(rs){
                             try{
                                 rs = eval("("+ rs +")");
@@ -23392,7 +23392,7 @@
                                 me.ui._dialogs['snapscreenDialog'].open();
                                 return;
                             }
-    
+
                             onSuccess(res);
                         }, 50);
                     },
@@ -23403,16 +23403,16 @@
             }
         }
     });
-    
-    
+
+
     // plugins/insertparagraph.js
     /**
      * 插入段落
      * @file
      * @since 1.2.6.1
      */
-    
-    
+
+
     /**
      * 插入段落
      * @command insertparagraph
@@ -23424,7 +23424,7 @@
      * editor.execCommand( 'insertparagraph' );
      * ```
      */
-    
+
     UE.commands['insertparagraph'] = {
         execCommand : function( cmdName,front) {
             var me = this,
@@ -23449,17 +23449,17 @@
             }
         }
     };
-    
-    
-    
+
+
+
     // plugins/webapp.js
     /**
      * 百度应用
      * @file
      * @since 1.2.6.1
      */
-    
-    
+
+
     /**
      * 插入百度应用
      * @command webapp
@@ -23481,7 +23481,7 @@
      * } );
      * ```
      */
-    
+
     //UE.plugins['webapp'] = function () {
     //    var me = this;
     //    function createInsertStr( obj, toIframe, addParagraph ) {
@@ -23525,7 +23525,7 @@
     //        }
     //    };
     //};
-    
+
     UE.plugin.register('webapp', function (){
         var me = this;
         function createInsertStr(obj,toEmbed){
@@ -23541,7 +23541,7 @@
                     (obj.align && !obj.cssfloat? 'align="' + obj.align + '"' : '') +
                     (obj.cssfloat ? 'style="float:' + obj.cssfloat + '"' : '') +
                     'width="' + obj.width + '" height="' + obj.height + '"  scrolling="no" frameborder="0" src="' + obj.url + '" logo_url = "'+obj.logo+'"></iframe>'
-    
+
         }
         return {
             outputRule: function(root){
@@ -23577,7 +23577,7 @@
                         node.parentNode.replaceChild(img,node);
                     }
                 })
-    
+
             },
             commands:{
                 /**
@@ -23603,7 +23603,7 @@
                  */
                 'webapp':{
                     execCommand:function (cmd, obj) {
-    
+
                         var me = this,
                             str = createInsertStr(utils.extend(obj,{
                                 align:'none'
@@ -23620,7 +23620,7 @@
             }
         }
     });
-    
+
     // plugins/template.js
     ///import core
     ///import plugins\inserthtml.js
@@ -23661,8 +23661,8 @@
             }
         });
     };
-    
-    
+
+
     // plugins/music.js
     /**
      * 插入音乐命令
@@ -23678,7 +23678,7 @@
                         ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="edui-faked-music"' +
                         ' src="'+me.options.langPath+me.options.lang+'/images/music.png" />'
                 :
-                '<embed type="application/x-shockwave-flash" class="edui-faked-music" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                '<embed type="application/x-shockwave-flash" class="edui-faked-music" pluginspage="Http://www.macromedia.com/go/getflashplayer"' +
                     ' src="' + url + '" width="' + width  + '" height="' + height  + '" '+ (align && !cssfloat? 'align="' + align + '"' : '') +
                     (cssfloat ? 'style="float:' + cssfloat + '"' : '') +
                     ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
@@ -23706,7 +23706,7 @@
                         node.parentNode.replaceChild(img,node);
                     }
                 })
-    
+
             },
             commands:{
                 /**
@@ -23743,7 +23743,7 @@
             }
         }
     });
-    
+
     // plugins/autoupload.js
     /**
      * @description
@@ -23753,7 +23753,7 @@
      * @date 2013-10-14
      */
     UE.plugin.register('autoupload', function (){
-    
+
         function sendAndInsertFile(file, editor) {
             var me  = editor;
             //模拟数据
@@ -23761,7 +23761,7 @@
                 loadingHtml, errorHandler, successHandler,
                 filetype = /image\/\w+/i.test(file.type) ? 'image':'file',
                 loadingId = 'loading_' + (+new Date()).toString(36);
-    
+
             fieldName = me.getOpt(filetype + 'FieldName');
             urlPrefix = me.getOpt(filetype + 'UrlPrefix');
             maxSize = me.getOpt(filetype + 'MaxSize');
@@ -23777,7 +23777,7 @@
                     'timeout': 4000
                 });
             };
-    
+
             if (filetype == 'image') {
                 loadingHtml = '<img class="loadingclass" id="' + loadingId + '" src="' +
                     me.options.themePath + me.options.theme +
@@ -23803,7 +23803,7 @@
                 successHandler = function(data) {
                     var link = urlPrefix + data.url,
                         loader = me.document.getElementById(loadingId);
-    
+
                     var rng = me.selection.getRange(),
                         bk = rng.createBookmark();
                     rng.selectNode(loader).select();
@@ -23811,10 +23811,10 @@
                     rng.moveToBookmark(bk).select();
                 };
             }
-    
+
             /* 插入loading的占位符 */
             me.execCommand('inserthtml', loadingHtml);
-    
+
             /* 判断后端配置是否没有加载成功 */
             if (!me.getOpt(filetype + 'ActionName')) {
                 errorHandler(me.getLang('autoupload.errorLoadConfig'));
@@ -23831,13 +23831,13 @@
                 errorHandler(me.getLang('autoupload.exceedTypeError'));
                 return;
             }
-    
+
             /* 创建Ajax并提交 */
             var xhr = new XMLHttpRequest(),
                 fd = new FormData(),
                 params = utils.serializeParam(me.queryCommandValue('serverparam')) || '',
                 url = utils.formatUrl(actionUrl + (actionUrl.indexOf('?') == -1 ? '?':'&') + params);
-    
+
             fd.append(fieldName, file, file.name || ('blob.' + file.type.substr('image/'.length)));
             fd.append('type', 'ajax');
             xhr.open("post", url, true);
@@ -23856,14 +23856,14 @@
             });
             xhr.send(fd);
         }
-    
+
         function getPasteImage(e){
             return e.clipboardData && e.clipboardData.items && e.clipboardData.items.length == 1 && /^image\//.test(e.clipboardData.items[0].type) ? e.clipboardData.items:null;
         }
         function getDropImage(e){
             return  e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files:null;
         }
-    
+
         return {
             outputRule: function(root){
                 utils.each(root.getNodesByTagName('img'),function(n){
@@ -23900,7 +23900,7 @@
                                 }
                                 hasImg && e.preventDefault();
                             }
-    
+
                         });
                         //取消拖放图片时出现的文字光标位置提示
                         domUtils.on(me.body, 'dragover', function (e) {
@@ -23908,7 +23908,7 @@
                                 e.preventDefault();
                             }
                         });
-    
+
                         //设置loading的样式
                         utils.cssRule('loading',
                             '.loadingclass{display:inline-block;cursor:default;background: url(\''
@@ -23924,10 +23924,10 @@
             }
         }
     });
-    
+
     // plugins/autosave.js
     UE.plugin.register('autosave', function (){
-    
+
         var me = this,
             //无限循环保护
             lastSaveTime = new Date(),
@@ -23935,41 +23935,41 @@
             MIN_TIME = 20,
             //auto save key
             saveKey = null;
-    
+
         function save ( editor ) {
-    
+
             var saveData;
-    
+
             if ( new Date() - lastSaveTime < MIN_TIME ) {
                 return;
             }
-    
+
             if ( !editor.hasContents() ) {
                 //这里不能调用命令来删除， 会造成事件死循环
                 saveKey && me.removePreferences( saveKey );
                 return;
             }
-    
+
             lastSaveTime = new Date();
-    
+
             editor._saveFlag = null;
-    
+
             saveData = me.body.innerHTML;
-    
+
             if ( editor.fireEvent( "beforeautosave", {
                 content: saveData
             } ) === false ) {
                 return;
             }
-    
+
             me.setPreferences( saveKey, saveData );
-    
+
             editor.fireEvent( "afterautosave", {
                 content: saveData
             } );
-    
+
         }
-    
+
         return {
             defaultOptions: {
                 //默认间隔时间
@@ -23978,50 +23978,50 @@
             },
             bindEvents:{
                 'ready':function(){
-    
+
                     var _suffix = "-drafts-data",
                         key = null;
-    
+
                     if ( me.key ) {
                         key = me.key + _suffix;
                     } else {
                         key = ( me.container.parentNode.id || 'ue-common' ) + _suffix;
                     }
-    
+
                     //页面地址+编辑器ID 保持唯一
                     saveKey = ( location.protocol + location.host + location.pathname ).replace( /[.:\/]/g, '_' ) + key;
-    
+
                 },
-    
+
                 'contentchange': function () {
                     // HaoChuan9421
                     if (!me.getOpt('enableAutoSave')) {
                         return;
                     }
-    
+
                     if ( !saveKey ) {
                         return;
                     }
-    
+
                     if ( me._saveFlag ) {
                         window.clearTimeout( me._saveFlag );
                     }
-    
+
                     if ( me.options.saveInterval > 0 ) {
-    
+
                         me._saveFlag = window.setTimeout( function () {
-    
+
                             save( me );
-    
+
                         }, me.options.saveInterval );
-    
+
                     } else {
-    
+
                         save(me);
-    
+
                     }
-    
-    
+
+
                 }
             },
             commands:{
@@ -24034,7 +24034,7 @@
                     notNeedUndo: true,
                     ignoreContentChange:true
                 },
-    
+
                 'getlocaldata':{
                     execCommand:function (cmd, name) {
                         return saveKey ? me.getPreferences( saveKey ) || '' : '';
@@ -24042,7 +24042,7 @@
                     notNeedUndo: true,
                     ignoreContentChange:true
                 },
-    
+
                 'drafts':{
                     execCommand:function (cmd, name) {
                         if ( saveKey ) {
@@ -24058,14 +24058,14 @@
                 }
             }
         }
-    
+
     });
-    
+
     // plugins/charts.js
     UE.plugin.register('charts', function (){
-    
+
         var me = this;
-    
+
         return {
             bindEvents: {
                 'chartserror': function () {
@@ -24074,20 +24074,20 @@
             commands:{
                 'charts': {
                     execCommand: function ( cmd, data ) {
-    
+
                         var tableNode = domUtils.findParentByTagName(this.selection.getRange().startContainer, 'table', true),
                             flagText = [],
                             config = {};
-    
+
                         if ( !tableNode ) {
                             return false;
                         }
-    
+
                         if ( !validData( tableNode ) ) {
                             me.fireEvent( "chartserror" );
                             return false;
                         }
-    
+
                         config.title = data.title || '';
                         config.subTitle = data.subTitle || '';
                         config.xTitle = data.xTitle || '';
@@ -24098,113 +24098,113 @@
                         config.dataFormat = data.tableDataFormat || '';
                         //图表类型
                         config.chartType = data.chartType || 0;
-    
+
                         for ( var key in config ) {
-    
+
                             if ( !config.hasOwnProperty( key ) ) {
                                 continue;
                             }
-    
+
                             flagText.push( key+":"+config[ key ] );
-    
+
                         }
-    
+
                         tableNode.setAttribute( "data-chart", flagText.join( ";" ) );
                         domUtils.addClass( tableNode, "edui-charts-table" );
-    
-    
-    
+
+
+
                     },
                     queryCommandState: function ( cmd, name ) {
-    
+
                         var tableNode = domUtils.findParentByTagName(this.selection.getRange().startContainer, 'table', true);
                         return tableNode && validData( tableNode ) ? 0 : -1;
-    
+
                     }
                 }
             },
             inputRule:function(root){
                 utils.each(root.getNodesByTagName('table'),function( tableNode ){
-    
+
                     if ( tableNode.getAttr("data-chart") !== undefined ) {
                         tableNode.setAttr("style");
                     }
-    
+
                 })
-    
+
             },
             outputRule:function(root){
                 utils.each(root.getNodesByTagName('table'),function( tableNode ){
-    
+
                     if ( tableNode.getAttr("data-chart") !== undefined ) {
                         tableNode.setAttr("style", "display: none;");
                     }
-    
+
                 })
-    
+
             }
         }
-    
+
         function validData ( table ) {
-    
+
             var firstRows = null,
                 cellCount = 0;
-    
+
             //行数不够
             if ( table.rows.length < 2 ) {
                 return false;
             }
-    
+
             //列数不够
             if ( table.rows[0].cells.length < 2 ) {
                 return false;
             }
-    
+
             //第一行所有cell必须是th
             firstRows = table.rows[ 0 ].cells;
             cellCount = firstRows.length;
-    
+
             for ( var i = 0, cell; cell = firstRows[ i ]; i++ ) {
-    
+
                 if ( cell.tagName.toLowerCase() !== 'th' ) {
                     return false;
                 }
-    
+
             }
-    
+
             for ( var i = 1, row; row = table.rows[ i ]; i++ ) {
-    
+
                 //每行单元格数不匹配， 返回false
                 if ( row.cells.length != cellCount ) {
                     return false;
                 }
-    
+
                 //第一列不是th也返回false
                 if ( row.cells[0].tagName.toLowerCase() !== 'th' ) {
                     return false;
                 }
-    
+
                 for ( var j = 1, cell; cell = row.cells[ j ]; j++ ) {
-    
+
                     var value = utils.trim( ( cell.innerText || cell.textContent || '' ) );
-    
+
                     value = value.replace( new RegExp( UE.dom.domUtils.fillChar, 'g' ), '' ).replace( /^\s+|\s+$/g, '' );
-    
+
                     //必须是数字
                     if ( !/^\d*\.?\d+$/.test( value ) ) {
                         return false;
                     }
-    
+
                 }
-    
+
             }
-    
+
             return true;
-    
+
         }
-    
+
     });
-    
+
     // plugins/section.js
     /**
      * 目录大纲支持插件
@@ -24236,9 +24236,9 @@
             }
             return current;
         }
-    
+
         var me = this;
-    
+
         return {
             bindMultiEvents:{
                 type: 'aftersetcontent afterscencerestore',
@@ -24278,7 +24278,7 @@
                 'getsections': {
                     execCommand: function (cmd, levels) {
                         var levelFn = levels || ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-    
+
                         for (var i = 0; i < levelFn.length; i++) {
                             if (typeof levelFn[i] == 'string') {
                                 levelFn[i] = function(fn){
@@ -24298,11 +24298,11 @@
                             }
                             return -1;
                         }
-    
+
                         var me = this,
                             Directory = getSection({'level':-1, 'title':'root'}),
                             previous = Directory;
-    
+
                         function traversal(node, Directory) {
                             var level,
                                 tmpSection = null,
@@ -24345,24 +24345,24 @@
                 },
                 'movesection': {
                     execCommand: function (cmd, sourceSection, targetSection, isAfter) {
-    
+
                         var me = this,
                             targetAddress,
                             target;
-    
+
                         if(!sourceSection || !targetSection || targetSection.level == -1) return;
-    
+
                         targetAddress = isAfter ? targetSection.endAddress:targetSection.startAddress;
                         target = getNodeFromAddress(targetAddress, me.body);
-    
+
                         /* 判断目标地址是否被源章节包含 */
                         if(!targetAddress || !target || isContainsAddress(sourceSection.startAddress, sourceSection.endAddress, targetAddress)) return;
-    
+
                         var startNode = getNodeFromAddress(sourceSection.startAddress, me.body),
                             endNode = getNodeFromAddress(sourceSection.endAddress, me.body),
                             current,
                             nextNode;
-    
+
                         if(isAfter) {
                             current = endNode;
                             while ( current && !(domUtils.getPosition( startNode, current ) & domUtils.POSITION_FOLLOWING) ) {
@@ -24380,9 +24380,9 @@
                                 current = nextNode;
                             }
                         }
-    
+
                         me.fireEvent('updateSections');
-    
+
                         /* 获取地址的包含关系 */
                         function isContainsAddress(startAddress, endAddress, addressTarget){
                             var isAfterStartAddress = false,
@@ -24412,9 +24412,9 @@
                 'deletesection': {
                     execCommand: function (cmd, section, keepChildren) {
                         var me = this;
-    
+
                         if(!section) return;
-    
+
                         function getNodeFromAddress(startAddress) {
                             var current = me.body;
                             for(var i = 0;i < startAddress.length; i++) {
@@ -24423,12 +24423,12 @@
                             }
                             return current;
                         }
-    
+
                         var startNode = getNodeFromAddress(section.startAddress),
                             endNode = getNodeFromAddress(section.endAddress),
                             current = startNode,
                             nextNode;
-    
+
                         if(!keepChildren) {
                             while ( current && domUtils.inDoc(endNode, me.document) && !(domUtils.getPosition( current, endNode ) & domUtils.POSITION_FOLLOWING) ) {
                                 nextNode = current.nextSibling;
@@ -24438,7 +24438,7 @@
                         } else {
                             domUtils.remove(current);
                         }
-    
+
                         me.fireEvent('updateSections');
                     }
                 },
@@ -24475,7 +24475,7 @@
             }
         }
     });
-    
+
     // plugins/simpleupload.js
     /**
      * @description
@@ -24491,12 +24491,12 @@
       var me = this,
         containerBtn,
         timestrap = (+new Date()).toString(36);
-    
+
       function initUploadBtn() {
         var w = containerBtn.offsetWidth || 20,
           h = containerBtn.offsetHeight || 20,
           btnStyle = 'display:block;width:' + w + 'px;height:' + h + 'px;overflow:hidden;border:0;margin:0;padding:0;position:absolute;top:0;left:0;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity: 0;cursor:pointer;';
-    
+
         var form = document.createElement('form');
         var input = document.createElement('input');
         form.id = 'edui_form_' + timestrap;
@@ -24509,7 +24509,7 @@
         input.style = btnStyle;
         form.appendChild(input);
         containerBtn.appendChild(form);
-    
+
         input.addEventListener('change', function(event) {
           if (!input.value) return;
           var loadingId = 'loading_' + (+new Date()).toString(36);
@@ -24519,7 +24519,7 @@
           var allowFiles = me.getOpt('imageAllowFiles');
           me.focus();
           me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme + '/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
-    
+
           function showErrorLoader(title) {
             if (loadingId) {
               var loader = me.document.getElementById(loadingId);
@@ -24544,7 +24544,7 @@
             showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
             return;
           }
-    
+
           var xhr = new XMLHttpRequest()
           xhr.open('post', action, true)
           if (me.options.headers && Object.prototype.toString.apply(me.options.headers) === "[object Object]") {
@@ -24556,13 +24556,13 @@
             if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
               var res = JSON.parse(xhr.responseText)
               var link = ''
-                
+
                 if(res.url.substring(0,4)==='http'){
                     link = res.url
                 }else{
                     var link = me.options.imageUrlPrefix + res.url;
                 }
-                
+
               if (res.state == 'SUCCESS' && res.url) {
                 loader = me.document.getElementById(loadingId);
                 loader.setAttribute('src', link);
@@ -24586,7 +24586,7 @@
           form.reset();
         })
       }
-    
+
       return {
         bindEvents: {
           'ready': function() {
@@ -24616,7 +24616,7 @@
         }
       }
     });
-    
+
     // plugins/serverparam.js
     /**
      * 服务器提交的额外参数列表设置插件
@@ -24624,10 +24624,10 @@
      * @since 1.2.6.1
      */
     UE.plugin.register('serverparam', function (){
-    
+
         var me = this,
             serverParam = {};
-    
+
         return {
             commands:{
                 /**
@@ -24691,7 +24691,7 @@
                  * editor.queryCommandValue('serverparam'); //返回对象 {'key': 'value'}
                  * ```
                  */
-    
+
                 /**
                  * 获取服务器提交的额外参数列表
                  * @command serverparam
@@ -24725,16 +24725,16 @@
             }
         }
     });
-    
-    
+
+
     // plugins/insertfile.js
     /**
      * 插入附件
      */
     UE.plugin.register('insertfile', function (){
-    
+
         var me = this;
-    
+
         function getFileIcon(url){
             var ext = url.substr(url.lastIndexOf('.') + 1).toLowerCase(),
                 maps = {
@@ -24769,13 +24769,13 @@
                 };
             return maps[ext] ? maps[ext]:maps['txt'];
         }
-    
+
         return {
             commands:{
                 'insertfile': {
                     execCommand: function (command, filelist){
                         filelist = utils.isArray(filelist) ? filelist : [filelist];
-    
+
                         var i, item, icon, title,
                             html = '',
                             URL = me.getOpt('UEDITOR_HOME_URL'),
@@ -24795,67 +24795,67 @@
             }
         }
     });
-    
-    
-    
-    
+
+
+
+
     // plugins/xssFilter.js
     /**
      * @file xssFilter.js
      * @desc xss过滤器
      * @author robbenmu
      */
-    
+
     UE.plugins.xssFilter = function() {
-    
+
         var config = UEDITOR_CONFIG;
         var whitList = config.whitList;
-    
+
         function filter(node) {
-    
+
             var tagName = node.tagName;
             var attrs = node.attrs;
-    
+
             if (!whitList.hasOwnProperty(tagName)) {
                 node.parentNode.removeChild(node);
                 return false;
             }
-    
+
             UE.utils.each(attrs, function (val, key) {
-    
+
                 if (whitList[tagName].indexOf(key) === -1) {
                     node.setAttr(key);
                 }
             });
         }
-    
+
         // 添加inserthtml\paste等操作用的过滤规则
         if (whitList && config.xssFilterRules) {
             this.options.filterRules = function () {
-    
+
                 var result = {};
-    
+
                 UE.utils.each(whitList, function(val, key) {
                     result[key] = function (node) {
                         return filter(node);
                     };
                 });
-    
+
                 return result;
             }();
         }
-    
+
         var tagList = [];
-    
+
         UE.utils.each(whitList, function (val, key) {
             tagList.push(key);
         });
-    
+
         // 添加input过滤规则
         //
         if (whitList && config.inputXssFilter) {
             this.addInputRule(function (root) {
-    
+
                 root.traversal(function(node) {
                     if (node.type !== 'element') {
                         return false;
@@ -24868,7 +24868,7 @@
         //
         if (whitList && config.outputXssFilter) {
             this.addOutputRule(function (root) {
-    
+
                 root.traversal(function(node) {
                     if (node.type !== 'element') {
                         return false;
@@ -24877,25 +24877,25 @@
                 });
             });
         }
-    
+
     };
-    
-    
+
+
     // ui/ui.js
     var baidu = baidu || {};
     baidu.editor = baidu.editor || {};
     UE.ui = baidu.editor.ui = {};
-    
+
     // ui/uiutils.js
     (function (){
         var browser = baidu.editor.browser,
             domUtils = baidu.editor.dom.domUtils;
-    
+
         var magic = '$EDITORUI';
         var root = window[magic] = {};
         var uidMagic = 'ID' + magic;
         var uidCount = 0;
-    
+
         var uiUtils = baidu.editor.ui.uiUtils = {
             uid: function (obj){
                 return (obj ? obj[uidMagic] || (obj[uidMagic] = ++ uidCount) : ++ uidCount);
@@ -25067,7 +25067,7 @@
                     doc.addEventListener('mousemove', handleMouseMove, true);
                     doc.addEventListener('mouseup', handleMouseUp, true);
                     window.addEventListener('mouseup', handleMouseUp, true);
-    
+
                     evt.preventDefault();
                 } else {
                     var elm = evt.srcElement;
@@ -25135,7 +25135,7 @@
             });
     //        layer.style.display = 'none';
     //        layer.style.display = 'block';
-    
+
             //#trace: 1354
     //        setTimeout(updateFixedOffset);
         }
@@ -25144,8 +25144,8 @@
             domUtils.on(window, 'resize', baidu.editor.utils.defer(updateFixedOffset, 0, true));
         }
     })();
-    
-    
+
+
     // ui/uibase.js
     (function () {
         var utils = baidu.editor.utils,
@@ -25153,7 +25153,7 @@
             EventBase = baidu.editor.EventBase,
             UIBase = baidu.editor.ui.UIBase = function () {
             };
-    
+
         UIBase.prototype = {
             className:'',
             uiName:'',
@@ -25170,7 +25170,7 @@
             render:function (holder) {
                 var html = this.renderHtml();
                 var el = uiUtils.createElementByHtml(html);
-    
+
                 //by xuheng 给每个node添加class
                 var list = domUtils.getElementsByTagName(el, "*");
                 var theme = "edui-" + (this.theme || this.editor.options.theme);
@@ -25183,7 +25183,7 @@
                     layer.className="";
                     domUtils.addClass(layer,theme);
                 }
-    
+
                 var seatEl = this.getDom();
                 if (seatEl != null) {
                     seatEl.parentNode.replaceChild(el, seatEl);
@@ -25230,8 +25230,8 @@
         };
         utils.inherits(UIBase, EventBase);
     })();
-    
-    
+
+
     // ui/separator.js
     (function (){
         var utils = baidu.editor.utils,
@@ -25250,10 +25250,10 @@
             }
         };
         utils.inherits(Separator, UIBase);
-    
+
     })();
-    
-    
+
+
     // ui/mask.js
     ///import core
     ///import uicore
@@ -25262,7 +25262,7 @@
             domUtils = baidu.editor.dom.domUtils,
             UIBase = baidu.editor.ui.UIBase,
             uiUtils = baidu.editor.ui.uiUtils;
-        
+
         var Mask = baidu.editor.ui.Mask = function (options){
             this.initOptions(options);
             this.initUIBase();
@@ -25308,8 +25308,8 @@
         };
         utils.inherits(Mask, UIBase);
     })();
-    
-    
+
+
     // ui/popup.js
     ///import core
     ///import uicore
@@ -25322,7 +25322,7 @@
                 this.initOptions(options);
                 this.initPopup();
             };
-    
+
         var allPopups = [];
         function closeAllPopup( evt,el ){
             for ( var i = 0; i < allPopups.length; i++ ) {
@@ -25334,13 +25334,13 @@
                     }
                 }
             }
-    
+
             if(allPopups.length)
                 pop.editor.fireEvent("afterhidepop");
         }
-    
+
         Popup.postHide = closeAllPopup;
-    
+
         var ANCHOR_CLASSES = ['edui-anchor-topleft','edui-anchor-topright',
             'edui-anchor-bottomleft','edui-anchor-bottomright'];
         Popup.prototype = {
@@ -25374,73 +25374,73 @@
                 }else{
                     return ''
                 }
-    
+
             },
             _UIBase_postRender: UIBase.prototype.postRender,
             postRender: function (){
-    
-    
+
+
                 if (this.content instanceof UIBase) {
                     this.content.postRender();
                 }
-    
+
                 //捕获鼠标滚轮
                 if( this.captureWheel && !this.captured ) {
-    
+
                     this.captured = true;
-    
+
                     var winHeight = ( document.documentElement.clientHeight || document.body.clientHeight )  - 80,
                         _height = this.getDom().offsetHeight,
                         _top = uiUtils.getClientRect( this.combox.getDom() ).top,
                         content = this.getDom('content'),
                         ifr = this.getDom('body').getElementsByTagName('iframe'),
                         me = this;
-    
+
                     ifr.length && ( ifr = ifr[0] );
-    
+
                     while( _top + _height > winHeight ) {
                         _height -= 30;
                     }
                     content.style.height = _height + 'px';
                     //同步更改iframe高度
                     ifr && ( ifr.style.height = _height + 'px' );
-    
+
                     //阻止在combox上的鼠标滚轮事件, 防止用户的正常操作被误解
                     if( window.XMLHttpRequest ) {
-    
+
                         domUtils.on( content, ( 'onmousewheel' in document.body ) ? 'mousewheel' :'DOMMouseScroll' , function(e){
-    
+
                             if(e.preventDefault) {
                                 e.preventDefault();
                             } else {
                                 e.returnValue = false;
                             }
-    
+
                             if( e.wheelDelta ) {
-    
+
                                 content.scrollTop -= ( e.wheelDelta / 120 )*60;
-    
+
                             } else {
-    
+
                                 content.scrollTop -= ( e.detail / -3 )*60;
-    
+
                             }
-    
+
                         });
-    
+
                     } else {
-    
+
                         //ie6
                         domUtils.on( this.getDom(), 'mousewheel' , function(e){
-    
+
                             e.returnValue = false;
-    
+
                             me.getDom('content').scrollTop -= ( e.wheelDelta / 120 )*60;
-    
+
                         });
-    
+
                     }
-    
+
                 }
                 this.fireEvent('postRenderAfter');
                 this.hide(true);
@@ -25485,7 +25485,7 @@
                 this.getDom().style.visibility = 'hidden';
                 this._show();
                 var popSize = this.fitSize();
-    
+
                 var sideLeft, sideUp, left, top;
                 if (hoz) {
                     sideLeft = this.canSideLeft && (rect.right + popSize.width > vpRect.right && rect.left > popSize.width);
@@ -25498,7 +25498,7 @@
                     left = (sideLeft ? rect.right - popSize.width : rect.left);
                     top = (sideUp ? rect.top - popSize.height : rect.bottom);
                 }
-    
+
                 var popEl = this.getDom();
                 uiUtils.setViewportOffset(popEl, {
                     left: left,
@@ -25511,7 +25511,7 @@
                     baidu.editor.ui.uiUtils.getFixedLayer().style.zIndex = popEl.style.zIndex - 1;
                 }
                 this.getDom().style.visibility = 'visible';
-    
+
             },
             showAt: function (offset) {
                 var left = offset.left;
@@ -25558,7 +25558,7 @@
             }
         };
         utils.inherits(Popup, UIBase);
-        
+
         domUtils.on( document, 'mousedown', function ( evt ) {
             var el = evt.target || evt.srcElement;
             closeAllPopup( evt,el );
@@ -25566,10 +25566,10 @@
         domUtils.on( window, 'scroll', function (evt,el) {
             closeAllPopup( evt,el );
         } );
-    
+
     })();
-    
-    
+
+
     // ui/colorpicker.js
     ///import core
     ///import uicore
@@ -25581,7 +25581,7 @@
                 this.noColorText = this.noColorText || this.editor.getLang("clearColor");
                 this.initUIBase();
             };
-    
+
         ColorPicker.prototype = {
             getHtmlTpl: function (){
                 return genColorPicker(this.noColorText,this.editor);
@@ -25608,7 +25608,7 @@
             }
         };
         utils.inherits(ColorPicker, UIBase);
-    
+
         var COLORS = (
             'ffffff,000000,eeece1,1f497d,4f81bd,c0504d,9bbb59,8064a2,4bacc6,f79646,' +
                 'f2f2f2,7f7f7f,ddd9c3,c6d9f0,dbe5f1,f2dcdb,ebf1dd,e5e0ec,dbeef3,fdeada,' +
@@ -25617,7 +25617,7 @@
                 'a5a5a5,262626,494429,17365d,366092,953734,76923c,5f497a,31859b,e36c09,' +
                 '7f7f7f,0c0c0c,1d1b10,0f243e,244061,632423,4f6128,3f3151,205867,974806,' +
                 'c00000,ff0000,ffc000,ffff00,92d050,00b050,00b0f0,0070c0,002060,7030a0,').split(',');
-    
+
         function genColorPicker(noColorText,editor){
             var html = '<div id="##" class="edui-colorpicker %%">' +
                 '<div class="edui-colorpicker-topbar edui-clearfix">' +
@@ -25636,7 +25636,7 @@
                     ' style="background-color:#'+ COLORS[i] +';border:solid #ccc;'+
                     (i<10 || i>=60?'border-width:1px;':
                         i>=10&&i<20?'border-width:1px 1px 0 1px;':
-    
+
                             'border-width:0 1px 0 1px;')+
                     '"' +
                     '></a></td>':'';
@@ -25645,8 +25645,8 @@
             return html;
         }
     })();
-    
-    
+
+
     // ui/tablepicker.js
     ///import core
     ///import uicore
@@ -25654,7 +25654,7 @@
         var utils = baidu.editor.utils,
             uiUtils = baidu.editor.ui.uiUtils,
             UIBase = baidu.editor.ui.UIBase;
-        
+
         var TablePicker = baidu.editor.ui.TablePicker = function (options){
             this.initOptions(options);
             this.initTablePicker();
@@ -25731,14 +25731,14 @@
         };
         utils.inherits(TablePicker, UIBase);
     })();
-    
-    
+
+
     // ui/stateful.js
     (function (){
         var browser = baidu.editor.browser,
             domUtils = baidu.editor.dom.domUtils,
             uiUtils = baidu.editor.ui.uiUtils;
-        
+
         var TPL_STATEFUL = 'onmousedown="$$.Stateful_onMouseDown(event, this);"' +
             ' onmouseup="$$.Stateful_onMouseUp(event, this);"' +
             ( browser.ie ? (
@@ -25747,7 +25747,7 @@
             : (
             ' onmouseover="$$.Stateful_onMouseOver(event, this);"' +
             ' onmouseout="$$.Stateful_onMouseOut(event, this);"' ));
-        
+
         baidu.editor.ui.Stateful = {
             alwalysHoverable: false,
             target:null,//目标元素和this指向dom不一样
@@ -25842,8 +25842,8 @@
             }
         };
     })();
-    
-    
+
+
     // ui/button.js
     ///import core
     ///import uicore
@@ -25912,10 +25912,10 @@
         };
         utils.inherits(Button, UIBase);
         utils.extend(Button.prototype, Stateful);
-    
+
     })();
-    
-    
+
+
     // ui/splitbutton.js
     ///import core
     ///import uicore
@@ -26002,10 +26002,10 @@
         };
         utils.inherits(SplitButton, UIBase);
         utils.extend(SplitButton.prototype, Stateful, true);
-    
+
     })();
-    
-    
+
+
     // ui/colorbutton.js
     ///import core
     ///import uicore
@@ -26065,10 +26065,10 @@
             }
         };
         utils.inherits(ColorButton, SplitButton);
-    
+
     })();
-    
-    
+
+
     // ui/tablebutton.js
     ///import core
     ///import uicore
@@ -26105,17 +26105,17 @@
             }
         };
         utils.inherits(TableButton, SplitButton);
-    
+
     })();
-    
-    
+
+
     // ui/autotypesetpicker.js
     ///import core
     ///import uicore
     (function () {
         var utils = baidu.editor.utils,
             UIBase = baidu.editor.ui.UIBase;
-    
+
         var AutoTypeSetPicker = baidu.editor.ui.AutoTypeSetPicker = function (options) {
             this.initOptions(options);
             this.initAutoTypeSetPicker();
@@ -26128,11 +26128,11 @@
                 var me = this.editor,
                     opt = me.options.autotypeset,
                     lang = me.getLang("autoTypeSet");
-    
+
                 var textAlignInputName = 'textAlignValue' + me.uid,
                     imageBlockInputName = 'imageBlockLineValue' + me.uid,
                     symbolConverInputName = 'symbolConverValue' + me.uid;
-    
+
                 return '<div id="##" class="edui-autotypesetpicker %%">' +
                     '<div class="edui-autotypesetpicker-body">' +
                     '<table >' +
@@ -26169,15 +26169,15 @@
                     '</table>' +
                     '</div>' +
                     '</div>';
-    
-    
+
+
             },
             _UIBase_render:UIBase.prototype.render
         };
         utils.inherits(AutoTypeSetPicker, UIBase);
     })();
-    
-    
+
+
     // ui/autotypesetbutton.js
     ///import core
     ///import uicore
@@ -26194,7 +26194,7 @@
                 this.initAutoTypeSetButton();
             };
         function getPara(me){
-    
+
             var opt = {},
                 cont = me.getDom(),
                 editorId = me.editor.uid,
@@ -26229,23 +26229,23 @@
                 } else {
                     opt[ipt.getAttribute("value")] = ipt.checked;
                 }
-    
+
             }
-    
+
             var selects = domUtils.getElementsByTagName(cont,"select");
             for(var i=0,si;si=selects[i++];){
                 var attr = si.getAttribute('name');
                 opt[attr] = opt[attr] ? si.value : '';
             }
-    
+
             utils.extend(me.editor.options.autotypeset,opt);
-    
+
             me.editor.setPreferences('autotypeset', opt);
         }
-    
+
         AutoTypeSetButton.prototype = {
             initAutoTypeSetButton: function (){
-    
+
                 var me = this;
                 this.popup = new Popup({
                     //传入配置参数
@@ -26266,18 +26266,18 @@
                     if(flag)return;
                     var cont = this.getDom(),
                         btn = cont.getElementsByTagName('button')[0];
-    
+
                     btn.onclick = function(){
                         getPara(popupUI);
                         me.editor.execCommand('autotypeset');
                         popupUI.hide()
                     };
-    
+
                     domUtils.on(cont, 'click', function(e) {
                         var target = e.target || e.srcElement,
                             editorId = me.editor.uid;
                         if (target && target.tagName == 'INPUT') {
-    
+
                             // 点击图片浮动的checkbox,去除对应的radio
                             if (target.name == 'imageBlockLine' || target.name == 'textAlign' || target.name == 'symbolConver') {
                                 var checked = target.checked,
@@ -26288,7 +26288,7 @@
                                         'textAlign': 'left',
                                         'symbolConver': 'tobdc'
                                     };
-    
+
                                 for (var i = 0; i < radios.length; i++) {
                                     if (checked) {
                                         if (radios[i].value == defalutSelect[target.name]) {
@@ -26304,21 +26304,21 @@
                                 var checkboxs = target.parentNode.previousSibling.getElementsByTagName('input');
                                 checkboxs && (checkboxs[0].checked = true);
                             }
-    
+
                             getPara(popupUI);
                         }
                     });
-    
+
                     flag = 1;
                 });
                 this.initSplitButton();
             }
         };
         utils.inherits(AutoTypeSetButton, SplitButton);
-    
+
     })();
-    
-    
+
+
     // ui/cellalignpicker.js
     ///import core
     ///import uicore
@@ -26327,7 +26327,7 @@
             Popup = baidu.editor.ui.Popup,
             Stateful = baidu.editor.ui.Stateful,
             UIBase = baidu.editor.ui.UIBase;
-    
+
         /**
          * 该参数将新增一个参数： selected， 参数类型为一个Object， 形如{ 'align': 'center', 'valign': 'top' }， 表示单元格的初始
          * 对齐状态为： 竖直居上，水平居中; 其中 align的取值为：'center', 'left', 'right'; valign的取值为: 'top', 'middle', 'bottom'
@@ -26341,9 +26341,9 @@
         CellAlignPicker.prototype = {
             //初始化选中状态， 该方法将根据传递进来的参数获取到应该选中的对齐方式图标的索引
             initSelected: function(){
-    
+
                 var status = {
-    
+
                     valign: {
                         top: 0,
                         middle: 1,
@@ -26355,41 +26355,41 @@
                         right: 2
                     },
                     count: 3
-    
+
                     },
                     result = -1;
-    
+
                 if( this.selected ) {
                     this.selectedIndex = status.valign[ this.selected.valign ] * status.count + status.align[ this.selected.align ];
                 }
-    
+
             },
             initCellAlignPicker:function () {
                 this.initUIBase();
                 this.Stateful_init();
             },
             getHtmlTpl:function () {
-    
+
                 var alignType = [ 'left', 'center', 'right' ],
                     COUNT = 9,
                     tempClassName = null,
                     tempIndex = -1,
                     tmpl = [];
-    
-    
+
+
                 for( var i= 0; i<COUNT; i++ ) {
-    
+
                     tempClassName = this.selectedIndex === i ? ' class="edui-cellalign-selected" ' : '';
                     tempIndex = i % 3;
-    
+
                     tempIndex === 0 && tmpl.push('<tr>');
-    
+
                     tmpl.push( '<td index="'+ i +'" ' + tempClassName + ' stateful><div class="edui-icon edui-'+ alignType[ tempIndex ] +'"></div></td>' );
-    
+
                     tempIndex === 2 && tmpl.push('</tr>');
-    
+
                 }
-    
+
                 return '<div id="##" class="edui-cellalignpicker %%">' +
                     '<div class="edui-cellalignpicker-body">' +
                     '<table onclick="$$._onClick(event);">' +
@@ -26413,11 +26413,11 @@
         utils.inherits(CellAlignPicker, UIBase);
         utils.extend(CellAlignPicker.prototype, Stateful,true);
     })();
-    
-    
-    
-    
-    
+
+
+
+
+
     // ui/pastepicker.js
     ///import core
     ///import uicore
@@ -26426,7 +26426,7 @@
             Stateful = baidu.editor.ui.Stateful,
             uiUtils = baidu.editor.ui.uiUtils,
             UIBase = baidu.editor.ui.UIBase;
-    
+
         var PastePicker = baidu.editor.ui.PastePicker = function (options) {
             this.initOptions(options);
             this.initPastePicker();
@@ -26462,12 +26462,12 @@
                 var node = domUtils.getNextDomNode(cur),
                     screenHt = uiUtils.getViewportRect().height,
                     subPop = uiUtils.getClientRect(node);
-    
+
                 if ((subPop.top + subPop.height) > screenHt)
                     node.style.top = (-subPop.height - cur.offsetHeight) + "px";
                 else
                     node.style.top = "";
-    
+
                 if (/hidden/ig.test(domUtils.getComputedStyle(node, "visibility"))) {
                     node.style.visibility = "visible";
                     domUtils.addClass(cur, "edui-state-opened");
@@ -26481,12 +26481,12 @@
         utils.inherits(PastePicker, UIBase);
         utils.extend(PastePicker.prototype, Stateful, true);
     })();
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     // ui/toolbar.js
     (function (){
         var utils = baidu.editor.utils,
@@ -26508,7 +26508,7 @@
                 }else{
                     this.items.splice(index,0,item)
                 }
-    
+
             },
             getHtmlTpl: function (){
                 var buff = [];
@@ -26535,10 +26535,10 @@
             }
         };
         utils.inherits(Toolbar, UIBase);
-    
+
     })();
-    
-    
+
+
     // ui/menu.js
     ///import core
     ///import uicore
@@ -26552,12 +26552,12 @@
             Popup = baidu.editor.ui.Popup,
             Stateful = baidu.editor.ui.Stateful,
             CellAlignPicker = baidu.editor.ui.CellAlignPicker,
-    
+
             Menu = baidu.editor.ui.Menu = function (options) {
                 this.initOptions(options);
                 this.initMenu();
             };
-    
+
         var menuSeparator = {
             renderHtml:function () {
                 return '<div class="edui-menuitem edui-menuseparator"><div class="edui-menuseparator-inner"></div></div>';
@@ -26661,7 +26661,7 @@
             }
         };
         utils.inherits(Menu, Popup);
-    
+
         /**
          * @update 2013/04/03 hancong03 新增一个参数menu, 该参数存储了menuItem所对应的menu引用
          * @type {Function}
@@ -26673,10 +26673,10 @@
             if (this.subMenu && !(this.subMenu instanceof Menu)) {
                 if (options.className && options.className.indexOf("aligntd") != -1) {
                     var me = this;
-    
+
                     //获取单元格对齐初始状态
                     this.subMenu.selected = this.editor.queryCommandValue( 'cellalignment' );
-    
+
                     this.subMenu = new Popup({
                         content:new CellAlignPicker(this.subMenu),
                         parentMenu:me,
@@ -26816,8 +26816,8 @@
         utils.inherits(MenuItem, UIBase);
         utils.extend(MenuItem.prototype, Stateful, true);
     })();
-    
-    
+
+
     // ui/combox.js
     ///import core
     ///import uicore
@@ -26856,7 +26856,7 @@
                     captureWheel: true,
                     combox: this
                 });
-    
+
                 this.initSplitButton();
             },
             _SplitButton_postRender: SplitButton.prototype.postRender,
@@ -26915,8 +26915,8 @@
         };
         utils.inherits(Combox, SplitButton);
     })();
-    
-    
+
+
     // ui/dialog.js
     ///import core
     ///import uicore
@@ -26985,9 +26985,9 @@
                         me.close(false);
                     }
                 });
-    
+
                 this.fullscreen && this.initResizeEvent();
-    
+
                 if (this.buttons) {
                     for (var i=0; i<this.buttons.length; i++) {
                         if (!(this.buttons[i] instanceof Button)) {
@@ -26999,41 +26999,41 @@
                 }
             },
             initResizeEvent: function () {
-    
+
                 var me = this;
-    
+
                 domUtils.on( window, "resize", function () {
-    
+
                     if ( me._hidden || me._hidden === undefined ) {
                         return;
                     }
-    
+
                     if ( me.__resizeTimer ) {
                         window.clearTimeout( me.__resizeTimer );
                     }
-    
+
                     me.__resizeTimer = window.setTimeout( function () {
-    
+
                         me.__resizeTimer = null;
-    
+
                         var dialogWrapNode = me.getDom(),
                             contentNode = me.getDom('content'),
                             wrapRect = UE.ui.uiUtils.getClientRect( dialogWrapNode ),
                             contentRect = UE.ui.uiUtils.getClientRect( contentNode ),
                             vpRect = uiUtils.getViewportRect();
-    
+
                         contentNode.style.width = ( vpRect.width - wrapRect.width + contentRect.width ) + "px";
                         contentNode.style.height = ( vpRect.height - wrapRect.height + contentRect.height ) + "px";
-    
+
                         dialogWrapNode.style.width = vpRect.width + "px";
                         dialogWrapNode.style.height = vpRect.height + "px";
-    
+
                         me.fireEvent( "resize" );
-    
+
                     }, 100 );
-    
+
                 } );
-    
+
             },
             fitSize: function (){
                 var popBodyEl = this.getDom('body');
@@ -27063,9 +27063,9 @@
                 el.style.top = Math.max(top, 0) + 'px';
             },
             showAtCenter: function (){
-    
+
                 var vpRect = uiUtils.getViewportRect();
-    
+
                 if ( !this.fullscreen ) {
                     this.getDom().style.display = '';
                     var popSize = this.fitSize();
@@ -27083,20 +27083,20 @@
                 } else {
                     var dialogWrapNode = this.getDom(),
                         contentNode = this.getDom('content');
-    
+
                     dialogWrapNode.style.display = "block";
-    
+
                     var wrapRect = UE.ui.uiUtils.getClientRect( dialogWrapNode ),
                         contentRect = UE.ui.uiUtils.getClientRect( contentNode );
                     dialogWrapNode.style.left = "-100000px";
-    
+
                     contentNode.style.width = ( vpRect.width - wrapRect.width + contentRect.width ) + "px";
                     contentNode.style.height = ( vpRect.height - wrapRect.height + contentRect.height ) + "px";
-    
+
                     dialogWrapNode.style.width = vpRect.width + "px";
                     dialogWrapNode.style.height = vpRect.height + "px";
                     dialogWrapNode.style.left = 0;
-    
+
                     //保存环境的overflow值
                     this._originalContext = {
                         html: {
@@ -27108,14 +27108,14 @@
                             overflowY: document.body.style.overflowY
                         }
                     };
-    
+
                     document.documentElement.style.overflowX = 'hidden';
                     document.documentElement.style.overflowY = 'hidden';
                     document.body.style.overflowX = 'hidden';
                     document.body.style.overflowY = 'hidden';
-    
+
                 }
-    
+
                 this._show();
             },
             getContentHtml: function (){
@@ -27130,7 +27130,7 @@
             },
             getHtmlTpl: function (){
                 var footHtml = '';
-    
+
                 if (this.buttons) {
                     var buff = [];
                     for (var i=0; i<this.buttons.length; i++) {
@@ -27140,7 +27140,7 @@
                          '<div id="##_buttons" class="%%-buttons">' + buff.join('') + '</div>' +
                         '</div>';
                 }
-    
+
                 return '<div id="##" class="%%"><div '+ ( !this.fullscreen ? 'class="%%"' : 'class="%%-wrap edui-dialog-fullscreen-flag"' ) +'><div id="##_body" class="%%-body">' +
                     '<div class="%%-shadow"></div>' +
                     '<div id="##_titlebar" class="%%-titlebar">' +
@@ -27182,7 +27182,7 @@
                         }
                     });
                 });
-    
+
                 //hold住scroll事件，防止dialog的滚动影响页面
     //            if( this.holdScroll ) {
     //
@@ -27263,7 +27263,7 @@
             _show: function (){
                 if (this._hidden) {
                     this.getDom().style.display = '';
-    
+
                     //要高过编辑器的zindxe
                     this.editor.container.style.zIndex && (this.getDom().style.zIndex = this.editor.container.style.zIndex * 1 + 10);
                     this._hidden = false;
@@ -27310,16 +27310,16 @@
                 if (this.fireEvent('close', ok) !== false) {
                     //还原环境
                     if ( this.fullscreen ) {
-    
+
                         document.documentElement.style.overflowX = this._originalContext.html.overflowX;
                         document.documentElement.style.overflowY = this._originalContext.html.overflowY;
                         document.body.style.overflowX = this._originalContext.body.overflowX;
                         document.body.style.overflowY = this._originalContext.body.overflowY;
                         delete this._originalContext;
-    
+
                     }
                     this._hide();
-    
+
                     //销毁content
                     var content = this.getDom('content');
                     var iframe = this.getDom('iframe');
@@ -27333,8 +27333,8 @@
         };
         utils.inherits(Dialog, UIBase);
     })();
-    
-    
+
+
     // ui/menubutton.js
     ///import core
     ///import uicore
@@ -27372,11 +27372,11 @@
             setValue : function(value){
                 this._value = value;
             }
-            
+
         };
         utils.inherits(MenuButton, SplitButton);
     })();
-    
+
     // ui/multiMenu.js
     ///import core
     ///import uicore
@@ -27389,7 +27389,7 @@
                 this.initOptions(options);
                 this.initMultiMenu();
             };
-    
+
         MultiMenuPop.prototype = {
             initMultiMenu: function (){
                 var me = this;
@@ -27412,13 +27412,13 @@
                 };
                 this.initSplitButton();
             }
-    
+
         };
-    
+
         utils.inherits(MultiMenuPop, SplitButton);
     })();
-    
-    
+
+
     // ui/shortcutmenu.js
     (function () {
         var UI = baidu.editor.ui,
@@ -27426,18 +27426,18 @@
             uiUtils = UI.uiUtils,
             utils = baidu.editor.utils,
             domUtils = baidu.editor.dom.domUtils;
-    
+
         var allMenus = [],//存储所有快捷菜单
             timeID,
             isSubMenuShow = false;//是否有子pop显示
-    
+
         var ShortCutMenu = UI.ShortCutMenu = function (options) {
             this.initOptions (options);
             this.initShortCutMenu ();
         };
-    
+
         ShortCutMenu.postHide = hideAllMenu;
-    
+
         ShortCutMenu.prototype = {
             isHidden : true ,
             SPACE : 5 ,
@@ -27451,13 +27451,13 @@
             initEvent : function () {
                 var me = this,
                     doc = me.editor.document;
-    
+
                 domUtils.on (doc , "mousemove" , function (e) {
                     if (me.isHidden === false) {
                         //有pop显示就不隐藏快捷菜单
                         if (me.getSubMenuMark () || me.eventType == "contextmenu")   return;
-    
-    
+
+
                         var flag = true,
                             el = me.getDom (),
                             wt = el.offsetWidth,
@@ -27466,7 +27466,7 @@
                             distanceY = ht / 2,//距离中心Y标准
                             x = Math.abs (e.screenX - me.left),//离中心距离横坐标
                             y = Math.abs (e.screenY - me.top);//离中心距离纵坐标
-    
+
                         clearTimeout (timeID);
                         timeID = setTimeout (function () {
                             if (y > 0 && y < distanceY) {
@@ -27477,7 +27477,7 @@
                             } else if (y > distanceY + 70 && y < distanceY + 140) {
                                 me.hide ();
                             }
-    
+
                             if (flag && x > 0 && x < distanceX) {
                                 me.setOpacity (el , "1")
                             } else if (x > distanceX && x < distanceX + 70) {
@@ -27488,30 +27488,30 @@
                         });
                     }
                 });
-    
+
                 //ie\ff下 mouseout不准
                 if (browser.chrome) {
                     domUtils.on (doc , "mouseout" , function (e) {
                         var relatedTgt = e.relatedTarget || e.toElement;
-    
+
                         if (relatedTgt == null || relatedTgt.tagName == "HTML") {
                             me.hide ();
                         }
                     });
                 }
-    
+
                 me.editor.addListener ("afterhidepop" , function () {
                     if (!me.isHidden) {
                         isSubMenuShow = true;
                     }
                 });
-    
+
             } ,
             initItems : function () {
                 if (utils.isArray (this.items)) {
                     for (var i = 0, len = this.items.length ; i < len ; i++) {
                         var item = this.items[i].toLowerCase ();
-    
+
                         if (UI[item]) {
                             this.items[i] = new UI[item] (this.editor);
                             this.items[i].className += " edui-shortcutsubmenu ";
@@ -27532,7 +27532,7 @@
                 var list = domUtils.getElementsByTagName (layerEle , "div" , function (node) {
                     return domUtils.hasClass (node , "edui-shortcutsubmenu edui-popup")
                 });
-    
+
                 for (var i = 0, node ; node = list[i++] ;) {
                     if (node.style.display != "none") {
                         isSubMenuShow = true;
@@ -27545,7 +27545,7 @@
                     offset = {},
                     el = this.getDom (),
                     fixedlayer = uiUtils.getFixedLayer ();
-    
+
                 function setPos (offset) {
                     if (offset.left < 0) {
                         offset.left = 0;
@@ -27555,7 +27555,7 @@
                     }
                     el.style.cssText = "position:absolute;left:" + offset.left + "px;top:" + offset.top + "px;";
                 }
-    
+
                 function setPosByCxtMenu (menu) {
                     if (!menu.tagName) {
                         menu = menu.getDom ();
@@ -27565,11 +27565,11 @@
                     offset.top -= el.offsetHeight + 15;
                     setPos (offset);
                 }
-    
-    
+
+
                 me.eventType = e.type;
                 el.style.cssText = "display:block;left:-9999px";
-    
+
                 if (e.type == "contextmenu" && hasContextmenu) {
                     var menu = domUtils.getElementsByTagName (fixedlayer , "div" , "edui-contextmenu")[0];
                     if (menu) {
@@ -27586,12 +27586,12 @@
                     setPos (offset);
                     me.setOpacity (el , 0.2);
                 }
-    
-    
+
+
                 me.isHidden = false;
                 me.left = e.screenX + el.offsetWidth / 2 - me.SPACE;
                 me.top = e.screenY - (el.offsetHeight / 2) - me.SPACE;
-    
+
                 if (me.editor) {
                     el.style.zIndex = me.editor.container.style.zIndex * 1 + 10;
                     fixedlayer.style.zIndex = el.style.zIndex - 1;
@@ -27621,39 +27621,39 @@
                 } else {
                     buff = this.items;
                 }
-    
+
                 return '<div id="##" class="%% edui-toolbar" data-src="shortcutmenu" onmousedown="return false;" onselectstart="return false;" >' +
                     buff +
                     '</div>';
             }
         };
-    
+
         utils.inherits (ShortCutMenu , UIBase);
-    
+
         function hideAllMenu (e) {
             var tgt = e.target || e.srcElement,
                 cur = domUtils.findParent (tgt , function (node) {
                     return domUtils.hasClass (node , "edui-shortcutmenu") || domUtils.hasClass (node , "edui-popup");
                 } , true);
-    
+
             if (!cur) {
                 for (var i = 0, menu ; menu = allMenus[i++] ;) {
                     menu.hide ()
                 }
             }
         }
-    
+
         domUtils.on (document , 'mousedown' , function (e) {
             hideAllMenu (e);
         });
-    
+
         domUtils.on (window , 'scroll' , function (e) {
             hideAllMenu (e);
         });
-    
+
     }) ();
-    
-    
+
+
     // ui/breakline.js
     (function (){
         var utils = baidu.editor.utils,
@@ -27672,10 +27672,10 @@
             }
         };
         utils.inherits(Breakline, UIBase);
-    
+
     })();
-    
-    
+
+
     // ui/message.js
     ///import core
     ///import uicore
@@ -27687,7 +27687,7 @@
                 this.initOptions(options);
                 this.initMessage();
             };
-    
+
         Message.prototype = {
             initMessage: function (){
                 this.initUIBase();
@@ -27711,10 +27711,10 @@
                         me.hide();
                     }, opt.timeout || 4000);
                 }
-    
+
                 opt.content !== undefined && me.setContent(opt.content);
                 opt.type !== undefined && me.setType(opt.type);
-    
+
                 me.show();
             },
             postRender: function(){
@@ -27750,12 +27750,12 @@
                 }
             }
         };
-    
+
         utils.inherits(Message, UIBase);
-    
+
     })();
-    
-    
+
+
     // adapter/editorui.js
     //ui跟编辑器的适配層
     //那个按钮弹出是dialog，是下拉筐等都是在这个js中配置
@@ -27765,11 +27765,11 @@
         var editorui = baidu.editor.ui;
         var _Dialog = editorui.Dialog;
         editorui.buttons = {};
-    
+
         editorui.Dialog = function (options) {
             var dialog = new _Dialog(options);
             dialog.addListener('hide', function () {
-    
+
                 if (dialog.editor) {
                     var editor = dialog.editor;
                     try {
@@ -27781,15 +27781,15 @@
                         } else {
                             editor.focus();
                         }
-    
-    
+
+
                     } catch (ex) {
                     }
                 }
             });
             return dialog;
         };
-    
+
         var iframeUrlMap = {
             'anchor':'~/dialogs/anchor/anchor.html',
             'insertimage':'~/dialogs/image/image.html',
@@ -27824,7 +27824,7 @@
             'selectall', 'print','horizontal', 'removeformat', 'time', 'date', 'unlink',
             'insertparagraphbeforetable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow',
             'deletecol', 'splittorows', 'splittocols', 'splittocells', 'mergecells', 'deletetable', 'drafts'];
-    
+
         for (var i = 0, ci; ci = btnCmds[i++];) {
             ci = ci.toLowerCase();
             editorui[ci] = function (cmd) {
@@ -27855,7 +27855,7 @@
                 };
             }(ci);
         }
-    
+
         //清除文档
         editorui.cleardoc = function (editor) {
             var ui = new editorui.Button({
@@ -27874,16 +27874,16 @@
             });
             return ui;
         };
-    
+
         //排版，图片排版，文字方向
         var typeset = {
             'justify':['left', 'right', 'center', 'justify'],
             'imagefloat':['none', 'left', 'center', 'right'],
             'directionality':['ltr', 'rtl']
         };
-    
+
         for (var p in typeset) {
-    
+
             (function (cmd, val) {
                 for (var i = 0, ci; ci = val[i++];) {
                     (function (cmd2) {
@@ -27907,7 +27907,7 @@
                 }
             })(p, typeset[p])
         }
-    
+
         //字体颜色和背景颜色
         for (var i = 0, ci; ci = ['backcolor', 'forecolor'][i++];) {
             editorui[ci] = function (cmd) {
@@ -27937,14 +27937,14 @@
                 };
             }(ci);
         }
-    
-    
+
+
         var dialogBtns = {
             noOk:['searchreplace', 'help', 'spechars', 'webapp','preview'],
             ok:['attachment', 'anchor', 'link', 'insertimage', 'map', 'gmap', 'insertframe', 'wordimage',
                 'insertvideo', 'insertframe', 'edittip', 'edittable', 'edittd', 'scrawl', 'template', 'music', 'background', 'charts']
         };
-    
+
         for (var p in dialogBtns) {
             (function (type, vals) {
                 for (var i = 0, ci; ci = vals[i++];) {
@@ -27956,7 +27956,7 @@
                         editorui[cmd] = function (editor, iframeUrl, title) {
                             iframeUrl = iframeUrl || (editor.options.iframeUrlMap || {})[cmd] || iframeUrlMap[cmd];
                             title = editor.options.labelMap[cmd] || editor.getLang("labelMap." + cmd) || '';
-    
+
                             var dialog;
                             //没有iframeUrl不创建dialog
                             if (iframeUrl) {
@@ -27988,10 +27988,10 @@
                                         }
                                     ]
                                 } : {}));
-    
+
                                 editor.ui._dialogs[cmd + "Dialog"] = dialog;
                             }
-    
+
                             var ui = new editorui.Button({
                                 className:'edui-for-' + cmd,
                                 title:title,
@@ -28010,7 +28010,7 @@
                                                     dialog.render();
                                                     dialog.open();
                                                 }
-    
+
                                                 break;
                                             default:
                                                 dialog.render();
@@ -28026,22 +28026,22 @@
                                 //只存在于右键菜单而无工具栏按钮的ui不需要检测状态
                                 var unNeedCheckState = {'edittable':1};
                                 if (cmd in unNeedCheckState)return;
-    
+
                                 var state = editor.queryCommandState(cmd);
                                 if (ui.getDom()) {
                                     ui.setDisabled(state == -1);
                                     ui.setChecked(state);
                                 }
-    
+
                             });
-    
+
                             return ui;
                         };
                     })(ci.toLowerCase())
                 }
             })(p, dialogBtns[p]);
         }
-    
+
         editorui.snapscreen = function (editor, iframeUrl, title) {
             title = editor.options.labelMap['snapscreen'] || editor.getLang("labelMap.snapscreen") || '';
             var ui = new editorui.Button({
@@ -28051,7 +28051,7 @@
                     editor.execCommand("snapscreen");
                 },
                 theme:editor.options.theme
-    
+
             });
             editorui.buttons['snapscreen'] = ui;
             iframeUrl = iframeUrl || (editor.options.iframeUrlMap || {})["snapscreen"] || iframeUrlMap["snapscreen"];
@@ -28079,7 +28079,7 @@
                             }
                         }
                     ]
-    
+
                 });
                 dialog.render();
                 editor.ui._dialogs["snapscreenDialog"] = dialog;
@@ -28089,7 +28089,7 @@
             });
             return ui;
         };
-    
+
         editorui.insertcode = function (editor, list, title) {
             list = editor.options['insertcode'] || [];
             title = editor.options.labelMap['insertcode'] || editor.getLang("labelMap.insertcode") || '';
@@ -28105,7 +28105,7 @@
                     }
                 });
             });
-    
+
             var ui = new editorui.Combox({
                 editor:editor,
                 items:items,
@@ -28125,7 +28125,7 @@
                                 return i;
                         }
                     }
-    
+
                     return -1;
                 }
             });
@@ -28145,15 +28145,15 @@
                         //trace:1871 ie下从源码模式切换回来时，字体会带单引号，而且会有逗号
                         value && (value = value.replace(/['"]/g, '').split(',')[0]);
                         ui.setValue(value);
-    
+
                     }
                 }
-    
+
             });
             return ui;
         };
         editorui.fontfamily = function (editor, list, title) {
-    
+
             list = editor.options['fontfamily'] || [];
             title = editor.options.labelMap['fontfamily'] || editor.getLang("labelMap.fontfamily") || '';
             if (!list.length) return;
@@ -28190,7 +28190,7 @@
                                 return i;
                         }
                     }
-    
+
                     return -1;
                 }
             });
@@ -28206,14 +28206,14 @@
                         //trace:1871 ie下从源码模式切换回来时，字体会带单引号，而且会有逗号
                         value && (value = value.replace(/['"]/g, '').split(',')[0]);
                         ui.setValue(value);
-    
+
                     }
                 }
-    
+
             });
             return ui;
         };
-    
+
         editorui.fontsize = function (editor, list, title) {
             title = editor.options.labelMap['fontsize'] || editor.getLang("labelMap.fontsize") || '';
             list = list || editor.options['fontsize'] || [];
@@ -28255,11 +28255,11 @@
                         ui.setValue(editor.queryCommandValue('FontSize'));
                     }
                 }
-    
+
             });
             return ui;
         };
-    
+
         editorui.paragraph = function (editor, list, title) {
             title = editor.options.labelMap['paragraph'] || editor.getLang("labelMap.paragraph") || '';
             list = editor.options['paragraph'] || [];
@@ -28305,12 +28305,12 @@
                         }
                     }
                 }
-    
+
             });
             return ui;
         };
-    
-    
+
+
         //自定义标题
         editorui.customstyle = function (editor) {
             var list = editor.options['customstyle'] || [],
@@ -28336,7 +28336,7 @@
                     });
                 })(t);
             }
-    
+
             var ui = new editorui.Combox({
                 editor:editor,
                 items:items,
@@ -28375,7 +28375,7 @@
                         }
                     }
                 }
-    
+
             });
             return ui;
         };
@@ -28398,7 +28398,7 @@
             });
             return ui;
         };
-    
+
         editorui.lineheight = function (editor) {
             var val = editor.options.lineheight || [];
             if (!val.length)return;
@@ -28437,7 +28437,7 @@
             });
             return ui;
         };
-    
+
         var rowspacings = ['top', 'bottom'];
         for (var r = 0, ri; ri = rowspacings[r++];) {
             (function (cmd) {
@@ -28523,7 +28523,7 @@
                 };
             })(cl)
         }
-    
+
         editorui.fullscreen = function (editor, title) {
             title = editor.options.labelMap['fullscreen'] || editor.getLang("labelMap.fullscreen") || '';
             var ui = new editorui.Button({
@@ -28545,7 +28545,7 @@
             });
             return ui;
         };
-    
+
         // 表情
         editorui["emotion"] = function (editor, iframeUrl) {
             var cmd = "emotion";
@@ -28556,13 +28556,13 @@
                 iframeUrl:editor.ui.mapUrl(iframeUrl || (editor.options.iframeUrlMap || {})[cmd] || iframeUrlMap[cmd])
             });
             editorui.buttons[cmd] = ui;
-    
+
             editor.addListener('selectionchange', function () {
                 ui.setDisabled(editor.queryCommandState(cmd) == -1)
             });
             return ui;
         };
-    
+
         editorui.autotypeset = function (editor) {
             var ui = new editorui.AutoTypeSetButton({
                 editor:editor,
@@ -28578,7 +28578,7 @@
             });
             return ui;
         };
-    
+
         /* 简单上传插件 */
         editorui["simpleupload"] = function (editor) {
             var name = 'simpleupload',
@@ -28609,10 +28609,10 @@
             });
             return ui;
         };
-    
+
     })();
-    
-    
+
+
     // adapter/editor.js
     ///import core
     ///commands 全屏
@@ -28624,12 +28624,12 @@
             UIBase = baidu.editor.ui.UIBase,
             domUtils = baidu.editor.dom.domUtils;
         var nodeStack = [];
-    
+
         function EditorUI(options) {
             this.initOptions(options);
             this.initEditorUI();
         }
-    
+
         EditorUI.prototype = {
             uiName:'editor',
             initEditorUI:function () {
@@ -28639,7 +28639,7 @@
                 this._initToolbars();
                 var editor = this.editor,
                     me = this;
-    
+
                 editor.addListener('ready', function () {
                     //提供getDialog方法
                     editor.getDialog = function (name) {
@@ -28650,9 +28650,9 @@
                     });
                     //提供编辑器实时宽高(全屏时宽高不变化)
                     editor.ui._actualFrameWidth = editor.options.initialFrameWidth;
-    
+
                     UE.browser.ie && UE.browser.version === 6 && editor.container.ownerDocument.execCommand("BackgroundImageCache", false, true);
-    
+
                     //display bottom-bar label based on config
                     if (editor.options.elementPathEnabled) {
                         editor.ui.getDom('elementpath').innerHTML = '<div class="edui-editor-breadcrumb">' + editor.getLang("elementPathTip") + ':</div>';
@@ -28679,18 +28679,18 @@
                         editor.ui.getDom('wordcount').style.display = "none";
                         editor.ui.getDom('scale').style.display = "none";
                     }
-    
+
                     if (!editor.selection.isFocus())return;
                     editor.fireEvent('selectionchange', false, true);
-    
-    
+
+
                 });
-    
+
                 editor.addListener('mousedown', function (t, evt) {
                     var el = evt.target || evt.srcElement;
                     baidu.editor.ui.Popup.postHide(evt, el);
                     baidu.editor.ui.ShortCutMenu.postHide(evt);
-    
+
                 });
                 editor.addListener("delcells", function () {
                     if (UE.ui['edittip']) {
@@ -28698,7 +28698,7 @@
                     }
                     editor.getDialog('edittip').open();
                 });
-    
+
                 var pastePop, isPaste = false, timer;
                 editor.addListener("afterpaste", function () {
                     if(editor.queryCommandState('pasteplain'))
@@ -28713,7 +28713,7 @@
                     }
                     isPaste = true;
                 });
-    
+
                 editor.addListener("afterinserthtml", function () {
                     clearTimeout(timer);
                     timer = setTimeout(function () {
@@ -28772,14 +28772,14 @@
                         countDom.innerHTML = msg.replace("{#leave}", max - count).replace("{#count}", count);
                     }
                 }
-    
+
                 editor.addListener('selectionchange', function () {
                     if (editor.options.elementPathEnabled) {
                         me[(editor.queryCommandState('elementpath') == -1 ? 'dis' : 'en') + 'ableElementPath']()
                     }
                     if (editor.options.scaleEnabled) {
                         me[(editor.queryCommandState('scale') == -1 ? 'dis' : 'en') + 'ableScale']();
-    
+
                     }
                 });
                 var popup = new baidu.editor.ui.Popup({
@@ -28793,12 +28793,12 @@
                     _onImgEditButtonClick:function (name) {
                         this.hide();
                         editor.ui._dialogs[name] && editor.ui._dialogs[name].open();
-    
+
                     },
                     _onImgSetFloat:function (value) {
                         this.hide();
                         editor.execCommand("imagefloat", value);
-    
+
                     },
                     _setIframeAlign:function (value) {
                         var frame = popup.anchorEl;
@@ -28906,9 +28906,9 @@
                                 '<span onclick=$$._onImgSetFloat("right") class="edui-clickable">' + editor.getLang("justifyright") + '</span>&nbsp;&nbsp;' +
                                 '<span onclick=$$._onImgSetFloat("center") class="edui-clickable">' + editor.getLang("justifycenter") + '</span>&nbsp;&nbsp;'+
                                 '<span onclick="$$._onImgEditButtonClick(\'' + dialogName + '\');" class="edui-clickable">' + editor.getLang("modify") + '</span></nobr>';
-    
+
                             !html && (html = popup.formatHtml(str))
-    
+
                         }
                         if (editor.ui._dialogs.linkDialog) {
                             var link = editor.queryCommandValue('link');
@@ -28928,7 +28928,7 @@
                                 popup.showAnchor(link);
                             }
                         }
-    
+
                         if (html) {
                             popup.getDom('content').innerHTML = html;
                             popup.anchorEl = img || link;
@@ -28938,7 +28938,7 @@
                         }
                     });
                 }
-    
+
             },
             _initToolbars:function () {
                 var editor = this.editor;
@@ -28961,7 +28961,7 @@
                             if (baidu.editor.ui[toolbarItem]) {
                                 toolbarItemUi = new baidu.editor.ui[toolbarItem](editor);
                             }
-    
+
                             //fullscreen这里单独处理一下，放到首行去
                             if (toolbarItem == 'fullscreen') {
                                 if (toolbarUis && toolbarUis[0]) {
@@ -28969,24 +28969,24 @@
                                 } else {
                                     toolbarItemUi && toolbarUi.items.splice(0, 0, toolbarItemUi);
                                 }
-    
+
                                 continue;
-    
-    
+
+
                             }
                         } else {
                             toolbarItemUi = toolbarItem;
                         }
                         if (toolbarItemUi && toolbarItemUi.id) {
-    
+
                             toolbarUi.add(toolbarItemUi);
                         }
                     }
                     toolbarUis[i] = toolbarUi;
                 }
-    
+
                 //接受外部定制的UI（修复因 utils.each 无法准确的循环出对象的全部元素而导致的自定义 UI 不符合预期的 BUG by HaoChuan9421）
-    
+
                 // utils.each(UE._customizeUI,function(obj,key){
                 //     var itemUI,index;
                 //     if(obj.id && obj.id != editor.key){
@@ -29001,8 +29001,8 @@
                 //         toolbarUi.add(itemUI,index)
                 //     }
                 // });
-    
-                
+
+
                 for(var key in UE._customizeUI){
                     var obj = UE._customizeUI[key]
                     var itemUI,index;
@@ -29017,7 +29017,7 @@
                         }
                     }
                 }
-    
+
                 this.toolbars = toolbarUis;
             },
             getHtmlTpl:function () {
@@ -29057,7 +29057,7 @@
                 return buff.join('');
             },
             setFullScreen:function (fullscreen) {
-    
+
                 var editor = this.editor,
                     container = editor.container.parentNode.parentNode;
                 if (this._fullscreen != fullscreen) {
@@ -29077,17 +29077,17 @@
                         this._bakBodyOverflow = document.body.style.overflow;
                         this._bakAutoHeight = this.editor.autoHeightEnabled;
                         this._bakScrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-    
+
                         this._bakEditorContaninerWidth = editor.iframe.parentNode.offsetWidth;
                         if (this._bakAutoHeight) {
                             //当全屏时不能执行自动长高
                             editor.autoHeightEnabled = false;
                             this.editor.disableAutoHeight();
                         }
-    
+
                         document.documentElement.style.overflow = 'hidden';
                         //修复，滚动条不收起的问题
-    
+
                         window.scrollTo(0,window.scrollY);
                         this._bakCssText = this.getDom().style.cssText;
                         this._bakCssText1 = this.getDom('iframeholder').style.cssText;
@@ -29104,7 +29104,7 @@
                             editor.autoHeightEnabled = true;
                             this.editor.enableAutoHeight();
                         }
-    
+
                         document.documentElement.style.overflow = this._bakHtmlOverflow;
                         document.body.style.overflow = this._bakBodyOverflow;
                         editor.iframe.parentNode.style.width = this._bakEditorContaninerWidth + 'px';
@@ -29125,12 +29125,12 @@
                             }, 0)
                         }, 0)
                     }
-    
+
                     if(editor.body.contentEditable === 'true'){
                         this.editor.fireEvent('fullscreenchanged', fullscreen);
                         this.triggerLayout();
                     }
-    
+
                 }
             },
             _updateFullScreen:function () {
@@ -29144,22 +29144,22 @@
                         try{
                             window.onresize();
                         }catch(e){
-    
+
                         }
-    
+
                     }
                 }
             },
             _updateElementPath:function () {
                 var bottom = this.getDom('elementpath'), list;
                 if (this.elementPathEnabled && (list = this.editor.queryCommandValue('elementpath'))) {
-    
+
                     var buff = [];
                     for (var i = 0, ci; ci = list[i]; i++) {
                         buff[i] = this.formatHtml('<span unselectable="on" onclick="$$.editor.execCommand(&quot;elementpath&quot;, &quot;' + i + '&quot;);">' + ci + '</span>');
                     }
                     bottom.innerHTML = '<div class="edui-editor-breadcrumb" onmousedown="return false;">' + this.editor.getLang("elementPathTip") + ': ' + buff.join(' &gt; ') + '</div>';
-    
+
                 } else {
                     bottom.style.display = 'none'
                 }
@@ -29169,7 +29169,7 @@
                 bottom.innerHTML = '';
                 bottom.style.display = 'none';
                 this.elementPathEnabled = false;
-    
+
             },
             enableElementPath:function () {
                 var bottom = this.getDom('elementpath');
@@ -29186,7 +29186,7 @@
                     bottombar = this.getDom("bottombar"),
                     scale = this.getDom("scale"),
                     scalelayer = this.getDom("scalelayer");
-    
+
                 var isMouseMove = false,
                     position = null,
                     minEditorHeight = 0,
@@ -29195,28 +29195,28 @@
                     pageY = 0,
                     scaleWidth = 0,
                     scaleHeight = 0;
-    
+
                 function down() {
                     position = domUtils.getXY(editorHolder);
-    
+
                     if (!minEditorHeight) {
                         minEditorHeight = editor.options.minFrameHeight + toolbarBox.offsetHeight + bottombar.offsetHeight;
                     }
-    
+
                     scalelayer.style.cssText = "position:absolute;left:0;display:;top:0;background-color:#41ABFF;opacity:0.4;filter: Alpha(opacity=40);width:" + editorHolder.offsetWidth + "px;height:"
                         + editorHolder.offsetHeight + "px;z-index:" + (editor.options.zIndex + 1);
-    
+
                     domUtils.on(doc, "mousemove", move);
                     domUtils.on(editorDocument, "mouseup", up);
                     domUtils.on(doc, "mouseup", up);
                 }
-    
+
                 var me = this;
                 //by xuheng 全屏时关掉缩放
                 this.editor.addListener('fullscreenchanged', function (e, fullScreen) {
                     if (fullScreen) {
                         me.disableScale();
-    
+
                     } else {
                         if (me.editor.options.scaleEnabled) {
                             me.enableScale();
@@ -29234,7 +29234,7 @@
                     pageY = e.pageY || (doc.documentElement.scrollTop + e.clientY);
                     scaleWidth = pageX - position.x;
                     scaleHeight = pageY - position.y;
-    
+
                     if (scaleWidth >= minEditorWidth) {
                         isMouseMove = true;
                         scalelayer.style.width = scaleWidth + 'px';
@@ -29244,13 +29244,13 @@
                         scalelayer.style.height = scaleHeight + "px";
                     }
                 }
-    
+
                 function up() {
                     if (isMouseMove) {
                         isMouseMove = false;
                         editor.ui._actualFrameWidth = scalelayer.offsetWidth - 2;
                         editorHolder.style.width = editor.ui._actualFrameWidth + 'px';
-    
+
                         editor.setHeight(scalelayer.offsetHeight - bottombar.offsetHeight - toolbarBox.offsetHeight - 2,true);
                     }
                     if (scalelayer) {
@@ -29261,14 +29261,14 @@
                     domUtils.un(editorDocument, "mouseup", up);
                     domUtils.un(doc, "mouseup", up);
                 }
-    
+
                 function clearSelection() {
                     if (browser.ie)
                         doc.selection.clear();
                     else
                         window.getSelection().removeAllRanges();
                 }
-    
+
                 this.enableScale = function () {
                     //trace:2868
                     if (editor.queryCommandState("source") == 1)    return;
@@ -29300,7 +29300,7 @@
                         });
                     };
                 domUtils.on(window, 'resize', updateFullScreenTime);
-    
+
                 me.addListener('destroy', function () {
                     domUtils.un(window, 'resize', updateFullScreenTime);
                     clearTimeout(timerId);
@@ -29331,11 +29331,11 @@
             }
         };
         utils.inherits(EditorUI, baidu.editor.ui.UIBase);
-    
-    
+
+
         var instances = {};
-    
-    
+
+
         UE.ui.Editor = function (options) {
             var editor = new UE.Editor(options);
             editor.options.editor = editor;
@@ -29345,7 +29345,7 @@
                 type:"text/css",
                 rel:"stylesheet"
             });
-    
+
             var oldRender = editor.render;
             editor.render = function (holder) {
                 if (holder.constructor === String) {
@@ -29377,12 +29377,12 @@
                                 if (/textarea/i.test(holder.tagName)) {
                                     editor.textarea = holder;
                                     editor.textarea.style.display = 'none';
-    
-    
+
+
                                 } else {
                                     holder.parentNode.removeChild(holder);
-    
-    
+
+
                                 }
                                 if(holder.id){
                                     newDiv.id = holder.id;
@@ -29391,7 +29391,7 @@
                                 holder = newDiv;
                                 holder.innerHTML = '';
                             }
-    
+
                         }
                         domUtils.addClass(holder, "edui-" + editor.options.theme);
                         editor.ui.render(holder);
@@ -29435,8 +29435,8 @@
             };
             return editor;
         };
-    
-    
+
+
         /**
          * @file
          * @name UE
@@ -29466,8 +29466,8 @@
             }
             return editor;
         };
-    
-    
+
+
         UE.delEditor = function (id) {
             var editor;
             if (editor = instances[id]) {
@@ -29475,7 +29475,7 @@
                 delete instances[id]
             }
         };
-    
+
         UE.registerUI = function(uiName,fn,index,editorId){
             utils.each(uiName.split(/\s+/), function (name) {
                 UE._customizeUI[name] = {
@@ -29484,20 +29484,20 @@
                     index:index
                 };
             })
-    
+
         }
-    
+
     })();
-    
+
     // adapter/message.js
     UE.registerUI('message', function(editor) {
-    
+
         var editorui = baidu.editor.ui;
         var Message = editorui.Message;
         var holder;
         var _messageItems = [];
         var me = editor;
-    
+
         me.addListener('ready', function(){
             holder = document.getElementById(me.ui.id + '_message_holder');
             updateHolderPos();
@@ -29506,7 +29506,7 @@
             //     updateHolderPos();
             // }, 500);
         });
-    
+
         me.addListener('showmessage', function(type, opt){
             opt = utils.isString(opt) ? {
                 'content': opt
@@ -29525,7 +29525,7 @@
             updateHolderPos();
             return mid;
         });
-    
+
         me.addListener('updatemessage',function(type, id, opt){
             opt = utils.isString(opt) ? {
                 'content': opt
@@ -29534,12 +29534,12 @@
             message.render(holder);
             message && message.reset(opt);
         });
-    
+
         me.addListener('hidemessage',function(type, id){
             var message = _messageItems[id];
             message && message.hide();
         });
-    
+
         function updateHolderPos(){
             var toolbarbox = me.ui.getDom('toolbarbox');
             if (toolbarbox) {
@@ -29547,16 +29547,16 @@
             }
             holder.style.zIndex = Math.max(me.options.zIndex, me.iframe.style.zIndex) + 1;
         }
-    
+
     });
-    
-    
+
+
     // adapter/autosave.js
     UE.registerUI('autosave', function(editor) {
         var timer = null,uid = null;
         editor.on('afterautosave',function(){
             clearTimeout(timer);
-    
+
             timer = setTimeout(function(){
                 if(uid){
                     editor.trigger('hidemessage',uid);
@@ -29565,13 +29565,12 @@
                     content : editor.getLang('autosave.success'),
                     timeout : 2000
                 });
-    
+
             },2000)
         })
-    
+
     });
-    
-    
-    
+
+
+
     })();
-    

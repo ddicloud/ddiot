@@ -929,7 +929,7 @@ function trimCacheStack(stack, length) {
 // Returns String version or undefined.
 function findVersion() {
   return $('meta').filter(function() {
-    var name = $(this).attr('http-equiv')
+    var name = $(this).attr('Http-equiv')
     return name && name.toUpperCase() === 'X-PJAX-VERSION'
   }).attr('content')
 }

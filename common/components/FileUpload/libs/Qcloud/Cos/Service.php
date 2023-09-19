@@ -180,7 +180,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                         ),
                         'GrantFullControl' => array(
@@ -328,7 +328,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'x-cos-copy-source-if-modified-since',
                         ),
@@ -343,7 +343,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'x-cos-copy-source-if-unmodified-since',
                         ),
@@ -353,7 +353,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                         ),
                         'GrantFullControl' => array(
@@ -770,7 +770,7 @@ class Service {
                                 'string',
                                 'integer'
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'If-Modified-Since'
                         ),
@@ -785,7 +785,7 @@ class Service {
                                 'string',
                                 'integer'
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'If-Unmodified-Since'
                         ),
@@ -832,7 +832,7 @@ class Service {
                                 'string',
                                 'integer'
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'query',
                             'sentAs' => 'response-expires'
                         ),
@@ -2698,7 +2698,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'If-Modified-Since',
                         ),
@@ -2713,7 +2713,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'If-Unmodified-Since',
                         ),
@@ -2806,7 +2806,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'x-cos-copy-source-if-modified-since',
                         ),
@@ -2821,7 +2821,7 @@ class Service {
                                 'string',
                                 'integer',
                             ),
-                            'format' => 'date-time-http',
+                            'format' => 'date-time-Http',
                             'location' => 'header',
                             'sentAs' => 'x-cos-copy-source-if-unmodified-since',
                         ),

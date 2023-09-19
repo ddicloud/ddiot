@@ -94,7 +94,7 @@ UE.I18N['en'] = {
     'autofloatMsg':"The plugin AutoFloat depends on EditorUI!",
     'loadconfigError': 'Get server config error.',
     'loadconfigFormatError': 'Server config format error.',
-    'loadconfigHttpError': 'Get server config http error.',
+    'loadconfigHttpError': 'Get server config Http error.',
     'snapScreen_plugin':{
         'browserMsg':"Only IE supported!",
         'callBackErrorMsg':"The callback data is wrong,please check the config!",
@@ -558,7 +558,7 @@ UE.I18N['en'] = {
             'lang_input_target':'open in new window：'
         },
         'validLink':'Supports only effective when a link is selected',
-        'httpPrompt':'The hyperlink you enter should start with "http|https|ftp://"!'
+        'httpPrompt':'The hyperlink you enter should start with "Http|https|ftp://"!'
     },
     map:{
         'static':{

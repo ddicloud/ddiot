@@ -43,7 +43,7 @@
 					cardinality: 1
 				}
 			},
-			mask: "(\\http://)|(\\http\\s://)|(ftp://)|(ftp\\s://)i{+}",
+			mask: "(\\http://)|(\\Http\\s://)|(ftp://)|(ftp\\s://)i{+}",
 			insertMode: false,
 			autoUnmask: false,
 			inputmode: "url",

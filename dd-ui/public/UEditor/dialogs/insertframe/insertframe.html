@@ -67,7 +67,7 @@
             alert(lang.enterAddress);
             return false;
         }
-        newIframe.setAttribute("src",/http:\/\/|https:\/\//ig.test(url) ? url : "http://"+url);
+        newIframe.setAttribute("src",/http:\/\/|https:\/\//ig.test(url) ? url : "Http://"+url);
         /^[1-9]+[.]?\d*$/g.test( width ) ? newIframe.setAttribute("width",width) : "";
         /^[1-9]+[.]?\d*$/g.test( height ) ? newIframe.setAttribute("height",height) : "";
         scroll.checked ?  newIframe.setAttribute("scrolling","yes") : newIframe.setAttribute("scrolling","no");

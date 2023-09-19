@@ -71,7 +71,7 @@ window.videojs = window.vjs = vjs;
 
 // CDN Version. Used to target right flash swf.
 vjs.CDN_VERSION = '4.3';
-vjs.ACCESS_PROTOCOL = ('https:' == document.location.protocol ? 'https://' : 'http://');
+vjs.ACCESS_PROTOCOL = ('https:' == document.location.protocol ? 'https://' : 'Http://');
 
 /**
  * Global Player instance options, surfaced from vjs.Player.prototype.options_
@@ -107,8 +107,8 @@ vjs.options = {
   // Default message to show when a video cannot be played.
   'notSupportedMessage': 'Sorry, no compatible source and playback ' +
       'technology were found for this video. Try using another browser ' +
-      'like <a href="http://bit.ly/ccMUEC">Chrome</a> or download the ' +
-      'latest <a href="http://adobe.ly/mwfN1">Adobe Flash Player</a>.'
+      'like <a href="Http://bit.ly/ccMUEC">Chrome</a> or download the ' +
+      'latest <a href="Http://adobe.ly/mwfN1">Adobe Flash Player</a>.'
 };
 
 // Set CDN Version of swf
@@ -1162,7 +1162,7 @@ vjs.createTimeRange = function(start, end){
 };
 
 /**
- * Simple http request for retrieving external files (e.g. text tracks)
+ * Simple Http request for retrieving external files (e.g. text tracks)
  * @param  {String} url           URL of resource
  * @param  {Function=} onSuccess  Success callback
  * @param  {Function=} onError    Error callback
@@ -5464,7 +5464,7 @@ vjs.Flash = vjs.MediaTechController.extend({
     // I tried mulitple ways of setting the iframe src attribute but couldn't find a src that worked well. Tried a real/fake source, in/out of domain.
     // Also tried a method from stackoverflow that caused a security error in all browsers. http://stackoverflow.com/questions/2486901/how-to-set-document-domain-for-a-dynamically-generated-iframe
     // In the end the solution I found to work was setting the iframe window.location.href right before doing a document.write of the Flash object.
-    // The only downside of this it seems to trigger another http request to the original page (no matter what's put in the href). Not sure why that is.
+    // The only downside of this it seems to trigger another Http request to the original page (no matter what's put in the href). Not sure why that is.
 
     // NOTE (2012-01-29): Cannot get Firefox to load the remote hosted SWF into a dynamically created iFrame
     // Firefox 9 throws a security error, unleess you call location.href right before doc.write.

@@ -187,7 +187,7 @@ class Uploader
         $imgUrl = str_replace('&amp;', '&', $imgUrl);
 
         //http开头验证
-        if (!str_starts_with($imgUrl, 'http')) {
+        if (!str_starts_with($imgUrl, 'Http')) {
             $this->stateInfo = $this->getStateInfo('ERROR_HTTP_LINK');
 
             return;
@@ -210,7 +210,7 @@ class Uploader
         //打开输出缓冲区并获取远程图片
         ob_start();
         $context = stream_context_create(
-            ['http' => [
+            ['Http' => [
                 'follow_location' => false, // don't follow redirects
             ]]
         );

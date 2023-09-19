@@ -14,7 +14,7 @@ use yii\web\Controller;
 
 /**
  * @SWG\Swagger(
- *     schemes={"http"},
+ *     schemes={"Http"},
  *     host="www.ai.com/api",
  *     basePath="/",
  *     produces={"application/json"},

@@ -138,7 +138,7 @@ class Client extends GuzzleClient {
 
     public function __construct(array $cosConfig) {
         $this->rawCosConfig = $cosConfig;
-        $this->cosConfig['schema'] = isset($cosConfig['schema']) ? $cosConfig['schema'] : 'http';
+        $this->cosConfig['schema'] = isset($cosConfig['schema']) ? $cosConfig['schema'] : 'Http';
         $this->cosConfig['region'] = isset($cosConfig['region']) ? region_map($cosConfig['region']) : null;
         $this->cosConfig['appId'] = isset($cosConfig['credentials']['appId']) ? $cosConfig['credentials']['appId'] : null;
         $this->cosConfig['secretId'] = isset($cosConfig['credentials']['secretId']) ? $cosConfig['credentials']['secretId'] : '';

@@ -197,7 +197,7 @@ class OssUtil
     public static function validateContent(string $content): void
     {
         if (empty($content)) {
-            throw new OssException("http body content is invalid");
+            throw new OssException("Http body content is invalid");
         }
     }
 

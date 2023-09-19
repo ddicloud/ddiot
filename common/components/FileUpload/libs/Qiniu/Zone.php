@@ -23,7 +23,7 @@ final class Zone
     //        array('deadline' => 'xxx', 'upHosts' => array(), 'ioHost' => 'xxx.com')
     //)
     public $hostCache;
-    public $scheme = 'http';
+    public $scheme = 'Http';
 
     public function __construct($scheme = null)
     {
@@ -181,7 +181,7 @@ final class Zone
      *  
      *  200 OK {
      *    "ttl": <ttl>,              // 有效时间
-     *    "http": {
+     *    "Http": {
      *      "up": [],
      *      "io": [],                // 当bucket为global时，我们不需要iohost, io缺省
      *    },

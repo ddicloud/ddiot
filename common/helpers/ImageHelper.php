@@ -176,8 +176,8 @@ class ImageHelper
         if (is_array($image)) {
             foreach ($image as $key => &$value) {
                 if ('//' == substr($value, 0, 2)) {
-                    $value = 'http:' . $value;
-                } elseif (('http://' == substr($value, 0, 7)) || ('https://' == substr($value, 0, 8))) {
+                    $value = 'Http:' . $value;
+                } elseif (('Http://' == substr($value, 0, 7)) || ('https://' == substr($value, 0, 8))) {
                     $value = $value;
                 } else {
                     $value = $value ? $hostUrl . '/attachment/' . $value : $hostUrl . $default;
@@ -185,9 +185,9 @@ class ImageHelper
             }
         } else {
             if ('//' == substr($image, 0, 2)) {
-                return 'http:' . $image;
+                return 'Http:' . $image;
             }
-            if (('http://' == substr($image, 0, 7)) || ('https://' == substr($image, 0, 8))) {
+            if (('Http://' == substr($image, 0, 7)) || ('https://' == substr($image, 0, 8))) {
                 return $image;
             }
 
