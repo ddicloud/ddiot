@@ -17,10 +17,10 @@ use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\services\api\RegisterLevel;
-use yii\base\ErrorException;
-use yii\base\Exception;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\ErrorException;
+use yii\base\Exception;
 
 class Fans extends BaseObject
 {

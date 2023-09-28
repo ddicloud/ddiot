@@ -2,9 +2,9 @@
 
 namespace frontend\tests\unit\models;
 
+use api\models\ResendVerificationEmailForm;
 use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
-use api\models\ResendVerificationEmailForm;
 
 class ResendVerificationEmailFormTest extends Unit
 {

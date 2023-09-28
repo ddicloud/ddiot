@@ -84,6 +84,7 @@
     },
     "autoload": {
         "psr-4": {
+            "addons\\": "addons",
             "admin\\": "admin",
             "api\\": "api",
             "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",

@@ -18,6 +18,10 @@ use Yii;
 use yii\base\Module;
 use yii\web\HttpException;
 
+/**
+ *
+ * @property-read array $menus
+ */
 class AddonsModule extends Module
 {
     /**

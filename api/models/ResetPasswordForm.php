@@ -8,9 +8,9 @@
  
 namespace api\models;
 
+use common\models\User;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
-use common\models\User;
 
 /**
  * Password reset form

@@ -9,7 +9,6 @@
 
 namespace api\modules\wechat\services;
 
-use api\modules\wechat\models\DdWxappFans;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;
