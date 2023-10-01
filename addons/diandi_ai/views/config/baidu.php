@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $model \app\models\forms\ConfigurationForm */
 /* @var $this \yii\web\View */
 
-$this->title = Yii::t('App', '百度SDK');
+$this->title = Yii::t('app', '百度SDK');
 ?>
 <?php echo $this->renderAjax('_tab'); ?>
 
@@ -28,7 +28,7 @@ $this->title = Yii::t('App', '百度SDK');
 
                 <?php echo $form->field($model, 'SECRET_KEY'); ?>
                 <?php echo $form->field($model, 'name'); ?>
-                <?php echo Html::submitButton(Yii::t('App', 'Save'), ['class' => 'btn btn-success']); ?>
+                <?php echo Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']); ?>
 
                 <?php ActiveForm::end(); ?>
 

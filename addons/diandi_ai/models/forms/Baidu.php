@@ -94,9 +94,9 @@ class Baidu extends Model
     public function attributeLabels(): array
     {
         return [
-            'APP_ID' => Yii::t('App', 'APP_ID'),
-            'API_KEY' => Yii::t('App', 'API_KEY'),
-            'SECRET_KEY' => Yii::t('App', 'SECRET_KEY'),
+            'APP_ID' => Yii::t('app', 'APP_ID'),
+            'API_KEY' => Yii::t('app', 'API_KEY'),
+            'SECRET_KEY' => Yii::t('app', 'SECRET_KEY'),
             'name' => '应用名称',
         ];
     }
