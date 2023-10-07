@@ -45,7 +45,7 @@ class AddonsModule extends Module
         $requestedRoute = $this->module->requestedRoute??'';
         FileHelper::writeLog($logPath, '请求地址', [$requestedRoute, $this->module]);
 
-        if (empty($store_id) && Yii::$app->id == 'App-api' && !StringHelper::strExists($requestedRoute, 'notify') && !StringHelper::strExists($requestedRoute, 'admin/auth')) {
+        if (empty($store_id) && Yii::$app->id == 'app-api' && !StringHelper::strExists($requestedRoute, 'notify') && !StringHelper::strExists($requestedRoute, 'admin/auth')) {
             throw new HttpException(400, '请选择商户后操作');
         }
 
@@ -61,7 +61,7 @@ class AddonsModule extends Module
         $appId = Yii::$app->id;
         $configPath = '';
         switch ($appId) {
-            case 'app-backend':
+            case 'app-admin':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/amdin.php');
                 Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
@@ -121,7 +121,7 @@ class AddonsModule extends Module
             Yii::$app->setComponents($config['components']);
         }
 
-        if (in_array($appId, ['App-swoole', 'App-api', 'App-frontend'])) {
+        if (in_array($appId, ['app-swoole', 'app-api', 'app-frontend'])) {
             // 初始化公众号配置信息
             $this->initWechat();
         }
