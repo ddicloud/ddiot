@@ -61,7 +61,7 @@ class AddonsModule extends Module
         $appId = Yii::$app->id;
         $configPath = '';
         switch ($appId) {
-            case 'App-backend':
+            case 'app-backend':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/backend.php');
                 Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
@@ -71,10 +71,10 @@ class AddonsModule extends Module
                     'value' => 'zh-CN',
                 ]));
                 break;
-            case 'App-frontend':
+            case 'app-frontend':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/frontend.php');
                 break;
-            case 'App-console':
+            case 'app-console':
                 $runtimePath = Yii::getAlias('@App/runtime/' . $module . '/swoole');
                 // define('SWOOLE_RUNTIME', $runtimePath);
                 FileHelper::mkdirs($runtimePath);
@@ -89,8 +89,8 @@ class AddonsModule extends Module
                     }
                 }
                 break;
-            case 'App-api':
-            case 'App-swoole':
+            case 'app-api':
+            case 'app-swoole':
             default:
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/api.php');
                 $cookies = Yii::$app->response->cookies;
