@@ -57,7 +57,6 @@ class AddonsModule extends Module
         switch ($appId) {
             case 'app-admin':
                 $configPath = Yii::getAlias('@addons/' . $module . '/config/amdin.php');
-                Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
                 $cookies->add(new \yii\web\Cookie([
