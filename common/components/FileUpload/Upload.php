@@ -28,7 +28,7 @@ use yii\web\UploadedFile;
  */
 class Upload extends Model
 {
-    public string $file;
+    public mixed $file;
     private array $_appendRules;
 
     public function init(): void
@@ -54,7 +54,7 @@ class Upload extends Model
         if (!$model->file) {
             return false;
         }
-        $relativePath = $successPath = '';
+
         $fileName = Uuid::uuid() . '.' . $model->file->extension;
         if (!ImageHelper::isImg($fileName)) {
             return ResultHelper::json(400, '请检查图片格式', [
