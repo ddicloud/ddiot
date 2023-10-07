@@ -263,7 +263,7 @@ class AddonsModule extends Module
         Yii::$app->i18n->translations[$module] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'zh',
-            'basePath' => '@addons/' . $module . '/messagess',
+            'basePath' => '@addons/' . $module . '/messages',
         ];
     }
 }
