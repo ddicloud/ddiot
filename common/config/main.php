@@ -11,11 +11,10 @@ return [
     'name' => '店滴云CMS',
     'version' => '1.1.9',
     'aliases' => [
-        '@bower' => dirname(dirname(__DIR__)) . '/frontend/resource/lib',
-        '@npm' => dirname(dirname(__DIR__)) . '/frontend/node_modules',
+        '@bower' => dirname(__DIR__, 2) . '/frontend/resource/lib',
+        '@npm' => dirname(__DIR__, 2) . '/frontend/node_modules',
         // '@bower' => '@vendor/bower-asset',
         '@vue' => '@common/widgets/firevue',
-        '@npm' => '@vendor/npm-asset',
         // 本地上传文件处理
         '@Local' => '@common/components/FileUpload/libs/Local',
         // 阿里云对象存储
@@ -28,7 +27,7 @@ return [
         '@diandi' => '@vendor/yii-diandi',
         '@addonstpl' => '@console/gii/giitpl',
     ],
-    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'vendorPath' => dirname(__DIR__, 2) . '/vendor',
     'modules' => [
         'settings' => [
             'class' => 'yii2mod\settings\Module',

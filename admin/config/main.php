@@ -14,7 +14,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'App-admin',
+    'id' => 'app-admin',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         // 初始化模块依赖的扩展
