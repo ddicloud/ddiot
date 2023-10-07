@@ -62,7 +62,7 @@ class AddonsModule extends Module
         $configPath = '';
         switch ($appId) {
             case 'app-backend':
-                $configPath = Yii::getAlias('@addons/' . $module . '/config/backend.php');
+                $configPath = Yii::getAlias('@addons/' . $module . '/config/amdin.php');
                 Yii::$app->params['menu'] = $this->getMenus();
                 $cookies = Yii::$app->response->cookies;
                 // 添加一个cookie
