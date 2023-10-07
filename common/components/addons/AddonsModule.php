@@ -50,13 +50,7 @@ class AddonsModule extends Module
         }
 
         /* 加载语言包 */
-        if (!isset(Yii::$app->i18n->translations[$module])) {
-            Yii::$app->i18n->translations[$module] = [
-                'class' => 'yii\i18n\PhpMessageSource',
-                'sourceLanguage' => 'en',
-                'basePath' => '@addons/' . $module . '/messagess',
-            ];
-        }
+        $this->registerTranslations($module);
 
         $appId = Yii::$app->id;
         $configPath = '';
@@ -262,5 +256,14 @@ class AddonsModule extends Module
         // 将新的配置设置到应用程序
         // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$App
         \Yii::configure(\Yii::$app, $config);
+    }
+
+    public function registerTranslations($module): void
+    {
+        Yii::$app->i18n->translations[$module] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'zh',
+            'basePath' => '@addons/' . $module . '/messagess',
+        ];
     }
 }
