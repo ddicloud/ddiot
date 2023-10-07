@@ -260,7 +260,8 @@ class AddonsModule extends Module
 
     public function registerTranslations($module): void
     {
-        Yii::$app->i18n->translations[$module] = [
+        [,$cate] = explode('_',$module);
+        Yii::$app->i18n->translations[$cate] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'zh',
             'basePath' => '@addons/' . $module . '/messages',
