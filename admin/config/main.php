@@ -322,7 +322,7 @@ return [
                         'POST,GET wxapp' => 'wxapp',
                         'POST,GET wechat' => 'wechat',
                         'POST,GET microapp' => 'microapp',
-                        'POST,GET App' => 'App',
+                        'POST,GET app' => 'app',
                         'POST,GET map' => 'map',
                         'POST,GET oss' => 'oss',
                         'POST,GET api' => 'api',
