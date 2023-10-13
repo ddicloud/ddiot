@@ -139,10 +139,10 @@ class MenuController extends AController
     public function actionRoute(): array
     {
         global $_GPC;
-        $name = $_GPC['name'];
-        $module_name = $_GPC['module_name'];
-        $route_type = $_GPC['route_type'];
-        $limit = $_GPC['limit'];
+        $name = $_GPC['name']??'';
+        $module_name = $_GPC['module_name']??'';
+        $route_type = $_GPC['route_type']??0;
+        $limit = $_GPC['limit']??0;
 
         $where = [];
         if (!empty($name)) {
