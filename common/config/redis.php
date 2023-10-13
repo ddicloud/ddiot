@@ -9,7 +9,7 @@
 
 return [
   'class' => 'yii\redis\Connection',
-  'hostname' => 'localhost',
-  'port' => 6379,
-  'database' => 2,
+  'hostname' => env('REDIS_HOST'),
+  'port' => env('REDIS_PORT'),
+  'database' => env('REDIS_DB'),
 ];
