@@ -10,8 +10,9 @@
 
 namespace api\modules\officialaccount\models;
 
-use addons\diandi_hotel\Traits\StoreTrait;
 
+
+use common\traits\ActiveQuery\StoreTrait;
 
 /**
  * This is the model class for table "dd_wxapp_fans".

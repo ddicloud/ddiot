@@ -8,7 +8,8 @@
 
 namespace common\models;
 
-use addons\diandi_hotel\Traits\StoreTrait;
+
+use common\traits\ActiveQuery\StoreTrait;
 
 /**
  * This is the model class for table "{{%qrcode_stat}}".
