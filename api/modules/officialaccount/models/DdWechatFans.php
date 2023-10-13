@@ -10,7 +10,7 @@
 
 namespace api\modules\officialaccount\models;
 
-use common\traits\ActiveQuery\StoreTrait;
+use addons\diandi_hotel\Traits\StoreTrait;
 
 
 /**

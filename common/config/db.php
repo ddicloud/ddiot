@@ -9,10 +9,10 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=20230714;port=3306',
-    'tablePrefix' => 'dd_',
-    'username' => 'root',
-    'password' => 'root',
+    'dsn' => 'mysql:host='. env('DB_HOST') .';dbname='. env('DB_NAME').';port='. env('DB_PORT'),
+    'username' => env('DB_USER'),
+    'password' => env('DB_PASS'),
+    'tablePrefix' => env('DB_PREFIX'),
     'charset' => 'utf8',
     'attributes' => [
         PDO::ATTR_STRINGIFY_FETCHES => false,
@@ -24,8 +24,8 @@ return [
     // Name of the cache component used to store schema information
     'schemaCache' => 'cache',
     'slaveConfig' => [
-        'username' => '从数据库用户名',
-        'password' => '从数据库密码',
+        'username' => 'root',
+        'password' => 'root',
         'attributes' => [
             // 从数据库连接参数配置
         ],

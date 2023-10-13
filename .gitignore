@@ -2,6 +2,7 @@
 # phpstorm project files
 .idea
 .svn
+.env
 # netbeans project files
 nbproject
 

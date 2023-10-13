@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bba6695de05c34ef946037e9742a6244",
+    "content-hash": "999b3ba6b190765761866ba8468e5895",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -5685,6 +5685,65 @@
                 }
             ],
             "time": "2021-12-30T08:48:48+00:00"
+        },
+        {
+            "name": "yiithings/yii2-dotenv",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/panlatent/yii2-dotenv.git",
+                "reference": "4a43ff88ad9eb1148ca597875ce4165816dc666d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/panlatent/yii2-dotenv/zipball/4a43ff88ad9eb1148ca597875ce4165816dc666d",
+                "reference": "4a43ff88ad9eb1148ca597875ce4165816dc666d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=8.0",
+                "vlucas/phpdotenv": "^5.3",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7|^6.0|^7.0|^8.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
+                "psr-4": {
+                    "yiithings\\dotenv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Panlatent",
+                    "email": "panlatent@gmail.com"
+                }
+            ],
+            "description": "PHP DotEnv for Yii2 framework",
+            "keywords": [
+                "dotenv",
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/panlatent/yii2-dotenv/issues",
+                "source": "https://github.com/panlatent/yii2-dotenv/tree/1.1.0"
+            },
+            "time": "2022-10-11T10:44:55+00:00"
         }
     ],
     "packages-dev": [

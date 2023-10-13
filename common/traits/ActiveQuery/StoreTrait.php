@@ -10,7 +10,7 @@ namespace common\traits\ActiveQuery;
 
 trait StoreTrait
 {
-    public $blocs = [];
+    public array $blocs = [];
 
     /**
      * find查询扩展.
@@ -24,19 +24,19 @@ trait StoreTrait
      *
      * @since
      */
-    public static function find()
+    public static function find(): CommonQuery
     {
         return new CommonQuery(get_called_class());
     }
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
         $fields['blocs'] = 'blocs';
         return $fields;
     }
 
-    public function afterFind()
+    public function afterFind(): void
     {
         $store_id = $this->getAttribute('store_id');
         $bloc_id = $this->getAttribute('bloc_id');

@@ -13,7 +13,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'App-console',
+    'id' => 'app-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'queue'],
     'controllerNamespace' => 'console\controllers',
