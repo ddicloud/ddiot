@@ -44,7 +44,7 @@ class module extends \yii\base\Module
 
         $config = require __DIR__ . '/config.php';
         // 获取应用程序的组件
-        $components = \Yii::$app->getComponents();
+        $components = Yii::$app->getComponents();
 
         // 遍历子模块独立配置的组件部分，并继承应用程序的组件配置
         foreach ($config['components'] as $k => $component) {
@@ -61,16 +61,16 @@ class module extends \yii\base\Module
         FileHelper::writeLog($logPath, '入口配置回来的值0-5' . substr($input, 0, 5));
         if (str_starts_with($input, '<xml>')) {
             FileHelper::writeLog($logPath, '准备处理');
-            $xmldata = StringHelper::getXml($input);
-            FileHelper::writeLog($logPath, 'xml解析后' . $xmldata['trade_type'] . '/' . json_encode($xmldata));
-            if ($xmldata['trade_type'] == 'JSAPI') {
-                $out_trade_no = $xmldata['out_trade_no'];
+            $xmlData = StringHelper::getXml($input);
+            FileHelper::writeLog($logPath, 'xml解析后' . $xmlData['trade_type'] . '/' . json_encode($xmlData));
+            if ($xmlData['trade_type'] == 'JSAPI') {
+                $out_trade_no = $xmlData['out_trade_no'];
                 FileHelper::writeLog($logPath, '入口配置回来的订单编号：' . $out_trade_no);
-                $DdCorePaylog = new DdCorePaylog();
-                $orderInfo = $DdCorePaylog->find()->where([
+                $DdCorePayLog = new DdCorePaylog();
+                $orderInfo = $DdCorePayLog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->asArray()->one();
-                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql' . $DdCorePaylog->find()->where([
+                FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql' . $DdCorePayLog->find()->where([
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
@@ -100,9 +100,9 @@ class module extends \yii\base\Module
 
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
-            'app_id' => $Wxapp['AppId'],
-            'mch_id' => $Wechatpay['mch_id'],
-            'key' => $Wechatpay['key'],  // API 密钥
+            'app_id' => $Wxapp['AppId']??'',
+            'mch_id' => $Wechatpay['mch_id']??'',
+            'key' => $Wechatpay['key']??'',  // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
             'cert_path' => $apiclient_cert, // XXX: 绝对路径！！！！
             'key_path'  => $apiclient_key, // XXX: 绝对路径！！！！
@@ -115,8 +115,8 @@ class module extends \yii\base\Module
 
         // 小程序参数设置
         $config['params']['wechatMiniProgramConfig'] = [
-            'app_id' => $Wxapp['AppId'],
-            'secret' => $Wxapp['AppSecret'],
+            'app_id' => $Wxapp['AppId']??'',
+            'secret' => $Wxapp['AppSecret']??'',
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
             'log' => [
@@ -140,6 +140,6 @@ class module extends \yii\base\Module
 
         // 将新的配置设置到应用程序
         // 很多都是写 Yii::configure($this, $config)，但是并不适用子模块，必须写 Yii::$App
-        \Yii::configure(\Yii::$app, $config);
+        Yii::configure(Yii::$app, $config);
     }
 }
