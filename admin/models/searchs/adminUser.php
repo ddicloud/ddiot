@@ -16,6 +16,13 @@ use yii\data\Pagination;
 
 /**
  * adminUser represents the model behind the search form of `admin\models\User`.
+ * @property mixed|null $id
+ * @property mixed $store_id
+ * @property mixed|null $is_login
+ * @property int|mixed $status
+ * @property mixed $bloc_id
+ * @property $username
+ * @property $email
  */
 class adminUser extends User
 {
