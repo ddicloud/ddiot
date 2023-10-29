@@ -19,22 +19,20 @@ use common\plugins\diandi_hub\models\store\HubAccountStorePay;
 use common\plugins\diandi_hub\services\account\OrderAccount;
 use common\plugins\diandi_hub\services\AftersaleService;
 use common\plugins\diandi_hub\services\GiftService;
-use common\plugins\diandi_hub\services\OrderService;
-use common\components\addons\AddonsModule;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
-use common\helpers\FileHelper;
 use common\helpers\loggingHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
 use common\models\PayRefundLog;
 use Yii;
+use yii\db\Exception;
 use yii\helpers\Json;
 
 /**
  * diandi_dingzuo module definition class.
  */
-class api extends AddonsModule
+class api extends PluginsModule
 {
     /**
      * {@inheritdoc}
@@ -74,9 +72,11 @@ class api extends AddonsModule
      *
      * @param [type] $params
      *
-     * @return void
+     * @return bool|string
+     * @throws \Throwable
+     * @throws Exception
      */
-    public function Notify($params)
+    public function Notify($params): bool|string
     {
         $logPath = Yii::getAlias('@runtime/diandi_hub/paynotify/'.date('Y/md').'.log');
 
