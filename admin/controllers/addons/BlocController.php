@@ -144,23 +144,28 @@ class BlocController extends AController
     public function actionView($id): array
     {
         $view = Bloc::find()->where(['bloc_id' => $id])->asArray()->one();
+        if ($view){
+            $view['extra'] = !empty($view['extra']) ? unserialize($view['extra']) : $view['extra'];
 
-        $view['extra'] = !empty($view['extra']) ? unserialize($view['extra']) : $view['extra'];
+            $view['provinceCityDistrict'] = [
+                (int) $view['province'],
+                (int) $view['city'],
+                (int) $view['district'],
+            ];
 
-        $view['provinceCityDistrict'] = [
-            (int) $view['province'],
-            (int) $view['city'],
-            (int) $view['district'],
-        ];
-
-        $view['address'] = [
-            'address' => $view['address'],
-            'lng' => $view['longitude'],
-            'lat' => $view['latitude'],
-        ];
+            $view['address'] = [
+                'address' => $view['address'],
+                'lng' => $view['longitude'],
+                'lat' => $view['latitude'],
+            ];
 
 
-        return ResultHelper::json(200, '获取成功', $view);
+            return ResultHelper::json(200, '获取成功', $view);
+        }else{
+            return ResultHelper::json(400, '请重新授权，公司数据不存在');
+
+        }
+
     }
 
     /**
