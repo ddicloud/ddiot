@@ -430,9 +430,8 @@ class PermissionController extends AController
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param string $id
-     * @return array|AuthItem
      */
-    protected function findModel($id): array|AuthItem
+    protected function findModel($id)
     {
         $auth = Configs::authManager();
         $item = $auth->getPermission($id);
