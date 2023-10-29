@@ -38,6 +38,12 @@ return [
         'settings' => [
             'class' => 'yii2mod\settings\Module',
         ],
+        'diandi_cloud' => [
+            'class' => 'common\plugins\diandi_cloud\admin',
+        ],
+        'diandi_hub' => [
+            'class' => 'common\plugins\diandi_hub\admin',
+        ]
     ],
     'language' => 'zh-CN',
     'components' => [
