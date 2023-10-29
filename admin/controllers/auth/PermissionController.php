@@ -23,6 +23,7 @@ use diandi\admin\components\Item;
 use diandi\admin\models\AuthItem;
 use diandi\admin\models\AuthItemModel;
 use diandi\admin\models\searchs\AuthItemSearch;
+use SebastianBergmann\Type\MixedType;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -198,7 +199,7 @@ class PermissionController extends AController
 
         $model = $this->findModel($id);
         $list = $model->getAdminItems($permission_type);
-        $assigneds = [];
+        $assignedAll = [];
         $assigned = $list['assigned'];
 
         $available = $list['available'];
@@ -221,7 +222,7 @@ class PermissionController extends AController
             foreach ($value as &$val) {
                 $val['key'] = $val['id'];
                 $val['label'] = $val['name'];
-                $assigneds[$key][] = $val['item_id'];
+                $assignedAll[$key][] = $val['item_id'];
             }
             $assigned[$key] = array_values($value);
             unset($value);
@@ -242,7 +243,7 @@ class PermissionController extends AController
         return ResultHelper::json(200, '获取成功', [
             'all' => $all,
             'assigneds' => $assigned,
-            'assignedKey' => $assigneds,
+            'assignedKey' => $assignedAll,
             'availables' => $available,
         ]);
     }
@@ -429,17 +430,15 @@ class PermissionController extends AController
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param string $id
-     *
-     * @return array|AuthItem|object[]|string[]
+     * @return array|AuthItem
      */
-    protected function findModel($id): array|ActiveRecord
+    protected function findModel($id): array|AuthItem
     {
         $auth = Configs::authManager();
         $item = $auth->getPermission($id);
 
         if ($item) {
             $item->is_sys = 3;
-
             return new AuthItem($item);
         } else {
             return ResultHelper::json(500, '请检查数据是否存在');
