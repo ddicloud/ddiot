@@ -38,7 +38,7 @@ class AssignmentController extends AController
     public mixed  $userClassName;
     public string $idField = 'id';
     public string $usernameField = 'username';
-    public mixed $searchClass = null;
+
     public array $extraColumns = [];
 
     public int $type;
@@ -54,17 +54,16 @@ class AssignmentController extends AController
      */
     public function init(): void
     {
-        try {
-            parent::init();
-        } catch (InvalidConfigException $e) {
-            throw new Exception($e->getMessage(),500);
-        }
-        if ($this->userClassName === null) {
-            $this->userClassName = Yii::$app->getUser()->identityClass;
-            $this->userClassName = $this->userClassName ?: 'diandi\admin\models\User';
-        }
+        $this->userClassName = Yii::$app->getUser()->identityClass;
+
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->type = $this->module_name == 'sys' ? 0 : 1;
+        parent::init();
+//        if ($this->userClassName === null) {
+//            $this->userClassName = Yii::$app->getUser()->identityClass;
+//            $this->userClassName = $this->userClassName ?: 'diandi\admin\models\User';
+//        }
+
     }
 
     /**
@@ -74,14 +73,16 @@ class AssignmentController extends AController
      */
     public function actionIndex(): array
     {
-        if ($this->searchClass === null) {
-            $searchModel = new AssignmentSearch();
-            $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams(), $this->userClassName, $this->usernameField);
-        } else {
-            $class = $this->searchClass;
-            $searchModel = new $class();
-            $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams());
-        }
+//        if ($this->searchClass === null) {
+//
+//        } else {
+//            $class = $this->searchClass;
+//            $searchModel = new $class();
+//            $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams());
+//        }
+
+        $searchModel = new AssignmentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams(), $this->userClassName, $this->usernameField);
         return ResultHelper::json(200, '获取成功', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
