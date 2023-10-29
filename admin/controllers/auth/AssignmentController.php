@@ -186,11 +186,11 @@ class AssignmentController extends AController
 
         // 获取原先的权限集
         $model = $this->getAssigment($id);
-        $itemsModel = $model->getItems(3);
-        $all = $itemsModel['all'];
+        $itemModel = $model->getItems(3);
+        $all = $itemModel['all'];
         // 所有应用
         $all['addons'] = DdAddons::find()->asArray()->all();
-        $addons_mids = array_column($all['addons'], 'mid');
+        $addons_mid = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
 //        $lists = [];
@@ -211,14 +211,14 @@ class AssignmentController extends AController
                 unset($list[$key]);
             }
         }
-        $assigneds = $itemsModel['assigned'];
+        $assignedAll = $itemModel['assigned'];
         // 用户的应用权限
         $AddonsUser = new AddonsUser();
-        $assigneds['addons'] = $AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
+        $assignedAll['addons'] = $AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $id, 'a.mid' => $addons_mid])->select('a.mid')->indexBy('a.mid')->column();
 
         // 商户权限
         $UserStore = new UserStore();
-        $assigneds['store'] = $UserStore::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
+        $assignedAll['store'] = $UserStore::find()->alias('u')->joinWith('store as s')->where(['u.user_id' => $id, 's.store_id' => $store_ids])->select('s.store_id')->indexBy('s.store_id')->column();
 
         $keyList = [
             'addons',
@@ -229,7 +229,7 @@ class AssignmentController extends AController
         ];
         $assignedKey = [];
         unset($value);
-        foreach ($assigneds as $key => $value) {
+        foreach ($assignedAll as $key => $value) {
             $assignedKey[] = $key;
             $assigned[$key] = array_keys($value);
         }
@@ -239,7 +239,7 @@ class AssignmentController extends AController
             $assigned[$value] = [];
         }
 
-        $assigned_ids = $assigned[$type];
+        $assigned_ids = $assigned[$type]??[];
         $authItems = $items ? $items[$type] : [];
         switch ($type) {
             case 'permission':
