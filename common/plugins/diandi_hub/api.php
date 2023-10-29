@@ -39,7 +39,7 @@ class api extends AddonsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_hub\api";
+    public $controllerNamespace = "common\plugins\diandi_hub\api";
 
     /**
      * {@inheritdoc}

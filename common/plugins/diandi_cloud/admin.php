@@ -20,7 +20,7 @@ class admin extends AddonsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_cloud\admin";
+    public $controllerNamespace = "common\plugins\diandi_cloud\admin";
 
     /**
      * {@inheritdoc}

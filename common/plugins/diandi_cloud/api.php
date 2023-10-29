@@ -29,12 +29,12 @@ class api extends AddonsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_cloud\api";
+    public $controllerNamespace = "common\plugins\diandi_cloud\api";
 
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
     }
