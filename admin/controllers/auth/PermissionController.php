@@ -197,7 +197,7 @@ class PermissionController extends AController
         $permission_type = $_GPC['permission_type'];
         $module_name = $_GPC['module_name'];
 
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
         $list = $model->getAdminItems($permission_type);
         $assignedAll = [];
         $assigned = $list['assigned'];
@@ -285,7 +285,7 @@ class PermissionController extends AController
     {
         global $_GPC;
         $id = $_GPC['id'];
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
         $data = yii::$app->request->post();
 
         if ($model->load($data, '') && $model->save()) {
@@ -307,7 +307,7 @@ class PermissionController extends AController
      */
     public function actionDelete($id): array
     {
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
         Configs::authManager()->remove($model->item);
         Helper::invalidate();
         $module_name = $this->module_name;
@@ -329,7 +329,7 @@ class PermissionController extends AController
             return ResultHelper::json(400, '参数items不能为空');
         }
 
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
 
         if (key_exists('route', $items)) {
             $list = $items['route'];
@@ -390,7 +390,7 @@ class PermissionController extends AController
     public function actionAssign(string $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
         $success = $model->addChildren($items);
         if (!$success) {
             $msg = ErrorsHelper::getModelError($model);
@@ -411,7 +411,7 @@ class PermissionController extends AController
     public function actionRemove(string $id): array
     {
         $items = Yii::$app->getRequest()->post('items', []);
-        $model = $this->findModel($id);
+        $model = $this->findSelfModel($id);
         $success = $model->removeChildren($items);
 
         return ResultHelper::json(200, '移除成功',array_merge($model->getItems(), ['success' => $success]));
@@ -429,9 +429,10 @@ class PermissionController extends AController
      * Finds the AuthItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $id
+     * @param int $id
+     * @return array|AuthItem
      */
-    protected function findModel($id)
+    protected function findSelfModel(int $id): array|AuthItem
     {
         $auth = Configs::authManager();
         $item = $auth->getPermission($id);
