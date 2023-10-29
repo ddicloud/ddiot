@@ -71,24 +71,34 @@ class adminUser extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'store_id' => $this->store_id,
-            'bloc_id' => $this->bloc_id,
             'status' => $this->status,
             'is_login' => $this->is_login,
             'userGroup.group_id' => $this->group_id,
         ]);
 
-        if(!empty($this->group_id)){
+        if (!empty($this->group_id)) {
             $query->andFilterWhere([
-                'userGroup.group_id' => $this->group_id,
+                'userGroup.group_id' => $this->group_id
+            ]);
+        }
+
+        if (!empty($this->store_id)) {
+            $query->andFilterWhere([
+                'store_id' => $this->store_id
+            ]);
+        }
+
+        if (!empty($this->bloc_id)) {
+            $query->andFilterWhere([
+                'bloc_id' => $this->bloc_id
             ]);
         }
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);
         $count = $query->count();
-        $pageSize = $_GPC['pageSize']??10;
-        $page = $_GPC['page']??1;
+        $pageSize = $_GPC['pageSize'] ?? 10;
+        $page = $_GPC['page'] ?? 1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
