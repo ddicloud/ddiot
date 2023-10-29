@@ -35,10 +35,10 @@ class AssignmentController extends AController
 {
     public $modelClass = '';
 
-    public  $userClassName;
+    public mixed  $userClassName;
     public string $idField = 'id';
     public string $usernameField = 'username';
-    public null $searchClass;
+    public mixed $searchClass = null;
     public array $extraColumns = [];
 
     public int $type;
