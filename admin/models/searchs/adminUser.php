@@ -72,8 +72,7 @@ class adminUser extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'is_login' => $this->is_login,
-            'userGroup.group_id' => $this->group_id,
+            'is_login' => $this->is_login
         ]);
 
         if (!empty($this->group_id)) {
