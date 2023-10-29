@@ -8,6 +8,7 @@
 
 namespace common\plugins\diandi_hub;
 
+use common\components\addons\PluginsModule;
 use common\plugins\diandi_hub\models\enums\OrderStatus;
 use common\plugins\diandi_hub\models\enums\OrderTypeStatus;
 use common\plugins\diandi_hub\models\enums\PayTypeStatus;
@@ -37,7 +38,7 @@ class api extends PluginsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "common\plugins\diandi_hub\api";
+    public  $controllerNamespace = "common\plugins\diandi_hub\api";
 
     /**
      * {@inheritdoc}

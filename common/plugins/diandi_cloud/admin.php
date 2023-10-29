@@ -10,12 +10,12 @@
 
 namespace common\plugins\diandi_cloud;
 
-use common\components\addons\AddonsModule;
+use common\components\addons\PluginsModule;
 
 /**
  * diandi_dingzuo module definition class.
  */
-class admin extends AddonsModule
+class admin extends PluginsModule
 {
     /**
      * {@inheritdoc}

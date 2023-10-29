@@ -10,9 +10,9 @@
 
 namespace common\plugins\diandi_cloud;
 
+use common\components\addons\PluginsModule;
 use common\helpers\ArrayHelper;
 use common\helpers\loggingHelper;
-use common\components\addons\AddonsModule;
 use common\plugins\diandi_cloud\models\MemberExpand;
 use common\plugins\diandi_cloud\models\enums\{
     MemberCertStatus,
@@ -24,7 +24,7 @@ use common\plugins\diandi_cloud\models\enums\{
 /**
  * diandi_dingzuo module definition class.
  */
-class api extends AddonsModule
+class api extends PluginsModule
 {
     /**
      * {@inheritdoc}
