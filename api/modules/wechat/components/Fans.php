@@ -122,7 +122,7 @@ class Fans extends BaseObject
             FileHelper::writeLog($logPath, '登录日志:会员注册返回结果' . json_encode($res));
 
             // 更新openid
-            $member_id = isset($res['member']) ? $res['member']['member_id']:0;
+            $member_id = isset($res['data']['member']) ? $res['data']['member']['member_id']:0;
             FileHelper::writeLog($logPath, '登录日志:获取用户id' . json_encode($member_id));
 
             DdApiAccessToken::updateAll(['openid' => $openid], ['member_id' => $member_id]);

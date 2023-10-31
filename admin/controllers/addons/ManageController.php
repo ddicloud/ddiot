@@ -13,6 +13,7 @@ use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use diandi\addons\services\addonsService;
 use diandi\admin\models\Route;
+use Throwable;
 use Yii;
 use yii\web\BadRequestHttpException;
 
@@ -40,10 +41,10 @@ class ManageController extends AController
                 return ResultHelper::json(500, '安装失败');
             }
         } catch (BadRequestHttpException $e) {
-            return ResultHelper::json(500, $e->getMessage());
+            return ResultHelper::json(400, $e->getMessage(),(array)$e);
 
-        } catch (\Throwable $e) {
-            return ResultHelper::json(500, $e->getMessage());
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(),(array)$e);
 
         }
 
@@ -54,7 +55,7 @@ class ManageController extends AController
      * 卸载.
      *
      * @return array
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionUninstall(): array
     {

@@ -4702,7 +4702,7 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "4.1.3",
+            "version": "4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
@@ -4751,22 +4751,22 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.1.3"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.1.4"
             },
             "time": "2023-10-30T06:12:30+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.1.5",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "298a23ce18d8041f6f1014f48cb864bab3d9449c"
+                "reference": "3e1d6299810c617a8612b24ff35250e194db5a64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/298a23ce18d8041f6f1014f48cb864bab3d9449c",
-                "reference": "298a23ce18d8041f6f1014f48cb864bab3d9449c",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/3e1d6299810c617a8612b24ff35250e194db5a64",
+                "reference": "3e1d6299810c617a8612b24ff35250e194db5a64",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4816,9 +4816,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.1.5"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.1.6"
             },
-            "time": "2023-08-31T03:13:40+00:00"
+            "time": "2023-10-31T12:30:56+00:00"
         },
         {
             "name": "yii-diandi/yii2-easywechat",

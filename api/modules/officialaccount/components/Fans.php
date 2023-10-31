@@ -94,7 +94,7 @@ class Fans extends BaseObject
 
 
             // 更新openid
-            $member_id = $res['member']['member_id'];
+            $member_id = isset($res['data']['member']) ? $res['data']['member']['member_id']:0;
             FileHelper::writeLog($logPath, '登录日志:获取用户id' . json_encode($member_id));
 
             $DdMember->updateAll(['openid' => $openid], ['member_id' => $member_id]);
