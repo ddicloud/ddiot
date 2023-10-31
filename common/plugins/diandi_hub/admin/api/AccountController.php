@@ -30,7 +30,7 @@ class AccountController extends AController
     public array $authOptional = ['addlog'];
 
     // 获取我的资产日志
-    public function actionLog()
+    public function actionLog(): array
     {
         global $_GPC;
 
@@ -57,7 +57,7 @@ class AccountController extends AController
             ]);
     }
 
-    public function actionOrder()
+    public function actionOrder(): array
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
@@ -75,6 +75,9 @@ class AccountController extends AController
         ]);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function actionWithdraw()
     {
         global $_GPC;
@@ -93,7 +96,7 @@ class AccountController extends AController
         }
     }
 
-    public function actionAddlog()
+    public function actionAddlog(): array
     {
         global $_GPC;
 

@@ -9,13 +9,14 @@
 
 namespace common\plugins\diandi_cloud\api;
 
+use addons\diandi_cloud\components\ResultTrait;
 use common\plugins\diandi_cloud\services\AddonsService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
 
 class AddonsController extends AController
 {
-    use \addons\diandi_cloud\components\ResultTrait;
+    use ResultTrait;
 
     public $modelClass = '';
 
@@ -51,7 +52,7 @@ class AddonsController extends AController
         return $this->_json(AddonsService::getLists($this->_getPageInfo(), $this->_fillWhere(['cate_id'])));
     }
 
-    public function actionAuthList()
+    public function actionAuthList(): array
     {
         global $_GPC;
         // 当前系统已经安装的应用

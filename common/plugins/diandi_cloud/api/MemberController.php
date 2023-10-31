@@ -9,6 +9,7 @@
 
 namespace common\plugins\diandi_cloud\api;
 
+use addons\diandi_cloud\components\ResultTrait;
 use Yii;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
@@ -19,9 +20,9 @@ class MemberController extends AController
 {
     public $modelClass = '';
 
-    use \addons\diandi_cloud\components\ResultTrait;
+    use ResultTrait;
 
-    public function actionRegisterDeveloper()
+    public function actionRegisterDeveloper(): array
     {
         $data = Yii::$app->request->post();
         return MemberService::registerDeveloper($data);

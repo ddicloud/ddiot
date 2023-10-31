@@ -42,7 +42,7 @@ class AgentController extends BaseController
 
     /**
      * Lists all HubAccountAgent models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -58,7 +58,7 @@ class AgentController extends BaseController
     /**
      * Displays a single HubAccountAgent model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -71,7 +71,7 @@ class AgentController extends BaseController
     /**
      * Creates a new HubAccountAgent model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -90,7 +90,7 @@ class AgentController extends BaseController
      * Updates an existing HubAccountAgent model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -110,7 +110,7 @@ class AgentController extends BaseController
      * Deletes an existing HubAccountAgent model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

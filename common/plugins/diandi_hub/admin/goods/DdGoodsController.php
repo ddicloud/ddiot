@@ -71,7 +71,7 @@ class DdGoodsController extends AController
     /**
      * Lists all DdGoods models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -122,7 +122,7 @@ class DdGoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -378,7 +378,7 @@ class DdGoodsController extends AController
      * Creates a new DdGoods model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -469,7 +469,7 @@ class DdGoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -547,7 +547,7 @@ class DdGoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

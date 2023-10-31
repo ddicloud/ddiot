@@ -29,7 +29,7 @@ class TicketsRecordController extends AController
 
     /**
      * Lists all HubTicketsRecord models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -45,7 +45,7 @@ class TicketsRecordController extends AController
     /**
      * Displays a single HubTicketsRecord model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -63,7 +63,7 @@ class TicketsRecordController extends AController
     /**
      * Creates a new HubTicketsRecord model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -100,7 +100,7 @@ class TicketsRecordController extends AController
      * Updates an existing HubTicketsRecord model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     // public function actionUpdate($id)
@@ -125,7 +125,7 @@ class TicketsRecordController extends AController
      * Deletes an existing HubTicketsRecord model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     // public function actionDelete($id)

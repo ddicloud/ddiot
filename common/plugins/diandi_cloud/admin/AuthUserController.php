@@ -14,6 +14,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -32,7 +34,7 @@ class AuthUserController extends AController
      *    @SWG\Response(response = 200, description = "授权用户列表",),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new CloudAuthUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -50,7 +52,7 @@ class AuthUserController extends AController
      *    @SWG\Response(response = 200, description = "授权用户",),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -73,7 +75,7 @@ class AuthUserController extends AController
      *    @SWG\Parameter(in="formData", name="status", type="string", description="用户状态【1:正常，2:禁用, 3:欠费】", required=true),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new CloudAuthUser();
 
@@ -81,7 +83,7 @@ class AuthUserController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -101,8 +103,9 @@ class AuthUserController extends AController
      *    @SWG\Parameter(in="formData", name="username", type="string", description="真实姓名", required=true),
      *    @SWG\Parameter(in="formData", name="status", type="string", description="用户状态【1:正常，2:禁用, 3:欠费】", required=true),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -112,7 +115,7 @@ class AuthUserController extends AController
                 unset($data['member_id']);
             }
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -128,11 +131,19 @@ class AuthUserController extends AController
      *    @SWG\Response(response = 200, description = "删除授权用户"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
@@ -141,11 +152,11 @@ class AuthUserController extends AController
      *
      * @param int $id
      *
-     * @return CloudAuthUser the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         $model = CloudAuthUser::find()->andWhere(['id' => $id])->with('member')->asArray()->one();
         if ($model !== null) {

@@ -37,7 +37,9 @@ class AuthAddonsController extends AController
         // 当前系统已经安装的应用
         $bool = AddonsService::authAddons($_GPC['web_key'], $_GPC['url'], $_GPC['addons']);
         if ($bool === true) {
-            return ResultHelper::json(200, '请求成功', $bool);
+            return ResultHelper::json(200, '请求成功', [
+                'bool'=> true
+            ]);
         } else {
             return ResultHelper::json(401, $bool);
         }
@@ -57,7 +59,7 @@ class AuthAddonsController extends AController
         global $_GPC;
         $bool = AddonsService::authDomain($_GPC['url']);
         if ($bool === true) {
-            return ResultHelper::json(200, '请求成功', $bool);
+            return ResultHelper::json(200, '请求成功');
         } else {
             return ResultHelper::json(401, $bool);
         }

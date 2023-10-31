@@ -30,7 +30,7 @@ class RefundController extends AController
     /**
      * Lists all HubRefundOrder models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -48,7 +48,7 @@ class RefundController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -71,7 +71,7 @@ class RefundController extends AController
      * Creates a new HubRefundOrder model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -102,7 +102,7 @@ class RefundController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -135,7 +135,7 @@ class RefundController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

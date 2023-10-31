@@ -29,13 +29,6 @@ class MemberController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     // 邀请码注册
     // 分销关系绑定
@@ -46,7 +39,7 @@ class MemberController extends AController
 
     // 获取用户信息
 
-    public function actionInfo()
+    public function actionInfo(): array
     {
         global $_GPC;
         $baseInfo = Yii::$app->service->commonMemberService->baseInfo(1);
@@ -72,7 +65,7 @@ class MemberController extends AController
         return ResultHelper::json(200, '获取用户信息成功', $baseInfo);
     }
 
-    public function actionMyagent()
+    public function actionMyagent(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -93,7 +86,7 @@ class MemberController extends AController
         ]);
     }
 
-    public function actionQrcode()
+    public function actionQrcode(): array
     {
         global $_GPC;
 
@@ -136,7 +129,7 @@ class MemberController extends AController
      *    @SWG\Parameter(in="formData", name="wechat_scene",type="string", description="同创建微信二维码接口参数【scene】", required=true),
      * )
      */
-    public function actionWechatQrcode()
+    public function actionWechatQrcode():array
     {
         global $_GPC;
 
@@ -159,7 +152,7 @@ class MemberController extends AController
         return ResultHelper::json(200, '生成成功', $img.'?time='.time());
     }
 
-    private function _getWechatQrcode()
+    private function _getWechatQrcode():array
     {
         global $_GPC;
         $path = $_GPC['wechat_path'];
@@ -189,7 +182,7 @@ class MemberController extends AController
         return $codePath;
     }
 
-    public function actionWithdrawlist()
+    public function actionWithdrawlist():array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -204,7 +197,7 @@ class MemberController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionEditbankapply()
+    public function actionEditbankapply():array
     {
         $member_id = Yii::$app->user->identity->user_id;
 
@@ -217,7 +210,7 @@ class MemberController extends AController
         }
     }
 
-    public function actionAddpayset()
+    public function actionAddpayset():array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -268,7 +261,7 @@ class MemberController extends AController
         }
     }
 
-    public function actionGetpayset()
+    public function actionGetpayset():array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -278,7 +271,7 @@ class MemberController extends AController
         return ResultHelper::json(200, '获取成功', $Res);
     }
 
-    public function actionCollect()
+    public function actionCollect():array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;

@@ -13,6 +13,8 @@ use common\plugins\diandi_hub\models\Searchs\account\HubAccountAgent as HubAccou
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -25,9 +27,9 @@ class AgentController extends AController
     /**
      * Lists all HubAccountAgent models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubAccountAgentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -43,11 +45,11 @@ class AgentController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200, '获取成功', [
             'model' => $this->findModel($id),
@@ -58,9 +60,9 @@ class AgentController extends AController
      * Creates a new HubAccountAgent model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new HubAccountAgent();
 
@@ -78,11 +80,11 @@ class AgentController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -100,11 +102,13 @@ class AgentController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -117,11 +121,11 @@ class AgentController extends AController
      *
      * @param int $id
      *
-     * @return HubAccountAgent the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = HubAccountAgent::findOne($id)) !== null) {
             return $model;

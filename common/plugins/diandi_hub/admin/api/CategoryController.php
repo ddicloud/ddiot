@@ -26,13 +26,6 @@ class CategoryController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     /**
      * @SWG\Get(path="/diandi_hub/category/list",
@@ -44,7 +37,7 @@ class CategoryController extends AController
      *     ),
      * )
      */
-    public function actionList()
+    public function actionList(): array
     {
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];

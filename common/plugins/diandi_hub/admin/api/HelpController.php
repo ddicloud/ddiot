@@ -21,13 +21,6 @@ class HelpController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     /**
      * @SWG\Post(path="/diandi_hub/help/detail",

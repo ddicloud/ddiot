@@ -16,6 +16,7 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use diandi\addons\models\DdAddons;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 
 class AddonsController extends AController
@@ -24,7 +25,7 @@ class AddonsController extends AController
 
     public $modelClass = '';
 
-    public function actionList()
+    public function actionList(): array
     {
         $list = DdAddons::find()->asArray()->all();
         return ResultHelper::json(200, '获取成功', $list);
@@ -37,7 +38,7 @@ class AddonsController extends AController
      *    @SWG\Response(response = 200, description = "应用列表",),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new CloudAddonsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -55,7 +56,7 @@ class AddonsController extends AController
      *    @SWG\Response(response = 200, description = "应用",),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         if (($model = CloudAddons::find()->andWhere(['id' => $id])->with(['cate', 'ddAddons'])->asArray()->one()) !== null) {
             return ResultHelper::json(200, '获取成功', $model);
@@ -87,7 +88,7 @@ class AddonsController extends AController
      *    @SWG\Parameter(in="formData", name="applets", type="string", description="小程序二维码", required=true),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new CloudAddons();
 
@@ -127,7 +128,7 @@ class AddonsController extends AController
      *    @SWG\Parameter(in="formData", name="applets", type="string", description="小程序二维码", required=true),
      * )
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -151,7 +152,7 @@ class AddonsController extends AController
      *    @SWG\Response(response = 200, description = "删除应用"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -164,11 +165,11 @@ class AddonsController extends AController
      *
      * @param int $id
      *
-     * @return CloudAddons the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = CloudAddons::findOne($id)) !== null) {
             return $model;

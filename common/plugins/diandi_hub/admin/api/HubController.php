@@ -20,13 +20,6 @@ class HubController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     // 我的资金状况：我的收益/累计提现/当前余额
     // 我的二维码

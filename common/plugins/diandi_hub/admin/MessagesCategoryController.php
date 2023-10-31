@@ -5,6 +5,7 @@ namespace common\plugins\diandi_hub\admin;
 use Yii;
 use common\plugins\diandi_hub\models\HubMessagesCategory;
 use common\plugins\diandi_hub\models\Searchs\HubMessagesCategorySearch;
+use yii\db\ActiveRecord;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,9 +27,9 @@ class MessagesCategoryController extends AController
 
     /**
      * Lists all HubMessagesCategory models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubMessagesCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -42,10 +43,10 @@ class MessagesCategoryController extends AController
     /**
      * Displays a single HubMessagesCategory model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -60,9 +61,9 @@ class MessagesCategoryController extends AController
     /**
      * Creates a new HubMessagesCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new HubMessagesCategory();
 
@@ -83,10 +84,10 @@ class MessagesCategoryController extends AController
      * Updates an existing HubMessagesCategory model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -108,10 +109,10 @@ class MessagesCategoryController extends AController
      * Deletes an existing HubMessagesCategory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -125,7 +126,7 @@ class MessagesCategoryController extends AController
      * @return HubMessagesCategory the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = HubMessagesCategory::findOne($id)) !== null) {
             return $model;

@@ -34,7 +34,7 @@ class MemberlevelController extends BaseController
 
     /**
      * Lists all HubMemberLevel models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -50,7 +50,7 @@ class MemberlevelController extends BaseController
     /**
      * Displays a single HubMemberLevel model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView()
@@ -79,7 +79,7 @@ class MemberlevelController extends BaseController
      * Updates an existing HubMemberLevel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)

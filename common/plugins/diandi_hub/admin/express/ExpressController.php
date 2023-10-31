@@ -27,7 +27,7 @@ class ExpressController extends AController
     /**
      * Lists all HubExpressCompany models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -45,7 +45,7 @@ class ExpressController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -68,7 +68,7 @@ class ExpressController extends AController
      * Creates a new HubExpressCompany model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -91,7 +91,7 @@ class ExpressController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -116,7 +116,7 @@ class ExpressController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

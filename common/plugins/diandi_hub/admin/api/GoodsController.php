@@ -56,7 +56,7 @@ class GoodsController extends AController
      *   ),
      * )
      */
-    public function actionSearch()
+    public function actionSearch(): array
     {
         global $_GPC;
         $keytwords = $_GPC['keywords'];
@@ -92,7 +92,7 @@ class GoodsController extends AController
      *   ),
      * )
      */
-    public function actionDetail()
+    public function actionDetail(): array
     {
         global $_GPC;
         $goods_id = $_GPC['goods_id'];
@@ -140,7 +140,7 @@ class GoodsController extends AController
     }
 
     // 获取礼包商品
-    public function actionGoodgift()
+    public function actionGoodgift(): array
     {
         global $_GPC;
 
@@ -162,7 +162,7 @@ class GoodsController extends AController
         ]);
     }
 
-    public function actionCollect()
+    public function actionCollect(): array
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
@@ -243,7 +243,7 @@ class GoodsController extends AController
      *   ),
      * )
      */
-    public function actionLists()
+    public function actionLists(): array
     {
         global $_GPC;
         $pageSize = $_GPC['pageSize'];
@@ -275,7 +275,7 @@ class GoodsController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionPainter()
+    public function actionPainter(): array
     {
         global $_GPC;
 

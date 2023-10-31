@@ -24,7 +24,7 @@ class PriceConfController extends AController
     /**
      * Lists all HubPriceConf models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -42,7 +42,7 @@ class PriceConfController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -57,7 +57,7 @@ class PriceConfController extends AController
      * Creates a new HubPriceConf model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -84,7 +84,7 @@ class PriceConfController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -113,7 +113,7 @@ class PriceConfController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

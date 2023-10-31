@@ -36,7 +36,7 @@ class StoreController extends AController
      *     )
      * )
      */
-    public function actionInfo()
+    public function actionInfo():array
     {
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
@@ -85,7 +85,7 @@ class StoreController extends AController
      *    ),
      * )
      */
-    public function actionDistance()
+    public function actionDistance():array
     {
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
@@ -114,7 +114,7 @@ class StoreController extends AController
     }
 
     // 申请开店
-    public function actionAdd()
+    public function actionAdd(): array
     {
         global $_GPC;
         $name = $_GPC['name'];
@@ -141,7 +141,7 @@ class StoreController extends AController
         }
     }
 
-    public function actionMystore()
+    public function actionMystore(): array
     {
         $member_id = Yii::$app->user->identity->user_id;
 
@@ -150,7 +150,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionAddpay()
+    public function actionAddpay(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -183,7 +183,7 @@ class StoreController extends AController
         }
     }
 
-    public function actionPaylist()
+    public function actionPaylist(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -198,7 +198,7 @@ class StoreController extends AController
         ]);
     }
 
-    public function actionMemberpaylist()
+    public function actionMemberpaylist(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -213,7 +213,7 @@ class StoreController extends AController
         ]);
     }
 
-    public function actionPaydetail()
+    public function actionPaydetail(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -223,7 +223,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $detail);
     }
 
-    public function actionCreditpay()
+    public function actionCreditpay(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -238,7 +238,7 @@ class StoreController extends AController
         }
     }
 
-    public function actionConfirm()
+    public function actionConfirm(): array
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->user_id;
@@ -252,7 +252,7 @@ class StoreController extends AController
         }
     }
 
-    public function actionList()
+    public function actionList(): array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $pageSize = Yii::$app->request->post('pageSize');
@@ -263,7 +263,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionConfirmonline()
+    public function actionConfirmonline():array
     {
         global $_GPC;
 
@@ -277,7 +277,7 @@ class StoreController extends AController
         return StoreService::confirmOrder($order_id, $ctype, $expressCode, $express_company);
     }
 
-    public function actionExpress()
+    public function actionExpress():array
     {
         global $_GPC;
         $express = HubExpressCompany::find()->where(['status' => 1])->asArray()->all();
@@ -285,7 +285,7 @@ class StoreController extends AController
         return ResultHelper::json(200, '获取成功', $express);
     }
 
-    public function actionConf()
+    public function actionConf():array
     {
         $model = new HubConfig();
         $detail = $model->findOne(1);

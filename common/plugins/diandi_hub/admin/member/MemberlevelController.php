@@ -29,7 +29,7 @@ class MemberlevelController extends AController
     /**
      * Lists all HubMemberLevel models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -45,7 +45,7 @@ class MemberlevelController extends AController
     /**
      * Displays a single HubMemberLevel model.
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -75,7 +75,7 @@ class MemberlevelController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

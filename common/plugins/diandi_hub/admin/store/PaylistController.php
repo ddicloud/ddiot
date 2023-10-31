@@ -26,7 +26,7 @@ class PaylistController extends AController
     /**
      * Lists all HubAccountStorePayList models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -44,7 +44,7 @@ class PaylistController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -59,7 +59,7 @@ class PaylistController extends AController
      * Creates a new HubAccountStorePayList model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -86,7 +86,7 @@ class PaylistController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -115,7 +115,7 @@ class PaylistController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

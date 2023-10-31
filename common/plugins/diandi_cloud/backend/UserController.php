@@ -36,7 +36,7 @@ class UserController extends BaseController
 
     /**
      * Lists all CloudAuthUser models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -52,7 +52,7 @@ class UserController extends BaseController
     /**
      * Displays a single CloudAuthUser model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -65,7 +65,7 @@ class UserController extends BaseController
     /**
      * Creates a new CloudAuthUser model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -84,7 +84,7 @@ class UserController extends BaseController
      * Updates an existing CloudAuthUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -104,7 +104,7 @@ class UserController extends BaseController
      * Deletes an existing CloudAuthUser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

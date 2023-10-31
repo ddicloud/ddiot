@@ -57,7 +57,7 @@ class AreasController extends AController
      *   ),
      * )
      */
-    public function actionList()
+    public function actionList(): array
     {
         $data = Yii::$app->request->post();
         // 创建一个 DB 查询来获得所有

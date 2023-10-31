@@ -30,7 +30,7 @@ class DdCategoryController extends AController
     /**
      * Lists all DdCategory models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -58,7 +58,7 @@ class DdCategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -97,7 +97,7 @@ class DdCategoryController extends AController
      * Creates a new DdCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -117,7 +117,7 @@ class DdCategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -156,7 +156,7 @@ class DdCategoryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

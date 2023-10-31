@@ -26,7 +26,7 @@ class AddressController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
+    public function actionSearch(): array
     {
         return [
             'error_code' => 20,
@@ -92,14 +92,14 @@ class AddressController extends AController
      *   )
      * )
      */
-    public function actionAdd()
+    public function actionAdd(): array
     {
         $data = Yii::$app->request->post();
 
         $data['user_id'] = Yii::$app->user->identity->user_id;
         $res = AddressService::add($data);
 
-        return ResultHelper::json(200, '添加成功', $res);
+        return ResultHelper::json(200, '添加成功');
     }
 
     /**
@@ -118,7 +118,7 @@ class AddressController extends AController
      *     ),
      * )
      */
-    public function actionLists()
+    public function actionLists(): array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $Res = AddressService::getList($user_id);
@@ -148,7 +148,7 @@ class AddressController extends AController
      *     ),
      * )
      */
-    public function actionDetail()
+    public function actionDetail(): array
     {
         $data = Yii::$app->request->post();
         $access_token = $data['access_token'];
@@ -224,7 +224,7 @@ class AddressController extends AController
      *   )
      * )
      */
-    public function actionEdit()
+    public function actionEdit(): array
     {
         $data = Yii::$app->request->post();
         $access_token = $data['access_token'];
@@ -256,7 +256,7 @@ class AddressController extends AController
      *     ),
      * )
      */
-    public function actionDeletes()
+    public function actionDeletes(): array
     {
         $data = Yii::$app->request->post();
         $access_token = $data['access_token'];
@@ -290,16 +290,16 @@ class AddressController extends AController
      *   ),
      * )
      */
-    public function actionSetdefault()
+    public function actionSetdefault(): array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $address_id = Yii::$app->request->post('address_id');
         $res = AddressService::setDefault($user_id, $address_id);
 
-        if ($res == true) {
-            return ResultHelper::json(200, '设置成功', $res);
+        if ($res) {
+            return ResultHelper::json(200, '设置成功');
         } else {
-            return ResultHelper::json(040, '设置失败', $res);
+            return ResultHelper::json(040, '设置失败');
         }
     }
 
@@ -319,7 +319,7 @@ class AddressController extends AController
      *     ),
      * )
      */
-    public function actionGetdefault()
+    public function actionGetdefault(): array
     {
         $access_token = Yii::$app->request->post('access-token');
         $user_id = Yii::$app->user->identity->user_id;
@@ -333,6 +333,6 @@ class AddressController extends AController
             'bloc_id' => Yii::$app->params['bloc_id'],
         ]);
 
-        return ResultHelper::json(200, '获取成功', $res);
+        return ResultHelper::json(200, '获取成功', (array)$res);
     }
 }

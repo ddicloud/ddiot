@@ -29,7 +29,7 @@ class AreaController extends AController
     /**
      * Lists all DdShopAreas models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -48,7 +48,7 @@ class AreaController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -63,7 +63,7 @@ class AreaController extends AController
      * Creates a new DdShopAreas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -95,7 +95,7 @@ class AreaController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -154,7 +154,7 @@ class AreaController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

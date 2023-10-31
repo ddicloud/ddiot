@@ -56,7 +56,7 @@ class DdOrderController extends AController
     /**
      * Lists all DdOrder models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -93,7 +93,7 @@ class DdOrderController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -192,7 +192,7 @@ class DdOrderController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -215,7 +215,7 @@ class DdOrderController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

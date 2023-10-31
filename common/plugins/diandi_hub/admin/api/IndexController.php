@@ -60,7 +60,7 @@ class IndexController extends AController
     }
 
     // 推荐位商品
-    public function actionGoodsadv()
+    public function actionGoodsadv(): array
     {
         global $_GPC;
         $mark = $_GPC['mark'];
@@ -71,7 +71,7 @@ class IndexController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionPageadv()
+    public function actionPageadv(): array
     {
         global $_GPC;
         $pageType = $_GPC['pageType'];
@@ -81,7 +81,7 @@ class IndexController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionMenu()
+    public function actionMenu(): array
     {
         global $_GPC;
         $list = LocationService::getMenu();

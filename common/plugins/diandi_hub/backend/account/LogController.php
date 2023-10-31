@@ -53,7 +53,7 @@ class LogController extends BaseController
 
     /**
      * Lists all HubAccountLog models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -69,7 +69,7 @@ class LogController extends BaseController
     /**
      * Displays a single HubAccountLog model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -82,7 +82,7 @@ class LogController extends BaseController
     /**
      * Creates a new HubAccountLog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -101,7 +101,7 @@ class LogController extends BaseController
      * Updates an existing HubAccountLog model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -121,7 +121,7 @@ class LogController extends BaseController
      * Deletes an existing HubAccountLog model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

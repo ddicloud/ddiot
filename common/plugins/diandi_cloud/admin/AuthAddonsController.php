@@ -14,6 +14,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -32,7 +34,7 @@ class AuthAddonsController extends AController
      *    @SWG\Response(response = 200, description = "授权应用列表",),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new CloudAuthAddonsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -50,7 +52,7 @@ class AuthAddonsController extends AController
      *    @SWG\Response(response = 200, description = "授权应用",),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -73,7 +75,7 @@ class AuthAddonsController extends AController
      *    @SWG\Parameter(in="formData", name="domin_url", type="string", description="域名【Http://test.com】", required=true),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new CloudAuthAddons();
 
@@ -102,7 +104,7 @@ class AuthAddonsController extends AController
      *    @SWG\Parameter(in="formData", name="domin_url", type="string", description="域名【Http://test.com】", required=true),
      * )
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -128,11 +130,19 @@ class AuthAddonsController extends AController
      *    @SWG\Response(response = 200, description = "删除授权应用"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
@@ -141,11 +151,11 @@ class AuthAddonsController extends AController
      *
      * @param int $id
      *
-     * @return CloudAuthAddons the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         $model = CloudAuthAddons::find()->andWhere(['id' => $id])->with('member')->asArray()->one();
         if ($model !== null) {

@@ -54,7 +54,7 @@ class GoodsController extends AController
     /**
      * Lists all HubGoods models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -74,7 +74,7 @@ class GoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -94,7 +94,7 @@ class GoodsController extends AController
      * Creates a new HubGoods model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -168,7 +168,7 @@ class GoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -212,7 +212,7 @@ class GoodsController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

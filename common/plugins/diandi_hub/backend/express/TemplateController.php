@@ -59,7 +59,7 @@ class TemplateController extends BaseController
     /**
      * Lists all HubExpressTemplate models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -75,7 +75,7 @@ class TemplateController extends BaseController
     /**
      * Displays a single HubExpressTemplate model.
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -153,7 +153,7 @@ class TemplateController extends BaseController
      * Creates a new HubExpressTemplate model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -176,7 +176,7 @@ class TemplateController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -324,7 +324,7 @@ class TemplateController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

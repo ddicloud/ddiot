@@ -20,7 +20,7 @@ class DefaultController extends AController
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
     }

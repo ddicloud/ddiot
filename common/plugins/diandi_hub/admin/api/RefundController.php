@@ -21,7 +21,7 @@ class RefundController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionInfo()
+    public function actionInfo():array
     {
         global $_GPC;
 
@@ -30,7 +30,7 @@ class RefundController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionAdd()
+    public function actionAdd():array
     {
         global $_GPC;
 
@@ -92,7 +92,7 @@ class RefundController extends AController
         }
     }
 
-    public function actionList()
+    public function actionList():array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $pageSize = Yii::$app->request->post('pageSize');
@@ -103,7 +103,7 @@ class RefundController extends AController
         return ResultHelper::json(200, '获取成功', $list);
     }
 
-    public function actionDetail()
+    public function actionDetail():array
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
@@ -124,7 +124,7 @@ class RefundController extends AController
      *    @SWG\Parameter(in="path", name="refund_id", type="integer", description="售后ID", required=false),
      * )
      */
-    public function actionCancel()
+    public function actionCancel():array
     {
         global $_GPC;
         $userId = Yii::$app->user->identity->user_id;

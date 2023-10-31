@@ -850,7 +850,19 @@ return [
             'POST create' => 'create',
         ],
     ],
-
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['diandi_hub/messages-category'],
+        'pluralize' => false,
+        'extraPatterns' => [
+            'GET index' => 'index',
+            'POST create' => 'create',
+            'POST,PUT update/<id>' => 'update',
+            'POST,GET,DELETE delete/<id>' => 'delete',
+            'GET view/<id>' => 'view',
+            'POST getspec' => 'get-spec',
+        ],
+    ],
     /*
 前台接口移植 - 结束 ------------------------------------------------------------------------------
  */

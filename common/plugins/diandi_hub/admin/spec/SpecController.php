@@ -28,7 +28,7 @@ class SpecController extends AController
     /**
      * Lists all HubSpec models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -46,7 +46,7 @@ class SpecController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -65,7 +65,7 @@ class SpecController extends AController
      * Creates a new HubSpec model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -95,7 +95,7 @@ class SpecController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -128,7 +128,7 @@ class SpecController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

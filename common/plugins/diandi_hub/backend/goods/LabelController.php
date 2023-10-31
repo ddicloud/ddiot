@@ -43,7 +43,7 @@ class LabelController extends BaseController
 
     /**
      * Lists all GoodsLabel models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -60,7 +60,7 @@ class LabelController extends BaseController
     /**
      * Displays a single GoodsLabel model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -82,7 +82,7 @@ class LabelController extends BaseController
     /**
      * Creates a new GoodsLabel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -101,7 +101,7 @@ class LabelController extends BaseController
      * Updates an existing GoodsLabel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -121,7 +121,7 @@ class LabelController extends BaseController
      * Deletes an existing GoodsLabel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

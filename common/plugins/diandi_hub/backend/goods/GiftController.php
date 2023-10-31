@@ -93,7 +93,7 @@ class GiftController extends BaseController
 
     /**
      * Lists all HubGift models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -112,7 +112,7 @@ class GiftController extends BaseController
     /**
      * Displays a single HubGift model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -125,7 +125,7 @@ class GiftController extends BaseController
       /**
      * Displays a single HubGift model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDetail()
@@ -139,7 +139,7 @@ class GiftController extends BaseController
     /**
      * Creates a new HubGift model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -161,7 +161,7 @@ class GiftController extends BaseController
      * Updates an existing HubGift model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -185,7 +185,7 @@ class GiftController extends BaseController
      * Deletes an existing HubGift model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

@@ -43,7 +43,7 @@ class MemberController extends BaseController
 
     /**
      * Lists all HubMemberAccount models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -59,7 +59,7 @@ class MemberController extends BaseController
     /**
      * Displays a single HubMemberAccount model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -72,7 +72,7 @@ class MemberController extends BaseController
    /**
      * Displays a single HubMemberAccount model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDetail()
@@ -91,7 +91,7 @@ class MemberController extends BaseController
      * Deletes an existing HubMemberAccount model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

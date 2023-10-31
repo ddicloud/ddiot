@@ -20,13 +20,6 @@ class LoginController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     // 普通注册
     // 验证码注册

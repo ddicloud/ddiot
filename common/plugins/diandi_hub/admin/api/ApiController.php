@@ -59,7 +59,7 @@ class ApiController extends AController
         ];
     }
 
-    public function actionDocsType()
+    public function actionDocsType(): array
     {
         return ResultHelper::json(200, '请求成功！', [
             [

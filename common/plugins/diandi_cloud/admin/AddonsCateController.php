@@ -15,6 +15,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 class AddonsCateController extends AController
@@ -112,6 +114,7 @@ class AddonsCateController extends AController
      *    @SWG\Parameter(in="formData", name="pid",type="integer", description="父级分类ID", required=true),
      *    @SWG\Parameter(in="formData", name="sort",type="integer", description="排序值", required=true),
      * )
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id): array
     {
@@ -136,12 +139,21 @@ class AddonsCateController extends AController
      *    summary="删除应用分类",
      *    @SWG\Response(response = 200, description = "删除应用分类"),
      * )
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
 
-        return ResultHelper::json(200, '删除成功');
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
@@ -150,11 +162,11 @@ class AddonsCateController extends AController
      *
      * @param int $id
      *
-     * @return CloudAddonsCate the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): array|\yii\db\ActiveRecord
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = CloudAddonsCate::findOne($id)) !== null) {
             return $model;

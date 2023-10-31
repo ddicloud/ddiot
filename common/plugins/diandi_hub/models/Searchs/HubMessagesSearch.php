@@ -74,8 +74,8 @@ class HubMessagesSearch extends HubMessages
             ->andFilterWhere(['like', 'publish_at', $this->publish_at]);
 
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize'];
-        $page       = $_GPC['page'];
+        $pageSize   = $_GPC['pageSize']??10;
+        $page       = $_GPC['page']??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
@@ -148,8 +148,8 @@ class HubMessagesSearch extends HubMessages
             ->andFilterWhere(['like', 'publish_at', $this->publish_at]);
         $query->andWhere('find_in_set(' . \Yii::$app->user->identity->user_id . ', admin_ids) OR admin_ids = ""');
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize'];
-        $page       = $_GPC['page'];
+        $pageSize   = $_GPC['pageSize']??10;
+        $page       = $_GPC['page']??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

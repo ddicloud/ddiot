@@ -26,6 +26,12 @@ use yii\web\IdentityInterface;
 /**
  * User model.
  *
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property $username
+ * @property int|mixed $status
+ * @property string $access_token
+ * @property mixed $avatar
  * @public int    $id
  * @public int    $store_id
  * @public string $username
@@ -96,9 +102,19 @@ class User extends ActiveRecord implements IdentityInterface
      * Signs user up.
      * Source_type: 0主动注册1后台添加.
      *
+     * @param $username
+     * @param $mobile
+     * @param $email
+     * @param $password
+     * @param int $status
+     * @param string $invitation_code
+     * @param int $source_type
+     * @param string $company
      * @return array|bool|object[]|string[]
+     * @throws ErrorException
+     * @throws Exception
      */
-    public function signup($username, $mobile, $email, $password, $status = 0, $invitation_code = '', $source_type = 0, $company = '')
+    public function signup($username, $mobile, $email, $password, int $status = 0, string $invitation_code = '', int $source_type = 0, string $company = ''): array|bool
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
@@ -177,7 +193,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return string
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function generateAccessToken(): string
     {
@@ -204,6 +220,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findUser($mobile, $username): array|ActiveRecord|null
     {
+        $user =  null;
         $query = static::find();
         if (!empty($mobile)) {
             $user = $query->where(['mobile' => $mobile])->one();
@@ -221,14 +238,14 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $username
      *
-     * @return User|array|ActiveRecord
+     * @return User|ActiveRecord|null
      */
-    public static function findByUsername($username): User|array|ActiveRecord
+    public static function findByUsername(string $username): User|ActiveRecord|null
     {
         return static::find()->where(['username' => $username, 'status' => self::STATUS_ACTIVE])->one();
     }
 
-    public static function findByMobile($mobile): array|ActiveRecord|null
+    public static function findByMobile($mobile): ActiveRecord|null
     {
         return static::find()->where(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE])->one();
     }
@@ -240,7 +257,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return User|null
      */
-    public static function findByPasswordResetToken($token): ?static
+    public static function findByPasswordResetToken(string $token): ?static
     {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
@@ -259,7 +276,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return User
      */
-    public static function findByVerificationToken($token): static
+    public static function findByVerificationToken(string $token): static
     {
         return static::findOne([
             'verification_token' => $token,

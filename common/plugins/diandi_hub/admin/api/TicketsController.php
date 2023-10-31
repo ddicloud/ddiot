@@ -23,7 +23,7 @@ class TicketsController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $data = \Yii::$app->request->post();
         $data['user_id'] = \Yii::$app->user->identity->user_id;
@@ -47,7 +47,7 @@ class TicketsController extends AController
         return $this->_json(TicketsService::getLists($this->_getPageInfo(), $where));
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $temp = \Yii::$app->request->post();
         $where = [
@@ -67,7 +67,7 @@ class TicketsController extends AController
         }
     }
 
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $where = [
             'id' => $id,
@@ -81,7 +81,7 @@ class TicketsController extends AController
         }
     }
 
-    public function actionView($id)
+    public function actionView($id): array
     {
         $where = [
             'id' => $id,

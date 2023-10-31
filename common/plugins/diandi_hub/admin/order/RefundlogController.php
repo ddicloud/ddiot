@@ -28,7 +28,7 @@ class RefundlogController extends AController
     /**
      * Lists all HubRefundLog models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -50,7 +50,7 @@ class RefundlogController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -69,7 +69,7 @@ class RefundlogController extends AController
      * Creates a new HubRefundLog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -123,7 +123,7 @@ class RefundlogController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -156,7 +156,7 @@ class RefundlogController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

@@ -63,7 +63,7 @@ class ApiController extends AController
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'json-base' => [
@@ -149,7 +149,7 @@ class ApiController extends AController
      *   )
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
 

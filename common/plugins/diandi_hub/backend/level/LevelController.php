@@ -43,7 +43,7 @@ class LevelController extends BaseController
     /**
      * Lists all HubLevel models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -61,7 +61,7 @@ class LevelController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -86,7 +86,7 @@ class LevelController extends BaseController
      * Creates a new HubLevel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -124,7 +124,7 @@ class LevelController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -162,7 +162,7 @@ class LevelController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

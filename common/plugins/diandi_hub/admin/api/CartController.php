@@ -25,13 +25,6 @@ class CartController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
-    {
-        return [
-            'error_code' => 20,
-            'res_msg' => 'ok',
-        ];
-    }
 
     /**
      * @SWG\Post(path="/diandi_hub/cart/add",
@@ -71,7 +64,7 @@ class CartController extends AController
      *   ),
      * )
      */
-    public function actionAdd()
+    public function actionAdd(): array
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
@@ -102,7 +95,7 @@ class CartController extends AController
      *   )
      * )
      */
-    public function actionList()
+    public function actionList(): array
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
@@ -147,7 +140,7 @@ class CartController extends AController
      *   )
      * )
      */
-    public function actionClear()
+    public function actionClear(): array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $list = CartService::clearAll($user_id);

@@ -28,7 +28,7 @@ class ConditionController extends AController
     /**
      * Lists all DiandiHubLevelCondition models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -51,7 +51,7 @@ class ConditionController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -70,7 +70,7 @@ class ConditionController extends AController
      * Creates a new DiandiHubLevelCondition model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -98,7 +98,7 @@ class ConditionController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -127,7 +127,7 @@ class ConditionController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

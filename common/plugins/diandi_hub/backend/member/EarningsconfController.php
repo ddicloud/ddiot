@@ -44,7 +44,7 @@ class EarningsconfController extends BaseController
 
     /**
      * Lists all butionLevelEarningsConf models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -64,7 +64,7 @@ class EarningsconfController extends BaseController
     /**
      * Displays a single butionLevelEarningsConf model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -81,7 +81,7 @@ class EarningsconfController extends BaseController
     /**
      * Creates a new butionLevelEarningsConf model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -106,7 +106,7 @@ class EarningsconfController extends BaseController
      * Updates an existing butionLevelEarningsConf model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -132,7 +132,7 @@ class EarningsconfController extends BaseController
      * Deletes an existing butionLevelEarningsConf model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

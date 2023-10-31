@@ -9,6 +9,7 @@
 
 namespace common\plugins\diandi_hub\admin\api;
 
+use addons\diandi_hub\components\ResultTrait;
 use common\plugins\diandi_hub\models\enums\{
     TicketsRecordType,
 };
@@ -21,13 +22,13 @@ use Yii;
  */
 class TicketsRecordController extends AController
 {
-    use \addons\diandi_hub\components\ResultTrait;
+    use ResultTrait;
 
     public $modelClass = '';
 
     public int $searchLevel = 0;
 
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $data = Yii::$app->request->post();
         $data['send_id'] = \Yii::$app->user->identity->user_id;

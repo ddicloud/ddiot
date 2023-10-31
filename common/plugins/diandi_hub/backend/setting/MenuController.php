@@ -41,7 +41,7 @@ class MenuController extends BaseController
     /**
      * Lists all DiandiHubIndexMenu models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -59,7 +59,7 @@ class MenuController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -74,7 +74,7 @@ class MenuController extends BaseController
      * Creates a new DiandiHubIndexMenu model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -95,7 +95,7 @@ class MenuController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -118,7 +118,7 @@ class MenuController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

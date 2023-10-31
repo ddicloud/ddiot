@@ -16,7 +16,7 @@ class UserController extends AController
 {
     public $modelClass = '';
   
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
 

@@ -60,9 +60,9 @@ class DefaultController extends AController
     /**
      * Renders the index view for the module.
      *
-     * @return string
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         global $_GPC;
     }

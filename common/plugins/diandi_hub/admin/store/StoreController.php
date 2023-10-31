@@ -43,7 +43,7 @@ class StoreController extends AController
     /**
      * Lists all HubStore models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -61,7 +61,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -76,7 +76,7 @@ class StoreController extends AController
      * Creates a new HubStore model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -103,7 +103,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -132,7 +132,7 @@ class StoreController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

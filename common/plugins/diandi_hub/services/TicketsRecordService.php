@@ -9,6 +9,7 @@
 
 namespace common\plugins\diandi_hub\services;
 
+use addons\diandi_hub\components\ResultServicesTrait;
 use common\services\BaseService;
 use common\plugins\diandi_hub\models\enums\{
     TicketsType,
@@ -17,9 +18,9 @@ use common\plugins\diandi_hub\models\enums\{
 
 class TicketsRecordService extends BaseService
 {
-    use \addons\diandi_hub\components\ResultServicesTrait;
+    use ResultServicesTrait;
 
-    public static function initData()
+    public static function initData(): void
     {
         self::$modelNamespace = '\addons\diandi_hub\models\HubTicketsRecord';
         // self::$isSoftDelete = true;
@@ -32,11 +33,11 @@ class TicketsRecordService extends BaseService
      * 获取列表
      * @param array $pageInfo
      * @param array $where
-     * @return void
+     * @return array
      * @date 2022-08-01
      * @author Radish
      */
-    public static function getLists($pageInfo = [], $where = [])
+    public static function getLists(array $pageInfo = [], array $where = []): array
     {
         static::initData();
         $query = self::$modelNamespace::find()->andWhere($where)->orderBy('created_at DESC');
@@ -51,7 +52,7 @@ class TicketsRecordService extends BaseService
      * @date 2022-08-01
      * @author Radish
      */
-    public static function create($data)
+    public static function create($data): array
     {
         static::initData();
         $model = new self::$modelNamespace();

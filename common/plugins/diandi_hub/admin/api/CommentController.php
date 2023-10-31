@@ -74,7 +74,7 @@ class CommentController extends AController
      *   )
      * )
      */
-    public function actionComment()
+    public function actionComment(): array
     {
         global $_GPC;
 
@@ -141,7 +141,7 @@ class CommentController extends AController
      *   )
      * )
      */
-    public function actionList()
+    public function actionList(): array
     {
         $pageSize = Yii::$app->request->get('pageSize');
         $list = CommentService::list($pageSize);

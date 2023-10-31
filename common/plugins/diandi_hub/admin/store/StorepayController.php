@@ -31,7 +31,7 @@ class StorepayController extends AController
     /**
      * Lists all HubAccountStorePay models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -50,7 +50,7 @@ class StorepayController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -73,7 +73,7 @@ class StorepayController extends AController
      * Creates a new HubAccountStorePay model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -100,7 +100,7 @@ class StorepayController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -130,7 +130,7 @@ class StorepayController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

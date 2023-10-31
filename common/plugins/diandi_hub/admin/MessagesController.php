@@ -34,9 +34,9 @@ class MessagesController extends AController
 
     /**
      * Lists all HubMessages models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubMessagesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -49,9 +49,9 @@ class MessagesController extends AController
 
     /**
      * Lists all HubMessages models.
-     * @return mixed
+     * @return array
      */
-    public function actionList()
+    public function actionList(): array
     {
         $searchModel = new HubMessagesSearch();
         $dataProvider = $searchModel->searchList(Yii::$app->request->queryParams);
@@ -65,10 +65,9 @@ class MessagesController extends AController
     /**
      * Displays a single HubMessages model.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -83,7 +82,7 @@ class MessagesController extends AController
     /**
      * Displays a single HubMessages model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUserView($id)
@@ -107,7 +106,7 @@ class MessagesController extends AController
 
     /**
      * Displays a single HubMessages model.
-     * @return mixed
+     * @return array
      */
     public function actionUnread()
     {
@@ -117,7 +116,7 @@ class MessagesController extends AController
     /**
      * Creates a new HubMessages model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -140,7 +139,7 @@ class MessagesController extends AController
      * Updates an existing HubMessages model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -165,7 +164,7 @@ class MessagesController extends AController
      * Deletes an existing HubMessages model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

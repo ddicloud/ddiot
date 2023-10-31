@@ -55,7 +55,7 @@ class CommentController extends BaseController
 
     /**
      * Lists all DdShopComment models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -71,7 +71,7 @@ class CommentController extends BaseController
     /**
      * Displays a single DdShopComment model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -84,7 +84,7 @@ class CommentController extends BaseController
     /**
      * Creates a new DdShopComment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -103,7 +103,7 @@ class CommentController extends BaseController
      * Updates an existing DdShopComment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -123,7 +123,7 @@ class CommentController extends BaseController
      * Deletes an existing DdShopComment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

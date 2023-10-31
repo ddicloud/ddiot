@@ -47,7 +47,7 @@ class BankController extends BaseController
 
     /**
      * Lists all HubUserBank models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -63,7 +63,7 @@ class BankController extends BaseController
     /**
      * Displays a single HubUserBank model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -76,7 +76,7 @@ class BankController extends BaseController
     /**
      * Creates a new HubUserBank model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -95,7 +95,7 @@ class BankController extends BaseController
      * Updates an existing HubUserBank model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate()
@@ -123,7 +123,7 @@ class BankController extends BaseController
      * Deletes an existing HubUserBank model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

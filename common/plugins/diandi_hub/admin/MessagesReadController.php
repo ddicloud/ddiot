@@ -26,7 +26,7 @@ class MessagesReadController extends AController
 
     /**
      * Lists all HubMessagesRead models.
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -42,7 +42,7 @@ class MessagesReadController extends AController
     /**
      * Displays a single HubMessagesRead model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -60,7 +60,7 @@ class MessagesReadController extends AController
     /**
      * Creates a new HubMessagesRead model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -83,7 +83,7 @@ class MessagesReadController extends AController
      * Updates an existing HubMessagesRead model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -108,7 +108,7 @@ class MessagesReadController extends AController
      * Deletes an existing HubMessagesRead model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

@@ -25,7 +25,7 @@ class Upgrade extends Migration implements AddonWidget
 
     /**
      * @param $params
-     * @return mixed|void
+     * @return array|void
      * @throws \yii\db\Exception
      */
     public function run($params)

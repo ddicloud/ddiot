@@ -16,6 +16,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -30,9 +32,9 @@ class MemberExpandController extends AController
     /**
      * Lists all MemberExpand models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new MemberExpandSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -48,24 +50,24 @@ class MemberExpandController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $view = $this->findArray($id);
 
-        return ResultHelper::json(200, '获取成功', $view);
+        return ResultHelper::json(200, '获取成功', $view->toArray());
     }
 
     /**
      * Creates a new MemberExpand model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new MemberExpand();
 
@@ -73,7 +75,7 @@ class MemberExpandController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -88,11 +90,11 @@ class MemberExpandController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -100,7 +102,7 @@ class MemberExpandController extends AController
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
@@ -115,11 +117,13 @@ class MemberExpandController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -132,11 +136,11 @@ class MemberExpandController extends AController
      *
      * @param int $id
      *
-     * @return MemberExpand the loaded model
+     * @return array|MemberExpand|ActiveRecord
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findArray($id)
+    protected function findArray(int $id): MemberExpand|array|ActiveRecord
     {
         if (($model = MemberExpand::find()->where(['member_id' => $id])->with(['member'])->asArray()->one()) !== null) {
             return $model;
@@ -151,11 +155,11 @@ class MemberExpandController extends AController
      *
      * @param int $id
      *
-     * @return MemberExpand the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = MemberExpand::findOne($id)) !== null) {
             return $model;
@@ -164,7 +168,10 @@ class MemberExpandController extends AController
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionAudit($id)
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionAudit($id): array
     {
         $model = $this->findModel($id);
         if ($model->audit == MemberAudit::WAIT) {

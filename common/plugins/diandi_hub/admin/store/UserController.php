@@ -29,7 +29,7 @@ class UserController extends AController
     /**
      * Lists all HubStoreUser models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -45,7 +45,7 @@ class UserController extends AController
     /**
      * Displays a single HubStoreUser model.
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -60,7 +60,7 @@ class UserController extends AController
      * Creates a new HubStoreUser model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -87,7 +87,7 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -116,7 +116,7 @@ class UserController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

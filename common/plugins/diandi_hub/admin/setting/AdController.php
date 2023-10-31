@@ -30,7 +30,7 @@ class AdController extends AController
     /**
      * Lists all HubLocationAd models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -65,7 +65,7 @@ class AdController extends AController
      * Creates a new HubLocationAd model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -97,7 +97,7 @@ class AdController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -131,7 +131,7 @@ class AdController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

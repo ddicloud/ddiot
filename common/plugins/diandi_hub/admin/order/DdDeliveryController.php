@@ -37,7 +37,7 @@ class DdDeliveryController extends AController
     /**
      * Lists all DdDelivery models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -55,7 +55,7 @@ class DdDeliveryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -70,7 +70,7 @@ class DdDeliveryController extends AController
      * Creates a new DdDelivery model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -91,7 +91,7 @@ class DdDeliveryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -114,7 +114,7 @@ class DdDeliveryController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */

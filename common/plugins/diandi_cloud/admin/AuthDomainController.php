@@ -14,6 +14,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -32,7 +34,7 @@ class AuthDomainController extends AController
      *    @SWG\Response(response = 200, description = "授权域名列表",),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new CloudAuthDomainSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -50,7 +52,7 @@ class AuthDomainController extends AController
      *    @SWG\Response(response = 200, description = "授权域名",),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -73,7 +75,7 @@ class AuthDomainController extends AController
      *    @SWG\Parameter(in="formData", name="end_time", type="string", description="结束时间[yyyy-MM-dd HH:mm:ss]", required=true),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new CloudAuthDomain();
 
@@ -101,8 +103,9 @@ class AuthDomainController extends AController
      *    @SWG\Parameter(in="formData", name="start_time", type="string", description="开始时间[yyyy-MM-dd HH:mm:ss]", required=true),
      *    @SWG\Parameter(in="formData", name="end_time", type="string", description="结束时间[yyyy-MM-dd HH:mm:ss]", required=true),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -128,11 +131,19 @@ class AuthDomainController extends AController
      *    @SWG\Response(response = 200, description = "删除授权域名"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
@@ -141,11 +152,11 @@ class AuthDomainController extends AController
      *
      * @param int $id
      *
-     * @return CloudAuthDomain the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         $model = CloudAuthDomain::find()->andWhere(['id' => $id])->with('member')->asArray()->one();
         if ($model !== null) {

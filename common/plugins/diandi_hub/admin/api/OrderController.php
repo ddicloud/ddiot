@@ -29,7 +29,7 @@ class OrderController extends AController
 
     public int $searchLevel = 0;
 
-    public function actionSearch()
+    public function actionSearch():array
     {
         return [
             'error_code' => 20,
@@ -125,7 +125,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionCreateorder()
+    public function actionCreateorder():array
     {
         global $_GPC;
         $data = Yii::$app->request->post();
@@ -182,7 +182,7 @@ class OrderController extends AController
     }
 
     // 直接购买
-    public function actionCreategoodsorder()
+    public function actionCreategoodsorder():array
     {
         global $_GPC;
         $total_price = $_GPC['total_price'];
@@ -266,7 +266,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionConfirm()
+    public function actionConfirm():array
     {
         $order_id = Yii::$app->request->post('order_id');
         $ctype = Yii::$app->request->post('ctype');
@@ -313,7 +313,7 @@ class OrderController extends AController
 
      * )
      */
-    public function actionList()
+    public function actionList():array
     {
         $user_id = Yii::$app->user->identity->user_id;
         $pageSize = Yii::$app->request->post('pageSize');
@@ -348,7 +348,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionDetail()
+    public function actionDetail():array
     {
         $order_id = Yii::$app->request->post('order_id');
         $user_id = Yii::$app->user->identity->user_id;
@@ -374,7 +374,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionDelivery()
+    public function actionDelivery():array
     {
     }
 
@@ -395,7 +395,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionLogistics()
+    public function actionLogistics():array
     {
     }
 
@@ -437,7 +437,7 @@ class OrderController extends AController
      *   ),
      * )
      */
-    public function actionOrderdetail()
+    public function actionOrderdetail():array
     {
         global $_GPC;
         $num = $_GPC['goods_number'];
@@ -456,7 +456,7 @@ class OrderController extends AController
         return ResultHelper::json(200, '获取成功', $goods);
     }
 
-    public function actionIntegralpay()
+    public function actionIntegralpay():array
     {
         global $_GPC;
         $order_id = $_GPC['order_id'];
@@ -489,7 +489,7 @@ class OrderController extends AController
     {
     }
 
-    public function actionGetexpress()
+    public function actionGetexpress():array
     {
         global $_GPC;
 
@@ -506,7 +506,7 @@ class OrderController extends AController
     }
 
     // 物流信息推送
-    public function actionKdinform()
+    public function actionKdinform():array
     {
         global $_GPC;
 
@@ -528,7 +528,7 @@ class OrderController extends AController
         return $Res;
     }
 
-    public function actionDeletebytime()
+    public function actionDeletebytime():array
     {
         global $_GPC;
 
@@ -538,7 +538,7 @@ class OrderController extends AController
         return ResultHelper::json(200, '删除成功');
     }
 
-    public function actionPay()
+    public function actionPay():array
     {
         $params = Yii::$app->params;
         $conf = $params['conf'];

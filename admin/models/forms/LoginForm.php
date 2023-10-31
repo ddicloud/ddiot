@@ -15,6 +15,7 @@ use common\helpers\MapHelper;
 use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
@@ -99,9 +100,10 @@ class LoginForm extends Model
     /**
      * Logs in a user using the provided username and password.
      *
-     * @return bool whether the user is logged in successfully
+     * @return array|bool|object[]|string[]
+     * @throws Exception
      */
-    public function login()
+    public function login(): array|bool
     {
         global $_GPC;
         if ($this->validate()) {

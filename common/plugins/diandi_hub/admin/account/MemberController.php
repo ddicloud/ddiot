@@ -14,6 +14,8 @@ use common\plugins\diandi_hub\models\account\HubMemberAccount;
 use common\plugins\diandi_hub\models\Searchs\account\HubMemberAccount as HubMemberAccountSearch;
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -29,9 +31,9 @@ class MemberController extends AController
 
     /**
      * Lists all HubMemberAccount models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubMemberAccountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -45,23 +47,21 @@ class MemberController extends AController
     /**
      * Displays a single HubMemberAccount model.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         return ResultHelper::json(200,'获取成功',[
             'model' => $this->findModel($id),
         ]);
     }
 
-   /**
+    /**
      * Displays a single HubMemberAccount model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array
      */
-    public function actionDetail()
+    public function actionDetail(): array
     {
         global $_GPC;
         $member_id = $_GPC['member_id']; 
@@ -77,10 +77,12 @@ class MemberController extends AController
      * Deletes an existing HubMemberAccount model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
  return ResultHelper::json(200,'删除成功');
@@ -90,10 +92,10 @@ class MemberController extends AController
      * Finds the HubMemberAccount model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return HubMemberAccount the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = HubMemberAccount::findOne($id)) !== null) {
             return $model;

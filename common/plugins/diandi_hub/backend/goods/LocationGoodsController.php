@@ -57,7 +57,7 @@ class LocationGoodsController extends BaseController
     /**
      * Lists all LocationGoods models.
      *
-     * @return mixed
+     * @return array
      */
     public function actionIndex()
     {
@@ -110,7 +110,7 @@ class LocationGoodsController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -175,7 +175,7 @@ class LocationGoodsController extends BaseController
      * Creates a new LocationGoods model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
-     * @return mixed
+     * @return array
      */
     public function actionCreate()
     {
@@ -196,7 +196,7 @@ class LocationGoodsController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -219,7 +219,7 @@ class LocationGoodsController extends BaseController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
