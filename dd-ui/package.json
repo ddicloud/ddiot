@@ -1,7 +1,7 @@
 {
   "name": "diandi-element-admin",
   "version": "1.1.0",
-  "description": "店滴多商户企业版",
+  "description": "美恋云",
   "author": "ChunChun <2192138785@qq.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -21,9 +21,9 @@
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
     "core-js": "3.6.5",
-    "diandi-admin": "^1.1.5",
-    "diandi-ele-form": "^0.3.0",
-    "diandi-ele-form-bmap": "^0.0.9",
+    "diandi-admin": "^1.1.7",
+    "diandi-ele-form": "^0.3.1",
+    "diandi-ele-form-bmap": "^0.1.2",
     "diandi-ele-form-dynamic": "^0.1.0",
     "diandi-ele-form-filter": "^1.0.7",
     "diandi-ele-form-image-uploader": "^1.0.4",

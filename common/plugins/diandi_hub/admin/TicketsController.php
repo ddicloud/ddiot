@@ -29,7 +29,7 @@ class TicketsController extends AController
      * Lists all HubTickets models.
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new HubTicketsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

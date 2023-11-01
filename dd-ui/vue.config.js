@@ -2,7 +2,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-10-30 10:40:26
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-12 09:08:56
+ * @Last Modified time: 2023-07-14 14:51:21
  */
 'use strict'
 const path = require('path')
@@ -31,7 +31,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/admin/pro-admin',
+  publicPath: '/backend/pro-admin',
   outputDir: 'dist/pro-admin',
   indexPath: '../index.html',
   assetsDir: 'static',
@@ -47,7 +47,7 @@ module.exports = {
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {
-    // provide the App's title in webpack's name field, so that
+    // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
@@ -112,7 +112,7 @@ module.exports = {
           },
           elementUI: {
             name: 'chunk-elementUI', // split elementUI into a single package
-            priority: 20, // the weight needs to be larger than libs and App or it will be packaged into libs or App
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
             test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
           },
           commons: {

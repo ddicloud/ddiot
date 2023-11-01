@@ -102,15 +102,13 @@ class MenuController extends AController
      */
     public function actionCreate(): array
     {
-        global $_GPC;
-
         $model = new Menu();
-
         $data = Yii::$app->request->post();
-        $data['parent'] = intval($data['parent']);
-        $data['order'] = intval($data['order']);
-        $data['is_sys'] = $_GPC['module_name'] == 'sys' || empty($_GPC['module_name']) ? 'system' : 'addons';
-        $data['route'] = AuthRoute::find()->where(['id' => $_GPC['route_id']])->select('name')->scalar();
+        $data['parent'] = Yii::$app->request->post('parent',0);
+        $data['order'] = Yii::$app->request->post('order',0);
+        $data['is_sys'] = Yii::$app->request->post('is_sys');
+        $route_id = Yii::$app->request->post('route_id',0);
+        $data['route'] = AuthRoute::find()->where(['id' => $route_id])->select('name')->scalar();
 
         if ($model->load($data, '') && $model->save()) {
             Helper::invalidate();
