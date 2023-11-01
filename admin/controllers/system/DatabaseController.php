@@ -413,7 +413,7 @@ class DatabaseController extends AController
     {
         global $_GPC;
 
-        $time = $_GPC['time'];
+        $time = Yii::$app->request->input('time');
 
         $config = $this->config;
 

@@ -161,7 +161,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $mobile = $_GPC['mobile'] ?? '';
+        $mobile = Yii::$app->request->input('mobile') ?? '';
 
         $data = Yii::$app->request->post();
 
@@ -216,8 +216,8 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $code = $_GPC['code'];
-        $mobile = $_GPC['mobile'];
+        $code = Yii::$app->request->input('code');
+        $mobile = Yii::$app->request->input('mobile');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
@@ -261,10 +261,10 @@ class UserController extends AController
     public function actionForgetpass(): array
     {
         global $_GPC;
-        $mobile = $_GPC['mobile'];
-        $password = $_GPC['password'];
-        $repassword = $_GPC['repassword'];
-        $code = $_GPC['sms_code'];
+        $mobile = Yii::$app->request->input('mobile');
+        $password = Yii::$app->request->input('password');
+        $repassword = Yii::$app->request->input('repassword');
+        $code = Yii::$app->request->input('sms_code');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         $settings = Yii::$app->settings;
@@ -313,11 +313,11 @@ class UserController extends AController
     public function actionSendcode(): array
     {
         global $_GPC;
-        $type = $_GPC['type'];
+        $type = Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile', 'login'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
-        $mobile = $_GPC['mobile'];
+        $mobile = Yii::$app->request->input('mobile');
         $where = [];
         $where['mobile'] = $mobile;
 
@@ -350,7 +350,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $refresh_token = $_GPC['refresh_token'];
+        $refresh_token = Yii::$app->request->input('refresh_token');
 
         $user = DdApiAccessToken::find()
             ->where(['refresh_token' => $refresh_token])
@@ -371,9 +371,9 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $name = $_GPC['name'];
-        $contact = $_GPC['contact'];
-        $feedback = $_GPC['feedback'];
+        $name = Yii::$app->request->input('name');
+        $contact = Yii::$app->request->input('contact');
+        $feedback = Yii::$app->request->input('feedback');
         $contacts = new DdWebsiteContact();
 
         $data = [
@@ -394,7 +394,7 @@ class UserController extends AController
     public function actionAddons(): array
     {
         global $_GPC;
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $AddonsUser = new AddonsUser([
             'user_id' => $id,
         ]);
@@ -435,8 +435,8 @@ class UserController extends AController
     public function actionUpstatus(): array
     {
         global $_GPC;
-        $user_id = $_GPC['user_id'];
-        $type = $_GPC['type'];
+        $user_id = Yii::$app->request->input('user_id');
+        $type = Yii::$app->request->input('type');
 
         if (empty($user_id)) {
             return ResultHelper::json(401, '用户ID不能为空');
@@ -456,11 +456,11 @@ class UserController extends AController
     public function actionCreate(): array
     {
         global $_GPC;
-        $username = $_GPC['username'];
-        $mobile = $_GPC['mobile'];
-        $password = $_GPC['password'];
-        $email = $_GPC['email'];
-        $status = $_GPC['status'];
+        $username = Yii::$app->request->input('username');
+        $mobile = Yii::$app->request->input('mobile');
+        $password = Yii::$app->request->input('password');
+        $email = Yii::$app->request->input('email');
+        $status = Yii::$app->request->input('status');
 
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空');
@@ -495,7 +495,7 @@ class UserController extends AController
     public function actionSetinfo(): array
     {
         global $_GPC;
-        $user_id = $_GPC['user_id'];
+        $user_id = Yii::$app->request->input('user_id');
         $addons = AddonsUser::find()->where(['user_id' => $user_id])->with(['addons'])->indexBy('module_name')->asArray()->all();
         $addonsList = [];
 
@@ -555,7 +555,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $user_id = $_GPC['user_id'];
+        $user_id = Yii::$app->request->input('user_id');
         $addons_user_id = AddonsUser::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
         $store_user_id = UserStore::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
 
@@ -568,10 +568,10 @@ class UserController extends AController
     public function actionDefault(): array
     {
         global $_GPC;
-        $user_id = $_GPC['user_id'];
-        $store_user_id = $_GPC['store_user_id'];
-        $bloc_user_id = $_GPC['bloc_user_id'];
-        $addons_user_id = $_GPC['addons_user_id'];
+        $user_id = Yii::$app->request->input('user_id');
+        $store_user_id = Yii::$app->request->input('store_user_id');
+        $bloc_user_id = Yii::$app->request->input('bloc_user_id');
+        $addons_user_id = Yii::$app->request->input('addons_user_id');
 
         if (empty($user_id)) {
             return ResultHelper::json(400, '用户ID不能为空');
@@ -692,7 +692,7 @@ class UserController extends AController
     public function actionLog(): array
     {
         global $_GPC;
-        $user_id = $_GPC['user_id'];
+        $user_id = Yii::$app->request->input('user_id');
         $pageSize = 20;
         $query = ActionLog::find()->where(['user_id' => $user_id]);
         $count = $query->count();

@@ -214,7 +214,7 @@ class DdGoodsController extends BaseController
         global $_GPC;
         $model = new HubGoodsBaseGoods();
 
-        $base = $_GPC['HubGoodsBaseGoods'];
+        $base = Yii::$app->request->input('HubGoodsBaseGoods');
         $delivery_id = 0;
         if(isset($base['delivery_id'])){
             $delivery_id =is_numeric($base['delivery_id'])? $base['delivery_id'] : 0;
@@ -551,7 +551,7 @@ class DdGoodsController extends BaseController
 
         if(Yii::$app->request->isPost){
             
-            $ids = explode(',',$_GPC['ids']);
+            $ids = explode(',',Yii::$app->request->input('ids'));
             $model = new HubGoodsBaseGoods();
             $where = ['in', 'goods_id', $ids];
             $model->deleteAll($where);
@@ -775,7 +775,7 @@ class DdGoodsController extends BaseController
             );
 
             return $this->renderPartial('spec', [
-                'op' => $_GPC['op'],
+                'op' => Yii::$app->request->input('op'),
                 'spec' => $spec,
                 'model' => $model,
                 'specitem' => [],

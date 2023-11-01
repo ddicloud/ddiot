@@ -219,7 +219,7 @@ class DdGoodsController extends AController
     public function actionGetSpec()
     {
         global $_GPC;
-        $category_id = $_GPC['category_id'][1];
+        $category_id = Yii::$app->request->input('category_id')[1];
         if (empty($category_id)) {
             return ResultHelper::json(400, '缺少二级分类id');
         }
@@ -314,7 +314,7 @@ class DdGoodsController extends AController
         global $_GPC;
         $model = new HubGoodsBaseGoods();
 
-        $base = $_GPC['HubGoodsBaseGoods'];
+        $base = Yii::$app->request->input('HubGoodsBaseGoods');
         $delivery_id = 0;
         if (isset($base['delivery_id'])) {
             $delivery_id = is_numeric($base['delivery_id']) ? $base['delivery_id'] : 0;
@@ -357,8 +357,8 @@ class DdGoodsController extends AController
     public function actionInit()
     {
         global $_GPC;
-        $where['store_id'] = $_GPC['store_id'];
-        $where['bloc_id'] = $_GPC['bloc_id'];
+        $where['store_id'] = Yii::$app->request->input('store_id');
+        $where['bloc_id'] = Yii::$app->request->input('bloc_id');
         //   商品分类
         $catedatas = HubCategory::find()->select(['*', 'category_id as value', 'name as label'])->where($where)->asArray()->all();
         $catedata = ArrayHelper::itemsMerge($catedatas, 0, 'category_id', 'parent_id', 'children');
@@ -448,7 +448,7 @@ class DdGoodsController extends AController
             if (!empty($base['specs'])) {
                 $goods_id = Yii::$app->db->getLastInsertID();
                 // $model->saveSpec($goods_id, $base['specs']);
-                if ($_GPC['spec_type']) {
+                if (Yii::$app->request->input('spec_type')) {
                     HubGoodsBaseSpec::saveData($goods_id, $base['goods_spec'], $base['specs']);
                 }
             }
@@ -558,7 +558,7 @@ class DdGoodsController extends AController
         $this->findModel($id)->delete();
 
         return ResultHelper::json(200, '删除成功', []);
-        //$ids = explode(',', $_GPC['ids']);
+        //$ids = explode(',', Yii::$app->request->input('ids'));
         // $model = new HubGoodsBaseGoods();
         // $where = ['in', 'goods_id', $id];
 
@@ -775,7 +775,7 @@ class DdGoodsController extends AController
             ];
 
             return $this->renderPartial('spec', [
-                'op' => $_GPC['op'],
+                'op' => Yii::$app->request->input('op'),
                 'spec' => $spec,
                 'model' => $model,
                 'specitem' => [],

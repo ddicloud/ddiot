@@ -119,13 +119,13 @@ class GoodsController extends BaseController
         global  $_GPC;
 
         if (Yii::$app->request->isPost) {
-            $baseprice = $_GPC['baseprice'];
-            $goods_id = $_GPC['goods_id'];
-            $member_price = $_GPC['member_price'];
-            $disInfo = $_GPC['disInfo'];
-            $prices = $_GPC['prices'];
-            $type = $_GPC['type'];
-            $goodsSpecs = $_GPC['goodsSpecs'];
+            $baseprice = Yii::$app->request->input('baseprice');
+            $goods_id = Yii::$app->request->input('goods_id');
+            $member_price = Yii::$app->request->input('member_price');
+            $disInfo = Yii::$app->request->input('disInfo');
+            $prices = Yii::$app->request->input('prices');
+            $type = Yii::$app->request->input('type');
+            $goodsSpecs = Yii::$app->request->input('goodsSpecs');
 
             $goods_type = '0'; //0分销1礼包
             // 分销商品信息存储
@@ -159,13 +159,13 @@ class GoodsController extends BaseController
     public function actionPostdata()
     {
         global  $_GPC;
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
     }
 
     public function actionDetail()
     {
         global  $_GPC;
-        $model = $this->findModel($_GPC['id']);
+        $model = $this->findModel(Yii::$app->request->input('id'));
         $goods_id = $model['goods_id'];
 
         $list = ServicesGoodsService::goodsDis($goods_id);
@@ -186,7 +186,7 @@ class GoodsController extends BaseController
         global  $_GPC;
         // if (Yii::$App->request->isPost) {
         //     $DdGoodsSpecRel = new HubGoodsSpecRel();
-        //     $html = $DdGoodsSpecRel->buildHtml($_GPC['goods_id']);
+        //     $html = $DdGoodsSpecRel->buildHtml(Yii::$app->request->input('goods_id'));
 
         //     return ResultHelper::json(200, '请求成功', $html);
         // }
@@ -210,13 +210,13 @@ class GoodsController extends BaseController
 
         
         if (Yii::$app->request->isPost) {
-            $baseprice = $_GPC['baseprice'];
-            $goods_id = $_GPC['goods_id'];
-            $member_price = $_GPC['member_price'];
-            $disInfo = $_GPC['disInfo'];
-            $prices = $_GPC['prices'];
-            $type = $_GPC['type'];
-            $goodsSpecs = $_GPC['goodsSpecs'];
+            $baseprice = Yii::$app->request->input('baseprice');
+            $goods_id = Yii::$app->request->input('goods_id');
+            $member_price = Yii::$app->request->input('member_price');
+            $disInfo = Yii::$app->request->input('disInfo');
+            $prices = Yii::$app->request->input('prices');
+            $type = Yii::$app->request->input('type');
+            $goodsSpecs = Yii::$app->request->input('goodsSpecs');
 
             $goods_type = '0'; //0分销1礼包
             // 分销商品信息存储
@@ -254,7 +254,7 @@ class GoodsController extends BaseController
     public function actionGoodslist()
     {
         global  $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         $list = [];
 
         $list = GoodsService::getList(0,$keywords);

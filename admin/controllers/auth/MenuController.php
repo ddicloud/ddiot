@@ -137,10 +137,10 @@ class MenuController extends AController
     public function actionRoute(): array
     {
         global $_GPC;
-        $name = $_GPC['name']??'';
-        $module_name = $_GPC['module_name']??'';
-        $route_type = $_GPC['route_type']??0;
-        $limit = $_GPC['limit']??0;
+        $name = Yii::$app->request->input('name')??'';
+        $module_name = Yii::$app->request->input('module_name')??'';
+        $route_type = Yii::$app->request->input('route_type')??0;
+        $limit = Yii::$app->request->input('limit')??0;
 
         $where = [];
         if (!empty($name)) {
@@ -185,7 +185,7 @@ class MenuController extends AController
         $model = $this->findModel($id);
 
             $data = Yii::$app->request->post();
-            $data['route'] = AuthRoute::find()->where(['id' => $_GPC['route_id']])->select('name')->scalar();
+            $data['route'] = AuthRoute::find()->where(['id' => Yii::$app->request->input('route_id')])->select('name')->scalar();
 
             if ($model->menuParent) {
                 $model->parent_name = $model->menuParent->name;

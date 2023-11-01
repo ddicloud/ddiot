@@ -131,7 +131,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
 
         $where = [];
 
@@ -160,7 +160,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
 
         $where = [];
 

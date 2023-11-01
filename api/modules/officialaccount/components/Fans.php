@@ -144,14 +144,14 @@ class Fans extends BaseObject
     {
         global $_GPC;
 
-        return DdWechatFans::find()->where(['openid' => $openid, 'store_id' => $_GPC['store_id']])->asArray()->one();
+        return DdWechatFans::find()->where(['openid' => $openid, 'store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
     }
 
     public function fansByopenid($openid): array|\yii\db\ActiveRecord|null
     {
         global $_GPC;
 
-        return DdWechatFans::find()->where(['openid' => $openid, 'store_id' => $_GPC['store_id']])->asArray()->one();
+        return DdWechatFans::find()->where(['openid' => $openid, 'store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
     }
 
     public function removeEmoji($nickname): array|string|null

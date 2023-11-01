@@ -57,7 +57,7 @@ class LevelController extends AController
     public function actionDetail()
     {
         global $_GPC;
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $detail = $this->findModel($id);
 
         return ResultHelper::json(200, '获取成功', $detail);
@@ -117,7 +117,7 @@ class LevelController extends AController
     {
         global $_GPC;
 
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $model = $this->findModel($id);
         if ($model->load($_GPC, '') && $model->save()) {
             return ResultHelper::json(200, '编辑成功', []);

@@ -112,7 +112,7 @@ class StorepayController extends BaseController
      
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($_GPC['HubAccountStorePay']['status'] == 2){
+            if(Yii::$app->request->input('HubAccountStorePay')['status'] == 2){
             
                 $Res = StoreService::thawMoney($id);      
                 

@@ -140,7 +140,7 @@ class module extends \yii\base\Module
         FileHelper::writeLog($logPath, '入口配置' . json_encode($config['params']['wechatPaymentConfig']));
         FileHelper::writeLog($logPath, '总配置' . json_encode($conf));
 
-        $redirect_uri = !empty($_GPC['redirect_uri']) ? $_GPC['redirect_uri'] : '';
+        $redirect_uri = !empty(Yii::$app->request->input('redirect_uri')) ? Yii::$app->request->input('redirect_uri') : '';
 
         // 公众号设置
         $wechatConfig = [

@@ -49,7 +49,7 @@ class SettingController extends AController
     {
         global $_GPC;
         $settings = Yii::$app->settings;
-        foreach ($_GPC['Website'] as $key => $value) {
+        foreach (Yii::$app->request->input('Website') as $key => $value) {
             $settings->set('Website', $key, $value);
         }
 

@@ -67,7 +67,7 @@ class TemplateController extends AController
     public function actionView($id)
     {
         global $_GPC;
-        $is_special = (int) $_GPC['is_special'];
+        $is_special = (int) Yii::$app->request->input('is_special');
         $detail = HubExpressTemplate::find()->where(['id' => $id])->asArray()->one();
         $region = new DdRegion();
 
@@ -119,40 +119,40 @@ class TemplateController extends AController
     {
         global $_GPC;
         $model = new HubExpressTemplate();
-        $is_nationwide = $_GPC['is_nationwide'];
-        $is_special = (int) $_GPC['is_special'];
+        $is_nationwide = Yii::$app->request->input('is_nationwide');
+        $is_special = (int) Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
             // 特殊区域处理
-            $seleCitys = $_GPC['seleCitys'];
+            $seleCitys = Yii::$app->request->input('seleCitys');
             $HubExpressTemplateArea = new HubExpressTemplateArea();
 
             foreach ($seleCitys as $key => $value) {
                 $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                 $data = [
-                    'is_special' => (int) $_GPC['is_special'],
-                    'template_id' => (int) $_GPC['template_id'],
+                    'is_special' => (int) Yii::$app->request->input('is_special'),
+                    'template_id' => (int) Yii::$app->request->input('template_id'),
                     'province' => $value['pid'],
                     'district' => $value['id'],
-                    'express_id' => (int) $_GPC['express_id'],
-                    'title' => $_GPC['title'],
-                    'bynum_snum' => floatval($_GPC['bynum_snum']),
-                    'bynum_sprice' => floatval($_GPC['bynum_sprice']),
-                    'bynum_xnum' => floatval($_GPC['bynum_xnum']),
-                    'bynum_xprice' => floatval($_GPC['bynum_xprice']),
-                    'bynum_is_use' => floatval($_GPC['bynum_is_use']),
+                    'express_id' => (int) Yii::$app->request->input('express_id'),
+                    'title' => Yii::$app->request->input('title'),
+                    'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
+                    'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
+                    'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
+                    'bynum_xprice' => floatval(Yii::$app->request->input('bynum_xprice')),
+                    'bynum_is_use' => floatval(Yii::$app->request->input('bynum_is_use')),
 
-                    'weight_snum' => floatval($_GPC['weight_snum']),
-                    'weight_sprice' => floatval($_GPC['weight_sprice']),
-                    'weight_xnum' => floatval($_GPC['weight_xnum']),
-                    'weight_xprice' => floatval($_GPC['weight_xprice']),
-                    'weight_is_use' => floatval($_GPC['weight_is_use']),
+                    'weight_snum' => floatval(Yii::$app->request->input('weight_snum')),
+                    'weight_sprice' => floatval(Yii::$app->request->input('weight_sprice')),
+                    'weight_xnum' => floatval(Yii::$app->request->input('weight_xnum')),
+                    'weight_xprice' => floatval(Yii::$app->request->input('weight_xprice')),
+                    'weight_is_use' => floatval(Yii::$app->request->input('weight_is_use')),
 
-                    'volume_snum' => floatval($_GPC['volume_snum']),
-                    'volume_sprice' => floatval($_GPC['volume_sprice']),
-                    'volume_xnum' => floatval($_GPC['volume_xnum']),
-                    'volume_xprice' => floatval($_GPC['volume_xprice']),
-                    'volume_is_use' => floatval($_GPC['volume_is_use']),
+                    'volume_snum' => floatval(Yii::$app->request->input('volume_snum')),
+                    'volume_sprice' => floatval(Yii::$app->request->input('volume_sprice')),
+                    'volume_xnum' => floatval(Yii::$app->request->input('volume_xnum')),
+                    'volume_xprice' => floatval(Yii::$app->request->input('volume_xprice')),
+                    'volume_is_use' => floatval(Yii::$app->request->input('volume_is_use')),
                 ];
                 $_HubExpressTemplateArea->setAttributes($data);
                 $Res = $_HubExpressTemplateArea->save();
@@ -168,36 +168,36 @@ class TemplateController extends AController
                 // region_id
                 $id = Yii::$app->db->getLastInsertID();
                 if (empty($is_nationwide)) {
-                    $seleCitys = $_GPC['seleCitys'];
+                    $seleCitys = Yii::$app->request->input('seleCitys');
                     $HubExpressTemplateArea = new HubExpressTemplateArea();
 
                     foreach ($seleCitys as $key => $value) {
                         $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                         $data = [
-                            'is_special' => (int) $_GPC['is_special'],
+                            'is_special' => (int) Yii::$app->request->input('is_special'),
                             'template_id' => $id,
                             'province' => $value['pid'],
                             'district' => $value['id'],
-                            'express_id' => (int) $_GPC['express_id'],
-                            'title' => $_GPC['title'],
-                            'bynum_snum' => floatval($_GPC['bynum_snum']),
-                            'bynum_sprice' => floatval($_GPC['bynum_sprice']),
-                            'bynum_xnum' => floatval($_GPC['bynum_xnum']),
-                            'bynum_xprice' => floatval($_GPC['bynum_xprice']),
-                            'bynum_is_use' => floatval($_GPC['bynum_is_use']),
+                            'express_id' => (int) Yii::$app->request->input('express_id'),
+                            'title' => Yii::$app->request->input('title'),
+                            'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
+                            'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
+                            'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
+                            'bynum_xprice' => floatval(Yii::$app->request->input('bynum_xprice')),
+                            'bynum_is_use' => floatval(Yii::$app->request->input('bynum_is_use')),
 
-                            'weight_snum' => floatval($_GPC['weight_snum']),
-                            'weight_sprice' => floatval($_GPC['weight_sprice']),
-                            'weight_xnum' => floatval($_GPC['weight_xnum']),
-                            'weight_xprice' => floatval($_GPC['weight_xprice']),
-                            'weight_is_use' => floatval($_GPC['weight_is_use']),
+                            'weight_snum' => floatval(Yii::$app->request->input('weight_snum')),
+                            'weight_sprice' => floatval(Yii::$app->request->input('weight_sprice')),
+                            'weight_xnum' => floatval(Yii::$app->request->input('weight_xnum')),
+                            'weight_xprice' => floatval(Yii::$app->request->input('weight_xprice')),
+                            'weight_is_use' => floatval(Yii::$app->request->input('weight_is_use')),
 
-                            'volume_snum' => floatval($_GPC['volume_snum']),
-                            'volume_sprice' => floatval($_GPC['volume_sprice']),
-                            'volume_xnum' => floatval($_GPC['volume_xnum']),
-                            'volume_xprice' => floatval($_GPC['volume_xprice']),
-                            'volume_is_use' => floatval($_GPC['volume_is_use']),
+                            'volume_snum' => floatval(Yii::$app->request->input('volume_snum')),
+                            'volume_sprice' => floatval(Yii::$app->request->input('volume_sprice')),
+                            'volume_xnum' => floatval(Yii::$app->request->input('volume_xnum')),
+                            'volume_xprice' => floatval(Yii::$app->request->input('volume_xprice')),
+                            'volume_is_use' => floatval(Yii::$app->request->input('volume_is_use')),
                         ];
                         $_HubExpressTemplateArea->setAttributes($data);
                         $Res = $_HubExpressTemplateArea->save();
@@ -233,44 +233,44 @@ class TemplateController extends AController
     {
         global $_GPC;
         $model = $this->findModel($id);
-        $is_special = (int) $_GPC['is_special'];
+        $is_special = (int) Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
             // 特殊区域处理
-            $seleCitys = $_GPC['seleCitys'];
+            $seleCitys = Yii::$app->request->input('seleCitys');
             $HubExpressTemplateArea = new HubExpressTemplateArea();
 
             $HubExpressTemplateArea->deleteAll([
                 'template_id' => $id,
-                'is_special' => (int) $_GPC['is_special'],
+                'is_special' => (int) Yii::$app->request->input('is_special'),
             ]);
 
             foreach ($seleCitys as $key => $value) {
                 $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                 $data = [
-                      'is_special' => (int) $_GPC['is_special'],
-                      'template_id' => (int) $_GPC['template_id'],
+                      'is_special' => (int) Yii::$app->request->input('is_special'),
+                      'template_id' => (int) Yii::$app->request->input('template_id'),
                       'province' => $value['pid'],
                       'district' => $value['id'],
-                      'express_id' => (int) $_GPC['express_id'],
-                      'title' => $_GPC['title'],
-                      'bynum_snum' => floatval($_GPC['bynum_snum']),
-                      'bynum_sprice' => floatval($_GPC['bynum_sprice']),
-                      'bynum_xnum' => floatval($_GPC['bynum_xnum']),
-                      'bynum_xprice' => floatval($_GPC['bynum_xprice']),
-                      'bynum_is_use' => floatval($_GPC['bynum_is_use']),
+                      'express_id' => (int) Yii::$app->request->input('express_id'),
+                      'title' => Yii::$app->request->input('title'),
+                      'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
+                      'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
+                      'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
+                      'bynum_xprice' => floatval(Yii::$app->request->input('bynum_xprice')),
+                      'bynum_is_use' => floatval(Yii::$app->request->input('bynum_is_use')),
 
-                      'weight_snum' => floatval($_GPC['weight_snum']),
-                      'weight_sprice' => floatval($_GPC['weight_sprice']),
-                      'weight_xnum' => floatval($_GPC['weight_xnum']),
-                      'weight_xprice' => floatval($_GPC['weight_xprice']),
-                      'weight_is_use' => floatval($_GPC['weight_is_use']),
+                      'weight_snum' => floatval(Yii::$app->request->input('weight_snum')),
+                      'weight_sprice' => floatval(Yii::$app->request->input('weight_sprice')),
+                      'weight_xnum' => floatval(Yii::$app->request->input('weight_xnum')),
+                      'weight_xprice' => floatval(Yii::$app->request->input('weight_xprice')),
+                      'weight_is_use' => floatval(Yii::$app->request->input('weight_is_use')),
 
-                      'volume_snum' => floatval($_GPC['volume_snum']),
-                      'volume_sprice' => floatval($_GPC['volume_sprice']),
-                      'volume_xnum' => floatval($_GPC['volume_xnum']),
-                      'volume_xprice' => floatval($_GPC['volume_xprice']),
-                      'volume_is_use' => floatval($_GPC['volume_is_use']),
+                      'volume_snum' => floatval(Yii::$app->request->input('volume_snum')),
+                      'volume_sprice' => floatval(Yii::$app->request->input('volume_sprice')),
+                      'volume_xnum' => floatval(Yii::$app->request->input('volume_xnum')),
+                      'volume_xprice' => floatval(Yii::$app->request->input('volume_xprice')),
+                      'volume_is_use' => floatval(Yii::$app->request->input('volume_is_use')),
                   ];
                 $_HubExpressTemplateArea->setAttributes($data);
                 $Res = $_HubExpressTemplateArea->save();
@@ -285,39 +285,39 @@ class TemplateController extends AController
             if ($model->load($_GPC, '') && $model->save()) {
                 // region_id
                 if (empty($is_nationwide)) {
-                    $seleCitys = $_GPC['seleCitys'];
+                    $seleCitys = Yii::$app->request->input('seleCitys');
                     $HubExpressTemplateArea = new HubExpressTemplateArea();
                     $HubExpressTemplateArea->deleteAll([
                         'template_id' => $id,
-                        'is_special' => (int) $_GPC['is_special'],
+                        'is_special' => (int) Yii::$app->request->input('is_special'),
                     ]);
 
                     foreach ($seleCitys as $key => $value) {
                         $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
                         $data = [
-                         'is_special' => (int) $_GPC['is_special'],
+                         'is_special' => (int) Yii::$app->request->input('is_special'),
                          'template_id' => $id,
                          'province' => $value['pid'],
                          'district' => $value['id'],
-                         'express_id' => (int) $_GPC['express_id'],
-                         'title' => $_GPC['title'],
-                         'bynum_snum' => floatval($_GPC['bynum_snum']),
-                         'bynum_sprice' => floatval($_GPC['bynum_sprice']),
-                         'bynum_xnum' => floatval($_GPC['bynum_xnum']),
-                         'bynum_xprice' => floatval($_GPC['bynum_xprice']),
-                         'bynum_is_use' => floatval($_GPC['bynum_is_use']),
+                         'express_id' => (int) Yii::$app->request->input('express_id'),
+                         'title' => Yii::$app->request->input('title'),
+                         'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
+                         'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
+                         'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
+                         'bynum_xprice' => floatval(Yii::$app->request->input('bynum_xprice')),
+                         'bynum_is_use' => floatval(Yii::$app->request->input('bynum_is_use')),
 
-                         'weight_snum' => floatval($_GPC['weight_snum']),
-                         'weight_sprice' => floatval($_GPC['weight_sprice']),
-                         'weight_xnum' => floatval($_GPC['weight_xnum']),
-                         'weight_xprice' => floatval($_GPC['weight_xprice']),
-                         'weight_is_use' => floatval($_GPC['weight_is_use']),
+                         'weight_snum' => floatval(Yii::$app->request->input('weight_snum')),
+                         'weight_sprice' => floatval(Yii::$app->request->input('weight_sprice')),
+                         'weight_xnum' => floatval(Yii::$app->request->input('weight_xnum')),
+                         'weight_xprice' => floatval(Yii::$app->request->input('weight_xprice')),
+                         'weight_is_use' => floatval(Yii::$app->request->input('weight_is_use')),
 
-                         'volume_snum' => floatval($_GPC['volume_snum']),
-                         'volume_sprice' => floatval($_GPC['volume_sprice']),
-                         'volume_xnum' => floatval($_GPC['volume_xnum']),
-                         'volume_xprice' => floatval($_GPC['volume_xprice']),
-                         'volume_is_use' => floatval($_GPC['volume_is_use']),
+                         'volume_snum' => floatval(Yii::$app->request->input('volume_snum')),
+                         'volume_sprice' => floatval(Yii::$app->request->input('volume_sprice')),
+                         'volume_xnum' => floatval(Yii::$app->request->input('volume_xnum')),
+                         'volume_xprice' => floatval(Yii::$app->request->input('volume_xprice')),
+                         'volume_is_use' => floatval(Yii::$app->request->input('volume_is_use')),
                      ];
                         $_HubExpressTemplateArea->setAttributes($data);
                         $Res = $_HubExpressTemplateArea->save();
@@ -342,8 +342,8 @@ class TemplateController extends AController
     public function actionGetarea()
     {
         global $_GPC;
-        $express_id = $_GPC['express_id'];
-        $template_id = $_GPC['template_id'];
+        $express_id = Yii::$app->request->input('express_id');
+        $template_id = Yii::$app->request->input('template_id');
         $HubExpressTemplateArea = new HubExpressTemplateArea();
         $list = $HubExpressTemplateArea->find()->where([
             'express_id' => $express_id,
@@ -356,8 +356,8 @@ class TemplateController extends AController
     public function actionCitylist()
     {
         global $_GPC;
-        $is_special = (int) $_GPC['is_special'];
-        $template_id = (int) $_GPC['template_id'];
+        $is_special = (int) Yii::$app->request->input('is_special');
+        $template_id = (int) Yii::$app->request->input('template_id');
         $cacheKey = 'regionExpress_'.$is_special;
         $region = new DdRegion();
         $regionVal = Yii::$app->cache->get($cacheKey);
@@ -390,11 +390,11 @@ class TemplateController extends AController
     {
         global $_GPC;
 
-        $region_ids = $_GPC['region_ids'];
+        $region_ids = Yii::$app->request->input('region_ids');
         if (!empty($region_ids)) {
-            $title = $_GPC['title'];
-            $express_id = $_GPC['express_id'];
-            $template_id = $_GPC['template_id'];
+            $title = Yii::$app->request->input('title');
+            $express_id = Yii::$app->request->input('express_id');
+            $template_id = Yii::$app->request->input('template_id');
 
             // if(empty($express_id)){
             //      return ResultHelper::json(400,'请更新快递模板后选择适用区域',[]);

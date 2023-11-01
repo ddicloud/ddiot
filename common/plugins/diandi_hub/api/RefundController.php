@@ -39,21 +39,21 @@ class RefundController extends AController
     {
         global $_GPC;
 
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
         if (empty($order_id)) {
             return ResultHelper::json(400, '订单id不能为空', []);
         }
 
-        $reason_id = $_GPC['reason_id'];
+        $reason_id = Yii::$app->request->input('reason_id');
 
         if (empty($reason_id)) {
             return ResultHelper::json(400, '退款原因不能为空', []);
         }
 
-        $type = intval($_GPC['type']);
-        $goods_id = intval($_GPC['goods_id']);
-        $money = floatval($_GPC['money']);
+        $type = intval(Yii::$app->request->input('type'));
+        $goods_id = intval(Yii::$app->request->input('goods_id'));
+        $money = floatval(Yii::$app->request->input('money'));
         if ($type != RefundType::getValueByName('换货')) {
             if (empty($money)) {
                 return ResultHelper::json(400, '必须输入退款金额', []);
@@ -64,25 +64,25 @@ class RefundController extends AController
             }
         }
 
-        $thumbs = $_GPC['thumbs'];
+        $thumbs = Yii::$app->request->input('thumbs');
 
         if (empty($thumbs)) {
 
             return ResultHelper::json(400, '至少拍照一张图片', []);
         }
 
-        $remark = trim($_GPC['remark']);
+        $remark = trim(Yii::$app->request->input('remark'));
 
         if (empty($remark)) {
             return ResultHelper::json(400, '请输入售后说明', []);
         }
 
-        $linkman = $_GPC['linkman'];
+        $linkman = Yii::$app->request->input('linkman');
         if (empty($linkman)) {
             return ResultHelper::json(400, '请输入联系人', []);
         }
 
-        $mobile  = $_GPC['mobile'];
+        $mobile  = Yii::$app->request->input('mobile');
         if (empty($remark)) {
             return ResultHelper::json(400, '请输入联系电话', []);
         }
@@ -115,7 +115,7 @@ class RefundController extends AController
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->member_id??0;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $detail = AftersaleService::detail($order_id);
         return ResultHelper::json(200, '获取成功', $detail);
     }
@@ -135,7 +135,7 @@ class RefundController extends AController
     {
         global $_GPC;
         $userId = Yii::$app->user->identity->member_id??0;
-        $refundId = $_GPC['refund_id'];
+        $refundId = Yii::$app->request->input('refund_id');
         $detail = AftersaleService::cancelRefund($userId, $refundId);
         if ($detail === true) {
             return ResultHelper::json(200, '取消成功', $detail);

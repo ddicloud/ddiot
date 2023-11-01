@@ -82,8 +82,8 @@ class LocationGoodsController extends BaseController
     {
         global $_GPC;
 
-        $adv_id = $_GPC['adv_id'];
-        $good_ids = $_GPC['good_ids'];
+        $adv_id = Yii::$app->request->input('adv_id');
+        $good_ids = Yii::$app->request->input('good_ids');
 
         $location = AdvertisingHubLocation::findOne($adv_id);
         $model = new HubLocationGoods();
@@ -124,13 +124,13 @@ class LocationGoodsController extends BaseController
     public function actionGoodslist()
     {
         global $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
 
-        $adv_id = $_GPC['adv_id'];
+        $adv_id = Yii::$app->request->input('adv_id');
 
-        $type = intval($_GPC['type']);
+        $type = intval(Yii::$app->request->input('type'));
 
-        $pageSize = intval($_GPC['pageSize'], 10);
+        $pageSize = intval(Yii::$app->request->input('pageSize'), 10);
 
         $lists = [];
 
@@ -235,8 +235,8 @@ class LocationGoodsController extends BaseController
         global $_GPC;
 
         if (yii::$app->request->isPost) {
-            $goods_id = $_GPC['goods_id'];
-            $location_id = $_GPC['adv_id'];
+            $goods_id = Yii::$app->request->input('goods_id');
+            $location_id = Yii::$app->request->input('adv_id');
 
             $res = HubLocationGoods::deleteAll([
                 'goods_id' => $goods_id,

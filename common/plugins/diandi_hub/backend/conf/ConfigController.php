@@ -27,7 +27,7 @@ class ConfigController extends BaseController
         $conf = $model->find()->one(); 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
-                $HubConfig = $_GPC['HubConfig'];
+                $HubConfig = Yii::$app->request->input('HubConfig');
                 $Data = [
                     'min_money' =>floatval($HubConfig['min_money']),
                     'max_num' =>floatval($HubConfig['max_num']) ,

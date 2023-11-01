@@ -28,7 +28,7 @@ class LevelController extends AController
     public function actionLink()
     {
         global $_GPC;
-        $member_id = $_GPC['member_id'];
+        $member_id = Yii::$app->request->input('member_id');
         $Res = levelService::siupChild($member_id);    
         // if($Res){
         //     $is_up = levelService::checkLevelUpdate($member_id);

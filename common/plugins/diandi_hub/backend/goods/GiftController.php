@@ -66,7 +66,7 @@ class GiftController extends BaseController
     public function actionGoodslist()
     {
         global  $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         $list = [];
         
         $list = ServicesGoodsService::getList(0,$keywords);
@@ -131,7 +131,7 @@ class GiftController extends BaseController
     public function actionDetail()
     {
         global $_GPC;
-        $id  = $_GPC['id'];
+        $id  = Yii::$app->request->input('id');
         $list = $this->findModel($id);
         return ResultHelper::json(200,'获取成功',$list);
     }

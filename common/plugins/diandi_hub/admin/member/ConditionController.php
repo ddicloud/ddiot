@@ -33,7 +33,7 @@ class ConditionController extends AController
     public function actionIndex()
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
         $searchModel = new DiandiHubLevelConditionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $levels = HubLevel::find()->indexBy('levelnum')->asArray()->all();
@@ -58,7 +58,7 @@ class ConditionController extends AController
     public function actionView($id)
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         return ResultHelper::json(200,'获取成功',[
             'model' => $this->findModel($id),
@@ -75,7 +75,7 @@ class ConditionController extends AController
     public function actionCreate()
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $model = new DiandiHubLevelCondition();
 
@@ -105,7 +105,7 @@ class ConditionController extends AController
     public function actionUpdate($id)
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
         $levels = LevelStatus::listData();
 
         $model = $this->findModel($id);
@@ -134,7 +134,7 @@ class ConditionController extends AController
     public function actionDelete($id)
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $this->findModel($id)->delete();
 

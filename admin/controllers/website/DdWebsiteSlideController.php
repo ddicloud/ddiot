@@ -94,7 +94,7 @@ class DdWebsiteSlideController extends AController
     {
         global $_GPC;
 
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
 
         $model = $this->findModel($id);
 
@@ -122,7 +122,7 @@ class DdWebsiteSlideController extends AController
     {
         global $_GPC;
 
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $this->findModel($id)->delete();
 
         return ResultHelper::json(200, '删除成功');

@@ -61,8 +61,8 @@ class SaveBehavior extends Behavior
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
 
         // 后台多级数据传递
-        if (!empty($_GPC['blocs'])) {
-            $blocs = $_GPC['blocs'];
+        if (!empty(Yii::$app->request->input('blocs'))) {
+            $blocs = Yii::$app->request->input('blocs');
             $bloc_id  = $blocs[0];
             $store_id = $blocs[1];
         }

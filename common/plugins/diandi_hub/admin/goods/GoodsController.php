@@ -100,23 +100,23 @@ class GoodsController extends AController
     {
         global  $_GPC;
         // 商品ID
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
         // 分销类型（比例和价格）
-        $type = $_GPC['type'];
+        $type = Yii::$app->request->input('type');
         // 不同等级对应的分销参数
-        $levelsValue = $_GPC['levelsValue'];
+        $levelsValue = Yii::$app->request->input('levelsValue');
         // 商品价格
-        $goods_price = $_GPC['goods_price'];
+        $goods_price = Yii::$app->request->input('goods_price');
         // 默认一级分销比例
-        $oneOptions = $_GPC['oneOptions'];
+        $oneOptions = Yii::$app->request->input('oneOptions');
         // 默认二级分销比例
-        $twoOptions = $_GPC['twoOptions'];
+        $twoOptions = Yii::$app->request->input('twoOptions');
         // 默认三级分销比例
-        $threeOptions = $_GPC['threeOptions'];
+        $threeOptions = Yii::$app->request->input('threeOptions');
 
-        $share_title = $_GPC['share_title'];
-        $share_desc = $_GPC['share_desc'];
-        $share_img = $_GPC['share_img'];
+        $share_title = Yii::$app->request->input('share_title');
+        $share_desc = Yii::$app->request->input('share_desc');
+        $share_img = Yii::$app->request->input('share_img');
 
         $Res = ServicesGoodsService::addGoodsRule($goods_id, $share_title, $share_desc, $share_img, $type, $levelsValue, $oneOptions, $twoOptions, $threeOptions);
 
@@ -130,13 +130,13 @@ class GoodsController extends AController
     public function actionPostdata()
     {
         global  $_GPC;
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
     }
 
     public function actionDetail()
     {
         global  $_GPC;
-        $model = $this->findModel($_GPC['id']);
+        $model = $this->findModel(Yii::$app->request->input('id'));
         $goods_id = $model['goods_id'];
 
         $list = ServicesGoodsService::goodsDis($goods_id);
@@ -156,7 +156,7 @@ class GoodsController extends AController
         global  $_GPC;
         if (Yii::$app->request->isPost) {
             $DdGoodsSpecRel = new HubGoodsBaseSpecRel();
-            $html = $DdGoodsSpecRel->buildHtml($_GPC['goods_id']);
+            $html = $DdGoodsSpecRel->buildHtml(Yii::$app->request->input('goods_id'));
 
             return ResultHelper::json(200, '请求成功', $html);
         }
@@ -179,23 +179,23 @@ class GoodsController extends AController
         $model = $this->findModel($id);
 
         // 商品ID
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
         // 分销类型（比例和价格）
-        $type = $_GPC['type'];
+        $type = Yii::$app->request->input('type');
         // 不同等级对应的分销参数
-        $levelsValue = $_GPC['levelsValue'];
+        $levelsValue = Yii::$app->request->input('levelsValue');
         // 商品价格
-        $goods_price = $_GPC['goods_price'];
+        $goods_price = Yii::$app->request->input('goods_price');
         // 默认一级分销比例
-        $oneOptions = $_GPC['oneOptions'];
+        $oneOptions = Yii::$app->request->input('oneOptions');
         // 默认二级分销比例
-        $twoOptions = $_GPC['twoOptions'];
+        $twoOptions = Yii::$app->request->input('twoOptions');
         // 默认三级分销比例
-        $threeOptions = $_GPC['threeOptions'];
+        $threeOptions = Yii::$app->request->input('threeOptions');
 
-        $share_title = $_GPC['share_title'];
-        $share_desc = $_GPC['share_desc'];
-        $share_img = $_GPC['share_img'];
+        $share_title = Yii::$app->request->input('share_title');
+        $share_desc = Yii::$app->request->input('share_desc');
+        $share_img = Yii::$app->request->input('share_img');
 
         $Res = ServicesGoodsService::upGoodsRule($id, $goods_id, $share_title, $share_desc, $share_img, $type, $levelsValue, $oneOptions, $twoOptions, $threeOptions);
 
@@ -229,7 +229,7 @@ class GoodsController extends AController
     public function actionGoodslist()
     {
         global  $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         $list = [];
 
         $list = GoodsService::getList(0, $keywords);

@@ -33,8 +33,8 @@ class SettingsController extends AController
     public function actionConf(): array
     {
         global $_GPC;
-        $section = $_GPC['section'];
-        $data = $_GPC['data'];
+        $section = Yii::$app->request->input('section');
+        $data = Yii::$app->request->input('data');
         $settings = Yii::$app->settings;
         if (!is_array($data)) {
             return ResultHelper::json(200, 'data数据必须为数组', []);
@@ -209,7 +209,7 @@ class SettingsController extends AController
     public function actionThem(): array
     {
         global $_GPC;
-        $themcolor = $_GPC['themcolor'];
+        $themcolor = Yii::$app->request->input('themcolor');
 
         $this->cache->set('themcolor', $themcolor);
 

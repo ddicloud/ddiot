@@ -112,7 +112,7 @@ class StorepayController extends AController
         $member_id = $model['member_id'];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($_GPC['HubAccountStorePay']['status'] == 2) {
+            if (Yii::$app->request->input('HubAccountStorePay')['status'] == 2) {
                 $Res = StoreService::thawMoney($id);
 
                 loggingHelper::writeLog('diandi_hub', 'StoreService/thawMoney', '后台确认订单结果', $Res);

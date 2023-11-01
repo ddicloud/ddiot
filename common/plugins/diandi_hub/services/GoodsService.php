@@ -93,10 +93,10 @@ class GoodsService extends BaseService
 
         $storeWhere = [];
 
-        if (!empty($_GPC['storeName'])) {
+        if (!empty(Yii::$app->request->input('storeName'))) {
             $storetable = BlocStore::tableName();
 
-            $storeWhere = ['like', $storetable . '.name', $_GPC['storeName']];
+            $storeWhere = ['like', $storetable . '.name', Yii::$app->request->input('storeName')];
         }
 
         // $bloc_id = Yii::$App->params['bloc_id'];
@@ -226,9 +226,9 @@ class GoodsService extends BaseService
     {
         global $_GPC;
         $list = [];
-        // $store_id = $_GPC['store_id'];
-        // $bloc_id = $_GPC['bloc_id'];
-        $page = empty($_GPC['page']) ? 1 : intval($_GPC['page']);
+        // $store_id = Yii::$app->request->input('store_id');
+        // $bloc_id = Yii::$app->request->input('bloc_id');
+        $page = empty(Yii::$app->request->input('page')) ? 1 : intval(Yii::$app->request->input('page'));
 
         $intypeAr = ['NOT IN', 'IN'];
 
@@ -268,10 +268,10 @@ class GoodsService extends BaseService
 
         $storeWhere = [];
 
-        if (!empty($_GPC['storeName'])) {
+        if (!empty(Yii::$app->request->input('storeName'))) {
             $storetable = BlocStore::tableName();
 
-            $storeWhere = ['like', $storetable . '.name', $_GPC['storeName']];
+            $storeWhere = ['like', $storetable . '.name', Yii::$app->request->input('storeName')];
         }
 
         // $bloc_id = Yii::$App->params['bloc_id'];

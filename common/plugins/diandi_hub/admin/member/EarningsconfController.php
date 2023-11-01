@@ -33,7 +33,7 @@ class EarningsconfController extends AController
     public function actionIndex()
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $searchModel = new LevelButionLevelEarningsConf();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -57,7 +57,7 @@ class EarningsconfController extends AController
     public function actionView($id)
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         return ResultHelper::json(200,'获取成功',[
             'levelnum' => $levelnum,
@@ -74,7 +74,7 @@ class EarningsconfController extends AController
     public function actionCreate()
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $model = new ModelsLevelButionLevelEarningsConf();
 
@@ -105,7 +105,7 @@ class EarningsconfController extends AController
         global $_GPC;
 
         $model = $this->findModel($id);
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'levelnum' => $levelnum]);
@@ -132,7 +132,7 @@ class EarningsconfController extends AController
     public function actionDelete($id)
     {
         global $_GPC;
-        $levelnum = intval($_GPC['levelnum']);
+        $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $this->findModel($id)->delete();
 

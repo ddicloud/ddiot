@@ -42,7 +42,7 @@ class ConfigController extends AController
     public function actions(): array
     {
         global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = Yii::$app->request->input('bloc_id');
         Bloc::findOne($bloc_id);
         return parent::actions();
     }
@@ -73,7 +73,7 @@ class ConfigController extends AController
         $settings = Yii::$app->settings;
         $model = new Weburl();
         if (Yii::$app->request->isPost) {
-            $Weburl = $_GPC['Weburl'];
+            $Weburl = Yii::$app->request->input('Weburl');
             foreach ($Weburl as $key => $value) {
                 $settings->set('Weburl', $key, $value);
             }
@@ -93,7 +93,7 @@ class ConfigController extends AController
         $model = new Baidu();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Baidu']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Baidu')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -103,7 +103,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -120,7 +120,7 @@ class ConfigController extends AController
         $model = new Wechatpay();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Wechatpay']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Wechatpay')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -130,7 +130,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -146,7 +146,7 @@ class ConfigController extends AController
         $model = new Sms();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Sms']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Sms')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -156,7 +156,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -173,7 +173,7 @@ class ConfigController extends AController
         $model = new Email();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Email']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Email')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -183,7 +183,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -199,7 +199,7 @@ class ConfigController extends AController
         $model = new Wxapp();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Wxapp']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Wxapp')['bloc_id'];
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
             if ($Res['code'] == 200) {
@@ -208,7 +208,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -224,7 +224,7 @@ class ConfigController extends AController
         $model = new Wechat();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Wechat']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Wechat')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -234,7 +234,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -250,7 +250,7 @@ class ConfigController extends AController
         $model = new Microapp();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Microapp']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Microapp')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -260,7 +260,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -276,7 +276,7 @@ class ConfigController extends AController
         $model = new App();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['App']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('App')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -286,7 +286,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -302,7 +302,7 @@ class ConfigController extends AController
         $model = new Map();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Map']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Map')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -312,7 +312,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -327,7 +327,7 @@ class ConfigController extends AController
         $model = new Oss();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Oss']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Oss')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -337,7 +337,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 
@@ -352,7 +352,7 @@ class ConfigController extends AController
         $model = new Api();
 
         if (Yii::$app->request->isPost) {
-            $bloc_id = $_GPC['Api']['bloc_id'];
+            $bloc_id = Yii::$app->request->input('Api')['bloc_id'];
 
             $model->load(Yii::$app->request->post());
             $Res = $model->saveConf($bloc_id);
@@ -362,7 +362,7 @@ class ConfigController extends AController
                 return ResultHelper::json(400, $Res['message']);
             }
         } else {
-            $bloc_id = $_GPC['bloc_id'];
+            $bloc_id = Yii::$app->request->input('bloc_id');
 
             $model->getConf($bloc_id);
 

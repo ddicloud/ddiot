@@ -46,7 +46,7 @@ class IotClient
     {
         global $_GPC;
         $apiConf = new Api();
-        $apiConf->getConf($_GPC['bloc_id']);
+        $apiConf->getConf(Yii::$app->request->input('bloc_id'));
         return $apiConf['app_id'];
     }
 

@@ -82,7 +82,7 @@ class TemplateController extends BaseController
     public function actionView()
     {
         global $_GPC;
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
 
         if (Yii::$app->request->isPost) {
              try {
@@ -187,7 +187,7 @@ class TemplateController extends BaseController
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             // 更新所有区域的正常模板价格
-            $view = $_GPC['HubExpressTemplate'];
+            $view = Yii::$app->request->input('HubExpressTemplate');
 
             $data = [
                     'bynum_snum' => floatval($view['bynum_snum']),
@@ -225,8 +225,8 @@ class TemplateController extends BaseController
     public function actionGetarea()
     {
         global $_GPC;
-        $express_id = $_GPC['express_id'];
-        $template_id = $_GPC['template_id'];
+        $express_id = Yii::$app->request->input('express_id');
+        $template_id = Yii::$app->request->input('template_id');
         $HubExpressTemplateArea = new HubExpressTemplateArea();
         $list = $HubExpressTemplateArea->find()->where([
             'express_id' => $express_id,
@@ -260,11 +260,11 @@ class TemplateController extends BaseController
     {
         global $_GPC;
 
-        $region_ids = $_GPC['region_ids'];
+        $region_ids = Yii::$app->request->input('region_ids');
         if (!empty($region_ids)) {
-            $title = $_GPC['title'];
-            $express_id = $_GPC['express_id'];
-            $template_id = $_GPC['template_id'];
+            $title = Yii::$app->request->input('title');
+            $express_id = Yii::$app->request->input('express_id');
+            $template_id = Yii::$app->request->input('template_id');
 
             // if(empty($express_id)){
             //      return ResultHelper::json(400,'请更新快递模板后选择适用区域',[]);
@@ -304,7 +304,7 @@ class TemplateController extends BaseController
                     'volume_xnum' => $view['volume_xnum'],
                     'volume_xprice' => $view['volume_xprice'],
                     'volume_is_use' => $view['volume_is_use'],
-                    'is_special' => (int) $_GPC['is_special'],
+                    'is_special' => (int) Yii::$app->request->input('is_special'),
                 ];
                 $_HubExpressTemplateArea->setAttributes($data);
                 if (!$_HubExpressTemplateArea->save()) {

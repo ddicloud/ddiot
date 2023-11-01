@@ -17,12 +17,12 @@ trait ResultTrait
     {
         global $_GPC;
         $pageInfo = [];
-        $limitStart = $_GPC['limit_start'] ?? -1;
+        $limitStart = Yii::$app->request->input('limit_start') ?? -1;
         if ($limitStart == 1) {
             $pageInfo = [
                 'limit_start' => 1,
-                'pageSize' => $_GPC['pageSize'] ?? 10,
-                'page' => $_GPC['page'],
+                'pageSize' => Yii::$app->request->input('pageSize') ?? 10,
+                'page' => Yii::$app->request->input('page'),
             ];
         }
         return $pageInfo;

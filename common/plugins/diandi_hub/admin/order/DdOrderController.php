@@ -166,9 +166,9 @@ class DdOrderController extends AController
     {
         global $_GPC;
         if (Yii::$app->request->isPost) {
-            $expressCode = $_GPC['expressCode'];
-            $express_company = $_GPC['express_company'];
-            $order_id = $_GPC['order_id'];
+            $expressCode = Yii::$app->request->input('expressCode');
+            $express_company = Yii::$app->request->input('express_company');
+            $order_id = Yii::$app->request->input('order_id');
             $HubOrder = new HubOrder();
             $Res = $HubOrder::updateAll([
                 'express_no' => $expressCode,
@@ -391,10 +391,10 @@ class DdOrderController extends AController
     {
         global $_GPC;
 
-        $pay_status = $_GPC['pay_status'];
-        $pay_type = $_GPC['pay_type'];
-        $order_status = $_GPC['order_status'];
-        $between_time = $_GPC['between_time'];
+        $pay_status = Yii::$app->request->input('pay_status');
+        $pay_type = Yii::$app->request->input('pay_type');
+        $order_status = Yii::$app->request->input('order_status');
+        $between_time = Yii::$app->request->input('between_time');
 
         $where = [];
 

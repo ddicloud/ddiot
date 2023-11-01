@@ -48,7 +48,7 @@ class ShareController extends BaseController
     public function actionIndex()
     {
         global $_GPC;
-        $goods_id  =$_GPC['goods_id'];
+        $goods_id  =Yii::$app->request->input('goods_id');
         $searchModel = new HubGoodsSubsidySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -69,7 +69,7 @@ class ShareController extends BaseController
     public function actionView($id)
     {
         global $_GPC;
-        $goods_id  = $_GPC['goods_id'];
+        $goods_id  = Yii::$app->request->input('goods_id');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'goods_id'=>$goods_id
@@ -85,7 +85,7 @@ class ShareController extends BaseController
     public function actionCreate()
     {
         global $_GPC;
-        $goods_id  = $_GPC['goods_id'];
+        $goods_id  = Yii::$app->request->input('goods_id');
         $model = new HubGoodsSubsidy();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -109,7 +109,7 @@ class ShareController extends BaseController
     public function actionUpdate($id)
     {
         global $_GPC;
-        $goods_id  =$_GPC['goods_id'];
+        $goods_id  =Yii::$app->request->input('goods_id');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -133,7 +133,7 @@ class ShareController extends BaseController
     public function actionDelete($id)
     {
         global $_GPC;
-        $goods_id  =$_GPC['goods_id'];
+        $goods_id  =Yii::$app->request->input('goods_id');
 
         $this->findModel($id)->delete();
 

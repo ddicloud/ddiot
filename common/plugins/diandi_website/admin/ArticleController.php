@@ -67,9 +67,9 @@ class ArticleController extends AController
     public function actionCate()
     {
         global $_GPC;
-        $where['store_id'] = $_GPC['store_id'];
-        $where['bloc_id'] = $_GPC['bloc_id'];
-        $where['pcate'] = $_GPC['pcate'];
+        $where['store_id'] = Yii::$app->request->input('store_id');
+        $where['bloc_id'] = Yii::$app->request->input('bloc_id');
+        $where['pcate'] = Yii::$app->request->input('pcate');
 
         $model = new WebsiteArticleCategory();
         $list = $model->find()->where($where)->select(['id', 'title as label'])->asArray()->all();
@@ -184,8 +184,8 @@ class ArticleController extends AController
     public function actionPageList()
     {
         global $_GPC;
-        $where['store_id'] = $_GPC['store_id'];
-        $where['bloc_id'] = $_GPC['bloc_id'];
+        $where['store_id'] = Yii::$app->request->input('store_id');
+        $where['bloc_id'] = Yii::$app->request->input('bloc_id');
 
         $detail = WebsitePageConfig::find()->select(['title AS label', 'id'])
             ->where($where)->asArray()->all();

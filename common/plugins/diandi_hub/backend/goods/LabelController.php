@@ -73,7 +73,7 @@ class LabelController extends BaseController
     public function actionGetlist()
     {
         global $_GPC;
-        $model = $this->findModel($_GPC['id']);
+        $model = $this->findModel(Yii::$app->request->input('id'));
         return ResultHelper::json(200,'',['color'=>$model->color]);
     }
     

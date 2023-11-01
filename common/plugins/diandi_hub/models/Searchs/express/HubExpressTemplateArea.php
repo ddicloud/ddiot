@@ -50,7 +50,7 @@ class HubExpressTemplateArea extends HubExpressTemplateAreaModel
         global $_GPC;
         $query = HubExpressTemplateAreaModel::find()->with(['province', 'district', 'express']);
 
-        $this->template_id = $_GPC['template_id'];
+        $this->template_id = Yii::$app->request->input('template_id');
         $this->is_special = 1;
 
         $this->load($params);
@@ -90,8 +90,8 @@ class HubExpressTemplateArea extends HubExpressTemplateAreaModel
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         $count = $query->count();
-        $pageSize = $_GPC['pageSize'];
-        $page = $_GPC['page'];
+        $pageSize = Yii::$app->request->input('pageSize');
+        $page = Yii::$app->request->input('page');
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

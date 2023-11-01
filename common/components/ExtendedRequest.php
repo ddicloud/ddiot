@@ -7,6 +7,11 @@ use yii\web\Request;
 
 class ExtendedRequest extends Request
 {
+    /**
+     * @param $key
+     * @param $default
+     * @return array|mixed|object|null
+     */
     public function input($key = null, $default = null)
     {
         $getParams = $this->get();

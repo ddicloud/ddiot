@@ -57,8 +57,8 @@ class GoodsController extends AController
     public function actionSearch()
     {
         global $_GPC;
-        $keytwords = $_GPC['keywords'];
-        $pageSize = $_GPC['pageSize'];
+        $keytwords = Yii::$app->request->input('keywords');
+        $pageSize = Yii::$app->request->input('pageSize');
         $user_id = Yii::$app->user->identity->member_id??0;
 
         $list = GoodsService::getList(0, $keytwords, 'not in', $pageSize, $user_id);
@@ -93,7 +93,7 @@ class GoodsController extends AController
     public function actionDetail()
     {
         global $_GPC;
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
         $member_id = Yii::$app->user->identity->member_id??0;
 
         if (HubGoodsBaseCollect::find()->where(['member_id' => $member_id, 'goods_id' => $goods_id])->one()) {
@@ -101,8 +101,8 @@ class GoodsController extends AController
         } else {
             $collected = false;
         }
-        $goods_type = $_GPC['goods_type'] ? $_GPC['goods_type'] : 2;
-        $order_type = $_GPC['order_type'];
+        $goods_type = Yii::$app->request->input('goods_type') ? Yii::$app->request->input('goods_type') : 2;
+        $order_type = Yii::$app->request->input('order_type');
 
         switch ($goods_type) {
             case GoodsTypeStatus::getValueByName('店铺商品'):
@@ -142,8 +142,8 @@ class GoodsController extends AController
         global $_GPC;
 
         $page = Yii::$app->request->get('page', 1);
-        $pageSize = 100; // $_GPC['pageSize'];
-        $keywords = $_GPC['keywords'];
+        $pageSize = 100; // Yii::$app->request->input('pageSize');
+        $keywords = Yii::$app->request->input('keywords');
         $list = GoodsService::goodsGifts($keywords, $page, $pageSize);
         $navbar = GiftCate::listData();
         $navbars = [];
@@ -164,8 +164,8 @@ class GoodsController extends AController
         global $_GPC;
         $user_id = Yii::$app->user->identity->member_id??0;
 
-        $goods_id = $_GPC['goods_id'];
-        $goods_type = $_GPC['goods_type'];
+        $goods_id = Yii::$app->request->input('goods_id');
+        $goods_type = Yii::$app->request->input('goods_type');
         $HubGoodsCollect = new HubGoodsBaseCollect();
         $is_collect = HubGoodsBaseCollect::find()->where(['goods_id' => $goods_id, 'member_id' => $user_id, 'goods_type' => $goods_type])->asArray()->one();
         $data = [
@@ -243,11 +243,11 @@ class GoodsController extends AController
     public function actionLists()
     {
         global $_GPC;
-        $pageSize = $_GPC['pageSize'];
-        $keywords = $_GPC['keywords'];
-        $goods_price = $_GPC['goods_price'];
-        $sales_initial = $_GPC['sales_initial'];
-        $label_id = $_GPC['label_id'];
+        $pageSize = Yii::$app->request->input('pageSize');
+        $keywords = Yii::$app->request->input('keywords');
+        $goods_price = Yii::$app->request->input('goods_price');
+        $sales_initial = Yii::$app->request->input('sales_initial');
+        $label_id = Yii::$app->request->input('label_id');
         $orderby = ' goods_sort desc';
         // 降序
         if ($goods_price == 'desc') {
@@ -267,7 +267,7 @@ class GoodsController extends AController
 
         $user_id = Yii::$app->user->identity->member_id??0;
 
-        $list = GoodsService::getLists($_GPC['category_pid'], $_GPC['category_id'], $keywords, $pageSize, $user_id, $orderby, $label_id);
+        $list = GoodsService::getLists(Yii::$app->request->input('category_pid'), Yii::$app->request->input('category_id'), $keywords, $pageSize, $user_id, $orderby, $label_id);
 
         return ResultHelper::json(200, '获取成功', $list);
     }
@@ -277,7 +277,7 @@ class GoodsController extends AController
         global $_GPC;
 
         $user_id = Yii::$app->user->identity->member_id??0;
-        $goods_id = $_GPC['goods_id'];
+        $goods_id = Yii::$app->request->input('goods_id');
         $conf = GoodsService::CreatePainter($goods_id, $user_id);
 
         return ResultHelper::json(200, '获取成功', $conf);

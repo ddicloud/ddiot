@@ -62,8 +62,8 @@ class ArticleController extends AController
     public function actionCate()
     {
         global $_GPC;
-        $pcate = $_GPC['pcate'];
-        $type = $_GPC['type'];
+        $pcate = Yii::$app->request->input('pcate');
+        $type = Yii::$app->request->input('type');
         $detail = ArticleService::getCate($pcate, $type);
 
         return ResultHelper::json(200, '请求成功', $detail);
@@ -117,11 +117,11 @@ class ArticleController extends AController
     public function actionList()
     {
         global $_GPC;
-        $type = $_GPC['type']; // NavTypeStatus::NAV;
-        $pcate = $_GPC['pcate'];
-        $ccate = $_GPC['ccate'];
-        $keywords = $_GPC['keywords'];
-        $ishot = $_GPC['ishot'];
+        $type = Yii::$app->request->input('type'); // NavTypeStatus::NAV;
+        $pcate = Yii::$app->request->input('pcate');
+        $ccate = Yii::$app->request->input('ccate');
+        $keywords = Yii::$app->request->input('keywords');
+        $ishot = Yii::$app->request->input('ishot');
         $menu = ArticleService::getList($type, $keywords, $pcate, $ccate, $ishot);
 
         return ResultHelper::json(200, '获取成功', $menu);
@@ -161,7 +161,7 @@ class ArticleController extends AController
     public function actionDetail()
     {
         global $_GPC;
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $detail = ArticleService::getDetail($id);
 
         return ResultHelper::json(200, '请求成功', $detail);

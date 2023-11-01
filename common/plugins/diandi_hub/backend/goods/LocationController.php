@@ -131,7 +131,7 @@ class LocationController extends BaseController
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             // 更新该位置下的商品和图片广告位对应的mark
-            $mark = $_GPC['HubLocation']['mark'];
+            $mark = Yii::$app->request->input('HubLocation')['mark'];
             HubLocationGoods::updateAll(['mark'=> $mark],['location_id'=>$id]);
             HubLocationAd::updateAll(['mark'=> $mark],['location_id'=>$id]);
             return $this->redirect(['view', 'id' => $model->id]);

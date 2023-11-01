@@ -161,7 +161,7 @@ class UserController extends AController
     public function actionUpRepassword(): array
     {
         global $_GPC;
-        $newpassword = $_GPC['password'];
+        $newpassword = Yii::$app->request->input('password');
         $member_id = Yii::$app->user->identity->member_id??0;
         if (empty($member_id)) {
             return ResultHelper::json(401, 'member_id为空');
@@ -189,7 +189,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $mobile = $_GPC['mobile'];
+        $mobile = Yii::$app->request->input('mobile');
 
         $data = Yii::$app->request->post();
 
@@ -219,8 +219,8 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $code = $_GPC['code'];
-        $mobile = $_GPC['mobile'];
+        $code = Yii::$app->request->input('code');
+        $mobile = Yii::$app->request->input('mobile');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
@@ -288,7 +288,7 @@ class UserController extends AController
     public function actionSendcode(): array
     {
         global $_GPC;
-        $type = $_GPC['type'];
+        $type = Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
@@ -331,7 +331,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $refresh_token = $_GPC['refresh_token'];
+        $refresh_token = Yii::$app->request->input('refresh_token');
 
         $user = DdApiAccessToken::find()
             ->where(['refresh_token' => $refresh_token])
@@ -355,9 +355,9 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $name = $_GPC['name'];
-        $contact = $_GPC['contact'];
-        $feedback = $_GPC['feedback'];
+        $name = Yii::$app->request->input('name');
+        $contact = Yii::$app->request->input('contact');
+        $feedback = Yii::$app->request->input('feedback');
         $contacts = new DdWebsiteContact();
 
         $data = [

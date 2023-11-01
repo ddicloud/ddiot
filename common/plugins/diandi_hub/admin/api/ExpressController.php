@@ -83,7 +83,7 @@ class ExpressController extends AController
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
         $res = [];
-        $address_id = $_GPC['address_id'];
+        $address_id = Yii::$app->request->input('address_id');
         $address = AddressService::detail($user_id, $address_id);
         $province = $address['province_id'];
         $district = $address['city_id'];

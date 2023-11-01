@@ -52,7 +52,7 @@ class HubRefundLog extends HubRefundLogModel
     public function search($params)
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $query = HubRefundLogModel::find();
 
         $this->order_id = $order_id;
@@ -86,8 +86,8 @@ class HubRefundLog extends HubRefundLogModel
             ->andFilterWhere(['like', 'user_remark', $this->user_remark]);
         
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize']??10;
-        $page       = $_GPC['page']??1;
+        $pageSize   = Yii::$app->request->input('pageSize')??10;
+        $page       = Yii::$app->request->input('page')??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

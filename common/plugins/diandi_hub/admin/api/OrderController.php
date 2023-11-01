@@ -129,20 +129,20 @@ class OrderController extends AController
     {
         global $_GPC;
         $data = Yii::$app->request->post();
-        $total_price = $_GPC['total_price'];
-        $express_price = $_GPC['express_price'];
-        $express_type = $_GPC['express_type'];
-        $remark = $_GPC['remark'];
+        $total_price = Yii::$app->request->input('total_price');
+        $express_price = Yii::$app->request->input('express_price');
+        $express_type = Yii::$app->request->input('express_type');
+        $remark = Yii::$app->request->input('remark');
 
         $name = '';
         $phone = 0;
         $detail = '';
-        $delivery_time = $_GPC['delivery_time'];
+        $delivery_time = Yii::$app->request->input('delivery_time');
 
-        $name = $_GPC['name'];
-        $phone = $_GPC['phone'];
+        $name = Yii::$app->request->input('name');
+        $phone = Yii::$app->request->input('phone');
 
-        if ($_GPC['express_type'] == ExpressTypeStatus::getValueByName('到店自提')) {
+        if (Yii::$app->request->input('express_type') == ExpressTypeStatus::getValueByName('到店自提')) {
             // if (empty($data['address_id']) || $data['address_id'] == 'undefined') {
             //     return ResultHelper::json(401, '请选择自提点', []);
             // }
@@ -167,13 +167,13 @@ class OrderController extends AController
         $address_id = $data['address_id'];
 
         $user_id = Yii::$app->user->identity->user_id;
-        $cartIds = json_decode($_GPC['cart_ids'], true);
+        $cartIds = json_decode(Yii::$app->request->input('cart_ids'), true);
 
         $extend = [];
         // $dispatcher = new DdDispatcher();
         // $subscriber = new OrderService();
         // $dispatcher->addSubscriber($subscriber);
-        $event = new DdOrderEvent($user_id, $cartIds, $_GPC['total_price'], $_GPC['express_price'], $_GPC['express_type'], $_GPC['address_id'], $_GPC['remark'], $_GPC['name'], $_GPC['phone'], $_GPC['delivery_time'], $extend);
+        $event = new DdOrderEvent($user_id, $cartIds, Yii::$app->request->input('total_price'), Yii::$app->request->input('express_price'), Yii::$app->request->input('express_type'), Yii::$app->request->input('address_id'), Yii::$app->request->input('remark'), Yii::$app->request->input('name'), Yii::$app->request->input('phone'), Yii::$app->request->input('delivery_time'), $extend);
         // $Res = $dispatcher->dispatch(DdOrderEvent::EVENT_ORDER_CREATE, $event);
         // $orderInfo = ServicesOrderService::createOrder($user_id, $cartIds, $total_price, $express_price, $express_type, $address_id, $remark, $name, $phone, $delivery_time);
         $orderInfo = ServicesOrderService::createOrder($event);
@@ -185,28 +185,28 @@ class OrderController extends AController
     public function actionCreategoodsorder():array
     {
         global $_GPC;
-        $total_price = $_GPC['total_price'];
-        $express_price = $_GPC['express_price'];
-        $express_type = intval($_GPC['express_type']);
-        $remark = trim($_GPC['remark']);
-        $goods_type = intval($_GPC['goods_type']);
+        $total_price = Yii::$app->request->input('total_price');
+        $express_price = Yii::$app->request->input('express_price');
+        $express_type = intval(Yii::$app->request->input('express_type'));
+        $remark = trim(Yii::$app->request->input('remark'));
+        $goods_type = intval(Yii::$app->request->input('goods_type'));
 
         $name = '';
         $phone = 0;
         $detail = '';
-        $delivery_time = $_GPC['delivery_time'];
+        $delivery_time = Yii::$app->request->input('delivery_time');
 
-        $name = $_GPC['name'];
-        $phone = $_GPC['phone'];
+        $name = Yii::$app->request->input('name');
+        $phone = Yii::$app->request->input('phone');
 
-        if ($_GPC['express_type'] == ExpressTypeStatus::getValueByName('到店自提')) {
-            // if (empty($_GPC['address_id']) || $_GPC['address_id'] == 'undefined') {
+        if (Yii::$app->request->input('express_type') == ExpressTypeStatus::getValueByName('到店自提')) {
+            // if (empty(Yii::$app->request->input('address_id')) || Yii::$app->request->input('address_id') == 'undefined') {
             //     return ResultHelper::json(401, '请选择自提点', []);
             // }
-            // if (empty($_GPC['name'])) {
+            // if (empty(Yii::$app->request->input('name'))) {
             //     return ResultHelper::json(401, '请输入收货人姓名', []);
             // }
-            // if (empty($_GPC['phone'])) {
+            // if (empty(Yii::$app->request->input('phone'))) {
             //     return ResultHelper::json(401, '请输入收货人手机号', []);
             // }
 
@@ -214,20 +214,20 @@ class OrderController extends AController
             //   return ResultHelper::json(401, '请输入收货详细地址具体到楼层房间号', []);
             // }
         } else {
-            // $address_id = intval($_GPC['address_id']);
+            // $address_id = intval(Yii::$app->request->input('address_id'));
 
             // if (empty($address_id)) {
             //     return ResultHelper::json(401, '请选择收货地址', []);
             // }
         }
 
-        $address_id = $_GPC['address_id'];
-        $goods_id = $_GPC['goods_id'];
-        $goods_num = $_GPC['goods_num'];
-        $spec_id = $_GPC['spec_id'];
+        $address_id = Yii::$app->request->input('address_id');
+        $goods_id = Yii::$app->request->input('goods_id');
+        $goods_num = Yii::$app->request->input('goods_num');
+        $spec_id = Yii::$app->request->input('spec_id');
 
         $user_id = Yii::$app->user->identity->user_id;
-        $goods = json_decode($_GPC['goods'], true);
+        $goods = json_decode(Yii::$app->request->input('goods'), true);
 
         $orderInfo = ServicesOrderService::creategoodsorder($user_id, $goods_id, $goods_num, $total_price, $express_price, $express_type, $address_id, $remark, $name, $phone, $delivery_time, $spec_id, $goods_type);
 
@@ -440,14 +440,14 @@ class OrderController extends AController
     public function actionOrderdetail():array
     {
         global $_GPC;
-        $num = $_GPC['goods_number'];
-        $spec_id = $_GPC['spec_id'];
-        $goods_type = $_GPC['goods_type'];
-        $order_type = $_GPC['order_type'];
-        $region_id = $_GPC['region_id'];
-        $goods_id = $_GPC['goods_id'];
-        $express_type = $_GPC['express_type'];
-        $express_id = $_GPC['express_id'];
+        $num = Yii::$app->request->input('goods_number');
+        $spec_id = Yii::$app->request->input('spec_id');
+        $goods_type = Yii::$app->request->input('goods_type');
+        $order_type = Yii::$app->request->input('order_type');
+        $region_id = Yii::$app->request->input('region_id');
+        $goods_id = Yii::$app->request->input('goods_id');
+        $express_type = Yii::$app->request->input('express_type');
+        $express_id = Yii::$app->request->input('express_id');
         $member_id = Yii::$app->user->identity->user_id;
         $ishave = HubMemberLevel::findOne(['member_id' => $member_id]);
 
@@ -459,7 +459,7 @@ class OrderController extends AController
     public function actionIntegralpay():array
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $Res = OrderService::integralPay($order_id);
         if ($Res['status'] == 0) {
             return ResultHelper::json(200, $Res['msg'], $Res);
@@ -493,7 +493,7 @@ class OrderController extends AController
     {
         global $_GPC;
 
-        $order_no = trim($_GPC['order_no']);
+        $order_no = trim(Yii::$app->request->input('order_no'));
 
         $member_id = Yii::$app->user->identity->user_id;
 
@@ -510,7 +510,7 @@ class OrderController extends AController
     {
         global $_GPC;
 
-        $RequestDatas = $_GPC['RequestData'];
+        $RequestDatas = Yii::$app->request->input('RequestData');
 
         $RequestData = json_decode($RequestDatas, true);
 

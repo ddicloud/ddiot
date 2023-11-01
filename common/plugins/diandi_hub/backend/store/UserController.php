@@ -70,7 +70,7 @@ class UserController extends BaseController
     {
         global $_GPC;
         
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
 
         return $this->renderView('view', [
             'model' => $this->findModel($id),
@@ -134,7 +134,7 @@ class UserController extends BaseController
     {
         global $_GPC;
         
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         
         $where = [];
         
@@ -166,7 +166,7 @@ class UserController extends BaseController
     {
         global $_GPC;
         
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         
         $where = [];
         

@@ -34,18 +34,18 @@ trait StoreLinkTrait
     public function beforeSave($insert): bool|array
     {
         global $_GPC;
-        $bloc_id =   $_GPC['bloc_id']??0;
-        $name = $_GPC['name']??'';
-        $logo = $_GPC['logo']??'';
-        $address = $_GPC['address']??'';
-        $longitude = $_GPC['longitude']??'';
-        $latitude = $_GPC['latitude']??'';
-        $mobile = $_GPC['mobile']??'';
-        $status = $_GPC['status']??0;
-        $lng_lat = $_GPC['lng_lat']??[];
-        $category = $_GPC['category']?(array)$_GPC['category']:[];
-        $provinceCityDistrict = $_GPC['provinceCityDistrict']?(array)$_GPC['provinceCityDistrict']:[];
-        $label_link = $_GPC['label_link']??[];
+        $bloc_id =   Yii::$app->request->input('bloc_id')??0;
+        $name = Yii::$app->request->input('name')??'';
+        $logo = Yii::$app->request->input('logo')??'';
+        $address = Yii::$app->request->input('address')??'';
+        $longitude = Yii::$app->request->input('longitude')??'';
+        $latitude = Yii::$app->request->input('latitude')??'';
+        $mobile = Yii::$app->request->input('mobile')??'';
+        $status = Yii::$app->request->input('status')??0;
+        $lng_lat = Yii::$app->request->input('lng_lat')??[];
+        $category = Yii::$app->request->input('category')?(array)Yii::$app->request->input('category'):[];
+        $provinceCityDistrict = Yii::$app->request->input('provinceCityDistrict')?(array)Yii::$app->request->input('provinceCityDistrict'):[];
+        $label_link = Yii::$app->request->input('label_link')??[];
         if ($insert) {
             try {
                 $user_id = $this->getUser();

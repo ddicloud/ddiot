@@ -67,8 +67,8 @@ class BasicsController extends AController
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/wechat/auth/' . date('ymd') . '.log');
 
-        $redirect_uri = $_GPC['redirect_uri'];
-        $route = $_GPC['route'];
+        $redirect_uri = Yii::$app->request->input('redirect_uri');
+        $route = Yii::$app->request->input('route');
 
         $wechat = Yii::$app->wechat->app;
         $response = $wechat->oauth->scopes(['snsapi_userinfo'])
@@ -84,7 +84,7 @@ class BasicsController extends AController
     {
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/officialaccount/signup/' . date('ymd') . '.log');
-        if (empty($_GPC['code'])) {
+        if (empty(Yii::$app->request->input('code'))) {
             return ResultHelper::json(400, 'code 参数不能为空');
         }
         $wechat = Yii::$app->wechat->app;

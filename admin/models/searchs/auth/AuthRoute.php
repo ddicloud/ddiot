@@ -80,8 +80,8 @@ class AuthRoute extends AuthRouteModel
             ->andFilterWhere(['like', 'module_name', $this->module_name]);
 
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize']??10;
-        $page       = $_GPC['page']??1;
+        $pageSize   = Yii::$app->request->input('pageSize')??10;
+        $page       = Yii::$app->request->input('page')??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

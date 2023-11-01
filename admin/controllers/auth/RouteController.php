@@ -90,7 +90,7 @@ class RouteController extends AController
         $model = new AuthRoute();
 
             $data = Yii::$app->request->post();
-            $data['is_sys'] = $_GPC['module_name'] == 'sys' || empty($_GPC['module_name']) ? 1 : 0;
+            $data['is_sys'] = Yii::$app->request->input('module_name') == 'sys' || empty(Yii::$app->request->input('module_name')) ? 1 : 0;
             if ($model->load($data, '') && $model->save()) {
                 // 给item同步添加数据
                 $AcmodelsAuthItem = new AuthItem();
@@ -184,7 +184,7 @@ class RouteController extends AController
     public function actionAssign(): array
     {
         global $_GPC;
-        $routes = $_GPC['routes'];
+        $routes = Yii::$app->request->input('routes');
         $model = new Route();
         $Res = $model->addNew($routes);
 

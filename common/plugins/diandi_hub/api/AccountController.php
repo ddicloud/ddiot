@@ -32,12 +32,12 @@ class AccountController extends AController
     {
         global $_GPC;
 
-        $change_type = intval($_GPC['change_type']);
-        $account_type = intval($_GPC['account_type']);
+        $change_type = intval(Yii::$app->request->input('change_type'));
+        $account_type = intval(Yii::$app->request->input('account_type'));
 
-        $pageSize = !empty($_GPC['pageSize']) ? $_GPC['pageSize'] : 10;
+        $pageSize = !empty(Yii::$app->request->input('pageSize')) ? Yii::$app->request->input('pageSize') : 10;
 
-        $page = !empty($_GPC['page']) ? $_GPC['page'] : 1;
+        $page = !empty(Yii::$app->request->input('page')) ? Yii::$app->request->input('page') : 1;
 
         $member_id = Yii::$app->user->identity->member_id??0;
         $list = logAccount::getListByMid($member_id, $change_type, $account_type, $pageSize, $page);
@@ -61,8 +61,8 @@ class AccountController extends AController
         $user_id = Yii::$app->user->identity->member_id??0;
         $pageSize = Yii::$app->request->post('pageSize');
         $order_status = Yii::$app->request->post('order_status');
-        $order_type = $_GPC['order_type'];
-        $type = $_GPC['type']; //分佣类型0分销佣金1等级佣金2团队佣金3区域经理佣金
+        $order_type = Yii::$app->request->input('order_type');
+        $type = Yii::$app->request->input('type'); //分佣类型0分销佣金1等级佣金2团队佣金3区域经理佣金
         $list = OrderAccount::list($order_type, $type, $user_id, $order_status, $pageSize);
 
         $order_type_str = OrderTypeStatus::getLabel($order_type);
@@ -79,8 +79,8 @@ class AccountController extends AController
 
         $member_id = Yii::$app->user->identity->member_id??0;
 
-        $type = $_GPC['type'];
-        $pay_type = $_GPC['pay_type'];
+        $type = Yii::$app->request->input('type');
+        $pay_type = Yii::$app->request->input('pay_type');
         $Res = MemberService::withdraw($member_id, $type, $pay_type);
         if ($Res['code'] == 0) {
             return ResultHelper::json(200, '提现成功');
@@ -95,18 +95,18 @@ class AccountController extends AController
     {
         global $_GPC;
 
-        $member_id = $_GPC['member_id'];
-        $order_id = $_GPC['order_id'];
-        $money = $_GPC['money'];
-        $order_goods_id = $_GPC['order_goods_id'];
-        $change_type = $_GPC['change_type'];
-        $account_type = $_GPC['account_type'];
-        $order_type = $_GPC['order_type'];
-        $goods_type = $_GPC['goods_type'];
-        $order_price = $_GPC['order_price'];
-        $goods_id = $_GPC['goods_id'];
-        $goods_price = $_GPC['goods_price'];
-        $performance = $_GPC['performance'];
+        $member_id = Yii::$app->request->input('member_id');
+        $order_id = Yii::$app->request->input('order_id');
+        $money = Yii::$app->request->input('money');
+        $order_goods_id = Yii::$app->request->input('order_goods_id');
+        $change_type = Yii::$app->request->input('change_type');
+        $account_type = Yii::$app->request->input('account_type');
+        $order_type = Yii::$app->request->input('order_type');
+        $goods_type = Yii::$app->request->input('goods_type');
+        $order_price = Yii::$app->request->input('order_price');
+        $goods_id = Yii::$app->request->input('goods_id');
+        $goods_price = Yii::$app->request->input('goods_price');
+        $performance = Yii::$app->request->input('performance');
 
         $log_account_id = logAccount::addorderMoneyLog($member_id, $order_id, $money, $order_goods_id, $change_type, $account_type, $order_type, $goods_type, $order_price, $goods_id, $goods_price, $performance);
 

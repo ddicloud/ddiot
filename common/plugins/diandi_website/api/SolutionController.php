@@ -82,10 +82,10 @@ class SolutionController extends AController
     public function actionCateList()
     {
         global $_GPC;
-        // if (isset($_GPC['solution_limit']) && $_GPC['solution_limit'] > 0) {
-        //     \addons\diandi_website\models\searchs\SolutionCateSearch::$solutionLimit = (int)$_GPC['solution_limit'];
+        // if (isset(Yii::$app->request->input('solution_limit')) && Yii::$app->request->input('solution_limit') > 0) {
+        //     \addons\diandi_website\models\searchs\SolutionCateSearch::$solutionLimit = (int)Yii::$app->request->input('solution_limit');
         // }
-        return $this->_json(SolutionService::getCate($this->getPageInfo(), $_GPC['solution_limit'] ?? 10, $_GPC['name'] ?? ''));
+        return $this->_json(SolutionService::getCate($this->getPageInfo(), Yii::$app->request->input('solution_limit') ?? 10, Yii::$app->request->input('name') ?? ''));
     }
 
     /**
@@ -144,7 +144,7 @@ class SolutionController extends AController
     {
         global $_GPC;
         $where = $this->_fillWhere(['cate_id']);
-        return $this->_json(SolutionService::getList($this->getPageInfo(), $where, $_GPC['name'] ?? ''));
+        return $this->_json(SolutionService::getList($this->getPageInfo(), $where, Yii::$app->request->input('name') ?? ''));
     }
     /**
      * @SWG\Get(path="/diandi_website/solution/bac-exhibit",

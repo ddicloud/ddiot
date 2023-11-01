@@ -33,7 +33,7 @@ class RefundlogController extends AController
     public function actionIndex()
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
         $searchModel = new HubRefundLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -57,7 +57,7 @@ class RefundlogController extends AController
     public function actionView($id)
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
         return ResultHelper::json(200,'获取成功',[
             'order_id' => $order_id,
@@ -74,7 +74,7 @@ class RefundlogController extends AController
     public function actionCreate()
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $refund = AftersaleService::detail($order_id);
         $detail = $refund['refund'];
         $pay_type = PayTypeStatus::getLabel($refund['pay_type']);
@@ -88,7 +88,7 @@ class RefundlogController extends AController
         $model = new HubRefundLog();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            AftersaleService::confirmRefund($order_id, $_GPC['HubRefundLog']['status'], $_GPC['HubRefundLog']['refund_status']);
+            AftersaleService::confirmRefund($order_id, Yii::$app->request->input('HubRefundLog')['status'], Yii::$app->request->input('HubRefundLog')['refund_status']);
 
             return $this->redirect(['view', 'id' => $model->id, 'order_id' => $order_id]);
         }
@@ -130,7 +130,7 @@ class RefundlogController extends AController
     public function actionUpdate($id)
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $model = $this->findModel($id);
 
         $refund = AftersaleService::detail($order_id);
@@ -163,7 +163,7 @@ class RefundlogController extends AController
     public function actionDelete($id)
     {
         global $_GPC;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
         $this->findModel($id)->delete();
 

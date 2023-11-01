@@ -99,8 +99,8 @@ class JssdkController extends AController
         ];
         
 
-        if(!empty($_GPC['url'])){
-            $app->jssdk->setUrl($_GPC['url']);
+        if(!empty(Yii::$app->request->input('url'))){
+            $app->jssdk->setUrl(Yii::$app->request->input('url'));
         }
 
 

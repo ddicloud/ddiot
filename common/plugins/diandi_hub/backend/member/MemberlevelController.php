@@ -56,7 +56,7 @@ class MemberlevelController extends BaseController
     public function actionView()
     {
         global $_GPC;
-        $id = $_GPC['id'];
+        $id = Yii::$app->request->input('id');
         $model = HubMemberLevel::find()->where(['id'=>$id])->with(['level','levelParent','member','memberParent','wxappfans','wechatfans','store'])->asArray()->one();
         
         $member_store_id = $model['member_store_id'];
@@ -86,7 +86,7 @@ class MemberlevelController extends BaseController
     {
         global $_GPC;
         
-        $member_store_id = $_GPC['HubMemberLevel']['member_store_id'];
+        $member_store_id = Yii::$app->request->input('HubMemberLevel')['member_store_id'];
         
         $have = HubMemberLevel::find()->where(['member_store_id'=>$member_store_id])->asArray()->one();
         
@@ -111,7 +111,7 @@ class MemberlevelController extends BaseController
     public function actionStorelist()
     {
         global $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
         $where = [];
         $where1 =[];
         if(!empty($keywords)){

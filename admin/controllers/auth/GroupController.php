@@ -125,8 +125,8 @@ class GroupController extends AController
     public function actionChange(): array
     {
         global $_GPC;
-        $id = $_GPC['id'];
-        $items = $_GPC['items'];
+        $id = Yii::$app->request->input('id');
+        $items = Yii::$app->request->input('items');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数ID不能为空');
@@ -455,9 +455,9 @@ class GroupController extends AController
             $data['bloc_id'] = $data['store_id'] ? BlocStore::find()->where(['store_id' => $data['store_id']])->select('bloc_id')->scalar() : 0;
 
             if ($model->load($data, '') && $model->save()) {
-                if ($old_parent != $_GPC['name']) {
+                if ($old_parent != Yii::$app->request->input('name')) {
                     AuthItemChild::updateAll([
-                        'parent' => $_GPC['name'],
+                        'parent' => Yii::$app->request->input('name'),
                     ], [
                         'parent_type' => 2,
                         'parent_id' => $model->item_id,
@@ -488,7 +488,7 @@ class GroupController extends AController
                     AuthItemChild::updateAll([
                         'parent_type' => 2,
                         'parent_id' => $model->item_id,
-                        'parent' => $_GPC['name'],
+                        'parent' => Yii::$app->request->input('name'),
                     ], [
                         'parent' => $old_parent,
                     ]);

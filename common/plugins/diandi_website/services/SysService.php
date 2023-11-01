@@ -111,8 +111,8 @@ class SysService extends BaseService
             $where['type'] = $type;
         }
         $query = WebsiteAd::find()->where($where);
-        $pageSize = $_GPC['pageSize'] ?? 10;
-        $page = $_GPC['page'];
+        $pageSize = Yii::$app->request->input('pageSize') ?? 10;
+        $page = Yii::$app->request->input('page');
         $count = $query->count();
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([

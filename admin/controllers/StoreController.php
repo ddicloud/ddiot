@@ -58,7 +58,7 @@ class StoreController extends AController
     public function actionDetailinfo(): array
     {
         global $_GPC;
-        $store_id = $_GPC['store_id'];
+        $store_id = Yii::$app->request->input('store_id');
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
 
         if (!$store) {
@@ -71,7 +71,7 @@ class StoreController extends AController
     public function actionCate(): array
     {
         global $_GPC;
-        $parent_id = $_GPC['parent_id'];
+        $parent_id = Yii::$app->request->input('parent_id');
 
         $list = Yii::$app->service->commonStoreService->getCate($parent_id);
 
@@ -82,15 +82,15 @@ class StoreController extends AController
     {
         global $_GPC;
 
-        $category_pid = $_GPC['category_pid'];
-        $category_id = $_GPC['category_id'];
-        $keywords = $_GPC['keywords'];
-        $longitude = $_GPC['longitude'];
-        $latitude = $_GPC['latitude'];
-        $label_id = intval($_GPC['label_id']);
+        $category_pid = Yii::$app->request->input('category_pid');
+        $category_id = Yii::$app->request->input('category_id');
+        $keywords = Yii::$app->request->input('keywords');
+        $longitude = Yii::$app->request->input('longitude');
+        $latitude = Yii::$app->request->input('latitude');
+        $label_id = intval(Yii::$app->request->input('label_id'));
 
-        $page = $_GPC['page'] ?? 1;
-        $pageSize = $_GPC['pageSize'] ?? 10;
+        $page = Yii::$app->request->input('page') ?? 1;
+        $pageSize = Yii::$app->request->input('pageSize') ?? 10;
 
         $list = Yii::$app->service->commonStoreService->list($category_pid, $category_id, $longitude, $latitude, $keywords, $label_id, $page, $pageSize);
 
@@ -105,9 +105,9 @@ class StoreController extends AController
     {
         global $_GPC;
 
-        $business_name = $_GPC['business_name'];
+        $business_name = Yii::$app->request->input('business_name');
 
-        $store_name = $_GPC['store_name'];
+        $store_name = Yii::$app->request->input('store_name');
 
         $user_id = Yii::$app->user->id;
         $group = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->asArray()->all();
@@ -245,7 +245,7 @@ class StoreController extends AController
         global $_GPC;
         if ($this->module->id == 'addons') {
             // 校验数量限制
-            $storeNum = StoreService::checkStoreNum($_GPC['bloc_id']);
+            $storeNum = StoreService::checkStoreNum(Yii::$app->request->input('bloc_id'));
             if (!$storeNum) {
                 return ResultHelper::json(400, '超过最大商户添加数量');
             }
@@ -268,7 +268,7 @@ class StoreController extends AController
                 $data = Yii::$app->request->post();
                 // $data['BlocStore']['lng_lat'] = implode(',',$data['BlocStore']['lng_lat']);
                 if ($model->load($data) && $model->save()) {
-                    $StoreLabelLink = $_GPC['StoreLabelLink'];
+                    $StoreLabelLink = Yii::$app->request->input('StoreLabelLink');
 
                     if (!empty($StoreLabelLink['label_id'])) {
                         foreach ($StoreLabelLink['label_id'] as $label_id) {
@@ -333,7 +333,7 @@ class StoreController extends AController
         $store_id = $model->store_id;
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-            $StoreLabelLink = $_GPC['StoreLabelLink'];
+            $StoreLabelLink = Yii::$app->request->input('StoreLabelLink');
             $link->deleteAll([
                 'store_id' => $store_id,
             ]);

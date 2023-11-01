@@ -115,21 +115,21 @@ class StoreController extends AController
     public function actionAdd()
     {
         global $_GPC;
-        $name = $_GPC['name'];
-        $mobile = $_GPC['mobile'];
-        $address = $_GPC['address'];
-        $city = $_GPC['city'];
-        $provice = $_GPC['province'];
-        $area = $_GPC['area'];
-        $linkman = $_GPC['linkman'];
-        $storefront = $_GPC['storefront'];
-        $cardFront = $_GPC['cardFront'];
-        $cardReverse = $_GPC['cardReverse'];
-        $desc = $_GPC['desc'];
-        $wechat_code = $_GPC['wechat_code'];
-        $business = $_GPC['business'];
-        $interior = $_GPC['interior'];
-        $certification = $_GPC['certification'];
+        $name = Yii::$app->request->input('name');
+        $mobile = Yii::$app->request->input('mobile');
+        $address = Yii::$app->request->input('address');
+        $city = Yii::$app->request->input('city');
+        $provice = Yii::$app->request->input('province');
+        $area = Yii::$app->request->input('area');
+        $linkman = Yii::$app->request->input('linkman');
+        $storefront = Yii::$app->request->input('storefront');
+        $cardFront = Yii::$app->request->input('cardFront');
+        $cardReverse = Yii::$app->request->input('cardReverse');
+        $desc = Yii::$app->request->input('desc');
+        $wechat_code = Yii::$app->request->input('wechat_code');
+        $business = Yii::$app->request->input('business');
+        $interior = Yii::$app->request->input('interior');
+        $certification = Yii::$app->request->input('certification');
 
         $Res = StoreService::addStore($name, $mobile, $address, $city, $provice, $area, $desc, $linkman, $storefront, $business, $cardFront, $cardReverse, $interior, $wechat_code, $certification);
         if ($Res) {
@@ -153,17 +153,17 @@ class StoreController extends AController
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
 
-        if (!empty($_GPC['goods'])) {
-            $goods = json_decode($_GPC['goods'], true);
+        if (!empty(Yii::$app->request->input('goods'))) {
+            $goods = json_decode(Yii::$app->request->input('goods'), true);
         } else {
             $goods = [];
         }
 
-        $totalprice = $_GPC['totalprice'];
-        $remark = $_GPC['remark'];
-        $member_store_id = $_GPC['member_store_id'];
+        $totalprice = Yii::$app->request->input('totalprice');
+        $remark = Yii::$app->request->input('remark');
+        $member_store_id = Yii::$app->request->input('member_store_id');
 
-        $typeStatus = $_GPC['typeStatus'];
+        $typeStatus = Yii::$app->request->input('typeStatus');
 
         $operation_mid = StoreService::getStoreByStoreId($member_store_id);
 
@@ -185,10 +185,10 @@ class StoreController extends AController
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
-        $order_status = $_GPC['order_status'];
+        $order_status = Yii::$app->request->input('order_status');
         $page = Yii::$app->request->post('page', 1);
         $pageSize = Yii::$app->request->post('pageSize', 10);
-        $order_status = $_GPC['order_status'];
+        $order_status = Yii::$app->request->input('order_status');
         $list = StoreService::list($member_id, $order_status, $page, $pageSize);
 
         return ResultHelper::json(200, '获取成功', [
@@ -200,10 +200,10 @@ class StoreController extends AController
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
-        $order_status = $_GPC['order_status'];
+        $order_status = Yii::$app->request->input('order_status');
         $page = Yii::$app->request->post('page', 1);
         $pageSize = Yii::$app->request->post('pageSize', 10);
-        $order_status = $_GPC['order_status'];
+        $order_status = Yii::$app->request->input('order_status');
         $list = StoreService::memberPayList($member_id, $order_status, $page, $pageSize);
 
         return ResultHelper::json(200, '获取成功', [
@@ -215,7 +215,7 @@ class StoreController extends AController
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $detail = StoreService::detail($order_id, $member_id);
 
         return ResultHelper::json(200, '获取成功', $detail);
@@ -225,7 +225,7 @@ class StoreController extends AController
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
         $Res = StoreService::creditPay($order_id);
 
@@ -240,7 +240,7 @@ class StoreController extends AController
     {
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
         $Res = StoreService::confirm($member_id, $order_id);
 
         if ($Res['status'] == 0) {
@@ -265,12 +265,12 @@ class StoreController extends AController
     {
         global $_GPC;
 
-        $order_id = $_GPC['order_id'];
+        $order_id = Yii::$app->request->input('order_id');
 
-        $ctype = $_GPC['ctype'];
+        $ctype = Yii::$app->request->input('ctype');
 
-        $expressCode = trim($_GPC['expressCode']);
-        $express_company = trim($_GPC['express_company']);
+        $expressCode = trim(Yii::$app->request->input('expressCode'));
+        $express_company = trim(Yii::$app->request->input('express_company'));
 
         return StoreService::confirmOrder($order_id, $ctype, $expressCode, $express_company);
     }

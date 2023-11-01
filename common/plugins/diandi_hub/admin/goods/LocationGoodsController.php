@@ -67,8 +67,8 @@ class LocationGoodsController extends AController
     {
         global $_GPC;
 
-        $adv_id = $_GPC['adv_id'];
-        $good_ids = $_GPC['good_ids'];
+        $adv_id = Yii::$app->request->input('adv_id');
+        $good_ids = Yii::$app->request->input('good_ids');
 
         if (empty($adv_id)) {
             return ResultHelper::json(400, '请选择广告位置');
@@ -115,13 +115,13 @@ class LocationGoodsController extends AController
     public function actionGoodslist()
     {
         global $_GPC;
-        $keywords = $_GPC['keywords'];
+        $keywords = Yii::$app->request->input('keywords');
 
-        $adv_id = $_GPC['adv_id'];
+        $adv_id = Yii::$app->request->input('adv_id');
 
-        if (!empty($_GPC['type']) || $_GPC['type'] == 0) {
+        if (!empty(Yii::$app->request->input('type')) || Yii::$app->request->input('type') == 0) {
             // 0 不存在,1存在
-            $type = intval($_GPC['type']);
+            $type = intval(Yii::$app->request->input('type'));
         } else {
             return ResultHelper::json(400, '缺少类型');
         }
@@ -130,7 +130,7 @@ class LocationGoodsController extends AController
             return ResultHelper::json(400, '请选择广告位置');
         }
 
-        $pageSize = intval($_GPC['pageSize'], 10);
+        $pageSize = intval(Yii::$app->request->input('pageSize'), 10);
 
         $lists = [];
 
@@ -168,10 +168,10 @@ class LocationGoodsController extends AController
 
         $where['store_id'] = Yii::$app->params['store_id'];
         $where['bloc_id'] = Yii::$app->params['bloc_id'];
-        if (empty($_GPC['type'])) {
+        if (empty(Yii::$app->request->input('type'))) {
             $where['type'] = 2;
         } else {
-            $where['type'] = $_GPC['type'];
+            $where['type'] = Yii::$app->request->input('type');
         }
 
         $list = AdvertisingHubLocation::find()->where($where)->select(['*', 'name as text', 'id as value'])->asArray()->all();
@@ -262,8 +262,8 @@ class LocationGoodsController extends AController
         global $_GPC;
 
         if (yii::$app->request->isPost) {
-            $goods_id = $_GPC['goods_id'];
-            $location_id = $_GPC['adv_id'];
+            $goods_id = Yii::$app->request->input('goods_id');
+            $location_id = Yii::$app->request->input('adv_id');
             if (empty($goods_id)) {
                 return ResultHelper::json(401, '缺少商品id');
             }

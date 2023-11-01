@@ -20,34 +20,34 @@ trait BlocLinkTrait
     public function beforeSave($insert): bool
     {
         global $_GPC;
-        $invitation_code = $_GPC['invitation_code'];
-        $business_name = $_GPC['business_name'];
-        $logo = $_GPC['logo'];
-        $pid = $_GPC['pid'];
-        $group_bloc_id = $_GPC['group_bloc_id'];
-        $category = $_GPC['category'];
-        $provinceCityDistrict = $_GPC['provinceCityDistrict'];
-        $address = $_GPC['address'];
-        $register_level = $_GPC['register_level'];
-        $longitude = $_GPC['longitude'];
-        $latitude = $_GPC['latitude'];
-        $telephone = $_GPC['telephone'];
-        $avg_price = $_GPC['avg_price'];
-        $recommend = $_GPC['recommend'];
-        $special = $_GPC['special'];
-        $introduction = $_GPC['introduction'];
+        $invitation_code = Yii::$app->request->input('invitation_code');
+        $business_name = Yii::$app->request->input('business_name');
+        $logo = Yii::$app->request->input('logo');
+        $pid = Yii::$app->request->input('pid');
+        $group_bloc_id = Yii::$app->request->input('group_bloc_id');
+        $category = Yii::$app->request->input('category');
+        $provinceCityDistrict = Yii::$app->request->input('provinceCityDistrict');
+        $address = Yii::$app->request->input('address');
+        $register_level = Yii::$app->request->input('register_level');
+        $longitude = Yii::$app->request->input('longitude');
+        $latitude = Yii::$app->request->input('latitude');
+        $telephone = Yii::$app->request->input('telephone');
+        $avg_price = Yii::$app->request->input('avg_price');
+        $recommend = Yii::$app->request->input('recommend');
+        $special = Yii::$app->request->input('special');
+        $introduction = Yii::$app->request->input('introduction');
         if ($insert) {
-            // $province = $_GPC['province'];
-            // $city = $_GPC['city'];
-            // $district = $_GPC['district'];
-            $open_time = $_GPC['open_time'];
-            $end_time = $_GPC['end_time'];
-            $status = $_GPC['status'];
-            $is_group = $_GPC['is_group'];
-            $sosomap_poi_uid = $_GPC['sosomap_poi_uid'];
-            $license_no = $_GPC['license_no'];
-            $license_name = $_GPC['license_name'];
-            $level_num = $_GPC['level_num'];
+            // $province = Yii::$app->request->input('province');
+            // $city = Yii::$app->request->input('city');
+            // $district = Yii::$app->request->input('district');
+            $open_time = Yii::$app->request->input('open_time');
+            $end_time = Yii::$app->request->input('end_time');
+            $status = Yii::$app->request->input('status');
+            $is_group = Yii::$app->request->input('is_group');
+            $sosomap_poi_uid = Yii::$app->request->input('sosomap_poi_uid');
+            $license_no = Yii::$app->request->input('license_no');
+            $license_name = Yii::$app->request->input('license_name');
+            $level_num = Yii::$app->request->input('level_num');
             try {
                 $bloc = StoreService::addLinkBloc($invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num);
             } catch (HttpException $e) {
@@ -55,17 +55,17 @@ trait BlocLinkTrait
             }
             $this->bloc_id = $bloc['bloc_id'];
         } else {
-            // $province = $_GPC['province'];
-            // $city = $_GPC['city'];
-            // $district = $_GPC['district'];
-            $end_time = $_GPC['end_time'];
-            $open_time = $_GPC['open_time'];
-            $status = $_GPC['status'];
-            $is_group = $_GPC['is_group'];
-            $sosomap_poi_uid = $_GPC['sosomap_poi_uid'];
-            $license_no = $_GPC['license_no'];
-            $license_name = $_GPC['license_name'];
-            $level_num = $_GPC['level_num'];
+            // $province = Yii::$app->request->input('province');
+            // $city = Yii::$app->request->input('city');
+            // $district = Yii::$app->request->input('district');
+            $end_time = Yii::$app->request->input('end_time');
+            $open_time = Yii::$app->request->input('open_time');
+            $status = Yii::$app->request->input('status');
+            $is_group = Yii::$app->request->input('is_group');
+            $sosomap_poi_uid = Yii::$app->request->input('sosomap_poi_uid');
+            $license_no = Yii::$app->request->input('license_no');
+            $license_name = Yii::$app->request->input('license_name');
+            $level_num = Yii::$app->request->input('level_num');
             $bloc_id = $this->bloc_id;
             try {
                 $bloc = StoreService::upLinkBloc($bloc_id, $invitation_code, $business_name, $logo, $pid, $group_bloc_id, $category, $provinceCityDistrict, $address, $register_level, $longitude, $latitude, $telephone, $avg_price, $recommend, $special, $introduction, $open_time, $end_time, $status, $is_group, $sosomap_poi_uid, $license_no, $license_name, $level_num);

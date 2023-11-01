@@ -42,7 +42,7 @@ class IndexController extends AController
     {
         global $_GPC;
 
-        $terminal_type = intval($_GPC['terminal_type']);
+        $terminal_type = intval(Yii::$app->request->input('terminal_type'));
 
         $LotterySlide = new HubSlide();
 
@@ -62,9 +62,9 @@ class IndexController extends AController
     public function actionGoodsadv()
     {
         global $_GPC;
-        $mark = $_GPC['mark'];
+        $mark = Yii::$app->request->input('mark');
         $page = Yii::$app->request->get('page', 1);
-        $pageSize = $_GPC['pageSize'];
+        $pageSize = Yii::$app->request->input('pageSize');
         $list = LocationService::getGoodsAdv($mark, $page, $pageSize);
 
         return ResultHelper::json(200, '获取成功', $list);
@@ -73,8 +73,8 @@ class IndexController extends AController
     public function actionPageadv()
     {
         global $_GPC;
-        $pageType = $_GPC['pageType'];
-        $locationType = $_GPC['locationType'];
+        $pageType = Yii::$app->request->input('pageType');
+        $locationType = Yii::$app->request->input('locationType');
         $list = LocationService::getAd($pageType, $locationType);
 
         return ResultHelper::json(200, '获取成功', $list);

@@ -104,9 +104,9 @@ class SiteController extends AController
         global $_GPC;
         $model = new SignupForm();
         $data = [
-            'username' => $_GPC['username'],
-            'email' => $_GPC['email'],
-            'password' => $_GPC['password'],
+            'username' => Yii::$app->request->input('username'),
+            'email' => Yii::$app->request->input('email'),
+            'password' => Yii::$app->request->input('password'),
         ];
         // p($model->load(Yii::$App->request->post()),$model->signup());
         if ($model->load($data, '') && $model->signup()) {
@@ -234,7 +234,7 @@ class SiteController extends AController
     public function actionXiufu(): void
     {
         global $_GPC;
-        if ($_GPC['type'] == 1) {
+        if (Yii::$app->request->input('type') == 1) {
             $AuthRoute = new AuthRoute();
             $list = AuthRoute::find()->alias('a')->leftJoin(AuthItem::tableName().' as c',
                 'a.route_name=c.name'
@@ -248,7 +248,7 @@ class SiteController extends AController
                     'id' => $value['id'],
                 ]);
             }
-        } elseif ($_GPC['type'] == 2) {
+        } elseif (Yii::$app->request->input('type') == 2) {
             $authItem = new AuthItem();
 
             $AuthRoute = AuthRoute::find()->asArray()->all();
@@ -273,7 +273,7 @@ class SiteController extends AController
                     echo '</pre>';
                 }
             }
-        } elseif ($_GPC['type'] == 3) {
+        } elseif (Yii::$app->request->input('type') == 3) {
             $AuthRoute = new AuthRoute();
             $list = AuthRoute::find()->where(['=', 'item_id', null])->asArray()->all();
 

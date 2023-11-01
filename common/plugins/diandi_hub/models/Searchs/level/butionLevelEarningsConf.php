@@ -53,7 +53,7 @@ class butionLevelEarningsConf extends butionLevelEarningsConfModel
         global $_GPC;
         $query = butionLevelEarningsConfModel::find();
 
-        $levelnum = $_GPC['levelnum'];
+        $levelnum = Yii::$app->request->input('levelnum');
         if(!empty($levelnum)){
             $this->levelnum = $levelnum;
         }
@@ -80,8 +80,8 @@ class butionLevelEarningsConf extends butionLevelEarningsConfModel
         ]);
         
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize']??10;
-        $page       = $_GPC['page']??1;
+        $pageSize   = Yii::$app->request->input('pageSize')??10;
+        $page       = Yii::$app->request->input('page')??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

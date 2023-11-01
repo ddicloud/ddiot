@@ -86,7 +86,7 @@ class SysController extends AController
     public function actionNav()
     {
         global $_GPC;
-        $type = $_GPC['type']; // NavTypeStatus::NAV;
+        $type = Yii::$app->request->input('type'); // NavTypeStatus::NAV;
         $menu = SysService::getNave($type);
 
         return ResultHelper::json(200, '获取成功', $menu);
@@ -126,7 +126,7 @@ class SysController extends AController
     public function actionSlide()
     {
         global $_GPC;
-        $page_id = $_GPC['page_id'];
+        $page_id = Yii::$app->request->input('page_id');
         $list = SysService::getSlide($page_id);
 
         return ResultHelper::json(200, '请求成功', $list);
@@ -166,7 +166,7 @@ class SysController extends AController
     public function actionPage()
     {
         global $_GPC;
-        $template = $_GPC['template'];
+        $template = Yii::$app->request->input('template');
         $page = SysService::getPage($template);
 
         return ResultHelper::json(200, '请求成功', $page);
@@ -251,7 +251,7 @@ class SysController extends AController
      */
     public function actionAd()
     {
-        return ResultHelper::json(200, '请求成功', SysService::getAdList($_GPC["category_id"] ?? 0, $_GPC["type"] ?? 0));
+        return ResultHelper::json(200, '请求成功', SysService::getAdList(Yii::$app->request->input('category_id') ?? 0, Yii::$app->request->input('type') ?? 0));
     }
 
     /**
@@ -304,8 +304,8 @@ class SysController extends AController
     public function actionFun()
     {
         global $_GPC;
-        if (isset($_GPC['fun_limit']) && $_GPC['fun_limit'] > 0) {
-            \addons\diandi_website\models\searchs\SysFunCateSearch::$funLimit = (int)$_GPC['fun_limit'];
+        if (isset(Yii::$app->request->input('fun_limit')) && Yii::$app->request->input('fun_limit') > 0) {
+            \addons\diandi_website\models\searchs\SysFunCateSearch::$funLimit = (int)Yii::$app->request->input('fun_limit');
         }
         $where = $this->_fillWhere(['solution_id', 'is_website']);
 

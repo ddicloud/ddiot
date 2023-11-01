@@ -116,8 +116,8 @@ class FansService extends BaseService
                         DdWechatFans::FOLLOW_ON,
                         date('Y-m-d H:i:s', time()),
                         '',
-                        $_GPC['store_id'],
-                        $_GPC['bloc_id'],
+                        Yii::$app->request->input('store_id'),
+                        Yii::$app->request->input('bloc_id'),
                         time(),
                         time(),
                     ];

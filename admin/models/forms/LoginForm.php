@@ -160,7 +160,7 @@ class LoginForm extends Model
                 'password_reset_token' => $password_reset_token,
             ], ['id' => Yii::$app->user->identity->id]);
 
-            $userobj = (int) $_GPC['type'] === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
+            $userobj = (int) Yii::$app->request->input('type') === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
             $service = Yii::$app->service;
             $service->namespace = 'admin';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);

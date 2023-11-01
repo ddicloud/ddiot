@@ -24,8 +24,8 @@ class CommonQuery extends ActiveQuery
     {
         global $_GPC;
         parent::init();
-        $this->bloc_id = $_GPC['bloc_id'];
-        $this->store_id = $_GPC['store_id'];
+        $this->bloc_id = Yii::$app->request->input('bloc_id');
+        $this->store_id = Yii::$app->request->input('store_id');
     }
 
     public function findBloc($alias=''): static

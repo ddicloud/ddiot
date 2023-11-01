@@ -29,7 +29,7 @@ class StoreService extends BaseService
     public static function list($category_pid, $category_id = 0, $longitude = '', $latitude = '', $keywords = '', $label_id = 0, $page = 1, $pageSize = 10)
     {
         global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = Yii::$app->request->input('bloc_id');
         $logPath = Yii::getAlias('@api/runtime/StoreService/list/'.date('Y/md').'.log');
 
         FileHelper::writeLog($logPath, '经纬度计算距离参数'.json_encode([
@@ -151,7 +151,7 @@ class StoreService extends BaseService
     public static function getCate($parent_id)
     {
         global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id = Yii::$app->request->input('bloc_id');
         $where = [];
         $where['bloc_id'] = $bloc_id;
         if (!empty($parent_id) && is_numeric($parent_id)) {

@@ -148,7 +148,7 @@ class OrderController extends AController
             'levelc', 'level',
         ]);
 
-        $between_time = $_GPC['between_time'];
+        $between_time = Yii::$app->request->input('between_time');
 
         $timeWhere = [];
         if (!empty($between_time[0])) {
