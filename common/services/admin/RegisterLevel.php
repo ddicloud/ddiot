@@ -24,7 +24,7 @@ class RegisterLevel extends BaseService
 
         return match ($register_level) {
             RegisterLevelStatus::BLOC => $userInfo && $userInfo['bloc_id'] == $bloc_id,
-            RegisterLevelStatus::STORE => $userInfo && $userInfo['store_id'] == Yii::$app->request->input('store_id'),
+            RegisterLevelStatus::STORE => $userInfo && $userInfo['store_id'] ==\Yii::$app->request->input('store_id',0),
             default => $userInfo && $userInfo['bloc_id'] == $group_bloc_id,
         };
     }

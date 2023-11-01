@@ -63,9 +63,9 @@ class IndexController extends AController
     public function actionGoodsadv(): array
     {
         global $_GPC;
-        $mark = Yii::$app->request->input('mark');
+        $mark =\Yii::$app->request->input('mark');
         $page = Yii::$app->request->get('page', 1);
-        $pageSize = Yii::$app->request->input('pageSize');
+        $pageSize =\Yii::$app->request->input('pageSize');
         $list = LocationService::getGoodsAdv($mark, $page, $pageSize);
 
         return ResultHelper::json(200, '获取成功', $list);
@@ -74,8 +74,8 @@ class IndexController extends AController
     public function actionPageadv(): array
     {
         global $_GPC;
-        $pageType = Yii::$app->request->input('pageType');
-        $locationType = Yii::$app->request->input('locationType');
+        $pageType =\Yii::$app->request->input('pageType');
+        $locationType =\Yii::$app->request->input('locationType');
         $list = LocationService::getAd($pageType, $locationType);
 
         return ResultHelper::json(200, '获取成功', $list);

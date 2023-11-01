@@ -43,7 +43,7 @@ class DdCategoryController extends AController
             $value['image_id'] = ImageHelper::tomedia($value['image_id']);
         }
         $lists = ArrayHelper::itemsMerge($list, 0, 'category_id', 'parent_id', 'children');
-        $one_category = HubCategory::find()->where(['parent_id' => 0, 'store_id' => Yii::$app->request->input('store_id'), 'bloc_id' => Yii::$app->request->input('bloc_id')])->asArray()->all();
+        $one_category = HubCategory::find()->where(['parent_id' => 0, 'store_id' =>\Yii::$app->request->input('store_id',0), 'bloc_id' =>\Yii::$app->request->input('bloc_id',0)])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', [
             'list' => $lists,
@@ -136,7 +136,7 @@ class DdCategoryController extends AController
     public function actionGoodslist()
     {
         global  $_GPC;
-        $keywords = Yii::$app->request->input('keywords');
+        $keywords =\Yii::$app->request->input('keywords');
         $list = [];
 
         $list = GoodsService::getList(0, 0, $keywords, 10);
@@ -173,7 +173,7 @@ class DdCategoryController extends AController
     public function actionChildcate()
     {
         global $_GPC;
-        $parent_id = Yii::$app->request->input('parent_id');
+        $parent_id =\Yii::$app->request->input('parent_id');
         $cates = HubCategory::findAll(['parent_id' => $parent_id]);
 
         return ResultHelper::json(200, '获取成功', $cates);

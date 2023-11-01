@@ -95,7 +95,7 @@ class BankController extends AController
     {
         global $_GPC;
 
-        $member_id = Yii::$app->request->input('member_id');
+        $member_id =\Yii::$app->request->input('member_id');
 
         $member = HubUserBank::find()->where(['member_id' => $member_id])->one();
         if (empty($member)) {

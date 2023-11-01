@@ -35,11 +35,11 @@ class QrcodeController extends AController
     public function actionGetqrcode(): array|string
     {
         global $_GPC;
-        $path = Yii::$app->request->input('path');
-        $width = Yii::$app->request->input('width');
-        $scene = Yii::$app->request->input('scene');
+        $path =\Yii::$app->request->input('path');
+        $width =\Yii::$app->request->input('width');
+        $scene =\Yii::$app->request->input('scene');
 
-        $module_name = Yii::$app->request->input('module_name');
+        $module_name =\Yii::$app->request->input('module_name');
         if (!$module_name) {
             return ResultHelper::json(400, '缺少参数module_name');
         }

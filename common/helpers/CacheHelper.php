@@ -41,7 +41,7 @@ class CacheHelper extends RedisCache
             $user_id  = Yii::$app->user->identity->id;
         }
         $terminal = Yii::$app->id;
-        $store_id = Yii::$app->request->input('store_id');
+        $store_id =\Yii::$app->request->input('store_id',0);
         // [终端，用户，商户]
         if(is_string($key)){
             return parent::buildKey([$key,$terminal,$store_id,$user_id]);

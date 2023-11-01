@@ -69,7 +69,7 @@ class ShareController extends BaseController
     public function actionView($id)
     {
         global $_GPC;
-        $goods_id  = Yii::$app->request->input('goods_id');
+        $goods_id  =\Yii::$app->request->input('goods_id');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'goods_id'=>$goods_id
@@ -85,7 +85,7 @@ class ShareController extends BaseController
     public function actionCreate()
     {
         global $_GPC;
-        $goods_id  = Yii::$app->request->input('goods_id');
+        $goods_id  =\Yii::$app->request->input('goods_id');
         $model = new HubGoodsSubsidy();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

@@ -138,7 +138,7 @@ class WithdrawlogController extends BaseController
     public function actionUpdate($id)
     {
         global $_GPC;
-        $withdraw_status = Yii::$app->request->input('HubWithdrawLog')['withdraw_status'];
+        $withdraw_status =\Yii::$app->request->input('HubWithdrawLog')['withdraw_status'];
 
         
         $model = HubWithdrawLog::find()->where(['id'=>$id])->with(['userbank','member'])->one();
@@ -289,7 +289,7 @@ class WithdrawlogController extends BaseController
         global $_GPC;
        
         $query = HubWithdrawLog::find()->with(['userbank','member']);
-        $between_time = Yii::$app->request->input('between_time'); 
+        $between_time =\Yii::$app->request->input('between_time');
 
         $timeWhere = [];
         if(!empty($between_time[0])){

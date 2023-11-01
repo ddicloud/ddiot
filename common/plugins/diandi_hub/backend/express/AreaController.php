@@ -65,7 +65,7 @@ class AreaController extends BaseController
         
         global $_GPC;
 
-        $template_id = Yii::$app->request->input('template_id');
+        $template_id =\Yii::$app->request->input('template_id');
         
         $searchModel = new HubExpressTemplateAreaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -88,7 +88,7 @@ class AreaController extends BaseController
     {
         global $_GPC;
 
-        $template_id = Yii::$app->request->input('template_id');
+        $template_id =\Yii::$app->request->input('template_id');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'template_id' => $template_id
@@ -104,7 +104,7 @@ class AreaController extends BaseController
     {
         global $_GPC;
 
-        $template_id = Yii::$app->request->input('template_id');
+        $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
         $express_id = $template['express_id'];
         $title      = $template['title'];
@@ -133,7 +133,7 @@ class AreaController extends BaseController
     {
         global $_GPC;
 
-        $template_id = Yii::$app->request->input('template_id');
+        $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
         $express_id = $template['express_id'];
         $title      = $template['title'];
@@ -164,7 +164,7 @@ class AreaController extends BaseController
     {
         global $_GPC;
 
-        $template_id = Yii::$app->request->input('template_id');
+        $template_id =\Yii::$app->request->input('template_id');
         
         $this->findModel($id)->delete();
 

@@ -76,7 +76,7 @@ class CartController extends AController
 
         $goods_id = intval(Yii::$app->request->input('goods_id'));
         $num = intval(Yii::$app->request->input('num'));
-        $spec_id = Yii::$app->request->input('spec_id');
+        $spec_id =\Yii::$app->request->input('spec_id');
 
         $list = CartService::confirm($user_id, $goods_id, $num, $spec_id);
 
@@ -107,17 +107,17 @@ class CartController extends AController
         $cart_ids = [];
         if (Yii::$app->request->input('cart_ids') !== null) {
             if (is_array(Yii::$app->request->input('cart_ids'))) {
-                $cart_ids = Yii::$app->request->input('cart_ids');
+                $cart_ids =\Yii::$app->request->input('cart_ids');
             } else {
-                $cart_ids = explode(',', Yii::$app->request->input('cart_ids'));
+                $cart_ids = explode(',',\Yii::$app->request->input('cart_ids'));
             }
         }
 
-        $express_type = Yii::$app->request->input('express_type');
-        $region_id = Yii::$app->request->input('region_id');
-        $goods_id = Yii::$app->request->input('goods_id');
-        $goods_type = Yii::$app->request->input('goods_type');
-        $express_id = Yii::$app->request->input('express_id');
+        $express_type =\Yii::$app->request->input('express_type');
+        $region_id =\Yii::$app->request->input('region_id');
+        $goods_id =\Yii::$app->request->input('goods_id');
+        $goods_type =\Yii::$app->request->input('goods_type');
+        $express_id =\Yii::$app->request->input('express_id');
         $list = CartService::list($user_id, $cart_ids, $express_type, $region_id, $express_id);
 
         $is_collect = HubGoodsBaseCollect::find()->where(['goods_id' => $goods_id, 'member_id' => $user_id, 'goods_type' => $goods_type])->one();
@@ -183,7 +183,7 @@ class CartController extends AController
 
         $user_id = Yii::$app->user->identity->member_id??0;
         $data = Yii::$app->request->post();
-        $cart_ids = Yii::$app->request->input('cart_ids');
+        $cart_ids =\Yii::$app->request->input('cart_ids');
 
         $list = CartService::deleteCart($user_id, $cart_ids);
 

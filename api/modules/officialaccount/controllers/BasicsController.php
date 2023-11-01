@@ -67,8 +67,8 @@ class BasicsController extends AController
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/wechat/auth/' . date('ymd') . '.log');
 
-        $redirect_uri = Yii::$app->request->input('redirect_uri');
-        $route = Yii::$app->request->input('route');
+        $redirect_uri =\Yii::$app->request->input('redirect_uri');
+        $route =\Yii::$app->request->input('route');
 
         $wechat = Yii::$app->wechat->app;
         $response = $wechat->oauth->scopes(['snsapi_userinfo'])

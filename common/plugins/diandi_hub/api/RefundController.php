@@ -39,13 +39,13 @@ class RefundController extends AController
     {
         global $_GPC;
 
-        $order_id = Yii::$app->request->input('order_id');
+        $order_id =\Yii::$app->request->input('order_id');
 
         if (empty($order_id)) {
             return ResultHelper::json(400, '订单id不能为空', []);
         }
 
-        $reason_id = Yii::$app->request->input('reason_id');
+        $reason_id =\Yii::$app->request->input('reason_id');
 
         if (empty($reason_id)) {
             return ResultHelper::json(400, '退款原因不能为空', []);
@@ -64,7 +64,7 @@ class RefundController extends AController
             }
         }
 
-        $thumbs = Yii::$app->request->input('thumbs');
+        $thumbs =\Yii::$app->request->input('thumbs');
 
         if (empty($thumbs)) {
 
@@ -77,12 +77,12 @@ class RefundController extends AController
             return ResultHelper::json(400, '请输入售后说明', []);
         }
 
-        $linkman = Yii::$app->request->input('linkman');
+        $linkman =\Yii::$app->request->input('linkman');
         if (empty($linkman)) {
             return ResultHelper::json(400, '请输入联系人', []);
         }
 
-        $mobile  = Yii::$app->request->input('mobile');
+        $mobile  =\Yii::$app->request->input('mobile');
         if (empty($remark)) {
             return ResultHelper::json(400, '请输入联系电话', []);
         }
@@ -115,7 +115,7 @@ class RefundController extends AController
     {
         global $_GPC;
         $user_id = Yii::$app->user->identity->member_id??0;
-        $order_id = Yii::$app->request->input('order_id');
+        $order_id =\Yii::$app->request->input('order_id');
         $detail = AftersaleService::detail($order_id);
         return ResultHelper::json(200, '获取成功', $detail);
     }
@@ -135,7 +135,7 @@ class RefundController extends AController
     {
         global $_GPC;
         $userId = Yii::$app->user->identity->member_id??0;
-        $refundId = Yii::$app->request->input('refund_id');
+        $refundId =\Yii::$app->request->input('refund_id');
         $detail = AftersaleService::cancelRefund($userId, $refundId);
         if ($detail === true) {
             return ResultHelper::json(200, '取消成功', $detail);

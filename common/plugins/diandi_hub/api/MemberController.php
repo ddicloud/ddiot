@@ -75,10 +75,10 @@ class MemberController extends AController
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
 
-        $pageSize = Yii::$app->request->input('pageSize');
-        $disLevel = Yii::$app->request->input('disLevel');
-        $keywords = Yii::$app->request->input('keywords');
-        $page = empty(Yii::$app->request->input('page')) ? 1 : Yii::$app->request->input('page');
+        $pageSize =\Yii::$app->request->input('pageSize');
+        $disLevel =\Yii::$app->request->input('disLevel');
+        $keywords =\Yii::$app->request->input('keywords');
+        $page = empty(Yii::$app->request->input('page')) ? 1 :\Yii::$app->request->input('page');
 
         $list = levelService::getAllChildDis($member_id, $disLevel, $keywords, $page, $pageSize);
         $totals = levelService::getChildCountByDis($member_id);
@@ -101,8 +101,8 @@ class MemberController extends AController
 
         $baseInfo = Yii::$app->service->commonMemberService->baseInfo(1);
 
-        $scene = Yii::$app->request->input('scene'); //二维码场景
-        $goods_id = Yii::$app->request->input('goods_id'); //二维码场景
+        $scene =\Yii::$app->request->input('scene'); //二维码场景
+        $goods_id =\Yii::$app->request->input('goods_id'); //二维码场景
 
         $url = urldecode(urldecode(Yii::$app->request->input('url'))); //二维码内容
 
@@ -110,7 +110,7 @@ class MemberController extends AController
             return ResultHelper::json(400, '地址不能为空', []);
         }
 
-        $width = Yii::$app->request->input('width'); //二维码内容
+        $width =\Yii::$app->request->input('width'); //二维码内容
 
         if (empty($goods_id)) {
             $img = PosterService::CreateQrcode($url, $scene, $width);
@@ -139,13 +139,13 @@ class MemberController extends AController
         global $_GPC;
 
         $member_id = Yii::$app->user->identity->member_id??0;
-        $scene = Yii::$app->request->input('scene'); //二维码场景
-        $goods_id = Yii::$app->request->input('goods_id'); //二维码场景
+        $scene =\Yii::$app->request->input('scene'); //二维码场景
+        $goods_id =\Yii::$app->request->input('goods_id'); //二维码场景
         $url = urldecode(urldecode(Yii::$app->request->input('url'))); //二维码内容
         if (empty($url)) {
             return ResultHelper::json(400, '地址不能为空', []);
         }
-        $width = Yii::$app->request->input('width'); //二维码尺寸
+        $width =\Yii::$app->request->input('width'); //二维码尺寸
 
         if (empty($goods_id)) {
             $img = PosterService::CreateQrcode($url, $scene, $width);
@@ -160,9 +160,9 @@ class MemberController extends AController
     private function _getWechatQrcode()
     {
         global $_GPC;
-        $path = Yii::$app->request->input('wechat_path');
-        $width = Yii::$app->request->input('wechat_width');
-        $scene = Yii::$app->request->input('wechat_scene');
+        $path =\Yii::$app->request->input('wechat_path');
+        $width =\Yii::$app->request->input('wechat_width');
+        $scene =\Yii::$app->request->input('wechat_scene');
         $module_name = 'diandi_hub';
         $baseInfo = Yii::$app->service->commonMemberService->baseInfo();
         $app = Yii::$app->wechat->miniProgram;
@@ -192,10 +192,10 @@ class MemberController extends AController
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
 
-        $pageSize = Yii::$app->request->input('pageSize');
-        $withdraw_status = Yii::$app->request->input('withdraw_status');
-        $withdraw_type = Yii::$app->request->input('withdraw_type');
-        $page = empty(Yii::$app->request->input('page')) ? 1 : Yii::$app->request->input('page');
+        $pageSize =\Yii::$app->request->input('pageSize');
+        $withdraw_status =\Yii::$app->request->input('withdraw_status');
+        $withdraw_type =\Yii::$app->request->input('withdraw_type');
+        $page = empty(Yii::$app->request->input('page')) ? 1 :\Yii::$app->request->input('page');
 
         $list = MemberService::Withdrawlist($member_id, $withdraw_status, $withdraw_type, $page, $pageSize);
 
@@ -220,38 +220,38 @@ class MemberController extends AController
         global $_GPC;
         $member_id = Yii::$app->user->identity->member_id??0;
 
-        $name = Yii::$app->request->input('name');
+        $name =\Yii::$app->request->input('name');
         if (empty($name)) {
             return ResultHelper::json(400, '真实姓名不能为空');
         }
-        $bank_no = Yii::$app->request->input('bank_no');
+        $bank_no =\Yii::$app->request->input('bank_no');
         if (empty($bank_no)) {
             return ResultHelper::json(400, '银行卡号不能为空');
         }
-        $mobile = Yii::$app->request->input('mobile');
+        $mobile =\Yii::$app->request->input('mobile');
         if (empty($mobile)) {
             return ResultHelper::json(400, '到账通知手机号不能为空');
         }
-        $address = Yii::$app->request->input('address');
+        $address =\Yii::$app->request->input('address');
         if (empty($address)) {
             return ResultHelper::json(400, '开户行地址不能为空');
         }
-        $province = Yii::$app->request->input('province');
-        $city = Yii::$app->request->input('city');
-        $area = Yii::$app->request->input('area');
-        $thumb = Yii::$app->request->input('thumb');
+        $province =\Yii::$app->request->input('province');
+        $city =\Yii::$app->request->input('city');
+        $area =\Yii::$app->request->input('area');
+        $thumb =\Yii::$app->request->input('thumb');
         if (empty($thumb)) {
             return ResultHelper::json(400, '银行卡照片不能为空');
         }
-        $card_front = Yii::$app->request->input('card_front');
+        $card_front =\Yii::$app->request->input('card_front');
         if (empty($card_front)) {
             return ResultHelper::json(400, '身份证正面不能为空');
         }
-        $card_reverse = Yii::$app->request->input('card_reverse');
+        $card_reverse =\Yii::$app->request->input('card_reverse');
         if (empty($card_reverse)) {
             return ResultHelper::json(400, '身份证反面不能为空');
         }
-        // $alipay = Yii::$app->request->input('alipay');
+        // $alipay =\Yii::$app->request->input('alipay');
         // if (empty($alipay)) {
         //     return ResultHelper::json(400, '支付宝账号不能为空');
         // }

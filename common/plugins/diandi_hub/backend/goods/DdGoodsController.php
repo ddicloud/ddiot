@@ -214,7 +214,7 @@ class DdGoodsController extends BaseController
         global $_GPC;
         $model = new HubGoodsBaseGoods();
 
-        $base = Yii::$app->request->input('HubGoodsBaseGoods');
+        $base =\Yii::$app->request->input('HubGoodsBaseGoods');
         $delivery_id = 0;
         if(isset($base['delivery_id'])){
             $delivery_id =is_numeric($base['delivery_id'])? $base['delivery_id'] : 0;
@@ -775,7 +775,7 @@ class DdGoodsController extends BaseController
             );
 
             return $this->renderPartial('spec', [
-                'op' => Yii::$app->request->input('op'),
+                'op' =>\Yii::$app->request->input('op'),
                 'spec' => $spec,
                 'model' => $model,
                 'specitem' => [],

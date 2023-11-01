@@ -104,9 +104,9 @@ class SiteController extends AController
         global $_GPC;
         $model = new SignupForm();
         $data = [
-            'username' => Yii::$app->request->input('username'),
-            'email' => Yii::$app->request->input('email'),
-            'password' => Yii::$app->request->input('password'),
+            'username' =>\Yii::$app->request->input('username'),
+            'email' =>\Yii::$app->request->input('email'),
+            'password' =>\Yii::$app->request->input('password'),
         ];
         // p($model->load(Yii::$App->request->post()),$model->signup());
         if ($model->load($data, '') && $model->signup()) {

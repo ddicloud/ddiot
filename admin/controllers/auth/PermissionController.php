@@ -141,7 +141,7 @@ class PermissionController extends AController
 
         $where = ['permission_type' => 1, 'parent_id' => 0];
         if (Yii::$app->request->input('is_sys') !== null) {
-            $where['is_sys'] = (int) Yii::$app->request->input('is_sys');
+            $where['is_sys'] = (int)\Yii::$app->request->input('is_sys');
         }
         // 权限只能是2级，不能是三级
         $parentMent = AuthItemModel::find()->where($where)->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
@@ -194,8 +194,8 @@ class PermissionController extends AController
     {
         global $_GPC;
         $all = [];
-        $permission_type = Yii::$app->request->input('permission_type');
-        $module_name = Yii::$app->request->input('module_name');
+        $permission_type =\Yii::$app->request->input('permission_type');
+        $module_name =\Yii::$app->request->input('module_name');
 
         $model = $this->findSelfModel($id);
         $list = $model->getAdminItems($permission_type);
@@ -284,7 +284,7 @@ class PermissionController extends AController
     public function actionUpdateitem(): array
     {
         global $_GPC;
-        $id = Yii::$app->request->input('id');
+        $id =\Yii::$app->request->input('id');
         $model = $this->findSelfModel($id);
         $data = yii::$app->request->post();
 
@@ -318,8 +318,8 @@ class PermissionController extends AController
     public function actionChange(): array
     {
         global $_GPC;
-        $id = Yii::$app->request->input('id');
-        $items = Yii::$app->request->input('items');
+        $id =\Yii::$app->request->input('id');
+        $items =\Yii::$app->request->input('items');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数ID不能为空');

@@ -64,8 +64,8 @@ class Fans extends BaseObject
         $isHave = $this->checkByopenid($openid);
         FileHelper::writeLog($logPath, '登录日志:校验openid是否存在' . json_encode([
             'isHave' => $isHave,
-            'bloc_id' => Yii::$app->request->input('bloc_id'),
-            'isRegister' => RegisterLevel::isRegister($isHave, Yii::$app->request->input('bloc_id')),
+            'bloc_id' =>\Yii::$app->request->input('bloc_id',0),
+            'isRegister' => RegisterLevel::isRegister($isHave,\Yii::$app->request->input('bloc_id',0)),
         ]));
 
 
@@ -173,14 +173,14 @@ class Fans extends BaseObject
     public function checkByopenid($openid): array|\yii\db\ActiveRecord|null
     {
         global $_GPC;
-        return DdWxappFans::find()->where(['openid' => $openid, 'store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
+        return DdWxappFans::find()->where(['openid' => $openid, 'store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
     }
 
     public function fansByopenid($openid): array|\yii\db\ActiveRecord|null
     {
         global $_GPC;
 
-        return DdWxappFans::find()->where(['openid' => $openid, 'store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
+        return DdWxappFans::find()->where(['openid' => $openid, 'store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
     }
 
     public function removeEmoji($nickname): array|string|null

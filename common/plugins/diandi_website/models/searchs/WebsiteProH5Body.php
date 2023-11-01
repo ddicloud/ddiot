@@ -74,8 +74,8 @@ class WebsiteProH5Body extends WebsiteProH5BodyModel
             ->andFilterWhere(['like', 'image_b', $this->image_b]);
 
         $count = $query->count();
-        $pageSize = Yii::$app->request->input('pageSize');
-        $page = Yii::$app->request->input('page');
+        $pageSize =\Yii::$app->request->input('pageSize');
+        $page =\Yii::$app->request->input('page');
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

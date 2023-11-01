@@ -54,8 +54,8 @@ class ProConfigController extends AController
     {
         global $_GPC;
 
-        $where['store_id'] = Yii::$app->request->input('store_id');
-        $view = WebsiteProConfig::find()->where(['store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
+        $where['store_id'] =\Yii::$app->request->input('store_id',0);
+        $view = WebsiteProConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
         // if ($view) {
         //     $view['image_a'] = ImageHelper::tomedia($view['image_a']);
         //     $view['image_b'] = ImageHelper::tomedia($view['image_b']);
@@ -113,8 +113,8 @@ class ProConfigController extends AController
 
         $data = Yii::$app->request->post();
         $website_model = new WebsiteProConfig();
-        $where['store_id'] = Yii::$app->request->input('store_id');
-        $is_add = $website_model->find()->where(['store_id' => Yii::$app->request->input('store_id')])->asArray()->one();
+        $where['store_id'] =\Yii::$app->request->input('store_id',0);
+        $is_add = $website_model->find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
 
         if ($is_add) {
             WebsiteProConfig::updateAll($data, ['id' => $is_add['id']]);

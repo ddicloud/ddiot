@@ -70,7 +70,7 @@ class Sign extends ActionFilter
     {
         global $_GPC;
         $apiConf = new Api();
-        $apiConf->getConf(Yii::$app->request->input('bloc_id'));
+        $apiConf->getConf(Yii::$app->request->input('bloc_id',0));
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
             'app_secret' => $apiConf['app_secret'],
             'app_id' => $apiConf['app_id'],

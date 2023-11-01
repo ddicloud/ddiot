@@ -114,7 +114,7 @@ class LocationController extends AController
 
         if ($model->load($_GPC, '') && $model->save()) {
             // 更新该位置下的商品和图片广告位对应的mark
-            $mark = Yii::$app->request->input('HubLocation')['mark'];
+            $mark =\Yii::$app->request->input('HubLocation')['mark'];
             HubLocationGoods::updateAll(['mark' => $mark], ['location_id' => $id]);
             HubLocationAd::updateAll(['mark' => $mark], ['location_id' => $id]);
         }

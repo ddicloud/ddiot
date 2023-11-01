@@ -35,8 +35,8 @@ class QrcodeController extends AController
         FileHelper::writeLog($logPath, '0002');
         
         $member_id = Yii::$app->user->identity->member_id;
-        $option  = Yii::$app->request->input('option');
-        $aging  = Yii::$app->request->input('aging');//1临时，2永久
+        $option  =\Yii::$app->request->input('option');
+        $aging  =\Yii::$app->request->input('aging');//1临时，2永久
         
         $app = Yii::$app->wechat->app;
         $expire_seconds = 0;

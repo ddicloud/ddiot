@@ -185,7 +185,7 @@ class UserController extends AController
     {
         global $_GPC;
 
-        $id = Yii::$app->request->input('id');
+        $id =\Yii::$app->request->input('id');
 
         $user = $this->findModel($id);
         $title = $user->username;

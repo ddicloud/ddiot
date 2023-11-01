@@ -146,7 +146,7 @@ class PluginsModule extends Module
     public function initWechat(): void
     {
         global $_GPC;
-        $store_id = Yii::$app->request->input('store_id');
+        $store_id =\Yii::$app->request->input('store_id',0);
         $config = require Yii::getAlias('@api/modules/officialaccount/config.php');
 
         $params = Yii::$app->params;
@@ -175,7 +175,7 @@ class PluginsModule extends Module
             'notify_url' => Yii::$app->request->hostInfo . '/api/wechat/basics/notify',
         ];
 
-        $redirect_uri = !empty(Yii::$app->request->input('redirect_uri')) ? Yii::$app->request->input('redirect_uri') : '';
+        $redirect_uri = !empty(Yii::$app->request->input('redirect_uri')) ?\Yii::$app->request->input('redirect_uri') : '';
 
         // 公众号设置
         $wechatConfig = [

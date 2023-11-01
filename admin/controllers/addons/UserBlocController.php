@@ -154,9 +154,9 @@ class UserBlocController extends AController
     {
         global $_GPC;
 
-        $bloc_id = Yii::$app->request->input('bloc_id');
+        $bloc_id =\Yii::$app->request->input('bloc_id',0);
 
-        $user_id = Yii::$app->request->input('user_id');
+        $user_id =\Yii::$app->request->input('user_id');
 
         if (!$user_id) {
             return ResultHelper::json(400, '请先选择管理员');

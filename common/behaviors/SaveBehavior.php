@@ -62,7 +62,7 @@ class SaveBehavior extends Behavior
 
         // 后台多级数据传递
         if (!empty(Yii::$app->request->input('blocs'))) {
-            $blocs = Yii::$app->request->input('blocs');
+            $blocs =\Yii::$app->request->input('blocs');
             $bloc_id  = $blocs[0];
             $store_id = $blocs[1];
         }

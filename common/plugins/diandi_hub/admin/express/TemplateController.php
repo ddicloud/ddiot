@@ -67,7 +67,7 @@ class TemplateController extends AController
     public function actionView($id)
     {
         global $_GPC;
-        $is_special = (int) Yii::$app->request->input('is_special');
+        $is_special = (int)\Yii::$app->request->input('is_special');
         $detail = HubExpressTemplate::find()->where(['id' => $id])->asArray()->one();
         $region = new DdRegion();
 
@@ -119,23 +119,23 @@ class TemplateController extends AController
     {
         global $_GPC;
         $model = new HubExpressTemplate();
-        $is_nationwide = Yii::$app->request->input('is_nationwide');
-        $is_special = (int) Yii::$app->request->input('is_special');
+        $is_nationwide =\Yii::$app->request->input('is_nationwide');
+        $is_special = (int)\Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
             // 特殊区域处理
-            $seleCitys = Yii::$app->request->input('seleCitys');
+            $seleCitys =\Yii::$app->request->input('seleCitys');
             $HubExpressTemplateArea = new HubExpressTemplateArea();
 
             foreach ($seleCitys as $key => $value) {
                 $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                 $data = [
-                    'is_special' => (int) Yii::$app->request->input('is_special'),
-                    'template_id' => (int) Yii::$app->request->input('template_id'),
+                    'is_special' => (int)\Yii::$app->request->input('is_special'),
+                    'template_id' => (int)\Yii::$app->request->input('template_id'),
                     'province' => $value['pid'],
                     'district' => $value['id'],
-                    'express_id' => (int) Yii::$app->request->input('express_id'),
-                    'title' => Yii::$app->request->input('title'),
+                    'express_id' => (int)\Yii::$app->request->input('express_id'),
+                    'title' =>\Yii::$app->request->input('title'),
                     'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
                     'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
                     'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
@@ -168,19 +168,19 @@ class TemplateController extends AController
                 // region_id
                 $id = Yii::$app->db->getLastInsertID();
                 if (empty($is_nationwide)) {
-                    $seleCitys = Yii::$app->request->input('seleCitys');
+                    $seleCitys =\Yii::$app->request->input('seleCitys');
                     $HubExpressTemplateArea = new HubExpressTemplateArea();
 
                     foreach ($seleCitys as $key => $value) {
                         $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                         $data = [
-                            'is_special' => (int) Yii::$app->request->input('is_special'),
+                            'is_special' => (int)\Yii::$app->request->input('is_special'),
                             'template_id' => $id,
                             'province' => $value['pid'],
                             'district' => $value['id'],
-                            'express_id' => (int) Yii::$app->request->input('express_id'),
-                            'title' => Yii::$app->request->input('title'),
+                            'express_id' => (int)\Yii::$app->request->input('express_id'),
+                            'title' =>\Yii::$app->request->input('title'),
                             'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
                             'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
                             'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
@@ -233,27 +233,27 @@ class TemplateController extends AController
     {
         global $_GPC;
         $model = $this->findModel($id);
-        $is_special = (int) Yii::$app->request->input('is_special');
+        $is_special = (int)\Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
             // 特殊区域处理
-            $seleCitys = Yii::$app->request->input('seleCitys');
+            $seleCitys =\Yii::$app->request->input('seleCitys');
             $HubExpressTemplateArea = new HubExpressTemplateArea();
 
             $HubExpressTemplateArea->deleteAll([
                 'template_id' => $id,
-                'is_special' => (int) Yii::$app->request->input('is_special'),
+                'is_special' => (int)\Yii::$app->request->input('is_special'),
             ]);
 
             foreach ($seleCitys as $key => $value) {
                 $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
 
                 $data = [
-                      'is_special' => (int) Yii::$app->request->input('is_special'),
-                      'template_id' => (int) Yii::$app->request->input('template_id'),
+                      'is_special' => (int)\Yii::$app->request->input('is_special'),
+                      'template_id' => (int)\Yii::$app->request->input('template_id'),
                       'province' => $value['pid'],
                       'district' => $value['id'],
-                      'express_id' => (int) Yii::$app->request->input('express_id'),
-                      'title' => Yii::$app->request->input('title'),
+                      'express_id' => (int)\Yii::$app->request->input('express_id'),
+                      'title' =>\Yii::$app->request->input('title'),
                       'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
                       'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
                       'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
@@ -285,22 +285,22 @@ class TemplateController extends AController
             if ($model->load($_GPC, '') && $model->save()) {
                 // region_id
                 if (empty($is_nationwide)) {
-                    $seleCitys = Yii::$app->request->input('seleCitys');
+                    $seleCitys =\Yii::$app->request->input('seleCitys');
                     $HubExpressTemplateArea = new HubExpressTemplateArea();
                     $HubExpressTemplateArea->deleteAll([
                         'template_id' => $id,
-                        'is_special' => (int) Yii::$app->request->input('is_special'),
+                        'is_special' => (int)\Yii::$app->request->input('is_special'),
                     ]);
 
                     foreach ($seleCitys as $key => $value) {
                         $_HubExpressTemplateArea = clone $HubExpressTemplateArea;
                         $data = [
-                         'is_special' => (int) Yii::$app->request->input('is_special'),
+                         'is_special' => (int)\Yii::$app->request->input('is_special'),
                          'template_id' => $id,
                          'province' => $value['pid'],
                          'district' => $value['id'],
-                         'express_id' => (int) Yii::$app->request->input('express_id'),
-                         'title' => Yii::$app->request->input('title'),
+                         'express_id' => (int)\Yii::$app->request->input('express_id'),
+                         'title' =>\Yii::$app->request->input('title'),
                          'bynum_snum' => floatval(Yii::$app->request->input('bynum_snum')),
                          'bynum_sprice' => floatval(Yii::$app->request->input('bynum_sprice')),
                          'bynum_xnum' => floatval(Yii::$app->request->input('bynum_xnum')),
@@ -342,8 +342,8 @@ class TemplateController extends AController
     public function actionGetarea()
     {
         global $_GPC;
-        $express_id = Yii::$app->request->input('express_id');
-        $template_id = Yii::$app->request->input('template_id');
+        $express_id =\Yii::$app->request->input('express_id');
+        $template_id =\Yii::$app->request->input('template_id');
         $HubExpressTemplateArea = new HubExpressTemplateArea();
         $list = $HubExpressTemplateArea->find()->where([
             'express_id' => $express_id,
@@ -356,8 +356,8 @@ class TemplateController extends AController
     public function actionCitylist()
     {
         global $_GPC;
-        $is_special = (int) Yii::$app->request->input('is_special');
-        $template_id = (int) Yii::$app->request->input('template_id');
+        $is_special = (int)\Yii::$app->request->input('is_special');
+        $template_id = (int)\Yii::$app->request->input('template_id');
         $cacheKey = 'regionExpress_'.$is_special;
         $region = new DdRegion();
         $regionVal = Yii::$app->cache->get($cacheKey);
@@ -390,11 +390,11 @@ class TemplateController extends AController
     {
         global $_GPC;
 
-        $region_ids = Yii::$app->request->input('region_ids');
+        $region_ids =\Yii::$app->request->input('region_ids');
         if (!empty($region_ids)) {
-            $title = Yii::$app->request->input('title');
-            $express_id = Yii::$app->request->input('express_id');
-            $template_id = Yii::$app->request->input('template_id');
+            $title =\Yii::$app->request->input('title');
+            $express_id =\Yii::$app->request->input('express_id');
+            $template_id =\Yii::$app->request->input('template_id');
 
             // if(empty($express_id)){
             //      return ResultHelper::json(400,'请更新快递模板后选择适用区域',[]);

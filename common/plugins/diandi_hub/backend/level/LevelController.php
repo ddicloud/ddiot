@@ -76,7 +76,7 @@ class LevelController extends BaseController
     public function actionDetail()
     {
         global $_GPC;
-        $id = Yii::$app->request->input('id');
+        $id =\Yii::$app->request->input('id');
         $detail = $this->findModel($id);
         
         return ResultHelper::json(200,'获取成功',$detail);
@@ -132,7 +132,7 @@ class LevelController extends BaseController
     {
         global $_GPC;
         
-        $id = Yii::$app->request->input('id');
+        $id =\Yii::$app->request->input('id');
         $model = $this->findModel($id);
          
         if(Yii::$app->request->isPost){

@@ -22,9 +22,9 @@ class DecryptController extends AController
     {
         global $_GPC;
 
-        $encryptedData = Yii::$app->request->input('encryptedData');
-        $iv = Yii::$app->request->input('iv');
-        $code = Yii::$app->request->input('code');
+        $encryptedData =\Yii::$app->request->input('encryptedData');
+        $iv =\Yii::$app->request->input('iv');
+        $code =\Yii::$app->request->input('code');
         $Res = DecryptService::decryptWechatData($encryptedData, $iv, $code);
         return ResultHelper::json(200, '解密成功', $Res);
     }

@@ -40,8 +40,8 @@ class WechatController extends AController
         $openPlatform = Factory::openPlatform($data);
 
         $callback = UrlHelper::adminUrl('wechat', 'signup', [
-            'bloc_id' => Yii::$app->request->input('bloc_id'),
-            'store_id' => Yii::$app->request->input('store_id'),
+            'bloc_id' =>\Yii::$app->request->input('bloc_id',0),
+            'store_id' =>\Yii::$app->request->input('store_id',0),
         ]);
 
         $url = $openPlatform->getPreAuthorizationUrl($callback); // 传入回调URI即可

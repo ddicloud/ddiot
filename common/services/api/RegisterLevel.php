@@ -35,7 +35,7 @@ class RegisterLevel extends BaseService
                 break;
             case RegisterLevelStatus::STORE:
 
-                return  $userInfo['store_id'] == Yii::$app->request->input('store_id');
+                return  $userInfo['store_id'] ==\Yii::$app->request->input('store_id',0);
                 break;
             default:
                 return  $userInfo['bloc_id'] == $bloc_id;

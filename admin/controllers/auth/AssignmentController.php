@@ -172,9 +172,9 @@ class AssignmentController extends AController
     public function actionChange(): array
     {
         global $_GPC;
-        $id = Yii::$app->request->input('id');
-        $items = Yii::$app->request->input('items');
-        $type = Yii::$app->request->input('type');
+        $id =\Yii::$app->request->input('id');
+        $items =\Yii::$app->request->input('items');
+        $type =\Yii::$app->request->input('type');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数id不能为空');

@@ -76,13 +76,13 @@ class UploadController extends AController
             $Upload = new Upload();
             //实例化上传验证类，传入上传配置参数项名称
             $model = new UploadValidate('uploadFile');
-            $path = Yii::$app->request->input('path');
-            $is_chunk = Yii::$app->request->input('is_chunk');
-            $chunk_partSize = Yii::$app->request->input('chunk_partSize');
-            $chunk_partCount = Yii::$app->request->input('chunk_partCount');
-            $chunk_partIndex = Yii::$app->request->input('chunk_partIndex');
-            $md5 = Yii::$app->request->input('md5');
-            $chunk_md5 = Yii::$app->request->input('chunk_md5');
+            $path =\Yii::$app->request->input('path');
+            $is_chunk =\Yii::$app->request->input('is_chunk');
+            $chunk_partSize =\Yii::$app->request->input('chunk_partSize');
+            $chunk_partCount =\Yii::$app->request->input('chunk_partCount');
+            $chunk_partIndex =\Yii::$app->request->input('chunk_partIndex');
+            $md5 =\Yii::$app->request->input('md5');
+            $chunk_md5 =\Yii::$app->request->input('chunk_md5');
 
             if (!empty($is_chunk)) {
                 if (!$chunk_partSize) {
@@ -115,11 +115,11 @@ class UploadController extends AController
             $Upload = new Upload();
             //实例化上传验证类，传入上传配置参数项名称
 //            $model = new UploadValidate('uploadFile');
-            $file_name = Yii::$app->request->input('file_name');
-            $file_type = Yii::$app->request->input('file_type');
-            $file_size = Yii::$app->request->input('file_size');
-            $file_parts = Yii::$app->request->input('file_parts');
-            $chunk_partSize = Yii::$app->request->input('chunk_partSize');
+            $file_name =\Yii::$app->request->input('file_name');
+            $file_type =\Yii::$app->request->input('file_type');
+            $file_size =\Yii::$app->request->input('file_size');
+            $file_parts =\Yii::$app->request->input('file_parts');
+            $chunk_partSize =\Yii::$app->request->input('chunk_partSize');
             //合并且进行云分片处理
             $info = $Upload::mergeFile($file_name, $file_type, $file_size, $file_parts, $chunk_partSize);
 

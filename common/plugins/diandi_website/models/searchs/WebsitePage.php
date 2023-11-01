@@ -71,8 +71,8 @@ class WebsitePage extends WebsitePageModel
             ->andFilterWhere(['like', 'content', $this->content]);
         
         $count = $query->count();
-        $pageSize   = Yii::$app->request->input('pageSize');
-        $page       = Yii::$app->request->input('page');
+        $pageSize   =\Yii::$app->request->input('pageSize');
+        $page       =\Yii::$app->request->input('page');
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

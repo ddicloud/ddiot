@@ -64,7 +64,7 @@ class UploadController extends AController
         global $_GPC;
 
         header('Content-type:text/html;charset=utf-8');
-        $base64_image_content       = Yii::$app->request->input('images');
+        $base64_image_content       =\Yii::$app->request->input('images');
 
 
         if (!$base64_image_content) return ['code' => 404, 'msg' => '数据不能为空'];

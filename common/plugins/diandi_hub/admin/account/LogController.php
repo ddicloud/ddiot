@@ -126,7 +126,7 @@ class LogController extends AController
     {
         global $_GPC;
 
-        $between_time = Yii::$app->request->input('between_time');
+        $between_time =\Yii::$app->request->input('between_time');
 
         $query = HubAccountLog::find();
 

@@ -78,11 +78,11 @@ class CommentController extends AController
 
         $data = [];
         
-        $data['type'] = Yii::$app->request->input('type');
+        $data['type'] =\Yii::$app->request->input('type');
 
         $DdShopComment = new  HubShopComment();
         
-        $data['comment_id'] = Yii::$app->request->input('comment_id');
+        $data['comment_id'] =\Yii::$app->request->input('comment_id');
         
         if($data['type'] == CommentType::getValueByName('订单评价')){
             $order_id = $data['comment_id'];
@@ -99,12 +99,12 @@ class CommentController extends AController
         }
         
         
-        $data['star_level'] = Yii::$app->request->input('star_level');
-        $data['comment']    = Yii::$app->request->input('comment');
+        $data['star_level'] =\Yii::$app->request->input('star_level');
+        $data['comment']    =\Yii::$app->request->input('comment');
 
         $data['user_id'] = Yii::$app->user->identity->member_id??0;
 
-        $data['images'] = serialize(explode(',', Yii::$app->request->input('images')));
+        $data['images'] = serialize(explode(',',\Yii::$app->request->input('images')));
 
         if ($DdShopComment->load($data, '') && $DdShopComment->save()) {
             $id = Yii::$app->db->getLastInsertID();

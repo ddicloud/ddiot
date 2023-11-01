@@ -301,7 +301,7 @@ class BlocController extends AController
         $where['pid'] = Yii::$app->params['bloc_id'];
 
         if (!empty(Yii::$app->request->input('level_num'))) {
-            $where['level_num'] = Yii::$app->request->input('level_num');
+            $where['level_num'] =\Yii::$app->request->input('level_num');
         }
 
         $childs = $model->find()->where($where)->select(['bloc_id', 'pid', 'business_name as label', 'bloc_id as id'])->asArray()->all();

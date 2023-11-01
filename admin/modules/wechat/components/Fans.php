@@ -63,7 +63,7 @@ class Fans extends BaseObject
         
         
 
-        if (RegisterLevel::isRegister($isHave, Yii::$app->request->input('bloc_id'))) {
+        if (RegisterLevel::isRegister($isHave,\Yii::$app->request->input('bloc_id',0))) {
             FileHelper::writeLog($logPath, '登录日志:有缓存');
 
             $fans = $this->fansByopenid($openid);

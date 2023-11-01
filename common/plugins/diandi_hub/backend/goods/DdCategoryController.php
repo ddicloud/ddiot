@@ -171,7 +171,7 @@ class DdCategoryController extends BaseController
     public function actionGoodslist()
     {
         global  $_GPC;
-        $keywords = Yii::$app->request->input('keywords');
+        $keywords =\Yii::$app->request->input('keywords');
         $list = [];
         
         $list = GoodsService::getList(0, 0, $keywords,10);

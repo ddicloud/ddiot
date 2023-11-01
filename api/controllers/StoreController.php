@@ -39,7 +39,7 @@ class StoreController extends AController
     public function actionDetailinfo(): array
     {
         global $_GPC;
-        $store_id = Yii::$app->request->input('store_id');
+        $store_id =\Yii::$app->request->input('store_id',0);
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
         
         if(!$store){
@@ -54,7 +54,7 @@ class StoreController extends AController
     public function actionCate(): array
     {
         global $_GPC;
-        $parent_id = Yii::$app->request->input('parent_id');
+        $parent_id =\Yii::$app->request->input('parent_id');
        
         $list = Yii::$app->service->commonStoreService->getCate($parent_id);
 
@@ -66,15 +66,15 @@ class StoreController extends AController
         global $_GPC;
         $logPath = Yii::getAlias('@runtime/StoreService/list/'.date('Y/md').'.log');
 
-        $category_pid = Yii::$app->request->input('category_pid');
-        $category_id = Yii::$app->request->input('category_id');
-        $keywords = Yii::$app->request->input('keywords');
-        $longitude = Yii::$app->request->input('longitude');
-        $latitude  = Yii::$app->request->input('latitude');
+        $category_pid =\Yii::$app->request->input('category_pid');
+        $category_id =\Yii::$app->request->input('category_id');
+        $keywords =\Yii::$app->request->input('keywords');
+        $longitude =\Yii::$app->request->input('longitude');
+        $latitude  =\Yii::$app->request->input('latitude');
         $label_id  = intval(Yii::$app->request->input('label_id'));
         
-        $page  = Yii::$app->request->input('page');
-        $pageSize  = Yii::$app->request->input('pageSize');
+        $page  =\Yii::$app->request->input('page');
+        $pageSize  =\Yii::$app->request->input('pageSize');
 
         FileHelper::writeLog($logPath, '经纬度计算距离参数' .json_encode([
             'longitude'=>$longitude,

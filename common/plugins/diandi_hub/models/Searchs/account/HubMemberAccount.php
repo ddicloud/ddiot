@@ -84,7 +84,7 @@ class HubMemberAccount extends HubMemberAccountModel
         ]);
         
         $count = $query->count();
-        $pageSize   = Yii::$app->request->input('pageSize',10);
+        $pageSize   =\Yii::$app->request->input('pageSize',10);
         $page       = \Yii::$app->request->input('page',1);
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
