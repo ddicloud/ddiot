@@ -246,7 +246,7 @@ class GoodsController extends AController
     public function actionLists(): array
     {
         global $_GPC;
-        $pageSize = $_GPC['pageSize'];
+        $pageSize = Yii::$app->request->input('pageSize',10);
         $keywords = $_GPC['keywords'];
         $goods_price = $_GPC['goods_price'];
         $sales_initial = $_GPC['sales_initial'];
