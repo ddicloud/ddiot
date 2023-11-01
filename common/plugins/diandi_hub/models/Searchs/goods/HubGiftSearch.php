@@ -52,8 +52,7 @@ class HubGiftSearch extends GoodsHubGift
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         
         $query = GoodsHubGift::find();
 

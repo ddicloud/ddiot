@@ -50,8 +50,7 @@ class HubAccountStorePay extends HubAccountStorePayModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubAccountStorePayModel::find();
 
         

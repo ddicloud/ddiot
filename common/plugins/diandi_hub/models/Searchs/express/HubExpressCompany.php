@@ -49,8 +49,7 @@ class HubExpressCompany extends HubExpressCompanyModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubExpressCompanyModel::find();
 
         

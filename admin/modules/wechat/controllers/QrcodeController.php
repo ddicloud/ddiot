@@ -26,8 +26,7 @@ class QrcodeController extends AController
      * @return string
      */
     public function actionGetqrcode()
-    {
-        global $_GPC;
+   {
         $path  =\Yii::$app->request->input('path');
         $width =\Yii::$app->request->input('width');
 

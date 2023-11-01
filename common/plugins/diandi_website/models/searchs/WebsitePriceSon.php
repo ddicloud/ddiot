@@ -42,8 +42,7 @@ class WebsitePriceSon extends WebsitePriceSonModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsitePriceSonModel::find();
 
         

@@ -49,8 +49,7 @@ class butionLevelEarningsConf extends butionLevelEarningsConfModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = butionLevelEarningsConfModel::find();
 
         $levelnum =\Yii::$app->request->input('levelnum');

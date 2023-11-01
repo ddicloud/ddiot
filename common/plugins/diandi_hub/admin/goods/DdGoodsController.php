@@ -74,8 +74,7 @@ class DdGoodsController extends AController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $searchModel = new HubBaseGoodsSearch();
         $searchWhere = $_GPC[$this->modelSearchName];
         if (!empty($searchWhere) && $searchWhere != 'undefined') {
@@ -217,8 +216,7 @@ class DdGoodsController extends AController
     }
 
     public function actionGetSpec()
-    {
-        global $_GPC;
+   {
         $category_id =\Yii::$app->request->input('category_id')[1];
         if (empty($category_id)) {
             return ResultHelper::json(400, '缺少二级分类id');
@@ -310,8 +308,7 @@ class DdGoodsController extends AController
 
     //该方法是异步校验字段，输入框失去焦点之后自动会自动请求改地址
     public function actionValidate()
-    {
-        global $_GPC;
+   {
         $model = new HubGoodsBaseGoods();
 
         $base =\Yii::$app->request->input('HubGoodsBaseGoods');
@@ -355,8 +352,7 @@ class DdGoodsController extends AController
     }
 
     public function actionInit()
-    {
-        global $_GPC;
+   {
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $where['bloc_id'] =\Yii::$app->request->input('bloc_id',0);
         //   商品分类
@@ -381,8 +377,7 @@ class DdGoodsController extends AController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
 
         $adminId = Yii::$app->user->identity->user_id;
         // $bool = MemberExpand::checkAdminCert($adminId);
@@ -399,7 +394,7 @@ class DdGoodsController extends AController
             $goods_type = GoodsTypeStatus::getValueByName('店铺商品');
         }
 
-        $base = $_GPC;
+        $base = Yii::$app->request->input();
         $delivery_id = 0;
         if (isset($base['delivery_id'])) {
             $delivery_id = is_numeric($base['delivery_id']) ? $base['delivery_id'] : 0;
@@ -474,11 +469,10 @@ class DdGoodsController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = $this->findModel($id);
 
-        $base = $_GPC;
+        $base = Yii::$app->request->input();
         $delivery_id = 0;
         if (isset($base['delivery_id'])) {
             $delivery_id = is_numeric($base['delivery_id']) ? $base['delivery_id'] : 0;
@@ -552,8 +546,7 @@ class DdGoodsController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
 
         $this->findModel($id)->delete();
 
@@ -572,8 +565,7 @@ class DdGoodsController extends AController
     }
 
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
         $where = [];
 
         $where['store_id'] = Yii::$app->params['store_id'];
@@ -754,8 +746,7 @@ class DdGoodsController extends AController
      * @throws NotFoundHttpException
      */
     public function actionSpec()
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
 

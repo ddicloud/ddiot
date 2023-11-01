@@ -41,8 +41,7 @@ class CeshiController extends AController
 
     
     public function actionSms()
-    {
-        global $_GPC;
+   {
         $mobile =\Yii::$app->request->input('mobile');
         Yii::$app->cache->set($mobile.'_code','147852');
     }

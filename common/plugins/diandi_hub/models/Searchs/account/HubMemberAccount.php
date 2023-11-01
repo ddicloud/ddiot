@@ -49,8 +49,7 @@ class HubMemberAccount extends HubMemberAccountModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubMemberAccountModel::find();
 
         

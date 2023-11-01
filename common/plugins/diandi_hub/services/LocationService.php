@@ -26,8 +26,7 @@ class LocationService extends BaseService
     public $modelClass = '';
 
     public static function getLocation($type)
-    {
-        global $_GPC;
+   {
         $where = [];
         $where['type'] = $type;
 
@@ -46,8 +45,7 @@ class LocationService extends BaseService
 
     //根据页面获取广告位内容
     public static function getAd($pageType = 0, $locationType = 1)
-    {
-        global $_GPC;
+   {
 
         $where = [];
         $where['bloc_id'] = Yii::$app->params['bloc_id'];
@@ -168,8 +166,7 @@ class LocationService extends BaseService
 
     // 获取推荐位的商品
     public static function getGoodsAdv($mark, $page = 1, $pageSize = 10)
-    {
-        global $_GPC;
+   {
 
         $location_where = [];
         $location_where['bloc_id'] = Yii::$app->params['bloc_id'];

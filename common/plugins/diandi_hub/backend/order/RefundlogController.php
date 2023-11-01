@@ -49,8 +49,7 @@ class RefundlogController extends BaseController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
 
         $searchModel = new HubRefundLogSearch();
@@ -70,8 +69,7 @@ class RefundlogController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
 
         return $this->render('view', [
@@ -86,8 +84,7 @@ class RefundlogController extends BaseController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
         $refund = AftersaleService::detail($order_id);
         $detail = $refund['refund'];
@@ -139,8 +136,7 @@ class RefundlogController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
         $model = $this->findModel($id);
 
@@ -170,8 +166,7 @@ class RefundlogController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
 
         $this->findModel($id)->delete();

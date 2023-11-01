@@ -289,8 +289,7 @@ class BlocController extends AController
      * @return array
      */
     public function actionChildbloc(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Bloc([
             'extras' => $this->extras,

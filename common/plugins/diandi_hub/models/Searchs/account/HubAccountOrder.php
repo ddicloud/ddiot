@@ -55,8 +55,7 @@ class HubAccountOrder extends HubAccountOrderModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubAccountOrderModel::find();
  
         $query->with([

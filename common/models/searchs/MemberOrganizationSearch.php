@@ -50,8 +50,7 @@ class MemberOrganizationSearch extends MemberOrganization
      * @return ArrayDataProvider|false
      */
     public function search(array $params): ArrayDataProvider|bool
-    {
-        global $_GPC;
+   {
         $query = MemberOrganization::find();
 
 

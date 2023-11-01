@@ -42,8 +42,7 @@ class WebsiteAd extends WebsiteAdModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteAdModel::find();
 
         

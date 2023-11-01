@@ -65,8 +65,7 @@ class TemplateController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $is_special = (int)\Yii::$app->request->input('is_special');
         $detail = HubExpressTemplate::find()->where(['id' => $id])->asArray()->one();
         $region = new DdRegion();
@@ -116,8 +115,7 @@ class TemplateController extends AController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $model = new HubExpressTemplate();
         $is_nationwide =\Yii::$app->request->input('is_nationwide');
         $is_special = (int)\Yii::$app->request->input('is_special');
@@ -230,8 +228,7 @@ class TemplateController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = $this->findModel($id);
         $is_special = (int)\Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
@@ -340,8 +337,7 @@ class TemplateController extends AController
     }
 
     public function actionGetarea()
-    {
-        global $_GPC;
+   {
         $express_id =\Yii::$app->request->input('express_id');
         $template_id =\Yii::$app->request->input('template_id');
         $HubExpressTemplateArea = new HubExpressTemplateArea();
@@ -354,8 +350,7 @@ class TemplateController extends AController
     }
 
     public function actionCitylist()
-    {
-        global $_GPC;
+   {
         $is_special = (int)\Yii::$app->request->input('is_special');
         $template_id = (int)\Yii::$app->request->input('template_id');
         $cacheKey = 'regionExpress_'.$is_special;
@@ -387,8 +382,7 @@ class TemplateController extends AController
     }
 
     public function actionTemplatearea()
-    {
-        global $_GPC;
+   {
 
         $region_ids =\Yii::$app->request->input('region_ids');
         if (!empty($region_ids)) {

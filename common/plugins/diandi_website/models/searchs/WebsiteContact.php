@@ -50,8 +50,7 @@ class WebsiteContact extends WebsiteContactModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteContactModel::find();
 
 

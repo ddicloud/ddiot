@@ -50,8 +50,7 @@ class SysFunSearch extends SysFun
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = SysFun::find();
 
 

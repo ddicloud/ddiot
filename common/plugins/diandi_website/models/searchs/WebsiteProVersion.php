@@ -47,8 +47,7 @@ class WebsiteProVersion extends WebsiteProVersionModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProVersionModel::find();
 
         $this->load($params);

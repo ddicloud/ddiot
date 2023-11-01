@@ -138,8 +138,7 @@ class DdOrderController extends AController
 
     // 修改订单收货地址
     public function actionUpaddress()
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $DdOrderAddress = new HubOrderAddress();
@@ -163,8 +162,7 @@ class DdOrderController extends AController
     }
 
     public function actionExpresscode()
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->isPost) {
             $expressCode =\Yii::$app->request->input('expressCode');
             $express_company =\Yii::$app->request->input('express_company');
@@ -388,8 +386,7 @@ class DdOrderController extends AController
     }
 
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
 
         $pay_status =\Yii::$app->request->input('pay_status');
         $pay_type =\Yii::$app->request->input('pay_type');

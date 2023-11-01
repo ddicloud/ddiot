@@ -19,8 +19,7 @@ class ConfigController extends BaseController
 {
 
     public function actionForm()
-    {
-        global $_GPC;
+   {
         
         $model = new HubConfig();
 

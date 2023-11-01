@@ -40,8 +40,7 @@ class IndexController extends AController
      * )
      */
     public function actionSlides()
-    {
-        global $_GPC;
+   {
 
         $terminal_type = intval(Yii::$app->request->input('terminal_type'));
 
@@ -61,8 +60,7 @@ class IndexController extends AController
 
     // 推荐位商品
     public function actionGoodsadv(): array
-    {
-        global $_GPC;
+   {
         $mark =\Yii::$app->request->input('mark');
         $page = Yii::$app->request->get('page', 1);
         $pageSize =\Yii::$app->request->input('pageSize');
@@ -72,8 +70,7 @@ class IndexController extends AController
     }
 
     public function actionPageadv(): array
-    {
-        global $_GPC;
+   {
         $pageType =\Yii::$app->request->input('pageType');
         $locationType =\Yii::$app->request->input('locationType');
         $list = LocationService::getAd($pageType, $locationType);
@@ -82,8 +79,7 @@ class IndexController extends AController
     }
 
     public function actionMenu(): array
-    {
-        global $_GPC;
+   {
         $list = LocationService::getMenu();
 
         return ResultHelper::json(200, '获取成功', $list);

@@ -151,8 +151,7 @@ class UserBlocController extends AController
     }
 
     public function actionGetstore(): array
-    {
-        global $_GPC;
+   {
 
         $bloc_id =\Yii::$app->request->input('bloc_id',0);
 

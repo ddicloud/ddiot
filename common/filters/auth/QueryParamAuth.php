@@ -25,8 +25,7 @@ class QueryParamAuth extends AuthQueryParamAuth
      * {@inheritdoc}
      */
     public function authenticate($user, $request, $response)
-    {
-        global $_GPC;
+   {
 
         $key = $this->tokenParam;
         $accessToken = Yii::$app->request->headers->get($key, '');

@@ -22,8 +22,7 @@ class RefundController extends AController
     public int $searchLevel = 0;
 
     public function actionInfo():array
-    {
-        global $_GPC;
+   {
 
         $list = AftersaleService::getRefundInfo();
 
@@ -31,8 +30,7 @@ class RefundController extends AController
     }
 
     public function actionAdd():array
-    {
-        global $_GPC;
+   {
 
         $order_id =\Yii::$app->request->input('order_id');
 
@@ -104,8 +102,7 @@ class RefundController extends AController
     }
 
     public function actionDetail():array
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->user_id;
         $order_id =\Yii::$app->request->input('order_id');
         $detail = AftersaleService::detail($order_id);
@@ -125,8 +122,7 @@ class RefundController extends AController
      * )
      */
     public function actionCancel():array
-    {
-        global $_GPC;
+   {
         $userId = Yii::$app->user->identity->user_id;
         $refundId =\Yii::$app->request->input('refund_id');
         $detail = AftersaleService::cancelRefund($userId, $refundId);

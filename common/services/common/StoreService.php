@@ -27,8 +27,7 @@ class StoreService extends BaseService
     public $modelClass = 'diandi\addons\models\BlocStore';
 
     public static function list($category_pid, $category_id = 0, $longitude = '', $latitude = '', $keywords = '', $label_id = 0, $page = 1, $pageSize = 10)
-    {
-        global $_GPC;
+   {
         $bloc_id =\Yii::$app->request->input('bloc_id',0);
         $logPath = Yii::getAlias('@api/runtime/StoreService/list/'.date('Y/md').'.log');
 
@@ -149,8 +148,7 @@ class StoreService extends BaseService
     }
 
     public static function getCate($parent_id)
-    {
-        global $_GPC;
+   {
         $bloc_id =\Yii::$app->request->input('bloc_id',0);
         $where = [];
         $where['bloc_id'] = $bloc_id;

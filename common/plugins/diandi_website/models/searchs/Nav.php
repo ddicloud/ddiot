@@ -50,8 +50,7 @@ class Nav extends NavModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = NavModel::find();
 
 

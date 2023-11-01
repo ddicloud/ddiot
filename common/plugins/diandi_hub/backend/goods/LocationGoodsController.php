@@ -79,8 +79,7 @@ class LocationGoodsController extends BaseController
     }
 
     public function actionGoodslocation()
-    {
-        global $_GPC;
+   {
 
         $adv_id =\Yii::$app->request->input('adv_id');
         $good_ids =\Yii::$app->request->input('good_ids');
@@ -122,8 +121,7 @@ class LocationGoodsController extends BaseController
     }
 
     public function actionGoodslist()
-    {
-        global $_GPC;
+   {
         $keywords =\Yii::$app->request->input('keywords');
 
         $adv_id =\Yii::$app->request->input('adv_id');
@@ -231,8 +229,7 @@ class LocationGoodsController extends BaseController
     }
 
     public function actionDeletegoods()
-    {
-        global $_GPC;
+   {
 
         if (yii::$app->request->isPost) {
             $goods_id =\Yii::$app->request->input('goods_id');

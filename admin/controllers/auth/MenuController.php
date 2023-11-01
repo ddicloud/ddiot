@@ -135,8 +135,7 @@ class MenuController extends AController
     }
 
     public function actionRoute(): array
-    {
-        global $_GPC;
+   {
         $name =\Yii::$app->request->input('name')??'';
         $module_name =\Yii::$app->request->input('module_name')??'';
         $route_type =\Yii::$app->request->input('route_type')??0;
@@ -179,8 +178,7 @@ class MenuController extends AController
      * @return array
      */
     public function actionUpdate($id): array
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
 

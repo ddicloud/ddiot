@@ -99,8 +99,7 @@ class SysService extends BaseService
     }
 
     public static function getAdList($categoryId = 0, $type = 0)
-    {
-        global $_GPC;
+   {
         $where = [];
         $where['bloc_id'] = Yii::$app->params['bloc_id'];
         $where['store_id'] = Yii::$app->params['store_id'];

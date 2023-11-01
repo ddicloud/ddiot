@@ -55,8 +55,7 @@ class GoodsController extends AController
      * )
      */
     public function actionSearch()
-    {
-        global $_GPC;
+   {
         $keytwords =\Yii::$app->request->input('keywords');
         $pageSize =\Yii::$app->request->input('pageSize');
         $user_id = Yii::$app->user->identity->member_id??0;
@@ -91,8 +90,7 @@ class GoodsController extends AController
      * )
      */
     public function actionDetail()
-    {
-        global $_GPC;
+   {
         $goods_id =\Yii::$app->request->input('goods_id');
         $member_id = Yii::$app->user->identity->member_id??0;
 
@@ -138,8 +136,7 @@ class GoodsController extends AController
 
     // 获取礼包商品
     public function actionGoodgift()
-    {
-        global $_GPC;
+   {
 
         $page = Yii::$app->request->get('page', 1);
         $pageSize = 100; //\Yii::$app->request->input('pageSize');
@@ -160,8 +157,7 @@ class GoodsController extends AController
     }
 
     public function actionCollect()
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->member_id??0;
 
         $goods_id =\Yii::$app->request->input('goods_id');
@@ -241,8 +237,7 @@ class GoodsController extends AController
      * )
      */
     public function actionLists()
-    {
-        global $_GPC;
+   {
         $pageSize =\Yii::$app->request->input('pageSize');
         $keywords =\Yii::$app->request->input('keywords');
         $goods_price =\Yii::$app->request->input('goods_price');
@@ -273,8 +268,7 @@ class GoodsController extends AController
     }
 
     public function actionPainter()
-    {
-        global $_GPC;
+   {
 
         $user_id = Yii::$app->user->identity->member_id??0;
         $goods_id =\Yii::$app->request->input('goods_id');

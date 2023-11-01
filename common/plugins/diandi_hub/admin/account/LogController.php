@@ -123,8 +123,7 @@ class LogController extends AController
 
 
     public function actionExportdatalist(): array
-    {
-        global $_GPC;
+   {
 
         $between_time =\Yii::$app->request->input('between_time');
 

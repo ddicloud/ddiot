@@ -47,8 +47,7 @@ class SaveBehavior extends Behavior
 
 
     public function init(): void
-    {
-        global $_GPC;
+   {
 
         if (empty($this->attributes)) {
             $this->attributes = [
@@ -130,8 +129,7 @@ class SaveBehavior extends Behavior
      * 声明一个析构方法.
      */
     public function __destruct()
-    {
-        global $_GPC;
+   {
         unset($_GPC, $this->_map, $this->attributes, $this->owner);
     }
 }

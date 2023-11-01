@@ -50,8 +50,7 @@ class UserController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $detail = HubStoreUser::find()->where(['id'=>$id])->with(['store','member','bloc'])->asArray()->one();
         return ResultHelper::json(200,'获取成功', $detail);
     }
@@ -128,8 +127,7 @@ class UserController extends AController
     }
 
     public function actionStorelist()
-    {
-        global $_GPC;
+   {
 
         $keywords =\Yii::$app->request->input('keywords');
 
@@ -157,8 +155,7 @@ class UserController extends AController
     }
 
     public function actionMemberlist()
-    {
-        global $_GPC;
+   {
 
         $keywords =\Yii::$app->request->input('keywords');
 

@@ -99,8 +99,7 @@ class BankController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate()
-    {
-        global $_GPC;
+   {
         
         $member_id =\Yii::$app->request->input('member_id');
 
@@ -135,8 +134,7 @@ class BankController extends BaseController
 
     
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
        
         $list = HubUserBank::find()->all();
     

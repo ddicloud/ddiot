@@ -60,8 +60,7 @@ class UploadController extends AController
     }
 
     public function actionBaseimg(): array
-    {
-        global $_GPC;
+   {
 
         header('Content-type:text/html;charset=utf-8');
         $base64_image_content       =\Yii::$app->request->input('images');

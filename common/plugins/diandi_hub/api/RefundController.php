@@ -27,8 +27,7 @@ class RefundController extends AController
     public $modelClass = 'common\addons\diandi_hub\models\order\HubRefundOrder';
 
     public function actionInfo()
-    {
-        global $_GPC;
+   {
 
         $list = AftersaleService::getRefundInfo();
 
@@ -36,8 +35,7 @@ class RefundController extends AController
     }
 
     public function actionAdd()
-    {
-        global $_GPC;
+   {
 
         $order_id =\Yii::$app->request->input('order_id');
 
@@ -112,8 +110,7 @@ class RefundController extends AController
 
 
     public function actionDetail()
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->member_id??0;
         $order_id =\Yii::$app->request->input('order_id');
         $detail = AftersaleService::detail($order_id);
@@ -132,8 +129,7 @@ class RefundController extends AController
      * )
      */
     public function actionCancel()
-    {
-        global $_GPC;
+   {
         $userId = Yii::$app->user->identity->member_id??0;
         $refundId =\Yii::$app->request->input('refund_id');
         $detail = AftersaleService::cancelRefund($userId, $refundId);

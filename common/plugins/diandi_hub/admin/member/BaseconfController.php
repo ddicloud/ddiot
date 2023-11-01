@@ -29,8 +29,7 @@ class BaseconfController extends AController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         $searchModel = new HubLevelBaseConfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -52,8 +51,7 @@ class BaseconfController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         return ResultHelper::json(200,'获取成功',[
@@ -69,8 +67,7 @@ class BaseconfController extends AController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $model = new HubLevelBaseConf();
@@ -99,8 +96,7 @@ class BaseconfController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         $model = $this->findModel($id);
 
@@ -128,8 +124,7 @@ class BaseconfController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $this->findModel($id)->delete();

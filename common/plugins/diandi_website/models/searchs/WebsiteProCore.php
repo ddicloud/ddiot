@@ -47,8 +47,7 @@ class WebsiteProCore extends WebsiteProCoreModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProCoreModel::find();
 
         $this->load($params);

@@ -47,8 +47,7 @@ class HubPriceConfSearch extends HubPriceConf
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubPriceConf::find();
 
         // add conditions that should always apply here

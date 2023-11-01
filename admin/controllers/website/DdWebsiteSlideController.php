@@ -91,8 +91,7 @@ class DdWebsiteSlideController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdateitem(): array
-    {
-        global $_GPC;
+   {
 
         $id =\Yii::$app->request->input('id');
 
@@ -119,8 +118,7 @@ class DdWebsiteSlideController extends AController
      * @throws StaleObjectException
      */
     public function actionDeleteitem(): array
-    {
-        global $_GPC;
+   {
 
         $id =\Yii::$app->request->input('id');
         $this->findModel($id)->delete();

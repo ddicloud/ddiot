@@ -22,8 +22,7 @@ class LevelController extends AController
     public int $searchLevel = 0;
 
     public function actionLink()
-    {
-        global $_GPC;
+   {
         $member_id =\Yii::$app->request->input('member_id');
         $Res = levelService::siupChild($member_id);
         // if($Res){

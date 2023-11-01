@@ -47,8 +47,7 @@ class LocationGoodsSearch extends HubLocationGoods
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLocationGoods::find()
                 ->joinWith('goods as g')
                 ->joinWith('location as l');

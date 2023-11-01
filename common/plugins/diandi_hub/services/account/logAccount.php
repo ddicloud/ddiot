@@ -40,8 +40,7 @@ class logAccount extends OrderAccount
      * @return void
      */
     public static function addorderMoneyLog($member_id,$order_id,$money,$order_goods_id,$change_type,$account_type,$order_type,$goods_type,$order_price,$goods_id,$goods_price,$performance=0)
-    {
-        global $_GPC;
+   {
         
         loggingHelper::writeLog('diandi_hub', 'logAccount', '更新zichan qingqiu数据',$_GPC); 
         

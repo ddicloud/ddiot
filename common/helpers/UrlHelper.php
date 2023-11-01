@@ -20,8 +20,7 @@ use yii\helpers\BaseUrl;
 class UrlHelper extends BaseUrl
 {
     public static function addonsUrl($addons, $controller, $action, $options = [])
-    {
-        global $_GPC;
+   {
         $urlArr = ['/'.$addons.'/'.$controller.'/'.$action];
         foreach ($options as $key => $value) {
             $urlArr = array_merge($urlArr, [$key => $value]);
@@ -31,8 +30,7 @@ class UrlHelper extends BaseUrl
     }
 
     public static function adminUrl($controller, $action, $options = [])
-    {
-        global $_GPC;
+   {
         $urlArr = ['/admin/\\'.$controller.'/'.$action];
         foreach ($options as $key => $value) {
             $urlArr = array_merge($urlArr, [$key => $value]);
@@ -42,8 +40,7 @@ class UrlHelper extends BaseUrl
     }
 
     public static function apiUrl($controller, $action, $options = [])
-    {
-        global $_GPC;
+   {
         $urlArr = ['/api/\\'.$controller.'/'.$action];
         foreach ($options as $key => $value) {
             $urlArr = array_merge($urlArr, [$key => $value]);

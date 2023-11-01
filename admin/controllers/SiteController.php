@@ -100,8 +100,7 @@ class SiteController extends AController
     }
 
     public function actionSignup(): array
-    {
-        global $_GPC;
+   {
         $model = new SignupForm();
         $data = [
             'username' =>\Yii::$app->request->input('username'),
@@ -232,8 +231,7 @@ class SiteController extends AController
     }
 
     public function actionXiufu(): void
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->input('type') == 1) {
             $AuthRoute = new AuthRoute();
             $list = AuthRoute::find()->alias('a')->leftJoin(AuthItem::tableName().' as c',

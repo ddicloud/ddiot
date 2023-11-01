@@ -47,7 +47,7 @@ class SettingController extends AController
 
     public function actionConfig(): array
     {
-        global $_GPC;
+
         $settings = Yii::$app->settings;
         foreach (Yii::$app->request->input('Website') as $key => $value) {
             $settings->set('Website', $key, $value);

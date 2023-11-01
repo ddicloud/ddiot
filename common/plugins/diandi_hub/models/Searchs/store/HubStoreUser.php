@@ -49,8 +49,7 @@ class HubStoreUser extends HubStoreUserModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         
         $query = HubStoreUserModel::find()
                     ->with(['store','member']);

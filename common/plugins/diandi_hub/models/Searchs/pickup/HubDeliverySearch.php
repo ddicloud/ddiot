@@ -50,8 +50,7 @@ class HubDeliverySearch extends HubDelivery
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         
         $query = HubDelivery::find();
 

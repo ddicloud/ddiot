@@ -49,8 +49,7 @@ class ConditionController extends BaseController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         $searchModel = new DiandiHubLevelConditionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -72,8 +71,7 @@ class ConditionController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         return $this->render('view', [
@@ -89,8 +87,7 @@ class ConditionController extends BaseController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $model = new DiandiHubLevelCondition();
@@ -116,8 +113,7 @@ class ConditionController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         $levels = LevelStatus::listData();
 
@@ -144,8 +140,7 @@ class ConditionController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $this->findModel($id)->delete();

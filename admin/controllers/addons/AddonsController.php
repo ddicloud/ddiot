@@ -31,8 +31,7 @@ class AddonsController extends AController
     public int $searchLevel = 0;
 
     public function actionInfo(): array
-    {
-        global $_GPC;
+   {
         $addons =\Yii::$app->request->input('addons');
         $info = CommonAddonsService::getAddonsInfo($addons);
 
@@ -68,8 +67,7 @@ class AddonsController extends AController
     }
 
     public function actionChild(): array
-    {
-        global $_GPC;
+   {
         $parent_mid =\Yii::$app->request->input('parent_mid');
         if (empty($parent_mid)) {
             return ResultHelper::json(400, '父级应用parent_mid不能为空');
@@ -89,8 +87,7 @@ class AddonsController extends AController
      * 未安装.
      */
     public function actionUninstalled(): array
-    {
-        global $_GPC;
+   {
         $title =\Yii::$app->request->input('title') ?? '';
         $list = addonsService::unAddons($title);
 

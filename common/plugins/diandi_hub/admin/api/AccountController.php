@@ -31,8 +31,7 @@ class AccountController extends AController
 
     // 获取我的资产日志
     public function actionLog(): array
-    {
-        global $_GPC;
+   {
 
         $change_type = intval(Yii::$app->request->input('change_type'));
         $account_type = intval(Yii::$app->request->input('account_type'));
@@ -58,8 +57,7 @@ class AccountController extends AController
     }
 
     public function actionOrder(): array
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->user_id;
         $pageSize = Yii::$app->request->post('pageSize');
         $order_status = Yii::$app->request->post('order_status');
@@ -79,8 +77,7 @@ class AccountController extends AController
      * @throws \Throwable
      */
     public function actionWithdraw()
-    {
-        global $_GPC;
+   {
 
         $member_id = Yii::$app->user->identity->user_id;
 
@@ -97,8 +94,7 @@ class AccountController extends AController
     }
 
     public function actionAddlog(): array
-    {
-        global $_GPC;
+   {
 
         $member_id =\Yii::$app->request->input('member_id');
         $order_id =\Yii::$app->request->input('order_id');

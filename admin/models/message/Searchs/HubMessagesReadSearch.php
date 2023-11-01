@@ -47,8 +47,7 @@ class HubMessagesReadSearch extends HubMessagesRead
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubMessagesRead::find();
 
         $this->load($params);

@@ -50,8 +50,7 @@ class GoodsService extends BaseService
      * @throws NotFoundHttpException
      */
     public static function getList($locationId = 0, $keywords = '', $intypes = 0, $pageSize = 10, $user_id = 0)
-    {
-        global $_GPC;
+   {
         $list = [];
         $page = Yii::$app->request->get('page', 1);
 
@@ -223,8 +222,7 @@ class GoodsService extends BaseService
      * @throws NotFoundHttpException
      */
     public static function getListLocation($locationId = 0, $keywords = '', $intypes = 0, $pageSize = 10, $user_id = 0)
-    {
-        global $_GPC;
+   {
         $list = [];
         // $store_id =\Yii::$app->request->input('store_id',0);
         // $bloc_id =\Yii::$app->request->input('bloc_id',0);
@@ -392,8 +390,7 @@ class GoodsService extends BaseService
     }
 
     public static function goodsGifts($keywords = '', $page = 1, $pageSize = 10)
-    {
-        global $_GPC;
+   {
         $list = [];
 
         $where = []; //初始化条件数组
@@ -448,8 +445,7 @@ class GoodsService extends BaseService
     }
 
     public static function Giftsdetail($goods_id)
-    {
-        global $_GPC;
+   {
         //  获取基础得产品信息
 
         $basewhere = [];
@@ -949,8 +945,7 @@ class GoodsService extends BaseService
      * @throws NotFoundHttpException
      */
     public static function getDetail($goods_id)
-    {
-        global $_GPC;
+   {
 
         $basewhere = [];
 
@@ -1071,8 +1066,7 @@ class GoodsService extends BaseService
     }
 
     public static function getOrderDetail($goods_id, $num, $spec_id, $goods_type = 2, $order_type = 0, $region_id = 0, $express_type = 0, $express_id = 0)
-    {
-        global $_GPC;
+   {
 
         $store_id = Yii::$app->params['store_id'];
 
@@ -1212,8 +1206,7 @@ class GoodsService extends BaseService
      * @throws NotFoundHttpException
      */
     public static function getLists($category_pid = 0, $category_id = 0, $keywords = '', $pageSize = 10, $user_id = '', $orderby = 'goods_sort desc', $label_id = 0)
-    {
-        global $_GPC;
+   {
         $list = [];
 
         $page = Yii::$app->request->get('page', 1);

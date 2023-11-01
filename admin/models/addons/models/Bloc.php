@@ -63,8 +63,7 @@ class Bloc extends BlocModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
 
         $query = BlocModel::find();
 

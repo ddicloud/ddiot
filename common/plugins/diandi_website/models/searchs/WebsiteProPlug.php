@@ -47,8 +47,7 @@ class WebsiteProPlug extends WebsiteProPlugModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProPlugModel::find();
 
         $this->load($params);

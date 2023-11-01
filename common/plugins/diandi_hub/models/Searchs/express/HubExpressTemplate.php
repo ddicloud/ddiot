@@ -49,8 +49,7 @@ class HubExpressTemplate extends HubExpressTemplateModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubExpressTemplateModel::find()->with(['express']);
 
         

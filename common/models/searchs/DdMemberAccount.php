@@ -49,8 +49,7 @@ class DdMemberAccount extends DdMemberAccountModel
      * @return ArrayDataProvider|false
      */
     public function search(array $params): ArrayDataProvider|bool
-    {
-        global $_GPC;
+   {
         $query = DdMemberAccountModel::find()->with(['member','store']);
 
 

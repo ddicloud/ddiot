@@ -67,8 +67,7 @@ class Sign extends ActionFilter
      * @return string
      */
     public static function generateSecret(): string
-    {
-        global $_GPC;
+   {
         $apiConf = new Api();
         $apiConf->getConf(Yii::$app->request->input('bloc_id',0));
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [

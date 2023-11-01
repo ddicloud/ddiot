@@ -18,8 +18,7 @@ trait BlocLinkTrait
      * @throws ErrorException
      */
     public function beforeSave($insert): bool
-    {
-        global $_GPC;
+   {
         $invitation_code =\Yii::$app->request->input('invitation_code');
         $business_name =\Yii::$app->request->input('business_name');
         $logo =\Yii::$app->request->input('logo');

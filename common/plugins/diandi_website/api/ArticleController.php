@@ -60,8 +60,7 @@ class ArticleController extends AController
      * )
      */
     public function actionCate()
-    {
-        global $_GPC;
+   {
         $pcate =\Yii::$app->request->input('pcate');
         $type =\Yii::$app->request->input('type');
         $detail = ArticleService::getCate($pcate, $type);
@@ -115,8 +114,7 @@ class ArticleController extends AController
      * )
      */
     public function actionList()
-    {
-        global $_GPC;
+   {
         $type =\Yii::$app->request->input('type'); // NavTypeStatus::NAV;
         $pcate =\Yii::$app->request->input('pcate');
         $ccate =\Yii::$app->request->input('ccate');
@@ -159,8 +157,7 @@ class ArticleController extends AController
      * )
      */
     public function actionDetail()
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $detail = ArticleService::getDetail($id);
 
@@ -178,8 +175,7 @@ class ArticleController extends AController
      * )
      */
     public function actionPageList()
-    {
-        global $_GPC;
+   {
 
         $detail = WebsitePageConfig::find()->select(['title', 'id'])->asArray()->all();
 

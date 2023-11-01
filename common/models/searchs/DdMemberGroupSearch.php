@@ -47,8 +47,7 @@ class DdMemberGroupSearch extends DdMemberGroup
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
 
         $query = DdMemberGroup::find();
 

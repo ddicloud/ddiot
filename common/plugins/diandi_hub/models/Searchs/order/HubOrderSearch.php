@@ -54,8 +54,7 @@ class HubOrderSearch extends HubOrder
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubOrder::find()->where(['is_split' => 0]);
 
         // add conditions that should always apply here

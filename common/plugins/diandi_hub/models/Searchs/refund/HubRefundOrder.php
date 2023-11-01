@@ -51,8 +51,7 @@ class HubRefundOrder extends HubRefundOrderModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubRefundOrderModel::find();
 
         $this->load($params);

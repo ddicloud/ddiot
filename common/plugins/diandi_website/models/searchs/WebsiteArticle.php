@@ -50,8 +50,7 @@ class WebsiteArticle extends WebsiteArticleModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteArticleModel::find()->with(['cate']);
 
         $this->load($params);

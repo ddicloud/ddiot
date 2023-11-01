@@ -42,8 +42,7 @@ class HubTicketsSearch extends HubTickets
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubTickets::find();
 
 

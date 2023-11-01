@@ -36,8 +36,7 @@ class MemberService extends BaseService
 {
     // 获取用户等级信息
     public static function getByUid($uid, $is_insert = false)
-    {
-        global $_GPC;
+   {
         loggingHelper::writeLog('diandi_hub', 'MemberService', '获取用户信息', $uid);
         if (intval($uid) == 0) {
             loggingHelper::writeLog('diandi_hub', 'MemberService', '获取用户信息失败，id为0', $uid);

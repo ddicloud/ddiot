@@ -29,9 +29,8 @@ class BasicsController extends AController
 
 
     public function actionSignup(): array
-    {
-        global $_GPC;
-        $users = $_GPC;
+   {
+        $users = Yii::$app->request->input();
 
         $code = $users['code'];
 
@@ -63,8 +62,7 @@ class BasicsController extends AController
 
 
     public function actionAuth(): array
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/wechat/auth/' . date('ymd') . '.log');
 
         $redirect_uri =\Yii::$app->request->input('redirect_uri');
@@ -81,8 +79,7 @@ class BasicsController extends AController
 
 
     public function actionUserinfo(): array
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/officialaccount/signup/' . date('ymd') . '.log');
         if (empty(Yii::$app->request->input('code'))) {
             return ResultHelper::json(400, 'code 参数不能为空');

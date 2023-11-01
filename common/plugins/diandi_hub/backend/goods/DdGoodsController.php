@@ -92,8 +92,7 @@ class DdGoodsController extends BaseController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $searchModel = new HubBaseGoodsSearch();
         $searchWhere = $_GPC[$this->modelSearchName]; 
         if(!empty($searchWhere) && $searchWhere != 'undefined'){
@@ -210,8 +209,7 @@ class DdGoodsController extends BaseController
 
     //该方法是异步校验字段，输入框失去焦点之后自动会自动请求改地址
     public function actionValidate()
-    {
-        global $_GPC;
+   {
         $model = new HubGoodsBaseGoods();
 
         $base =\Yii::$app->request->input('HubGoodsBaseGoods');
@@ -546,8 +544,7 @@ class DdGoodsController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete()
-    {
-        global $_GPC;
+   {
 
         if(Yii::$app->request->isPost){
             
@@ -569,8 +566,7 @@ class DdGoodsController extends BaseController
     }
 
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
         $where = [];
         
         $where['store_id'] = Yii::$app->params['store_id'];
@@ -754,8 +750,7 @@ class DdGoodsController extends BaseController
      * @throws NotFoundHttpException
      */
     public function actionSpec()
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
             

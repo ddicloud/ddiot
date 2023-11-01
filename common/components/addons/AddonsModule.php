@@ -28,8 +28,7 @@ class AddonsModule extends Module
      * @throws HttpException
      */
     public function init(): void
-    {
-        global $_GPC;
+   {
 
         $logPath = Yii::getAlias('@runtime/base/addons/' . date('ymd') . '.log');
 
@@ -156,8 +155,7 @@ class AddonsModule extends Module
     }
 
     public function initWechat(): void
-    {
-        global $_GPC;
+   {
         $store_id =\Yii::$app->request->input('store_id',0);
         $config = require Yii::getAlias('@api/modules/officialaccount/config.php');
 

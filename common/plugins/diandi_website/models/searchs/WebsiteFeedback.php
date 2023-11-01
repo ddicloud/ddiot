@@ -42,8 +42,7 @@ class WebsiteFeedback extends WebsiteFeedbackModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteFeedbackModel::find();
 
         

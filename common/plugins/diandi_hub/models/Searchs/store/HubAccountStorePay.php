@@ -48,8 +48,7 @@ class HubAccountStorePay extends HubAccountStorePayModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubAccountStorePayModel::find()
                     ->with(['member', 'affirm', 'operation']);
 

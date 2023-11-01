@@ -44,8 +44,7 @@ class CartController extends AController
     }
 
     public function actionAdd()
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->member_id;
 
         $goods_id = intval($_GPC['goods_id']);

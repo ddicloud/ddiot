@@ -42,8 +42,7 @@ class WebsiteConfig extends WebsiteConfigModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteConfigModel::find();
 
         

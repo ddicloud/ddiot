@@ -48,8 +48,7 @@ class HubLevelSearch extends HubLevel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLevel::find()->orderBy('levelnum');
 
         // add conditions that should always apply here

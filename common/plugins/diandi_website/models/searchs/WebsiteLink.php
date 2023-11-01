@@ -42,8 +42,7 @@ class WebsiteLink extends WebsiteLinkModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteLinkModel::find();
 
         

@@ -49,8 +49,7 @@ class HubShopAreas extends PickupHubShopAreas
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = PickupHubShopAreas::find();
 
         // add conditions that should always apply here

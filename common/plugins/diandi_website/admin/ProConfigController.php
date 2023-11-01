@@ -51,8 +51,7 @@ class ProConfigController extends AController
      * )
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
 
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $view = WebsiteProConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
@@ -108,8 +107,7 @@ class ProConfigController extends AController
      * )
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
 
         $data = Yii::$app->request->post();
         $website_model = new WebsiteProConfig();

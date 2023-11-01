@@ -33,8 +33,7 @@ class Fans extends BaseObject
      * @throws NotFoundHttpException
      */
     public function signup($users)
-    {
-        global $_GPC;
+   {
         
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
         FileHelper::writeLog($logPath, '登录日志:用户信息sign'.json_encode($users));

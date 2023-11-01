@@ -50,8 +50,7 @@ class DdWebsiteSlideSearch extends DdWebsiteSlide
      * @return ArrayDataProvider|ActiveDataProvider
      */
     public function search(array $params): ArrayDataProvider|ActiveDataProvider
-    {
-        global $_GPC;
+   {
 
         $query = DdWebsiteSlide::find();
 

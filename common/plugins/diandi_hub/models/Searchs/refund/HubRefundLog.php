@@ -50,8 +50,7 @@ class HubRefundLog extends HubRefundLogModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
         $query = HubRefundLogModel::find();
 

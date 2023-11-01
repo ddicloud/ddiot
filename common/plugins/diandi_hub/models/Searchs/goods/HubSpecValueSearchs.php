@@ -47,8 +47,7 @@ class HubSpecValueSearchs extends HubSpecValue
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubSpecValue::find();
 
         $this->load($params);

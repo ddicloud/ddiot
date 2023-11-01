@@ -56,8 +56,7 @@ class StoreController extends AController
     }
 
     public function actionDetailinfo(): array
-    {
-        global $_GPC;
+   {
         $store_id =\Yii::$app->request->input('store_id',0);
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
 
@@ -69,8 +68,7 @@ class StoreController extends AController
     }
 
     public function actionCate(): array
-    {
-        global $_GPC;
+   {
         $parent_id =\Yii::$app->request->input('parent_id');
 
         $list = Yii::$app->service->commonStoreService->getCate($parent_id);
@@ -79,8 +77,7 @@ class StoreController extends AController
     }
 
     public function actionList(): array
-    {
-        global $_GPC;
+   {
 
         $category_pid =\Yii::$app->request->input('category_pid');
         $category_id =\Yii::$app->request->input('category_id');
@@ -102,8 +99,7 @@ class StoreController extends AController
     }
 
     public function actionBlocs(): array
-    {
-        global $_GPC;
+   {
 
         $business_name =\Yii::$app->request->input('business_name');
 
@@ -241,8 +237,7 @@ class StoreController extends AController
      * @throws HttpException
      */
     public function actionCreate(): array
-    {
-        global $_GPC;
+   {
         if ($this->module->id == 'addons') {
             // 校验数量限制
             $storeNum = StoreService::checkStoreNum(Yii::$app->request->input('bloc_id',0));
@@ -322,8 +317,7 @@ class StoreController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);

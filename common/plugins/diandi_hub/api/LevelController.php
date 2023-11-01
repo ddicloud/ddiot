@@ -26,8 +26,7 @@ class LevelController extends AController
     public $modelClass = '\common\models\Member';
 
     public function actionLink()
-    {
-        global $_GPC;
+   {
         $member_id =\Yii::$app->request->input('member_id');
         $Res = levelService::siupChild($member_id);    
         // if($Res){

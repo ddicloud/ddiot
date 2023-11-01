@@ -230,8 +230,7 @@ class ProductController extends AController
      * )
      */
     public function actionCustomerList()
-    {
-        global $_GPC;
+   {
         return $this->_json(ProductService::getCustomer($this->getPageInfo(), $this->_fillWhere(['solution_id', 'is_website'])));
     }
     /**

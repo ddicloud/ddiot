@@ -34,8 +34,7 @@ class CacheHelper extends RedisCache
 
 
     public function buildKey($key)
-    {
-        global $_GPC;
+   {
         $user_id = 0;
         if(Yii::$app->user->identity){
             $user_id  = Yii::$app->user->identity->id;

@@ -159,8 +159,7 @@ class StoreController extends AController
      * @throws HttpException
      */
     public function actionCreate(): array
-    {
-        global $_GPC;
+   {
 
         $model = new BlocStore([
             'extras' => $this->extras,
@@ -241,8 +240,7 @@ class StoreController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);
@@ -363,8 +361,7 @@ class StoreController extends AController
     }
 
     public function actionStoreCreate(): array
-    {
-        global $_GPC;
+   {
         // 校验公司是否存储
         $bloc_id = (int)\Yii::$app->request->input('bloc_id',0);
         $have_bloc = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->asArray()->one();

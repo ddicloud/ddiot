@@ -84,8 +84,7 @@ class RouteController extends AController
      * @return array
      */
     public function actionCreate(): array
-    {
-        global $_GPC;
+   {
 
         $model = new AuthRoute();
 
@@ -182,8 +181,7 @@ class RouteController extends AController
      * @return array
      */
     public function actionAssign(): array
-    {
-        global $_GPC;
+   {
         $routes =\Yii::$app->request->input('routes');
         $model = new Route();
         $Res = $model->addNew($routes);

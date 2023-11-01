@@ -49,8 +49,7 @@ class DdArticleSearch extends DdArticle
      * @return ArrayDataProvider|false
      */
     public function search(array $params): ArrayDataProvider|bool
-    {
-        global $_GPC;
+   {
         
         $query = DdArticle::find();
 

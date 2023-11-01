@@ -78,8 +78,7 @@ class UserController extends AController
      * @since
      */
     public function actionRegister(): array
-    {
-        global $_GPC;
+   {
         $DdMember = new DdMember();
         $data = Yii::$app->request->post();
         $username = $data['username'];
@@ -103,8 +102,7 @@ class UserController extends AController
 
 
     public function actionLogin(): array
-    {
-        global $_GPC;
+   {
         $model = new LoginForm();
         if ($model->load($_GPC, '') && $userinfo = $model->login()) {
             return ResultHelper::json(200, '登录成功', (array)$userinfo);
@@ -117,8 +115,7 @@ class UserController extends AController
 
 
     public function actionRepassword(): array
-    {
-        global $_GPC;
+   {
         $model = new PasswdForm();
         if ($model->load(Yii::$app->request->post(), '')) {
             if (!$model->validate()) {
@@ -159,8 +156,7 @@ class UserController extends AController
     }
 
     public function actionUpRepassword(): array
-    {
-        global $_GPC;
+   {
         $newpassword =\Yii::$app->request->input('password');
         $member_id = Yii::$app->user->identity->member_id??0;
         if (empty($member_id)) {
@@ -186,8 +182,7 @@ class UserController extends AController
 
 
     public function actionUserinfo(): array
-    {
-        global $_GPC;
+   {
 
         $mobile =\Yii::$app->request->input('mobile');
 
@@ -216,8 +211,7 @@ class UserController extends AController
 
 
     public function actionBindmobile()
-    {
-        global $_GPC;
+   {
 
         $code =\Yii::$app->request->input('code');
         $mobile =\Yii::$app->request->input('mobile');
@@ -286,8 +280,7 @@ class UserController extends AController
 
 
     public function actionSendcode(): array
-    {
-        global $_GPC;
+   {
         $type =\Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
@@ -328,8 +321,7 @@ class UserController extends AController
 
 
     public function actionRefresh(): array
-    {
-        global $_GPC;
+   {
 
         $refresh_token =\Yii::$app->request->input('refresh_token');
 
@@ -352,8 +344,7 @@ class UserController extends AController
 
 
     public function actionFeedback(): array
-    {
-        global $_GPC;
+   {
 
         $name =\Yii::$app->request->input('name');
         $contact =\Yii::$app->request->input('contact');

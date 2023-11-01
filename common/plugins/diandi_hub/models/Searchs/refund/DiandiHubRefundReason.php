@@ -49,8 +49,7 @@ class DiandiHubRefundReason extends DiandiHubRefundReasonModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = DiandiHubRefundReasonModel::find();
 
         

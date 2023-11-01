@@ -42,8 +42,7 @@ class BackendExhibitSearch extends BackendExhibit
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = BackendExhibit::find();
 
         

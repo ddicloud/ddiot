@@ -70,8 +70,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
 
         

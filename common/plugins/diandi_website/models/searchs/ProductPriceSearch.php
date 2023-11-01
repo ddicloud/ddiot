@@ -43,8 +43,7 @@ class ProductPriceSearch extends ProductPrice
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = ProductPrice::find();
 
         

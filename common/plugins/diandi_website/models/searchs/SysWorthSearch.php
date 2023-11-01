@@ -42,8 +42,7 @@ class SysWorthSearch extends SysWorth
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = SysWorth::find();
 
         

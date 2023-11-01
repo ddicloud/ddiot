@@ -47,8 +47,7 @@ class LocationSearch extends HubLocation
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLocation::find();
 
         $this->load($params);

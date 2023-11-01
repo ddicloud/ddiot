@@ -48,8 +48,7 @@ class DdMemberSearch extends DdMember
      * @return ActiveDataProvider
      */
     public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
-    {
-        global $_GPC;
+   {
         $query = DdMember::find();
 
         $this->load($params);

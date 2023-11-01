@@ -48,8 +48,7 @@ class HubCategorySearch extends HubCategory
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubCategory::find();
 
         // add conditions that should always apply here

@@ -49,8 +49,7 @@ class HubLocationAd extends HubLocationAdModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLocationAdModel::find()->with(['location']);
 
         

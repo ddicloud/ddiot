@@ -47,8 +47,7 @@ class HubShopCommentSearch extends HubShopComment
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubShopComment::find();
 
         // add conditions that should always apply here

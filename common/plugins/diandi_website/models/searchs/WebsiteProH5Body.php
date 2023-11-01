@@ -47,8 +47,7 @@ class WebsiteProH5Body extends WebsiteProH5BodyModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProH5BodyModel::find();
 
         $this->load($params);

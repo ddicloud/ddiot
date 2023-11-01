@@ -1166,8 +1166,7 @@ class OrderService extends BaseService
 
     // 订单打印
     public static function cloudPrint($order_ids = [])
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/diandi_hub/print/log/'.date('Y/m/d').'/wechat.log');
 
         $list = self::details($order_ids);

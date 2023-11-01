@@ -31,8 +31,7 @@ class SettingsController extends AController
 
 
     public function actionConf(): array
-    {
-        global $_GPC;
+   {
         $section =\Yii::$app->request->input('section');
         $data =\Yii::$app->request->input('data');
         $settings = Yii::$app->settings;
@@ -207,8 +206,7 @@ class SettingsController extends AController
     }
 
     public function actionThem(): array
-    {
-        global $_GPC;
+   {
         $themcolor =\Yii::$app->request->input('themcolor');
 
         $this->cache->set('themcolor', $themcolor);

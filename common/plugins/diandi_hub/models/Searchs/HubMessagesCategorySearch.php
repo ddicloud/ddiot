@@ -41,8 +41,7 @@ class HubMessagesCategorySearch extends HubMessagesCategory
      * @return ActiveDataProvider
  */
     public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
-    {
-        global $_GPC;
+   {
         $query = HubMessagesCategory::find();
 
 

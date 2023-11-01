@@ -21,8 +21,7 @@ class CommonQuery extends ActiveQuery
     
 
     public function init(): void
-    {
-        global $_GPC;
+   {
         parent::init();
         $this->bloc_id =\Yii::$app->request->input('bloc_id',0);
         $this->store_id =\Yii::$app->request->input('store_id',0);

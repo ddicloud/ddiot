@@ -70,8 +70,7 @@ class CartController extends AController
      * )
      */
     public function actionAdd()
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->member_id??0;
 
         $goods_id = intval(Yii::$app->request->input('goods_id'));
@@ -101,8 +100,7 @@ class CartController extends AController
      * )
      */
     public function actionList()
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->member_id??0;
         $cart_ids = [];
         if (Yii::$app->request->input('cart_ids') !== null) {
@@ -178,8 +176,7 @@ class CartController extends AController
      * )
      */
     public function actionDeletecart()
-    {
-        global $_GPC;
+   {
 
         $user_id = Yii::$app->user->identity->member_id??0;
         $data = Yii::$app->request->post();

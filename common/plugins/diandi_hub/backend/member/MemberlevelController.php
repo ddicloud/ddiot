@@ -54,8 +54,7 @@ class MemberlevelController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView()
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $model = HubMemberLevel::find()->where(['id'=>$id])->with(['level','levelParent','member','memberParent','wxappfans','wechatfans','store'])->asArray()->one();
         
@@ -83,8 +82,7 @@ class MemberlevelController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         
         $member_store_id =\Yii::$app->request->input('HubMemberLevel')['member_store_id'];
         
@@ -109,8 +107,7 @@ class MemberlevelController extends BaseController
     }
 
     public function actionStorelist()
-    {
-        global $_GPC;
+   {
         $keywords =\Yii::$app->request->input('keywords');
         $where = [];
         $where1 =[];

@@ -33,8 +33,7 @@ class QrcodeController extends AController
      * @throws RuntimeException
      */
     public function actionGetqrcode(): array|string
-    {
-        global $_GPC;
+   {
         $path =\Yii::$app->request->input('path');
         $width =\Yii::$app->request->input('width');
         $scene =\Yii::$app->request->input('scene');

@@ -55,8 +55,7 @@ class HubAccountLog extends HubAccountLogModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubAccountLogModel::find();
         $query->with(['goods','ordergoods','member']);
         $this->load($params);

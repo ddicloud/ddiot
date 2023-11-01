@@ -47,8 +47,7 @@ class EarningsconfController extends BaseController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $searchModel = new LevelButionLevelEarningsConf();
@@ -68,8 +67,7 @@ class EarningsconfController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         
         return $this->render('view', [
@@ -84,8 +82,7 @@ class EarningsconfController extends BaseController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $model = new butionLevelEarningsConf();
@@ -110,8 +107,7 @@ class EarningsconfController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
         $levelnum = intval(Yii::$app->request->input('levelnum'));
@@ -136,8 +132,7 @@ class EarningsconfController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
         $levelnum = intval(Yii::$app->request->input('levelnum'));
 
         $this->findModel($id)->delete();

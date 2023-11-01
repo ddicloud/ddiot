@@ -122,8 +122,7 @@ class WithdrawlogController extends AController
      * @return array
      */
     public function actionUpdate($id): array
-    {
-        global $_GPC;
+   {
         $withdraw_status =\Yii::$app->request->input('HubWithdrawLog')['withdraw_status'];
 
 
@@ -265,8 +264,7 @@ class WithdrawlogController extends AController
 
 
     public function actionExportdatalist(): array
-    {
-        global $_GPC;
+   {
 
         $query = HubWithdrawLog::find()->with(['userbank', 'member']);
         $between_time =\Yii::$app->request->input('between_time');

@@ -23,7 +23,6 @@ class DefaultController extends AController
      * @return string
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
     }
 }

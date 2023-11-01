@@ -18,7 +18,7 @@ class RegisterLevel extends BaseService
 
     public static function isRegister($userInfo, $bloc_id): bool
     {
-        global  $_GPC;
+        
         $group_bloc_id = Bloc::find()->where(['bloc_id' => $bloc_id])->select(['group_bloc_id'])->scalar();
         $register_level = Bloc::find()->where(['bloc_id' => $group_bloc_id])->select(['register_level'])->scalar();
 

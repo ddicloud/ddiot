@@ -67,8 +67,7 @@ class UserController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView()
-    {
-        global $_GPC;
+   {
         
         $id =\Yii::$app->request->input('id');
 
@@ -131,8 +130,7 @@ class UserController extends BaseController
 
     
     public function actionStorelist()
-    {
-        global $_GPC;
+   {
         
         $keywords =\Yii::$app->request->input('keywords');
         
@@ -163,8 +161,7 @@ class UserController extends BaseController
 
 
     public function actionMemberlist()
-    {
-        global $_GPC;
+   {
         
         $keywords =\Yii::$app->request->input('keywords');
         

@@ -43,8 +43,7 @@ class WebsitePrice extends WebsitePriceModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsitePriceModel::find();
 
         

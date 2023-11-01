@@ -74,8 +74,7 @@ class LevelController extends BaseController
 
 
     public function actionDetail()
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $detail = $this->findModel($id);
         
@@ -129,8 +128,7 @@ class LevelController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate()
-    {
-        global $_GPC;
+   {
         
         $id =\Yii::$app->request->input('id');
         $model = $this->findModel($id);

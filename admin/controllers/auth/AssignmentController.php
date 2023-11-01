@@ -170,8 +170,7 @@ class AssignmentController extends AController
      * @throws \Exception
      */
     public function actionChange(): array
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $items =\Yii::$app->request->input('items');
         $type =\Yii::$app->request->input('type');

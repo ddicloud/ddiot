@@ -49,8 +49,7 @@ class HubLevelBaseConf extends HubLevelBaseConfModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLevelBaseConfModel::find();
 
         $levelnum =\Yii::$app->request->input('levelnum');

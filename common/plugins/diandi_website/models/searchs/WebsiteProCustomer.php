@@ -48,8 +48,7 @@ class WebsiteProCustomer extends WebsiteProCustomerModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProCustomerModel::find();
 
         $this->load($params);

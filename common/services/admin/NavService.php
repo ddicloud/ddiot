@@ -30,8 +30,7 @@ class NavService extends BaseService
     public static array $module_names;
 
     public function getMenuTop($types): array|string
-    {
-        global $_GPC;
+   {
         // $lists[] = 'system';
 
         $lists = array_merge([

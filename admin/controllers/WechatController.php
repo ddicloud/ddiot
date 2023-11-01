@@ -23,8 +23,7 @@ class WechatController extends AController
     public int $searchLevel = 0;
 
     public function actionAuthUrl(): array
-    {
-        global $_GPC;
+   {
         $configPath = Yii::getAlias('@common/config/wechat.php');
         $config = [];
         if (file_exists($configPath)) {
@@ -94,8 +93,7 @@ class WechatController extends AController
     }
 
     public function actionTick(): void
-    {
-        global $_GPC;
+   {
 
         loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $_GPC);
     }

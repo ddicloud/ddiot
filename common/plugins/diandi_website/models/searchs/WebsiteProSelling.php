@@ -47,8 +47,7 @@ class WebsiteProSelling extends WebsiteProSellingModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProSellingModel::find();
 
         $this->load($params);

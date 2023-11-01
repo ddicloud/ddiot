@@ -47,8 +47,7 @@ class HubMessagesCategorySearch extends HubMessagesCategory
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubMessagesCategory::find();
 
         $this->load($params);

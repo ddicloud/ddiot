@@ -51,8 +51,7 @@ class HubBaseGoodsSearch extends HubGoodsBaseGoods
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
 
         $DdGoods = new HubGoodsBaseGoods();
 

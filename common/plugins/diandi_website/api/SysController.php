@@ -84,8 +84,7 @@ class SysController extends AController
      * )
      */
     public function actionNav()
-    {
-        global $_GPC;
+   {
         $type =\Yii::$app->request->input('type'); // NavTypeStatus::NAV;
         $menu = SysService::getNave($type);
 
@@ -124,8 +123,7 @@ class SysController extends AController
      * )
      */
     public function actionSlide()
-    {
-        global $_GPC;
+   {
         $page_id =\Yii::$app->request->input('page_id');
         $list = SysService::getSlide($page_id);
 
@@ -164,8 +162,7 @@ class SysController extends AController
      * )
      */
     public function actionPage()
-    {
-        global $_GPC;
+   {
         $template =\Yii::$app->request->input('template');
         $page = SysService::getPage($template);
 
@@ -197,8 +194,7 @@ class SysController extends AController
      * )
      */
     public function actionLink()
-    {
-        global $_GPC;
+   {
         $link = SysService::getLink();
 
         return ResultHelper::json(200, '请求成功', $link);
@@ -302,8 +298,7 @@ class SysController extends AController
      * )
      */
     public function actionFun()
-    {
-        global $_GPC;
+   {
         if (Yii::$app->request->input('fun_limit') !== null &&\Yii::$app->request->input('fun_limit') > 0) {
             \addons\diandi_website\models\searchs\SysFunCateSearch::$funLimit = (int)Yii::$app->request->input('fun_limit');
         }

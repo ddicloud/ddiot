@@ -37,8 +37,7 @@ class StoreController extends AController
 
       
     public function actionDetailinfo(): array
-    {
-        global $_GPC;
+   {
         $store_id =\Yii::$app->request->input('store_id',0);
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
         
@@ -52,8 +51,7 @@ class StoreController extends AController
     }
 
     public function actionCate(): array
-    {
-        global $_GPC;
+   {
         $parent_id =\Yii::$app->request->input('parent_id');
        
         $list = Yii::$app->service->commonStoreService->getCate($parent_id);
@@ -62,8 +60,7 @@ class StoreController extends AController
     }
 
     public function actionList(): array
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/StoreService/list/'.date('Y/md').'.log');
 
         $category_pid =\Yii::$app->request->input('category_pid');

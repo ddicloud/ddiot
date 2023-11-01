@@ -42,8 +42,7 @@ class WebsiteContentDetail extends WebsiteContentDetailModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteContentDetailModel::find();
 
         

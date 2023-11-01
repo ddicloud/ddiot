@@ -80,8 +80,7 @@ class TemplateController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView()
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
 
         if (Yii::$app->request->isPost) {
@@ -181,8 +180,7 @@ class TemplateController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -223,8 +221,7 @@ class TemplateController extends BaseController
     }
 
     public function actionGetarea()
-    {
-        global $_GPC;
+   {
         $express_id =\Yii::$app->request->input('express_id');
         $template_id =\Yii::$app->request->input('template_id');
         $HubExpressTemplateArea = new HubExpressTemplateArea();
@@ -257,8 +254,7 @@ class TemplateController extends BaseController
     }
 
     public function actionTemplatearea()
-    {
-        global $_GPC;
+   {
 
         $region_ids =\Yii::$app->request->input('region_ids');
         if (!empty($region_ids)) {

@@ -29,8 +29,7 @@ class module extends \yii\base\Module
      * {@inheritdoc}
      */
     public function init()
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/officialaccount/payparameters'.date('ymd').'.log');
         parent::init();
 

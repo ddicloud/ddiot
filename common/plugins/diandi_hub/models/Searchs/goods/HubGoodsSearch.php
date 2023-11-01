@@ -47,8 +47,7 @@ class HubGoodsSearch extends HubGoods
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubGoods::find();
 
         $this->load($params);

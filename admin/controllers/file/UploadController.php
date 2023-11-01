@@ -69,8 +69,7 @@ class UploadController extends AController
 
 
     public function actionFile(): array
-    {
-        global $_GPC;
+   {
 
         try {
             $Upload = new Upload();
@@ -109,8 +108,7 @@ class UploadController extends AController
 
 
     public function actionMerge()
-    {
-        global $_GPC;
+   {
         try {
             $Upload = new Upload();
             //实例化上传验证类，传入上传配置参数项名称

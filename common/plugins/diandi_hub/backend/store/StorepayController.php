@@ -103,8 +103,7 @@ class StorepayController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = HubAccountStorePay::find()->where(['id'=>$id])->with(['userbank'])->one();
         
         $member_id = $model['member_id'];

@@ -17,7 +17,7 @@ class RegisterLevel extends BaseService
 {
     public static function isRegister($userInfo, $bloc_id)
     {
-        global  $_GPC;
+        
 
         if (empty($userInfo)) {
             return false;

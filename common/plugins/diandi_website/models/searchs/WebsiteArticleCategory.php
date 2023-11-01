@@ -47,8 +47,7 @@ class WebsiteArticleCategory extends WebsiteArticleCategoryModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteArticleCategoryModel::find();
         $this->load($params);
 

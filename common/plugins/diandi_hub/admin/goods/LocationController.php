@@ -46,7 +46,7 @@ class LocationController extends AController
      */
     public function actionIndex()
     {
-        global  $_GPC;
+        
 
         $searchModel = new LocationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -83,8 +83,7 @@ class LocationController extends AController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         $model = new HubLocation();
         if ($model->load($_GPC, '') && $model->save()) {
             return ResultHelper::json(200, '新建成功', [
@@ -108,8 +107,7 @@ class LocationController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = $this->findModel($id);
 
         if ($model->load($_GPC, '') && $model->save()) {

@@ -64,8 +64,7 @@ class LocationGoodsController extends AController
     }
 
     public function actionGoodslocation()
-    {
-        global $_GPC;
+   {
 
         $adv_id =\Yii::$app->request->input('adv_id');
         $good_ids =\Yii::$app->request->input('good_ids');
@@ -113,8 +112,7 @@ class LocationGoodsController extends AController
     }
 
     public function actionGoodslist()
-    {
-        global $_GPC;
+   {
         $keywords =\Yii::$app->request->input('keywords');
 
         $adv_id =\Yii::$app->request->input('adv_id');
@@ -162,8 +160,7 @@ class LocationGoodsController extends AController
     }
 
     public function actionAdvlist()
-    {
-        global $_GPC;
+   {
         $where = [];
 
         $where['store_id'] = Yii::$app->params['store_id'];
@@ -258,8 +255,7 @@ class LocationGoodsController extends AController
     }
 
     public function actionDeletegoods()
-    {
-        global $_GPC;
+   {
 
         if (yii::$app->request->isPost) {
             $goods_id =\Yii::$app->request->input('goods_id');

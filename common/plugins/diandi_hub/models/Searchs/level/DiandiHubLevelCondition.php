@@ -46,8 +46,7 @@ class DiandiHubLevelCondition extends LevelDiandiHubLevelCondition
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = LevelDiandiHubLevelCondition::find();
         $levelnum = intval(Yii::$app->request->input('levelnum'));
         if($levelnum){

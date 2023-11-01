@@ -50,8 +50,7 @@ class HubWithdrawLog extends HubWithdrawLogModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
 
         
         $query = HubWithdrawLogModel::find()->with(['userbank','member']);

@@ -35,8 +35,7 @@ class Fans extends BaseObject
      * @throws Exception
      */
     public function signup(?array $users): array|string
-    {
-        global $_GPC;
+   {
 
         $logPath = Yii::getAlias('@runtime/wechat/login/' . date('ymd') . '.log');
         FileHelper::writeLog($logPath, '登录日志:用户信息sign' . json_encode($users));
@@ -171,14 +170,12 @@ class Fans extends BaseObject
     }
 
     public function checkByopenid($openid): array|\yii\db\ActiveRecord|null
-    {
-        global $_GPC;
+   {
         return DdWxappFans::find()->where(['openid' => $openid, 'store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
     }
 
     public function fansByopenid($openid): array|\yii\db\ActiveRecord|null
-    {
-        global $_GPC;
+   {
 
         return DdWxappFans::find()->where(['openid' => $openid, 'store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
     }

@@ -47,8 +47,7 @@ class WebsiteProSlide extends WebsiteProSlideModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProSlideModel::find();
 
         $this->load($params);

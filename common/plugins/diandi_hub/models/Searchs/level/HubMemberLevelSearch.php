@@ -49,8 +49,7 @@ class HubMemberLevelSearch extends HubLevel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubLevel::find();
 
         

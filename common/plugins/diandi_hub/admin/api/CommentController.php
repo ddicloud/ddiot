@@ -75,8 +75,7 @@ class CommentController extends AController
      * )
      */
     public function actionComment(): array
-    {
-        global $_GPC;
+   {
 
         $data = [];
 

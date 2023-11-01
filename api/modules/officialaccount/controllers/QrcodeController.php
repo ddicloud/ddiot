@@ -28,8 +28,7 @@ class QrcodeController extends AController
      * @return array|object[]|string|string[]
      */
     public function actionGetqrcode(): array|string
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/officialaccount/Qrcode'.date('ymd').'.log');
         
         FileHelper::writeLog($logPath, '0002');

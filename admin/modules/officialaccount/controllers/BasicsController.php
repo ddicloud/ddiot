@@ -109,9 +109,8 @@ class BasicsController extends AController
      * )
      */
     public function actionSignup()
-    {
-        global $_GPC;
-        $users = $_GPC;
+   {
+        $users = Yii::$app->request->input();
 
         $code = $users['code'];
 
@@ -166,8 +165,7 @@ class BasicsController extends AController
      * )
      */
     public function actionAuth()
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/wechat/auth/'.date('ymd').'.log');
 
         $redirect_uri =\Yii::$app->request->input('redirect_uri');
@@ -201,8 +199,7 @@ class BasicsController extends AController
      * )
      */
     public function actionUserinfo()
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/officialaccount/signup/'.date('ymd').'.log');
         if (empty(Yii::$app->request->input('code'))) {
             return ResultHelper::json(400, 'code 参数不能为空', []);
@@ -300,8 +297,7 @@ class BasicsController extends AController
      * )
      */
     public function actionPayparameters()
-    {
-        global $_GPC;
+   {
 
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];
@@ -339,8 +335,7 @@ class BasicsController extends AController
 
     // app支付参数获取
     public function actionPayappparameters()
-    {
-        global $_GPC;
+   {
 
         $bloc_id = Yii::$app->params['bloc_id'];
         

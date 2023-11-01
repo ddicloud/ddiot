@@ -32,8 +32,7 @@ class ServiceBehavior extends Behavior
     public array $params = [];
 
     public function init(): void
-    {
-        global $_GPC;
+   {
         // if ($this->addons || $this->serviceClassName || $this->action || $this->params) {
         // }
     }

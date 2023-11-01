@@ -23,8 +23,7 @@ class DefaultController extends BaseController
      * @return string
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         
         $info = AddonsService::getAddonsInfo('diandi_ai');
 

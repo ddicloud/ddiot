@@ -410,8 +410,7 @@ class DatabaseController extends AController
      * 删除文件.
      */
     public function actionDelete($id): array
-    {
-        global $_GPC;
+   {
 
         $time =\Yii::$app->request->input('time');
 

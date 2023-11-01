@@ -77,8 +77,7 @@ class FaceController extends AController
      * )
      */
     public function actionDetect()
-    {
-        global $_GPC;
+   {
           
         $Res = BaiduFace::Detect(Yii::$app->request->input('images'));
 
@@ -121,8 +120,7 @@ class FaceController extends AController
      * )
      */
     public function actionSearchs()
-    {
-        global $_GPC;
+   {
         $Res  = BaiduFace::Searchs(Yii::$app->request->input('images'));
         return $Res;
     }

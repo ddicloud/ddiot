@@ -258,8 +258,7 @@ class PosterService extends BaseService
     }
 
     public static function CreateQrcode($url, $scene, $width = 300)
-    {
-        global $_GPC;
+   {
 
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);

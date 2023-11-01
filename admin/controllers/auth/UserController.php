@@ -182,8 +182,7 @@ class UserController extends AController
      * @throws BadRequestHttpException
      */
     public function actionChangePass(): array
-    {
-        global $_GPC;
+   {
 
         $id =\Yii::$app->request->input('id');
 

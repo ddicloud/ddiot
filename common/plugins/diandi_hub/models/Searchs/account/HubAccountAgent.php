@@ -49,8 +49,7 @@ class HubAccountAgent extends HubAccountAgentModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubAccountAgentModel::find();
 
         

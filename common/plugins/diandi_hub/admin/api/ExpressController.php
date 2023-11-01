@@ -79,8 +79,7 @@ class ExpressController extends AController
      * )
      */
     public function actionList(): array
-    {
-        global $_GPC;
+   {
         $user_id = Yii::$app->user->identity->user_id;
         $res = [];
         $address_id =\Yii::$app->request->input('address_id');

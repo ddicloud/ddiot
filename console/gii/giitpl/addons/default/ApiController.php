@@ -76,8 +76,7 @@ class ApiController extends AController
      * )
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
 
         $data = Yii::$app->request->post();
         $access_token = $data['access_token'];

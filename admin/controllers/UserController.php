@@ -158,8 +158,7 @@ class UserController extends AController
     }
 
     public function actionUserinfo(): array
-    {
-        global $_GPC;
+   {
 
         $mobile =\Yii::$app->request->input('mobile') ?? '';
 
@@ -213,8 +212,7 @@ class UserController extends AController
     }
 
     public function actionBindmobile()
-    {
-        global $_GPC;
+   {
 
         $code =\Yii::$app->request->input('code');
         $mobile =\Yii::$app->request->input('mobile');
@@ -259,8 +257,7 @@ class UserController extends AController
     }
 
     public function actionForgetpass(): array
-    {
-        global $_GPC;
+   {
         $mobile =\Yii::$app->request->input('mobile');
         $password =\Yii::$app->request->input('password');
         $repassword =\Yii::$app->request->input('repassword');
@@ -311,8 +308,7 @@ class UserController extends AController
     }
 
     public function actionSendcode(): array
-    {
-        global $_GPC;
+   {
         $type =\Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile', 'login'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
@@ -347,8 +343,7 @@ class UserController extends AController
     }
 
     public function actionRefresh(): array
-    {
-        global $_GPC;
+   {
 
         $refresh_token =\Yii::$app->request->input('refresh_token');
 
@@ -368,8 +363,7 @@ class UserController extends AController
     }
 
     public function actionFeedback(): array
-    {
-        global $_GPC;
+   {
 
         $name =\Yii::$app->request->input('name');
         $contact =\Yii::$app->request->input('contact');
@@ -392,8 +386,7 @@ class UserController extends AController
     }
 
     public function actionAddons(): array
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $AddonsUser = new AddonsUser([
             'user_id' => $id,
@@ -433,8 +426,7 @@ class UserController extends AController
     }
 
     public function actionUpstatus(): array
-    {
-        global $_GPC;
+   {
         $user_id =\Yii::$app->request->input('user_id');
         $type =\Yii::$app->request->input('type');
 
@@ -454,8 +446,7 @@ class UserController extends AController
     }
 
     public function actionCreate(): array
-    {
-        global $_GPC;
+   {
         $username =\Yii::$app->request->input('username');
         $mobile =\Yii::$app->request->input('mobile');
         $password =\Yii::$app->request->input('password');
@@ -493,8 +484,7 @@ class UserController extends AController
     }
 
     public function actionSetinfo(): array
-    {
-        global $_GPC;
+   {
         $user_id =\Yii::$app->request->input('user_id');
         $addons = AddonsUser::find()->where(['user_id' => $user_id])->with(['addons'])->indexBy('module_name')->asArray()->all();
         $addonsList = [];
@@ -552,8 +542,7 @@ class UserController extends AController
     }
 
     public function actionDefaultInfo(): array
-    {
-        global $_GPC;
+   {
 
         $user_id =\Yii::$app->request->input('user_id');
         $addons_user_id = AddonsUser::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
@@ -566,8 +555,7 @@ class UserController extends AController
     }
 
     public function actionDefault(): array
-    {
-        global $_GPC;
+   {
         $user_id =\Yii::$app->request->input('user_id');
         $store_user_id =\Yii::$app->request->input('store_user_id');
         $bloc_user_id =\Yii::$app->request->input('bloc_user_id');
@@ -690,8 +678,7 @@ class UserController extends AController
     }
 
     public function actionLog(): array
-    {
-        global $_GPC;
+   {
         $user_id =\Yii::$app->request->input('user_id');
         $pageSize = 20;
         $query = ActionLog::find()->where(['user_id' => $user_id]);

@@ -43,8 +43,7 @@ class IotClient
      * @return string
      */
     public  function getAppid()
-    {
-        global $_GPC;
+   {
         $apiConf = new Api();
         $apiConf->getConf(Yii::$app->request->input('bloc_id',0));
         return $apiConf['app_id'];

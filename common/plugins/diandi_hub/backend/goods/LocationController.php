@@ -63,7 +63,7 @@ class LocationController extends BaseController
      */
     public function actionIndex()
     {
-        global  $_GPC;
+        
 
         $searchModel = new LocationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -125,8 +125,7 @@ class LocationController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

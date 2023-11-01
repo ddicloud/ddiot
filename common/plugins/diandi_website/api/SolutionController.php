@@ -80,8 +80,7 @@ class SolutionController extends AController
      * )
      */
     public function actionCateList()
-    {
-        global $_GPC;
+   {
         // if (isset(Yii::$app->request->input('solution_limit')) &&\Yii::$app->request->input('solution_limit') > 0) {
         //     \addons\diandi_website\models\searchs\SolutionCateSearch::$solutionLimit = (int)Yii::$app->request->input('solution_limit');
         // }
@@ -141,8 +140,7 @@ class SolutionController extends AController
      * )
      */
     public function actionList()
-    {
-        global $_GPC;
+   {
         $where = $this->_fillWhere(['cate_id']);
         return $this->_json(SolutionService::getList($this->getPageInfo(), $where,\Yii::$app->request->input('name') ?? ''));
     }

@@ -42,8 +42,7 @@ class WebsiteCorefun extends WebsiteCorefunModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteCorefunModel::find();
 
         

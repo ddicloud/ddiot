@@ -50,8 +50,7 @@ class HubMemberLevel extends HubMemberLevelModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $memberUsername = $this->memberUsername; 
         
         $query = HubMemberLevelModel::find()

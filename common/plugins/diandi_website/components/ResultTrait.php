@@ -14,8 +14,7 @@ use common\helpers\ResultHelper;
 trait ResultTrait
 {
     private function getPageInfo()
-    {
-        global $_GPC;
+   {
         $pageInfo = [];
         $limitStart =\Yii::$app->request->input('limit_start') ?? -1;
         if ($limitStart == 1) {
@@ -37,8 +36,7 @@ trait ResultTrait
     }
 
     private function _fillWhere($fields = [])
-    {
-        global $_GPC;
+   {
         $where = [];
         foreach ($fields as $field) {
             if (isset($_GPC[$field]) && $_GPC[$field]) {

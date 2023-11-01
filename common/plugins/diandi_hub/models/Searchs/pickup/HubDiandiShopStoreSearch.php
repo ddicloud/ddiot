@@ -48,8 +48,7 @@ class HubDiandiShopStoreSearch extends HubShopStore
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubShopStore::find();
 
         // add conditions that should always apply here

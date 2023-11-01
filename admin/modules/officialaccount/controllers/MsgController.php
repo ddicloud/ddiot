@@ -36,8 +36,7 @@ class MsgController extends AController
      *
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $request = Yii::$app->request;
         $logPath = Yii::getAlias('@runtime/wechat/msg/'.date('ymd').'.log');
         

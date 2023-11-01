@@ -56,8 +56,7 @@ class adminUser extends User
      * @return ArrayDataProvider|bool|ActiveDataProvider
      */
     public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
-    {
-        global $_GPC;
+   {
         $query = User::find()->joinWith('userGroup as userGroup');
 
         $this->load($params);

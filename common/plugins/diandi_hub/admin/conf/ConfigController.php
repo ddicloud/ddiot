@@ -28,14 +28,13 @@ class ConfigController extends AController
     }
 
     public function actionForm()
-    {
-        global $_GPC;
+   {
 
         $model = new HubConfig();
 
         $conf = $model->find()->asArray()->one();
         if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
-            $HubConfig = $_GPC;
+            $HubConfig = Yii::$app->request->post();
             $Data = [
                     'min_money' => floatval($HubConfig['min_money']),
                     'max_num' => floatval($HubConfig['max_num']),

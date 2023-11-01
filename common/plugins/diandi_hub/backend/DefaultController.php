@@ -66,8 +66,7 @@ class DefaultController extends BaseController
      * Action index
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
 
         $info = AddonsService::getAddonsInfo('diandi_hub');
         // $out_refund_no =  'Ref2021011797101559';

@@ -50,8 +50,7 @@ class SolutionCateSearch extends SolutionCate
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = SolutionCate::find();
 
 

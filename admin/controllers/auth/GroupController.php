@@ -123,8 +123,7 @@ class GroupController extends AController
     }
 
     public function actionChange(): array
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $items =\Yii::$app->request->input('items');
 
@@ -443,8 +442,7 @@ class GroupController extends AController
      * @throws StaleObjectException
      */
     public function actionUpdate($id): array
-    {
-        global $_GPC;
+   {
         $model = UserGroup::findOne($id);
 
         $old_parent = $model->name;

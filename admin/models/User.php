@@ -115,8 +115,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @throws Exception
      */
     public function signup($username, $mobile, $email, $password, int $status = 0, string $invitation_code = '', int $source_type = 0, string $company = ''): array|bool
-    {
-        global $_GPC;
+   {
         $logPath = Yii::getAlias('@runtime/wechat/login/'.date('ymd').'.log');
 
         if (!$this->validate()) {

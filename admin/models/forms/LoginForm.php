@@ -104,8 +104,7 @@ class LoginForm extends Model
      * @throws Exception
      */
     public function login(): array|bool
-    {
-        global $_GPC;
+   {
         if ($this->validate()) {
             $mobile = $this->mobile;
             $code = $this->sms_code;

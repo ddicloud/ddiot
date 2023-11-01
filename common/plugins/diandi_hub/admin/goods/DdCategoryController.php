@@ -33,8 +33,7 @@ class DdCategoryController extends AController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
         $searchModel = new SearchsHubCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider = ArrayHelper::objectToarray($dataProvider);
@@ -135,7 +134,7 @@ class DdCategoryController extends AController
 
     public function actionGoodslist()
     {
-        global  $_GPC;
+        
         $keywords =\Yii::$app->request->input('keywords');
         $list = [];
 
@@ -171,8 +170,7 @@ class DdCategoryController extends AController
      * @return string
      */
     public function actionChildcate()
-    {
-        global $_GPC;
+   {
         $parent_id =\Yii::$app->request->input('parent_id');
         $cates = HubCategory::findAll(['parent_id' => $parent_id]);
 

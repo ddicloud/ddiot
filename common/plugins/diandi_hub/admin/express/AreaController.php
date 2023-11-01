@@ -42,8 +42,7 @@ class AreaController extends AController
      * @return array
      */
     public function actionIndex()
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
 
@@ -67,8 +66,7 @@ class AreaController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         $detail = HubExpressTemplateArea::find()->where(['id' => $id])->asArray()->one();
@@ -91,8 +89,7 @@ class AreaController extends AController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
@@ -123,8 +120,7 @@ class AreaController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
@@ -156,8 +152,7 @@ class AreaController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
 

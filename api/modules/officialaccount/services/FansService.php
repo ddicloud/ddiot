@@ -28,8 +28,7 @@ class FansService extends BaseService
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
     public function follow($openid): void
-    {
-        global $_GPC;
+   {
         // 获取用户信息
         $user = Yii::$app->wechat->app->user->get($openid);
         $user = ArrayHelper::toArray($user);
@@ -93,8 +92,7 @@ class FansService extends BaseService
      * @throws \yii\web\UnprocessableEntityHttpException
      */
     public function syncAllOpenid(): array
-    {
-        global $_GPC;
+   {
         // 获取全部列表
         $fans_list = Yii::$app->wechat->app->user->list();
         // Yii::$App->debris->getWechatError($fans_list);

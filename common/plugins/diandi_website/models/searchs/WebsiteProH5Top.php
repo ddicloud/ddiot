@@ -47,8 +47,7 @@ class WebsiteProH5Top extends WebsiteProH5TopModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProH5TopModel::find();
 
         $this->load($params);

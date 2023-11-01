@@ -136,8 +136,7 @@ class WithdrawlogController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         $withdraw_status =\Yii::$app->request->input('HubWithdrawLog')['withdraw_status'];
 
         
@@ -285,8 +284,7 @@ class WithdrawlogController extends BaseController
 
     
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
        
         $query = HubWithdrawLog::find()->with(['userbank','member']);
         $between_time =\Yii::$app->request->input('between_time');

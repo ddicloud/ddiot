@@ -42,8 +42,7 @@ class WebsitePage extends WebsitePageModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsitePageModel::find();
 
         

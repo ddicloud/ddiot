@@ -40,8 +40,7 @@ class ConfigController extends AController
     public int $searchLevel = 0;
 
     public function actions(): array
-    {
-        global $_GPC;
+   {
         $bloc_id =\Yii::$app->request->input('bloc_id',0);
         Bloc::findOne($bloc_id);
         return parent::actions();
@@ -68,8 +67,7 @@ class ConfigController extends AController
      * )
      */
     public function actionWeburl(): array
-    {
-        global $_GPC;
+   {
         $settings = Yii::$app->settings;
         $model = new Weburl();
         if (Yii::$app->request->isPost) {
@@ -88,8 +86,7 @@ class ConfigController extends AController
 
 
     public function actionBaidu(): array
-    {
-        global $_GPC;
+   {
         $model = new Baidu();
 
         if (Yii::$app->request->isPost) {
@@ -114,8 +111,7 @@ class ConfigController extends AController
 
 
     public function actionWechatpay(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Wechatpay();
 
@@ -140,8 +136,7 @@ class ConfigController extends AController
 
 
     public function actionSms(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Sms();
 
@@ -167,8 +162,7 @@ class ConfigController extends AController
 
 
     public function actionEmail(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Email();
 
@@ -193,8 +187,7 @@ class ConfigController extends AController
 
 
     public function actionWxapp(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Wxapp();
 
@@ -218,8 +211,7 @@ class ConfigController extends AController
 
 
     public function actionWechat(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Wechat();
 
@@ -244,8 +236,7 @@ class ConfigController extends AController
 
 
     public function actionMicroapp(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Microapp();
 
@@ -270,8 +261,7 @@ class ConfigController extends AController
 
 
     public function actionApp(): array
-    {
-        global $_GPC;
+   {
 
         $model = new App();
 
@@ -296,8 +286,7 @@ class ConfigController extends AController
 
 
     public function actionMap(): array
-    {
-        global $_GPC;
+   {
 
         $model = new Map();
 
@@ -322,8 +311,7 @@ class ConfigController extends AController
 
 
     public function actionOss(): array
-    {
-        global $_GPC;
+   {
         $model = new Oss();
 
         if (Yii::$app->request->isPost) {
@@ -347,8 +335,7 @@ class ConfigController extends AController
 
 
     public function actionApi(): array
-    {
-        global $_GPC;
+   {
         $model = new Api();
 
         if (Yii::$app->request->isPost) {

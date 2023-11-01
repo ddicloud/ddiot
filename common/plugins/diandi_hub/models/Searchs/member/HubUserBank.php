@@ -49,8 +49,7 @@ class HubUserBank extends HubUserBankModel
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubUserBankModel::find();
 
         

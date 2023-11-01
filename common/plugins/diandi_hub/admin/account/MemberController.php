@@ -62,8 +62,7 @@ class MemberController extends AController
      * @return array
      */
     public function actionDetail(): array
-    {
-        global $_GPC;
+   {
         $member_id =\Yii::$app->request->input('member_id');
         
         $model = HubMemberAccount::find()->where(['member_id'=>$member_id])->one();

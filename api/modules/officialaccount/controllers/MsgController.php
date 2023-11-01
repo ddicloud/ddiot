@@ -26,8 +26,7 @@ class MsgController extends AController
     public $defaultAction = 'event';
 
     public function actionOpen(): void
-    {
-        global $_GPC;
+   {
         $request = Yii::$app->request;
         $app = Yii::$app->wechat->getApp();
         loggingHelper::writeLog('officialaccount', 'actionOpen', '事件监听处理', [
@@ -74,8 +73,7 @@ class MsgController extends AController
      * @throws NotFoundHttpException
      */
     public function actionEvent(): void
-    {
-        global $_GPC;
+   {
 
         $request = Yii::$app->request;
         $app = Yii::$app->wechat->getApp();

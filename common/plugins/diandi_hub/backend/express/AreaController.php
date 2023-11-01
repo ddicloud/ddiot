@@ -62,8 +62,7 @@ class AreaController extends BaseController
      */
     public function actionIndex()
     {
-        
-        global $_GPC;
+        Yii::$app->request->input('store_id',0)
 
         $template_id =\Yii::$app->request->input('template_id');
         
@@ -85,8 +84,7 @@ class AreaController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         return $this->render('view', [
@@ -101,8 +99,7 @@ class AreaController extends BaseController
      * @return array
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
@@ -130,8 +127,7 @@ class AreaController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
@@ -161,8 +157,7 @@ class AreaController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        global $_GPC;
+   {
 
         $template_id =\Yii::$app->request->input('template_id');
         

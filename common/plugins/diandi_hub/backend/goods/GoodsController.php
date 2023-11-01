@@ -60,7 +60,7 @@ class GoodsController extends BaseController
 
     public function actionAttribute()
     {
-        global  $_GPC;
+        
         if (Yii::$app->request->isPost) {
             $model = new GoodsHubGoods();
             $attribute = $model->attributeLabels();
@@ -79,7 +79,7 @@ class GoodsController extends BaseController
      */
     public function actionIndex()
     {
-        global  $_GPC;
+        
         $searchModel = new HubGoodsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
      
@@ -116,7 +116,7 @@ class GoodsController extends BaseController
      */
     public function actionCreate()
     {
-        global  $_GPC;
+        
 
         if (Yii::$app->request->isPost) {
             $baseprice =\Yii::$app->request->input('baseprice');
@@ -158,13 +158,13 @@ class GoodsController extends BaseController
 
     public function actionPostdata()
     {
-        global  $_GPC;
+        
         $goods_id =\Yii::$app->request->input('goods_id');
     }
 
     public function actionDetail()
     {
-        global  $_GPC;
+        
         $model = $this->findModel(Yii::$app->request->input('id'));
         $goods_id = $model['goods_id'];
 
@@ -183,7 +183,7 @@ class GoodsController extends BaseController
 
     public function actionGethtml()
     {
-        global  $_GPC;
+        
         // if (Yii::$App->request->isPost) {
         //     $DdGoodsSpecRel = new HubGoodsSpecRel();
         //     $html = $DdGoodsSpecRel->buildHtml(Yii::$app->request->input('goods_id'));
@@ -203,8 +203,7 @@ class GoodsController extends BaseController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
         
         $model = $this->findModel($id);
 
@@ -253,7 +252,7 @@ class GoodsController extends BaseController
 
     public function actionGoodslist()
     {
-        global  $_GPC;
+        
         $keywords =\Yii::$app->request->input('keywords');
         $list = [];
 
@@ -280,7 +279,7 @@ class GoodsController extends BaseController
 
     public function actionSpechtml()
     {
-        global  $_GPC;
+        
         $goods_id = Yii::$app->request->post();
     }
 

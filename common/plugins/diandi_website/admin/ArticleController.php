@@ -65,8 +65,7 @@ class ArticleController extends AController
     }
 
     public function actionCate()
-    {
-        global $_GPC;
+   {
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $where['bloc_id'] =\Yii::$app->request->input('bloc_id',0);
         $where['pcate'] =\Yii::$app->request->input('pcate');
@@ -182,8 +181,7 @@ class ArticleController extends AController
     }
 
     public function actionPageList()
-    {
-        global $_GPC;
+   {
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $where['bloc_id'] =\Yii::$app->request->input('bloc_id',0);
 

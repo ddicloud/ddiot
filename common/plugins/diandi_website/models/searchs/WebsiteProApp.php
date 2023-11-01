@@ -47,8 +47,7 @@ class WebsiteProApp extends WebsiteProAppModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProAppModel::find();
 
         $this->load($params);

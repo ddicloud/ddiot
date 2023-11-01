@@ -132,8 +132,7 @@ class PermissionController extends AController
     }
 
     public function actionLevels(): array
-    {
-        global $_GPC;
+   {
         $DdAddons = new DdAddons();
 
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
@@ -191,8 +190,7 @@ class PermissionController extends AController
      * @return array
      */
     public function actionView($id): array
-    {
-        global $_GPC;
+   {
         $all = [];
         $permission_type =\Yii::$app->request->input('permission_type');
         $module_name =\Yii::$app->request->input('module_name');
@@ -282,8 +280,7 @@ class PermissionController extends AController
      * @return array
      */
     public function actionUpdateitem(): array
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $model = $this->findSelfModel($id);
         $data = yii::$app->request->post();
@@ -316,8 +313,7 @@ class PermissionController extends AController
     }
 
     public function actionChange(): array
-    {
-        global $_GPC;
+   {
         $id =\Yii::$app->request->input('id');
         $items =\Yii::$app->request->input('items');
 

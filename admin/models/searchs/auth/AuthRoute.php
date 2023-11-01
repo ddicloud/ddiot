@@ -50,8 +50,7 @@ class AuthRoute extends AuthRouteModel
      * @return ArrayDataProvider|bool|ActiveDataProvider
      */
     public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
-    {
-        global $_GPC;
+   {
         $query = AuthRouteModel::find()->with(['addons']);
 
 

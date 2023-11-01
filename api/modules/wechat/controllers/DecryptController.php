@@ -19,8 +19,7 @@ class DecryptController extends AController
     protected array $authOptional = ['msg'];
 
     public function actionMsg(): array
-    {
-        global $_GPC;
+   {
 
         $encryptedData =\Yii::$app->request->input('encryptedData');
         $iv =\Yii::$app->request->input('iv');

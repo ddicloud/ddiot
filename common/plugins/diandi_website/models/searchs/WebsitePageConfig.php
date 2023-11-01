@@ -46,8 +46,7 @@ class WebsitePageConfig extends WebsitePageConfigModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsitePageConfigModel::find();
 
         $this->load($params);

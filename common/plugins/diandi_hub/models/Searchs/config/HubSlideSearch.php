@@ -47,8 +47,7 @@ class HubSlideSearch extends HubSlide
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubSlide::find();
 
         $dataProvider = new ActiveDataProvider([

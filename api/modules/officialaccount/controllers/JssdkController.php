@@ -23,8 +23,7 @@ class JssdkController extends AController
 
 
     public function actionConfig(): array
-    {
-        global $_GPC;
+   {
         $app = Yii::$app->wechat->app;
         $APIs = [
             'checkJsApi',

@@ -67,8 +67,7 @@ class HttpRequstMethod extends Behavior
 
     //@see http://www.yiichina.com/doc/api/2.0/yii-base-behavior#events()-detail
     public function events()
-    {
-        global $_GPC;
+   {
 
         $whereInit = [];
         $where = [];

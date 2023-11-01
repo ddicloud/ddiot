@@ -32,8 +32,7 @@ trait StoreLinkTrait
      * @throws HttpException
      */
     public function beforeSave($insert): bool|array
-    {
-        global $_GPC;
+   {
         $bloc_id =  \Yii::$app->request->input('bloc_id',0)??0;
         $name =\Yii::$app->request->input('name')??'';
         $logo =\Yii::$app->request->input('logo')??'';

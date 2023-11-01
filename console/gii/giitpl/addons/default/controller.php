@@ -34,7 +34,7 @@ class DefaultController extends BaseController
 */
 public function actionIndex()
 {
-    global $_GPC;
+    
         
     $info = AddonsService::getAddonsInfo("<?= $generator->moduleID; ?>");
     

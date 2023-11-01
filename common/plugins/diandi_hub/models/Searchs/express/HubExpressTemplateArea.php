@@ -46,8 +46,7 @@ class HubExpressTemplateArea extends HubExpressTemplateAreaModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubExpressTemplateAreaModel::find()->with(['province', 'district', 'express']);
 
         $this->template_id =\Yii::$app->request->input('template_id');

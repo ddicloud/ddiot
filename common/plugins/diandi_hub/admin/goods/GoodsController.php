@@ -39,7 +39,7 @@ class GoodsController extends AController
 
     public function actionAttribute()
     {
-        global  $_GPC;
+        
         if (Yii::$app->request->isPost) {
             $model = new GoodsHubGoods();
             $attribute = $model->attributeLabels();
@@ -58,7 +58,7 @@ class GoodsController extends AController
      */
     public function actionIndex()
     {
-        global  $_GPC;
+        
         $searchModel = new HubGoodsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -98,7 +98,7 @@ class GoodsController extends AController
      */
     public function actionCreate()
     {
-        global  $_GPC;
+        
         // 商品ID
         $goods_id =\Yii::$app->request->input('goods_id');
         // 分销类型（比例和价格）
@@ -129,13 +129,13 @@ class GoodsController extends AController
 
     public function actionPostdata()
     {
-        global  $_GPC;
+        
         $goods_id =\Yii::$app->request->input('goods_id');
     }
 
     public function actionDetail()
     {
-        global  $_GPC;
+        
         $model = $this->findModel(Yii::$app->request->input('id'));
         $goods_id = $model['goods_id'];
 
@@ -153,7 +153,7 @@ class GoodsController extends AController
 
     public function actionGethtml()
     {
-        global  $_GPC;
+        
         if (Yii::$app->request->isPost) {
             $DdGoodsSpecRel = new HubGoodsBaseSpecRel();
             $html = $DdGoodsSpecRel->buildHtml(Yii::$app->request->input('goods_id'));
@@ -173,8 +173,7 @@ class GoodsController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
 
@@ -228,7 +227,7 @@ class GoodsController extends AController
 
     public function actionGoodslist()
     {
-        global  $_GPC;
+        
         $keywords =\Yii::$app->request->input('keywords');
         $list = [];
 
@@ -255,7 +254,7 @@ class GoodsController extends AController
 
     public function actionSpechtml()
     {
-        global  $_GPC;
+        
         $goods_id = Yii::$app->request->post();
         $DdGoodsSpecRel = new HubGoodsBaseSpecRel();
         $DdGoodsSpecRel->buildHtml($goods_id);

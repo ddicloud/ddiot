@@ -46,8 +46,7 @@ class DiandiHubIndexMenu extends DiandiHubIndexMenuModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = DiandiHubIndexMenuModel::find();
 
         $this->load($params);

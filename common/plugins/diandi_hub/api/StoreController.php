@@ -113,8 +113,7 @@ class StoreController extends AController
 
     // 申请开店
     public function actionAdd()
-    {
-        global $_GPC;
+   {
         $name =\Yii::$app->request->input('name');
         $mobile =\Yii::$app->request->input('mobile');
         $address =\Yii::$app->request->input('address');
@@ -149,8 +148,7 @@ class StoreController extends AController
     }
 
     public function actionAddpay()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         if (!empty(Yii::$app->request->input('goods'))) {
@@ -182,8 +180,7 @@ class StoreController extends AController
     }
 
     public function actionPaylist()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
         $order_status =\Yii::$app->request->input('order_status');
         $page = Yii::$app->request->post('page', 1);
@@ -197,8 +194,7 @@ class StoreController extends AController
     }
 
     public function actionMemberpaylist()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
         $order_status =\Yii::$app->request->input('order_status');
         $page = Yii::$app->request->post('page', 1);
@@ -212,8 +208,7 @@ class StoreController extends AController
     }
 
     public function actionPaydetail()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
         $order_id =\Yii::$app->request->input('order_id');
         $detail = StoreService::detail($order_id, $member_id);
@@ -222,8 +217,7 @@ class StoreController extends AController
     }
 
     public function actionCreditpay()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
         $order_id =\Yii::$app->request->input('order_id');
 
@@ -237,8 +231,7 @@ class StoreController extends AController
     }
 
     public function actionConfirm()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
         $order_id =\Yii::$app->request->input('order_id');
         $Res = StoreService::confirm($member_id, $order_id);
@@ -262,8 +255,7 @@ class StoreController extends AController
     }
 
     public function actionConfirmonline()
-    {
-        global $_GPC;
+   {
 
         $order_id =\Yii::$app->request->input('order_id');
 
@@ -276,8 +268,7 @@ class StoreController extends AController
     }
 
     public function actionExpress()
-    {
-        global $_GPC;
+   {
         $express = HubExpressCompany::find()->where(['status' => 1])->asArray()->all();
 
         return ResultHelper::json(200, '获取成功', $express);

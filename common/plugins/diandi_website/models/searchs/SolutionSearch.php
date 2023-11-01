@@ -42,8 +42,7 @@ class SolutionSearch extends Solution
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = Solution::find();
 
         

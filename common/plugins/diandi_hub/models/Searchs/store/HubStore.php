@@ -46,8 +46,7 @@ class HubStore extends HubStoreModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubStoreModel::find();
 
         $this->load($params);

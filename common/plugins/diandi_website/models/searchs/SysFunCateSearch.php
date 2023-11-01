@@ -50,8 +50,7 @@ class SysFunCateSearch extends SysFunCate
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = SysFunCate::find();
 
 

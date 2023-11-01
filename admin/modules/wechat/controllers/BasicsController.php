@@ -110,8 +110,7 @@ class BasicsController extends AController
      * )
      */
     public function actionSignup()
-    {
-        global $_GPC;
+   {
         $users = Yii::$app->request->post();
         $code = $users['code'];
 
@@ -195,8 +194,7 @@ class BasicsController extends AController
      * )
      */
     public function actionPayparameters()
-    {
-        global $_GPC;
+   {
       
         $bloc_id = Yii::$app->params['bloc_id'];
         $store_id = Yii::$app->params['store_id'];

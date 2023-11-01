@@ -46,8 +46,7 @@ class WebsiteProConfig extends WebsiteProConfigModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = WebsiteProConfigModel::find();
 
         $this->load($params);

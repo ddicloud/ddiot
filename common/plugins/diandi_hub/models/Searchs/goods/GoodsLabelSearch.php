@@ -48,8 +48,7 @@ class GoodsLabelSearch extends HubGoodsBaseLabel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubGoodsBaseLabel::find();
 
         // add conditions that should always apply here

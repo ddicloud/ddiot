@@ -142,8 +142,7 @@ class OrderController extends BaseController
 
     
     public function actionExportdatalist()
-    {
-        global $_GPC;
+   {
        
         $query = HubAccountOrder::find();
  

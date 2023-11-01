@@ -16,8 +16,7 @@ trait ApiValidate {
      * @throws ErrorException
      */
     public function validateParams(array $rules): array|bool
-    {
-        global $_GPC;
+   {
         $validator = DynamicModel::validateData($_GPC, $rules);
         $validator->validate();
         if ($validator->validate()) {

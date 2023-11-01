@@ -73,8 +73,7 @@ class CommentController extends AController
      * )
      */
     public function actionComment()
-    {
-        global $_GPC;
+   {
 
         $data = [];
         

@@ -45,8 +45,7 @@ class MemberController extends AController
     // 获取用户信息
 
     public function actionInfo()
-    {
-        global $_GPC;
+   {
         $baseInfo = Yii::$app->service->commonMemberService->baseInfo(1);
 
         $baseInfo['levels'] = MemberService::getByUid($baseInfo['member_id']);
@@ -71,8 +70,7 @@ class MemberController extends AController
     }
 
     public function actionMyagent()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $pageSize =\Yii::$app->request->input('pageSize');
@@ -92,8 +90,7 @@ class MemberController extends AController
     }
 
     public function actionQrcode()
-    {
-        global $_GPC;
+   {
 
         $store_id = Yii::$app->params['store_id'];
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
@@ -135,8 +132,7 @@ class MemberController extends AController
      * )
      */
     public function actionWechatQrcode()
-    {
-        global $_GPC;
+   {
 
         $member_id = Yii::$app->user->identity->member_id??0;
         $scene =\Yii::$app->request->input('scene'); //二维码场景
@@ -158,8 +154,7 @@ class MemberController extends AController
     }
 
     private function _getWechatQrcode()
-    {
-        global $_GPC;
+   {
         $path =\Yii::$app->request->input('wechat_path');
         $width =\Yii::$app->request->input('wechat_width');
         $scene =\Yii::$app->request->input('wechat_scene');
@@ -188,8 +183,7 @@ class MemberController extends AController
     }
 
     public function actionWithdrawlist()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $pageSize =\Yii::$app->request->input('pageSize');
@@ -216,8 +210,7 @@ class MemberController extends AController
     }
 
     public function actionAddpayset()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $name =\Yii::$app->request->input('name');
@@ -267,8 +260,7 @@ class MemberController extends AController
     }
 
     public function actionGetpayset()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $Res = MemberService::Getpayset($member_id);
@@ -277,8 +269,7 @@ class MemberController extends AController
     }
 
     public function actionCollect()
-    {
-        global $_GPC;
+   {
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $list = MemberService::Collect($member_id);

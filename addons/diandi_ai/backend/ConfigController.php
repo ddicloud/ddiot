@@ -22,16 +22,14 @@ class ConfigController extends BaseController
     public $modelSearchName = "";
 
     public function actions()
-    {
-        global $_GPC;
+   {
         $bloc_id = Yii::$app->params['bloc_id'];
 
         $bloc = Bloc::findOne($bloc_id);
     }
 
     public function actionBaidu()
-    {
-        global $_GPC;
+   {
 
         $model = new Baidu();
         $bloc_id = Yii::$app->params['bloc_id'];

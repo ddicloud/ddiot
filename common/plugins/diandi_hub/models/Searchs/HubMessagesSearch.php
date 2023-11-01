@@ -42,8 +42,7 @@ class HubMessagesSearch extends HubMessages
 
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = HubMessages::find();
 
 
@@ -116,8 +115,7 @@ class HubMessagesSearch extends HubMessages
     }
 
     public function searchList($params)
-    {
-        global $_GPC;
+   {
         $query = HubMessages::find();
 
 

@@ -123,8 +123,7 @@ class OrderController extends AController
      * )
      */
     public function actionCreateorder()
-    {
-        global $_GPC;
+   {
         $data = Yii::$app->request->post();
         $total_price =\Yii::$app->request->input('total_price');
         $express_price =\Yii::$app->request->input('express_price');
@@ -283,8 +282,7 @@ class OrderController extends AController
      * )
      */
     public function actionCreategoodsorder()
-    {
-        global $_GPC;
+   {
         $total_price =\Yii::$app->request->input('total_price');
         $express_price =\Yii::$app->request->input('express_price');
         $express_type = intval(Yii::$app->request->input('express_type'));
@@ -538,8 +536,7 @@ class OrderController extends AController
      * )
      */
     public function actionOrderdetail()
-    {
-        global $_GPC;
+   {
         $num =\Yii::$app->request->input('goods_number');
         $spec_id =\Yii::$app->request->input('spec_id');
         $goods_type =\Yii::$app->request->input('goods_type');
@@ -557,8 +554,7 @@ class OrderController extends AController
     }
 
     public function actionIntegralpay()
-    {
-        global $_GPC;
+   {
         $order_id =\Yii::$app->request->input('order_id');
         $Res = OrderService::integralPay($order_id);
         if ($Res['status'] == 0) {
@@ -590,8 +586,7 @@ class OrderController extends AController
     }
 
     public function actionGetexpress()
-    {
-        global $_GPC;
+   {
 
         $order_no = trim(Yii::$app->request->input('order_no'));
 
@@ -607,8 +602,7 @@ class OrderController extends AController
 
     // 物流信息推送
     public function actionKdinform()
-    {
-        global $_GPC;
+   {
 
         $RequestDatas =\Yii::$app->request->input('RequestData');
 
@@ -629,8 +623,7 @@ class OrderController extends AController
     }
 
     public function actionDeletebytime()
-    {
-        global $_GPC;
+   {
 
         OrderService::DeleteByTime();
         OrderService::autoReceive();
