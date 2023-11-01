@@ -49,8 +49,8 @@ return [
         'officialaccount' => [
             'class' => 'api\modules\officialaccount\module',
         ],
-        'diandi_cloud' => [
-            'class' => 'common\plugins\diandi_cloud\api',
+        'diandi_website' => [
+            'class' => 'common\plugins\diandi_website\api',
         ],
         'diandi_hub' => [
             'class' => 'common\plugins\diandi_hub\api',
