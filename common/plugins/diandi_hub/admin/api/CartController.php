@@ -100,7 +100,7 @@ class CartController extends AController
         global $_GPC;
         $user_id = Yii::$app->user->identity->user_id;
         $cart_ids = [];
-        if (isset(Yii::$app->request->input('cart_ids'))) {
+        if (Yii::$app->request->input('cart_ids') !== null) {
             if (is_array(Yii::$app->request->input('cart_ids'))) {
                 $cart_ids = Yii::$app->request->input('cart_ids');
             } else {

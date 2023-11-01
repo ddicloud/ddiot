@@ -69,8 +69,8 @@ class HubMessagesCategorySearch extends HubMessagesCategory
         $query->andWhere(['pid' => 0]);
 
         $count = $query->count();
-        $pageSize   = Yii::$app->request->input('pageSize')??10;
-        $page       = Yii::$app->request->input('page')??1;
+        $pageSize   = Yii::$app->request->input('pageSize',10);
+        $page       = \Yii::$app->request->input('page',1);
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

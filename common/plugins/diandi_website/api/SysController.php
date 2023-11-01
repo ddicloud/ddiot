@@ -304,7 +304,7 @@ class SysController extends AController
     public function actionFun()
     {
         global $_GPC;
-        if (isset(Yii::$app->request->input('fun_limit')) && Yii::$app->request->input('fun_limit') > 0) {
+        if (Yii::$app->request->input('fun_limit') !== null && Yii::$app->request->input('fun_limit') > 0) {
             \addons\diandi_website\models\searchs\SysFunCateSearch::$funLimit = (int)Yii::$app->request->input('fun_limit');
         }
         $where = $this->_fillWhere(['solution_id', 'is_website']);

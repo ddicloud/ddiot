@@ -140,7 +140,7 @@ class PermissionController extends AController
         $addons['sys'] = '系统';
 
         $where = ['permission_type' => 1, 'parent_id' => 0];
-        if (isset(Yii::$app->request->input('is_sys'))) {
+        if (Yii::$app->request->input('is_sys') !== null) {
             $where['is_sys'] = (int) Yii::$app->request->input('is_sys');
         }
         // 权限只能是2级，不能是三级
