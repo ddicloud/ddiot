@@ -59,6 +59,7 @@ class GoodsController extends AController
     public function actionSearch(): array
     {
         global $_GPC;
+//        Yii::$app->request->getData();
         $keytwords = $_GPC['keywords'];
         $pageSize = $_GPC['pageSize'];
         $user_id = Yii::$app->user->identity->user_id;
