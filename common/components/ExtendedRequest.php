@@ -7,7 +7,7 @@ use yii\web\Request;
 
 class ExtendedRequest extends Request
 {
-    public function input($key = null, $default = null):array|object
+    public function input($key = null, $default = null)
     {
         $getParams = $this->get();
         $postParams = $this->post();
