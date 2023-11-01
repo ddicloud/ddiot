@@ -19,11 +19,11 @@ class ExtendedRequest extends Request
         $postParams = $this->post();
 
         //头部bloc_id 与store_id 参数优先级低于自身请求体里面的参数
-        $headerParams = [];
-        if ($key === 'bloc_id' || $key === 'store_id'){
-            $headerKey = str_replace('_','-',$key);
-            $headerParams = Yii::$app->request->headers->get($headerKey);
-        }
+        $headerParams = [
+            'bloc_id'=>Yii::$app->request->headers->get('bloc-id'),
+            'store_id'=>Yii::$app->request->headers->get('store-id'),
+            'access_token'=>Yii::$app->request->headers->get('access-token'),
+        ];
 
         $data = array_merge($headerParams,$getParams, $postParams);
 
