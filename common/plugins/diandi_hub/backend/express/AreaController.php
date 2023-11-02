@@ -60,11 +60,10 @@ class AreaController extends BaseController
      * Lists all HubExpressTemplateArea models.
      * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
-        Yii::$app->request->input('store_id',0)
 
-        $template_id =\Yii::$app->request->input('template_id');
+        $template_id = Yii::$app->request->input('template_id');
         
         $searchModel = new HubExpressTemplateAreaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -86,7 +85,7 @@ class AreaController extends BaseController
     public function actionView($id)
    {
 
-        $template_id =\Yii::$app->request->input('template_id');
+        $template_id = Yii::$app->request->input('template_id');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'template_id' => $template_id
@@ -101,7 +100,7 @@ class AreaController extends BaseController
     public function actionCreate()
    {
 
-        $template_id =\Yii::$app->request->input('template_id');
+        $template_id = Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
         $express_id = $template['express_id'];
         $title      = $template['title'];
@@ -129,7 +128,7 @@ class AreaController extends BaseController
     public function actionUpdate($id)
    {
 
-        $template_id =\Yii::$app->request->input('template_id');
+        $template_id = Yii::$app->request->input('template_id');
         $template = HubExpressTemplate::findOne($template_id);
         $express_id = $template['express_id'];
         $title      = $template['title'];
@@ -159,7 +158,7 @@ class AreaController extends BaseController
     public function actionDelete($id)
    {
 
-        $template_id =\Yii::$app->request->input('template_id');
+        $template_id = Yii::$app->request->input('template_id');
         
         $this->findModel($id)->delete();
 
