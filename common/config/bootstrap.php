@@ -14,5 +14,4 @@ Yii::setAlias('@api', dirname(dirname(__DIR__)).'/api');
 Yii::setAlias('@admin', dirname(dirname(__DIR__)).'/admin');
 Yii::setAlias('@addons', dirname(dirname(__DIR__)).'/addons');
 Yii::setAlias('@attachment', dirname(dirname(__DIR__)).'/frontend/attachment');
-Yii::setAlias('@ddswoole', dirname(dirname(__DIR__)).'/swoole');
 Yii::setAlias('@vue', dirname(dirname(__DIR__)).'/common/widgets/firevue');

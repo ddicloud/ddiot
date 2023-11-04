@@ -11,18 +11,17 @@ namespace console\controllers;
 
 use common\services\admin\NavService;
 use Yii;
-use yii\console\Controller;
 
 // 使用示例： ./yii addons -addons=diandi_lottery -bloc_id=1 -store_id=3   job ninini
 
 class AddonsController extends BaseController
 {
-    public function actionCreatemenu()
+    public function actionCreatemenu(): void
     {
         NavService::addonsMens($this->addons);
     }
 
-    public function actionConsole($controller, $action, $param)
+    public function actionConsole($controller, $action, $param): void
     {
         print_r([$controller, $action, $param]);
         Yii::$app->getModule($this->addons)->$action($param);

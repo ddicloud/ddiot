@@ -125,7 +125,7 @@ class MenuController extends AController
     public function actionLevels(): array
     {
         $addons = DdAddons::find()->asArray()->all();
-        $parentMent = Menu::find()->where(['is_sys' => 'system'])->asArray()->all();
+        $parentMent = Menu::find()->where(['is_sys' => 1])->asArray()->all();
         $parentMenu = HelpersArrayHelper::itemsMergeDropDown(HelpersArrayHelper::itemsMerge($parentMent, 0, 'id', 'parent'), 'id', 'name');
 
         return ResultHelper::json(200, '获取成功', [

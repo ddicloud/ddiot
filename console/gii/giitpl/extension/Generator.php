@@ -66,7 +66,7 @@ class Generator extends \yii\gii\Generator
         return array_merge(
             parent::rules(),
             [
-                [['vendorName', 'packageName'], 'filter', 'filter' => 'trim'],
+                [['vendorName', 'packageName'], 'filter', 'filter' => 'trim', 'skipOnEmpty' => true],
                 [
                     [
                         'vendorName',

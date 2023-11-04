@@ -67,6 +67,7 @@ common/config/mongodb.php
 addons/*
 !addons/diandi_ai
 !addons/diandi_website
+!addons/diandi_tea
 
 # 资源目录
 node_modules

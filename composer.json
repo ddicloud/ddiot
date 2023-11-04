@@ -1,109 +1,109 @@
 {
-    "name": "ddicloud/ddicms",
-    "description": "店滴云-针对多商户业务开发的一套管理cms,支持多运营主体,单运营主体运营开发",
-    "keywords": [
-        "yii2",
-        "ai开源框架",
-        "python开源框架"
-    ],
-    "homepage": "https://www.dandicloud.com/",
-    "type": "project",
-    "license": "BSD-3-Clause",
-    "support": {
-        "issues": "https://github.com/tuhuokeji/diandicms/issues",
-        "forum": "https://www.hopesfire.com",
-        "wiki": "https://github.com/tuhuokeji/diandicms/wiki",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/tuhuokeji/diandicms"
+  "name": "ddicloud/ddicms",
+  "description": "店滴云-针对多商户业务开发的一套管理cms,支持多运营主体,单运营主体运营开发",
+  "keywords": [
+    "yii2",
+    "ai开源框架",
+    "python开源框架"
+  ],
+  "homepage": "https://www.dandicloud.com/",
+  "type": "project",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/tuhuokeji/diandicms/issues",
+    "forum": "https://www.hopesfire.com",
+    "wiki": "https://github.com/tuhuokeji/diandicms/wiki",
+    "irc": "irc://irc.freenode.net/yii",
+    "source": "https://github.com/tuhuokeji/diandicms"
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=8.0",
+    "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+    "yiisoft/yii2-redis": "^2.0",
+    "yiisoft/yii2-queue": "^2.3",
+    "yii2mod/yii2-enum": "~1.7.1",
+    "yii2mod/yii2-settings": "~2.5",
+    "leandrogehlen/yii2-treegrid": "~1.1.0",
+    "richardfan1126/yii2-js-register": "~0.0.1",
+    "ramsey/uuid": "^3.9",
+    "overtrue/easy-sms": "^1.1",
+    "yii-diandi/yii2-admin": "^3.1",
+    "yii-diandi/yii2-region": "^1.0",
+    "2amigos/qrcode-library": "^2.0",
+    "hashids/hashids": "^4.0",
+    "yii-diandi/yii2-migration": "^2.0",
+    "yiisoft/yii2": "2.0.48.1",
+    "yii-diandi/yii2-addons": "^4.1",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-simplexml": "*",
+    "guzzlehttp/guzzle": "^7.4",
+    "guzzlehttp/guzzle-services": "^1.1",
+    "guzzlehttp/psr7": "^1.3.1 || ^2.0",
+    "symfony/browser-kit": ">=2.7 <5.0",
+    "symfony/dependency-injection": "^5.4",
+    "swoole/ide-helper": "^5.0",
+    "simps/mqtt": "^1.4",
+    "ext-openssl": "*",
+    "ext-pdo": "*",
+    "yii-diandi/yii2-easywechat": "^1.1",
+    "ext-libxml": "*",
+    "ext-swoole": "*",
+    "ext-redis": "*",
+    "vlucas/phpdotenv": "^5.5",
+    "yiithings/yii2-dotenv": "^1.1"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.1.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "yiisoft/yii2-gii": "^2.1",
+    "codeception/verify": "~1.0.0",
+    "phpunit/phpunit": "^9.6"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "fxp-asset": {
+      "enabled": false
     },
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=8.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "yiisoft/yii2-redis": "^2.0",
-        "yiisoft/yii2-queue": "^2.3",
-        "yii2mod/yii2-enum": "~1.7.1",
-        "yii2mod/yii2-settings": "~2.5",
-        "leandrogehlen/yii2-treegrid": "~1.1.0",
-        "richardfan1126/yii2-js-register": "~0.0.1",
-        "ramsey/uuid": "^3.9",
-        "overtrue/easy-sms": "^1.1",
-        "yii-diandi/yii2-admin": "^3.1",
-        "yii-diandi/yii2-region": "^1.0",
-        "2amigos/qrcode-library": "^2.0",
-        "hashids/hashids": "^4.0",
-        "yii-diandi/yii2-migration": "^2.0",
-        "yiisoft/yii2": "2.0.48.1",
-        "yii-diandi/yii2-addons": "^4.1",
-        "ext-curl": "*",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "^7.4",
-        "guzzlehttp/guzzle-services": "^1.1",
-        "guzzlehttp/psr7": "^1.3.1 || ^2.0",
-        "symfony/browser-kit": ">=2.7 <5.0",
-        "symfony/dependency-injection": "^5.4",
-        "swoole/ide-helper": "^5.0",
-        "simps/mqtt": "^1.4",
-        "ext-openssl": "*",
-        "ext-pdo": "*",
-        "yii-diandi/yii2-easywechat": "^1.1",
-        "ext-libxml": "*",
-       "ext-swoole": "*",
-        "ext-redis": "*",
-        "vlucas/phpdotenv": "^5.5",
-        "yiithings/yii2-dotenv": "^1.1"
-    },
-    "require-dev": {
-        "yiisoft/yii2-debug": "~2.1.0",
-        "yiisoft/yii2-faker": "~2.0.0",
-        "yiisoft/yii2-gii": "^2.1",
-        "codeception/verify": "~1.0.0",
-        "phpunit/phpunit": "^9.6"
-    },
-    "config": {
-        "process-timeout": 1800,
-        "fxp-asset": {
-            "enabled": false
-        },
-        "allow-plugins": {
-            "yiisoft/yii2-composer": true,
-            "easywechat-composer/easywechat-composer": true
-        }
-    },
-    "replace": {
-        "bower-asset/jquery": ">=1.11.0",
-        "bower-asset/inputmask": ">=3.2.0",
-        "bower-asset/punycode": ">=1.3.0",
-        "bower-asset/yii2-pjax": ">=2.0.0",
-        "bower-asset/x-editable": ">=1.5.0",
-        "bower-asset/jquery.cookie": ">=1.4.0",
-        "bower-asset/typeahead.js": ">=0.11.0",
-        "bower-asset/bootstrap": ">=3.4.1",
-        "bower-asset/jquery-treegrid": ">=0.3.0",
-        "bower-asset/jquery-ui": ">=1.12.1",
-        "bower-asset/swagger-ui": ">=3.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "addons\\": "addons",
-            "admin\\": "admin",
-            "api\\": "api",
-            "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",
-            "EasySwoole\\Rpc\\Tests\\": "common/components/EasySwoole/rpc/tests/",
-            "EasySwoole\\Component\\": "common/components/EasySwoole/component/src/",
-            "EasySwoole\\Spl\\": "common/components/EasySwoole/spl/src/",
-            "EasySwoole\\Utility\\": "common/components/EasySwoole/utility/src/"
-        }
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
-        },
-        "0": {
-            "type": "composer",
-            "url": "https://packagist.org"
-        }
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "easywechat-composer/easywechat-composer": true
     }
+  },
+  "replace": {
+    "bower-asset/jquery": ">=1.11.0",
+    "bower-asset/inputmask": ">=3.2.0",
+    "bower-asset/punycode": ">=1.3.0",
+    "bower-asset/yii2-pjax": ">=2.0.0",
+    "bower-asset/x-editable": ">=1.5.0",
+    "bower-asset/jquery.cookie": ">=1.4.0",
+    "bower-asset/typeahead.js": ">=0.11.0",
+    "bower-asset/bootstrap": ">=3.4.1",
+    "bower-asset/jquery-treegrid": ">=0.3.0",
+    "bower-asset/jquery-ui": ">=1.12.1",
+    "bower-asset/swagger-ui": ">=3.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "addons\\": "addons",
+      "admin\\": "admin",
+      "api\\": "api",
+      "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",
+      "EasySwoole\\Rpc\\Tests\\": "common/components/EasySwoole/rpc/tests/",
+      "EasySwoole\\Component\\": "common/components/EasySwoole/component/src/",
+      "EasySwoole\\Spl\\": "common/components/EasySwoole/spl/src/",
+      "EasySwoole\\Utility\\": "common/components/EasySwoole/utility/src/"
+    }
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer/"
+    },
+    "0": {
+      "type": "composer",
+      "url": "https://packagist.org"
+    }
+  }
 }
