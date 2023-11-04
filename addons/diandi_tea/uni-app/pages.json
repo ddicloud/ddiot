@@ -1,0 +1,736 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"aliasPath": "/", //对于h5端你必须在首页加上aliasPath并设置为/
+		"name": "index",
+		"meta": {
+			"title": "首页"
+		},
+		"style": {
+			"navigationStyle": "custom",
+			"navigationBarTextStyle": "#FFFFFF",
+			"backgroundColorBottom": "#F7F7F7",
+			"enablePullDownRefresh": false,
+			"onReachBottomDistance": 50,
+			"app-plus": {
+				"scrollIndicator": "none"
+			}
+		}
+	}, {
+		"path": "pages/mecenter/mecenter",
+		"aliasPath": "/mecenter", //对于h5端你必须在首页加上aliasPath并设置为/
+		"name": "mecenter",
+		"meta": {
+			"title": "会员中心"
+		},
+		"style": {
+			"navigationBarTitleText": "会员中心",
+			"navigationBarBackgroundColor": "#FFFFFF",
+			"enablePullDownRefresh": false,
+			"app-plus": {
+				"navigationBarTextStyle": "#FFFFFF",
+				"autoBackButton": true
+				// "titleNView": true
+				// "bounce": "vertical"
+			}
+		}
+	}, {
+		"path": "pages/reserve/reserve",
+		"aliasPath": "/reserve", //对于h5端你必须在首页加上aliasPath并设置为/
+		"name": "reserve",
+		"meta": {
+			"title": "我的订单",
+			"isLogin": true
+		},
+		"style": {
+			"navigationBarTitleText": "我的订单",
+			"navigationBarBackgroundColor": "#FFFFFF",
+			"enablePullDownRefresh": false,
+			"app-plus": {
+				"navigationBarTextStyle": "#FFFFFF",
+				"autoBackButton": true
+				// "titleNView": true
+				// "bounce": "vertical"
+			}
+		}
+	}, {
+		"path": "pages/my/my",
+		"aliasPath": "/my", //对于h5端你必须在首页加上aliasPath并设置为/
+		"name": "my",
+		"meta": {
+			"title": "我的"
+		},
+		"style": {
+			"navigationBarTitleText": "我的",
+			"navigationBarBackgroundColor": "#FFFFFF",
+			"enablePullDownRefresh": false,
+			"app-plus": {
+				"navigationBarTextStyle": "#FFFFFF",
+				"autoBackButton": true
+				// "titleNView": true
+				// "bounce": "vertical"
+			}
+		}
+	}    ,{
+            "path" : "pages/orderinfo/orderinfo",
+			"aliasPath": "/orderinfo", //对于h5端你必须在首页加上aliasPath并设置为/
+			"name": "orderinfo",
+			"meta": {
+				"title": "订单汇总"
+			},
+            "style" :                                                                                    
+            {
+               "navigationBarTitleText": "我的",
+               "navigationBarBackgroundColor": "#FFFFFF",
+               "enablePullDownRefresh": false,
+               "app-plus": {
+               	"navigationBarTextStyle": "#FFFFFF",
+               	"autoBackButton": true
+               	// "titleNView": true
+               	// "bounce": "vertical"
+               }
+            }
+            
+        }
+    ],
+	"subPackages": [{
+			"root": "teahouse",
+			"pages": [{
+					"path": "houseselect/houseselect",
+					"aliasPath": "/houseselect", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "houseselect",
+					"meta": {
+						"title": "房间选择"
+						// "isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "房间选择",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "integral/integral",
+					"aliasPath": "/integrals", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "integrals",
+					"meta": {
+						"title": "积分"
+					},
+					"style": {
+						"navigationBarTitleText": "积分",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "recharge/recharge",
+					"aliasPath": "/recharge", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "recharge",
+					"meta": {
+						"title": "充值"
+					},
+					"style": {
+						"navigationBarTitleText": "充值",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "order/order",
+					"aliasPath": "/order", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "order",
+					"meta": {
+						"title": "我的订单"
+						// "isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "我的订单",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "balance/balance",
+					"aliasPath": "/balance", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "balance",
+					"meta": {
+						"title": "余额"
+						// "isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "余额",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "coupon/coupon",
+					"aliasPath": "/coupon", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "coupon",
+					"meta": {
+						"title": "会员卡券",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "会员卡券",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "modified/modified",
+					"aliasPath": "/modified", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "modified",
+					"meta": {
+						"title": "修改资料",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "修改资料",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "orderDetail/orderDetail",
+					"aliasPath": "/orderDetail", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "orderDetail",
+					"meta": {
+						"title": "详情",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "详情",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "givecoupon/givecoupon",
+					"aliasPath": "/givecoupon", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "givecoupon",
+					"meta": {
+						"title": "赠送卡券"
+					},
+					"style": {
+						"navigationBarTitleText": "赠送卡券",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "predetermine/predetermine",
+					"aliasPath": "/predetermine", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "predetermine",
+					"meta": {
+						"title": "预定"
+					},
+					"style": {
+						"navigationBarTitleText": "预定",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "confirmOrder/confirmOrder",
+					"aliasPath": "/confirmOrder", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "confirmOrder",
+					"meta": {
+						"title": "订单确认"
+					},
+					"style": {
+						"navigationBarTitleText": "订单确认",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "renewalDetial/renewalDetial",
+					"aliasPath": "/renewalDetial", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "renewalDetial",
+					"meta": {
+						"title": "续费明细",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "续费明细",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "mycoupon/mycoupon",
+					"aliasPath": "/mycoupon", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "mycoupon",
+					"meta": {
+						"title": "我的卡券"
+					},
+					"style": {
+						"navigationBarTitleText": "我的卡券",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				},
+				{
+					"path": "goods/integral/integral",
+					"aliasPath": "/integral", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "integral",
+					"meta": {
+						"title": "积分商城",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "积分商城",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				},
+				{
+					"path": "goods/integral/integralDetail",
+					"aliasPath": "/integralDetail", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "integralDetail",
+					"meta": {
+						"title": "商品详情"
+					},
+					"style": {
+						"navigationBarTitleText": "商品详情",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				},
+				{
+					"path": "goods/integral/confirmOrder",
+					"aliasPath": "/integralconfirmOrder", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "integralconfirmOrder",
+					"meta": {
+						"title": "积分兑换"
+					},
+					"style": {
+						"navigationBarTitleText": "积分兑换",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "address/address",
+					"aliasPath": "/address", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "address",
+					"meta": {
+						"title": "收货地址"
+					},
+					"style": {
+						"navigationBarTitleText": "收货地址",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				},
+				{
+					"path": "address/editAddress",
+					"aliasPath": "/editAddress", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "editAddress",
+					"meta": {
+						"title": "编辑地址"
+					},
+					"style": {
+						"navigationBarTitleText": "编辑地址",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "couponDetail/couponDetail",
+					"aliasPath": "/couponDetail", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "couponDetail",
+					"meta": {
+						"title": "卡券详情"
+					},
+					"style": {
+						"navigationBarTitleText": "卡券详情",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "invoice/invoice",
+					"aliasPath": "/invoice", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "invoice",
+					"meta": {
+						"title": "申请开票"
+					},
+					"style": {
+						"navigationBarTitleText": "申请开票",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "invoiceDetail/invoiceDetail",
+					"aliasPath": "/invoiceDetail", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "invoiceDetail",
+					"meta": {
+						"title": "开票记录",
+						"isLogin": true
+					},
+					"style": {
+						"navigationBarTitleText": "开票记录",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"root": "public",
+			"pages": [{
+					"path": "login/wechatlogin",
+					"aliasPath": "/wechatlogin", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "wechatlogin",
+					"meta": {
+						"title": "选择登录",
+						"isLogin": false
+					},
+					"style": {
+						"navigationBarTitleText": "选择登录",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"navigationBarTextStyle": "#FFFFFF",
+							"autoBackButton": true,
+							// "titleNView": true
+							// "bounce": "vertical"
+							"app-plus": {
+								"scrollIndicator": "none"
+							}
+						}
+					}
+				}, {
+					"path": "mobile/mobile",
+					"aliasPath": "/mobile", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "mobile",
+					"meta": {
+						"title": "绑定手机号"
+					},
+					"style": {
+						"navigationBarTitleText": "绑定手机号",
+						"app-plus": {
+							"titleNView": false,
+							"bounce": "vertical"
+						}
+					}
+
+				}, {
+					"path": "login/login",
+					"aliasPath": "/login", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "login",
+					"meta": {
+						"title": "个人中心"
+					},
+					"style": {
+						"navigationBarTitleText": "账号密码登录",
+						"navigationBarTitleText": "选择登录",
+						"navigationBarBackgroundColor": "#E50012",
+						"navigationBarTextStyle": "#FFFFFF",
+						"backgroundColorBottom": "#F7F7F7",
+						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"scrollIndicator": "none",
+							"titleNView": false
+						}
+					}
+				}, {
+					"path": "forgetPwd/forgetPwd",
+					"aliasPath": "/forgetPwd", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "forgetPwd",
+					"meta": {
+						"title": "修改密码"
+					},
+					"style": {
+						"navigationBarTitleText": "修改密码",
+						"navigationBarBackgroundColor": "#E50012",
+						"navigationBarTextStyle": "#FFFFFF",
+						"backgroundColorBottom": "#F7F7F7",
+						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"scrollIndicator": "none",
+							"titleNView": false
+						}
+					}
+				}, {
+					"path": "login/reg",
+					"aliasPath": "/register", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "register",
+					"meta": {
+						"title": "注册"
+					},
+					"style": {
+						"navigationBarTitleText": "选择登录",
+						"navigationBarBackgroundColor": "#E50012",
+						"navigationBarTextStyle": "#FFFFFF",
+						"backgroundColorBottom": "#F7F7F7",
+						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 50,
+						"app-plus": {
+							"scrollIndicator": "none",
+							"titleNView": false
+						}
+					}
+				}, {
+					"path": "auth/auth",
+					"aliasPath": "/auth", //对于h5端你必须在首页加上aliasPath并设置为/
+					"name": "auth",
+					"meta": {
+						"title": "公众号授权登录"
+					},
+					"style": {
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"navigationBarTitleText": "登录授权",
+							"titleNView": false,
+							"scrollIndicator": "none",
+							"popGesture": "none"
+						}
+					}
+				}, {
+					"path": "update/update",
+					"name": "update",
+					"style": {
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"navigationBarTitleText": "",
+							"titleNView": false,
+							"scrollIndicator": "none",
+							"popGesture": "none"
+						}
+					}
+				},
+				{
+					"path": "icard/icard",
+					"name": "icard",
+					"style": {
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"navigationBarTitleText": "",
+							"titleNView": false,
+							"scrollIndicator": "none",
+							"popGesture": "none"
+						}
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"public/login/login": {
+			"network": "all",
+			"packages": ["__APP__"]
+		}
+	},
+	"globalStyle": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#ffffff",
+		// "navigationBarTitleText": "都唻团",
+		"navigationBarTextStyle": "black",
+		"backgroundColor": "#fafafa",
+		"backgroundColorTop": "#fafafa",
+		"backgroundColorBottom": "#fafafa",
+		"rpxCalcMaxDeviceWidth": 960,
+		"rpxCalcBaseDeviceWidth": 375,
+		"rpxCalcIncludeWidth": 750
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"fui-(.*)": "@/components/fireui/fui-$1/fui-$1.vue"
+		}
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "pages/index/index", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}

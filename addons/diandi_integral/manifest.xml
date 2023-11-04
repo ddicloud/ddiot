@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="https://www.dandicloud.com/" versionCode="1.0">
+    <application>
+        <title><![CDATA[积分商城]]></title>
+        <identifie><![CDATA[diandi_integral]]></identifie>
+        <version><![CDATA[0.1]]></version>
+        <type><![CDATA[business]]></type>
+        <ability><![CDATA[积分商城]]></ability>
+        <description><![CDATA[积分商城]]></description>
+        <author><![CDATA[tuhuokeji]]></author>
+        <url><![CDATA[]]></url>
+    </application>
+    <bindings>
+    </bindings>
+    <install><![CDATA[install.php]]></install>
+    <uninstall><![CDATA[uninstall.php]]></uninstall>
+    <upgrade><![CDATA[upgrade.php]]></upgrade>
+</manifest>
