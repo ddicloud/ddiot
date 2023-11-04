@@ -359,32 +359,28 @@ class UserService extends BaseService
 
         // 增加查看插件的权限
         $add_ids = array_diff($authItems, $assigned_ids);
-        $addList = DdAddons::find()->where(['mid' => $add_ids])->asArray()->all();
 
         loggingHelper::writeLog('StoreService', 'createStore', 'AssignmentPermissionByUid', [
             'authItems' => $authItems,
             'add_ids' => $add_ids,
-            'addList' => $addList,
             'user_id' => $user_id,
             'addons_identifie' => $addons_identifie,
         ]);
-        foreach ($addList as $value) {
-            $_AddonsUser = clone $AddonsUser;
-            $data = [
-                'user_id' => $user_id,
-                'is_default' => 0,
-                'type' => 1,
-                'module_name' => $value['identifie'],
-                'status' => 0,
-            ];
-            $_AddonsUser->setAttributes($data);
-            if (!$_AddonsUser->save()) {
-                $msg = ErrorsHelper::getModelError($_AddonsUser);
-                loggingHelper::writeLog('StoreService', 'createStore', '授权插件错误', [
-                    'err' => $msg
-                ]);
-                throw new \Exception($msg);
-            }
+
+        $data = [
+            'user_id' => $user_id,
+            'is_default' => !empty($assigneds['addons'])?0:1,
+            'type' => 1,
+            'module_name' => $value['identifie'],
+            'status' => 0,
+        ];
+        $AddonsUser->load($data,'');
+        if (!$AddonsUser->save()) {
+            $msg = ErrorsHelper::getModelError($AddonsUser);
+            loggingHelper::writeLog('StoreService', 'createStore', '授权插件错误', [
+                'err' => $msg
+            ]);
+            throw new \Exception($msg);
         }
 
         // 删除权限
