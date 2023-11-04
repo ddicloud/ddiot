@@ -116,17 +116,17 @@ class InstallController extends \yii\console\Controller
 
             if ($is_connect) {
                 $envConfig = <<<EOF
-                DB_HOST=$host
-                DB_PORT=$port
-                DB_PREFIX=$tablePrefix
-                DB_NAME=$dbname
-                DB_USER=$dbusername
-                DB_PASS=$dbpassword
+DB_HOST=$host
+DB_PORT=$port
+DB_PREFIX=$tablePrefix
+DB_NAME=$dbname
+DB_USER=$dbusername
+DB_PASS=$dbpassword
 
-                REDIS_HOST=127.0.0.1
-                REDIS_AUTH=(null)
-                REDIS_PORT=6379
-                REDIS_DB=0
+REDIS_HOST=127.0.0.1
+REDIS_AUTH=(null)
+REDIS_PORT=6379
+REDIS_DB=0
 EOF;
 
                 file_put_contents(yii::getAlias('.env'), $envConfig);

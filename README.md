@@ -28,103 +28,97 @@
 - gii代码自动生成，包括扩展模块，数据库模型，检索模型，控制器和接口都可以自动生成
 - element-ui+uniapp+店滴cms，中后台，多端兼容，数据处理全部支持且开源
 
+
+
 # 环境准备：
 
-    php>=7.3
-    redis
-    git 工具下载：https://git-scm.com/downloads
-    composer https://www.phpcomposer.com/
-    composer建议使用阿里镜像 https://developer.aliyun.com/composer
+    Php>=8.1
+    Redis 7.0.0
+    MySQL 5.6.50
+
 
 # 第一步：git 下载代码
 
 ```
-git clone https://toscode.gitee.com/wayfirer/ddicms.git
+git clone https://gitee.com/wayfirer/ddicms.git
 
 ```
 
-# 第二步：更新 composer 扩展
+# 第二步：composer 扩展安装
 
 ```
-cd 你的文件路径
-composer update
-
-```
-
-# 第三步：建立数据库并完成配置
-
-```
-cd common\config
-
-vim common\config\main-local.php
+cd 你的项目根路径
+php composer.phar install
 
 ```
 
+# 注：第一步和第二步也可以合并，缺点是后续git更新不方便，优点是安装快捷
+
 ```
-<?php
+composer create-project ddicloud/ddicms
 
-/**
- * @Author: Wang Chunsheng 2192138785@qq.com
- * @Date:   2020-03-12 20:12:31
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-09 18:25:50
- */
+```
 
-return [
-    'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=netos',
-            'username' => 'root',
-            'password' => 'root',
-            'charset' => 'utf8',
-            'attributes'  => [
-                PDO::ATTR_STRINGIFY_FETCHES => false,
-                PDO::ATTR_EMULATE_PREPARES  => false,
-            ],
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
-        ],
-    ],
-    'language' => 'zh-CN',
-
-];
-
-
-make distclean
-
-phpize && \
-./configure  --with-php-config=/www/server/php/74/bin/php-config  \
---enable-openssl \
---with-openssl-dir  \
---enable-swoole-curl  \
---enable-http2 && \
-make && sudo make install
+# 第三步：执行安装命令
 
 
 
 
 ```
 
-# Nginx 部署配置
+    php ./yii install
 
-首先解析网站到 frontend\web，然后配置 nginx 如下：
+说明：提醒输入数据库版本，请输入：1.0.0
+
+
+```
+
+# 第五步：Nginx 部署配置
+
+首先解析网站到 frontend，然后配置 nginx 如下：
 
 ```
 server {
         listen        80;
         server_name  www.ai.com;
-        root   "*/firetech/frontend";
+        root   "ddicms/frontend";
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Allow-Headers X-Requested-With,Authorization,Content-Type,access-token,bloc-id,store-id;
-        add_header Access-Control-Allow-Methods GET,POST,OPTIONS,DELETE,PUT;
-
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS,PUT,DELETE;
+        location / {
+            index index.php index.html error/index.html;
+            error_page 400 /error/400.html;
+            error_page 403 /error/403.html;
+            error_page 404 /error/404.html;
+            error_page 500 /error/500.html;
+            error_page 501 /error/501.html;
+            error_page 502 /error/502.html;
+            error_page 503 /error/503.html;
+            error_page 504 /error/504.html;
+            error_page 505 /error/505.html;
+            error_page 506 /error/506.html;
+            error_page 507 /error/507.html;
+            error_page 509 /error/509.html;
+            error_page 510 /error/510.html;
+            include D:/www/firetech/frontend/web/nginx.htaccess;
+            autoindex  off;
+        }
+        location ~ \.php(.*)$ {
+            fastcgi_pass   127.0.0.1:9001;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+        }
+        location /backend {
+            index index.php index.html;
+            if (!-e $request_filename)
+            {
+                rewrite ^/backend/(.*)$ /backend/index.php last;
+            }
+        }
         location /api {
             index index.php index.html;
             if (!-e $request_filename)
@@ -142,19 +136,11 @@ server {
             {
                 rewrite ^/admin/(.*)$ /admin/index.php last;
             }
-        }
-
-        location / {
-            proxy_http_version 1.1;
-            proxy_set_header Connection "keep-alive";
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header SERVER_NAME $server_name;
-            if (!-e $request_filename) {
-                proxy_pass http://127.0.0.1:9501;
+            if (!-f $request_filename){
+                set $rule_0 1$rule_0;
             }
         }
 }
-
 
 ```
 # 特别鸣谢
