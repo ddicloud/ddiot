@@ -34,7 +34,7 @@ class InstallController extends \yii\console\Controller
     public function actionIndex()
     {
         if (file_exists(yii::getAlias('@console/data/install.lock'))) {
-            Console::output('系统已安装，需要重新安装请删除文件：' . yii::getAlias('@common/install.lock'));
+            Console::output('系统已安装，需要重新安装请删除文件：' . yii::getAlias('@console/data/install.lock'));
             return false;
         }
 
