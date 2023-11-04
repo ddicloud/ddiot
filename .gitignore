@@ -65,9 +65,8 @@ assets/*
 common/config/sqlServer.php
 common/config/mongodb.php
 addons/*
-!addons/diandi_ai
-!addons/diandi_website
 !addons/diandi_tea
+!addons/diandi_integral
 
 # 资源目录
 node_modules
