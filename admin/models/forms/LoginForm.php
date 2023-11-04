@@ -83,7 +83,7 @@ class LoginForm extends Model
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
-     * @param array  $params    the additional name-value pairs given in the rule
+     * @param array $params the additional name-value pairs given in the rule
      */
     public function validatePassword($attribute, $params)
     {
@@ -91,8 +91,8 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!empty($user) && !$user->validatePassword($this->password)) {
-                $Namemsg = (int) $this->type === 1 ? '用户名' : '手机号';
-                $this->addError($attribute, $Namemsg.'或密码不正确');
+                $Namemsg = (int)$this->type === 1 ? '用户名' : '手机号';
+                $this->addError($attribute, $Namemsg . '或密码不正确');
             }
         }
     }
@@ -104,17 +104,17 @@ class LoginForm extends Model
      * @throws Exception
      */
     public function login(): array|bool
-   {
+    {
         if ($this->validate()) {
             $mobile = $this->mobile;
             $code = $this->sms_code;
-            $sendcode = Yii::$app->cache->get($mobile.'_code');
+            $sendcode = Yii::$app->cache->get($mobile . '_code');
 
             $settings = Yii::$app->settings;
             $settings->invalidateCache();
             $info = $settings->getAllBySection('Website');
 
-            if ((int) $info['is_send_code'] === 1 && $this->type === 2) {
+            if (!empty($info) && (int)$info['is_send_code'] === 1 && $this->type === 2) {
                 if (empty($code)) {
                     return ResultHelper::json(401, '验证码不能为空');
                 }
@@ -130,7 +130,7 @@ class LoginForm extends Model
                     $list = UserStatus::listData();
                     $status_str = $list[$info['status']];
 
-                    return ResultHelper::json(400, '您的账户'.$status_str.'，请联系客服');
+                    return ResultHelper::json(400, '您的账户' . $status_str . '，请联系客服');
                 } else {
                     return ResultHelper::json(400, '账户不存在');
                 }
@@ -151,7 +151,7 @@ class LoginForm extends Model
             //     return $this->goHome();
             // }
             // 记录最后登录的时间
-            $password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
+            $password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
             User::updateAll([
                 'last_time' => time(),
                 'is_login' => 1,
@@ -180,7 +180,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = (int) $this->type === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
+            $this->_user = (int)$this->type === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
         }
 
         return $this->_user;
