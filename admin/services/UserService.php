@@ -287,7 +287,13 @@ class UserService extends BaseService
             'is_sys' => 0,
         ])->select('id')->column();
         loggingHelper::writeLog('StoreService', 'createStore', '初始权限数据', $items);
-        $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
+
+        if(!in_array(Yii::$app->id,['install-console','app-console'])){
+            $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
+        }else{
+            $class = 'diandi\admin\models\User';
+        }
+
         $user = $class::findIdentity($user_id);
         // 获取原先的权限集
         $model = new Assignment([
