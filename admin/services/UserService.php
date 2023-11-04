@@ -371,7 +371,7 @@ class UserService extends BaseService
             'user_id' => $user_id,
             'is_default' => !empty($assigneds['addons'])?0:1,
             'type' => 1,
-            'module_name' => $value['identifie'],
+            'module_name' => $addons_identifie,
             'status' => 0,
         ];
         $AddonsUser->load($data,'');
