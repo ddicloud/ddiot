@@ -259,7 +259,10 @@ class UserService extends BaseService
     /**
      * 给创建用户授权整个应用的权限.
      *
+     * @param $user_id
+     * @param $addons_identifie
      * @return mixed
+     * @throws \Exception
      * @date 2022-10-26
      *
      * @example
@@ -359,6 +362,9 @@ class UserService extends BaseService
         $addList = DdAddons::find()->where(['mid' => $add_ids])->asArray()->all();
 
         loggingHelper::writeLog('StoreService', 'createStore', 'AssignmentPermissionByUid', [
+            'authItems' => $authItems,
+            'add_ids' => $add_ids,
+            'addList' => $addList,
             'user_id' => $user_id,
             'addons_identifie' => $addons_identifie,
         ]);
