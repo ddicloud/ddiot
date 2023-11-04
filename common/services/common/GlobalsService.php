@@ -157,7 +157,7 @@ class GlobalsService extends BaseService
         $key = 'common.globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
-        if (isset($globalBloc['bloc_id']) && !empty($globalBloc['bloc_id']) && Yii::$app->id == 'App-backend') {
+        if (!empty($globalBloc['bloc_id']) && Yii::$app->id == 'App-backend') {
             return $globalBloc['bloc_id'];
         }
 
@@ -176,7 +176,7 @@ class GlobalsService extends BaseService
         $key = 'common.globalBloc';
 
         $globalBloc = Yii::$app->cache->get($key);
-        if (isset($globalBloc['store_id']) && !empty($globalBloc['store_id']) && Yii::$app->id == 'App-backend') {
+        if (!empty($globalBloc['store_id']) && Yii::$app->id == 'App-backend') {
             return $globalBloc['store_id'];
         }
 
@@ -465,7 +465,10 @@ class GlobalsService extends BaseService
         return Bloc::find()->where(['pid' => $bloc_id])->asArray()->all();
     }
 
-    public function getBlocLevel()
+    /**
+     * @return array
+     */
+    public function getBlocLevel(): array
     {
         $global_bloc_id = $this->global_bloc_id;
 
@@ -484,13 +487,13 @@ class GlobalsService extends BaseService
     /**
      * 获取全局系统消息.
      */
-    public function getMessage($bloc_id = 0)
+    public function getMessage($bloc_id = 0): array
     {
         $cacheKey = 'common.message_' . $bloc_id;
         if (Yii::$app->cache->get($cacheKey)) {
             Yii::$app->params['message'] = Yii::$app->cache->get($cacheKey);
 
-            return;
+            return [];
         }
 
         $MessageNoticeLog = new MessageNoticeLog();

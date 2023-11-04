@@ -69,11 +69,11 @@ class DdDeliveryRuleController extends AController
             foreach(Yii::$app->request->input('region') as $v){
                 $str = $str.','.$v;
             }
-           \Yii::$app->request->input('region') = trim($str,',');
         }
+       $data['region'] = trim($str,',');
 
-        $data = \Yii::$app->request->input();
-        $blocs =\Yii::$app->request->input('blocs');
+        $data = Yii::$app->request->input();
+        $blocs = Yii::$app->request->input('blocs');
         $data['bloc_id'] = $blocs[0];
         $data['store_id']= $blocs[1];
 
@@ -107,12 +107,12 @@ class DdDeliveryRuleController extends AController
             foreach(Yii::$app->request->input('region') as $v){
                 $str = $str.','.$v;
             }
+            $data = Yii::$app->request->input();
 
-           \Yii::$app->request->input('region') = trim($str,',');
+            $data['region'] = trim($str,',');
 
 
-            $data = \Yii::$app->request->input();
-            $blocs =\Yii::$app->request->input('blocs');
+            $blocs = Yii::$app->request->input('blocs');
             $data['bloc_id'] = $blocs[0];
             $data['store_id']= $blocs[1];
 

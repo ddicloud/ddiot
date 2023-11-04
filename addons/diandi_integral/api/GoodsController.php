@@ -9,11 +9,10 @@
 
 namespace addons\diandi_integral\api;
 
-use api\controllers\AController;
 use addons\diandi_integral\services\GoodsService;
+use api\controllers\AController;
 use common\helpers\ResultHelper;
 use Yii;
-use yii\base\DynamicModel;
 use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
 
@@ -23,14 +22,14 @@ use yii\base\InvalidConfigException;
 class GoodsController extends AController
 {
     public $modelClass = '\common\models\IntegralGoods';
-    protected array $authOptional = ['search','lists','getslide'];
+    protected array $authOptional = ['search', 'lists', 'getslide'];
 
 
     public function actionSearch(): array
-   {
+    {
         $keytwords = Yii::$app->request->get('keywords');
         $pageSize = Yii::$app->request->get('pageSize');
-        $user_id = Yii::$app->user->identity->member_id??0;
+        $user_id = Yii::$app->user->identity->member_id ?? 0;
 
         $list = GoodsService::getList(0, 0, $keytwords, $pageSize, $user_id);
 
@@ -43,7 +42,7 @@ class GoodsController extends AController
         $goods_id = Yii::$app->request->get('goods_id');
 
         $list = GoodsService::getDetail($goods_id);
-        
+
         return ResultHelper::json(200, '获取成功', [
             'goods' => $list,
             'order_type' => 0,
@@ -57,21 +56,21 @@ class GoodsController extends AController
      * @throws InvalidConfigException
      */
     public function actionLists(): array
-   {
+    {
 
         // 定义需要验证的参数规则
         $rules = [
-            [['pageSize', 'goods_price','sales_initial'], 'required'],
-            [['goods_price','sales_initial'], 'in', 'range' => ['desc','asc']],
+            [['pageSize', 'goods_price', 'sales_initial'], 'required'],
+            [['goods_price', 'sales_initial'], 'in', 'range' => ['desc', 'asc']],
             [['pageSize'], 'integer', 'min' => 0, 'max' => 50],
-            [['category_pid','category_id'], 'integer']
+            [['category_pid', 'category_id'], 'integer']
         ];
 
         $this->validateParams($rules);
 
-        $pageSize =\Yii::$app->request->input('pageSize');
-        $goods_price =\Yii::$app->request->input('goods_price');
-        $sales_initial =\Yii::$app->request->input('sales_initial');
+        $pageSize = Yii::$app->request->input('pageSize');
+        $goods_price = Yii::$app->request->input('goods_price');
+        $sales_initial = Yii::$app->request->input('sales_initial');
 
         $orderby = ' goods_sort desc';
         // 降序
@@ -92,9 +91,9 @@ class GoodsController extends AController
 
         $user_id = Yii::$app->user->identity ? Yii::$app->user->identity->member_id : 0;
 
-        $keytwords =\Yii::$app->request->input('keywords')??'';
+        $keytwords = Yii::$app->request->input('keywords') ?? '';
 
-        $list = GoodsService::getList(Yii::$app->request->input('category_pid')??0,\Yii::$app->request->input('category_id')??0, $keytwords, $pageSize, $orderby);
+        $list = GoodsService::getList(Yii::$app->request->input('category_pid') ?? 0, Yii::$app->request->input('category_id') ?? 0, $keytwords, $pageSize, $orderby);
 
         return ResultHelper::json(200, '获取成功', $list);
     }
@@ -110,13 +109,14 @@ class GoodsController extends AController
      *     ),
      * )
      */
-    public function actionGetslide(){Yii::$app->request->input('store_id',0)
-        $store_id =\Yii::$app->request->input('store_id',0);
-        $bloc_id =\Yii::$app->request->input('bloc_id',0);
-        
-        $list = GoodsService::getSlides($store_id,$bloc_id);
-        
-        
+    public function actionGetslide()
+    {
+        $store_id = Yii::$app->request->input('store_id', 0);
+        $bloc_id = Yii::$app->request->input('bloc_id', 0);
+
+        $list = GoodsService::getSlides($store_id, $bloc_id);
+
+
         return ResultHelper::json(200, '获取成功', $list);
     }
 

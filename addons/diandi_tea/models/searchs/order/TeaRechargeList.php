@@ -90,7 +90,8 @@ class TeaRechargeList extends TeaRechargeListModel
             ->all();
 
         foreach ($list as $key => &$value) {
-            $value['username'] = DdMember::find()->select(['username'])->where(['member_id' => $value['member_id']])->asArray()->one()['username'];
+            $member = DdMember::find()->select(['username'])->where(['member_id' => $value['member_id']])->asArray()->one();
+            $value['username'] = $member?$member['username']:'';
         }
 
         return new ArrayDataProvider([

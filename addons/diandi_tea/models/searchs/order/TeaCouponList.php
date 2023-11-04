@@ -96,7 +96,8 @@ class TeaCouponList extends TeaCouponListModel
         $couponType = CouponType::listData();
         foreach ($list as $key => &$value) {
             $value['coupon_type'] = $couponType[$value['coupon_type']];
-            $value['username'] = DdMember::find()->select(['username'])->where(['member_id' => $value['member_id']])->asArray()->one()['username'];
+            $member = DdMember::find()->select(['username'])->where(['member_id' => $value['member_id']])->asArray()->one();
+            $value['username'] =$member?$member['username']:'';
         }
 
         return new ArrayDataProvider([

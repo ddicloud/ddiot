@@ -27,7 +27,6 @@ use yii\db\ActiveRecord;
 use yii\db\Transaction;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii2mod\editable\EditableAction;
 
@@ -170,10 +169,10 @@ class DdGoodsController extends AController
 
     //该方法是异步校验字段，输入框失去焦点之后自动会自动请求改地址
     public function actionValidate(): array
-   {
+    {
         $model = new IntegralGoods();
 
-        $base =\Yii::$app->request->input('IntegralGoods');
+        $base = Yii::$app->request->input('IntegralGoods');
         $delivery_id = 0;
         if (isset($base['delivery_id'])) {
             $delivery_id = is_numeric($base['delivery_id']) ? $base['delivery_id'] : 0;
@@ -342,13 +341,13 @@ class DdGoodsController extends AController
 
 
     public function actionUpdate($id): array
-   {
+    {
         $model = IntegralGoods::find()->where(['id' => $id])->asArray()->one();
+        $data = Yii::$app->request->input();
+        $data['category_pid'] = Yii::$app->request->input('category_id')[1];
+        $data['category_id'] = Yii::$app->request->input('category_id')[0];
 
-       \Yii::$app->request->input('category_pid') =\Yii::$app->request->input('category_id')[1];
-       \Yii::$app->request->input('category_id') =\Yii::$app->request->input('category_id')[0];
-
-        if ($model->load($_GPC, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
             return ResultHelper::json(200, '编辑成功');
         } else {
             $message = ErrorsHelper::getModelError($model);
@@ -414,7 +413,7 @@ class DdGoodsController extends AController
 
 
     public function actionSpec(): array
-   {
+    {
         $data = Yii::$app->request->post();
 
         $title = Yii::$app->request->post('title', '');
@@ -437,7 +436,7 @@ class DdGoodsController extends AController
         ];
 
         return ResultHelper::json(200, '添加成功', [
-            'op' =>\Yii::$app->request->input('op'),
+            'op' => Yii::$app->request->input('op'),
             'spec' => $spec,
             'model' => $model,
             'specitem' => [],

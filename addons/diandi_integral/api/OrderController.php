@@ -13,6 +13,7 @@ use addons\diandi_integral\services\GoodsService;
 use addons\diandi_integral\services\OrderService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
+use Throwable;
 use Yii;
 
 class OrderController extends AController
@@ -23,26 +24,26 @@ class OrderController extends AController
     /**
      * 直接购买
      * @return array|object[]|string[]
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionCreategoodsorder(): array
    {
-        $total_price =\Yii::$app->request->input('total_price') ?? null;
-        $express_price =\Yii::$app->request->input('express_price') ?? null;
-        $express_type =\Yii::$app->request->input('express_type') ?? null;
-        $order_type =\Yii::$app->request->input('order_type') ?? null;
-        $remark =\Yii::$app->request->input('remark') ?? null;
-        $isMoney = isset(Yii::$app->request->input('is_money')) ? (int)Yii::$app->request->input('is_money') : 0;
-        $delivery_time =\Yii::$app->request->input('delivery_time') ?? null;
-        $name =\Yii::$app->request->input('name') ?? null;
-        $phone =\Yii::$app->request->input('phone') ?? null;
-        $address_id =\Yii::$app->request->input('address_id') ?? 0;
-        $goods_id =\Yii::$app->request->input('goods_id') ?? 0;
-        $goods_num =\Yii::$app->request->input('goods_num') ?? 0;
-        $spec_id =\Yii::$app->request->input('spec_id') ?? 0;
+        $total_price = Yii::$app->request->input('total_price') ?? null;
+        $express_price = Yii::$app->request->input('express_price') ?? null;
+        $express_type = Yii::$app->request->input('express_type') ?? null;
+        $order_type = Yii::$app->request->input('order_type') ?? null;
+        $remark = Yii::$app->request->input('remark') ?? null;
+        $isMoney = Yii::$app->request->input('is_money',0);
+        $delivery_time = Yii::$app->request->input('delivery_time') ?? null;
+        $name = Yii::$app->request->input('name') ?? null;
+        $phone = Yii::$app->request->input('phone') ?? null;
+        $address_id = Yii::$app->request->input('address_id') ?? 0;
+        $goods_id = Yii::$app->request->input('goods_id') ?? 0;
+        $goods_num = Yii::$app->request->input('goods_num') ?? 0;
+        $spec_id = Yii::$app->request->input('spec_id') ?? 0;
 
         if (Yii::$app->request->input('express_type') == 1) {
-            if (empty(Yii::$app->request->input('address_id')) ||\Yii::$app->request->input('address_id') == 'undefined') {
+            if (empty(Yii::$app->request->input('address_id')) || Yii::$app->request->input('address_id') == 'undefined') {
                 return ResultHelper::json(401, '请选择自提点', []);
             }
             if (empty(Yii::$app->request->input('name'))) {
@@ -56,7 +57,7 @@ class OrderController extends AController
             //   return ResultHelper::json(401, '请输入收货详细地址具体到楼层房间号', []);
             // }
         } else {
-            if (empty(Yii::$app->request->input('address_id')) ||\Yii::$app->request->input('address_id') == 'undefined') {
+            if (empty(Yii::$app->request->input('address_id')) || Yii::$app->request->input('address_id') == 'undefined') {
                 return ResultHelper::json(401, '请选择收货地址', []);
             }
         }
@@ -112,13 +113,13 @@ class OrderController extends AController
 
     public function actionOrderdetail(): array
    {
-        $num =\Yii::$app->request->input('goods_number');
-        $spec_id =\Yii::$app->request->input('spec_id');
-        $goods_type =\Yii::$app->request->input('goods_type');
-        $order_type =\Yii::$app->request->input('order_type');
-        $region_id =\Yii::$app->request->input('region_id');
+        $num = Yii::$app->request->input('goods_number');
+        $spec_id = Yii::$app->request->input('spec_id');
+        $goods_type = Yii::$app->request->input('goods_type');
+        $order_type = Yii::$app->request->input('order_type');
+        $region_id = Yii::$app->request->input('region_id');
         $goods_id = Yii::$app->request->get('goods_id');
-        $express_type =\Yii::$app->request->input('express_type');
+        $express_type = Yii::$app->request->input('express_type');
         $member_id = Yii::$app->user->identity->member_id ?? 0;
 
         $goods = GoodsService::getOrderDetail($goods_id, $num, $spec_id, $express_type, $region_id);
@@ -128,8 +129,8 @@ class OrderController extends AController
 
     public function actionExchange(): array
    {
-        $order_id =\Yii::$app->request->input('order_id');
-        $total_fee =\Yii::$app->request->input('total_fee');
+        $order_id = Yii::$app->request->input('order_id');
+        $total_fee = Yii::$app->request->input('total_fee');
 
         $Res = OrderService::exchangeCredit($order_id, $total_fee);
 
