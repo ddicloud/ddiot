@@ -184,6 +184,14 @@ EOF;
                 ],
             ],
         ]);
+
+        Yii::$app->params['diandi.admin.configs'] = [
+            'authManager' => [
+                'class' => 'diandi\admin\components\DbManager', // 使用数据库管理配置文件
+                'defaultRoles' => ['基础权限组'], //默认角色，该角色有最高权限
+            ]
+        ];
+
         $runResult = Yii::$app->runAction('migrate/up', ['migrationPath' => '@console/migrations/' . $version, 'interactive' => false]);
         // $post_log = ob_get_clean();
         // Yii::info($post_log, 'fecshop_debug');
