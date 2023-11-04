@@ -181,15 +181,17 @@ class UserController extends AController
         $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
 
         $Website = Yii::$app->settings->getAllBySection('Website');
-        unset(
-            $Website['access_key_id'],
-            $Website['access_key_secret'],
-            $Website['sign_name'],
-            $Website['template_code'],
-            $Website['themcolor']
-        );
-        $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
-        $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
+        if ($Website){
+            unset(
+                $Website['access_key_id'],
+                $Website['access_key_secret'],
+                $Website['sign_name'],
+                $Website['template_code'],
+                $Website['themcolor']
+            );
+            $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
+            $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
+        }
 
         $roles = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
         $userinfo['roles'] = $roles;
