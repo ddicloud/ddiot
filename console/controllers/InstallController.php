@@ -145,6 +145,10 @@ EOF;
             'id' => 'install-console',
             'basePath' => $bashPath,
             'components' => [
+                'request' => [
+                    'class' => 'common\components\ExtendedRequest',
+                    // ...
+                ],
                 'service' => [
                     'class' => 'common\services\BaseService',
                 ],
