@@ -13,6 +13,7 @@ use common\helpers\FileHelper;
 use console\services\InstallServer;
 use PDOException;
 use Yii;
+use yii\console\Application;
 use yii\console\widgets\Table;
 use yii\db\Exception;
 use yii\db\mssql\PDO;
@@ -97,7 +98,7 @@ class InstallController extends \yii\console\Controller
                 Console::output("Exception:{$errorMsg}");
             } catch (PDOException $e) {
                 $error = $e->getMessage();
-                if (strpos($error, 'Access denied for user') !== false) {
+                if (str_contains($error, 'Access denied for user')) {
                     $error = '您的数据库访问用户名或是密码错误. <br />';
                 } else {
                     $error = iconv('gbk', 'utf8', $error);
@@ -106,7 +107,21 @@ class InstallController extends \yii\console\Controller
             }
 
             if ($is_connect) {
-                file_put_contents(yii::getAlias('@common/config/db.php'), $config);
+                $envConfig = <<<EOF
+                DB_HOST=$host
+                DB_PORT=$port
+                DB_PREFIX=$tablePrefix
+                DB_NAME=$dbname
+                DB_USER=$dbusername
+                DB_PASS=$dbpassword
+
+                REDIS_HOST=127.0.0.1
+                REDIS_AUTH=(null)
+                REDIS_PORT=6379
+                REDIS_DB=0
+EOF;
+
+                file_put_contents(yii::getAlias('.env'), $envConfig);
                 Console::input('数据库配置成功，下一步初始化数据库');
             } else {
                 Console::input('数据库无法连接，请重新配置');
@@ -118,7 +133,7 @@ class InstallController extends \yii\console\Controller
 
         $bashPath = dirname(Yii::getAlias('@console'));
         $oldAPP = Yii::$app;
-        Yii::$app = new \yii\console\Application([
+        Yii::$app = new Application([
             'id' => 'install-console',
             'basePath' => $bashPath,
             'components' => [
