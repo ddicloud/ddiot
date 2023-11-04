@@ -102,7 +102,9 @@ class AccessTokenService extends BaseService
         $result['expiration_time'] = Yii::$app->params['user.accessTokenExpire'] ?? 3600;
         // 关联账号信息
         $user = ArrayHelper::toArray($member);
-        $user['avatar'] = ImageHelper::tomedia($user['avatar']);
+        if ($user['avatar']){
+            $user['avatar'] = ImageHelper::tomedia($user['avatar']);
+        }
         $result['user'] = $user;
         $result['addons'] = false;
 
