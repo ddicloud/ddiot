@@ -60,7 +60,7 @@ class SaveBehavior extends Behavior
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
 
         // 后台多级数据传递,控制台不做这个处理
-        if (Yii::$app->id !== 'app-console') {
+        if (Yii::$app->id !== 'app-console' && Yii::$app->id !==  'install-console') {
             if (!empty(Yii::$app->request->input('blocs'))) {
                 $blocs = \Yii::$app->request->input('blocs');
                 $bloc_id = $blocs[0];
