@@ -47,7 +47,7 @@ class SaveBehavior extends Behavior
 
 
     public function init(): void
-   {
+    {
 
         if (empty($this->attributes)) {
             $this->attributes = [
@@ -59,11 +59,13 @@ class SaveBehavior extends Behavior
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
 
-        // 后台多级数据传递
-        if (!empty(Yii::$app->request->input('blocs'))) {
-            $blocs =\Yii::$app->request->input('blocs');
-            $bloc_id  = $blocs[0];
-            $store_id = $blocs[1];
+        // 后台多级数据传递,控制台不做这个处理
+        if (Yii::$app->id !== 'app-console') {
+            if (!empty(Yii::$app->request->input('blocs'))) {
+                $blocs = \Yii::$app->request->input('blocs');
+                $bloc_id = $blocs[0];
+                $store_id = $blocs[1];
+            }
         }
 
 
@@ -80,10 +82,10 @@ class SaveBehavior extends Behavior
         $this->_map = [
             $this->createdAttribute => $time, //在这里你可以随意格式化
             $this->updatedAttribute => $time,
-            $this->blocAttribute => (int) $bloc_id,
-            $this->storeAttribute => (int) $store_id,
-            $this->blocPAttribute => $blocPid ? (int) $blocPid : 0,
-            $this->adminAttribute => (int) $admin_id,
+            $this->blocAttribute => (int)$bloc_id,
+            $this->storeAttribute => (int)$store_id,
+            $this->blocPAttribute => $blocPid ? (int)$blocPid : 0,
+            $this->adminAttribute => (int)$admin_id,
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
         unset($time, $bloc_id, $store_id, $admin_id, $blocPid, $_GPC);
@@ -129,7 +131,7 @@ class SaveBehavior extends Behavior
      * 声明一个析构方法.
      */
     public function __destruct()
-   {
+    {
         unset($_GPC, $this->_map, $this->attributes, $this->owner);
     }
 }
