@@ -159,7 +159,7 @@ class AccessTokenService extends BaseService
     public static function isPeriod(string $token, $type = null): bool
     {
         // 判断验证token有效性是否开启
-        if (Yii::$app->params['user.accessTokenValidity'] && Yii::$app->params['user.accessTokenValidity'] === true) {
+        if (isset(Yii::$app->params['user.accessTokenValidity'])  && Yii::$app->params['user.accessTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
             $expire = Yii::$app->params['user.accessTokenExpire'];
             // 验证有效期
@@ -183,7 +183,7 @@ class AccessTokenService extends BaseService
     public static function isPeriodRefToken(string $token, $type = null):bool
     {
         // 判断验证token有效性是否开启
-        if (Yii::$app->params['user.refreshTokenValidity'] && Yii::$app->params['user.refreshTokenValidity'] === true) {
+        if (isset(Yii::$app->params['user.refreshTokenValidity'])  && Yii::$app->params['user.refreshTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
             $expire = Yii::$app->params['user.refreshTokenExpire'];
             // 验证有效期
