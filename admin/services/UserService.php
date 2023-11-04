@@ -56,9 +56,8 @@ class UserService extends BaseService
 
         $Website = Yii::$app->settings->getAllBySection('Website');
         if ($Website){
-            $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
-            $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
-
+            $Website['blogo'] = isset($Website['blogo']) ? ImageHelper::tomedia($Website['blogo']) : '';
+            $Website['flogo'] = isset($Website['flogo']) ? ImageHelper::tomedia($Website['flogo']) : '';
             $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
         }
 
