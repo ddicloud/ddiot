@@ -189,8 +189,8 @@ class UserController extends AController
                 $Website['template_code'],
                 $Website['themcolor']
             );
-            $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
-            $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
+            $Website['blogo'] = $Website['blogo']?ImageHelper::tomedia($Website['blogo']):'';
+            $Website['flogo'] = $Website['flogo']?ImageHelper::tomedia($Website['flogo']):'';
         }
 
         $roles = AuthAssignmentGroup::find()->where(['user_id' => $user_id])->select('item_name')->column();
