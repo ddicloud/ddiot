@@ -86,15 +86,11 @@ class AController extends ActiveController
         ];
 
         // 签名验证
-        try {
-            $behaviors['sign'] = [
-                'class' => Sign::class,
-                'key' => Sign::generateSecret(), // 密钥
-                'optional' => $this->signOptional,
-            ];
-        } catch (SignException $e) {
-            throw new ErrorException($e->getMessage(),400);
-        }
+        $behaviors['sign'] = [
+            'class' => Sign::class,
+            'key' => Sign::generateSecret(), // 密钥
+            'optional' => $this->signOptional,
+        ];
 
         $urls = Yii::$app->settings->get('Weburl', 'urls');
 
@@ -103,7 +99,7 @@ class AController extends ActiveController
             'class' => \yii\filters\Cors::class,
             'cors' => [
                 // restrict access to
-                'Origin' => explode(',', $urls),
+                'Origin' =>$urls?explode(',', $urls):[],
                 // Allow only POST and PUT methods POST, GET, OPTIONS, DELETE
                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'GET', 'DELETE'],
                 'Access-Control-Allow-Headers' => ['Content-Type', 'Referer', 'Content-Length', 'Authorization', 'Accept', 'X-Requested-With', 'access-token', 'bloc_id', 'store_id', 'bloc-id', 'store-id'],

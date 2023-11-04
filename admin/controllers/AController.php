@@ -112,7 +112,7 @@ class AController extends ActiveController
             'class' => Cors::class,
             'cors' => [
                 // restrict access to
-                'Origin' => $urls?explode(',', $urls):'',
+                'Origin' => $urls?explode(',', $urls):[],
                 // Allow only POST and PUT methods POST, GET, OPTIONS, DELETE
                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'GET', 'DELETE'],
                 'Access-Control-Allow-Headers' => ['Content-Type', 'Referer', 'Content-Length', 'Authorization', 'Accept', 'X-Requested-With', 'access-token', 'bloc-id', 'store-id'],
