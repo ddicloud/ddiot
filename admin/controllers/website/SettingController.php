@@ -64,6 +64,6 @@ class SettingController extends AController
         $settings->invalidateCache();
         $info = $settings->getAllBySection('Website');
 
-        return ResultHelper::json(200, '获取成功', $info);
+        return ResultHelper::json(200, '获取成功', (array)$info);
     }
 }
