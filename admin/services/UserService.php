@@ -56,10 +56,13 @@ class UserService extends BaseService
         $moduleAll = $module_names ?? [];
 
         $Website = Yii::$app->settings->getAllBySection('Website');
-        $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
-        $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
+        if ($Website){
+            $Website['blogo'] = ImageHelper::tomedia($Website['blogo']);
+            $Website['flogo'] = ImageHelper::tomedia($Website['flogo']);
 
-        $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
+            $Website['themcolor'] = !empty(Yii::$app->cache->get('themcolor')) ? Yii::$app->cache->get('themcolor') : $Website['themcolor'];
+        }
+
 
         $Roles = UserGroup::find()->select('name')->column();
 
