@@ -22,7 +22,10 @@ use common\services\BaseService;
 use diandi\addons\models\AddonsUser;
 use diandi\addons\models\DdAddons;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
 /**
@@ -129,13 +132,14 @@ class AccessTokenService extends BaseService
     /**
      * 忘记密码.
      *
-     * @param int|null post
-     *
+     * @param User $member
+     * @param $password
      * @return string
      *
-     * @throws NotFoundHttpException
+     * @throws ErrorException
+     * @throws Exception
      */
-    public function forgetpassword(User $member, $mobile, $password)
+    public function forgetpassword(User $member, $password)
     {
         $member->generatePasswordResetToken();
         $member->setPassword($password);
@@ -148,16 +152,14 @@ class AccessTokenService extends BaseService
     /**
      * 判断有效期.
      *
-     * @param int|null post
-     *
-     * @return 到期：true
-     *
-     * @throws NotFoundHttpException
+     * @param string $token post
+     * @param null $type
+     * @return bool
      */
-    public static function isPeriod($token, $type = null)
+    public static function isPeriod(string $token, $type = null): bool
     {
         // 判断验证token有效性是否开启
-        if (Yii::$app->params['user.accessTokenValidity'] === true) {
+        if (Yii::$app->params['user.accessTokenValidity'] && Yii::$app->params['user.accessTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
             $expire = Yii::$app->params['user.accessTokenExpire'];
             // 验证有效期
@@ -173,16 +175,15 @@ class AccessTokenService extends BaseService
     /**
      * 判断refresh_token有效期.
      *
-     * @param int|null post
+     * @param string $token post
      *
-     * @return 到期：true
+     * @return true
      *
-     * @throws NotFoundHttpException
      */
-    public static function isPeriodRefToken($token, $type = null)
+    public static function isPeriodRefToken(string $token, $type = null):bool
     {
         // 判断验证token有效性是否开启
-        if (Yii::$app->params['user.refreshTokenValidity'] === true) {
+        if (Yii::$app->params['user.refreshTokenValidity'] && Yii::$app->params['user.refreshTokenValidity'] === true) {
             $timestamp = (int) substr($token, strrpos($token, '_') + 1);
             $expire = Yii::$app->params['user.refreshTokenExpire'];
             // 验证有效期
@@ -198,13 +199,13 @@ class AccessTokenService extends BaseService
     /**
      * 修改accesstoken.
      *
-     * @param int|null post
-     *
+     * @param int|null $user_id post
+     * @param int $group_id
      * @return string
      *
-     * @throws NotFoundHttpException
+     * @throws \Exception
      */
-    public function RefreshToken($user_id, $group_id = 1)
+    public function RefreshToken(?int $user_id, $group_id = 1): string
     {
         $model = $this->findModel($user_id, $group_id);
 
@@ -225,7 +226,7 @@ class AccessTokenService extends BaseService
      */
     public function getTokenToCache($token, $type)
     {
-        if ($this->cache == false) {
+        if (!$this->cache) {
             return $this->findByAccessToken($token);
         }
 
@@ -242,6 +243,7 @@ class AccessTokenService extends BaseService
      * 禁用token.
      *
      * @param $access_token
+     * @return bool
      */
     public function disableByAccessToken($access_token)
     {
@@ -263,7 +265,7 @@ class AccessTokenService extends BaseService
      *
      * @return array|ActiveRecord|AccessToken|null
      */
-    public function findByAccessToken($token)
+    public function findByAccessToken($token): AccessToken|array|ActiveRecord|null
     {
         return DdApiAccessToken::find()
             ->where(['access_token' => $token, 'status' => 1])
@@ -275,7 +277,7 @@ class AccessTokenService extends BaseService
      *
      * @return string
      */
-    protected function getCacheKey($access_token)
+    protected function getCacheKey($access_token): string
     {
         // 区分传统模式后台登录
         return $access_token.'_admin';
@@ -285,7 +287,7 @@ class AccessTokenService extends BaseService
      * 注册和登录发送验证码
      *
      * @param [type] $mobile
-     * @param array  $data
+     * @param array $data
      *
      * @return void
      * @date 2022-07-12
@@ -296,7 +298,7 @@ class AccessTokenService extends BaseService
      *
      * @since
      */
-    public function send($mobile, $data = [])
+    public function send($mobile, array $data = [])
     {
         $settings = Yii::$app->settings;
         $settings->invalidateCache();
@@ -326,9 +328,11 @@ class AccessTokenService extends BaseService
     /**
      * 返回模型.
      *
-     * @return array|AccessToken|ActiveRecord|null
+     * @param $user_id
+     * @param $group_id
+     * @return ActiveRecord|array|DdApiAccessToken|null
      */
-    protected function findModel($user_id, $group_id)
+    protected function findModel($user_id, $group_id): DdApiAccessToken|array|ActiveRecord|null
     {
         if (empty(($model = DdApiAccessToken::find()->where([
             'user_id' => $user_id,
