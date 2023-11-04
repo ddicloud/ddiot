@@ -71,6 +71,7 @@ class AccessTokenService extends BaseService
         $model = $this->findModel($member->id, $group_id);
 
         $model->user_id = $member->id;
+
         $model->id = $member->id;
 
         $model->group_id = $group_id;

@@ -23,6 +23,7 @@ use yii\filters\RateLimitInterface;
 /**
  * This is the model class for table "dd_admin_access_token".
  *
+ * @property mixed|string|null $refresh_token
  * @public int         $id
  * @public string|null $refresh_token 刷新令牌
  * @public string|null $access_token  授权令牌
