@@ -40,7 +40,6 @@ class UserService extends BaseService
         $is_addons = Yii::$app->params['is_addons'];
 
         $AllNav = Yii::$app->service->adminNavService->getMenu('', $is_addons);
-        $leftMenu = $AllNav['left'];
 
         $AddonsUser = new AddonsUser();
         $module_names = $AddonsUser->find()->where([
@@ -260,7 +259,7 @@ class UserService extends BaseService
     /**
      * 给创建用户授权整个应用的权限.
      *
-     * @return void
+     * @return mixed
      * @date 2022-10-26
      *
      * @example
@@ -363,7 +362,7 @@ class UserService extends BaseService
             'user_id' => $user_id,
             'addons_identifie' => $addons_identifie,
         ]);
-        foreach ($addList as $key => $value) {
+        foreach ($addList as $value) {
             $_AddonsUser = clone $AddonsUser;
             $data = [
                 'user_id' => $user_id,
@@ -375,6 +374,9 @@ class UserService extends BaseService
             $_AddonsUser->setAttributes($data);
             if (!$_AddonsUser->save()) {
                 $msg = ErrorsHelper::getModelError($_AddonsUser);
+                loggingHelper::writeLog('StoreService', 'createStore', '授权插件错误', [
+                    'err' => $msg
+                ]);
                 throw new \Exception($msg);
             }
         }
