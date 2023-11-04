@@ -10,6 +10,7 @@ namespace console\services;
 
 use admin\models\DdApiAccessToken;
 use admin\models\User;
+use admin\services\UserService;
 use common\services\admin\AccessTokenService;
 use common\services\BaseService;
 use console\models\AuthAssignmentGroup;
@@ -255,6 +256,13 @@ EOF;
         $user_id = $UserObj->id;
         // 查找权限
         $groups = AuthUserGroup::find()->where(['name' => '总管理员'])->asArray()->one();
+
+        //初始化管理员模块应用权限方便登录
+        // 初始权限
+        $addons = ['diandi_tea','diandi_integral'];
+        foreach ($addons as $addon) {
+            UserService::AssignmentPermissionByUid($user_id, $addon);
+        }
 
         $data = [
             'group_id' => $groups['id'],
