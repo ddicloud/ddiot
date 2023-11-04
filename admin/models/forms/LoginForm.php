@@ -113,8 +113,8 @@ class LoginForm extends Model
             $settings = Yii::$app->settings;
             $settings->invalidateCache();
             $info = $settings->getAllBySection('Website');
-
-            if (!empty($info) && (int)$info['is_send_code'] === 1 && $this->type === 2) {
+            $is_send_code = $info['is_send_code'] ?? 0;
+            if (!empty($info) && (int)$is_send_code === 1 && $this->type === 2) {
                 if (empty($code)) {
                     return ResultHelper::json(401, '验证码不能为空');
                 }
