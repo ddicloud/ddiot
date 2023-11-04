@@ -13,6 +13,8 @@ use common\helpers\FileHelper;
 use console\services\InstallServer;
 use PDOException;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\base\InvalidRouteException;
 use yii\console\Application;
 use yii\console\widgets\Table;
 use yii\db\Exception;
@@ -23,6 +25,12 @@ use yii\helpers\Console;
 
 class InstallController extends \yii\console\Controller
 {
+    /**
+     * @throws \Throwable
+     * @throws InvalidRouteException
+     * @throws InvalidConfigException
+     * @throws \yii\console\Exception
+     */
     public function actionIndex()
     {
         if (file_exists(yii::getAlias('@console/data/install.lock'))) {
