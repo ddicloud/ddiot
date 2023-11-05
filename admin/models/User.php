@@ -30,6 +30,7 @@ use yii\web\IdentityInterface;
  * @property string $auth_key
  * @property $username
  * @property int|mixed $status
+ * @property int $id
  * @property string $access_token
  * @property mixed $avatar
  * @public int    $id

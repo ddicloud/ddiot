@@ -7,6 +7,9 @@
  * @Last Modified time: 2023-07-05 11:36:39
  */
 
+use yii\mutex\MysqlMutex;
+use yii\queue\db\Queue;
+
 return [
     'name' => '店滴云CMS',
     'version' => '1.1.9',
@@ -60,10 +63,10 @@ return [
         ],
         /* ------ 队列设置 ------ **/
         'queue' => [
-            'class' => \yii\queue\db\Queue::class,
+            'class' => Queue::class,
             'db' => 'db', // DB 连接组件或它的配置
             'tableName' => '{{%queue}}', // 表名
-            'mutex' => \yii\mutex\MysqlMutex::class, // Mutex that used to sync queries
+            'mutex' => MysqlMutex::class, // Mutex that used to sync queries
             // 'class' => 'yii\queue\redis\Queue',
             // 'redis' => 'redis', // 连接组件或它的配置
             'channel' => 'queue', // Queue channel key

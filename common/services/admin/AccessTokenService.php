@@ -58,6 +58,7 @@ class AccessTokenService extends BaseService
      *
      * @return array
      * @throws UnprocessableEntityHttpException
+     * @throws \Exception
      * @date 2022-10-18
      *
      * @example
@@ -138,12 +139,12 @@ class AccessTokenService extends BaseService
      *
      * @param User $member
      * @param $password
-     * @return string
+     * @return bool
      *
      * @throws ErrorException
      * @throws Exception
      */
-    public function forgetpassword(User $member, $password)
+    public function forgetpassword(User $member, $password): bool
     {
         $member->generatePasswordResetToken();
         $member->setPassword($password);

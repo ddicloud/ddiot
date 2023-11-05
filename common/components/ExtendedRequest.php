@@ -16,9 +16,9 @@ class ExtendedRequest extends Request
     /**
      * @param $key
      * @param $default
-     * @return array|object|null
+     * @return mixed|null
      */
-    public function input($key = null, $default = null): array|object|null
+    public function input($key = null, $default = null): mixed
     {
         $getParams = $this->get();
         $postParams = $this->post();

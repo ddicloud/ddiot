@@ -9,7 +9,6 @@
 
 namespace common\plugins\diandi_hub\admin\goods;
 
-use common\plugins\diandi_hub\models\advertising\HubLocationGoods;
 use common\plugins\diandi_hub\models\DdGoods;
 use common\plugins\diandi_hub\models\enums\GoodsTypeStatus;
 use common\plugins\diandi_hub\models\express\HubExpressTemplate;
@@ -21,17 +20,14 @@ use common\plugins\diandi_hub\models\goods\HubGoodsBaseSpec;
 use common\plugins\diandi_hub\models\goods\HubGoodsBaseSpecRel;
 use common\plugins\diandi_hub\models\goods\HubSpec;
 use common\plugins\diandi_hub\models\goods\HubSpecValue;
-use common\plugins\diandi_hub\models\MemberExpand;
 use common\plugins\diandi_hub\models\Searchs\goods\HubBaseGoodsSearch;
 use admin\controllers\AController;
-use common\components\MyStringHelp;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use common\helpers\ImageHelper;
 use common\helpers\phpexcel\ExportModel;
 use common\helpers\ResultHelper;
-use common\widgets\MyActiveForm;
 use Yii;
 use yii\db\Transaction;
 use yii\web\BadRequestHttpException;
@@ -124,9 +120,8 @@ class DdGoodsController extends AController
      *
      * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $detail = HubGoodsBaseGoods::find()->where(['goods_id' => $id])->findStore()->asArray()->one();
 
@@ -216,8 +211,8 @@ class DdGoodsController extends AController
         return ResultHelper::json(200, '获取成功', $detail);
     }
 
-    public function actionGetSpec()
-   {
+    public function actionGetSpec(): array
+    {
         $category_id =\Yii::$app->request->input('category_id')[1];
         if (empty($category_id)) {
             return ResultHelper::json(400, '缺少二级分类id');
