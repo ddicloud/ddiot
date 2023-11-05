@@ -113,10 +113,10 @@ server {
             include        fastcgi_params;
         }
         location /backend {
-            index index.php index.html;
+            index index.html  index.php;
             if (!-e $request_filename)
             {
-                rewrite ^/backend/(.*)$ /backend/index.php last;
+                rewrite ^/backend/(.*)$ /backend/index.html last;
             }
         }
         location /api {
@@ -140,6 +140,12 @@ server {
                 set $rule_0 1$rule_0;
             }
         }
+        
+        gzip on;
+      	gzip_comp_level 5;
+      	gzip_min_length 256;
+      	gzip_proxied any;
+      	gzip_vary on;
 }
 
 ```
