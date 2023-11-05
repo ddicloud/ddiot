@@ -29,11 +29,10 @@ class SettingsController extends AController
     public int $searchLevel = 0;
 
 
-
     public function actionConf(): array
-   {
-        $section =\Yii::$app->request->input('section');
-        $data =\Yii::$app->request->input('data');
+    {
+        $section = \Yii::$app->request->input('section');
+        $data = \Yii::$app->request->input('data');
         $settings = Yii::$app->settings;
         if (!is_array($data)) {
             return ResultHelper::json(200, 'data数据必须为数组', []);
@@ -44,7 +43,6 @@ class SettingsController extends AController
 
         return ResultHelper::json(200, '设置成功', []);
     }
-
 
 
     /**
@@ -164,7 +162,7 @@ class SettingsController extends AController
             ],
         ];
 
-        return  $setActions;
+        return $setActions;
     }
 
     /**
@@ -187,16 +185,14 @@ class SettingsController extends AController
 
     public function actionSetCache()
     {
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post('bloc', '');
-            if ($data) {
-                $key = Yii::$app->user->identity->id . 'globalBloc';
-                Yii::$app->cache->set($key, $data);
+        $data = Yii::$app->request->post('bloc', '');
+        if ($data) {
+            $key = Yii::$app->user->identity->id . 'globalBloc';
+            Yii::$app->cache->set($key, $data);
 
-                return ResultHelper::json(200, '切换成功', Yii::$app->cache->get('globalBloc'));
-            } else {
-                return ResultHelper::json(200, '切换失败', []);
-            }
+            return ResultHelper::json(200, '切换成功', Yii::$app->cache->get('globalBloc'));
+        } else {
+            return ResultHelper::json(200, '切换失败', []);
         }
     }
 
@@ -206,13 +202,13 @@ class SettingsController extends AController
     }
 
     public function actionThem(): array
-   {
-        $themcolor =\Yii::$app->request->input('themcolor');
+    {
+        $themcolor = \Yii::$app->request->input('themcolor');
 
         $this->cache->set('themcolor', $themcolor);
-
+        $data = Yii::$app->request->input();
         return ResultHelper::json(200, '主题设置成功', [
-            'themcolor' => $_GPC,
+            'themcolor' => $data,
             'themcolorCache' => $this->cache->get('themcolor'),
         ]);
     }

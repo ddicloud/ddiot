@@ -94,8 +94,8 @@ class WechatController extends AController
 
     public function actionTick(): void
    {
-
-        loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $_GPC);
+       $data = Yii::$app->request->input();
+        loggingHelper::writeLog('WechatController', 'tick', '服务器消息处理', $data);
     }
 
     public function actionBind(): array

@@ -88,7 +88,6 @@ class SaveBehavior extends Behavior
             $this->adminAttribute => (int)$admin_id,
             $this->globalBlocAttribute => Yii::$app->params['global_bloc_id'] ?? 0,
         ];
-        unset($time, $bloc_id, $store_id, $admin_id, $blocPid, $_GPC);
         // DebugService::consoleWrite('行为-内存测试4');
     }
 
@@ -132,6 +131,8 @@ class SaveBehavior extends Behavior
      */
     public function __destruct()
     {
-        unset($_GPC, $this->_map, $this->attributes, $this->owner);
+        $data = Yii::$app->request->input();
+
+        unset($data, $this->_map, $this->attributes, $this->owner);
     }
 }

@@ -84,8 +84,10 @@ class LocationController extends AController
      */
     public function actionCreate()
    {
+       $data = Yii::$app->request->input();
+
         $model = new HubLocation();
-        if ($model->load($_GPC, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
             return ResultHelper::json(200, '新建成功', [
                 'model' => $model,
             ]);
@@ -106,11 +108,12 @@ class LocationController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-   {
+    public function actionUpdate($id): array
+    {
+        $data = Yii::$app->request->input();
         $model = $this->findModel($id);
 
-        if ($model->load($_GPC, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
             // 更新该位置下的商品和图片广告位对应的mark
             $mark =\Yii::$app->request->input('HubLocation')['mark'];
             HubLocationGoods::updateAll(['mark' => $mark], ['location_id' => $id]);

@@ -2,6 +2,7 @@
 
 namespace common\traits;
 
+use Yii;
 use yii\base\DynamicModel;
 use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
@@ -17,7 +18,8 @@ trait ApiValidate {
      */
     public function validateParams(array $rules): array|bool
    {
-        $validator = DynamicModel::validateData($_GPC, $rules);
+        $data = Yii::$app->request->input();
+        $validator = DynamicModel::validateData($data, $rules);
         $validator->validate();
         if ($validator->validate()) {
             // 验证通过，执行接口逻辑

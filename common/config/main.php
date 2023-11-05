@@ -40,8 +40,7 @@ return [
     ],
     'components' => [
         'request' => [
-            'class' => 'common\components\ExtendedRequest',
-            // ...
+            'class' => 'common\components\ExtendedRequest'
         ],
         // 服务定位器
         // 'ServiceLocator'=>'yii\di\ServiceLocator',

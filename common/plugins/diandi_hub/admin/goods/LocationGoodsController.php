@@ -152,7 +152,6 @@ class LocationGoodsController extends AController
 
         return ResultHelper::json(200, '请求成功', [
              'list' => $lists,
-             '_GPC' => $_GPC,
              'pageSize' => $pageSize,
              'count' => $count,
              'levels' => $levels,

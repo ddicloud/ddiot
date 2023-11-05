@@ -43,10 +43,12 @@ trait ResultTrait
 
     private function _fillWhere($fields = [])
    {
+       $data = Yii::$app->request->input();
+
         $where = [];
         foreach ($fields as $field) {
-            if (isset($_GPC[$field]) && $_GPC[$field]) {
-                $where[$field] = $_GPC[$field];
+            if (isset($data[$field]) && $data[$field]) {
+                $where[$field] = $data[$field];
             }
         }
         return $where;

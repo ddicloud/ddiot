@@ -44,11 +44,11 @@ use yii2mod\editable\EditableAction;
  */
 class DdGoodsController extends AController
 {
-    public $modelName = 'HubGoodsBaseGoods';
+    public string $modelName = 'HubGoodsBaseGoods';
 
     public string $modelSearchName = 'HubBaseGoodsSearch';
 
-    public function actions()
+    public function actions(): array
     {
         return [
             'upload' => [
@@ -73,10 +73,11 @@ class DdGoodsController extends AController
      *
      * @return array
      */
-    public function actionIndex()
-   {
+    public function actionIndex(): array
+    {
+        $data = Yii::$app->request->input();
         $searchModel = new HubBaseGoodsSearch();
-        $searchWhere = $_GPC[$this->modelSearchName];
+        $searchWhere = $data[$this->modelSearchName];
         if (!empty($searchWhere) && $searchWhere != 'undefined') {
             $where[$this->modelSearchName] = array_merge($searchWhere, Yii::$app->request->queryParams[$this->modelSearchName]);
         } else {

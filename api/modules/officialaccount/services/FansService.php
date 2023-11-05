@@ -45,7 +45,6 @@ class FansService extends BaseService
 
         loggingHelper::writeLog('officialaccount', 'FansService', '更新关注事件', [
             'fans' => $fans,
-            '_GPC' => $_GPC,
             'sql' => DdWechatFans::find()->where(['openid' => $openid])->findBloc()->findStore()->createCommand()->getRawSql(),
         ]);
 

@@ -30,7 +30,6 @@ class MsgController extends AController
         $request = Yii::$app->request;
         $app = Yii::$app->wechat->getApp();
         loggingHelper::writeLog('officialaccount', 'actionOpen', '事件监听处理', [
-            'msg' => $_GPC,
             'getMethod' => $request->getMethod(),
         ]);
         
@@ -78,7 +77,6 @@ class MsgController extends AController
         $request = Yii::$app->request;
         $app = Yii::$app->wechat->getApp();
         loggingHelper::writeLog('officialaccount', 'actionIndex', '事件监听处理', [
-            'msg' => $_GPC,
             'getMethod' => $request->getMethod(),
         ]);
         switch ($request->getMethod()) {

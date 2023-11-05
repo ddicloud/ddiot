@@ -130,8 +130,9 @@ class HttpRequstMethod extends Behavior
             if (key_exists($this->owner->modelSearchName, Yii::$app->request->queryParams)) {
                 $whereInit = array_merge($whereInit, Yii::$app->request->queryParams[$this->owner->modelSearchName]);
             }
+            $data = Yii::$app->request->input();
 
-            $whereGpc = !empty($_GPC[$this->owner->modelSearchName]) && is_array($_GPC[$this->owner->modelSearchName]) ? $_GPC[$this->owner->modelSearchName] : [];
+            $whereGpc = !empty($data[$this->owner->modelSearchName]) && is_array($data[$this->owner->modelSearchName]) ? $data[$this->owner->modelSearchName] : [];
             $where[$this->owner->modelSearchName] = array_merge($whereInit, $whereGpc);
         }
 

@@ -89,6 +89,7 @@
       "addons\\": "addons",
       "admin\\": "admin",
       "api\\": "api",
+      "common\\": "common",
       "EasySwoole\\Rpc\\": "common/components/EasySwoole/rpc/src/",
       "EasySwoole\\Rpc\\Tests\\": "common/components/EasySwoole/rpc/tests/",
       "EasySwoole\\Component\\": "common/components/EasySwoole/component/src/",

@@ -6,14 +6,19 @@ namespace common\components;
 use Yii;
 use yii\web\Request;
 
+/**
+ * @inheritdoc
+ *
+ * @property yii\web\Request Request
+ */
 class ExtendedRequest extends Request
 {
     /**
      * @param $key
      * @param $default
-     * @return array|mixed|object|null
+     * @return array|object|null
      */
-    public function input($key = null, $default = null): mixed
+    public function input($key = null, $default = null): array|object|null
     {
         $getParams = $this->get();
         $postParams = $this->post();

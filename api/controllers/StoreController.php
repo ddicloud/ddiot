@@ -76,7 +76,6 @@ class StoreController extends AController
         FileHelper::writeLog($logPath, '经纬度计算距离参数' .json_encode([
             'longitude'=>$longitude,
             'latitude'=>$latitude,
-            '_GPC'=>$_GPC,
             'member_id' => Yii::$app->user->identity->member_id??0
         ]));
         

@@ -56,7 +56,7 @@ class LevelController extends AController
 
     public function actionDetail()
    {
-        $id =\Yii::$app->request->input('id');
+        $id = Yii::$app->request->input('id');
         $detail = $this->findModel($id);
 
         return ResultHelper::json(200, '获取成功', $detail);
@@ -114,10 +114,12 @@ class LevelController extends AController
      */
     public function actionUpdate($id)
    {
+       $data = Yii::$app->request->input();
 
-        $id =\Yii::$app->request->input('id');
+
+       $id = Yii::$app->request->input('id');
         $model = $this->findModel($id);
-        if ($model->load($_GPC, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
             return ResultHelper::json(200, '编辑成功', []);
         } else {
             $msg = ErrorsHelper::getModelError($model);

@@ -10,18 +10,19 @@
 namespace addons\diandi_website\components;
 
 use common\helpers\ResultHelper;
+use Yii;
 
 trait ResultTrait
 {
     private function getPageInfo()
    {
         $pageInfo = [];
-        $limitStart =\Yii::$app->request->input('limit_start') ?? -1;
+        $limitStart = Yii::$app->request->input('limit_start') ?? -1;
         if ($limitStart == 1) {
             $pageInfo = [
                 'limit_start' => 1,
-                'pageSize' =>\Yii::$app->request->input('pageSize') ?? 10,
-                'page' =>\Yii::$app->request->input('page'),
+                'pageSize' => Yii::$app->request->input('pageSize') ?? 10,
+                'page' => Yii::$app->request->input('page'),
             ];
         }
         return $pageInfo;
@@ -37,10 +38,12 @@ trait ResultTrait
 
     private function _fillWhere($fields = [])
    {
-        $where = [];
+       $where = [];
+       $data = Yii::$app->request->input();
+
         foreach ($fields as $field) {
-            if (isset($_GPC[$field]) && $_GPC[$field]) {
-                $where[$field] = $_GPC[$field];
+            if (isset($data[$field]) && $data[$field]) {
+                $where[$field] = $data[$field];
             }
         }
         return $where;

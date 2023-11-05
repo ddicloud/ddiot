@@ -229,6 +229,7 @@ class TemplateController extends AController
      */
     public function actionUpdate($id)
    {
+       $params = Yii::$app->request->input();
         $model = $this->findModel($id);
         $is_special = (int)\Yii::$app->request->input('is_special');
         if (!empty($is_special)) {
@@ -279,7 +280,7 @@ class TemplateController extends AController
 
             return ResultHelper::json(200, '修改成功');
         } else {
-            if ($model->load($_GPC, '') && $model->save()) {
+            if ($model->load($params, '') && $model->save()) {
                 // region_id
                 if (empty($is_nationwide)) {
                     $seleCitys =\Yii::$app->request->input('seleCitys');

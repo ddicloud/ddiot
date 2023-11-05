@@ -186,7 +186,7 @@ class StoreController extends AController
             ]);
 
             if ($model->load($data, '') && $model->save()) {
-                $StoreLabelLink =\Yii::$app->request->input('label_link');
+                $StoreLabelLink = Yii::$app->request->input('label_link');
                 if (!empty($StoreLabelLink) && is_array($StoreLabelLink)) {
 
                     foreach ($StoreLabelLink as $key => $label_id) {
@@ -258,7 +258,7 @@ class StoreController extends AController
         $data['county'] = $data['provinceCityDistrict'][2];
 
         if ($model->load($data, '') && $model->save()) {
-            $StoreLabelLink =\Yii::$app->request->input('label_link');
+            $StoreLabelLink = Yii::$app->request->input('label_link');
             $link->deleteAll([
                 'store_id' => $store_id,
             ]);
@@ -362,13 +362,15 @@ class StoreController extends AController
 
     public function actionStoreCreate(): array
    {
+       $data = Yii::$app->request->input();
+
         // 校验公司是否存储
-        $bloc_id = (int)\Yii::$app->request->input('bloc_id',0);
+        $bloc_id = (int)Yii::$app->request->input('bloc_id',0);
         $have_bloc = ModelsBloc::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
         if (!$have_bloc) {
             return ResultHelper::json(400, '管理员授权公司不存在');
         }
-        $store = StoreService::createStore($_GPC,\Yii::$app->request->input('mid'),\Yii::$app->request->input('extras'));
+        $store = StoreService::createStore($data, Yii::$app->request->input('mid'), Yii::$app->request->input('extras'));
         // 创建成功，重新返回用户权限数据
         $list = UserService::getUserMenus();
         $list['store'] = $store;
