@@ -104,7 +104,8 @@ class UserController extends AController
     public function actionLogin(): array
    {
         $model = new LoginForm();
-        if ($model->load($_GPC, '') && $userinfo = $model->login()) {
+        $data = Yii::$app->request->input();
+        if ($model->load($data, '') && $userinfo = $model->login()) {
             return ResultHelper::json(200, '登录成功', (array)$userinfo);
         } else {
             $message = ErrorsHelper::getModelError($model);
