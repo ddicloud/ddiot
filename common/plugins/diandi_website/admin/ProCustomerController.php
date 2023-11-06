@@ -9,8 +9,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProCustomer as WebsiteProCustomerSearch;
-use addons\diandi_website\models\WebsiteProCustomer;
+use common\plugins\diandi_website\models\searchs\WebsiteProCustomer as WebsiteProCustomerSearch;
+use common\plugins\diandi_website\models\WebsiteProCustomer;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;

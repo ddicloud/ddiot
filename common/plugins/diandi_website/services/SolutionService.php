@@ -10,9 +10,9 @@
 namespace common\plugins\diandi_website\services;
 
 use common\services\BaseService;
-use addons\diandi_website\models\SolutionCate;
-use addons\diandi_website\models\Solution;
-use addons\diandi_website\models\searchs\BackendExhibitSearch;
+use common\plugins\diandi_website\models\SolutionCate;
+use common\plugins\diandi_website\models\Solution;
+use common\plugins\diandi_website\models\searchs\BackendExhibitSearch;
 
 class SolutionService extends BaseService
 {

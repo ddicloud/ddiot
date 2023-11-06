@@ -3,8 +3,8 @@
 namespace common\plugins\diandi_website\admin;
 
 use Yii;
-use addons\diandi_website\models\WebsiteCorefunSon;
-use addons\diandi_website\models\searchs\WebsiteCorefunSon as WebsiteCorefunSonSearch;
+use common\plugins\diandi_website\models\WebsiteCorefunSon;
+use common\plugins\diandi_website\models\searchs\WebsiteCorefunSon as WebsiteCorefunSonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

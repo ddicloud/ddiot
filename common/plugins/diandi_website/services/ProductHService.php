@@ -10,8 +10,8 @@
 namespace common\plugins\diandi_website\services;
 
 use common\services\BaseService;
-use addons\diandi_website\models\WebsiteProH5Body;
-use addons\diandi_website\models\WebsiteProH5Top;
+use common\plugins\diandi_website\models\WebsiteProH5Body;
+use common\plugins\diandi_website\models\WebsiteProH5Top;
 
 class ProductHService extends BaseService
 {

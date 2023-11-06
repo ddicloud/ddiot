@@ -8,8 +8,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProH5Body as WebsiteProH5BodySearch;
-use addons\diandi_website\models\WebsiteProH5Body;
+use common\plugins\diandi_website\models\searchs\WebsiteProH5Body as WebsiteProH5BodySearch;
+use common\plugins\diandi_website\models\WebsiteProH5Body;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;

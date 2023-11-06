@@ -11,8 +11,8 @@
 namespace common\plugins\diandi_website\admin;
 
 use Yii;
-use addons\diandi_website\models\SolutionCate;
-use addons\diandi_website\models\searchs\SolutionCateSearch;
+use common\plugins\diandi_website\models\SolutionCate;
+use common\plugins\diandi_website\models\searchs\SolutionCateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

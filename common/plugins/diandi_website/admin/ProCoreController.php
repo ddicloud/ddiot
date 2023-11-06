@@ -9,8 +9,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProCore as WebsiteProCoreSearch;
-use addons\diandi_website\models\WebsiteProCore;
+use common\plugins\diandi_website\models\searchs\WebsiteProCore as WebsiteProCoreSearch;
+use common\plugins\diandi_website\models\WebsiteProCore;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;

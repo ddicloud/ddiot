@@ -9,7 +9,7 @@
 
 namespace common\plugins\diandi_website\models\searchs;
 
-use addons\diandi_website\models\WebsiteProCustomer as WebsiteProCustomerModel;
+use common\plugins\diandi_website\models\WebsiteProCustomer as WebsiteProCustomerModel;
 use common\components\DataProvider\ArrayDataProvider;
 use common\helpers\ImageHelper;
 use yii\base\Model;

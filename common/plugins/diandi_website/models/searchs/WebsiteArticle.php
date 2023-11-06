@@ -12,7 +12,7 @@ namespace common\plugins\diandi_website\models\searchs;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
-use addons\diandi_website\models\WebsiteArticle as WebsiteArticleModel;
+use common\plugins\diandi_website\models\WebsiteArticle as WebsiteArticleModel;
 use yii\data\Pagination;
 
 

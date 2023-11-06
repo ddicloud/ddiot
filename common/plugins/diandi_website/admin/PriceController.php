@@ -3,8 +3,8 @@
 namespace common\plugins\diandi_website\admin;
 
 use Yii;
-use addons\diandi_website\models\WebsitePrice;
-use addons\diandi_website\models\searchs\WebsitePrice as WebsitePriceSearch;
+use common\plugins\diandi_website\models\WebsitePrice;
+use common\plugins\diandi_website\models\searchs\WebsitePrice as WebsitePriceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

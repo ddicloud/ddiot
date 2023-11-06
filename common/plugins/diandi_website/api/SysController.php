@@ -9,7 +9,7 @@
 
 namespace common\plugins\diandi_website\api;
 
-use addons\diandi_website\services\SysService;
+use common\plugins\diandi_website\services\SysService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
 

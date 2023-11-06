@@ -8,8 +8,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProApp as WebsiteProAppSearch;
-use addons\diandi_website\models\WebsiteProApp;
+use common\plugins\diandi_website\models\searchs\WebsiteProApp as WebsiteProAppSearch;
+use common\plugins\diandi_website\models\WebsiteProApp;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;

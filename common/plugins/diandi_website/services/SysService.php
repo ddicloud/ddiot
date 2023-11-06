@@ -9,15 +9,15 @@
 
 namespace common\plugins\diandi_website\services;
 
-use addons\diandi_website\models\enums\AdType;
-use addons\diandi_website\models\Nav;
-use addons\diandi_website\models\searchs\SysFunCateSearch;
-use addons\diandi_website\models\searchs\SysWorthSearch;
-use addons\diandi_website\models\searchs\WebsiteAd;
-use addons\diandi_website\models\searchs\WebsiteContact;
-use addons\diandi_website\models\searchs\WebsiteLink;
-use addons\diandi_website\models\searchs\WebsitePage;
-use addons\diandi_website\models\searchs\WebsiteSlide;
+use common\plugins\diandi_website\models\enums\AdType;
+use common\plugins\diandi_website\models\Nav;
+use common\plugins\diandi_website\models\searchs\SysFunCateSearch;
+use common\plugins\diandi_website\models\searchs\SysWorthSearch;
+use common\plugins\diandi_website\models\searchs\WebsiteAd;
+use common\plugins\diandi_website\models\searchs\WebsiteContact;
+use common\plugins\diandi_website\models\searchs\WebsiteLink;
+use common\plugins\diandi_website\models\searchs\WebsitePage;
+use common\plugins\diandi_website\models\searchs\WebsiteSlide;
 use common\helpers\ArrayHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;

@@ -8,7 +8,7 @@
 
 namespace common\plugins\diandi_website\models\searchs;
 
-use addons\diandi_website\models\WebsiteProH5Top as WebsiteProH5TopModel;
+use common\plugins\diandi_website\models\WebsiteProH5Top as WebsiteProH5TopModel;
 use common\components\DataProvider\ArrayDataProvider;
 use common\helpers\ImageHelper;
 use yii\base\Model;

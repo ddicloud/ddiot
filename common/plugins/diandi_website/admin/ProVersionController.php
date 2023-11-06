@@ -8,8 +8,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProVersion as WebsiteProVersionSearch;
-use addons\diandi_website\models\WebsiteProVersion;
+use common\plugins\diandi_website\models\searchs\WebsiteProVersion as WebsiteProVersionSearch;
+use common\plugins\diandi_website\models\WebsiteProVersion;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;

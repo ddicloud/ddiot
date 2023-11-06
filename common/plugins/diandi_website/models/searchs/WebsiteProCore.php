@@ -8,7 +8,7 @@
 
 namespace common\plugins\diandi_website\models\searchs;
 
-use addons\diandi_website\models\WebsiteProCore as WebsiteProCoreModel;
+use common\plugins\diandi_website\models\WebsiteProCore as WebsiteProCoreModel;
 use common\components\DataProvider\ArrayDataProvider;
 use common\helpers\ImageHelper;
 use yii\base\Model;

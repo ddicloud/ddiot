@@ -8,8 +8,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsitePageConfig as WebsitePageConfigSearch;
-use addons\diandi_website\models\WebsitePageConfig;
+use common\plugins\diandi_website\models\searchs\WebsitePageConfig as WebsitePageConfigSearch;
+use common\plugins\diandi_website\models\WebsitePageConfig;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;

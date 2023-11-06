@@ -10,7 +10,7 @@
 namespace common\plugins\diandi_website\api;
 
 use api\controllers\AController;
-use addons\diandi_website\services\ProductService;
+use common\plugins\diandi_website\services\ProductService;
 
 class ProductController extends AController
 {

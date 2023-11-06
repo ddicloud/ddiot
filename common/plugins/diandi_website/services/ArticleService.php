@@ -9,8 +9,8 @@
 
 namespace common\plugins\diandi_website\services;
 
-use addons\diandi_website\models\searchs\WebsiteArticle;
-use addons\diandi_website\models\searchs\WebsiteArticleCategory;
+use common\plugins\diandi_website\models\searchs\WebsiteArticle;
+use common\plugins\diandi_website\models\searchs\WebsiteArticleCategory;
 use common\helpers\ArrayHelper;
 use common\helpers\ImageHelper;
 use common\services\BaseService;

@@ -9,10 +9,10 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteArticle as WebsiteArticleSearch;
-use addons\diandi_website\models\searchs\WebsiteArticleCategory;
-use addons\diandi_website\models\WebsiteArticle;
-use addons\diandi_website\models\WebsitePageConfig;
+use common\plugins\diandi_website\models\searchs\WebsiteArticle as WebsiteArticleSearch;
+use common\plugins\diandi_website\models\searchs\WebsiteArticleCategory;
+use common\plugins\diandi_website\models\WebsiteArticle;
+use common\plugins\diandi_website\models\WebsitePageConfig;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;

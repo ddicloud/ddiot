@@ -10,8 +10,8 @@
 namespace common\plugins\diandi_website\api;
 
 use api\controllers\AController;
-use addons\diandi_website\models\WebsiteProH5Body;
-use addons\diandi_website\services\ProductHService;
+use common\plugins\diandi_website\models\WebsiteProH5Body;
+use common\plugins\diandi_website\services\ProductHService;
 
 class ProductHController extends AController
 {

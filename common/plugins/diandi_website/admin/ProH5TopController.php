@@ -8,8 +8,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteProH5Top as WebsiteProH5TopSearch;
-use addons\diandi_website\models\WebsiteProH5Top;
+use common\plugins\diandi_website\models\searchs\WebsiteProH5Top as WebsiteProH5TopSearch;
+use common\plugins\diandi_website\models\WebsiteProH5Top;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;

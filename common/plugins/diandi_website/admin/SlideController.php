@@ -11,8 +11,8 @@
 namespace common\plugins\diandi_website\admin;
 
 use Yii;
-use addons\diandi_website\models\WebsiteSlide;
-use addons\diandi_website\models\searchs\WebsiteSlide as WebsiteSlideSearch;
+use common\plugins\diandi_website\models\WebsiteSlide;
+use common\plugins\diandi_website\models\searchs\WebsiteSlide as WebsiteSlideSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

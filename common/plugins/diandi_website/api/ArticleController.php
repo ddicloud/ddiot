@@ -9,9 +9,9 @@
 
 namespace common\plugins\diandi_website\api;
 
-use addons\diandi_website\models\enums\NavTypeStatus;
-use addons\diandi_website\models\WebsitePageConfig;
-use addons\diandi_website\services\ArticleService;
+use common\plugins\diandi_website\models\enums\NavTypeStatus;
+use common\plugins\diandi_website\models\WebsitePageConfig;
+use common\plugins\diandi_website\services\ArticleService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
 use Yii;

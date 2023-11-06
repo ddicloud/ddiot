@@ -9,8 +9,8 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use addons\diandi_website\models\searchs\WebsiteArticleCategory as WebsiteArticleCategorySearch;
-use addons\diandi_website\models\WebsiteArticleCategory;
+use common\plugins\diandi_website\models\searchs\WebsiteArticleCategory as WebsiteArticleCategorySearch;
+use common\plugins\diandi_website\models\WebsiteArticleCategory;
 use admin\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;

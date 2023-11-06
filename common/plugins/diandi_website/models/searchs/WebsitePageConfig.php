@@ -8,7 +8,7 @@
 
 namespace common\plugins\diandi_website\models\searchs;
 
-use addons\diandi_website\models\WebsitePageConfig as WebsitePageConfigModel;
+use common\plugins\diandi_website\models\WebsitePageConfig as WebsitePageConfigModel;
 use common\components\DataProvider\ArrayDataProvider;
 use yii\base\Model;
 use yii\data\Pagination;

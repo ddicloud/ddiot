@@ -11,15 +11,15 @@ namespace common\plugins\diandi_website\services;
 
 use yii\data\Pagination;
 use common\services\BaseService;
-use addons\diandi_website\models\WebsiteProSlide;
-use addons\diandi_website\models\WebsiteProVersion;
-use addons\diandi_website\models\WebsiteProPlug;
-use addons\diandi_website\models\WebsiteProCustomer;
-use addons\diandi_website\models\WebsiteProSelling;
-use addons\diandi_website\models\WebsiteProCore;
-use addons\diandi_website\models\WebsiteProApp;
-use addons\diandi_website\models\WebsiteProConfig;
-use addons\diandi_website\models\ProductPrice;
+use common\plugins\diandi_website\models\WebsiteProSlide;
+use common\plugins\diandi_website\models\WebsiteProVersion;
+use common\plugins\diandi_website\models\WebsiteProPlug;
+use common\plugins\diandi_website\models\WebsiteProCustomer;
+use common\plugins\diandi_website\models\WebsiteProSelling;
+use common\plugins\diandi_website\models\WebsiteProCore;
+use common\plugins\diandi_website\models\WebsiteProApp;
+use common\plugins\diandi_website\models\WebsiteProConfig;
+use common\plugins\diandi_website\models\ProductPrice;
 
 class ProductService extends BaseService
 {

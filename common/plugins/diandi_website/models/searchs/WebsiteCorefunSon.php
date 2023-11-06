@@ -4,7 +4,7 @@ namespace common\plugins\diandi_website\models\searchs;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
-use addons\diandi_website\models\WebsiteCorefunSon as WebsiteCorefunSonModel;
+use common\plugins\diandi_website\models\WebsiteCorefunSon as WebsiteCorefunSonModel;
 use yii\data\Pagination;
 
 
