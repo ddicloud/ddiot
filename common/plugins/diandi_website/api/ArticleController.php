@@ -9,11 +9,10 @@
 
 namespace common\plugins\diandi_website\api;
 
-use common\plugins\diandi_website\models\enums\NavTypeStatus;
-use common\plugins\diandi_website\models\WebsitePageConfig;
-use common\plugins\diandi_website\services\ArticleService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
+use common\plugins\diandi_website\models\WebsitePageConfig;
+use common\plugins\diandi_website\services\ArticleService;
 use Yii;
 
 class ArticleController extends AController
@@ -49,8 +48,10 @@ class ArticleController extends AController
     public function actionDetail(): array
     {
         $id = Yii::$app->request->input('id');
+        if (empty($id)){
+            return ResultHelper::json(400, 'id不能为空');
+        }
         $detail = ArticleService::getDetail($id);
-
         return ResultHelper::json(200, '请求成功', $detail);
     }
 
