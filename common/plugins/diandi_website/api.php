@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website;
+namespace common\plugins\diandi_website;
 
 
 use common\components\addons\PluginsModule;
@@ -21,7 +21,7 @@ class api extends PluginsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_website\api";
+    public $controllerNamespace = "common\plugins\diandi_website\api";
 
     /**
      * {@inheritdoc}

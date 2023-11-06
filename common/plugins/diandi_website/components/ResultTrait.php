@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-07-07 18:36:32
  */
 
-namespace addons\diandi_website\components;
+namespace common\plugins\diandi_website\components;
 
 use common\helpers\ResultHelper;
 use Yii;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-01 14:16:31
  */
 
-namespace addons\diandi_website\services;
+namespace common\plugins\diandi_website\services;
 
 use addons\diandi_website\models\enums\AdType;
 use addons\diandi_website\models\Nav;

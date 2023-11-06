@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-02-14 10:11:51
  */
 
-namespace addons\diandi_website\models\searchs;
+namespace common\plugins\diandi_website\models\searchs;
 
 use addons\diandi_website\models\WebsiteSlide as WebsiteSlideModel;
 use common\components\DataProvider\ArrayDataProvider;

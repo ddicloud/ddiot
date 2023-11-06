@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-28 12:03:40
  */
 
-namespace addons\diandi_website\services;
+namespace common\plugins\diandi_website\services;
 
 use yii\data\Pagination;
 use common\services\BaseService;

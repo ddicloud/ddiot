@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-07 14:58:48
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteProSlide as WebsiteProSlideSearch;
 use addons\diandi_website\models\WebsiteProSlide;

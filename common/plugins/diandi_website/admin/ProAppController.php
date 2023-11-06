@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-06 18:24:07
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteProApp as WebsiteProAppSearch;
 use addons\diandi_website\models\WebsiteProApp;

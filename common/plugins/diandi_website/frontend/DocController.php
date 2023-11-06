@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website\frontend;
+namespace common\plugins\diandi_website\frontend;
 
 
 use Yii;

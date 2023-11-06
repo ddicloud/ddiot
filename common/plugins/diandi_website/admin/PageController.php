@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-06 18:16:20
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsitePage as WebsitePageSearch;
 use addons\diandi_website\models\WebsitePage;

@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-01 14:14:54
  */
 
-namespace addons\diandi_website\models;
+namespace common\plugins\diandi_website\models;
 
 use common\traits\ActiveQuery\StoreTrait;
 

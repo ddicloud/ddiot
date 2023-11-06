@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-29 09:18:36
  */
 
-namespace addons\diandi_website\api;
+namespace common\plugins\diandi_website\api;
 
 use addons\diandi_website\services\SysService;
 use api\controllers\AController;

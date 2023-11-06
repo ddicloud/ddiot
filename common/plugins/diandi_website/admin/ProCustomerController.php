@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-27 16:11:30
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteProCustomer as WebsiteProCustomerSearch;
 use addons\diandi_website\models\WebsiteProCustomer;

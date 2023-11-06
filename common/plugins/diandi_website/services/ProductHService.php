@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-23 15:04:27
  */
 
-namespace addons\diandi_website\services;
+namespace common\plugins\diandi_website\services;
 
 use common\services\BaseService;
 use addons\diandi_website\models\WebsiteProH5Body;

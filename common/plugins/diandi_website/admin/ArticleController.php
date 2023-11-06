@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-27 17:49:31
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteArticle as WebsiteArticleSearch;
 use addons\diandi_website\models\searchs\WebsiteArticleCategory;

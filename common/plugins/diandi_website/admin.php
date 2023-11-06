@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website;
+namespace common\plugins\diandi_website;
 
 
 use common\components\addons\PluginsModule;
@@ -21,7 +21,7 @@ class admin extends PluginsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_website\admin";
+    public $controllerNamespace = "common\plugins\diandi_website\admin";
 
     /**
      * {@inheritdoc}

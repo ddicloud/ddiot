@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-23 16:26:32
  */
 
-namespace addons\diandi_website\api;
+namespace common\plugins\diandi_website\api;
 
 use api\controllers\AController;
 use addons\diandi_website\models\WebsiteProH5Body;

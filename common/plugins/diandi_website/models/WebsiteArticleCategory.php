@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-01 13:30:15
  */
 
-namespace addons\diandi_website\models;
+namespace common\plugins\diandi_website\models;
 
 /**
  * This is the model class for table "{{%diandi_website_article_category}}".

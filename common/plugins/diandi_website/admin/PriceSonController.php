@@ -1,6 +1,6 @@
 <?php
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use Yii;
 use addons\diandi_website\models\WebsitePriceSon;

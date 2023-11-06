@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-22 17:09:18
  */
 
-namespace addons\diandi_website\models\enums;
+namespace common\plugins\diandi_website\models\enums;
 
 use yii2mod\enum\helpers\BaseEnum;
 

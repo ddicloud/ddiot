@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-21 09:43:07
  */
 
-namespace addons\diandi_website\models\searchs;
+namespace common\plugins\diandi_website\models\searchs;
 
 use addons\diandi_website\models\WebsitePageConfig as WebsitePageConfigModel;
 use common\components\DataProvider\ArrayDataProvider;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-01 13:30:30
  */
 
-namespace addons\diandi_website\services;
+namespace common\plugins\diandi_website\services;
 
 use addons\diandi_website\models\searchs\WebsiteArticle;
 use addons\diandi_website\models\searchs\WebsiteArticleCategory;

@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-08-01 09:56:16
  */
 
-namespace addons\diandi_website;
+namespace common\plugins\diandi_website;
 
 use common\interfaces\AddonWidget;
 use yii\db\Migration;

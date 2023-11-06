@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 
 use admin\controllers\AController;

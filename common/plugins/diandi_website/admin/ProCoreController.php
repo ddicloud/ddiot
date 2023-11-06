@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-27 16:30:34
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteProCore as WebsiteProCoreSearch;
 use addons\diandi_website\models\WebsiteProCore;

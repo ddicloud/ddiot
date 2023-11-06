@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-07 14:58:15
  */
 
-namespace addons\diandi_website\admin;
+namespace common\plugins\diandi_website\admin;
 
 use addons\diandi_website\models\searchs\WebsiteProH5Body as WebsiteProH5BodySearch;
 use addons\diandi_website\models\WebsiteProH5Body;

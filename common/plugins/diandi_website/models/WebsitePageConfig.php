@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-04-21 09:43:13
  */
 
-namespace addons\diandi_website\models;
+namespace common\plugins\diandi_website\models;
 
 /**
  * This is the model class for table "{{%diandi_website_page_config}}".

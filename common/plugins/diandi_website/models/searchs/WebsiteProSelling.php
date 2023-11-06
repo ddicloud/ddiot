@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-07 12:00:58
  */
 
-namespace addons\diandi_website\models\searchs;
+namespace common\plugins\diandi_website\models\searchs;
 
 use addons\diandi_website\models\WebsiteProSelling as WebsiteProSellingModel;
 use common\components\DataProvider\ArrayDataProvider;

@@ -1,6 +1,6 @@
 <?php
 
-namespace addons\diandi_website\models\searchs;
+namespace common\plugins\diandi_website\models\searchs;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;

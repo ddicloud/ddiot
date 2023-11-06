@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-07-12 11:41:42
  */
 
-namespace addons\diandi_website\services;
+namespace common\plugins\diandi_website\services;
 
 use common\services\BaseService;
 use addons\diandi_website\models\SolutionCate;

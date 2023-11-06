@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-07-07 18:36:23
  */
 
-namespace addons\diandi_website\components;
+namespace common\plugins\diandi_website\components;
 
 use yii\data\Pagination;
 use common\helpers\ResultHelper;

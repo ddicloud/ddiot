@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website\models;
+namespace common\plugins\diandi_website\models;
 
 use Yii;
 

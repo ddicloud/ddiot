@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-06-27 15:57:49
  */
 
-namespace addons\diandi_website\models\searchs;
+namespace common\plugins\diandi_website\models\searchs;
 
 use addons\diandi_website\models\WebsiteProCustomer as WebsiteProCustomerModel;
 use common\components\DataProvider\ArrayDataProvider;

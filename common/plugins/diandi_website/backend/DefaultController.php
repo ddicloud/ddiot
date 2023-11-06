@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website\backend;
+namespace common\plugins\diandi_website\backend;
 
 
 use backend\controllers\BaseController;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-07-12 11:41:30
  */
 
-namespace addons\diandi_website\api;
+namespace common\plugins\diandi_website\api;
 
 use api\controllers\AController;
 use addons\diandi_website\services\SolutionService;

@@ -8,7 +8,7 @@
  */
 
 
-namespace addons\diandi_website;
+namespace common\plugins\diandi_website;
 
 use common\components\addons\AddonsModule;
 
@@ -20,7 +20,7 @@ class console extends AddonsModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = "addons\diandi_website\console";
+    public $controllerNamespace = "common\plugins\diandi_website\console";
 
     /**
      * {@inheritdoc}

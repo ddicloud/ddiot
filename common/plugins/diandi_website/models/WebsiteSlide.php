@@ -7,7 +7,7 @@
  * @Last Modified time: 2022-08-01 14:15:31
  */
 
-namespace addons\diandi_website\models;
+namespace common\plugins\diandi_website\models;
 
 /**
  * This is the model class for table "{{%diandi_website_slide}}".
