@@ -20,217 +20,27 @@ class ProductController extends AController
 
     public $modelClass = '';
 
-    /**
-     * @SWG\Get(path="/diandi_website/product/slide",
-     *    tags={"产品"},
-     *    summary="幻灯片",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "产品幻灯片",
-     *     ),
-     *     @SWG\Parameter(
-     *     in="header",
-     *     name="bloc-id",
-     *     type="integer",
-     *     description="公司ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="header",
-     *     name="store-id",
-     *     type="integer",
-     *     description="商户ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="limit_start",
-     *     type="integer",
-     *     description="是否开启分页（-1：不开启，1：开启）默认：-1",
-     *     required=false,
-     *   ),
-     *   @SWG\Parameter(
-     *     in="path",
-     *     name="pageSize",
-     *     type="integer",
-     *     description="每页数据量(默认10) - 开启分页时有效",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="page",
-     *     type="integer",
-     *     description="页码（默认1） - 开启分页时有效",
-     *     required=false,
-     *   ),
-     * )
-     */
-    public function actionSlide()
+
+    public function actionSlide(): array
     {
         return $this->_json(ProductService::getSlide($this->getPageInfo()));
     }
 
-    /**
-     * @SWG\Get(path="/diandi_website/product/version",
-     *    tags={"产品"},
-     *    summary="产品版本",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "产品版本",
-     *     ),
-     *     @SWG\Parameter(
-     *     in="header",
-     *     name="bloc-id",
-     *     type="integer",
-     *     description="公司ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="header",
-     *     name="store-id",
-     *     type="integer",
-     *     description="商户ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="limit_start",
-     *     type="integer",
-     *     description="是否开启分页（-1：不开启，1：开启）默认：-1",
-     *     required=false,
-     *   ),
-     *   @SWG\Parameter(
-     *     in="path",
-     *     name="pageSize",
-     *     type="integer",
-     *     description="每页数据量(默认10) - 开启分页时有效",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="page",
-     *     type="integer",
-     *     description="页码（默认1） - 开启分页时有效",
-     *     required=false,
-     *   ),
-     * )
-     */
-    public function actionVersion()
+
+    public function actionVersion(): array
     {
         return $this->_json(ProductService::getVersion($this->getPageInfo()));
     }
 
-    /**
-     * @SWG\Get(path="/diandi_website/product/plug",
-     *    tags={"产品"},
-     *    summary="产品插件",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "产品插件",
-     *     ),
-     *     @SWG\Parameter(
-     *     in="header",
-     *     name="bloc-id",
-     *     type="integer",
-     *     description="公司ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="header",
-     *     name="store-id",
-     *     type="integer",
-     *     description="商户ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="limit_start",
-     *     type="integer",
-     *     description="是否开启分页（-1：不开启，1：开启）默认：-1",
-     *     required=false,
-     *   ),
-     *   @SWG\Parameter(
-     *     in="path",
-     *     name="pageSize",
-     *     type="integer",
-     *     description="每页数据量(默认10) - 开启分页时有效",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="page",
-     *     type="integer",
-     *     description="页码（默认1） - 开启分页时有效",
-     *     required=false,
-     *   ),
-     * )
-     */
-    public function actionPlug()
+
+    public function actionPlug(): array
     {
         return $this->_json(ProductService::getPlug($this->getPageInfo()));
     }
 
-    /**
-     * @SWG\Get(path="/diandi_website/product/customer-list",
-     *    tags={"产品"},
-     *    summary="客戶案例列表 - (后台：客户案例)",
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "客戶案例列表 - (后台：客户案例)",
-     *     ),
-     *     @SWG\Parameter(
-     *     in="header",
-     *     name="bloc-id",
-     *     type="integer",
-     *     description="公司ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="header",
-     *     name="store-id",
-     *     type="integer",
-     *     description="商户ID",
-     *     required=true,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="limit_start",
-     *     type="integer",
-     *     description="是否开启分页（-1：不开启，1：开启）默认：-1",
-     *     required=false,
-     *   ),
-     *   @SWG\Parameter(
-     *     in="path",
-     *     name="pageSize",
-     *     type="integer",
-     *     description="每页数据量(默认10) - 开启分页时有效",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="path",
-     *     name="page",
-     *     type="integer",
-     *     description="页码（默认1） - 开启分页时有效",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="integer",
-     *     description="解决方案ID",
-     *     required=false,
-     *   ),
-     *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_website",
-     *     type="integer",
-     *     description="是否是官网（-1：否，1：是）",
-     *     required=false,
-     *   ),
-     * )
-     */
-    public function actionCustomerList()
-   {
+
+    public function actionCustomerList(): array
+    {
         return $this->_json(ProductService::getCustomer($this->getPageInfo(), $this->_fillWhere(['solution_id', 'is_website'])));
     }
     /**
