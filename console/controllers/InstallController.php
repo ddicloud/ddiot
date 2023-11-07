@@ -241,6 +241,7 @@ EOF;
             Console::input('请删除对“phpenv”的禁用');
         }
         Console::input('系统安装成功，配置你的nginx就可以访问了');
+        Console::input('nginx配置后，需要将/frontend/backend/pro-admin/configs/configs.js 中的接口域名和站点域名都配置为自己的域名');
         return  true;
     }
 }

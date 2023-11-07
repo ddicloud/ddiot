@@ -286,9 +286,11 @@ EOF;
     /**
      * 返回模型.
      *
-     * @return array|AccessToken|ActiveRecord|null
+     * @param $user_id
+     * @param $group_id
+     * @return array|DdApiAccessToken|ActiveRecord|null
      */
-    public static function findModel($user_id, $group_id): ActiveRecord|array|AccessToken|null
+    public static function findModel($user_id, $group_id): ActiveRecord|array|DdApiAccessToken|null
     {
         if (empty(($model = DdApiAccessToken::find()->where([
             'user_id' => $user_id,
