@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use common\helpers\FileHelper;
 use console\services\InstallServer;
+use PDO as PDOAlias;
 use PDOException;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -82,7 +83,7 @@ class InstallController extends \yii\console\Controller
                     $statement = $link->query("SHOW DATABASES LIKE '{$dbname}';");
                     $fetch = $statement->fetch();
                     if (empty($fetch)) {
-                        if (substr($link->getAttribute(PDO::ATTR_SERVER_VERSION), 0, 3) > '4.1') {
+                        if (substr($link->getAttribute(PDOAlias::ATTR_SERVER_VERSION), 0, 3) > '4.1') {
                             $link->query("CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8");
                         } else {
                             $link->query("CREATE DATABASE IF NOT EXISTS `{$dbname}`");
@@ -91,7 +92,7 @@ class InstallController extends \yii\console\Controller
                     $statement = $link->query("SHOW DATABASES LIKE '{$dbname}';");
                     $fetch = $statement->fetch();
                     if (empty($fetch)) {
-                        $error .= '数据库不存在且创建数据库失败. <br />';
+                        $error .= '数据库不存在且创建数据库失败'.PHP_EOL;
                     } else {
                         $is_connect = true;
                     }
@@ -216,13 +217,11 @@ EOF;
         $dirs = ['api/runtime/', 'frontend/runtime/', 'frontend/assets/', 'frontend/attachment', 'admin/runtime/', 'api/web/store/'];
 
         foreach ($dirs as $key => $value) {
-            if (is_dir($baseDir . $value)) {
-                chmod($baseDir . $value, 0777);
-            } else {
+            if (!is_dir($baseDir . $value)) {
                 mkdir($baseDir . $value, 0777);
-                chmod($baseDir . $value, 0777);
             }
-            echo '目录' . $value . '权限设置成功' . PHP_EOL;
+            chmod($baseDir . $value, 0777);
+            Console::input('目录' . $value . '权限设置成功');
             sleep(1);
         }
 
@@ -237,6 +236,11 @@ EOF;
         if (file_exists($installConfPath)) {
             @unlink($installConfPath);
         }
+        $check_phpenv =  InstallServer::enabledCheck();
+        if (!$check_phpenv){
+            Console::input('请删除对“phpenv”的禁用');
+        }
         Console::input('系统安装成功，配置你的nginx就可以访问了');
+        return  true;
     }
 }

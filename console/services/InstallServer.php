@@ -16,10 +16,17 @@ use common\services\BaseService;
 use console\models\AuthAssignmentGroup;
 use console\models\AuthUserGroup;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\Console;
 
 class InstallServer extends BaseService
 {
+     public  static function  enabledCheck($func= 'phpenv'): bool
+     {
+        $disabled = explode(',', ini_get('disable_functions'));
+        return !in_array($func, $disabled);
+    }
+
     public static function local_mysql_config()
     {
         $cfg = <<<EOF
@@ -281,7 +288,7 @@ EOF;
      *
      * @return array|AccessToken|ActiveRecord|null
      */
-    public static function findModel($user_id, $group_id)
+    public static function findModel($user_id, $group_id): ActiveRecord|array|AccessToken|null
     {
         if (empty(($model = DdApiAccessToken::find()->where([
             'user_id' => $user_id,
