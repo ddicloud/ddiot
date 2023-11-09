@@ -10,13 +10,16 @@
 namespace admin\modules\officialaccount\controllers;
 
 use admin\controllers\AController;
+use common\helpers\ResultHelper;
 use Yii;
 use api\modules\officialaccount\components\Fans;
 use common\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
 
-
+/**
+ * 粉丝消息
+ */
 class MsgController extends AController
 {
     
@@ -35,8 +38,8 @@ class MsgController extends AController
      * 只做微信公众号激活，不做其他消息处理
      *
      */
-    public function actionIndex()
-   {
+    public function actionIndex(): array
+    {
         $request = Yii::$app->request;
         $logPath = Yii::getAlias('@runtime/wechat/msg/'.date('ymd').'.log');
         
@@ -57,5 +60,36 @@ class MsgController extends AController
         }
 
         exit();
+    }
+
+    public function actionAdd()
+    {
+        return ResultHelper::json(200, '获取成功');
+
+    }
+
+    public function actionList(): array
+    {
+
+        return ResultHelper::json(200, '获取成功');
+    }
+
+
+    public function actionUpdate($id): array
+    {
+
+        return ResultHelper::json(200, '获取成功');
+    }
+
+    public function actionDelete($id): array
+    {
+
+        return ResultHelper::json(200, '获取成功');
+    }
+
+    public function actionUpdateResContent(): array
+    {
+
+        return ResultHelper::json(200, '获取成功');
     }
 }
