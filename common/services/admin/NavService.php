@@ -110,10 +110,9 @@ class NavService extends BaseService
 
                 //区分系统菜单和扩展模块菜单
 
-                if ($menu['is_sys'] == 'system') {
+                if ($menu['is_sys'] === 1) {
                     $parent_id = intval($menu['parent']);
-                    $parent = $parent_id > 0 ? $parent_id : $menu['id'];
-
+//                    $parent = $parent_id > 0 ? $parent_id : $menu['id'];
                     $menu_type = 'system';
                     // $module_name = $menu['module_name'];
                     // $addonsdefault = "/{$module_name}/default/index";
@@ -131,9 +130,9 @@ class NavService extends BaseService
 
                 $return = [
                     'id' => $menu['id'],
-                    'hidden' => $menu['is_show'] == 0 ? false : true,
+                    'hidden' => !($menu['is_show'] == 0),
                     'parent' => $parent_id,
-                    'order' => $menu['order'] ? $menu['order'] : 0,
+                    'order' => (int) $menu['order'],
                     'name' => $route_name,
                     'level_type' => $menu['level_type'],
                     'type' => $menu_type,
@@ -141,10 +140,10 @@ class NavService extends BaseService
                         'parent_menu_id' => 0,
                         'title' => $menu['name'],
                         'icon' => $menu['icon'],
-                        'affix' => ($menu['name'] === '工作台' && !empty($parent_id)) ? true : false,
-                        'parent' => $parent_id ? $parent_id : $menu['id'],
+                        'affix' => $menu['name'] === '工作台' && !empty($parent_id),
+                        'parent' => $parent_id,
                     ],
-                    'path' => $route ? $route : '/' . $menu['id'],
+                    'path' => $route ?? '/' . $menu['id'],
                     'children' => $menu['children'],
                 ];
 
@@ -161,8 +160,7 @@ class NavService extends BaseService
 
                 return  $return;
             };
-            $where = [];
-            $where = ['or', ['is_sys' => 'system'], ['module_name' => $module_name]];
+            $where = ['or', ['is_sys' => 1], ['module_name' => $module_name]];
             $user_id = Yii::$app->user->id;
             $initmenus = MenuHelper::getAssignedMenu($user_id, null, $callback, $where, 1);
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
@@ -218,21 +216,19 @@ class NavService extends BaseService
 
     public static function addonsMens($addons)
     {
-        $list = Menu::find()->where(['module_name' => $addons])->with(['ruoter' => function ($query) {
+        $list = Menu::find()->where(['module_name' => $addons])->with(['router' => function ($query) {
             return  $query->with(['item']);
         }])->asArray()->all();
 
-        foreach ($list as $key => &$value) {
-            unset($value['ruoter']['id'], $value['ruoter']['created_at'], $value['ruoter']['updated_at']);
-            if (is_array($value['ruoter']) && !empty($value['ruoter'])) {
-                foreach ($value['ruoter'] as $k => $val) {
-                    if (!empty($value['ruoter']['item']) && is_array($value['ruoter']['item'])) {
-                        unset($value['ruoter']['item']['id'], $value['ruoter']['item']['created_at'], $value['ruoter']['item']['updated_at']);
-                    }
+        foreach ($list as &$value) {
+            if (!empty($value['router']) && is_array($value['router'])) {
+                unset($value['router']['id'], $value['router']['created_at'], $value['router']['updated_at']);
+                if (!empty($value['router']['item']) && is_array($value['router']['item'])) {
+                    unset($value['router']['item']['id'], $value['router']['item']['created_at'], $value['router']['item']['updated_at']);
                 }
             }
         }
-
+        unset($value);
         $lists = ArrayHelper::itemsMerge($list, 0, 'id', 'parent', 'child', 3);
         //    去除id
         $menu = ArrayHelper::removeByKey($lists);
