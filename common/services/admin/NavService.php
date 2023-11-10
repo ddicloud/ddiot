@@ -54,7 +54,7 @@ class NavService extends BaseService
 
     public function getMenu($location = '', $is_addons = false): array|bool|string
     {
-        $allMenu = $this->allMenu($is_addons);
+        $allMenu = $this->allMenu();
 
         $types = array_column($allMenu, 'type', 'type');
 
@@ -81,7 +81,7 @@ class NavService extends BaseService
         }
     }
 
-    public function allMenu($is_addons)
+    public function allMenu()
     {
         $module_names = AddonsUser::find()->where([
             'user_id' => Yii::$app->user->id,
@@ -176,12 +176,11 @@ class NavService extends BaseService
 
     // 处理模块菜单
 
-    public function ModuleMenu($allMenu = [])
+    public function ModuleMenu($allMenu = []): array
     {
         $top = [];
-        $allMenus = [];
         $leftMenu = [];
-        $allMenus = ArrayHelper::removeByValue($allMenu, '', 'id');
+        $allMenus = ArrayHelper::removeByValue($allMenu, '');
         $num = 0;
         foreach (array_values($allMenus) as $key => $value) {
             $value['mark'] = $value['type'];

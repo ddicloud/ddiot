@@ -16,6 +16,7 @@ use Yii;
 use yii\base\Component;
 
 /**
+ *
  * 使用说明：
  * components 组件中添加如下配置.
  *

@@ -34,7 +34,7 @@ use Yii;
 
 class UserService extends BaseService
 {
-    public static function getUserMenus()
+    public static function getUserMenus(): array
     {
         // 初始化菜单
         $is_addons = Yii::$app->params['is_addons'];
@@ -42,9 +42,12 @@ class UserService extends BaseService
         $AllNav = Yii::$app->service->adminNavService->getMenu('', $is_addons);
 
         $AddonsUser = new AddonsUser();
-        $module_names = $AddonsUser->find()->where([
-            'user_id' => Yii::$app->user->identity->user_id,
-        ])->with(['addons'])->asArray()->all();
+        $module_names = [];
+        if (isset(Yii::$app->user->identity->user_id)) {
+            $module_names = $AddonsUser->find()->where([
+                'user_id' => Yii::$app->user->identity->user_id,
+            ])->with(['addons'])->asArray()->all();
+        }
 
         foreach ($module_names as $key => &$value) {
             if (empty($value['addons'])) {

@@ -13,6 +13,7 @@ use common\helpers\FileHelper;
 use console\services\InstallServer;
 use PDO as PDOAlias;
 use PDOException;
+use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidRouteException;
@@ -27,7 +28,7 @@ use yii\helpers\Console;
 class InstallController extends \yii\console\Controller
 {
     /**
-     * @throws \Throwable
+     * @throws Throwable
      * @throws InvalidRouteException
      * @throws InvalidConfigException
      * @throws \yii\console\Exception

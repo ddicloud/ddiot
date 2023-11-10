@@ -19,7 +19,7 @@ use yii\web\Response;
 
 class IndexController extends AController
 {
-    public $modelClass = ' ';
+    public $modelClass = '';
 
     public $enableCsrfValidation = false;
 
