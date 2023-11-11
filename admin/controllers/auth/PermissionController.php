@@ -23,9 +23,7 @@ use diandi\admin\components\Item;
 use diandi\admin\models\AuthItem;
 use diandi\admin\models\AuthItemModel;
 use diandi\admin\models\searchs\AuthItemSearch;
-use SebastianBergmann\Type\MixedType;
 use Yii;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 
@@ -54,7 +52,7 @@ class PermissionController extends AController
     {
         $this->module_name = Yii::$app->request->get('module_name', 'sys');
         $this->is_sys = $this->module_name == 'sys' ? 1 : 0;
-        return  parent::actions();
+        return parent::actions();
     }
 
     /**
@@ -132,16 +130,17 @@ class PermissionController extends AController
     }
 
     public function actionLevels(): array
-   {
+    {
         $DdAddons = new DdAddons();
 
         $addons = $DdAddons->find()->indexBy('identifie')->select(['title'])->asArray()->column();
         $addons['sys'] = '系统';
 
         $where = ['permission_type' => 1, 'parent_id' => 0];
-        if (Yii::$app->request->input('is_sys') !== null) {
-            $where['is_sys'] = (int)\Yii::$app->request->input('is_sys');
-        }
+        $is_sys = Yii::$app->request->input('is_sys', 0);
+
+        $where['is_sys'] = (int)$is_sys;
+
         // 权限只能是2级，不能是三级
         $parentMent = AuthItemModel::find()->where($where)->select(['id', 'id as value', 'parent_id', 'name as label', 'module_name', 'is_sys'])->asArray()->all();
 
@@ -190,10 +189,10 @@ class PermissionController extends AController
      * @return array
      */
     public function actionView($id): array
-   {
+    {
         $all = [];
-        $permission_type =\Yii::$app->request->input('permission_type');
-        $module_name =\Yii::$app->request->input('module_name');
+        $permission_type = \Yii::$app->request->input('permission_type');
+        $module_name = \Yii::$app->request->input('module_name');
 
         $model = $this->findSelfModel($id);
         $list = $model->getAdminItems($permission_type);
@@ -259,17 +258,17 @@ class PermissionController extends AController
 
         $module_name = $this->module_name;
 
-            $data = Yii::$app->getRequest()->post();
+        $data = Yii::$app->getRequest()->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '提交成功',[
-                    'module_name'=>$module_name
-                ]);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '提交成功', [
+                'module_name' => $module_name
+            ]);
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
+        }
 
     }
 
@@ -280,8 +279,8 @@ class PermissionController extends AController
      * @return array
      */
     public function actionUpdateitem(): array
-   {
-        $id =\Yii::$app->request->input('id');
+    {
+        $id = \Yii::$app->request->input('id');
         $model = $this->findSelfModel($id);
         $data = yii::$app->request->post();
 
@@ -309,13 +308,13 @@ class PermissionController extends AController
         Helper::invalidate();
         $module_name = $this->module_name;
 
-        return ResultHelper::json(200, '删除成功',['module_name'=>$module_name]);
+        return ResultHelper::json(200, '删除成功', ['module_name' => $module_name]);
     }
 
     public function actionChange(): array
-   {
-        $id =\Yii::$app->request->input('id');
-        $items =\Yii::$app->request->input('items');
+    {
+        $id = \Yii::$app->request->input('id');
+        $items = \Yii::$app->request->input('items');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数ID不能为空');
@@ -392,8 +391,8 @@ class PermissionController extends AController
             $msg = ErrorsHelper::getModelError($model);
             return ResultHelper::json(500, $msg);
 
-        }else{
-            return ResultHelper::json(200, '操作成功',array_merge($model->getItems(), ['success' => $success]));
+        } else {
+            return ResultHelper::json(200, '操作成功', array_merge($model->getItems(), ['success' => $success]));
         }
     }
 
@@ -410,7 +409,7 @@ class PermissionController extends AController
         $model = $this->findSelfModel($id);
         $success = $model->removeChildren($items);
 
-        return ResultHelper::json(200, '移除成功',array_merge($model->getItems(), ['success' => $success]));
+        return ResultHelper::json(200, '移除成功', array_merge($model->getItems(), ['success' => $success]));
     }
 
     /**

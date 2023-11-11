@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "999b3ba6b190765761866ba8468e5895",
+    "content-hash": "a355d49eb3e38d3249744b06a77e5b4e",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4702,16 +4702,16 @@
         },
         {
             "name": "yii-diandi/yii2-addons",
-            "version": "4.1.8",
+            "version": "4.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-addons.git",
-                "reference": "41b0b704966397f12d5e5260af71897493518e4b"
+                "reference": "94027a640801e1f3f5562753b34f3325e15d726f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/41b0b704966397f12d5e5260af71897493518e4b",
-                "reference": "41b0b704966397f12d5e5260af71897493518e4b",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-addons/zipball/94027a640801e1f3f5562753b34f3325e15d726f",
+                "reference": "94027a640801e1f3f5562753b34f3325e15d726f",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4751,22 +4751,22 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-addons/issues",
-                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.1.8"
+                "source": "https://github.com/yii-diandi/yii2-addons/tree/4.1.9"
             },
-            "time": "2023-11-01T17:24:45+00:00"
+            "time": "2023-11-11T04:58:18+00:00"
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.1.7",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "d4f4a8196344c4a6a4d14eab23f3d079c7661546"
+                "reference": "8ef5193530091ec62d6b9ebfe1a034a329e5b862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/d4f4a8196344c4a6a4d14eab23f3d079c7661546",
-                "reference": "d4f4a8196344c4a6a4d14eab23f3d079c7661546",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/8ef5193530091ec62d6b9ebfe1a034a329e5b862",
+                "reference": "8ef5193530091ec62d6b9ebfe1a034a329e5b862",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4816,9 +4816,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.1.7"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.2.1"
             },
-            "time": "2023-11-01T17:26:14+00:00"
+            "time": "2023-11-11T04:56:53+00:00"
         },
         {
             "name": "yii-diandi/yii2-easywechat",

@@ -89,7 +89,8 @@ class RouteController extends AController
         $model = new AuthRoute();
 
             $data = Yii::$app->request->post();
-            $data['is_sys'] =\Yii::$app->request->input('module_name') == 'sys' || empty(Yii::$app->request->input('module_name')) ? 1 : 0;
+            $module_name =  Yii::$app->request->input('module_name','sys');
+            $data['is_sys'] = $module_name == 'sys' ? 1 : 0;
             if ($model->load($data, '') && $model->save()) {
                 // 给item同步添加数据
                 $AcmodelsAuthItem = new AuthItem();

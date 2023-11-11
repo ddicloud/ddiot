@@ -28,7 +28,7 @@
     "richardfan1126/yii2-js-register": "~0.0.1",
     "ramsey/uuid": "^3.9",
     "overtrue/easy-sms": "^1.1",
-    "yii-diandi/yii2-admin": "^3.1",
+    "yii-diandi/yii2-admin": "^3.2",
     "yii-diandi/yii2-region": "^1.0",
     "2amigos/qrcode-library": "^2.0",
     "hashids/hashids": "^4.0",
