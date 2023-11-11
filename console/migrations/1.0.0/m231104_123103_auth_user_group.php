@@ -11,7 +11,7 @@ class m231104_123103_auth_user_group extends Migration
         
         /* 创建表 */
         $this->createTable('{{%auth_user_group}}', [
-            'id' => "int(11) unsigned zerofill NOT NULL AUTO_INCREMENT",
+            'id' => "int(11) NOT NULL AUTO_INCREMENT",
             'item_id' => "int(11) NULL",
             'name' => "varchar(64) NOT NULL COMMENT '用户组名称'",
             'module_name' => "varchar(255) NULL",
@@ -32,8 +32,8 @@ class m231104_123103_auth_user_group extends Migration
         
         
         /* 表数据 */
-        $this->insert('{{%auth_user_group}}',['id'=>'00000000551','item_id'=>'59','name'=>'基础权限组','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'is_default'=>'0','created_at'=>'1588976797','updated_at'=>'1588837647']);
-        $this->insert('{{%auth_user_group}}',['id'=>'00000000552','item_id'=>'60','name'=>'总管理员','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'is_default'=>'0','created_at'=>'1588976797','updated_at'=>'1621841609']);
+        $this->insert('{{%auth_user_group}}',['id'=>'551','item_id'=>'59','name'=>'基础权限组','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'is_default'=>'0','created_at'=>'1588976797','updated_at'=>'1588837647']);
+        $this->insert('{{%auth_user_group}}',['id'=>'552','item_id'=>'60','name'=>'总管理员','module_name'=>'sys','type'=>'0','is_sys'=>'1','description'=>'','bloc_id'=>NULL,'store_id'=>NULL,'is_default'=>'0','created_at'=>'1588976797','updated_at'=>'1621841609']);
         
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');

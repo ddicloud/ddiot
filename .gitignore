@@ -69,3 +69,6 @@ addons/*
 # 资源目录
 node_modules
 pro-admin/node_modules
+
+# 安装缓存
+console/data
