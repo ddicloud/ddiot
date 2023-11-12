@@ -184,15 +184,15 @@ EOD;
         $files[] = new CodeFile(
             $modulePath.'/config/api.php',
             $this->render('config/api.php')
-        );
-        $files[] = new CodeFile(
-            $modulePath.'/config/admin.php',
-            $this->render('config/admin.php')
-        );
+        );$files[] = new CodeFile(
+        $modulePath.'/config/admin.php',
+        $this->render('config/admin.php')
+    );
         $files[] = new CodeFile(
             $modulePath.'/config/menu.php',
             $this->render('config/menu.php')
         );
+
         $files[] = new CodeFile(
             $modulePath.'/config/console.php',
             $this->render('config/console.php')

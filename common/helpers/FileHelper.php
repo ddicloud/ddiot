@@ -24,8 +24,9 @@ class FileHelper extends BaseFileHelper
      * 检测目录并循环创建目录
      *
      * @param $catalogue
+     * @return true
      */
-    public static function mkdirs($catalogue)
+    public static function mkdirs($catalogue): bool
     {
         if (!file_exists($catalogue)) {
             self::mkdirs(dirname($catalogue));

@@ -46,31 +46,31 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\controllers\BaseController;
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use common\helpers\ErrorsHelper;
-
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
+use Throwable;
 
 /**
 * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
 */
 class <?= $controllerClass ?> extends AController
 {
-public $modelSearchName = "<?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>";
+public string $modelSearchName = "<?= $searchModelAlias ?? $searchModelClass ?>";
 
 public $modelClass = '';
 
 
 /**
 * Lists all <?= $modelClass ?> models.
-* @return mixed
+* @return array
 */
-public function actionIndex()
+public function actionIndex(): array
 {
 <?php if (!empty($generator->searchModelClass)) : ?>
-    $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
+    $searchModel = new <?= $searchModelAlias ?? $searchModelClass ?>();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     return ResultHelper::json(200, '获取成功',[
@@ -94,89 +94,76 @@ public function actionIndex()
 /**
 * Displays a single <?= $modelClass ?> model.
 * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
-* @return mixed
+* @return array
 * @throws NotFoundHttpException if the model cannot be found
 */
-public function actionView(<?= $actionParams ?>)
+public function actionView(<?= $actionParams ?>): array
 {
+    $view = $this->findModel(<?= $actionParams ?>);
 
-$view = $this->findModel(<?= $actionParams ?>);
-
-return ResultHelper::json(200, '获取成功', $view);
-
+    return ResultHelper::json(200, '获取成功', $view->toArray());
 }
 
 /**
 * Creates a new <?= $modelClass ?> model.
 * If creation is successful, the browser will be redirected to the 'view' page.
-* @return mixed
+* @return array
 */
-public function actionCreate()
+public function actionCreate(): array
 {
-$model = new <?= $modelClass ?>();
-
-if (Yii::$app->request->isPost) {
-$data = Yii::$app->request->post();
-
-if ($model->load($data, '') && $model->save()) {
-
-return ResultHelper::json(200, '创建成功', $model);
-} else {
-$msg = ErrorsHelper::getModelError($model);
-return ResultHelper::json(400, $msg);
-}
-}
-
+    $model = new <?= $modelClass ?>();
+    $data = Yii::$app->request->post();
+    if ($model->load($data, '') && $model->save()) {
+        return ResultHelper::json(200, '创建成功', $model->toArray());
+    } else {
+        $msg = ErrorsHelper::getModelError($model);
+        return ResultHelper::json(400, $msg);
+    }
 }
 
 /**
 * Updates an existing <?= $modelClass ?> model.
 * If update is successful, the browser will be redirected to the 'view' page.
 * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
-* @return mixed
+* @return array
 * @throws NotFoundHttpException if the model cannot be found
 */
-public function actionUpdate(<?= $actionParams ?>)
+public function actionUpdate(<?= $actionParams ?>): array
 {
-$model = $this->findModel(<?= $actionParams ?>);
-
-
-if (Yii::$app->request->isPut) {
-$data = Yii::$app->request->post();
-
-if ($model->load($data, '') && $model->save()) {
-
-return ResultHelper::json(200, '编辑成功', $model);
-} else {
-$msg = ErrorsHelper::getModelError($model);
-return ResultHelper::json(400, $msg);
-}
-}
-
+    $model = $this->findModel(<?= $actionParams ?>);
+    $data = Yii::$app->request->post();
+    if ($model->load($data, '') && $model->save()) {
+        return ResultHelper::json(200, '编辑成功', $model->toArray());
+    } else {
+        $msg = ErrorsHelper::getModelError($model);
+        return ResultHelper::json(400, $msg);
+    }
 }
 
 /**
-* Deletes an existing <?= $modelClass ?> model.
+* Deletes an existing WeihExhibitionServiceProvider model.
 * If deletion is successful, the browser will be redirected to the 'index' page.
-* <?= implode("\n     * ", $actionParamComments) . "\n" ?>
-* @return mixed
+* @param integer $id
+* @return array
 * @throws NotFoundHttpException if the model cannot be found
+* @throws Throwable
+* @throws StaleObjectException
 */
-public function actionDelete(<?= $actionParams ?>)
+public function actionDelete(<?= $actionParams ?>): array
 {
-$this->findModel(<?= $actionParams ?>)->delete();
+    $this->findModel(<?= $actionParams ?>)->delete();
 
-return ResultHelper::json(200, '删除成功');
+    return ResultHelper::json(200, '删除成功');
 }
 
 /**
 * Finds the <?= $modelClass ?> model based on its primary key value.
 * If the model is not found, a 404 HTTP exception will be thrown.
 * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
-* @return <?= $modelClass ?> the loaded model
+* @return array|ActiveRecord the loaded model
 * @throws NotFoundHttpException if the model cannot be found
 */
-protected function findModel(<?= $actionParams ?>)
+protected function findModel(<?= $actionParams ?>): array|ActiveRecord
 {
 <?php
 if (count($pks) === 1) {

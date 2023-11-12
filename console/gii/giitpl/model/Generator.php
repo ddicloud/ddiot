@@ -948,7 +948,7 @@ class Generator extends \yii\gii\Generator
      *
      * @param string $attribute Namespace variable.
      */
-    public function validateNamespace($attribute)
+    public function validateNamespace(string $attribute): void
     {
         $value = $this->$attribute;
         $value = ltrim($value, '\\');
