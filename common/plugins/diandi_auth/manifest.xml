@@ -1,0 +1,12 @@
+﻿<manifest xmlns="https://www.dandicloud.com/" versionCode="1.0">
+    <application>
+        <title><![CDATA[店滴云]]></title>
+        <identifie><![CDATA[diandi_auth]]></identifie>
+        <version><![CDATA[]]></version>
+        <type><![CDATA[]]></type>
+        <ability><![CDATA[]]></ability>
+        <description><![CDATA[]]></description>
+        <author><![CDATA[]]></author>
+        <url><![CDATA[]]></url>
+    </application>
+</manifest>
