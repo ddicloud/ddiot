@@ -130,7 +130,7 @@ EOD;
      */
     public function requiredTemplates()
     {
-        return ['module.php', 'controller.php', 'api.php', 'frontend.php', 'manifest.xml'];
+        return ['module.php', 'controller.php', 'api.php', 'manifest.xml'];
     }
 
     /**
@@ -267,10 +267,6 @@ EOD;
         return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')).'\assets';
     }
 
-    public function getFrontendPath()
-    {
-        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')).'\frontend';
-    }
 
     public function getApiCachekey()
     {
