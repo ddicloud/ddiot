@@ -207,12 +207,12 @@ class Generator extends \yii\gii\Generator
             $viewPath . '/api.js',
             $this->render('vue/api.js')
         );
-        $initParams = $this->createInitParams();
+
+//        $initParams = $this->createInitParams();
 
         $initContent = $this->render('vue/init.js');
 
         //获取字段
-        var_dump($this->modelClass);
         $searchModelClass = explode('\\',$this->searchModelClass);
 
         $attributeLabels = (new $this->modelClass)->attributeLabels();
