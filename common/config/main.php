@@ -34,7 +34,7 @@ return [
     'modules' => [
         'settings' => [
             'class' => 'yii2mod\settings\Module',
-        ],
+        ]
     ],
     'bootstrap' => [
         // 初始化模块依赖的扩展

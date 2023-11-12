@@ -13,10 +13,8 @@ namespace common\plugins\diandi_website\admin;
 use Yii;
 use common\plugins\diandi_website\models\WebsiteAd;
 use common\plugins\diandi_website\models\searchs\WebsiteAd as WebsiteAdSearch;
-use yii\web\Controller;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\controllers\BaseController;
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
 use common\helpers\ErrorsHelper;
@@ -36,7 +34,7 @@ class AdController extends AController
      * Lists all WebsiteAd models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsiteAdSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -53,7 +51,7 @@ class AdController extends AController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -70,7 +68,7 @@ class AdController extends AController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsiteAd();
 
@@ -79,7 +77,7 @@ class AdController extends AController
 
             if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
+                return ResultHelper::json(200, '创建成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 return ResultHelper::json(400, $msg);
@@ -94,7 +92,7 @@ class AdController extends AController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
@@ -104,7 +102,7 @@ class AdController extends AController
 
             if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
                 return ResultHelper::json(400, $msg);
@@ -119,7 +117,7 @@ class AdController extends AController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -130,10 +128,10 @@ class AdController extends AController
      * Finds the WebsiteAd model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return WebsiteAd the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsiteAd::findOne($id)) !== null) {
             return $model;

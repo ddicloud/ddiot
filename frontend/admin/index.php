@@ -30,6 +30,7 @@ $config = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/../../admin/config/main.php',
     require __DIR__ . '/../../admin/config/main-local.php'
 );
+
 /**
  * 打印.
  */

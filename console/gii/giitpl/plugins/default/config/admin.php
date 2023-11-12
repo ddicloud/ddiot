@@ -9,7 +9,7 @@
 echo "<?php\n";
 ?>
 
-return [
+ return [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => ['diandi_task/task'],//模块名称/控制器方法

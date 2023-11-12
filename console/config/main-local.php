@@ -51,6 +51,12 @@ if (YII_ENV) {
                     'default' => '@console/gii/giitpl/addons/default',
                 ],
             ],
+            'plugins' => [
+                'class' => 'addonstpl\plugins\Generator',
+                'templates' => [
+                    'default' => '@console/gii/giitpl/plugins/default',
+                ],
+            ],
             'adminapi' => [
                 'class' => 'addonstpl\adminapi\Generator',
                 'templates' => [

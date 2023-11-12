@@ -26,7 +26,7 @@ public $controllerNamespace = "<?= $generator->getControllerNamespace() . '\\adm
 /**
 * {@inheritdoc}
 */
-public function init()
+public function init(): void
 {
 parent::init();
 }

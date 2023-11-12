@@ -7,7 +7,7 @@
  * @Last Modified time: 2023-01-05 10:58:40
  */
 
-namespace addonstpl\addons;
+namespace addonstpl\plugins;
 
 use common\helpers\FileHelper;
 use Yii;
@@ -249,7 +249,7 @@ EOD;
      */
     public function getModulePath()
     {
-        $this->moduleClass = 'addons\\'.$this->moduleID.'\\site';
+        $this->moduleClass = 'common\plugins\\'.$this->moduleID.'\\site';
 
         return Yii::getAlias('@'.str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
     }

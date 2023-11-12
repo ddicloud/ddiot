@@ -11,12 +11,12 @@ echo "<?php\n";
 
 namespace <?= $generator->getControllerNamespace(); ?>;
 
-use common\components\addons\AddonsModule;
+use common\components\addons\PluginsModule;
 
 /**
 * diandi_dingzuo module definition class.
 */
-class api extends AddonsModule
+class api extends PluginsModule
 {
 /**
 * {@inheritdoc}
