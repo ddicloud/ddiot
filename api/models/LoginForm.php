@@ -10,6 +10,7 @@ namespace api\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -103,9 +104,9 @@ class LoginForm extends Model
     /**
      * Finds user by [[username]].
      *
-     * @return array|\yii\db\ActiveRecord
+     * @return array|ActiveRecord|null
      */
-    protected function getUser(): array|\yii\db\ActiveRecord
+    protected function getUser(): array|ActiveRecord|null
     {
         if ($this->_user === null) {
             $this->_user = DdMember::findByUsername($this->username);
