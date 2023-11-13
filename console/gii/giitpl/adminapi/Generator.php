@@ -221,7 +221,7 @@ class Generator extends \yii\gii\Generator
         $form = [
             'blocs'=>[
                 'type'=> 'cascader-store',
-                'label' => '选择楼栋'
+                'label' => '选择公司'
             ]
         ];
 
