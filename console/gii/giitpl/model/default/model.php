@@ -50,7 +50,7 @@ use StoreTrait;
 /**
 * {@inheritdoc}
 */
-public static function tableName()
+public static function tableName(): string
 {
 return '<?= $generator->generateTableName($tableName) ?>';
 }
@@ -68,31 +68,31 @@ return '<?= $generator->generateTableName($tableName) ?>';
 /**
 * {@inheritdoc}
 */
-public function rules()
+public function rules(): array
 {
-return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
+    return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
 }
 
 /**
 * 行为.
 */
-public function behaviors()
+public function behaviors(): array
 {
-/*自动添加创建和修改时间*/
-return [
-[
-'class' => \common\behaviors\SaveBehavior::className(),
-'updatedAttribute' => 'update_time',
-'createdAttribute' => 'create_time',
-'time_type' => 'datetime',
-],
-];
+    /*自动添加创建和修改时间*/
+    return [
+        [
+            'class' => \common\behaviors\SaveBehavior::className(),
+            'updatedAttribute' => 'update_time',
+            'createdAttribute' => 'create_time',
+            'time_type' => 'datetime',
+        ],
+    ];
 }
 
 /**
 * {@inheritdoc}
 */
-public function attributeLabels()
+public function attributeLabels(): array
 {
 return [
 <?php foreach ($labels as $name => $label) : ?>
