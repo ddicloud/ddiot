@@ -236,9 +236,9 @@ class DdMember extends ActiveRecord
      *
      * @param string $username
      *
-     * @return array|ActiveRecord
+     * @return array|ActiveRecord|null
      */
-    public static function findByUsername(string $username): array|ActiveRecord
+    public static function findByUsername(string $username): array|ActiveRecord|null
     {
         return static::find()
             ->where(['and', ['or', " username = '$username'", "mobile='$username'"], 'status =' . self::STATUS_ACTIVE])
