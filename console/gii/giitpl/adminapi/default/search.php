@@ -34,7 +34,7 @@ use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
 use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
 use yii\data\Pagination;
-
+use yii\data\ActiveDataProvider;
 
 /**
  * <?= $searchModelClass ?> represents the model behind the search form of `<?= $generator->modelClass ?>`.
@@ -45,7 +45,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             <?= implode(",\n            ", $rules) ?>,
@@ -55,21 +55,20 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-
-     */
-    public function search($params)
+    * Creates data provider instance with search query applied
+    *
+    * @param array $params
+    *
+    * @return ArrayDataProvider|bool|ActiveDataProvider
+    */
+    public function search(array $params): ArrayDataProvider|bool|ActiveDataProvider
    {
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
 
@@ -107,11 +106,11 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         //} 
             
 
-        $provider = new ArrayDataProvider([
+        return new ArrayDataProvider([
             'key'=>'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ? $count : 0,
-            'total'=> isset($count) ? $count : 0,
+            'totalCount' => isset($count) ?? 0,
+            'total'=> isset($count) ?? 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -124,8 +123,6 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
                 'pageSize' => $pageSize,
             ]
         ]);
-        
-        return $provider;
         
     }
 }
