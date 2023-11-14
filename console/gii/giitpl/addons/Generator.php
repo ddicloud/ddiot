@@ -41,7 +41,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName()
     {
-        return '扩展模块生成';
+        return '插件生成';
     }
 
     /**
@@ -49,7 +49,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getDescription()
     {
-        return '生成自己的扩展模块';
+        return '生成自己的扩展模块（目录：/addons）';
     }
 
     /**

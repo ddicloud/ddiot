@@ -78,7 +78,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName(): string
     {
-        return '后台管理接口生成';
+        return '后台管理接口/vue页面生成';
     }
 
     /**

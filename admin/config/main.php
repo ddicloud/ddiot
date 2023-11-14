@@ -43,6 +43,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-admin',
+            'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUT',
         ],
         'user' => [
             'class' => 'yii\web\User',

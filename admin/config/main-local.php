@@ -6,14 +6,7 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2023-03-26 11:33:25
  */
-$config = [
-    'components' => [
-        'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUT',
-        ],
-    ],
-];
+$config = [];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
