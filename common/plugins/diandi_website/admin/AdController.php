@@ -10,10 +10,12 @@
 
 namespace common\plugins\diandi_website\admin;
 
+use Throwable;
 use Yii;
 use common\plugins\diandi_website\models\WebsiteAd;
 use common\plugins\diandi_website\models\searchs\WebsiteAd as WebsiteAdSearch;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use admin\controllers\AController;
 use common\helpers\ResultHelper;
@@ -48,8 +50,7 @@ class AdController extends AController
     /**
      * Displays a single WebsiteAd model.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array
      */
     public function actionView($id): array
     {
@@ -66,38 +67,36 @@ class AdController extends AController
     /**
      * Creates a new WebsiteAd model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
     public function actionCreate(): array
     {
         $model = new WebsiteAd();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        $data = Yii::$app->request->post();
 
-                return ResultHelper::json(200, '创建成功', $model->toArray());
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+        if ($model->load($data, '') && $model->save()) {
+
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
+
     }
 
     /**
      * Updates an existing WebsiteAd model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-
-        if (Yii::$app->request->isPut) {
             $data = Yii::$app->request->post();
 
             if ($model->load($data, '') && $model->save()) {
@@ -107,15 +106,17 @@ class AdController extends AController
                 $msg = ErrorsHelper::getModelError($model);
                 return ResultHelper::json(400, $msg);
             }
-        }
+
     }
 
     /**
      * Deletes an existing WebsiteAd model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id): array
     {

@@ -9,13 +9,14 @@
 
 namespace common\plugins\diandi_website\api;
 
+use addons\diandi_website\components\ResultTrait;
 use common\plugins\diandi_website\services\SysService;
 use api\controllers\AController;
 use common\helpers\ResultHelper;
 
 class SysController extends AController
 {
-    use \addons\diandi_website\components\ResultTrait;
+    use ResultTrait;
 
     protected array $authOptional = ['*'];
 

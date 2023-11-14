@@ -10,17 +10,17 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use Yii;
+use admin\controllers\AController;
+use backend\controllers\BaseController;
+use common\helpers\ArrayHelper;
+use common\helpers\ErrorsHelper;
+use common\helpers\ResultHelper;
 use common\plugins\diandi_website\models\Nav;
 use common\plugins\diandi_website\models\searchs\Nav as NavSearch;
-use yii\web\Controller;
+use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\controllers\BaseController;
-use admin\controllers\AController;
-use common\helpers\ArrayHelper;
-use common\helpers\ResultHelper;
-use common\helpers\ErrorsHelper;
 
 
 /**
@@ -35,9 +35,9 @@ class NavController extends AController
 
     /**
      * Lists all Nav models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new NavSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -49,7 +49,7 @@ class NavController extends AController
             $value['label'] = $value['name'];
         }
 
-        $list =  ArrayHelper::itemsMerge($parentMent, 0, "id", 'parent', 'children');
+        $list = ArrayHelper::itemsMerge($parentMent, 0, "id", 'parent', 'children');
 
 
         return ResultHelper::json(200, '获取成功', [
@@ -62,40 +62,38 @@ class NavController extends AController
     /**
      * Displays a single Nav model.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
-         try {
+        try {
             $view = $this->findModel($id)->toArray();
+            return ResultHelper::json(200, '获取成功', $view);
+
         } catch (NotFoundHttpException $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
 
-        return ResultHelper::json(200, '获取成功', $view);
     }
 
     /**
      * Creates a new Nav model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new Nav();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -103,24 +101,22 @@ class NavController extends AController
      * Updates an existing Nav model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -128,24 +124,32 @@ class NavController extends AController
      * Deletes an existing Nav model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
      * Finds the Nav model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Nav the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = Nav::findOne($id)) !== null) {
             return $model;

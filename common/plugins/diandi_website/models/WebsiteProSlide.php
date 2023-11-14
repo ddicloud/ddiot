@@ -28,7 +28,7 @@ class WebsiteProSlide extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function  tableName(): string
     {
         return '{{%diandi_website_pro_slide}}';
     }
@@ -48,7 +48,7 @@ class WebsiteProSlide extends \yii\db\ActiveRecord
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -64,7 +64,7 @@ class WebsiteProSlide extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',

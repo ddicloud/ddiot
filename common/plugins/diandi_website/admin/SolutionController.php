@@ -10,9 +10,12 @@
 
 namespace common\plugins\diandi_website\admin;
 
+use Throwable;
 use Yii;
 use common\plugins\diandi_website\models\Solution;
 use common\plugins\diandi_website\models\searchs\SolutionSearch;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +48,7 @@ class SolutionController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new SolutionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -69,7 +72,7 @@ class SolutionController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -93,49 +96,47 @@ class SolutionController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="cate_id",
-     *     type="integer",
-     *     description="分类ID",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="cate_id",
+     *     type="integer",
+     *     description="分类ID",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="icon",
-     *     type="string",
-     *     description="ICON",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="icon",
+     *     type="string",
+     *     description="ICON",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new Solution();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -151,50 +152,49 @@ class SolutionController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="cate_id",
-     *     type="integer",
-     *     description="分类ID",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="cate_id",
+     *     type="integer",
+     *     description="分类ID",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="icon",
-     *     type="string",
-     *     description="ICON",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="icon",
+     *     type="string",
+     *     description="ICON",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -211,21 +211,28 @@ class SolutionController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
 
-        return ResultHelper::json(200, '删除成功');
+        }
+
     }
 
     /**
      * Finds the Solution model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Solution the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = Solution::findOne($id)) !== null) {
             return $model;

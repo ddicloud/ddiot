@@ -15,6 +15,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -39,7 +41,7 @@ class ProCoreController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsiteProCoreSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -63,7 +65,7 @@ class ProCoreController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -86,63 +88,61 @@ class ProCoreController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="logo",
-     *     type="string",
-     *     description="logo",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="logo",
+     *     type="string",
+     *     description="logo",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="describe",
-     *     type="string",
-     *     description="描述",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="describe",
+     *     type="string",
+     *     description="描述",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="content",
-     *     type="string",
-     *     description="内容",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="content",
+     *     type="string",
+     *     description="内容",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="integer",
-     *     description="解决方案ID",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="solution_id",
+     *     type="integer",
+     *     description="解决方案ID",
+     *     required=true,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsiteProCore();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -158,64 +158,62 @@ class ProCoreController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="logo",
-     *     type="string",
-     *     description="logo",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="logo",
+     *     type="string",
+     *     description="logo",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="describe",
-     *     type="string",
-     *     description="描述",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="describe",
+     *     type="string",
+     *     description="描述",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="content",
-     *     type="string",
-     *     description="内容",
-     *     required=false,
-     *   ),
-     
+     *     in="query",
+     *     name="content",
+     *     type="string",
+     *     description="内容",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="integer",
-     *     description="解决方案ID",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="solution_id",
+     *     type="integer",
+     *     description="解决方案ID",
+     *     required=true,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -232,11 +230,17 @@ class ProCoreController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
-        return ResultHelper::json(200, '删除成功');
     }
 
     /**
@@ -245,11 +249,11 @@ class ProCoreController extends AController
      *
      * @param int $id
      *
-     * @return WebsiteProCore the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsiteProCore::findOne($id)) !== null) {
             return $model;

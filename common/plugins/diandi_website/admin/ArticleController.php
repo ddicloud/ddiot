@@ -17,6 +17,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -31,9 +33,9 @@ class ArticleController extends AController
     /**
      * Lists all WebsiteArticle models.
      *
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsiteArticleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -49,11 +51,10 @@ class ArticleController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -64,8 +65,8 @@ class ArticleController extends AController
         return ResultHelper::json(200, '获取成功', $view);
     }
 
-    public function actionCate()
-   {
+    public function actionCate(): array
+    {
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $where['bloc_id'] =\Yii::$app->request->input('bloc_id',0);
         $where['pcate'] =\Yii::$app->request->input('pcate');
@@ -85,28 +86,26 @@ class ArticleController extends AController
      *         description = "添加",
      *     ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_top",
-     *     type="integer",
-     *     description="是否置顶（-1：否，1：是）",
-     *     required=true,
-     *   )
+     *     in="formData",
+     *     name="is_top",
+     *     type="integer",
+     *     description="是否置顶（-1：否，1：是）",
+     *     required=true,
+     *   )
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsiteArticle();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -119,28 +118,27 @@ class ArticleController extends AController
      *         description = "添加",
      *     ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_top",
-     *     type="integer",
-     *     description="是否置顶（-1：否，1：是）",
-     *     required=true,
-     *   )
+     *     in="formData",
+     *     name="is_top",
+     *     type="integer",
+     *     description="是否置顶（-1：否，1：是）",
+     *     required=true,
+     *   )
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -150,11 +148,13 @@ class ArticleController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -167,11 +167,11 @@ class ArticleController extends AController
      *
      * @param int $id
      *
-     * @return WebsiteArticle the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsiteArticle::findOne($id)) !== null) {
             return $model;
@@ -180,8 +180,8 @@ class ArticleController extends AController
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionPageList()
-   {
+    public function actionPageList(): array
+    {
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $where['bloc_id'] =\Yii::$app->request->input('bloc_id',0);
 

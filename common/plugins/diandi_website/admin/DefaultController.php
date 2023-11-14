@@ -26,13 +26,15 @@ class DefaultController extends AController
 
     /**
      * Renders the index view for the module
-     * @return string
+     * @return array
      */
-    public function actionIndex()
-   {
+    public function actionIndex(): array
+    {
 
         $info = AddonsService::getAddonsInfo("diandi_website");
 
-        return ResultHelper::json(200, '获取成功', []);
+        return ResultHelper::json(200, '获取成功', [
+            'info' => $info
+        ]);
     }
 }

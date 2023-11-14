@@ -10,9 +10,12 @@
 
 namespace common\plugins\diandi_website\admin;
 
+use Throwable;
 use Yii;
 use common\plugins\diandi_website\models\SysFunCate;
 use common\plugins\diandi_website\models\searchs\SysFunCateSearch;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +48,7 @@ class SysfuncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new SysFunCateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -69,7 +72,7 @@ class SysfuncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -92,55 +95,53 @@ class SysfuncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="名称",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="名称",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="string",
-     *     description="解決方案ID(只在需要时填写)",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="solution_id",
+     *     type="string",
+     *     description="解決方案ID(只在需要时填写)",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="icon",
-     *     type="string",
-     *     description="ICON",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="icon",
+     *     type="string",
+     *     description="ICON",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_website",
-     *     type="integer",
-     *     description="是否是官网（-1：不是， 1：是）",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="is_website",
+     *     type="integer",
+     *     description="是否是官网（-1：不是， 1：是）",
+     *     required=true,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new SysFunCate();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            if ($model->load($data, '') && $model->save()) {
+        $data = Yii::$app->request->post();
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -156,57 +157,56 @@ class SysfuncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="string",
-     *     description="解決方案ID",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="solution_id",
+     *     type="string",
+     *     description="解決方案ID",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="名称",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="名称",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="icon",
-     *     type="string",
-     *     description="ICON",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="icon",
+     *     type="string",
+     *     description="ICON",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_website",
-     *     type="integer",
-     *     description="是否是官网（-1：不是， 1：是）",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="is_website",
+     *     type="integer",
+     *     description="是否是官网（-1：不是， 1：是）",
+     *     required=false,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -223,21 +223,29 @@ class SysfuncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
      * Finds the SysFunCate model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return SysFunCate the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = SysFunCate::findOne($id)) !== null) {
             return $model;

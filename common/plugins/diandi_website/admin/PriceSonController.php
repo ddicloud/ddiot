@@ -5,6 +5,8 @@ namespace common\plugins\diandi_website\admin;
 use Yii;
 use common\plugins\diandi_website\models\WebsitePriceSon;
 use common\plugins\diandi_website\models\searchs\WebsitePriceSon as WebsitePriceSonSearch;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,9 +28,9 @@ class PriceSonController extends AController
 
     /**
      * Lists all WebsitePriceSon models.
-     * @return mixed
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsitePriceSonSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -42,10 +44,9 @@ class PriceSonController extends AController
     /**
      * Displays a single WebsitePriceSon model.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return array
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -61,50 +62,45 @@ class PriceSonController extends AController
     /**
      * Creates a new WebsitePriceSon model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return array
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsitePriceSon();
-        
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            
-            if ($model->load($data, '') && $model->save()) {
-               
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+
+
+        $data = Yii::$app->request->post();
+
+        if ($model->load($data, '') && $model->save()) {
+
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
-        
     }
 
     /**
      * Updates an existing WebsitePriceSon model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-               
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+        $data = Yii::$app->request->post();
+
+        if ($model->load($data, '') && $model->save()) {
+
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
-        
     }
 
     /**
@@ -113,8 +109,10 @@ class PriceSonController extends AController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -125,10 +123,10 @@ class PriceSonController extends AController
      * Finds the WebsitePriceSon model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return WebsitePriceSon the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|\yii\db\ActiveRecord
     {
         if (($model = WebsitePriceSon::findOne($id)) !== null) {
             return $model;

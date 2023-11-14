@@ -10,9 +10,12 @@
 
 namespace common\plugins\diandi_website\admin;
 
+use Throwable;
 use Yii;
 use common\plugins\diandi_website\models\SolutionCate;
 use common\plugins\diandi_website\models\searchs\SolutionCateSearch;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +48,7 @@ class SolutioncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new SolutionCateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -69,7 +72,7 @@ class SolutioncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -93,35 +96,33 @@ class SolutioncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="名称",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="名称",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new SolutionCate();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -137,36 +138,35 @@ class SolutioncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="名称",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="名称",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -183,21 +183,27 @@ class SolutioncateController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
-        return ResultHelper::json(200, '删除成功');
     }
 
     /**
      * Finds the SolutionCate model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return SolutionCate the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = SolutionCate::findOne($id)) !== null) {
             return $model;

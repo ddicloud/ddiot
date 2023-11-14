@@ -14,6 +14,8 @@ use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -38,7 +40,7 @@ class PageConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsitePageConfigSearch();
 
@@ -63,7 +65,7 @@ class PageConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
          try {
             $view = $this->findModel($id)->toArray();
@@ -86,41 +88,39 @@ class PageConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=true,
+     *   ),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="template",
-     *     type="string",
-     *     description="模板",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="template",
+     *     type="string",
+     *     description="模板",
+     *     required=true,
+     *   ),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="type",
-     *     type="integer",
-     *     description="分类",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="type",
+     *     type="integer",
+     *     description="分类",
+     *     required=true,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsitePageConfig();
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -136,42 +136,41 @@ class PageConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=true,
+     *   ),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="template",
-     *     type="string",
-     *     description="模板",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="template",
+     *     type="string",
+     *     description="模板",
+     *     required=true,
+     *   ),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="type",
-     *     type="integer",
-     *     description="分类",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="type",
+     *     type="integer",
+     *     description="分类",
+     *     required=true,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -188,11 +187,16 @@ class PageConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
-
-        return ResultHelper::json(200, '删除成功');
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
     }
 
     /**
@@ -201,11 +205,11 @@ class PageConfigController extends AController
      *
      * @param int $id
      *
-     * @return WebsitePageConfig the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsitePageConfig::findOne($id)) !== null) {
             return $model;

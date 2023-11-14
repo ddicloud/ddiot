@@ -9,6 +9,7 @@
 
 namespace common\plugins\diandi_website\components;
 
+use common\helpers\ImageHelper;
 use yii\data\Pagination;
 use common\helpers\ResultHelper;
 
@@ -19,14 +20,14 @@ trait ResultServicesTrait
      * @var int
      * @date 2022-06-23
      */
-    public static $storeInvalid = 40001;
+    public static int $storeInvalid = 40001;
 
     /**
      * 需要格式化的图片地址
      * @var array
      * @date 2022-06-23
      */
-    public static $images = ['image', 'b_image', 'logo'];
+    public static array $images = ['image', 'b_image', 'logo'];
 
     /**
      * @param array $pageInfo = [
@@ -92,16 +93,14 @@ trait ResultServicesTrait
                 return self::$storeInvalid;
             }
         }
-        $query = $query->andWhere($where);
-
-        return $query;
+        return $query->andWhere($where);
     }
 
     public static function formatData(array &$item)
     {
         foreach (self::$images as $val) {
             if (isset($item[$val]) && $item[$val]) {
-                $item[$val] = \common\helpers\ImageHelper::tomedia($item[$val]);
+                $item[$val] = ImageHelper::tomedia($item[$val]);
             }
         }
     }

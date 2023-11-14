@@ -8,13 +8,15 @@
 
 namespace common\plugins\diandi_website\admin;
 
-use common\plugins\diandi_website\models\searchs\WebsiteProApp as WebsiteProAppSearch;
-use common\plugins\diandi_website\models\WebsiteProApp;
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use common\plugins\diandi_website\models\searchs\WebsiteProApp as WebsiteProAppSearch;
+use common\plugins\diandi_website\models\WebsiteProApp;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -39,7 +41,7 @@ class ProAppController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsiteProAppSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -63,16 +65,17 @@ class ProAppController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
-         try {
+        try {
             $view = $this->findModel($id)->toArray();
+            $view['logo'] = ImageHelper::tomedia($view['logo']);
+
+            return ResultHelper::json(200, '获取成功', $view);
         } catch (NotFoundHttpException $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
-        $view->logo = ImageHelper::tomedia($view->logo);
 
-        return ResultHelper::json(200, '获取成功', $view);
     }
 
     /**
@@ -87,63 +90,61 @@ class ProAppController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="logo",
-     *     type="string",
-     *     description="logo",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="logo",
+     *     type="string",
+     *     description="logo",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="立即使用链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="立即使用链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="content",
-     *     type="string",
-     *     description="内容",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="content",
+     *     type="string",
+     *     description="内容",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="tip1",
-     *     type="string",
-     *     description="标签1",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="tip1",
+     *     type="string",
+     *     description="标签1",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="tip2",
-     *     type="string",
-     *     description="标签2",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="tip2",
+     *     type="string",
+     *     description="标签2",
+     *     required=false,
+     *   ),
      * )
      */
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new WebsiteProApp();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -159,63 +160,62 @@ class ProAppController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="title",
-     *     type="string",
-     *     description="标题",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="title",
+     *     type="string",
+     *     description="标题",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="logo",
-     *     type="string",
-     *     description="logo",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="logo",
+     *     type="string",
+     *     description="logo",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="立即使用链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="立即使用链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="content",
-     *     type="string",
-     *     description="内容",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="content",
+     *     type="string",
+     *     description="内容",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="tip1",
-     *     type="string",
-     *     description="标签1",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="tip1",
+     *     type="string",
+     *     description="标签1",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="tip2",
-     *     type="string",
-     *     description="标签2",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="tip2",
+     *     type="string",
+     *     description="标签2",
+     *     required=false,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -232,11 +232,17 @@ class ProAppController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (\Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
-        return ResultHelper::json(200, '删除成功');
     }
 
     /**
@@ -245,11 +251,11 @@ class ProAppController extends AController
      *
      * @param int $id
      *
-     * @return WebsiteProApp the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsiteProApp::findOne($id)) !== null) {
             return $model;

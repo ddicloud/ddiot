@@ -10,9 +10,12 @@
 
 namespace common\plugins\diandi_website\admin;
 
+use Throwable;
 use Yii;
 use common\plugins\diandi_website\models\ProductPrice;
 use common\plugins\diandi_website\models\searchs\ProductPriceSearch;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +48,7 @@ class ProductPriceController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new ProductPriceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -69,7 +72,7 @@ class ProductPriceController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
 
          try {
@@ -93,85 +96,83 @@ class ProductPriceController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="solution_id",
-     *     type="string",
-     *     description="解決方案ID(只在需要时填写)",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="solution_id",
+     *     type="string",
+     *     description="解決方案ID(只在需要时填写)",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="产品名称",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="产品名称",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="price",
-     *     type="integer",
-     *     description="产品价格",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="price",
+     *     type="integer",
+     *     description="产品价格",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="show_price",
-     *     type="string",
-     *     description="展示价格",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="show_price",
+     *     type="string",
+     *     description="展示价格",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="drift",
-     *     type="integer",
-     *     description="价格浮动（1：不变，2：增加，3：减少）",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="drift",
+     *     type="integer",
+     *     description="价格浮动（1：不变，2：增加，3：减少）",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="fun",
-     *     type="string",
-     *     description="产品功能",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="fun",
+     *     type="string",
+     *     description="产品功能",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="back_color",
-     *     type="string",
-     *     description="背景色",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="back_color",
+     *     type="string",
+     *     description="背景色",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_recommend",
-     *     type="string",
-     *     description="是否是推荐（-1:否，1：是）",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="is_recommend",
+     *     type="string",
+     *     description="是否是推荐（-1:否，1：是）",
+     *     required=true,
+     *   ),
      * )
      */
     //[{"name":"商城所有功能","state":1},{"name":"商城功能","state":1},{"name":"分销功能","state":1},{"name":"会员等级功能","state":-1}]
-    public function actionCreate()
+    public function actionCreate(): array
     {
         $model = new ProductPrice();
 
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '创建成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '创建成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -187,85 +188,84 @@ class ProductPriceController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="ProductPrice_id",
-     *     type="string",
-     *     description="解決方案ID(只在需要时填写)",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="ProductPrice_id",
+     *     type="string",
+     *     description="解決方案ID(只在需要时填写)",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="name",
-     *     type="string",
-     *     description="产品名称",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="name",
+     *     type="string",
+     *     description="产品名称",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="des",
-     *     type="string",
-     *     description="描述",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="des",
+     *     type="string",
+     *     description="描述",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="price",
-     *     type="integer",
-     *     description="产品价格",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="price",
+     *     type="integer",
+     *     description="产品价格",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="show_price",
-     *     type="string",
-     *     description="展示价格",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="show_price",
+     *     type="string",
+     *     description="展示价格",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="drift",
-     *     type="integer",
-     *     description="价格浮动（1：不变，2：增加，3：减少）",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="drift",
+     *     type="integer",
+     *     description="价格浮动（1：不变，2：增加，3：减少）",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="fun",
-     *     type="string",
-     *     description="产品功能",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="fun",
+     *     type="string",
+     *     description="产品功能",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="back_color",
-     *     type="string",
-     *     description="产品功能",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="back_color",
+     *     type="string",
+     *     description="产品功能",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="is_recommend",
-     *     type="string",
-     *     description="是否是推荐（-1:否，1：是）",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="is_recommend",
+     *     type="string",
+     *     description="是否是推荐（-1:否，1：是）",
+     *     required=false,
+     *   ),
      * )
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
+        if ($model->load($data, '') && $model->save()) {
 
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -282,21 +282,29 @@ class ProductPriceController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            return ResultHelper::json(200, '删除成功');
 
-        return ResultHelper::json(200, '删除成功');
+        } catch (StaleObjectException|NotFoundHttpException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+
+        }
+
     }
 
     /**
      * Finds the ProductPrice model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ProductPrice the loaded model
+     * @return array|ActiveRecord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = ProductPrice::findOne($id)) !== null) {
             return $model;

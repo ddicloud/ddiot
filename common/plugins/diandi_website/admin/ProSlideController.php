@@ -87,19 +87,19 @@ class ProSlideController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="image",
-     *     type="string",
-     *     description="图片",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="image",
+     *     type="string",
+     *     description="图片",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionCreate()
@@ -131,19 +131,19 @@ class ProSlideController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="link",
-     *     type="string",
-     *     description="链接地址",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="link",
+     *     type="string",
+     *     description="链接地址",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="image",
-     *     type="string",
-     *     description="图片",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="image",
+     *     type="string",
+     *     description="图片",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionUpdate($id)

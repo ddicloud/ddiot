@@ -14,8 +14,8 @@ use Yii;
 
 trait ResultTrait
 {
-    private function getPageInfo()
-   {
+    private function getPageInfo(): array
+    {
         $pageInfo = [];
         $limitStart = Yii::$app->request->input('limit_start') ?? -1;
         if ($limitStart == 1) {
@@ -28,7 +28,7 @@ trait ResultTrait
         return $pageInfo;
     }
 
-    private function _json($data, $code = 200, $message = "请求成功!")
+    private function _json($data, $code = 200, $message = "请求成功!"): array
     {
         if ($data === \addons\diandi_website\components\ResultServicesTrait::$storeInvalid) {
             return ResultHelper::json(400, '请求失败！', '无效的商户信息');
@@ -36,8 +36,8 @@ trait ResultTrait
         return ResultHelper::json($code, $message, $data);
     }
 
-    private function _fillWhere($fields = [])
-   {
+    private function _fillWhere($fields = []): array
+    {
        $where = [];
        $data = Yii::$app->request->input();
 

@@ -15,6 +15,8 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -26,7 +28,7 @@ class ProConfigController extends AController
 
     public $modelClass = '';
 
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $searchModel = new WebsiteProConfigSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -50,8 +52,8 @@ class ProConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
      */
-    public function actionView($id)
-   {
+    public function actionView($id): array
+    {
 
         $where['store_id'] =\Yii::$app->request->input('store_id',0);
         $view = WebsiteProConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->asArray()->one();
@@ -77,37 +79,37 @@ class ProConfigController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="image_a",
-     *     type="string",
-     *     description="公众号演示二维码",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="image_a",
+     *     type="string",
+     *     description="公众号演示二维码",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="image_b",
-     *     type="string",
-     *     description="商城二维码",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="image_b",
+     *     type="string",
+     *     description="商城二维码",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="image_c",
-     *     type="string",
-     *     description="官方公众号二维码",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="image_c",
+     *     type="string",
+     *     description="官方公众号二维码",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="image_d",
-     *     type="string",
-     *     description="官方商城二维码",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="image_d",
+     *     type="string",
+     *     description="官方商城二维码",
+     *     required=false,
+     *   ),
      * )
      */
-    public function actionCreate()
-   {
+    public function actionCreate(): array
+    {
 
         $data = Yii::$app->request->post();
         $website_model = new WebsiteProConfig();
@@ -120,7 +122,7 @@ class ProConfigController extends AController
             return ResultHelper::json(200, '编辑成功');
         } else {
             if ($website_model->load($data, '') && $website_model->save()) {
-                return ResultHelper::json(200, '创建成功', $website_model);
+                return ResultHelper::json(200, '创建成功', $website_model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($website_model);
 
@@ -135,24 +137,22 @@ class ProConfigController extends AController
      *
      * @param int $id
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPut) {
-            $data = Yii::$app->request->post();
+        $data = Yii::$app->request->post();
 
-            if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+        if ($model->load($data, '') && $model->save()) {
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
         }
     }
 
@@ -165,8 +165,10 @@ class ProConfigController extends AController
      * @return mixed
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
 
@@ -179,11 +181,11 @@ class ProConfigController extends AController
      *
      * @param int $id
      *
-     * @return WebsiteProConfig the loaded model
+     * @return array|ActiveRecord the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): array|ActiveRecord
     {
         if (($model = WebsiteProConfig::findOne($id)) !== null) {
             return $model;
