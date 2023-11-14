@@ -54,11 +54,10 @@ class GlobalsService extends BaseService
     //模块标识
     private string $addons = 'system';
 
-    public function initId($bloc_id, $store_id, $addons): void
+    public function initId(int $bloc_id,int $store_id): void
     {
         $this->setbloc_id($bloc_id);
         $this->setStore_id($store_id);
-        $this->setAddons($addons);
     }
 
     // 全局设置商家id
