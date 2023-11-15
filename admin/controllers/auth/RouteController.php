@@ -68,7 +68,7 @@ class RouteController extends AController
      */
     public function actionView($id): array
     {
-         try {
+        try {
             $view = $this->findModel($id)->toArray();
         } catch (NotFoundHttpException $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
@@ -84,42 +84,43 @@ class RouteController extends AController
      * @return array
      */
     public function actionCreate(): array
-   {
+    {
 
         $model = new AuthRoute();
 
-            $data = Yii::$app->request->post();
-            $module_name =  Yii::$app->request->input('module_name','sys');
-            $data['is_sys'] = $module_name == 'sys' ? 1 : 0;
-            if ($model->load($data, '') && $model->save()) {
-                // 给item同步添加数据
-                $AcmodelsAuthItem = new AuthItem();
-                $items = [
-                    'permission_type' => 0,
-                    'name' => $model->name,
-                    'is_sys' => $model->is_sys,
-                    'parent_id' => 0,
-                    'permission_level' => 0,
-                    'module_name' => $model->module_name,
-                ];
-                if ($AcmodelsAuthItem->load($items, '') && $AcmodelsAuthItem->save()) {
-                    $model->updateAll([
-                        'item_id' => $AcmodelsAuthItem->id,
-                    ], [
-                        'id' => $model->id,
-                    ]);
+        $data = Yii::$app->request->post();
+        $module_name = Yii::$app->request->input('module_name', 'sys');
 
-                    return ResultHelper::json(200, '创建成功', $model->toArray());
-                } else {
-                    $msg = ErrorsHelper::getModelError($model);
+        $data['is_sys'] = $module_name == 'sys' ? 1 : 0;
+        if ($model->load($data, '') && $model->save()) {
+            // 给item同步添加数据
+            $AcmodelsAuthItem = new AuthItem();
+            $items = [
+                'permission_type' => 0,
+                'name' => $model->name,
+                'is_sys' => $model->is_sys,
+                'parent_id' => 0,
+                'permission_level' => 0,
+                'module_name' => $model->module_name,
+            ];
+            if ($AcmodelsAuthItem->load($items, '') && $AcmodelsAuthItem->save()) {
+                $model->updateAll([
+                    'item_id' => $AcmodelsAuthItem->id,
+                ], [
+                    'id' => $model->id,
+                ]);
 
-                    return ResultHelper::json(400, $msg);
-                }
+                return ResultHelper::json(200, '创建成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
                 return ResultHelper::json(400, $msg);
             }
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
+
+            return ResultHelper::json(400, $msg);
+        }
 
     }
 
@@ -136,25 +137,25 @@ class RouteController extends AController
     {
         $model = $this->findModel($id);
 
-            if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-                $AcmodelsAuthItem = new AuthItem();
-                $items = [
-                    'permission_type' => 0,
-                    'name' => $model->name,
-                    'is_sys' => $model->is_sys,
-                    'permission_level' => 0,
-                    'module_name' => $model->module_name,
-                ];
-                $AcmodelsAuthItem->updateAll($items, [
-                    'id' => $model->item_id,
-                ]);
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            $AcmodelsAuthItem = new AuthItem();
+            $items = [
+                'permission_type' => 0,
+                'name' => $model->name,
+                'is_sys' => $model->is_sys,
+                'permission_level' => 0,
+                'module_name' => $model->module_name,
+            ];
+            $AcmodelsAuthItem->updateAll($items, [
+                'id' => $model->item_id,
+            ]);
 
-                return ResultHelper::json(200, '编辑成功', $model->toArray());
-            } else {
-                $msg = ErrorsHelper::getModelError($model);
+            return ResultHelper::json(200, '编辑成功', $model->toArray());
+        } else {
+            $msg = ErrorsHelper::getModelError($model);
 
-                return ResultHelper::json(400, $msg);
-            }
+            return ResultHelper::json(400, $msg);
+        }
 
     }
 
@@ -182,12 +183,12 @@ class RouteController extends AController
      * @return array
      */
     public function actionAssign(): array
-   {
-        $routes =\Yii::$app->request->input('routes');
+    {
+        $routes = \Yii::$app->request->input('routes');
         $model = new Route();
         $Res = $model->addNew($routes);
 
-        return ResultHelper::json(200, '添加成功', ['list' => $model->getRoutes(),'Res'=>$Res]);
+        return ResultHelper::json(200, '添加成功', ['list' => $model->getRoutes(), 'Res' => $Res]);
     }
 
     /**

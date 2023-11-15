@@ -105,7 +105,7 @@ class Sign extends ActionFilter
 
         // 获取通用型的签名
         $forAllString = $this->paramFilter($params);  // 参数处理
-        $forAllSign = $this->md5Sign($forAllString, $params['appid']);
+        $forAllSign = $this->md5Sign($forAllString, $params['app_id']);
         // && (!$forMerSign && $forMerSign != $params['sign'])
         if ($params['sign'] != $forAllSign) {
             throw  new SignException(CodeConst::CODE_90005);
@@ -137,7 +137,6 @@ class Sign extends ActionFilter
      * @param $preStr string 需要签名的字符串
      * @param string $appId
      * @return string 签名结果
-     * @throws SignException
      */
     public function md5Sign(string $preStr, string $appId = ''): string
     {

@@ -206,15 +206,13 @@ class NavService extends BaseService
                 unset($allMenus[$key]);
             }
         }
-        $menus = [
+        return [
             'top' => $top,
             'left' => $leftMenu,
         ];
-
-        return $menus;
     }
 
-    public static function addonsMens($addons)
+    public static function addonsMens($addons): array
     {
         $list = Menu::find()->where(['module_name' => $addons])->with(['router' => function ($query) {
             return  $query->with(['item']);

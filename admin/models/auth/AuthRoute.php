@@ -32,7 +32,7 @@ class AuthRoute extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%auth_route}}';
     }
@@ -43,7 +43,7 @@ class AuthRoute extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'is_sys', 'route_name'], 'required'],
+            [['name', 'is_sys','route_type', 'route_name'], 'required'],
             [['is_sys', 'pid', 'route_type', 'item_id', 'created_at', 'updated_at'], 'integer'],
             [['description', 'data'], 'string'],
             [['name', 'title', 'route_name'], 'string', 'max' => 255],
