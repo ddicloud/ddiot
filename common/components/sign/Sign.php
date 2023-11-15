@@ -93,6 +93,7 @@ class Sign extends ActionFilter
         if (!isset($params['timestamp']) || !$params['timestamp']) {
             throw new SignException(CodeConst::CODE_90002);
         }
+
         // 验证请求， 10分钟失效
         if (time() - $params['timestamp'] > self::C_TIME_LOSE) {
             throw new SignException(CodeConst::CODE_90004);
