@@ -13,7 +13,6 @@ use common\helpers\loggingHelper;
 use diandi\addons\models\form\Api;
 use Yii;
 use yii\base\ActionFilter;
-use yii\helpers\ArrayHelper;
 
 class Sign extends ActionFilter
 {
@@ -41,8 +40,6 @@ class Sign extends ActionFilter
      */
     private array $needSignEnvironment = ['beta', 'production'];
 
-
-
     /**
      * Sign constructor.
      *
@@ -51,30 +48,28 @@ class Sign extends ActionFilter
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        // in_array(\Yii::$App->params['server_name'], $this->needSignEnvironment
         // all代表全部需要，*代表全部不需要
         if ((in_array('all', $this->optional) || in_array(Yii::$app->controller->action->id, $this->optional)) && !in_array('*', $this->optional)) {
             $this->validateSign(
-                // ArrayHelper::merge(\Yii::$App->request->bodyParams, \Yii::$App->request->get(), \Yii::$App->request->post())
-                \Yii::$app->request->post()
+            // ArrayHelper::merge(\Yii::$App->request->bodyParams, \Yii::$App->request->get(), \Yii::$App->request->post())
+                Yii::$app->request->post()
             );
         }
     }
 
     /**
      * 根据key生成密钥 secret是由MD5(key+appid)生成 32位.
-     *
      * @return string
      */
     public static function generateSecret(): string
-   {
+    {
         $apiConf = new Api();
-        $apiConf->getConf(Yii::$app->request->input('bloc_id',0));
+        $bloc_id = Yii::$app->request->headers->get('bloc-id', 0);
+        $apiConf->getConf($bloc_id);
         loggingHelper::writeLog('sign', 'generateSecret', 'app_secret', [
             'app_secret' => $apiConf['app_secret'],
             'app_id' => $apiConf['app_id'],
         ]);
-
         return md5($apiConf['app_secret'] . $apiConf['app_id']);
     }
 

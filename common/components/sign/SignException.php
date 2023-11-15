@@ -9,6 +9,8 @@
 
 namespace common\components\sign;
 
+use yii\web\HttpException;
+
 /**
  * MethodNotAllowedHttpException represents a "Sign Not Pass" HTTP exception with status code 403.
  *
@@ -16,7 +18,7 @@ namespace common\components\sign;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class SignException extends \yii\web\HttpException
+class SignException extends HttpException
 {
     /**
      * Constructor.
@@ -28,7 +30,7 @@ class SignException extends \yii\web\HttpException
     {
         // 未传$message 取错误映射表默认值
         $errorMsg = CodeConst::codeMap()[$code] ?? '';
-        $message = $message ? $message : $errorMsg;
+        $message = $message ?? $errorMsg;
         parent::__construct(403, $message, $code, $previous);
     }
 }
