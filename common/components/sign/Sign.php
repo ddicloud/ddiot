@@ -120,7 +120,7 @@ class Sign extends ActionFilter
     public function paramFilter($param): string
     {
         $paraFilter = $param;
-        unset($paraFilter['sign']); // 剔除sign本身
+        unset($paraFilter['sign'],$paraFilter['app_id']); // 剔除sign本身
         array_filter($paraFilter); // 过滤空值
         ksort($paraFilter); // 对数组根据键名升序排序
         reset($paraFilter); // 函数将内部指针指向数组中的第一个元素，并输出
