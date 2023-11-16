@@ -9,7 +9,9 @@
 
 namespace console\controllers;
 
+use common\helpers\FileHelper;
 use common\services\admin\NavService;
+use console\services\ApiServer;
 use Yii;
 
 // 使用示例： ./yii addons -addons=diandi_lottery -bloc_id=1 -store_id=3   job ninini
@@ -20,6 +22,12 @@ class AddonsController extends BaseController
     {
         NavService::addonsMens($this->addons);
     }
+
+    public function actionCreateapi(): void
+    {
+        ApiServer::createApiJs($this->addons);
+    }
+
 
     public function actionConsole($controller, $action, $param): void
     {

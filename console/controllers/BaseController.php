@@ -26,9 +26,12 @@ class BaseController extends \yii\console\Controller
 
     public function actions()
     {
-        Yii::$app->service->commonGlobalsService->initId($this->bloc_id, $this->store_id, $this->addons);
+        Yii::$app->service->commonGlobalsService->initId((int) $this->bloc_id,(int) $this->store_id);
         Yii::$app->service->commonGlobalsService->getConf($this->bloc_id);
         $module = $this->addons;
+        if (empty($module)) {
+            throw new NotFoundHttpException("缺少参数addons,示例 --addons=diandi_website");
+        }
         $mid = DdAddons::find()->where(['identifie' => $module])->select('mid')->scalar();
         if (!$mid) {
             throw new NotFoundHttpException("当前插件{$module}没有安装.");

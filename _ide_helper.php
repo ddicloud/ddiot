@@ -9,7 +9,7 @@ class Yii
     /**
      * @var MyApplication
      */
-    public static $app;
+    public static MyApplication $app;
 }
 
 /**
@@ -20,5 +20,13 @@ class Yii
  */
 class MyApplication extends Application
 {
+    /**
+     * @var mixed|object|null
+     */
+    public mixed $template_message;
+    /**
+     * @var mixed|object|null
+     */
+    public mixed $wechat;
 }
 
