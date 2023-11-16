@@ -20,7 +20,14 @@ EOF;
         foreach ($apiArr as $item) {
             $path = '/' . str_replace("\\", "/", $item['controller'][0]);
             foreach ($item['extraPatterns'] as $key => $extraPattern) {
-                [$method, $api] = explode(' ', $key);
+                $apiUrls = explode(" ", $key);
+                $method = $apiUrls[0];
+                $position = strpos($method, ',');
+                if ($position !== false) {
+                    //字符串中存在逗号
+                    $method = substr($method, 0, strpos($method, ','));
+                }
+                $api =  end($apiUrls);
                 $apiBasePath = $path .'/'. $api;
                 $apiName = self::createApiName($apiBasePath);
                 $apiBase .= <<<EOF
