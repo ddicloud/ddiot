@@ -56,7 +56,7 @@ class AssignmentController extends AController
     {
         $this->userClassName = Yii::$app->getUser()->identityClass;
 
-        $this->module_name = Yii::$app->request->get('module_name', 'sys');
+        $this->module_name = Yii::$app->request->get('module_name', 'system');
         $this->type = $this->module_name == 'sys' ? 0 : 1;
         parent::init();
 //        if ($this->userClassName === null) {

@@ -19,7 +19,6 @@ use diandi\admin\acmodels\AuthItem;
  * @public int           $type
  * @public string|null   $description
  * @public string|null   $title
- * @public int|null      $pid
  * @public resource|null $data
  * @public string|null   $module_name
  * @public int|null      $created_at
@@ -44,7 +43,7 @@ class AuthRoute extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'is_sys','route_type', 'route_name'], 'required'],
-            [['is_sys', 'pid', 'route_type', 'item_id', 'created_at', 'updated_at'], 'integer'],
+            [['is_sys', 'route_type', 'item_id', 'created_at', 'updated_at'], 'integer'],
             [['description', 'data'], 'string'],
             [['name', 'title', 'route_name'], 'string', 'max' => 255],
             [['module_name'], 'string', 'max' => 50],
@@ -89,7 +88,6 @@ class AuthRoute extends \yii\db\ActiveRecord
             'description' => 'Description',
             'title' => 'Title',
             'item_id' => 'Item_id',
-            'pid' => 'Pid',
             'data' => 'Data',
             'route_type' => '路由类型',
             'route_name' => '路由名称',

@@ -47,7 +47,7 @@ class UserController extends AController
     public function actionUserlist(): array
     {
         $searchModel = new ModelsUser([
-            'module_name' => 'sys',
+            'module_name' => 'system',
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

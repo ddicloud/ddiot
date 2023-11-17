@@ -50,7 +50,7 @@ class PermissionController extends AController
 
     public function actions(): array
     {
-        $this->module_name = Yii::$app->request->get('module_name', 'sys');
+        $this->module_name = Yii::$app->request->get('module_name', 'system');
         $this->is_sys = $this->module_name == 'sys' ? 1 : 0;
         return parent::actions();
     }
