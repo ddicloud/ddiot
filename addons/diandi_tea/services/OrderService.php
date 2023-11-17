@@ -209,7 +209,7 @@ class OrderService extends BaseService
     }
 
     //我的卡券列表
-    public static function myCoupon($type = '', $member_id): array
+    public static function myCoupon($type, $member_id): array
     {
         if ($type) {
             $where['type'] = $type;
@@ -318,7 +318,7 @@ class OrderService extends BaseService
      * @throws Exception
      * @throws \Throwable
      */
-    public static function createOrder($member_id, int $coupon_id, $amount_payable, float $discount, $real_pay, $hourse_id, $order_type, $set_meal_id, $set_meal_name, $renew_order_id = '', $start_time, $end_time, $renew_price, $renew_num = ''): array
+    public static function createOrder($member_id, int $coupon_id, $amount_payable, float $discount, $real_pay, $hourse_id, $order_type, $set_meal_id, $set_meal_name, $renew_order_id, $start_time, $end_time, $renew_price, $renew_num = ''): array
     {
         // 订单基础信息写入
         $orderbase = [

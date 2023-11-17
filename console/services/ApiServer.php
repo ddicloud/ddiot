@@ -29,7 +29,7 @@ EOF;
                 }
                 $api =  end($apiUrls);
                 $apiBasePath = $path .'/'. $api;
-                $apiName = self::createApiName($apiBasePath);
+                $apiName = self::createApiName($apiBasePath,$addons);
                 $apiBase .= <<<EOF
 export function $apiName() {
 	return sendHttp('$apiBasePath', "$method", {}, true)
@@ -52,20 +52,20 @@ EOF;
 
     }
 
-    public static function createApiName($apiBasePath): string
+    public static function createApiName($apiBasePath,$addons): string
     {
-
+        $addonsName = explode('_',$addons);
         $apiFunc = explode('/', $apiBasePath);
         $ApiName = '';
         // 遍历数组中的每个元素
         foreach ($apiFunc as $word) {
             // 将每个元素的首字母转换为大写，并将其添加到新的字符串中
             $word = str_replace('-','',$word);
-            $word = str_replace('_','',$word);
+            $word = str_replace($addons,'',$word);
             $new_word = ucwords($word);
             $ApiName .= $new_word;
         }
 
-        return $ApiName;
+        return $addonsName[1] .$ApiName;
     }
 }

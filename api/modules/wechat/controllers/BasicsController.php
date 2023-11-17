@@ -97,7 +97,7 @@ class BasicsController extends AController
 
             return ResultHelper::json(200, '支付参数获取成功', $config);
         } else {
-            return ResultHelper::json(401, $result['err_code_des'], $result);
+            return ResultHelper::json(401, $result['err_code_des']??'支付失败', (array)$result);
         }
     }
 
