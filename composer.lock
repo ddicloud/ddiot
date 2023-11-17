@@ -4757,16 +4757,16 @@
         },
         {
             "name": "yii-diandi/yii2-admin",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yii-diandi/yii2-admin.git",
-                "reference": "8ef5193530091ec62d6b9ebfe1a034a329e5b862"
+                "reference": "524b0aebe1ed0baf799accc9317348a9bf345eac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/8ef5193530091ec62d6b9ebfe1a034a329e5b862",
-                "reference": "8ef5193530091ec62d6b9ebfe1a034a329e5b862",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-admin/zipball/524b0aebe1ed0baf799accc9317348a9bf345eac",
+                "reference": "524b0aebe1ed0baf799accc9317348a9bf345eac",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4816,9 +4816,9 @@
             ],
             "support": {
                 "issues": "https://github.com/yii-diandi/yii2-admin/issues",
-                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.2.1"
+                "source": "https://github.com/yii-diandi/yii2-admin/tree/3.2.2"
             },
-            "time": "2023-11-11T04:56:53+00:00"
+            "time": "2023-11-17T16:12:03+00:00"
         },
         {
             "name": "yii-diandi/yii2-easywechat",
