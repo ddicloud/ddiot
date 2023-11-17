@@ -30,7 +30,7 @@ class NavService extends BaseService
     public static array $module_names;
 
     public function getMenuTop($types): array|string
-   {
+    {
         // $lists[] = 'system';
 
         $lists = array_merge([
@@ -63,7 +63,7 @@ class NavService extends BaseService
         foreach ($menucate as $key => &$value) {
             $value['text'] = $value['title'];
             $value['targetType'] = 'top-nav';
-            $mark = !empty($value['mark'])  ? $value['mark'] : '';
+            $mark = !empty($value['mark']) ? $value['mark'] : '';
             $value['url'] = "system/welcome/{$mark}";
         }
         if (!$is_addons) {
@@ -109,30 +109,19 @@ class NavService extends BaseService
                 $parent_id = intval($menu['parent']);
 
                 //区分系统菜单和扩展模块菜单
+                $menu_type = $menu['module_name'];
 
                 if ($menu['is_sys'] === 1) {
                     $parent_id = intval($menu['parent']);
-//                    $parent = $parent_id > 0 ? $parent_id : $menu['id'];
-                    $menu_type = 'system';
-                    // $module_name = $menu['module_name'];
-                    // $addonsdefault = "/{$module_name}/default/index";
-                } else {
-                    $menu_type = $menu['module_name'];
                 }
 
                 $route = $menu['route'];
-
-                // 校验是否存在子模块
-                // $parent_menu_id = 0;
-                // if (!empty($pluginsMenus[$menu_type])) {
-                //     $parent_menu_id = $pluginsMenus[$menu_type];
-                // }
 
                 $return = [
                     'id' => $menu['id'],
                     'hidden' => !($menu['is_show'] == 0),
                     'parent' => $parent_id,
-                    'order' => (int) $menu['order'],
+                    'order' => (int)$menu['order'],
                     'name' => $route_name,
                     'level_type' => $menu['level_type'],
                     'type' => $menu_type,
@@ -150,24 +139,21 @@ class NavService extends BaseService
                 //处理我们的配置
                 if ($data) {
                     isset($data['visible']) && $return['visible'] = $data['visible']; //visible
-                    isset($data['icon']) && $data['icon'] && $return['icon'] = $data['icon']; //icon
-                    //other attribute e.g. class...
+                    isset($data['icon']) && $data['icon'] && $return['icon'] = $data['icon']; //icon//other attribute e.g. class...
                     $return['options'] = $data;
                 }
 
                 //没配置图标的显示默认图标
                 (!isset($return['icon']) || !$return['icon']) && $return['icon'] = 'fa fa-fw fa-cube';
 
-                return  $return;
+                return $return;
             };
             $where = ['or', ['is_sys' => 1], ['module_name' => $module_name]];
             $user_id = Yii::$app->user->id;
             $initmenus = MenuHelper::getAssignedMenu($user_id, null, $callback, $where, 1);
             $initmenu = ArrayHelper::arraySort($initmenus, 'order');
             $initmenuList = $this->menuChildRoute($initmenu);
-            $cacheClass = new CacheHelper();
-            $cacheClass->set($key, $initmenuList);
-
+            Yii::$app->cache->set($key, $initmenuList);
             return $initmenuList;
         }
     }
@@ -215,7 +201,7 @@ class NavService extends BaseService
     public static function addonsMens($addons): array
     {
         $list = Menu::find()->where(['module_name' => $addons])->with(['router' => function ($query) {
-            return  $query->with(['item']);
+            return $query->with(['item']);
         }])->asArray()->all();
 
         foreach ($list as &$value) {
@@ -248,7 +234,7 @@ class NavService extends BaseService
             echo '菜单创建失败' . PHP_EOL;
         }
 
-        return   $menus;
+        return $menus;
     }
 
     // 处理非页面菜单
