@@ -12,7 +12,7 @@ use yii\queue\db\Queue;
 
 return [
     'name' => '店滴云CMS',
-    'version' => '1.1.9',
+    'version' => '1.0.1',
     'aliases' => [
         '@bower' => dirname(__DIR__, 2) . '/frontend/resource/lib',
         '@npm' => dirname(__DIR__, 2) . '/frontend/node_modules',
