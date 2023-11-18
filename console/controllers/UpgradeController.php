@@ -40,8 +40,8 @@ class UpgradeController extends \yii\console\Controller
                 break;
             case '1.0.1':
                 // 删除测试 - 冗余的字段
-                $Migration->update('{{%auth_route}}', ['module_name'], "'module_name'=>'sys'",['module_name'=>'system']);
-                $Migration->update('{{%auth_menu}}', ['module_name'], "'module_name'=>'sys'",['module_name'=>'system']);
+                $Migration->update('{{%auth_route}}', ['module_name'=>'system'], ['module_name'=>'sys']);
+                $Migration->update('{{%auth_menu}}', ['module_name'=>'system'], ['module_name'=>'sys']);
                 // $this->dropColumn('{{%addon_example_curd}}', 'field2');
                 break;
                 
