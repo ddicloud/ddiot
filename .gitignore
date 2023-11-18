@@ -39,7 +39,8 @@ swoole/runtime/*
 console/runtime/*
 admin/runtime/*
 frontend/runtime/*
-
+help/runtime/*
+frontend/help/assets/*
 
 # 接口目录
 api/modules/wechat/log
