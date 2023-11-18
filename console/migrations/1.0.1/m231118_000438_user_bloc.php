@@ -23,11 +23,7 @@ class m231118_000438_user_bloc extends Migration
         
         /* 索引设置 */
         
-        
-        /* 表数据 */
-        $this->insert('{{%user_bloc}}',['id'=>'225','user_id'=>'83','bloc_id'=>'91','status'=>'0','is_default'=>'1','create_time'=>'1698590665','update_time'=>'1698590665']);
-        $this->insert('{{%user_bloc}}',['id'=>'224','user_id'=>'11','bloc_id'=>'91','status'=>'0','is_default'=>'1','create_time'=>'1687231901','update_time'=>'1687231901']);
-        
+
         /* 设置外键约束 */
         $this->execute('SET foreign_key_checks = 1;');
     }

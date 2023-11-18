@@ -142,7 +142,6 @@ EOF;
         $version = Yii::$app->version;
 
         $bashPath = dirname(Yii::getAlias('@console'));
-        $oldAPP = Yii::$app;
         Yii::$app = new Application([
             'id' => 'install-console',
             'basePath' => $bashPath,
@@ -193,7 +192,6 @@ EOF;
                 'defaultRoles' => ['基础权限组'], //默认角色，该角色有最高权限
             ]
         ];
-
         $runResult = Yii::$app->runAction('migrate/up', ['migrationPath' => '@console/migrations/' . $version, 'interactive' => false]);
         // $post_log = ob_get_clean();
         // Yii::info($post_log, 'fecshop_debug');
