@@ -81,7 +81,7 @@ class ResultHelper
      */
     protected static function baseJson(int $code, string $message, array $data): array
     {
-        if (Yii::$app->id != 'App-console') {
+        if (!in_array(Yii::$app->id,['install-console','app-console'])) {
             Yii::$app->response->format = Response::FORMAT_JSON;
         }
 

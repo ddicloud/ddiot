@@ -30,7 +30,10 @@ use diandi\admin\acmodels\AuthUserGroup;
 use diandi\admin\models\Assignment;
 use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\UserGroup;
+use Exception;
+use Throwable;
 use Yii;
+use yii\db\StaleObjectException;
 
 class UserService extends BaseService
 {
@@ -58,7 +61,7 @@ class UserService extends BaseService
         $moduleAll = $module_names ?? [];
 
         $Website = Yii::$app->settings->getAllBySection('Website');
-        if ($Website){
+        if ($Website) {
             $Website['blogo'] = isset($Website['blogo']) ? ImageHelper::tomedia($Website['blogo']) : '';
             $Website['flogo'] = isset($Website['flogo']) ? ImageHelper::tomedia($Website['flogo']) : '';
         }
@@ -74,7 +77,7 @@ class UserService extends BaseService
         ];
     }
 
-    public static function deleteUser($user_id)
+    public static function deleteUser($user_id): array|bool|int
     {
         $where = [];
         $where['user_id'] = $user_id;
@@ -90,13 +93,21 @@ class UserService extends BaseService
         self::deleteFile($user_id);
 
         if ($User) {
-            $User->delete();
+            try {
+                return $User->delete();
+            } catch (StaleObjectException $e) {
+                return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            } catch (Throwable $e) {
+                return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            }
         }
+        return false;
     }
 
     /**
      * 删除商户.
      *
+     * @param $store_id
      * @return void
      * @date 2022-10-28
      *
@@ -106,7 +117,7 @@ class UserService extends BaseService
      *
      * @since
      */
-    public static function deleteUserStore($store_id)
+    public static function deleteUserStore($store_id): void
     {
         BlocStore::deleteAll(['store_id' => $store_id]);
         StoreLabelLink::deleteAll(['store_id' => $store_id]);
@@ -131,13 +142,19 @@ class UserService extends BaseService
         // dd_upload_file_user
     }
 
-    public static function upStatus($user_id, $type)
+    public static function upStatus($user_id, $type): bool|int|array
     {
         $list = UserStatus::getConstantsByName();
         $user = User::findOne($user_id);
         $user->status = $list[$type];
 
-        return $user->update();
+        try {
+            return $user->update();
+        } catch (StaleObjectException $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        } catch (Throwable $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
     }
 
     /**
@@ -146,6 +163,9 @@ class UserService extends BaseService
      * @param [type] $user_id
      *
      * @return void
+     * @throws StaleObjectException
+     * @throws Throwable
+     * @throws \yii\db\Exception
      * @date 2022-10-26
      *
      * @example
@@ -154,7 +174,7 @@ class UserService extends BaseService
      *
      * @since
      */
-    public static function initUserAuth($user_id)
+    public static function initUserAuth($user_id): void
     {
         // 初始权限组
         self::initGroup($user_id);
@@ -162,7 +182,7 @@ class UserService extends BaseService
         self::SignBindBloc($user_id);
     }
 
-    public static function initGroup($user_id)
+    public static function initGroup($user_id): void
     {
         $authManager = Yii::$app->getAuthManager();
         $defaultRoles = $authManager->defaultRoles;
@@ -183,7 +203,12 @@ class UserService extends BaseService
     /**
      * 创建用户公司进行绑定.
      *
+     * @param $user_id
+     * @param int $is_default
      * @return void
+     * @throws Throwable
+     * @throws \yii\db\Exception
+     * @throws StaleObjectException
      * @date 2022-08-28
      *
      * @example
@@ -192,7 +217,7 @@ class UserService extends BaseService
      *
      * @since
      */
-    public static function SignBindBloc($user_id, $is_default = 1)
+    public static function SignBindBloc($user_id, int $is_default = 1): void
     {
         $transaction = Bloc::getDb()->beginTransaction();
 
@@ -203,7 +228,7 @@ class UserService extends BaseService
                 $bloc = new Bloc();
                 $blocData = [
                     'business_name' => '您的公司名称',
-                    'pid' => (int) $have_user['parent_bloc_id'],
+                    'pid' => (int)$have_user['parent_bloc_id'],
                     'is_group' => 0,
                     'province' => 0,
                     'city' => 0,
@@ -242,13 +267,13 @@ class UserService extends BaseService
             }
 
             $transaction->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             loggingHelper::writeLog('admin', 'SignBindBloc', 'Exception错误', $e);
             // 删除用户
             self::deleteUser($user_id);
             $transaction->rollBack();
             throw $e;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             loggingHelper::writeLog('admin', 'SignBindBloc', 'Throwable错误', $e);
             // 删除用户
             self::deleteUser($user_id);
@@ -262,8 +287,8 @@ class UserService extends BaseService
      *
      * @param $user_id
      * @param $addons_identifie
-     * @return mixed
-     * @throws \Exception
+     * @return array
+     * @throws Exception
      * @date 2022-10-26
      *
      * @example
@@ -272,7 +297,7 @@ class UserService extends BaseService
      *
      * @since
      */
-    public static function AssignmentPermissionByUid($user_id, $addons_identifie)
+    public static function AssignmentPermissionByUid($user_id, $addons_identifie): array
     {
         if (!$user_id) {
             return ResultHelper::serverJson(1, 'user_id 不能为空');
@@ -294,9 +319,9 @@ class UserService extends BaseService
         ])->select('id')->column();
         loggingHelper::writeLog('StoreService', 'createStore', '初始权限数据', $items);
 
-        if(!in_array(Yii::$app->id,['install-console','app-console'])){
+        if (!in_array(Yii::$app->id, ['install-console', 'app-console'])) {
             $class = Yii::$app->getUser()->identityClass ?: 'diandi\admin\models\User';
-        }else{
+        } else {
             $class = 'diandi\admin\models\User';
         }
 
@@ -313,6 +338,7 @@ class UserService extends BaseService
         $addons_mids = array_column($all['addons'], 'mid');
         // 所有商户
         $list = Bloc::find()->with(['store'])->asArray()->all();
+        $store_ids = [];
         foreach ($list as $key => &$value) {
             $value['label'] = $value['business_name'];
             $value['id'] = $value['bloc_id'];
@@ -345,13 +371,14 @@ class UserService extends BaseService
         ];
 
         $assignedKey = [];
+        unset($value);
         foreach ($assigneds as $key => $value) {
             $assignedKey[] = $key;
             $assigned[$key] = array_keys($value);
         }
 
         $keyDiff = array_diff($keyList, $assignedKey);
-        foreach ($keyDiff as $key => $value) {
+        foreach ($keyDiff as $value) {
             $assigned[$value] = [];
         }
 
@@ -370,18 +397,18 @@ class UserService extends BaseService
 
         $data = [
             'user_id' => $user_id,
-            'is_default' => !empty($assigneds['addons'])?0:1,
+            'is_default' => !empty($assigneds['addons']) ? 0 : 1,
             'type' => 1,
             'module_name' => $addons_identifie,
             'status' => 0,
         ];
-        $AddonsUser->load($data,'');
+        $AddonsUser->load($data, '');
         if (!$AddonsUser->save()) {
             $msg = ErrorsHelper::getModelError($AddonsUser);
             loggingHelper::writeLog('StoreService', 'createStore', '授权插件错误', [
                 'err' => $msg
             ]);
-            throw new \Exception($msg);
+            return ResultHelper::json(400, $msg);
         }
 
         // 删除权限
@@ -414,19 +441,22 @@ class UserService extends BaseService
 
         $key = 'auth_' . $user_id . '_' . 'initmenu';
         Yii::$app->cache->delete($key);
+        return ResultHelper::json(200, '授权成功');
     }
 
     /**
      * 用户创建商户后授权商户权限
-     * @param [type] $bloc_id
-     * @param [type] $store_id
-     * @return void
+     * @param $user_id
+     * @param $bloc_id
+     * @param $store_id
+     * @param $is_default
+     * @return array
      * @date 2023-03-03
      * @example
      * @author Wang Chunsheng
      * @since
      */
-    public static function addUserBloc($user_id, $bloc_id, $store_id, $is_default)
+    public static function addUserBloc($user_id, $bloc_id, $store_id, $is_default): array
     {
         $UserStore = UserStore::find()->where([
             'user_id' => $user_id,
@@ -445,12 +475,12 @@ class UserService extends BaseService
         } else {
             $UserStoreModel = new UserStore();
             $Res = $UserStoreModel->load([
-                'is_default' => $is_default,
-                'user_id' => $user_id,
-                'bloc_id' => $bloc_id,
-                'store_id' => $store_id,
-                'status'=>1,
-            ], '') && $UserStoreModel->save();
+                    'is_default' => $is_default,
+                    'user_id' => $user_id,
+                    'bloc_id' => $bloc_id,
+                    'store_id' => $store_id,
+                    'status' => 1,
+                ], '') && $UserStoreModel->save();
             $msg = ErrorsHelper::getModelError($UserStoreModel);
             if ($msg) {
                 return ResultHelper::serverJson(1, $msg);
