@@ -47,18 +47,18 @@ class InstallController extends \yii\console\Controller
 
         $is_connect = false;
         do {
-            $host = InstallServer::getConf('host', '请输入host');
+            $host = InstallServer::getConf('host', '请输入host(默认127.0.0.1)');
             // $formatName = Console::ansiFormat($host, [Console::FG_YELLOW]);
             // Console::output("你的host是：{$formatName}");
-            $port = InstallServer::getConf('port', '请输入数据库端口port');
+            $port = InstallServer::getConf('port', '请输入数据库端口port(默认3306)');
             $dbname = InstallServer::getConf('dbname', '请输入dbname');
-            $tablePrefix = InstallServer::getConf('tablePrefix', '请输入数据库前缀tablePrefix');
+            $tablePrefix = InstallServer::getConf('tablePrefix', '请输入数据库前缀tablePrefix(默认dd_)');
             $dbusername = InstallServer::getConf('dbusername', '请输入数据库dbusername');
             $dbpassword = InstallServer::getConf('dbpassword', '请输入数据库dbpassword');
             $confTable = Table::widget([
                 'headers' => ['host', 'port', 'dbname', 'tablePrefix', 'username', 'password'],
                 'rows' => [
-                    [$host, $port, $dbname, $tablePrefix, $dbusername, $dbpassword],
+                    [$host?:'127.0.0.1', $port?:3306, $dbname, $tablePrefix?:'dd_', $dbusername, $dbpassword],
                 ],
             ]);
 
