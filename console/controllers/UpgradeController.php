@@ -24,24 +24,24 @@ use yii\console\controllers\MigrateController;
 class UpgradeController extends \yii\console\Controller
 {
 
-     /**
-     * @param $addon
-     * @return mixed|void
-     * @throws \yii\db\Exception
+    /**
+     * @return void
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $Migration = new Migration();
         
         $version = Yii::$app->version;
         
         switch ($version) {
-            case '1.0.1':
+            case '1.0.0':
                 // 增加测试 - 冗余的字段
                 $Migration->addColumn('{{%ceshi}}', 'field1', 'varchar(48)');
                 break;
-            case '1.0.2':
+            case '1.0.1':
                 // 删除测试 - 冗余的字段
+                $Migration->update('{{%auth_route}}', ['module_name'], ['module_name'=>'sys'],['module_name'=>'system']);
+                $Migration->update('{{%auth_menu}}', ['module_name'], ['module_name'=>'sys'],['module_name'=>'system']);
                 // $this->dropColumn('{{%addon_example_curd}}', 'field2');
                 break;
                 
