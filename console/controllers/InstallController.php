@@ -139,7 +139,7 @@ EOF;
         } while (!$is_connect);
 
         // 初始数据库
-        $version = InstallServer::getConf('version', '请输入数据库脚本版本号');
+        $version = Yii::$app->version;
 
         $bashPath = dirname(Yii::getAlias('@console'));
         $oldAPP = Yii::$app;
