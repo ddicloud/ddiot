@@ -28,7 +28,6 @@
             'POST,GET mycoupon' => 'my-coupon',
             'POST,GET rechargeactivity' => 'recharge-activity',
             'POST,GET renewprice' => 'renew-price',
-
             'POST,GET createorder' => 'create-order',
             'POST,GET createrechargeorder' => 'create-recharge-order',
             'POST,GET createbuycouponorder' => 'create-buy-coupon-order',

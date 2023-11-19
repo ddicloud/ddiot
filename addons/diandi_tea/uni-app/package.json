@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "element-ui": "^2.15.3",
-    "jweixin-module": "^1.6.0",
-    "luch-request": "^3.0.7",
-    "uni-read-pages": "^1.0.5",
-    "uni-simple-router": "^2.0.6"
-  }
-}

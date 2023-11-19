@@ -9,6 +9,7 @@
 
 namespace addons\diandi_tea\models\config;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
@@ -24,6 +25,8 @@ use Yii;
  */
 class TeaSlide extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     /**
      * {@inheritdoc}
      */

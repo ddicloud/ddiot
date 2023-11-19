@@ -8,9 +8,11 @@
 
 namespace addons\diandi_tea\models\config;
 
+use addons\diandi_place\models\room\PlaceRoom;
 use addons\diandi_tea\models\order\TeaCouponList;
 use addons\diandi_tea\models\order\TeaOrderList;
 use common\helpers\DateHelper;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%diandi_tea_hourse}}".
@@ -29,53 +31,51 @@ use common\helpers\DateHelper;
  * @public string|null $set_meal_ids 包间套餐列表
  * @public string|null $fit_num      包间适合人数
  */
-class TeaHourse extends \yii\db\ActiveRecord
+class TeaHourse extends PlaceRoom
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName(): string
-    {
-        return '{{%diandi_tea_hourse}}';
-    }
 
     /**
-     * {@inheritdoc}
+     * @var mixed|null
      */
-    public function rules(): array
-    {
-        return [
-            [['name'], 'required'],
-            [['price'], 'number'],
-            [['bloc_id', 'store_id', 'max_num', 'status'], 'integer'],
-            [['create_time', 'update_time'], 'safe'],
-            [['name', 'set_meal_ids', 'fit_num'], 'string', 'max' => 100],
-            [['picture'], 'string', 'max' => 255],
-            [['introduce', 'tip', 'slide'], 'string'],
-        ];
-    }
-
+    private mixed $name;
     /**
-     * 行为.
+     * @var mixed|null
      */
-    public function behaviors(): array
-    {
-        /*自动添加创建和修改时间*/
-        return [
-            [
-                'class' => \common\behaviors\SaveBehavior::class,
-                'updatedAttribute' => 'update_time',
-                'createdAttribute' => 'create_time',
-                'time_type' => 'datetime',
-            ],
-        ];
-    }
+    private mixed $picture;
+    /**
+     * @var mixed|null
+     */
+    private mixed $introduce;
+    /**
+     * @var mixed|null
+     */
+    private mixed $max_num;
+    /**
+     * @var mixed|null
+     */
+    private mixed $tip;
+    /**
+     * @var mixed|null
+     */
+    private mixed $fit_num;
 
-    public function getOrder(): \yii\db\ActiveQuery
+    public function getOrder(): ActiveQuery
     {
         $today = DateHelper::today();
         $whereTime = ['between', 'start_time', date('Y-m-d H:i:s', $today['start']), date('Y-m-d H:i:s', $today['end'])];
         return $this->hasMany(TeaOrderList::class,['hourse_id'=>'id'])->where(['status'=>2])->andWhere($whereTime);
+    }
+
+    public function afterFind(): void
+    {
+        $this->name = $this->title;
+        $this->picture =$this->thumb;
+        $this->introduce = $this->content;
+        $this->max_num = $this->persons;
+        $this->tip = $this->desc;
+        $this->fit_num = $this->bed;
+        $this->slide = $this->thumbs;
+        parent::afterFind();
     }
 
     /**

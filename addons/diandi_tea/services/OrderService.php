@@ -89,7 +89,7 @@ class OrderService extends BaseService
             $teaHouse['status'] = '空闲中';
         }
         //$teaHourse['status'] = $HoursesStatus[$teaHourse['status']];
-        $teaHouse['picture'] = ImageHelper::tomedia($teaHouse['picture']);
+        $teaHouse['picture'] = ImageHelper::tomedia($teaHouse['thumb']);
 
         //包间套餐
         $list = [];

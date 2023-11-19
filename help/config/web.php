@@ -12,6 +12,14 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUT',
         ],
+        'user' => [
+            'class' => 'yii\web\User',
+            'identityClass' => 'admin\models\DdApiAccessToken',
+            'enableAutoLogin' => true,
+            'enableSession' => true,
+            'loginUrl' => null,
+            'identityCookie' => ['name' => '_identity-admin', 'httpOnly' => true],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

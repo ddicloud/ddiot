@@ -6,7 +6,7 @@
  * @Last Modified time: 2022-06-30 16:16:20
  */
 
- return [
+return [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => ['diandi_tea/admin/member'], //模块名称/控制器方法
@@ -22,6 +22,19 @@
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => ['diandi_tea/config/hourse'], //模块名称/控制器方法
+        'pluralize' => false,
+        'extraPatterns' => [
+            'GET index' => 'index',
+            'GET view' => 'view',
+            'POST create' => 'create',
+            'POST,PUT update/<id>' => 'update',
+            'POST,GET,DELETE delete/<id>' => 'delete',
+            'GET view/<id>' => 'view',
+        ],
+    ],
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['diandi_tea/config/meal'], //模块名称/控制器方法
         'pluralize' => false,
         'extraPatterns' => [
             'GET index' => 'index',
@@ -230,4 +243,4 @@
             'GET index' => 'index',
         ],
     ],
- ];
+];

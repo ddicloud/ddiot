@@ -192,8 +192,8 @@ class StoreService extends BaseService
         ]);
         loggingHelper::writeLog('StoreService','upLinkStore','校验数据',$category);
         $storeData = [
-            'category_id' => (int) $category[1]??0,
             'category_pid' => (int) $category[0]??0,
+            'category_id' => (int) $category[1]??0,
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => (int) $bloc_id,

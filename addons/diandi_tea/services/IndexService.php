@@ -31,6 +31,7 @@ class IndexService extends BaseService
      * @param int $page
      * @param int $store_id
      * @return array
+     * @throws Exception
      */
     public static function top(int $pageSize = 20, int $page = 1,int $store_id = 0): array
    {
@@ -130,7 +131,7 @@ class IndexService extends BaseService
         ]);
 
         $list = $query->where(['store_id' => $store_id])->offset($pagination->offset)
-        ->limit($pagination->limit)->orderBy('price DESC')->asArray()->all();
+        ->limit($pagination->limit)->orderBy('cprice DESC')->asArray()->all();
         //$list = array_reverse($list);
 
         $HourseStatus = HoursesStatus::listData();
@@ -155,7 +156,7 @@ class IndexService extends BaseService
 
         foreach ($list as &$value) {
             $value['month_num'] = $month_num[$value['id']] ?? random_int(100, 200);
-            $value['picture'] = ImageHelper::tomedia($value['picture']);
+            $value['picture'] = ImageHelper::tomedia($value['thumb']);
             $value['status_str'] = $HourseStatus[$value['status']];
         }
         //$store['hourse_list'] = ArrayHelper::arraySort($list, 'max_num');

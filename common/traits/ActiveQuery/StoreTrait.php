@@ -8,6 +8,8 @@
 
 namespace common\traits\ActiveQuery;
 
+use Yii;
+
 trait StoreTrait
 {
     public array $blocs = [];
@@ -34,6 +36,16 @@ trait StoreTrait
         $fields = parent::fields();
         $fields['blocs'] = 'blocs';
         return $fields;
+    }
+
+    public function beforeSave($insert): bool
+    {
+        $blocs = Yii::$app->request->input('blocs');
+        if (is_array($blocs) && count($blocs) === 2){
+            $this->bloc_id = $blocs[0];
+            $this->store_id = $blocs[1];
+        }
+        return parent::beforeSave($insert);
     }
 
     public function afterFind(): void
