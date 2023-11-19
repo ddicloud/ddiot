@@ -17,7 +17,9 @@ use yii\web\HttpException;
 
 trait StoreLinkTrait
 {
-    use  StoreTrait;
+    use  StoreTrait {
+        StoreTrait::beforeSave as  beforeSaveStore;
+    }
 
     /**
      * @throws Exception
@@ -57,6 +59,7 @@ trait StoreLinkTrait
                 $store_id = $this->store_id;
                 $bloc = StoreService::upLinkStore($store_id, $bloc_id, $category, $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link);
             }
+            self::beforeSaveStore($insert);
             return parent::beforeSave($insert);
         } catch (HttpException|Exception $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
