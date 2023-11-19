@@ -8,6 +8,8 @@
 
 namespace addons\diandi_tea\models\marketing;
 
+use common\traits\ActiveQuery\StoreTrait;
+
 /**
  * This is the model class for table "{{%diandi_tea_set_meal}}".
  *
@@ -24,6 +26,8 @@ namespace addons\diandi_tea\models\marketing;
  */
 class TeaSetMeal extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     /**
      * {@inheritdoc}
      */

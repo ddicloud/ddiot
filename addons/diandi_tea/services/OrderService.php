@@ -62,8 +62,15 @@ class OrderService extends BaseService
     public static function hourseInfo($hourse_id, $store_id, $bloc_id)
     {
         $teaHouse = TeaHourse::find()->where(['id' => $hourse_id, 'store_id' => $store_id, 'bloc_id' => $bloc_id])->asArray()->one();
-        if (!empty($teaHouse['slide'])) {
-            $teaHouse['slide'] = json_decode($teaHouse['slide'], true);
+        $teaHouse['name'] = $teaHouse['title'];
+        $teaHouse['introduce'] = $teaHouse['content'];
+        $teaHouse['max_num'] = $teaHouse['persons'];
+        $teaHouse['tip'] = $teaHouse['desc'];
+        $teaHouse['fit_num'] = $teaHouse['bed'];
+        $teaHouse['slide'] = $teaHouse['thumbs'];
+
+        if (!empty($teaHouse['thumbs'])) {
+            $teaHouse['slide'] = json_decode($teaHouse['thumbs'], true);
 
             if (is_array($teaHouse['slide'])) {
                 foreach ($teaHouse['slide'] as $key => &$value) {

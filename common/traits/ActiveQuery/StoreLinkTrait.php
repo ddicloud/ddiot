@@ -17,6 +17,8 @@ use yii\web\HttpException;
 
 trait StoreLinkTrait
 {
+    use  StoreTrait;
+
     /**
      * @throws Exception
      */

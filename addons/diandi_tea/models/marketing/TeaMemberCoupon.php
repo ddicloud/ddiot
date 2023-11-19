@@ -9,6 +9,7 @@
 namespace addons\diandi_tea\models\marketing;
 
 use common\models\DdMember;
+use common\traits\ActiveQuery\StoreTrait;
 
 /**
  * This is the model class for table "{{%diandi_tea_member_coupon}}".
@@ -31,6 +32,8 @@ use common\models\DdMember;
  */
 class TeaMemberCoupon extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     /**
      * {@inheritdoc}
      */

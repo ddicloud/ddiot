@@ -155,6 +155,7 @@ class IndexService extends BaseService
         }
 
         foreach ($list as &$value) {
+            $value['max_num'] = $value['persons'];
             $value['month_num'] = $month_num[$value['id']] ?? random_int(100, 200);
             $value['picture'] = ImageHelper::tomedia($value['thumb']);
             $value['status_str'] = $HourseStatus[$value['status']];

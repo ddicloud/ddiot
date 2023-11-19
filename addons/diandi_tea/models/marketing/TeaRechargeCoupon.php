@@ -9,6 +9,7 @@
 
 namespace addons\diandi_tea\models\marketing;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
@@ -26,6 +27,8 @@ use Yii;
  */
 class TeaRechargeCoupon extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     /**
      * {@inheritdoc}
      */

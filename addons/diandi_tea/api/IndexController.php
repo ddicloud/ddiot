@@ -9,21 +9,16 @@
 namespace addons\diandi_tea\api;
 
 use addons\diandi_tea\services\IndexService;
-use addons\diandi_tea\models\config\TeaHourse;
-use addons\diandi_tea\models\enums\HoursesStatus;
-use addons\diandi_tea\models\marketing\TeaCoupon;
-use addons\diandi_tea\models\marketing\TeaMemberCoupon;
 use api\controllers\AController;
-use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
+use Exception;
 use Yii;
-use yii\data\Pagination;
 
 class IndexController extends AController
 {
     public $modelClass = '';
 
-    protected array $authOptional = ['top','sms'];
+    protected array $authOptional = ['top', 'sms'];
 
     /**
      * @SWG\Post(path="/diandi_tea/index/top",
@@ -37,28 +32,28 @@ class IndexController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      * )
+     * @throws Exception
      */
     public function actionTop(): array
-   {
-
+    {
         $data = Yii::$app->request->post();
-        $pageSize = $data['pageSize']??10;
-        $page = $data['page']??1;
-        $store_id =\Yii::$app->request->input('store_id',0)??0;
-        $indexList = IndexService::top($pageSize,$page,$store_id);
-       
+        $pageSize = $data['pageSize'] ?? 10;
+        $page = $data['page'] ?? 1;
+        $store_id = \Yii::$app->request->input('store_id', 0) ?? 0;
+        $indexList = IndexService::top($pageSize, $page, $store_id);
+
         return ResultHelper::json(200, '请求成功', $indexList);
     }
 
     public function actionSms(): array
     {
         //    短信通知
-          $mobile = '17778984690';
-          $template = 'SMS_243370847';
-          $data = [
-              'product'=> '有新的订单情况'
-          ];
-          $res = Yii::$app->service->apiSmsService->sendContent($mobile, $data, $template);
+        $mobile = '17778984690';
+        $template = 'SMS_243370847';
+        $data = [
+            'product' => '有新的订单情况'
+        ];
+        $res = Yii::$app->service->apiSmsService->sendContent($mobile, $data, $template);
         return ResultHelper::json(200, '请求成功', $res);
 
     }

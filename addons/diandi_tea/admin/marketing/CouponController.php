@@ -86,7 +86,7 @@ class CouponController extends AController
         if (!empty($view['use_hourse'])) {
             $view['use_hourse'] = explode(',', $view['use_hourse']);
 
-            $houser = TeaHourse::find()->select('name')->where(['id' => $view['use_hourse']])->asArray()->all();
+            $houser = TeaHourse::find()->select('title as  name')->where(['id' => $view['use_hourse']])->asArray()->all();
             $houser = array_column($houser, 'name');
             $view['hourse_name'] = implode(',', $houser);
         } else {
@@ -245,11 +245,11 @@ class CouponController extends AController
                     }
                 }
             }
-            // if (is_array($data['use_hourse'])) {
-            //     $data['use_hourse'] = implode(',', array_unique($data['use_hourse']));
-            // } else {
-            //     $data['use_hourse'] = '';
-            // }
+             if (is_array($data['use_hourse'])) {
+                 $data['use_hourse'] = implode(',', array_unique($data['use_hourse']));
+             } else {
+                 $data['use_hourse'] = '';
+             }
             if ($model->load($data, '') && $model->save()) {
                 return ResultHelper::json(200, '创建成功', $model->toArray());
             } else {
@@ -406,7 +406,7 @@ class CouponController extends AController
             if ($data['type'] == 5) {
                 $is_have = TeaCoupon::find()->select('id')
                     ->where(['store_id' =>\Yii::$app->request->input('store_id',0), 'type' => 5])->asArray()->one();
-                if ($is_have['id'] && $is_have['id'] != $data['id']) {
+                if ($is_have && $is_have['id'] && $is_have['id'] != $data['id']) {
                     return ResultHelper::json(400, '已有体验券');
                 }
                 if (is_array($data['use_hourse'])) {
@@ -415,14 +415,14 @@ class CouponController extends AController
                     }
                 }
             }
-            // if (is_array($data['use_hourse'])) {
-            //     $data['use_hourse'] = implode(',', array_unique($data['use_hourse']));
-            // } else {
-            //     $data['use_hourse'] = '';
-            // }
+             if (is_array($data['use_hourse'])) {
+                 $data['use_hourse'] = implode(',', array_unique($data['use_hourse']));
+             } else {
+                 $data['use_hourse'] = '';
+             }
 
             if ($model->load($data, '') && $model->save()) {
-                return ResultHelper::json(200, '编辑成功', $model);
+                return ResultHelper::json(200, '编辑成功', $model->toArray());
             } else {
                 $msg = ErrorsHelper::getModelError($model);
 
