@@ -20,6 +20,7 @@ use diandi\addons\models\Bloc;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\DdAddons;
 use diandi\addons\models\StoreLabelLink;
+use Exception;
 use Yii;
 use yii\web\HttpException;
 
@@ -82,7 +83,7 @@ class StoreService extends BaseService
                         ];
                         $_link->setAttributes($data);
                         if (!$_link->save()) {
-                            throw new \Exception('保存标签数据失败!');
+                            throw new Exception('保存标签数据失败!');
                         }
                     }
                 }
@@ -104,14 +105,14 @@ class StoreService extends BaseService
                     $addonsUser->status = 1;
                     $addonsUser->is_default = AddonsUser::find()->andWhere(['user_id' => Yii::$app->user->id])->andWhere('is_default = 1')->exists() ? 0 : 1;
                     if (!$addonsUser->save()) {
-                        throw new \Exception('保存用户模块数据失败!');
+                        throw new Exception('保存用户模块数据失败!');
                     }
                 }
                 $user = User::find()->where(['id' => Yii::$app->user->identity->user_id])->one();
                 if ($user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
-                        throw new \Exception('保存用户数据失败!');
+                        throw new Exception('保存用户数据失败!');
                     }
                 }
                 $user_id = Yii::$app->user->identity->user_id;
@@ -148,7 +149,7 @@ class StoreService extends BaseService
                 $transaction->commit();
 
                 return $model;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $transaction->rollBack();
                 throw new HttpException(400, $e->getMessage());
             }
@@ -229,7 +230,7 @@ class StoreService extends BaseService
                         ];
                         $_link->setAttributes($data);
                         if (!$_link->save()) {
-                            throw new \Exception('保存标签数据失败!');
+                            throw new Exception('保存标签数据失败!');
                         }
                     }
                 }
@@ -237,7 +238,7 @@ class StoreService extends BaseService
                 $transaction->commit();
 
                 return $model;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $transaction->rollBack();
                 throw new HttpException(400, $e->getMessage());
             }
@@ -264,6 +265,7 @@ class StoreService extends BaseService
      * @param array $label_link
      * @return BlocStore
      * @throws HttpException
+     * @throws Exception
      * @date 2023-03-03
      * @author Wang Chunsheng
      * @since
@@ -272,7 +274,7 @@ class StoreService extends BaseService
     public static function addLinkStore($user_id, $bloc_id,array $category,array $provinceCityDistrict, $name, $logo, $address, $longitude, $latitude, $mobile, $status, $label_link = []): BlocStore
     {
         if (empty($user_id)) {
-            throw new \Exception('关联商户中，用户ID不能为空!');
+            throw new Exception('关联商户中，用户ID不能为空!');
         }
         $model = new BlocStore([
             'extras' => [],
@@ -311,6 +313,7 @@ class StoreService extends BaseService
             try {
                 // 保存商户标签
                 $StoreLabelLink = $label_link;
+                $store_id = 0;
                 if (!empty($StoreLabelLink)) {
                     foreach ($StoreLabelLink as $key => $label_id) {
                         $_link = clone $link;
@@ -323,7 +326,7 @@ class StoreService extends BaseService
                         ];
                         $_link->setAttributes($data);
                         if (!$_link->save()) {
-                            throw new \Exception('保存标签数据失败!');
+                            throw new Exception('保存标签数据失败!');
                         }
                     }
                 }
@@ -332,7 +335,7 @@ class StoreService extends BaseService
                 if ($user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
-                        throw new \Exception('保存用户数据失败!');
+                        throw new Exception('保存用户数据失败!');
                     }
                 }
                 // $user_id = Yii::$App->user->identity->user_id;
@@ -368,7 +371,7 @@ class StoreService extends BaseService
                 $transaction->commit();
 
                 return $model;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $transaction->rollBack();
                 throw new HttpException(400, $e->getMessage());
             }
@@ -381,32 +384,33 @@ class StoreService extends BaseService
 
     /**
      * 用户添加公司
-     * @param [type] $invitation_code
-     * @param [type] $business_name
-     * @param [type] $logo
-     * @param [type] $pid
-     * @param [type] $group_bloc_id
-     * @param [type] $category
+     * @param $invitation_code
+     * @param $business_name
+     * @param $logo
+     * @param $pid
+     * @param $group_bloc_id
+     * @param $category
      * @param array $provinceCityDistrict
-     * @param [type] $address
-     * @param [type] $register_level
-     * @param [type] $longitude
-     * @param [type] $latitude
-     * @param [type] $telephone
-     * @param [type] $avg_price
-     * @param [type] $recommend
-     * @param [type] $special
-     * @param [type] $introduction
-     * @param [type] $open_time
-     * @param [type] $status
-     * @param [type] $is_group
-     * @param [type] $sosomap_poi_uid
-     * @param [type] $license_no
-     * @param [type] $license_name
-     * @param [type] $level_num
-     * @return
-     * @date 2023-06-19
+     * @param $address
+     * @param $register_level
+     * @param $longitude
+     * @param $latitude
+     * @param $telephone
+     * @param $avg_price
+     * @param $recommend
+     * @param $special
+     * @param $introduction
+     * @param $open_time
+     * @param $end_time
+     * @param $status
+     * @param $is_group
+     * @param $sosomap_poi_uid
+     * @param $license_no
+     * @param $license_name
+     * @param $level_num
+     * @return Bloc
      * @throws HttpException
+     * @date 2023-06-19
      * @example
      * @author Wang Chunsheng
      * @since
@@ -460,7 +464,7 @@ class StoreService extends BaseService
                 if ($user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
-                        throw new \Exception('保存用户数据失败!');
+                        throw new Exception('保存用户数据失败!');
                     }
                 }
                 $user_id = Yii::$app->user->identity->user_id;
@@ -471,7 +475,7 @@ class StoreService extends BaseService
                 $transaction->commit();
 
                 return $model;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $transaction->rollBack();
                 throw new HttpException(400, $e->getMessage());
             }
@@ -565,7 +569,7 @@ class StoreService extends BaseService
                 if ($user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
-                        throw new \Exception('保存用户数据失败!');
+                        throw new Exception('保存用户数据失败!');
                     }
                 }
 
@@ -576,7 +580,7 @@ class StoreService extends BaseService
                 $msg = ErrorsHelper::getModelError($model);
                 throw new HttpException(400, $msg);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $transaction->rollBack();
             throw new HttpException(400, $e->getMessage());
         }
