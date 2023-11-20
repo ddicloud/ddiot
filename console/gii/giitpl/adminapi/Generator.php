@@ -14,6 +14,7 @@
 
 namespace addonstpl\adminapi;
 
+use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -46,13 +47,13 @@ use yii\web\Controller;
  */
 class Generator extends \yii\gii\Generator
 {
-    public string $moduleID;
+    public string $moduleID = '';
 
-    public string $modelClass;
+    public string $modelClass = '';
 
-    public string $controllerClass;
+    public string $controllerClass = '';
 
-    public string $viewPath;
+    public string $viewPath = '';
 
     public string $baseControllerClass = 'yii\web\Controller';
 
@@ -207,15 +208,13 @@ class Generator extends \yii\gii\Generator
             $viewPath . '/api.js',
             $this->render('vue/api.js')
         );
-
-//        $initParams = $this->createInitParams();
-
         $initContent = $this->render('vue/init.js');
-
         //获取字段
         $searchModelClass = explode('\\',$this->searchModelClass);
 
         $attributeLabels = (new $this->modelClass)->attributeLabels();
+        $TableSchema = (new $this->modelClass)->getTableSchema();
+        $TableSchemaArray = ArrayHelper::toArray($TableSchema->columns);
         $tableColumns = [];
         $fieldList = [];
         $form = [
@@ -224,27 +223,36 @@ class Generator extends \yii\gii\Generator
                 'label' => '选择公司'
             ]
         ];
-
         $getPrimaryKey = (new $this->modelClass)->getPrimaryKey();
         $pathApi = "'".'/'.$this->moduleID.'/'. $this->getControllerID()."'";
+        $formType = [
+            'int' => 'number',
+            'datetime' => 'datetime',
+            'varchar' => 'input',
+            'decimal' => 'number',
+            'longtext' => 'fire-editor',
+            'text' => 'textarea',
+        ];
+
         foreach ($attributeLabels as $prop=> $label) {
             $tableColumns[]= [
                 'label'=> $label,
                 'prop'=> $prop
             ];
-            $fieldList = [
-                'label'=> $label,
-                'type'=> 'input',
-                'value'=> end($searchModelClass).'['.$prop.']'
-            ];
-
-            if ($prop !== $getPrimaryKey){
-                $form[$prop] = [
+            if (!empty($TableSchemaArray[$prop])){
+                [$dbType,] = explode('(',$TableSchemaArray[$prop]['dbType']);
+                $fieldList = [
+                    'label'=> $label,
                     'type'=> 'input',
-                    'label' => $label
+                    'value'=> end($searchModelClass).'['.$prop.']'
                 ];
+                if (!in_array($prop,[$getPrimaryKey,'create_time','update_time','bloc_id','store_id'])){
+                    $form[$prop] = [
+                        'type'=>  $formType[trim($dbType)]??'input',
+                        'label' => $label
+                    ];
+                }
             }
-
         }
 
         $initContent = str_replace([
