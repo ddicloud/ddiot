@@ -7,8 +7,10 @@ $config = [
     'id' => 'app-help',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'controllerNamespace' => 'help\controllers',
     'components' => [
         'request' => [
+            'class' => 'common\components\ExtendedRequest',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'a2JT39LPV_JRdgCv4HchqUzCgefuAQUT',
         ],
@@ -63,6 +65,7 @@ if (YII_ENV_DEV) {
         'viewPath' => '@help/views/gii',
         /*自定义*/
         'allowedIPs' => ['127.0.0.1', '::1'],
+        'controllerNamespace'=>'help\controllers',
         'generators' => [
             'addons' => [
                 'class' => 'addonstpl\addons\Generator',

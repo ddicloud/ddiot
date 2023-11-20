@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers;
+namespace help\controllers;
 
 
 use yii\gii\controllers\DefaultController;

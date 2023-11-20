@@ -61,23 +61,15 @@ class OrderService extends BaseService
     //房间详情
     public static function hourseInfo($hourse_id, $store_id, $bloc_id)
     {
-        $teaHouse = TeaHourse::find()->where(['id' => $hourse_id, 'store_id' => $store_id, 'bloc_id' => $bloc_id])->asArray()->one();
+        $teaHouse = TeaHourse::find()->where(['id' => $hourse_id, 'store_id' => $store_id, 'bloc_id' => $bloc_id])->with(['meta'])->asArray()->one();
         $teaHouse['name'] = $teaHouse['title'];
         $teaHouse['introduce'] = $teaHouse['content'];
         $teaHouse['max_num'] = $teaHouse['persons'];
         $teaHouse['tip'] = $teaHouse['desc'];
         $teaHouse['fit_num'] = $teaHouse['bed'];
-        $teaHouse['slide'] = $teaHouse['thumbs'];
+        $teaHouse['slide'] = unserialize($teaHouse['thumbs']);
+        $teaHouse['slide'] = ImageHelper::tomedia($teaHouse['slide']);
 
-        if (!empty($teaHouse['thumbs'])) {
-            $teaHouse['slide'] = json_decode($teaHouse['thumbs'], true);
-
-            if (is_array($teaHouse['slide'])) {
-                foreach ($teaHouse['slide'] as $key => &$value) {
-                    $value = ImageHelper::tomedia($value);
-                }
-            }
-        }
         //详情
 //        $HoursesStatus = HoursesStatus::listData();
         $time = date('Y-m-d H:i:s');
@@ -100,8 +92,8 @@ class OrderService extends BaseService
 
         //包间套餐
         $list = [];
-        if (!empty($teaHouse['set_meal_ids'])) {
-            $set_meal_ids = explode(',', $teaHouse['set_meal_ids']);
+        if (!empty($teaHouse['meta']['set_meal_ids'])) {
+            $set_meal_ids = explode(',', $teaHouse['meta']['set_meal_ids']);
             $list = TeaSetMeal::find()
                 ->where(['id' => $set_meal_ids])
                 ->asArray()
@@ -851,6 +843,7 @@ class OrderService extends BaseService
 
     public static function fiveMin($now_hour = 0, $start_m = 0)
     {
+        $minn = [];
         for ($h = $now_hour; $h < 24; ++$h) {
             if ($h > $now_hour) {
                 $for_m = 0;

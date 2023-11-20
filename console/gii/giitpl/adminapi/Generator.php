@@ -46,31 +46,31 @@ use yii\web\Controller;
  */
 class Generator extends \yii\gii\Generator
 {
-    public $moduleID;
+    public string $moduleID;
 
-    public $modelClass;
+    public string $modelClass;
 
-    public $controllerClass;
+    public string $controllerClass;
 
-    public $viewPath;
+    public string $viewPath;
 
-    public $baseControllerClass = 'yii\web\Controller';
+    public string $baseControllerClass = 'yii\web\Controller';
 
-    public $indexWidgetType = 'grid';
+    public string $indexWidgetType = 'grid';
 
-    public $searchModelClass = '';
+    public string $searchModelClass = '';
 
     /**
      * @var bool whether to wrap the `GridView` or `ListView` widget with the `yii\widgets\Pjax` widget
      * @since 2.0.5
      */
-    public $enablePjax = false;
+    public bool $enablePjax = false;
 
     /**
      * @var bool whether to use strict inflection for controllers IDs (insert a separator between two consecutive uppercase chars)
      * @since 2.1.0
      */
-    public $strictInflector = true;
+    public bool $strictInflector = true;
 
 
     /**
@@ -95,7 +95,7 @@ class Generator extends \yii\gii\Generator
     public function rules(): array
     {
         return array_merge(parent::rules(), [
-            [['controllerClass', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim', 'skipOnEmpty' => true],
+            [['moduleID','controllerClass', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim', 'skipOnEmpty' => true],
             [['modelClass', 'controllerClass', 'baseControllerClass', 'indexWidgetType'], 'required'],
             [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
             [['modelClass', 'controllerClass', 'baseControllerClass', 'searchModelClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
@@ -313,7 +313,6 @@ class Generator extends \yii\gii\Generator
     {
         $controllerClass = StringHelper::dirname(ltrim($this->controllerClass, '\\'));
         [,$path] = explode('admin',$controllerClass);
-        echo '子路径：'.$path;
         if (empty($this->viewPath) && $path) {
             $viewPath = Yii::getAlias('@addons/' . $this->moduleID . '/views'.$path.'/' . $this->getControllerID());
             FileHelper::mkdirs($viewPath);
@@ -330,6 +329,7 @@ class Generator extends \yii\gii\Generator
 
     /**
      * @return string
+     * @throws InvalidConfigException
      */
     public function getNameAttribute(): string
     {
@@ -349,6 +349,7 @@ class Generator extends \yii\gii\Generator
      * Generates code for active field
      * @param string $attribute
      * @return string
+     * @throws InvalidConfigException
      */
     public function generateActiveField(string $attribute): string
     {

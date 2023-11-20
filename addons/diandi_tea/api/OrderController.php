@@ -10,6 +10,7 @@ namespace addons\diandi_tea\api;
 
 use addons\diandi_tea\models\config\TeaGlobalConfig;
 use addons\diandi_tea\models\config\TeaHourse;
+use addons\diandi_tea\models\config\TeaTemplate;
 use addons\diandi_tea\models\marketing\TeaCoupon;
 use addons\diandi_tea\models\marketing\TeaMemberCoupon;
 use addons\diandi_tea\models\marketing\TeaRecharge;
@@ -188,12 +189,11 @@ class OrderController extends AController
         }
 
         // 获取充值订阅模板ID
-        $msg_template = TeaGlobalConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->select(['recharge_template'])->asArray()->one();
-        $msg_templates = array_values($msg_template);
+        $msg_templates = TeaTemplate::find()->findBlocs()->where(['msg_type'=>3])->select('template_code')->scalar();
 
         return ResultHelper::json(200, '请求成功', [
             'list' => ArrayHelper::arraySort($list, 'price'),
-            'msg_template' => $msg_templates,
+            'msg_template' => [$msg_templates],
         ]);
     }
 
@@ -711,9 +711,9 @@ class OrderController extends AController
 
         $info = ServicesOrderService::orderDetail($order_id);
         // 模板消息订阅列表
-        $msg_template = TeaGlobalConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->select(['order_create_template', 'order_end_template'])->asArray()->one();
-        $info['msg_template'] = array_values($msg_template);
-
+//        $msg_template = TeaGlobalConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->select(['order_create_template', 'order_end_template'])->asArray()->one();
+//        $info['msg_template'] = $msg_template? array_values($msg_template):[];
+       $info['msg_template'] = TeaTemplate::find()->findBlocs()->where(['msg_type'=>[1,2]])->select('template_code')->column();
         return ResultHelper::json(200, '获取成功', $info);
     }
 

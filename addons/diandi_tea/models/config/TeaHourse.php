@@ -66,6 +66,11 @@ class TeaHourse extends PlaceRoom
         return $this->hasMany(TeaOrderList::class,['hourse_id'=>'id'])->where(['status'=>2])->andWhere($whereTime);
     }
 
+    public function  getMeta(): ActiveQuery
+    {
+        return $this->hasOne(TeaHourseMeal::class,['place_roome_id'=>'id']);
+    }
+
     public function afterFind(): void
     {
         $this->name = $this->title;

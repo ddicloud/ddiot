@@ -31,6 +31,7 @@ use yii\helpers\StringHelper;
 class Generator extends \yii\gii\Generator
 {
     public $moduleClass;
+
     public $moduleID;
 
 
