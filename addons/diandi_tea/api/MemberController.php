@@ -126,8 +126,8 @@ class MemberController extends AController
         $member_id = Yii::$app->user->identity->member_id??0;
 
         $data = Yii::$app->request->post();
-        $pageSize = $data['pageSize'];
-        $page = $data['page'];
+        $pageSize = $data['pageSize']??10;
+        $page = $data['page']??1;
         $info = MemberService::order($member_id, $pageSize, $page, $data);
 
         return ResultHelper::json(200, '请求成功', $info);

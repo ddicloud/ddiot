@@ -8,19 +8,15 @@
 
 namespace addons\diandi_tea\api;
 
-use addons\diandi_doorlock\models\sdk\DoorlockRoomOrder;
-use addons\diandi_tea\services\NoticeService;
 use api\controllers\AController;
-use api\modules\wechat\models\DdWxappFans;
 use common\helpers\ResultHelper;
 use diandi\addons\cloud;
-use Yii;
 
 class ApiController extends AController
 {
     public $modelClass = '';
 
-    protected array $authOptional = ['test'];
+    protected array $authOptional = ['index'];
 
     /**
      * @SWG\Post(path="/diandi_shop/address/add",
@@ -78,24 +74,18 @@ class ApiController extends AController
      * )
      */
     public function actionIndex(): array
-   {
-
-        $data = Yii::$app->request->post();
-        $access_token = $data['access_token'];
-        $data['user_id'] = Yii::$app->user->identity->member_id??0;
-        $res = [];
-
-        return ResultHelper::json(200, '请求成功', $res);
+    {
+        return ResultHelper::json(200, '请求成功');
     }
 
     public function actionTest(): void
     {
-       $cloud = new cloud();
+        $cloud = new cloud();
 //       $verify_license =$cloud->activate_license('3617B0UY','chunchun');
 //       var_dump($verify_license);
-       $file = $cloud->check_update();
-       $cloud->download_update($file['update_id'], $file['has_sql'], $file['version']);
-       var_dump($file);
+        $file = $cloud->check_update();
+        $cloud->download_update($file['update_id'], $file['has_sql'], $file['version']);
+        var_dump($file);
     }
 
     // 队列测试

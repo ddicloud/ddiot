@@ -7,6 +7,14 @@
  */
 
  return [
+     [
+         'class' => 'yii\rest\UrlRule',
+         'controller' => ['diandi_tea/api'], //模块名称/控制器方法
+         'pluralize' => false,
+         'extraPatterns' => [
+             'POST,GET index' => 'index',
+         ],
+     ],
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => ['diandi_tea/index'], //模块名称/控制器方法

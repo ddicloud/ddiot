@@ -129,7 +129,7 @@ class TeaOrderList extends \yii\db\ActiveRecord
 
     public function getHourse(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(TeaHourse::class, ['id' => 'hourse_id'])->select(['name AS hourse_name'])->asArray();
+        return $this->hasOne(TeaHourse::class, ['id' => 'hourse_id'])->select(['title AS hourse_name'])->asArray();
     }
 
     public function getCoupon(): \yii\db\ActiveQuery

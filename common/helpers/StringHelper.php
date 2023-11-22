@@ -333,7 +333,7 @@ class StringHelper extends BaseStringHelper
         bool $is_prefix = false
     ): \SimpleXMLElement|bool
     {
-        libxml_disable_entity_loader(true);
+
         if (preg_match('/(\<\!DOCTYPE|\<\!ENTITY)/i', $string)) {
             return false;
         }
@@ -627,7 +627,6 @@ class StringHelper extends BaseStringHelper
 
     public static function isimplexml_load_string($string, $class_name = 'SimpleXMLElement', $options = 0, $ns = '', $is_prefix = false)
     {
-        libxml_disable_entity_loader(true);
         if (preg_match('/(\<\!DOCTYPE|\<\!ENTITY)/i', $string)) {
             return false;
         }

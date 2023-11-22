@@ -25,18 +25,18 @@ class MemberService extends BaseService
     public static function info($member_id): array|\yii\db\ActiveRecord
     {
         $info = DdMember::find()
-                ->select(['username', 'mobile', 'gender', 'nickName', 'avatarUrl', 'level', 'member_id'])
-                ->where(['member_id' => $member_id])
-                ->asArray()
-                ->one();
+            ->select(['username', 'mobile', 'gender', 'nickName', 'avatarUrl', 'level', 'member_id'])
+            ->where(['member_id' => $member_id])
+            ->asArray()
+            ->one();
 
         $info['avatarUrl'] = ImageHelper::tomedia($info['avatarUrl']);
-       
+
 
         if ($info['level'] == 2) {
             $info['saveMoney'] = TeaOrderList::find()
-            ->where(['member_id' => $member_id])
-            ->sum('discount');
+                ->where(['member_id' => $member_id])
+                ->sum('discount');
             // $info['saveMoney'] = TeaOrderList::find()
             //     ->select('SUM(discount) AS saveMoney')
             //     ->where(['member_id' => $member_id])
@@ -46,10 +46,10 @@ class MemberService extends BaseService
 
         // var_dump($info);die;
         $data = DdMemberAccount::find()
-                ->select(['user_money', 'user_integral'])
-                ->where(['member_id' => $member_id])
-                ->asArray()
-                ->one();
+            ->select(['user_money', 'user_integral'])
+            ->where(['member_id' => $member_id])
+            ->asArray()
+            ->one();
         //余额充值明细
         // $query = TeaRechargeList::find();
         // $count = $query->count();
@@ -78,12 +78,12 @@ class MemberService extends BaseService
         $month = [];
         //用户余额充值记录
         $info['recharge_list'] = TeaRechargeList::find()
-                ->with('recharge')
-                ->where(['member_id' => $member_id, 'status' => 2])
-                ->select(['*', "DATE_FORMAT(create_time,'%Y-%m') AS month"])
-                //->groupBy('month')
-                ->asArray()
-                ->all();
+            ->with('recharge')
+            ->where(['member_id' => $member_id, 'status' => 2])
+            ->select(['*', "DATE_FORMAT(create_time,'%Y-%m') AS month"])
+            //->groupBy('month')
+            ->asArray()
+            ->all();
         foreach ($info['recharge_list'] as &$v) {
             $v['pay_time'] = date('Y-m-d H:i', strtotime($v['pay_time']));
             $v['all_money'] = number_format($v['price'] + $v['recharge']['give_money'], 2);
@@ -106,11 +106,11 @@ class MemberService extends BaseService
 
         //用户余额消费记录
         $order_list = AccountLog::find()
-                ->where(['member_id' => $member_id, 'account_type' => ['tea_buy_coupon_balance', 'tea_order_balance', 'tea_member_renew_money_balance', 'tea_member_money_balance']])
-                ->select(['*', "FROM_UNIXTIME(create_time,'%Y-%m') as month"])
-                ->orderBy(['create_time' => SORT_DESC])
-                ->asArray()
-                ->all();
+            ->where(['member_id' => $member_id, 'account_type' => ['tea_buy_coupon_balance', 'tea_order_balance', 'tea_member_renew_money_balance', 'tea_member_money_balance']])
+            ->select(['*', "FROM_UNIXTIME(create_time,'%Y-%m') as month"])
+            ->orderBy(['create_time' => SORT_DESC])
+            ->asArray()
+            ->all();
 
         $month = [];
         foreach ($order_list as &$val) {
@@ -133,25 +133,29 @@ class MemberService extends BaseService
         return $info;
     }
 
-    public static function order($member_id,int $pageSize = 20,int $page = 1, $data = ''): array
+    public static function order($member_id, int $pageSize = 20, int $page = 1, $data = ''): array
     {
-        //我的预定
-        if ($data['type'] == 1) {
-            //$where['status'] = 2;
-            $where['status'] = [1, 2];
-            $where['order_type'] = 1;
-        } else {
-            //我的订单
-            if ($data['status']) {
-                $where['status'] = $data['status'];
-                //$where['status'] = [1, 2];
-            }
-            if ($data['order_type']) {
-                $where['order_type'] = $data['order_type'];
-            } else {
+        $where = [];
+        if (is_array($data)) {
+            //我的预定
+            if (isset($data['type']) && $data['type'] == 1) {
+                //$where['status'] = 2;
+                $where['status'] = [1, 2];
                 $where['order_type'] = 1;
+            } else {
+                //我的订单
+                if (isset($data['status']) && $data['status']) {
+                    $where['status'] = $data['status'];
+                    //$where['status'] = [1, 2];
+                }
+                if (isset($data['order_type'])) {
+                    $where['order_type'] = $data['order_type'];
+                } else {
+                    $where['order_type'] = 1;
+                }
             }
         }
+
         $where['member_id'] = $member_id;
 
         $query = TeaOrderList::find();
@@ -166,19 +170,19 @@ class MemberService extends BaseService
         ]);
 
         $member = DdMember::find()
-                ->select(['nickName'])
-                ->where(['member_id' => $member_id])
-                ->asArray()
-                ->one();
+            ->select(['nickName'])
+            ->where(['member_id' => $member_id])
+            ->asArray()
+            ->one();
 
         $info = $query->where(['member_id' => $member_id])
-                ->with(['hourse', 'coupon'])
-                ->select(['id', 'start_time', 'end_time', 'balance', 'discount', 'amount_payable', 'real_pay', 'order_number', 'status', 'hourse_id', 'coupon_id', 'create_time', 'pay_type', 'status AS sss'])
-                ->orderBy(['create_time' => SORT_DESC])
-                ->where($where)
-                ->limit($pagination->limit)
-                ->asArray()
-                ->all();
+            ->with(['hourse', 'coupon'])
+            ->select(['id', 'start_time', 'end_time', 'balance', 'discount', 'amount_payable', 'real_pay', 'order_number', 'status', 'hourse_id', 'coupon_id', 'create_time', 'pay_type', 'status AS sss'])
+            ->orderBy(['create_time' => SORT_DESC])
+            ->where($where)
+            ->limit($pagination->limit)
+            ->asArray()
+            ->all();
 
 
         foreach ($info as &$value) {
@@ -187,7 +191,7 @@ class MemberService extends BaseService
 
             //上一次订单结束时间
             $order_end_time = TeaOrderList::find()->where(['renew_order_id' => $value['id'], 'status' => [2, 3]])->orderBy('create_time DESC')->asArray()->one();
-            if ($order_end_time['end_time']) {
+            if ($order_end_time && $order_end_time['end_time']) {
                 $value['end_time'] = $order_end_time['end_time'];
             }
             //---------------------------
@@ -199,7 +203,7 @@ class MemberService extends BaseService
             // 是否显示退款按钮
             $time = time();
             $start_time = DateHelper::dateToInt($value['start_time']);
-            if ((int) $value['status'] == OrderStatus::status2 && $start_time - $time > 0 && $start_time - $time > 30 * 60) {
+            if ((int)$value['status'] == OrderStatus::status2 && $start_time - $time > 0 && $start_time - $time > 30 * 60) {
                 $value['is_refund'] = 1;
             } else {
                 $value['is_refund'] = 0;
@@ -230,20 +234,20 @@ class MemberService extends BaseService
     {
         //积分明细
         $integral_addlist = AccountLog::find()
-        ->where([
-            'member_id' => $member_id,
-            'is_add' => 0,
-            'account_type' => [
-                'tea_member_give_integral',
-                'tea_member_give_inte_ren',
-                'tea_member_give_inte_cou',
-                'tea_member_give_inte_rec',
-            ],
-        ])
-        ->select(['*', "FROM_UNIXTIME(create_time,'%Y-%m') as month"])
-        ->orderBy(['create_time' => SORT_DESC])
-        ->asArray()
-        ->all();
+            ->where([
+                'member_id' => $member_id,
+                'is_add' => 0,
+                'account_type' => [
+                    'tea_member_give_integral',
+                    'tea_member_give_inte_ren',
+                    'tea_member_give_inte_cou',
+                    'tea_member_give_inte_rec',
+                ],
+            ])
+            ->select(['*', "FROM_UNIXTIME(create_time,'%Y-%m') as month"])
+            ->orderBy(['create_time' => SORT_DESC])
+            ->asArray()
+            ->all();
 
         $month = [];
         foreach ($integral_addlist as &$val) {
@@ -263,10 +267,10 @@ class MemberService extends BaseService
         }
 
         $user_integral = DdMemberAccount::find()
-                ->select(['user_integral'])
-                ->where(['member_id' => $member_id])
-                ->asArray()
-                ->one()['user_integral'];
+            ->select(['user_integral'])
+            ->where(['member_id' => $member_id])
+            ->asArray()
+            ->one()['user_integral'];
 
         $list['integral'] = $data;
         $list['user_integral'] = $user_integral;
