@@ -71,12 +71,12 @@ class module extends \yii\base\Module
                     'uniontid' => trim($out_trade_no),
                 ])->select(['bloc_id', 'store_id', 'module'])->asArray()->one();
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志sql' . $DdCorePayLog->find()->where([
-                    'uniontid' => trim($out_trade_no),
-                ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
+                        'uniontid' => trim($out_trade_no),
+                    ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
                 $pay_bloc_id = Bloc::find()->where(['bloc_id' => $orderInfo['bloc_id']])->select('group_bloc_id')->scalar();
 
-                Yii::$app->service->commonGlobalsService->initId($pay_bloc_id, $orderInfo['store_id'], $orderInfo['module']);
+                Yii::$app->service->commonGlobalsService->initId((int)$pay_bloc_id??0, (int)$orderInfo['store_id']??0);
                 Yii::$app->service->commonGlobalsService->getConf($pay_bloc_id);
                 Yii::$app->params['bloc_id'] = $pay_bloc_id;
                 Yii::$app->params['store_id'] = $orderInfo['store_id'];
@@ -92,20 +92,20 @@ class module extends \yii\base\Module
         $Wxapp = $conf['wxapp'];
 
 
-        $apiclient_certUrl =  !empty($Wechatpay['apiclient_cert']) &&  !empty($Wechatpay['apiclient_cert']['url'])  ? $Wechatpay['apiclient_cert']['url'] : '';
-        $apiclient_keyUrl =  !empty($Wechatpay['apiclient_key']) &&  !empty($Wechatpay['apiclient_key']['url'])  ? $Wechatpay['apiclient_key']['url'] : '';
+        $apiclient_certUrl = !empty($Wechatpay['apiclient_cert']) && !empty($Wechatpay['apiclient_cert']['url']) ? $Wechatpay['apiclient_cert']['url'] : '';
+        $apiclient_keyUrl = !empty($Wechatpay['apiclient_key']) && !empty($Wechatpay['apiclient_key']['url']) ? $Wechatpay['apiclient_key']['url'] : '';
         $apiclient_cert = Yii::getAlias('@attachment/' . $apiclient_certUrl);
         $apiclient_key = Yii::getAlias('@attachment/' . $apiclient_keyUrl);
 
 
         // 支付参数设置
         $config['params']['wechatPaymentConfig'] = [
-            'app_id' => $Wxapp['AppId']??'',
-            'mch_id' => $Wechatpay['mch_id']??'',
-            'key' => $Wechatpay['key']??'',  // API 密钥
+            'app_id' => $Wxapp['AppId'] ?? '',
+            'mch_id' => $Wechatpay['mch_id'] ?? '',
+            'key' => $Wechatpay['key'] ?? '',  // API 密钥
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
             'cert_path' => $apiclient_cert, // XXX: 绝对路径！！！！
-            'key_path'  => $apiclient_key, // XXX: 绝对路径！！！！
+            'key_path' => $apiclient_key, // XXX: 绝对路径！！！！
             'notify_url' => Yii::$app->request->hostInfo . '/api/wechat/basics/notify',
         ];
 
@@ -115,8 +115,8 @@ class module extends \yii\base\Module
 
         // 小程序参数设置
         $config['params']['wechatMiniProgramConfig'] = [
-            'app_id' => $Wxapp['AppId']??'',
-            'secret' => $Wxapp['AppSecret']??'',
+            'app_id' => $Wxapp['AppId'] ?? '',
+            'secret' => $Wxapp['AppSecret'] ?? '',
             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
             'response_type' => 'array',
             'log' => [

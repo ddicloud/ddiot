@@ -223,7 +223,7 @@ class OrderController extends AController
         $set_meal_id = TeaOrderList::find()->where(['id' => $order_id])->select('set_meal_id')->one();
         $price = TeaSetMeal::find()->where(['id' => $set_meal_id['set_meal_id']])->select('renew_price')->one();
 
-        return ResultHelper::json(200, '请求成功', $price);
+        return ResultHelper::json(200, '请求成功', $price?$price->toArray():[]);
     }
 
     /**
