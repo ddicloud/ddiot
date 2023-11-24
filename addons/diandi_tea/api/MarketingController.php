@@ -29,12 +29,12 @@ class MarketingController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="coupon_id",
-     *     type="string",
-     *     description="卡券id",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="coupon_id",
+     *     type="string",
+     *     description="卡券id",
+     *     required=true,
+     *   ),
      * )
      */
     public function actionCouponDetail(): array

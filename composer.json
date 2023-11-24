@@ -52,7 +52,8 @@
     "ext-swoole": "*",
     "ext-redis": "*",
     "vlucas/phpdotenv": "^5.5",
-    "yiithings/yii2-dotenv": "^1.1"
+    "yiithings/yii2-dotenv": "^1.1",
+    "yii-diandi/yii2-iot": "^1.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

@@ -53,7 +53,6 @@ class CommonQuery extends ActiveQuery
     public function findBlocs(string $alias=''): static
     {
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('bloc_id')->column();
-        
         $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
 
         return $this;

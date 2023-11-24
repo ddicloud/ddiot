@@ -75,8 +75,11 @@ class module extends \yii\base\Module
                     ])->select(['bloc_id', 'store_id', 'module'])->createCommand()->getRawSql());
                 FileHelper::writeLog($logPath, '入口配置回来的xml值订单日志' . json_encode($orderInfo));
                 $pay_bloc_id = Bloc::find()->where(['bloc_id' => $orderInfo['bloc_id']])->select('group_bloc_id')->scalar();
-
-                Yii::$app->service->commonGlobalsService->initId((int)$pay_bloc_id??0, (int)$orderInfo['store_id']??0);
+                $pay_bloc_id = (int)($pay_bloc_id?:$orderInfo['bloc_id']);
+                FileHelper::writeLog($logPath, '支付对应的参数公司' . json_encode([
+                    'pay_bloc_id'=>$pay_bloc_id
+                ]));
+                Yii::$app->service->commonGlobalsService->initId($pay_bloc_id, (int)$orderInfo['store_id']??0);
                 Yii::$app->service->commonGlobalsService->getConf($pay_bloc_id);
                 Yii::$app->params['bloc_id'] = $pay_bloc_id;
                 Yii::$app->params['store_id'] = $orderInfo['store_id'];

@@ -87,12 +87,12 @@ class SlideController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="slide",
-     *     type="string",
-     *     description="幻灯片",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="slide",
+     *     type="string",
+     *     description="幻灯片",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionCreate(): array
@@ -122,12 +122,12 @@ class SlideController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="slide",
-     *     type="string",
-     *     description="幻灯片",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="slide",
+     *     type="string",
+     *     description="幻灯片",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionUpdate($id): array

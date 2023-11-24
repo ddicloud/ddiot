@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d31482c478ed55caa87198a496144c7",
+    "content-hash": "9b9cec19a236362c82680381b54e3577",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -4908,6 +4908,56 @@
                 "source": "https://github.com/yii-diandi/yii2-easywechat/tree/1.1.2"
             },
             "time": "2023-09-12T11:00:18+00:00"
+        },
+        {
+            "name": "yii-diandi/yii2-iot",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii-diandi/yii2-iot.git",
+                "reference": "5436d27d552c9c6a2a2ebc05a4489fe94ce6830c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii-diandi/yii2-iot/zipball/5436d27d552c9c6a2a2ebc05a4489fe94ce6830c",
+                "reference": "5436d27d552c9c6a2a2ebc05a4489fe94ce6830c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "diandi\\iot\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "wangchunsheng",
+                    "email": "2192138785@qq.com"
+                }
+            ],
+            "description": "店滴云物联网控制",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/yii-diandi/yii2-iot/issues",
+                "source": "https://github.com/yii-diandi/yii2-iot/tree/1.0.0"
+            },
+            "time": "2023-11-24T04:03:29+00:00"
         },
         {
             "name": "yii-diandi/yii2-migration",

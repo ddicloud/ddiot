@@ -64,12 +64,12 @@ class OrderListController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *  @SWG\Parameter(
-     *     in="query",
-     *     name="id",
-     *     type="integer",
-     *     description="id",
-     *     required=false,
-     *   )
+     *     in="query",
+     *     name="id",
+     *     type="integer",
+     *     description="id",
+     *     required=false,
+     *   )
      * )
      */
     public function actionView($id): array

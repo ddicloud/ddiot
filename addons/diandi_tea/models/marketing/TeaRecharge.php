@@ -44,7 +44,7 @@ class TeaRecharge extends \yii\db\ActiveRecord
     {
         return [
          
-            [['type'], 'integer'],
+            [['type','bloc_id','store_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
             [['price', 'give_money'], 'number'],
             [['give_coupon_ids'], 'string', 'max' => 100],

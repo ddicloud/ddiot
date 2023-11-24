@@ -8,7 +8,7 @@
 
 namespace addons\diandi_tea\services\jobs;
 
-use addons\diandi_tea\services\diandiLockSdk;
+use addons\diandi_tea\services\diandiSdk;
 use common\components\Job;
 use common\helpers\loggingHelper;
 use GuzzleHttp\Client;
@@ -41,7 +41,7 @@ class CrelockOrder extends Job
      */
     public function execute($queue): void
     {
-        $diandiLockSdk = new diandiLockSdk();
+        $diandiLockSdk = new diandiSdk();
         $ext_order_id = $this->ext_order_id;
         $member_id = $this->member_id;
         $password = $this->password;

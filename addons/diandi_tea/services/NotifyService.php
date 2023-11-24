@@ -142,11 +142,14 @@ class NotifyService extends AddonsModule
                     ->where(['member_id' => $orderInfo['member_id']])->asArray()->one()['level'];
                 $scale = TeaGlobalConfig::find()->select(['mumber_scale', 'vip_scale'])
                     ->where(['store_id' => $orderInfo['store_id']])->asArray()->one();
-                if ($memberLevel == 1) {
-                    $integral = round($orderInfo['real_pay'] * $scale['mumber_scale'] / 100);
-                } else {
-                    $integral = round($orderInfo['real_pay'] * $scale['vip_scale'] / 100);
+                if ($scale){
+                    if ($memberLevel == 1) {
+                        $integral = round($orderInfo['real_pay'] * $scale['mumber_scale'] / 100);
+                    } else {
+                        $integral = round($orderInfo['real_pay'] * $scale['vip_scale'] / 100);
+                    }
                 }
+
                 $innn = ['inte' => $integral, 'memberint' => $memberIntegral, 'level' => $memberLevel, 'scale' => $scale, 'money' => $orderInfo['real_pay']];
                 loggingHelper::writeLog('diandi_tea', 'integral', '计算积分', $innn);
                 if ($integral > 0) {
@@ -203,7 +206,7 @@ class NotifyService extends AddonsModule
                 // $event = new LockOrderEvent($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 // $dispatcher->dispatch(LockOrderEvent::EVENT_LOCK_ORDER, $event);
 
-                $diandiLockSdk = new diandiLockSdk();
+                $diandiLockSdk = new diandiSdk();
                 $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
 
                 loggingHelper::writeLog('diandi_tea', 'Notify', '房间开锁下单', [$ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time]);
@@ -280,7 +283,7 @@ class NotifyService extends AddonsModule
                     $switch_time_renew = 1;
                 }
 
-                $diandiLockSdk = new diandiLockSdk();
+                $diandiLockSdk = new diandiSdk();
                 $ext_event_id = $orderInfo['id'];
                 // 增加5个关灯任务
                 for ($i = 0; $i < 5; $i++) {
@@ -399,7 +402,7 @@ class NotifyService extends AddonsModule
                 // $event = new LockOrderEvent($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 // $dispatcher->dispatch(LockOrderEvent::EVENT_LOCK_ORDER, $event);
 
-                $diandiLockSdk = new diandiLockSdk();
+                $diandiLockSdk = new diandiSdk();
                 $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 loggingHelper::writeLog('diandi_tea', 'Notify', '房间开锁加时下单', [$ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time]);
 

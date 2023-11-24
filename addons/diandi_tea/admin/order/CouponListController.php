@@ -40,19 +40,19 @@ class CouponListController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="CouponAar[name]",
-     *     type="string",
-     *     description="卡券名",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="CouponAar[name]",
+     *     type="string",
+     *     description="卡券名",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="CouponAar[type]",
-     *     type="integer",
-     *     description="卡券类型1：代金券 2：时长卡  3：次卡 4：折扣券 5：体验券",
-     *     required=false,
-     *   )
+     *     in="query",
+     *     name="CouponAar[type]",
+     *     type="integer",
+     *     description="卡券类型1：代金券 2：时长卡  3：次卡 4：折扣券 5：体验券",
+     *     required=false,
+     *   )
      * )
      */
     public function actionIndex(): array

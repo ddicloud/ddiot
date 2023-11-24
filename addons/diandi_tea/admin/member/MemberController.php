@@ -39,26 +39,26 @@ class MemberController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="HonoraryAar[title]",
-     *     type="string",
-     *     description="标题",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="HonoraryAar[title]",
+     *     type="string",
+     *     description="标题",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="HonoraryAar[status]",
-     *     type="integer",
-     *     description="状态",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="HonoraryAar[status]",
+     *     type="integer",
+     *     description="状态",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="HonoraryAar[type]",
-     *     type="integer",
-     *     description="类型",
-     *     required=false,
-     *   )
+     *     in="query",
+     *     name="HonoraryAar[type]",
+     *     type="integer",
+     *     description="类型",
+     *     required=false,
+     *   )
      * )
      */
     public function actionIndex(): array

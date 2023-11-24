@@ -8,7 +8,7 @@
 
 namespace addons\diandi_tea\services\jobs;
 
-use addons\diandi_tea\services\diandiLockSdk;
+use addons\diandi_tea\services\diandiSdk;
 use common\components\Job;
 use common\helpers\loggingHelper;
 use GuzzleHttp\Client;
@@ -47,7 +47,7 @@ class SwitchJob extends Job
         $ext_event_id = $this->ext_event_id;
         $is_queue = $this->is_queue;
 
-        $diandiLockSdk = new diandiLockSdk();
+        $diandiLockSdk = new diandiSdk();
         // 增加5个关灯任务
         for ($i=0; $i <5 ; $i++) { 
             $switch_time_renew += 5*60; 

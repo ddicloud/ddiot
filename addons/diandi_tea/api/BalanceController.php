@@ -29,19 +29,19 @@ class BalanceController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="order_number",
-     *     type="string",
-     *     description="订单编号",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="order_number",
+     *     type="string",
+     *     description="订单编号",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="real_pay",
-     *     type="string",
-     *     description="实际支付金额",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="real_pay",
+     *     type="string",
+     *     description="实际支付金额",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionOrderBalancePay()
@@ -79,19 +79,19 @@ class BalanceController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="order_number",
-     *     type="string",
-     *     description="订单编号",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="order_number",
+     *     type="string",
+     *     description="订单编号",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="price",
-     *     type="string",
-     *     description="支付金额",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="price",
+     *     type="string",
+     *     description="支付金额",
+     *     required=false,
+     *   ),
      * )
      */
     public static function actionCouponBalancePay()

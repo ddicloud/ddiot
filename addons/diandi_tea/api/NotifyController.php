@@ -29,12 +29,12 @@ class NotifyController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *     @SWG\Parameter(
-     *     in="formData",
-     *     name="out_trade_no",
-     *     type="string",
-     *     description="订单编号",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="out_trade_no",
+     *     type="string",
+     *     description="订单编号",
+     *     required=true,
+     *   ),
      * )
      */
     public function actionNotify(): ?array

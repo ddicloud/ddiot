@@ -17,7 +17,7 @@ use addons\diandi_tea\models\marketing\TeaRecharge;
 use addons\diandi_tea\models\marketing\TeaSetMeal;
 use addons\diandi_tea\models\order\TeaInvoice;
 use addons\diandi_tea\models\order\TeaOrderList;
-use addons\diandi_tea\services\diandiLockSdk;
+use addons\diandi_tea\services\diandiSdk;
 use addons\diandi_tea\services\OrderService as ServicesOrderService;
 use api\controllers\AController;
 use common\helpers\ArrayHelper;
@@ -44,12 +44,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="hourse_id",
-     *     type="integer",
-     *     description="包间id",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="hourse_id",
+     *     type="integer",
+     *     description="包间id",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionSetMealList(): array
@@ -73,12 +73,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="type",
-     *     type="integer",
-     *     description="卡券类型  1：代金券 2：时常卡  3：次卡 4：折扣券 5：体验券",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="type",
+     *     type="integer",
+     *     description="卡券类型  1：代金券 2：时常卡  3：次卡 4：折扣券 5：体验券",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionCouponList(): array
@@ -107,12 +107,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="type",
-     *     type="integer",
-     *     description="卡券类型  1：代金券 2：时常卡  3：次卡 4：折扣券 5：体验券",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="type",
+     *     type="integer",
+     *     description="卡券类型  1：代金券 2：时常卡  3：次卡 4：折扣券 5：体验券",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionMyCoupon(): array
@@ -166,25 +166,25 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="type",
-     *     type="integer",
-     *     description="卡券类型",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="type",
+     *     type="integer",
+     *     description="卡券类型",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionRechargeActivity(): array
    {
 
-        $list = TeaRecharge::find()->select(['id', 'price', 'type', 'give_money', 'give_coupon_ids'])->asArray()->all();
+        $list = TeaRecharge::find()->where(['store_id' => Yii::$app->request->input('store_id',0)])->select(['id', 'price', 'type', 'give_money', 'give_coupon_ids'])->asArray()->all();
 
-        foreach ($list as $key => &$value) {
-            $ids = explode(',', $value['give_coupon_ids']);
-            if ($value['give_coupon_ids']) {
-                $give_coupon = TeaCoupon::find()->select(['name', 'explain', 'type', 'price', 'use_start', 'use_end', 'enable_start', 'enable_end', 'background', 'enable_store', 'enable_week', 'max_time'])->where(['id' => $ids])->asArray()->all();
-                $value['give_coupon_name'] = implode(',', array_column($give_coupon, 'name'));
-                $value['give_time'] = TeaCoupon::find()->where(['id' => $ids])->sum('max_time');
+        foreach ($list as &$value) {
+            if ($value['give_coupon_ids']){
+                $ids = explode(',', $value['give_coupon_ids']);
+                    $give_coupon = TeaCoupon::find()->select(['name', 'explain', 'type', 'price', 'use_start', 'use_end', 'enable_start', 'enable_end', 'background', 'enable_store', 'enable_week', 'max_time'])->where(['id' => $ids])->asArray()->all();
+                    $value['give_coupon_name'] = implode(',', array_column($give_coupon, 'name'));
+                    $value['give_time'] = TeaCoupon::find()->where(['id' => $ids])->sum('max_time');
             }
         }
 
@@ -209,12 +209,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *   @SWG\Parameter(
-     *     in="query",
-     *     name="order_id",
-     *     type="integer",
-     *     description="订单id",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="order_id",
+     *     type="integer",
+     *     description="订单id",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionRenewPrice(): array
@@ -241,88 +241,87 @@ class OrderController extends AController
      *      required=true
      *     ),
      *     @SWG\Parameter(
-     *          in="formData",
-     *          name="start_time",
-     *          type="string",
-     *          description="开始时间",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="start_time",
+     *          type="string",
+     *          description="开始时间",
+     *          required=true,
+     *   ),
      *     @SWG\Parameter(
-     *          in="formData",
-     *          name="end_time",
-     *          type="string",
-     *          description="结束时间",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="end_time",
+     *          type="string",
+     *          description="结束时间",
+     *          required=true,
+     *   ),
      *     @SWG\Parameter(
-     *          in="formData",
-     *          name="coupon_id",
-     *          type="integer",
-     *          description="使用卡券id",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="coupon_id",
+     *          type="integer",
+     *          description="使用卡券id",
+     *          required=true,
+     *   ),
      *     @SWG\Parameter(
-     *          in="formData",
-     *          name="amount_payable",
-     *          type="number",
-     *          description="应付金额",
-     *          required=false,
-     *   ),
+     *          in="formData",
+     *          name="amount_payable",
+     *          type="number",
+     *          description="应付金额",
+     *          required=false,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="discount",
-     *          type="number",
-     *          description="优惠金额",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="discount",
+     *          type="number",
+     *          description="优惠金额",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="real_pay",
-     *          type="number",
-     *          description="实付金额",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="real_pay",
+     *          type="number",
+     *          description="实付金额",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="renew_order_id",
-     *          type="integer",
-     *          description="所续费订单id",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="renew_order_id",
+     *          type="integer",
+     *          description="所续费订单id",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="renew_price",
-     *          type="integer",
-     *          description="所续费订单id",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="renew_price",
+     *          type="integer",
+     *          description="所续费订单id",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="order_type",
-     *          type="integer",
-     *          description="订单类型 1.包间订单  2.续费订单",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="order_type",
+     *          type="integer",
+     *          description="订单类型 1.包间订单  2.续费订单",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="pay_type",
-     *          type="integer",
-     *          description="支付方式：1.现金支付 2.余额支付",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="pay_type",
+     *          type="integer",
+     *          description="支付方式：1.现金支付 2.余额支付",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="renew_num",
-     *          type="integer",
-     *          description="续费单位个数",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="renew_num",
+     *          type="integer",
+     *          description="续费单位个数",
+     *          required=true,
+     *   ),
      * )
      */
     public function actionCreateOrder(): array
     {
         $member_id = Yii::$app->user->identity->member_id ?? 0;
-
         $coupon_id = Yii::$app->request->post('coupon_id', 0);
         $discount = Yii::$app->request->post('discount', 0);
         $set_meal_id = Yii::$app->request->post('set_meal_id');
@@ -450,19 +449,19 @@ class OrderController extends AController
      *      required=true
      *     ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="recharge_id",
-     *          type="integer",
-     *          description="充值套餐id",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="recharge_id",
+     *          type="integer",
+     *          description="充值套餐id",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="price",
-     *          type="number",
-     *          description="充值金额",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="price",
+     *          type="number",
+     *          description="充值金额",
+     *          required=true,
+     *   ),
      * )
      */
     public function actionCreateRechargeOrder(): array
@@ -498,33 +497,33 @@ class OrderController extends AController
      *      required=true
      *     ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="coupon_id",
-     *          type="integer",
-     *          description="卡券id",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="coupon_id",
+     *          type="integer",
+     *          description="卡券id",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="coupon_type",
-     *          type="integer",
-     *          description="卡券类型",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="coupon_type",
+     *          type="integer",
+     *          description="卡券类型",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="coupon_name",
-     *          type="string",
-     *          description="卡券名",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="coupon_name",
+     *          type="string",
+     *          description="卡券名",
+     *          required=true,
+     *   ),
      *   @SWG\Parameter(
-     *          in="formData",
-     *          name="price",
-     *          type="number",
-     *          description="购买金额",
-     *          required=true,
-     *   ),
+     *          in="formData",
+     *          name="price",
+     *          type="number",
+     *          description="购买金额",
+     *          required=true,
+     *   ),
      * )
      */
     public function actionCreateBuyCouponOrder(): array
@@ -566,12 +565,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="hourse_id",
-     *     type="integer",
-     *     description="包间id",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="hourse_id",
+     *     type="integer",
+     *     description="包间id",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionHourseDetail(): array
@@ -600,12 +599,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="order_id",
-     *     type="integer",
-     *     description="订单id",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="order_id",
+     *     type="integer",
+     *     description="订单id",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionCancelOrder(): array
@@ -632,33 +631,33 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="set_meal_id",
-     *     type="integer",
-     *     description="套餐id",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="set_meal_id",
+     *     type="integer",
+     *     description="套餐id",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="coupon_id",
-     *     type="integer",
-     *     description="卡券id",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="coupon_id",
+     *     type="integer",
+     *     description="卡券id",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="start_time",
-     *     type="string",
-     *     description="开始时间",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="start_time",
+     *     type="string",
+     *     description="开始时间",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="end_time",
-     *     type="string",
-     *     description="结束时间",
-     *     required=true,
-     *   ),
+     *     in="formData",
+     *     name="end_time",
+     *     type="string",
+     *     description="结束时间",
+     *     required=true,
+     *   ),
      * )
      */
     public function actionCharging(): array
@@ -696,12 +695,12 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="order_id",
-     *     type="integer",
-     *     description="订单id",
-     *     required=true,
-     *   ),
+     *     in="query",
+     *     name="order_id",
+     *     type="integer",
+     *     description="订单id",
+     *     required=true,
+     *   ),
      * )
      */
     public function actionOrderDetail(): array
@@ -729,19 +728,19 @@ class OrderController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="order_id",
-     *     type="integer",
-     *     description="订单id",
-     *     required=true,
-     *   ),
+     *     in="query",
+     *     name="order_id",
+     *     type="integer",
+     *     description="订单id",
+     *     required=true,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="invoice_url",
-     *     type="integer",
-     *     description="发票地址",
-     *     required=true,
-     *   ),
+     *     in="query",
+     *     name="invoice_url",
+     *     type="integer",
+     *     description="发票地址",
+     *     required=true,
+     *   ),
      * )
      */
     public function actionInvoice()
@@ -800,58 +799,6 @@ class OrderController extends AController
         return ResultHelper::json(200, '获取成功！', $info);
     }
 
-    public function actionOpenDoor(): array
-   {
-        $order_id =\Yii::$app->request->input('order_id');
-        if (empty($order_id)) {
-            return ResultHelper::json(400, '缺少订单id');
-        }
-
-        $order = TeaOrderList::find()->where(['id' => $order_id])->asArray()->one();
-        if (empty($order['id'])) {
-            return ResultHelper::json(401, '订单不存在');
-        }
-
-        $time = date('Y-m-d H:i:s');
-        $where_time = [
-            'and',
-            ['<', 'start_time', $time],
-            ['>', 'end_time', $time],
-        ];
-        $is_use = TeaOrderList::find()->where(['hourse_id' => $order['hourse_id'], 'status' => 2])->andWhere($where_time)->one();
-        if ($is_use) {
-            if ($is_use['id'] != $order_id) {
-                return ResultHelper::json(401, '房间待客中，请稍后开启！');
-            }
-        }
-
-        // 派遣器
-        // $dispatcher = new DdDispatcher();
-        // // 监听器
-        // $listener = new DdListener();
-
-        // $subscriber = new LockopenServer();
-        // $dispatcher->addSubscriber($subscriber);
-        $ext_room_id = $order['hourse_id'];
-        $password = $order['pwd'];
-        $member_id = $order['member_id'];
-        $phoneNo = '1111';
-        $keyName = '姓名';
-        $ext_order_id = $order['id'];
-        $lock_type = (int)Yii::$app->request->input('lock_type');
-        // $event = new LockopenEvent($ext_order_id, $member_id, $ext_room_id, $password, $phoneNo, $keyName, $lock_type);
-
-        $diandiLockSdk = new diandiLockSdk();
-        $Res = $diandiLockSdk->LockOpen($ext_room_id, $password, $phoneNo, $keyName, $lock_type, $member_id, $ext_order_id);
-        loggingHelper::writeLog('diandi_tea', 'OpenDoor', '房间开锁', [$ext_room_id, $password, $member_id, $phoneNo, $keyName]);
-
-        // $Res = $dispatcher->dispatch(LockopenEvent::EVENT_LOCK_NAME, $event);
-        if ($Res['is_auth']) {
-            return ResultHelper::json(200, '开锁成功！', $Res);
-        } else {
-            return ResultHelper::json(400, '开锁失败！', $Res);
-        }
-    }
 
     public function actionGetHourse(): array
    {

@@ -67,22 +67,21 @@ class RechargeController extends AController
      */
     public function actionView($id): array
     {
-         try {
+        try {
             $view = $this->findModel($id)->toArray();
-             $view = TeaRecharge::find()->where(['id' => $id])->asArray()->one();
-             if ($view['give_coupon_ids']) {
-                 $give_coupon_ids = explode(',', $view['give_coupon_ids']);
+            $view = TeaRecharge::find()->where(['id' => $id])->asArray()->one();
+            if ($view['give_coupon_ids']) {
+                $give_coupon_ids = explode(',', $view['give_coupon_ids']);
+                $data = TeaCoupon::find()->select(['name'])->where(['id' => $give_coupon_ids])->asArray()->all();
+                $new = [];
+                foreach ($data as $a => $b) {
+                    $new[] = $b['name'];
+                }
 
-                 $data = TeaCoupon::find()->select(['name'])->where(['id' => $give_coupon_ids])->asArray()->all();
-                 $new = [];
-                 foreach ($data as $a => $b) {
-                     $new[] = $b['name'];
-                 }
+                $view['give_coupon_name'] = implode(',', $new);
+            }
 
-                 $view['give_coupon_name'] = implode(',', $new);
-             }
-
-             return ResultHelper::json(200, '获取成功', $view);
+            return ResultHelper::json(200, '获取成功', $view);
         } catch (NotFoundHttpException $e) {
             return ResultHelper::json(400, $e->getMessage(), (array)$e);
         }
@@ -101,33 +100,33 @@ class RechargeController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="price",
-     *     type="number",
-     *     description="充值金额",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="price",
+     *     type="number",
+     *     description="充值金额",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="give_money",
-     *     type="number",
-     *     description="赠送金额",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="give_money",
+     *     type="number",
+     *     description="赠送金额",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="give_coupon_ids",
-     *     type="string",
-     *     description="赠送卡券集合",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="give_coupon_ids",
+     *     type="string",
+     *     description="赠送卡券集合",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="formData",
-     *     name="type",
-     *     type="integer",
-     *     description="是否为活动套餐：1.是 2否",
-     *     required=false,
-     *   ),
+     *     in="formData",
+     *     name="type",
+     *     type="integer",
+     *     description="是否为活动套餐：1.是 2否",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionCreate(): array
@@ -135,7 +134,7 @@ class RechargeController extends AController
         $model = new TeaRecharge();
 
         $data = Yii::$app->request->post();
-        $ids = $data['give_coupon_ids'];
+        $ids = Yii::$app->request->input('give_coupon_ids', '');
         if (count(explode(',', $ids)) != count(array_unique(explode(',', $ids)))) {
             return ResultHelper::json(400, '请勿添加重复卡券');
         }
@@ -160,33 +159,33 @@ class RechargeController extends AController
      *     @SWG\Parameter(ref="#/parameters/bloc-id"),
      *     @SWG\Parameter(ref="#/parameters/store-id"),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="price",
-     *     type="number",
-     *     description="充值金额",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="price",
+     *     type="number",
+     *     description="充值金额",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="give_money",
-     *     type="number",
-     *     description="赠送金额",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="give_money",
+     *     type="number",
+     *     description="赠送金额",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="give_coupon_ids",
-     *     type="string",
-     *     description="赠送卡券集合",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="give_coupon_ids",
+     *     type="string",
+     *     description="赠送卡券集合",
+     *     required=false,
+     *   ),
      *    @SWG\Parameter(
-     *     in="query",
-     *     name="type",
-     *     type="integer",
-     *     description="是否为活动套餐：1.是 2否",
-     *     required=false,
-     *   ),
+     *     in="query",
+     *     name="type",
+     *     type="integer",
+     *     description="是否为活动套餐：1.是 2否",
+     *     required=false,
+     *   ),
      * )
      */
     public function actionUpdate($id): array

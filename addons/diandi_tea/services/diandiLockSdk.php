@@ -340,7 +340,7 @@ EOF;
 }
 
 try {
-    diandiLockSdk::__init();
+    diandiSdk::__init();
 } catch (ErrorException $e) {
     throw new ErrorException($e->getMessage());
 }

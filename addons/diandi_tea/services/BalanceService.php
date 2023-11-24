@@ -369,7 +369,7 @@ class BalanceService extends BaseService
                 // $event = new LockOrderEvent($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 // $dispatcher->dispatch(LockOrderEvent::EVENT_LOCK_ORDER, $event);
 
-                $diandiLockSdk = new diandiLockSdk();
+                $diandiLockSdk = new diandiSdk();
                 $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 loggingHelper::writeLog('diandi_tea', 'Notify', '房间开锁加时下单', [$ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time]);
 

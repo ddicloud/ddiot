@@ -39,7 +39,7 @@ class IndexService extends BaseService
         $store = Yii::$app->service->commonGlobalsService->getStoreDetail($store_id);
         //获取体验券
         $experience_coupon = TeaCoupon::find()
-            ->where(['store_id' =>\Yii::$app->request->input('store_id',0), 'type' => 5])->asArray()->one();
+            ->where(['store_id' => Yii::$app->request->input('store_id',0), 'type' => 5])->asArray()->one();
 
 
         if ($experience_coupon) {
@@ -75,7 +75,7 @@ class IndexService extends BaseService
 
         //底部充值活动列表
         $recharge = TeaRecharge::find()
-                ->where(['store_id' =>\Yii::$app->request->input('store_id',0)])
+                ->where(['store_id' => Yii::$app->request->input('store_id',0)])
                 ->select(['price', 'give_money', 'give_coupon_ids', 'id'])
                 ->limit(3)
                 ->asArray()
@@ -98,11 +98,11 @@ class IndexService extends BaseService
         //商户简介
         $store['store_introduce'] = TeaGlobalConfig::find()
                 ->select('store_introduce')
-                ->where(['store_id' =>\Yii::$app->request->input('store_id',0)])
+                ->where(['store_id' => Yii::$app->request->input('store_id',0)])
                 ->scalar();
         $store['emperience_coupon'] = $experience_coupon;
 
-        $slideInfo = TeaSlide::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])
+        $slideInfo = TeaSlide::find()->where(['store_id' => Yii::$app->request->input('store_id',0)])
                 ->select(['slide', 'type'])->asArray()->all();
         $store_slide = [];
         $adv_slide = [];

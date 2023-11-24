@@ -8,6 +8,8 @@
 
 namespace addons\diandi_tea\models\config;
 
+use common\traits\ActiveQuery\StoreTrait;
+
 /**
  * This is the model class for table "{{%diandi_tea_global_config}}".
  *
@@ -22,6 +24,8 @@ namespace addons\diandi_tea\models\config;
  */
 class TeaGlobalConfig extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     /**
      * {@inheritdoc}
      */
