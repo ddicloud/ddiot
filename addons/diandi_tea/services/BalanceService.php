@@ -17,7 +17,7 @@ use addons\diandi_tea\models\order\TeaCouponList;
 use addons\diandi_tea\models\order\TeaOrderList;
 use addons\diandi_tea\models\order\TeaSetMealList;
 use addons\diandi_tea\models\order\TeaSetMealRenewList;
-use addons\diandi_tea\services\jobs\CrelockOrder;
+use addons\diandi_tea\services\jobs\CreateLockPassWord;
 use addons\diandi_tea\services\jobs\Noticeobs;
 use addons\diandi_tea\services\jobs\Renewobs;
 use addons\diandi_tea\services\jobs\SwitchJob;
@@ -143,7 +143,7 @@ class BalanceService extends BaseService
                 ]);
 
                 // 改成队列执行，提升效率
-                Yii::$app->queue->push(new CrelockOrder([
+                Yii::$app->queue->push(new CreateLockPassWord([
                     'member_id'=> $member_id,
                     'password'=> $password,
                     'ext_room_id'=> $ext_room_id,

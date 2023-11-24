@@ -16,11 +16,11 @@ use yii\queue\Queue;
 
 class Job extends BaseObject implements \yii\queue\JobInterface
 {
-    public int $bloc_id;
+    public int $bloc_id = 0;
 
-    public int $store_id;
+    public int $store_id  = 0;
 
-    public array $addons;
+    public string $addons  = '';
 
     public function init(): void
     {

@@ -8,13 +8,13 @@
 
 namespace addons\diandi_tea\services\jobs;
 
-use addons\diandi_tea\services\diandiSdk;
 use common\components\Job;
 use common\helpers\loggingHelper;
-use GuzzleHttp\Client;
+use diandi\iot\services\diandiSdk;
+use yii\queue\Queue;
 
 /**
- * 订单处理任务
+ * 延期门锁密码
  *
  * @date 2022-05-28
  *
@@ -24,30 +24,27 @@ use GuzzleHttp\Client;
  *
  * @since
  */
-class CrelockOrder extends Job
+class DelayLockPassWord extends Job
 {
-    public int $member_id;
-    public string $password;
-    public int $ext_room_id;
-    public int $start_time;
-    public int $end_time;
-    public int $ext_order_id;
+    public int $ext_order_id = 0;
+    public int $modifyType = 1;
+    public int $ext_room_id = 0;
+    public int $end_time  = 0;
 
     /**
-     * @param \yii\queue\Queue $queue
+     * @param Queue $queue
      *
      * @return void
      *
      */
     public function execute($queue): void
     {
-        $diandiLockSdk = new diandiSdk();
         $ext_order_id = $this->ext_order_id;
-        $member_id = $this->member_id;
-        $password = $this->password;
+        $modifyType = $this->modifyType;
         $ext_room_id = $this->ext_room_id;
-        $start_time = $this->start_time;
         $end_time = $this->end_time;
-        $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
+        $diandiLockSdk = new diandiSdk();
+        loggingHelper::writeLog('diandi_tea','CrelockOrder','新建密码');
+        $diandiLockSdk->delayPassWord($ext_order_id,$modifyType,$ext_room_id,$end_time);
     }
 }

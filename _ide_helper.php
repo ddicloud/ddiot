@@ -24,9 +24,16 @@ class MyApplication extends Application
      * @var mixed|object|null
      */
     public mixed $template_message;
+
     /**
      * @var mixed|object|null
      */
     public mixed $wechat;
+
+    /**
+     * @var yii\queue\Queue
+     *
+     */
+    public mixed $queue;
 }
 

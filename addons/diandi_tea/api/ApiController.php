@@ -8,7 +8,10 @@
 
 namespace addons\diandi_tea\api;
 
+use addons\diandi_tea\services\jobs\CreateLockPassWord;
+use addons\diandi_tea\services\jobs\DelayLockPassWord;
 use api\controllers\AController;
+use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use diandi\addons\cloud;
 use diandi\iot\services\diandiSdk;
@@ -78,8 +81,24 @@ class ApiController extends AController
     public function actionIndex(): array
     {
         $data = Yii::$app->request->post();
-        $diandiSdk = new diandiSdk();
-        $diandiSdk->LockOpen('13546');
+//        $diandiSdk = new diandiSdk();
+//        $Res = $diandiSdk->LockOpen('6194300db128');
+        // 正常设置密码
+//        $Res = Yii::$app->queue->push(new CreateLockPassWord([
+//            'ext_room_id' => 1375,
+//            'member_id'=>2001,
+//            'ext_order_id' => 2,
+//            'password'=>'123456',
+//            'start_time'=>time(),
+//            'end_time'=>time()+3600*2,
+//        ]));
+        //        密码延期
+        $Res = Yii::$app->queue->push(new DelayLockPassWord([
+            'ext_order_id' =>2,
+            'modifyType' =>1,
+            'ext_room_id' =>1375,
+            'end_time' =>time()+3600*2
+        ]));
         return ResultHelper::json(200,'获取成功');
     }
 

@@ -11,6 +11,7 @@ namespace addons\diandi_tea;
 use addons\diandi_tea\services\NotifyService;
 use common\components\addons\AddonsModule;
 use common\helpers\loggingHelper;
+use Throwable;
 
 /**
  * diandi_dingzuo module definition class.
@@ -55,7 +56,7 @@ class api extends AddonsModule
      * @param [type] $params
      *
      * @return void
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function Notify($params): void
     {

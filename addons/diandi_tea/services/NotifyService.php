@@ -20,6 +20,7 @@ use addons\diandi_tea\models\order\TeaOrderList;
 use addons\diandi_tea\models\order\TeaRechargeList;
 use addons\diandi_tea\models\order\TeaSetMealList;
 use addons\diandi_tea\models\order\TeaSetMealRenewList;
+use addons\diandi_tea\services\jobs\CreateLockPassWord;
 use addons\diandi_tea\services\jobs\Noticeobs;
 use addons\diandi_tea\services\jobs\Renewobs;
 use addons\diandi_tea\services\jobs\TeaSmsJob;
@@ -100,7 +101,7 @@ class NotifyService extends AddonsModule
             loggingHelper::writeLog('diandi_tea', 'Notify', '包间订单详情sql', TeaOrderList::find()->where(['order_number' => $params['out_trade_no']])->createCommand()->getRawSql());
             loggingHelper::writeLog('diandi_tea', 'Notify', '包间订单详情', $orderInfo);
             if ($orderInfo['status'] > 1) {
-                if ($params['is_auto'] == 1) {
+                if (isset($params['is_auto']) && $params['is_auto'] == 1) {
                     return ResultHelper::json(401, '订单已支付');
                 } else {
                     echo ArrayHelper::toXml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']);
@@ -206,8 +207,8 @@ class NotifyService extends AddonsModule
                 // $event = new LockOrderEvent($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
                 // $dispatcher->dispatch(LockOrderEvent::EVENT_LOCK_ORDER, $event);
 
-                $diandiLockSdk = new diandiSdk();
-                $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
+//                $diandiLockSdk = new diandiSdk();
+//                $diandiLockSdk->createLockOrder($ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time);
 
                 loggingHelper::writeLog('diandi_tea', 'Notify', '房间开锁下单', [$ext_order_id, $member_id, $password, $ext_room_id, $start_time, $end_time]);
 
@@ -249,7 +250,7 @@ class NotifyService extends AddonsModule
 
                 $openid = DdWxappFans::find()->where(['user_id' => $member_id])->select('openid')->scalar();
                 //小程序下单通知
-                $hourse_name = TeaHourse::find()->where(['id' => $orderInfo['hourse_id']])->select('name')->scalar();
+                $hourse_name = TeaHourse::find()->where(['id' => $orderInfo['hourse_id']])->select('title')->scalar();
                 NoticeService::OrderNotice(['openid' => $openid, 'hourse_name' => $hourse_name, 'order_num' => $orderInfo['order_number'], 'price' => $orderInfo['real_pay'], 'order_id' => $orderInfo['id'], 'store_id' => $orderInfo['store_id']]);
                 //小程序预约到期前10分钟通知
                 $dif = (strtotime($orderInfo['start_time']) - 600) - time();
@@ -258,7 +259,7 @@ class NotifyService extends AddonsModule
                 } else {
                     $notice_time = 1;
                 }
-                $store = Yii::$app->service->commonGlobalsService->getStoreDetail(79);
+                $store = Yii::$app->service->commonGlobalsService->getStoreDetail($orderInfo['store_id']);
                 $address = '西安市雁塔区' . $store['address'];
                 $url = Yii::$app->request->hostInfo . '/api/diandi_tea/notice/orderobs?bloc_id=30&store_id=79';
                 loggingHelper::writeLog('diandi_tea', 'notice_time', 'url地址', $url);
@@ -276,26 +277,29 @@ class NotifyService extends AddonsModule
                 }
 
                 // 增加关灯任务
-                $switch_dif_renew = (strtotime($orderInfo['end_time'])) - time();
-                if ($switch_dif_renew > 0) {
-                    $switch_time_renew = $switch_dif_renew;
-                } else {
-                    $switch_time_renew = 1;
-                }
+//                $switch_dif_renew = (strtotime($orderInfo['end_time'])) - time();
+//                if ($switch_dif_renew > 0) {
+//                    $switch_time_renew = $switch_dif_renew;
+//                } else {
+//                    $switch_time_renew = 1;
+//                }
+//
+//                $diandiLockSdk = new diandiSdk();
+//                $ext_event_id = $orderInfo['id'];
+//                // 增加5个关灯任务
+//                for ($i = 0; $i < 5; $i++) {
+//                    $switch_time_renew += 5 * 60;
+//                    $diandiLockSdk->switchStatue($ext_room_id, 1, $switch_time_renew, $ext_event_id, true);
+//                }
 
-                $diandiLockSdk = new diandiSdk();
-                $ext_event_id = $orderInfo['id'];
-                // 增加5个关灯任务
-                for ($i = 0; $i < 5; $i++) {
-                    $switch_time_renew += 5 * 60;
-                    $diandiLockSdk->switchStatue($ext_room_id, 1, $switch_time_renew, $ext_event_id, true);
-                }
-
-                // Yii::$App->queue->delay($switch_time_renew)->push(new SwitchJob([
-                //     'ext_room_id' => $ext_room_id,
-                //     'switch_type' => 1,
-                //     'ext_event_id' => $orderInfo['id'],
-                // ]));
+                 Yii::$app->queue->delay(20)->push(new CreateLockPassWord([
+                     'ext_room_id' => 1375,
+                     'member_id'=>2001,
+                     'ext_order_id' => 2,
+                     'password'=>'123456',
+                     'start_time'=>time(),
+                     'end_time'=>time()+3600*2,
+                 ]));
 
                 Yii::$app->queue->delay($notice_time_renew)->push(new Renewobs([
                     'bloc_id' => $orderInfo['bloc_id'],
@@ -322,7 +326,7 @@ class NotifyService extends AddonsModule
                 throw $e;
             }
 
-            if ($params['is_auto'] == 1) {
+            if (isset($params['is_auto']) && $params['is_auto'] == 1) {
                 return ResultHelper::json(200, '支付成功');
             } else {
                 echo ArrayHelper::toXml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']);
