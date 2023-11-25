@@ -50,7 +50,7 @@ trait StoreLinkTrait
             $status = Yii::$app->request->input('status', 0);
             $lng_lat = Yii::$app->request->input('lng_lat', []);
             $category = Yii::$app->request->input('category', []);
-            $provinceCityDistrict = Yii::$app->request->input('provinceCityDistrict',[]);
+            $provinceCityDistrict = Yii::$app->request->input('provinceCityDistrict', []);
             $label_link = Yii::$app->request->input('label_link') ?? [];
             if ($insert) {
                 $user_id = $this->getUser();
@@ -63,7 +63,7 @@ trait StoreLinkTrait
             self::beforeSaveStore($insert);
             return parent::beforeSave($insert);
         } catch (HttpException|Exception $e) {
-            throw new Exception( $e->getMessage(),400);
+            throw new Exception($e->getMessage(), 400, $e);
         }
     }
 }
