@@ -339,7 +339,8 @@ class StoreService extends BaseService
                     if (!$user->save(false)) {
                         throw new Exception('保存用户数据失败!');
                     }
-                }else{
+                }
+                if (!$user){
                     throw new Exception('管理员不存在!');
                 }
                 // $user_id = Yii::$App->user->identity->user_id;
