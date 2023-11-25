@@ -287,8 +287,8 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_pid' => (int) ($category[0]?:0),
-            'category_id' => (int) ($category[1]?:0),
+            'category_pid' => (int) ($category[0]??0),
+            'category_id' => (int) ($category[1]??0),
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => $bloc_id,
