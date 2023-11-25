@@ -192,14 +192,14 @@ class StoreService extends BaseService
         ]);
         loggingHelper::writeLog('StoreService','upLinkStore','校验数据',$category);
         $storeData = [
-            'category_pid' => (int) $category[0]??0,
-            'category_id' => (int) $category[1]??0,
+            'category_pid' => (int) ($category[0]??0),
+            'category_id' => (int) ($category[1]??0),
             'name' => $name,
             'logo' => $logo,
-            'bloc_id' => (int) $bloc_id,
-            'province' => (int) $provinceCityDistrict[0]??0,
-            'city' => (int) $provinceCityDistrict[1]??0,
-            'county' => (int) $provinceCityDistrict[2]??0,
+            'bloc_id' => $bloc_id,
+            'province' => (int) ($provinceCityDistrict[0]??0),
+            'city' => (int) ($provinceCityDistrict[1]??0),
+            'county' => (int) ($provinceCityDistrict[2]??0),
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
@@ -287,14 +287,14 @@ class StoreService extends BaseService
         ]);
 
         $storeData = [
-            'category_id' => (int) $category[1]??0,
-            'category_pid' => (int) $category[0]??0,
+            'category_pid' => (int) ($category[0]?:0),
+            'category_id' => (int) ($category[1]?:0),
             'name' => $name,
             'logo' => $logo,
             'bloc_id' => $bloc_id,
-            'province' => (int) $provinceCityDistrict[0]??0,
-            'city' => (int) $provinceCityDistrict[1]??0,
-            'county' => (int) $provinceCityDistrict[2]??0,
+            'province' => (int) ($provinceCityDistrict[0]??0),
+            'city' => (int) ($provinceCityDistrict[1]??0),
+            'county' => (int) ($provinceCityDistrict[2]??0),
             'address' => $address,
             'mobile' => $mobile,
             'status' => $status,
@@ -302,6 +302,7 @@ class StoreService extends BaseService
             'longitude' => (string) $longitude,
             'latitude' => (string) $latitude,
         ];
+
         loggingHelper::writeLog('StoreService', 'addLinkStore', '创建初始数据', [
             'data' => $storeData,
         ]);
@@ -428,9 +429,9 @@ class StoreService extends BaseService
             'pid' => (int) $pid,
             'group_bloc_id' => $group_bloc_id,
             'category' => (int) $category,
-            'province' => (int) $provinceCityDistrict[0],
-            'city' => (int) $provinceCityDistrict[1],
-            'district' => (int) $provinceCityDistrict[2],
+            'province' => (int) ($provinceCityDistrict[0]),
+            'city' => (int) ($provinceCityDistrict[1]),
+            'district' => (int) ($provinceCityDistrict[2]),
             'address' => $address,
             'register_level' => $register_level,
             'longitude' => $longitude,
@@ -531,9 +532,9 @@ class StoreService extends BaseService
             'pid' => (int) $pid,
             'group_bloc_id' => (int) $group_bloc_id,
             'category' => (int) $category,
-            'province' => (int) $provinceCityDistrict[0],
-            'city' => (int) $provinceCityDistrict[1],
-            'district' => (int) $provinceCityDistrict[2],
+            'province' => (int) ($provinceCityDistrict[0]),
+            'city' => (int) ($provinceCityDistrict[1]),
+            'district' => (int) ($provinceCityDistrict[2]),
             'address' => $address,
             'register_level' => $register_level,
             'longitude' => $longitude,
