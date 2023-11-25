@@ -333,11 +333,14 @@ class StoreService extends BaseService
                 }
 
                 $user = User::find()->where(['id' => $user_id])->one();
-                if ($user->store_id == 0) {
+
+                if ($user && $user->store_id == 0) {
                     $user->store_id = $model->store_id;
                     if (!$user->save(false)) {
                         throw new Exception('保存用户数据失败!');
                     }
+                }else{
+                    throw new Exception('管理员不存在!');
                 }
                 // $user_id = Yii::$App->user->identity->user_id;
                 // 初始权限
