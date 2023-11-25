@@ -35,6 +35,7 @@ trait StoreLinkTrait
     }
 
     /**
+     * @throws Exception
      */
     public function beforeSave($insert): bool|array
     {
@@ -62,7 +63,7 @@ trait StoreLinkTrait
             self::beforeSaveStore($insert);
             return parent::beforeSave($insert);
         } catch (HttpException|Exception $e) {
-            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+            throw new Exception( $e->getMessage(),400);
         }
     }
 }
