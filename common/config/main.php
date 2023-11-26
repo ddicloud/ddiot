@@ -64,13 +64,7 @@ return [
         /* ------ 队列设置 ------ **/
         'queue' => [
             'class' => Queue::class,
-            'db' => 'db', // DB 连接组件或它的配置
-            'tableName' => '{{%queue}}', // 表名
-            'mutex' => MysqlMutex::class, // Mutex that used to sync queries
-            // 'class' => 'yii\queue\redis\Queue',
-            // 'redis' => 'redis', // 连接组件或它的配置
-            'channel' => 'queue', // Queue channel key
-            'as log' => 'yii\queue\LogBehavior', // 日志
+            'db' => 'redis'
         ],
         'settings' => [
             'class' => 'yii2mod\settings\components\Settings',
