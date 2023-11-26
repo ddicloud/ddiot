@@ -64,7 +64,7 @@ return [
         /* ------ 队列设置 ------ **/
         'queue' => [
             'class' => Queue::class,
-            'db' => 'redis'
+            'redis' => 'redis'
         ],
         'settings' => [
             'class' => 'yii2mod\settings\components\Settings',
