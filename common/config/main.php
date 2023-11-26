@@ -8,7 +8,7 @@
  */
 
 use yii\mutex\MysqlMutex;
-use yii\queue\db\Queue;
+use yii\queue\redis\Queue;
 
 return [
     'name' => '店滴云CMS',
