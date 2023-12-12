@@ -18,6 +18,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
+use yii\web\HttpException;
 
 /**
  * Login form.
@@ -83,16 +84,19 @@ class LoginForm extends Model
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @param array|null $params the additional name-value pairs given in the rule
      */
-    public function validatePassword($attribute, $params)
+    public function validatePassword(string $attribute, array|null $params)
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
-            if (!empty($user) && !$user->validatePassword($this->password)) {
-                $Namemsg = (int)$this->type === 1 ? '用户名' : '手机号';
-                $this->addError($attribute, $Namemsg . '或密码不正确');
+            if (empty($user)){
+                $msg = (int)$this->type === 1 ? '用户名' : '手机号';
+                $this->addError($attribute, $msg . '不存在');
+            }else{
+                if (!$user->validatePassword($this->password)) {
+                    $this->addError($attribute, '密码不正确');
+                }
             }
         }
     }
@@ -108,7 +112,7 @@ class LoginForm extends Model
         if ($this->validate()) {
             $mobile = $this->mobile;
             $code = $this->sms_code;
-            $sendcode = Yii::$app->cache->get($mobile . '_code');
+            $sendCode = Yii::$app->cache->get($mobile . '_code');
 
             $settings = Yii::$app->settings;
             $settings->invalidateCache();
@@ -118,7 +122,7 @@ class LoginForm extends Model
                 if (empty($code)) {
                     return ResultHelper::json(401, '验证码不能为空');
                 }
-                if ($code != $sendcode) {
+                if ($code != $sendCode) {
                     return ResultHelper::json(401, '验证码错误');
                 }
             }
@@ -137,36 +141,44 @@ class LoginForm extends Model
             }
 
             $Res = Yii::$app->user->login($userInfo, $this->rememberMe ? 3600 * 24 * 30 : 0);
+            if ($Res){
+                $last_login_ip = MapHelper::get_client_ip();
+//                单点登录校验
+//                if (isset(Yii::$app->user->identity->id)) {
+//                    $user = User::find()->where([
+//                        'id' => Yii::$app->user->identity->id,
+//                        'last_login_ip' => $last_login_ip,
+//                    ])->select(['is_login'])->one();
+                    // if($user['is_login']==1 && $user['last_time']+60*5<time()){
 
-            $last_login_ip = MapHelper::get_client_ip();
-            $user = User::find()->where([
-                'id' => Yii::$app->user->identity->id,
-                'last_login_ip' => $last_login_ip,
-            ])->select(['is_login'])->one();
+                    //     Yii::$App->user->logout();
+                    //     Yii::$App->session->setFlash('success', '该账户已在其他浏览器登录');
+                    //     return $this->goHome();
+                    // }
+//                }
 
-            // if($user['is_login']==1 && $user['last_time']+60*5<time()){
 
-            //     Yii::$App->user->logout();
-            //     Yii::$App->session->setFlash('success', '该账户已在其他浏览器登录');
-            //     return $this->goHome();
-            // }
-            // 记录最后登录的时间
-            $password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
-            User::updateAll([
-                'last_time' => time(),
-                'is_login' => 1,
-                'last_login_ip' => $last_login_ip,
-                'password_reset_token' => $password_reset_token,
-            ], ['id' => Yii::$app->user->identity->id]);
+                // 记录最后登录的时间
+                $password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+                User::updateAll([
+                    'last_time' => time(),
+                    'is_login' => 1,
+                    'last_login_ip' => $last_login_ip,
+                    'password_reset_token' => $password_reset_token,
+                ], ['id' => Yii::$app->user->identity->id]);
+                $type = Yii::$app->request->input('type');
+                $userObj = (int) $type === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
+                $service = Yii::$app->service;
+                $service->namespace = 'admin';
+                $userinfo = $service->AccessTokenService->getAccessToken($userObj, 1);
+                // 登录日志记录
+                loggingHelper::actionLog(Yii::$app->user->identity->id, '账号登录', $last_login_ip);
 
-            $userobj = (int)\Yii::$app->request->input('type') === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);
-            $service = Yii::$app->service;
-            $service->namespace = 'admin';
-            $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
-            // 登录日志记录
-            loggingHelper::actionLog(Yii::$app->user->identity->id, '账号登录', $last_login_ip);
+                return ArrayHelper::toArray($userinfo);
+            }else{
+                return false;
+            }
 
-            return ArrayHelper::toArray($userinfo);
         } else {
             return false;
         }
@@ -177,7 +189,7 @@ class LoginForm extends Model
      *
      * @return User|null
      */
-    protected function getUser()
+    protected function getUser(): ?User
     {
         if ($this->_user === null) {
             $this->_user = (int)$this->type === 1 ? User::findByUsername($this->username) : User::findByMobile($this->mobile);

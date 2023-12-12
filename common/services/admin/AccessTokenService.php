@@ -137,21 +137,21 @@ class AccessTokenService extends BaseService
     /**
      * 忘记密码.
      *
-     * @param User $member
+     * @param User $user
      * @param $password
      * @return bool
      *
      * @throws ErrorException
      * @throws Exception
      */
-    public function forgetpassword(User $member, $password): bool
+    public function forgetpassword(User $user, $password): bool
     {
-        $member->generatePasswordResetToken();
-        $member->setPassword($password);
-        $member->generateAuthKey();
-        $member->generateEmailVerificationToken();
+        $user->generatePasswordResetToken();
+        $user->setPassword($password);
+        $user->generateAuthKey();
+        $user->generateEmailVerificationToken();
 
-        return  $member->save(false);
+        return  $user->save(false);
     }
 
     /**

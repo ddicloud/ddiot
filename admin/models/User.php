@@ -16,6 +16,7 @@ use common\helpers\FileHelper;
 use common\helpers\ResultHelper;
 use common\models\enums\UserStatus;
 use diandi\admin\models\AuthAssignmentGroup;
+use Throwable;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -113,7 +114,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $company
      * @return array|bool|object[]|string[]
      * @throws ErrorException
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     public function signup($username, $mobile, $email, $password, int $status = 0, string $invitation_code = '', int $source_type = 0, string $company = ''): array|bool
    {
@@ -151,7 +152,7 @@ class User extends ActiveRecord implements IdentityInterface
         if ($invitation_code) {
             $parent_bloc_id = Bloc::find()->where(['invitation_code' => $invitation_code])->select('bloc_id')->scalar();
         }
-        $avatar =\Yii::$app->request->input('avatar');
+        $avatar = Yii::$app->request->input('avatar');
 
         $this->avatar = $avatar;
         $this->username = $username;
@@ -160,9 +161,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->company = $company;
         $this->mobile = $mobile;
         
-        if ((int)\Yii::$app->request->input('source_type') === 1) {
-            $this->store_id =\Yii::$app->request->input('store_id',0);
-            $this->bloc_id =\Yii::$app->request->input('bloc_id',0);
+        if ((int)Yii::$app->request->input('source_type') === 1) {
+            $this->store_id = Yii::$app->request->input('store_id',0);
+            $this->bloc_id = Yii::$app->request->input('bloc_id',0);
         }
         $this->status = (int) $status;
 
@@ -173,7 +174,8 @@ class User extends ActiveRecord implements IdentityInterface
         if ($this->save()) {
             $user_id = Yii::$app->db->getLastInsertID();
             // 只有没有该参数才是正常的注册，否则是后台直接添加的用户
-            if ((int)\Yii::$app->request->input('source_type') === 0) {
+            $source_type = Yii::$app->request->input('source_type');
+            if ((int)$source_type === 0) {
                 UserService::initUserAuth($user_id);
             }
             /* 写入用户apitoken */

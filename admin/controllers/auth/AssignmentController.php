@@ -21,8 +21,6 @@ use diandi\admin\models\Assignment;
 use diandi\admin\models\searchs\Assignment as AssignmentSearch;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\web\NotFoundHttpException;
 
 /**
  * AssignmentController implements the CRUD actions for Assignment model.
@@ -35,7 +33,7 @@ class AssignmentController extends AController
 {
     public $modelClass = '';
 
-    public mixed  $userClassName;
+    public mixed $userClassName;
     public string $idField = 'id';
     public string $usernameField = 'username';
 
@@ -170,10 +168,10 @@ class AssignmentController extends AController
      * @throws \Exception
      */
     public function actionChange(): array
-   {
-        $id =\Yii::$app->request->input('id');
-        $items =\Yii::$app->request->input('items');
-        $type =\Yii::$app->request->input('type');
+    {
+        $id = \Yii::$app->request->input('id');
+        $items = \Yii::$app->request->input('items');
+        $type = \Yii::$app->request->input('type');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数id不能为空');
@@ -238,7 +236,7 @@ class AssignmentController extends AController
             $assigned[$value] = [];
         }
 
-        $assigned_ids = $assigned[$type]??[];
+        $assigned_ids = $assigned[$type] ?? [];
         $authItems = $items ? $items[$type] : [];
         switch ($type) {
             case 'permission':
@@ -321,6 +319,7 @@ class AssignmentController extends AController
                 $add_ids = array_diff($authItems, $assigned_ids);
 
                 $addList = BlocStore::find()->where(['store_id' => $add_ids])->asArray()->all();
+
                 $UserStore = new UserStore();
                 foreach ($addList as $value) {
                     $_UserStore = clone $UserStore;
@@ -348,16 +347,16 @@ class AssignmentController extends AController
                 $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
                 // 过滤掉总部的权限
                 $blocGroups = Bloc::find()->where(['is_group' => 1])->select('bloc_id')->column();
-                if($authItems){
+
+                if ($authItems) {
                     foreach ($authItems as $key => $value) {
-                        if(in_array($value,$blocGroups)){
+                        if (in_array($value, $blocGroups)) {
                             unset($authItems[$key]);
                         }
                     }
                 }
 
                 $add_ids = array_diff($authItems, $assigned_ids);
-
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
                 $UserBloc = new UserBloc();
                 foreach ($addList as $value) {

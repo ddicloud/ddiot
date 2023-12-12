@@ -30,6 +30,7 @@ use diandi\admin\models\AuthAssignmentGroup;
 use diandi\admin\models\searchs\User as ModelsUser;
 use diandi\admin\models\User as AdminModelsUser;
 use Yii;
+use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\data\Pagination;
@@ -78,7 +79,11 @@ class UserController extends AController
             return ResultHelper::json(401, '密码不能为空');
         }
 
-        $res = $User->signup($username, $mobile, $email, $password, 1, $invitation_code);
+        try {
+            $res = $User->signup($username, $mobile, $email, $password, 1, $invitation_code);
+        } catch (ErrorException|Exception $e) {
+            return ResultHelper::json(400, $e->getMessage(), (array)$e);
+        }
 
         return ResultHelper::json(200, '注册成功', (array)$res);
     }
@@ -88,23 +93,22 @@ class UserController extends AController
      */
     public function actionLogin(): array
     {
-
-        \YII::beginProfile('actionLogin');
+        Yii::beginProfile('actionLogin');
 
         $model = new LoginForm();
         try {
             if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $userinfo = $model->login()) {
-                \YII::endProfile('actionLogin');
+                Yii::endProfile('actionLogin');
 
                 return ResultHelper::json(200, '登录成功', (array)$userinfo);
             } else {
                 $message = ErrorsHelper::getModelError($model);
-                \YII::endProfile('actionLogin');
+                Yii::endProfile('actionLogin');
 
                 return ResultHelper::json('401', $message);
             }
         } catch (InvalidConfigException $e) {
-            \YII::endProfile('actionLogin');
+            Yii::endProfile('actionLogin');
 
             throw new Exception($e->getMessage(), 400);
         }
@@ -156,10 +160,13 @@ class UserController extends AController
         }
     }
 
+    /**
+     * @return array
+     */
     public function actionUserinfo(): array
     {
 
-        $mobile = \Yii::$app->request->input('mobile') ?? '';
+        $mobile = Yii::$app->request->input('mobile') ?? '';
 
         $data = Yii::$app->request->post();
 
@@ -212,11 +219,15 @@ class UserController extends AController
         ]);
     }
 
+    /**
+     * 绑定手机号
+     * @return array|object[]|string[]
+     */
     public function actionBindmobile()
     {
 
-        $code = \Yii::$app->request->input('code');
-        $mobile = \Yii::$app->request->input('mobile');
+        $code = Yii::$app->request->input('code');
+        $mobile = Yii::$app->request->input('mobile');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
@@ -235,6 +246,10 @@ class UserController extends AController
         }
     }
 
+    /**
+     * 修改用户信息
+     * @return array
+     */
     public function actionEdituserinfo(): array
     {
         $model = new EdituserinfoForm();
@@ -259,10 +274,10 @@ class UserController extends AController
 
     public function actionForgetpass(): array
     {
-        $mobile = \Yii::$app->request->input('mobile');
-        $password = \Yii::$app->request->input('password');
-        $repassword = \Yii::$app->request->input('repassword');
-        $code = \Yii::$app->request->input('sms_code');
+        $mobile = Yii::$app->request->input('mobile');
+        $password = Yii::$app->request->input('password');
+        $repassword = Yii::$app->request->input('repassword');
+        $code = Yii::$app->request->input('sms_code');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         $settings = Yii::$app->settings;
@@ -310,11 +325,11 @@ class UserController extends AController
 
     public function actionSendcode(): array
     {
-        $type = \Yii::$app->request->input('type');
+        $type = Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile', 'login'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
-        $mobile = \Yii::$app->request->input('mobile');
+        $mobile = Yii::$app->request->input('mobile');
         $where = [];
         $where['mobile'] = $mobile;
 
@@ -346,7 +361,7 @@ class UserController extends AController
     public function actionRefresh(): array
     {
 
-        $refresh_token = \Yii::$app->request->input('refresh_token');
+        $refresh_token = Yii::$app->request->input('refresh_token');
 
         $user = DdApiAccessToken::find()
             ->where(['refresh_token' => $refresh_token])
@@ -366,9 +381,9 @@ class UserController extends AController
     public function actionFeedback(): array
     {
 
-        $name = \Yii::$app->request->input('name');
-        $contact = \Yii::$app->request->input('contact');
-        $feedback = \Yii::$app->request->input('feedback');
+        $name = Yii::$app->request->input('name');
+        $contact = Yii::$app->request->input('contact');
+        $feedback = Yii::$app->request->input('feedback');
         $contacts = new DdWebsiteContact();
 
         $data = [
@@ -388,7 +403,7 @@ class UserController extends AController
 
     public function actionAddons(): array
     {
-        $id = \Yii::$app->request->input('id');
+        $id = Yii::$app->request->input('id');
         $AddonsUser = new AddonsUser([
             'user_id' => $id,
         ]);
@@ -428,8 +443,8 @@ class UserController extends AController
 
     public function actionUpstatus(): array
     {
-        $user_id = \Yii::$app->request->input('user_id');
-        $type = \Yii::$app->request->input('type');
+        $user_id = Yii::$app->request->input('user_id');
+        $type = Yii::$app->request->input('type');
 
         if (empty($user_id)) {
             return ResultHelper::json(401, '用户ID不能为空');
@@ -448,11 +463,11 @@ class UserController extends AController
 
     public function actionCreate(): array
     {
-        $username = \Yii::$app->request->input('username');
-        $mobile = \Yii::$app->request->input('mobile');
-        $password = \Yii::$app->request->input('password');
-        $email = \Yii::$app->request->input('email');
-        $status = \Yii::$app->request->input('status');
+        $username = Yii::$app->request->input('username');
+        $mobile = Yii::$app->request->input('mobile');
+        $password = Yii::$app->request->input('password');
+        $email = Yii::$app->request->input('email');
+        $status = Yii::$app->request->input('status');
 
         if (empty($username)) {
             return ResultHelper::json(401, '用户名不能为空');
@@ -486,7 +501,7 @@ class UserController extends AController
 
     public function actionSetinfo(): array
     {
-        $user_id = \Yii::$app->request->input('user_id');
+        $user_id = Yii::$app->request->input('user_id');
         $addons = AddonsUser::find()->where(['user_id' => $user_id])->with(['addons'])->indexBy('module_name')->asArray()->all();
         $addonsList = [];
 
@@ -545,7 +560,7 @@ class UserController extends AController
     public function actionDefaultInfo(): array
     {
 
-        $user_id = \Yii::$app->request->input('user_id');
+        $user_id = Yii::$app->request->input('user_id');
         $addons_user_id = AddonsUser::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
         $store_user_id = UserStore::find()->where(['user_id' => $user_id, 'is_default' => 1])->select('id')->scalar();
 
@@ -557,10 +572,10 @@ class UserController extends AController
 
     public function actionDefault(): array
     {
-        $user_id = \Yii::$app->request->input('user_id');
-        $store_user_id = \Yii::$app->request->input('store_user_id');
-        $bloc_user_id = \Yii::$app->request->input('bloc_user_id');
-        $addons_user_id = \Yii::$app->request->input('addons_user_id');
+        $user_id = Yii::$app->request->input('user_id');
+        $store_user_id = Yii::$app->request->input('store_user_id');
+        $bloc_user_id = Yii::$app->request->input('bloc_user_id');
+        $addons_user_id = Yii::$app->request->input('addons_user_id');
 
         if (empty($user_id)) {
             return ResultHelper::json(400, '用户ID不能为空');
@@ -680,7 +695,7 @@ class UserController extends AController
 
     public function actionLog(): array
     {
-        $user_id = \Yii::$app->request->input('user_id');
+        $user_id = Yii::$app->request->input('user_id');
         $pageSize = 20;
         $query = ActionLog::find()->where(['user_id' => $user_id]);
         $count = $query->count();
