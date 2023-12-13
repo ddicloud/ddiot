@@ -10,6 +10,7 @@ namespace admin\controllers\auth;
 
 use admin\controllers\AController;
 use common\helpers\ErrorsHelper;
+use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\models\UserBloc;
 use common\models\UserStore;
@@ -101,8 +102,13 @@ class AssignmentController extends AController
     public function actionView($id): array
     {
         $model = $this->getAssigment($id);
-        $items = $model->getItems(3);
-        $all = $items['all'];
+        $all = [];
+        $assigneds = [];
+        if ($model instanceof Assignment){
+            $items = $model->getItems(3);
+            $all = $items['all'];
+            $assigneds = $items['assigned'];
+        }
         // 所有应用
         $all['addons'] = DdAddons::find()->asArray()->all();
         $addons_mids = array_column($all['addons'], 'mid');
@@ -127,7 +133,7 @@ class AssignmentController extends AController
         $all['store'] = $list;
         $alls = [];
 
-        $assigneds = $items['assigned'];
+
         // 用户的应用权限
         $assigneds['addons'] = AddonsUser::find()->alias('u')->joinWith('addons as a')->where(['u.user_id' => $id, 'a.mid' => $addons_mids])->select('a.mid')->indexBy('a.mid')->column();
 
@@ -346,16 +352,23 @@ class AssignmentController extends AController
                 //授权的公司
                 $assigned_ids = UserBloc::find()->where(['user_id' => $id])->select('bloc_id')->groupBy('bloc_id')->column();
                 // 过滤掉总部的权限
-                $blocGroups = Bloc::find()->where(['is_group' => 1])->select('bloc_id')->column();
-
-                if ($authItems) {
-                    foreach ($authItems as $key => $value) {
-                        if (in_array($value, $blocGroups)) {
-                            unset($authItems[$key]);
-                        }
-                    }
-                }
-
+//                $blocGroups = Bloc::find()->where(['is_group' => 1])->select('bloc_id')->column();
+//
+//                if ($authItems) {
+//                    loggingHelper::writeLog('AssignmentController','change','提交的授权数据authItems',[
+//                        'authItems'=>$authItems,
+//                    ]);
+//                    foreach ($authItems as $key => $value) {
+//                        if (in_array($value, $blocGroups)) {
+//                            unset($authItems[$key]);
+//                        }
+//                    }
+//                }
+                loggingHelper::writeLog('AssignmentController','change','公司数据授权',[
+                    'assigned_ids'=>$assigned_ids,
+//                    'blocGroups'=>$blocGroups,
+                    'authItems'=>$authItems,
+                ]);
                 $add_ids = array_diff($authItems, $assigned_ids);
                 $addList = Bloc::find()->where(['bloc_id' => $add_ids])->asArray()->all();
                 $UserBloc = new UserBloc();
