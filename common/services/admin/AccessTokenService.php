@@ -127,7 +127,6 @@ class AccessTokenService extends BaseService
                 'store_id' => $store_id,
             ];
         }
-
         // 写入缓存
         $this->cache === true && Yii::$app->cache->set($this->getCacheKey($model->access_token), $model, $this->timeout);
 
