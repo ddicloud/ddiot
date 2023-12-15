@@ -712,7 +712,7 @@ class OrderController extends AController
         // 模板消息订阅列表
 //        $msg_template = TeaGlobalConfig::find()->where(['store_id' =>\Yii::$app->request->input('store_id',0)])->select(['order_create_template', 'order_end_template'])->asArray()->one();
 //        $info['msg_template'] = $msg_template? array_values($msg_template):[];
-       $info['msg_template'] = TeaTemplate::find()->findBlocs()->where(['msg_type'=>[1,2]])->select('template_code')->column();
+       $info['msg_template'] = TeaTemplate::find()->where(['msg_type'=>[1,2]])->findBloc()->select('template_code')->column();
         return ResultHelper::json(200, '获取成功', $info);
     }
 

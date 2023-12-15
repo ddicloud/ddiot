@@ -66,6 +66,24 @@ class AddonsController extends AController
         ]);
     }
 
+    /**
+     * 用户授权
+     * @return array
+     */
+    public function actionAuth(): array
+    {
+        $AddonsUser = new AddonsUser();
+
+        $list = $AddonsUser->find()->where([
+            'user_id' => Yii::$app->user->id,
+        ])->with(['addons'])->orderBy(['is_default'=>SORT_DESC])->asArray()->all();
+        $lists = [];
+        foreach ($list as  $item) {
+            $lists[] = $item['addons'];
+        }
+        return ResultHelper::json(200, '获取成功',$lists);
+    }
+
     public function actionChild(): array
    {
         $parent_mid =\Yii::$app->request->input('parent_mid');

@@ -23,21 +23,27 @@ class CommonQuery extends ActiveQuery
     public function init(): void
    {
         parent::init();
-        $this->bloc_id =\Yii::$app->request->input('bloc_id',0);
-        $this->store_id =\Yii::$app->request->input('store_id',0);
+        $this->bloc_id = Yii::$app->request->input('bloc_id',0);
+        $this->store_id = Yii::$app->request->input('store_id',0);
     }
 
     public function findBloc($alias=''): static
     {
-        $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
-
+        if ($this->where){
+            $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
+        }else{
+            $this->where([($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
+        }
         return $this;
     }
 
     public function findStore($alias=''): static
     {
-        $this->andWhere([($alias?$alias.'.':'').'store_id' => $this->store_id, ($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
-
+        if ($this->where){
+            $this->andWhere([($alias?$alias.'.':'').'store_id' => $this->store_id, ($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
+        }else{
+            $this->where([($alias?$alias.'.':'').'store_id' => $this->store_id, ($alias?$alias.'.':'').'bloc_id' => $this->bloc_id]);
+        }
         return $this;
     }
 
@@ -53,8 +59,11 @@ class CommonQuery extends ActiveQuery
     public function findBlocs(string $alias=''): static
     {
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('bloc_id')->column();
-        $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
-
+        if ($this->where){
+            $this->andWhere([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
+        }else{
+            $this->where([($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
+        }
         return $this;
     }
 
@@ -73,9 +82,11 @@ class CommonQuery extends ActiveQuery
         $bloc_ids = UserBloc::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('bloc_id')->column();
         
         $store_ids = UserStore::find()->where(['user_id' => Yii::$app->user->identity->user_id??0])->select('store_id')->column();
-        
-        $this->andWhere([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
-
+        if ($this->where){
+            $this->andWhere([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
+        }else{
+            $this->where([($alias?$alias.'.':'').'store_id' => $store_ids, ($alias?$alias.'.':'').'bloc_id' => $bloc_ids]);
+        }
         return $this;
     }
 }

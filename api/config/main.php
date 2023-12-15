@@ -206,6 +206,7 @@ return [
                     'controller' => ['wechat/basics'],
                     'pluralize' => false,
                     'extraPatterns' => [
+                        'POST share' => 'share',
                         'POST,HEAD signup' => 'signup',
                         'POST,HEAD payparameters' => 'payparameters',
                         'POST,HEAD,GET,PUT refundednotify' => 'refundednotify',

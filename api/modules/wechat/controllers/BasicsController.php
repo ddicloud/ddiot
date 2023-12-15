@@ -12,6 +12,7 @@ namespace api\modules\wechat\controllers;
 use api\controllers\AController;
 use common\helpers\ArrayHelper;
 use common\helpers\FileHelper;
+use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use common\helpers\StringHelper;
 use common\models\DdCorePaylog;
@@ -24,7 +25,7 @@ use yii\helpers\Json;
  */
 class BasicsController extends AController
 {
-    protected array $authOptional = ['signup', 'notify'];
+    protected array $authOptional = ['signup', 'notify','share'];
     public $modelClass = 'api\modules\wechat\models\DdWxappFans';
 
 
@@ -57,6 +58,18 @@ class BasicsController extends AController
         FileHelper::writeLog($logPath, '登录成功：' . json_encode($res));
 
         return ResultHelper::json(200, '登录成功', $res);
+    }
+
+    public function actionShare()
+    {
+        $params = Yii::$app->params;
+        $conf = $params['conf'];
+        $Wxapp = $conf['wxapp'];
+        return ResultHelper::json(200, '获取成功', [
+            'title' => $Wxapp?$Wxapp['share_title']:'店滴云',
+			'path' => $Wxapp?$Wxapp['share_path']:'pages/index/index',
+			'imageUrl' => $Wxapp? ImageHelper::tomedia($Wxapp['share_image']):'',
+        ]);
     }
 
 

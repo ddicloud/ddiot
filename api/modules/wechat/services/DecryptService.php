@@ -12,6 +12,7 @@ namespace api\modules\wechat\services;
 use common\helpers\loggingHelper;
 use common\helpers\ResultHelper;
 use common\services\BaseService;
+use Yii;
 
 class DecryptService extends BaseService
 {
@@ -38,7 +39,7 @@ class DecryptService extends BaseService
             return ResultHelper::json(400, 'code is requred');
         }
 
-        $miniProgram = \Yii::$app->wechat->miniProgram;
+        $miniProgram = Yii::$app->wechat->miniProgram;
         $user = $miniProgram->auth->session($code);
         loggingHelper::writeLog('DecryptService', 'decryptWechatData', '解密准备', $user);
         if (isset($user['session_key'])) {

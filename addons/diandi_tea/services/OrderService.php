@@ -983,12 +983,21 @@ class OrderService extends BaseService
             ->alias('order')
             ->join('LEFT JOIN', 'dd_member member', 'order.member_id = member.member_id')
             ->join('LEFT JOIN', 'dd_diandi_tea_coupon coupon', 'order.coupon_id = coupon.id')
-            ->join('LEFT JOIN', 'dd_diandi_tea_hourse hourse', 'order.hourse_id = hourse.id')
+            ->join('LEFT JOIN', 'dd_diandi_place_room hourse', 'order.hourse_id = hourse.id')
             ->where(['order.id' => $order_id])
-            ->select(['order.*', 'member.nickName', 'coupon.name AS coupon_name', 'hourse.name AS hourse_name'])
+            ->select(['order.*', 'member.nickName', 'coupon.name AS coupon_name', 'hourse.title AS hourse_name'])
             ->asArray()
             ->one();
-
+        loggingHelper::writeLog('diandi_tea','orderDetail','订单详情',[
+            'sql'=>TeaOrderList::find()
+                ->alias('order')
+                ->join('LEFT JOIN', 'dd_member member', 'order.member_id = member.member_id')
+                ->join('LEFT JOIN', 'dd_diandi_tea_coupon coupon', 'order.coupon_id = coupon.id')
+                ->join('LEFT JOIN', 'dd_diandi_tea_hourse hourse', 'order.hourse_id = hourse.id')
+                ->where(['order.id' => $order_id])
+                ->select(['order.*', 'member.nickName', 'coupon.name AS coupon_name', 'hourse.name AS hourse_name'])
+            ->createCommand()->getRawSql()
+        ]);
         $info['start_time'] = date('Y-m-d H:i', strtotime($info['start_time']));
         $info['end_time'] = date('Y-m-d H:i', strtotime($info['end_time']));
         $info['end_time_open'] = date('Y-m-d H:i', strtotime($info['end_time']) + 30 * 60);

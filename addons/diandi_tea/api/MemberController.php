@@ -185,15 +185,18 @@ class MemberController extends AController
    {
 
         $member_id = Yii::$app->user->identity->member_id??0;
-        $data = Yii::$app->request->post();
-
         // if($data['gender'] == '男'){
         //     $data['gender'] = 0;
         // }elseif($data['gender'] == '女'){
         //     $data['gender'] = 1;
         // }
-
-        MemberService::editMember($member_id, $data);
+       $username = Yii::$app->request->post('username','');
+       $mobile = Yii::$app->request->post('mobile','');
+       $nickName = Yii::$app->request->post('nickName','');
+       $gender = Yii::$app->request->post('gender',1);
+       $avatarUrl = Yii::$app->request->post('avatarUrl','');
+       
+        MemberService::editMember($member_id, $username,$mobile,$nickName,$gender,$avatarUrl);
 
         return ResultHelper::json(200, '修改成功');
     }

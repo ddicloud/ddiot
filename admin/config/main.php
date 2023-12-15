@@ -340,6 +340,7 @@ return [
                         'POST,GET info' => 'info',
                         'POST create' => 'create',
                         'POST update' => 'update',
+                        'POST auth' => 'auth',
                         'POST uninstalled' => 'uninstalled',
                     ],
                 ],

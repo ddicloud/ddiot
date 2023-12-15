@@ -225,9 +225,15 @@ class MemberService extends BaseService
         return $info;
     }
 
-    public static function editMember($member_id, $data): int
+    public static function editMember($member_id, $username,$mobile,$nickName,$gender,$avatarUrl): int
     {
-        return DdMember::updateAll($data, ['member_id' => $member_id]);
+        return DdMember::updateAll([
+            'username'=> $username,
+            'mobile'=> $mobile,
+            'nickName'=> $nickName,
+            'gender'=> $gender,
+            'avatarUrl'=> $avatarUrl
+        ], ['member_id' => $member_id]);
     }
 
     public static function integral($member_id): array
