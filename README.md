@@ -25,8 +25,11 @@
 - gii代码自动生成，包括扩展模块，数据库模型，检索模型，控制器和接口都可以自动生成
 - element-ui+uniapp+店滴cms，中后台，多端兼容，数据处理全部支持且开源
 
-## 演示账号
+## 基于element-ui的后台：ddAdmin
 
+```js
+    git clone https://gitee.com/wayfirer/dd-admin.git
+```
 
 
 # 环境准备：
