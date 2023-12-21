@@ -25,7 +25,7 @@ class Bloc extends BlocModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['bloc_id', 'pid', 'group_bloc_id', 'register_level', 'avg_price', 'status', 'is_group', 'store_id', 'level_num'], 'integer'],

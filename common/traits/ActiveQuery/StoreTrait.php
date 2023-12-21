@@ -8,11 +8,17 @@
 
 namespace common\traits\ActiveQuery;
 
+use admin\models\addons\models\Bloc;
+use diandi\addons\models\BlocStore;
 use Yii;
 
 trait StoreTrait
 {
     public array $blocs = [];
+
+    public array $bloc = [];
+
+    public array $store = [];
 
     /**
      * find查询扩展.
@@ -35,6 +41,8 @@ trait StoreTrait
     {
         $fields = parent::fields();
         $fields['blocs'] = 'blocs';
+        $fields['bloc']  = 'bloc';
+        $fields['store'] = 'store';
         return $fields;
     }
 
@@ -53,6 +61,10 @@ trait StoreTrait
         $store_id = $this->getAttribute('store_id');
         $bloc_id = $this->getAttribute('bloc_id');
         $this->blocs = [$bloc_id,$store_id];
+        $store = BlocStore::find()->where(['store_id'=>$store_id])->asArray()->one();
+        $this->store = $store??[];
+        $bloc = Bloc::find()->where(['bloc_id'=>$bloc_id])->asArray()->one();
+        $this->bloc = $bloc??[];
         parent::afterFind();
     }
 }
