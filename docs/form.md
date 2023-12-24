@@ -261,11 +261,11 @@ export const form = {
     },
     coupon_img: {
         label: '卡券主图',
-        type: 'image-uploader' // 只需要在这里指定为 image-uploader 即可
-        // attrs: {
-        //   multiple: true,
-        //   limit: 10
-        // }
+        type: 'image-uploader',
+        attrs: {
+          multiple: true,
+          limit: 10
+        }
     },
     background: {
         label: '卡券背景',

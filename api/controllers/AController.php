@@ -60,7 +60,7 @@ class AController extends ActiveController
     public $modelClass = '';
 
     /**
-     * @throws ErrorException
+     * 行为
      */
     public function behaviors(): array
     {
@@ -198,7 +198,7 @@ class AController extends ActiveController
     public function actionIndex(): array
     {
         $modelClass = $this->modelClass;
-        $REs = $modelClass::find()->asArray()->one();
+        $REs =  $modelClass? $modelClass::find()->asArray()->one():[];
         return ResultHelper::json(200, '获取成功', $REs);
     }
 
@@ -209,15 +209,18 @@ class AController extends ActiveController
      */
     public function actionCreate(): array|bool
     {
-        $model = new $this->modelClass();
-        $model->member_id = Yii::$app->user->identity->user_id??0;
-        $model->attributes = Yii::$app->request->post();
+        if ($this->modelClass){
+            $model = new $this->modelClass;
+            $model->member_id = Yii::$app->user->identity->user_id??0;
+            $model->attributes = Yii::$app->request->post();
 
-        if (!$model->save()) {
-            // 返回数据验证失败
-            $msg =  $model->getFirstErrors();
-            return ResultHelper::json(500, $msg);
+            if (!$model->save()) {
+                // 返回数据验证失败
+                $msg =  $model->getFirstErrors();
+                return ResultHelper::json(500, $msg);
+            }
         }
+
 
         return ResultHelper::json(200, '新建成功');
     }
@@ -294,6 +297,9 @@ class AController extends ActiveController
     {
         if (empty($id)) {
             throw new NotFoundHttpException('请求的数据失败.');
+        }
+        if (!$this->modelClass){
+            throw new NotFoundHttpException('modelClass 为空.');
         }
         if ($model = $this->modelClass::findOne($id)) {
             return $model;
