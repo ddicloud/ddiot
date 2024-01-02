@@ -15,6 +15,12 @@ use common\components\ueditor\UEditorAction;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use common\models\forms\ClearCache;
+use common\models\forms\Email;
+use common\models\forms\Map;
+use common\models\forms\Sms;
+use common\models\forms\Weburl;
+use common\models\forms\Wechat;
+use common\models\forms\Wechatpay;
 use Yii;
 
 /**
@@ -52,7 +58,7 @@ class SettingsController extends AController
     {
         parent::actions();
 
-        $setActions = [
+        return [
             'ueditor' => [
                 'class' => UEditorAction::class,
                 'config' => [
@@ -97,7 +103,7 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Wechat::class,
+                'modelClass' => Wechat::class,
             ],
             'wechatpay' => [
                 'class' => AdminSettingsAction::class,
@@ -109,7 +115,7 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Wechatpay::class,
+                'modelClass' => Wechatpay::class,
             ],
             'weburl' => [
                 'class' => AdminSettingsAction::class,
@@ -122,7 +128,7 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Weburl::class,
+                'modelClass' => Weburl::class,
             ],
             'sms' => [
                 'class' => AdminSettingsAction::class,
@@ -134,7 +140,7 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Sms::class,
+                'modelClass' => Sms::class,
             ],
             'email' => [
                 'class' => AdminSettingsAction::class,
@@ -146,7 +152,7 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Email::class,
+                'modelClass' => Email::class,
             ],
             'map' => [
                 'class' => AdminSettingsAction::class,
@@ -158,11 +164,9 @@ class SettingsController extends AController
                 'on afterSave' => function ($event) {
                     // your custom code
                 },
-                'modelClass' => \common\models\forms\Map::class,
+                'modelClass' => Map::class,
             ],
         ];
-
-        return $setActions;
     }
 
     /**

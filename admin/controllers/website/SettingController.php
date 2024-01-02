@@ -10,6 +10,7 @@
 namespace admin\controllers\website;
 
 use admin\controllers\AController;
+use common\helpers\ImageHelper;
 use common\helpers\ResultHelper;
 use Yii;
 
@@ -63,6 +64,17 @@ class SettingController extends AController
         $settings = Yii::$app->settings;
         $settings->invalidateCache();
         $info = $settings->getAllBySection('Website');
+        if (isset($info['blogo'])){
+            $info['blogo'] = ImageHelper::tomedia($info['blogo']);
+        }
+
+        if (isset($info['loginbg'])){
+            $info['loginbg'] = ImageHelper::tomedia($info['loginbg']);
+        }
+
+        if (isset($info['flogo'])){
+            $info['flogo'] = ImageHelper::tomedia($info['flogo']);
+        }
 
         return ResultHelper::json(200, '获取成功', (array)$info);
     }
