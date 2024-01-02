@@ -191,8 +191,8 @@ class PermissionController extends AController
     public function actionView($id): array
     {
         $all = [];
-        $permission_type = \Yii::$app->request->input('permission_type');
-        $module_name = \Yii::$app->request->input('module_name');
+        $permission_type = Yii::$app->request->input('permission_type');
+        $module_name = Yii::$app->request->input('module_name');
 
         $model = $this->findSelfModel($id);
         $list = $model->getAdminItems($permission_type);
@@ -280,7 +280,7 @@ class PermissionController extends AController
      */
     public function actionUpdateitem(): array
     {
-        $id = \Yii::$app->request->input('id');
+        $id = Yii::$app->request->input('id');
         $model = $this->findSelfModel($id);
         $data = yii::$app->request->post();
 
@@ -313,8 +313,8 @@ class PermissionController extends AController
 
     public function actionChange(): array
     {
-        $id = \Yii::$app->request->input('id');
-        $items = \Yii::$app->request->input('items');
+        $id = Yii::$app->request->input('id');
+        $items = Yii::$app->request->input('items');
 
         if (empty($id)) {
             return ResultHelper::json(400, '参数ID不能为空');
@@ -332,6 +332,7 @@ class PermissionController extends AController
                 'parent_id' => $id,
                 'child_type' => 0,
             ])->andWhere(['not in', 'item_id', $list])->select('item_id')->asArray()->column();
+
             if (!empty($remove_ids)) {
                 $model->removeChildren(['route' => $remove_ids]);
             }
@@ -342,7 +343,6 @@ class PermissionController extends AController
             ])->select('item_id')->asArray()->column();
 
             $add_ids = array_diff($list, $have_ids);
-
             if (!empty($add_ids)) {
                 $model->addChildren(['route' => $add_ids]);
             }

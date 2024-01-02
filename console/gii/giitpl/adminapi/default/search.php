@@ -109,8 +109,8 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         return new ArrayDataProvider([
             'key'=>'id',
             'allModels' => $list,
-            'totalCount' => isset($count) ?? 0,
-            'total'=> isset($count) ?? 0,
+            'totalCount' => $count,
+            'total'=> $count,
             'sort' => [
                 'attributes' => [
                     //'member_id',
