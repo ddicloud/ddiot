@@ -103,8 +103,8 @@ class IntegralCompanySearch extends IntegralCompanyModel
         return new ArrayDataProvider([
             'key'=>'id',
             'allModels' => $list,
-            'totalCount' => $count ?? 0,
-            'total'=> $count ?? 0,
+             'totalCount' => $count,
+            'total'=> $count,
             'sort' => [
                 'attributes' => [
                     //'member_id',
