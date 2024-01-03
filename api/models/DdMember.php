@@ -18,6 +18,7 @@ use common\models\DdMemberAccount;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -43,6 +44,44 @@ class DdMember extends ActiveRecord
     const STATUS_DELETED = 1; //删除
     const STATUS_INACTIVE = 2; //拉黑
     const STATUS_ACTIVE = 0; //正常
+
+
+    const SCENARIO_MOBILE = 'mobile';
+
+    const SCENARIO_USERNAME = 'username';
+
+    const SCENARIO_ALL = 'all';
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_MOBILE => ['openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email','country', 'province', 'city','gender', 'address_id', 'group_id', 'organization_id'],
+            self::SCENARIO_USERNAME => ['username', 'openid', 'invitation_code', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email','country', 'province', 'city','gender', 'address_id', 'group_id', 'organization_id'],
+            self::SCENARIO_ALL => ['username', 'mobile', 'openid', 'invitation_code', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email','country', 'province', 'city','gender', 'address_id', 'group_id', 'organization_id'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            [['gender', 'address_id', 'group_id', 'organization_id', 'create_time', 'update_time'], 'integer'],
+            [['username', 'openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email'], 'string', 'max' => 255],
+            [['country', 'province', 'city'], 'string', 'max' => 100],
+            // ['username', 'unique'],
+        ];
+    }
+
+    public function fields(): array
+    {
+        $fields = parent::fields();
+        // 去掉一些包含敏感信息的字段
+        unset($fields['auth_key'], $fields['password_hash'], $fields['verification_token']);
+
+        return $fields;
+    }
 
     /**
      * {@inheritdoc}
@@ -83,9 +122,9 @@ class DdMember extends ActiveRecord
     /**
      * 关联api验证token.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getAccesstoken(): \yii\db\ActiveQuery
+    public function getAccesstoken(): ActiveQuery
     {
         return $this->hasOne(DdApiAccessToken::class, ['member_id' => 'member_id']);
     }
@@ -93,9 +132,9 @@ class DdMember extends ActiveRecord
     /**
      * 关联用户资产.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getAccount(): \yii\db\ActiveQuery
+    public function getAccount(): ActiveQuery
     {
         return $this->hasOne(DdMemberAccount::class, ['member_id' => 'member_id']);
     }
@@ -118,10 +157,14 @@ class DdMember extends ActiveRecord
         }
 
         /* 查看用户名是否重复 */
-        $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
-        if (!empty($userinfo)) {
-            return ResultHelper::json(401, '用户名重复');
+        if ($username){
+            $userinfo = $this->find()->where(['username' => $username])->select('member_id')->one();
+            if (!empty($userinfo)) {
+                return ResultHelper::json(401, '用户名重复');
+            }
         }
+
+
         /* 查看手机号是否重复 */
         if ($mobile) {
             $userinfo = $this->find()->where(['mobile' => $mobile])
@@ -130,6 +173,7 @@ class DdMember extends ActiveRecord
                 return ResultHelper::json(401, '手机号重复');
             }
         }
+
         FileHelper::writeLog($logPath, '登录日志:会员注册校验手机号' . json_encode($mobile));
 
         // 校验用户名是否重复
@@ -405,27 +449,7 @@ class DdMember extends ActiveRecord
         $this->password_reset_token = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules(): array
-    {
-        return [
-            [['gender', 'address_id', 'group_id', 'organization_id', 'create_time', 'update_time'], 'integer'],
-            [['username', 'openid', 'invitation_code', 'mobile', 'nickName', 'avatarUrl', 'verification_token', 'address', 'email'], 'string', 'max' => 255],
-            [['country', 'province', 'city'], 'string', 'max' => 100],
-            // ['username', 'unique'],
-        ];
-    }
 
-    public function fields(): array
-    {
-        $fields = parent::fields();
-        // 去掉一些包含敏感信息的字段
-        unset($fields['auth_key'], $fields['password_hash'], $fields['verification_token']);
-
-        return $fields;
-    }
 
     /**
      * {@inheritdoc}

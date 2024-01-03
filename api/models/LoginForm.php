@@ -19,11 +19,23 @@ use yii\helpers\ArrayHelper;
 class LoginForm extends Model
 {
     public string $username = '';
-    public string $mobile  = '';
-    public string $password  = '';
+    public string $mobile = '';
+    public string $password = '';
     public bool $rememberMe = true;
 
     private mixed $_user = null;
+
+    const SCENARIO_MOBILE = 'mobile';
+
+    const SCENARIO_USERNAME = 'username';
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_MOBILE => ['mobile', 'password', 'rememberMe'],
+            self::SCENARIO_USERNAME => ['username', 'password', 'rememberMe'],
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -43,11 +55,11 @@ class LoginForm extends Model
 
     public function eitherOneRequired($attribute, $params, $validator): bool
     {
-        if (empty($this->username)
-            && empty($this->mobile)
-        ) {
-            $this->addError($attribute, '用户名或手机号不能为空');
-
+        if (empty($this->username) && $this->scenario === 'username') {
+            $this->addError($attribute, '用户名不能为空');
+            return false;
+        } elseif (empty($this->mobile) && $this->scenario === 'mobile') {
+            $this->addError($attribute, '手机号不能为空');
             return false;
         }
 
@@ -74,8 +86,11 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, '用户名或密码不正确');
+            if (empty($user->toArray())){
+                $this->addError($attribute,  $this->scenario === 'username'?'用户不存在':'手机号不存在');
+            }
+            if (!$user->validatePassword($this->password)) {
+                $this->addError($attribute, '密码不正确');
             }
             return true;
         }
@@ -90,7 +105,7 @@ class LoginForm extends Model
     public function login(): array|bool
     {
         if ($this->validate()) {
-            $userobj = DdMember::findByUsername($this->username);
+            $userobj = $this->scenario === 'username'? DdMember::findByUsername($this->username):DdMember::findByMobile($this->mobile);
             $service = Yii::$app->service;
             $service->namespace = 'api';
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
@@ -109,7 +124,7 @@ class LoginForm extends Model
     protected function getUser(): array|ActiveRecord|null
     {
         if ($this->_user === null) {
-            $this->_user = DdMember::findByUsername($this->username);
+            $this->_user = $this->scenario === 'username'? DdMember::findByUsername($this->username):DdMember::findByMobile($this->mobile);
         }
 
         return $this->_user;

@@ -20,15 +20,19 @@ use common\models\DdWebsiteContact;
 use common\models\forms\EdituserinfoForm;
 use common\models\forms\PasswdForm;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 
 class UserController extends AController
 {
     public $modelClass = '';
+
     protected array $authOptional = ['login', 'signup', 'register', 'repassword', 'sendcode', 'forgetpass', 'refresh', 'smsconf', 'relations'];
 
     /**
      * 手机号注册
-     * @return void
+     * @return array
+     * @throws ErrorException
      * @date 2023-07-03
      * @example
      * @author Wang Chunsheng
@@ -45,7 +49,6 @@ class UserController extends AController
 
         $code = $data['code'];
         $sendcode = Yii::$app->cache->get($mobile . '_code');
-
 
 
         if (empty($username) && empty($mobile)) {
@@ -72,28 +75,48 @@ class UserController extends AController
     /**
      * 账户注册
      * @return array
+     * @throws ErrorException
      * @date 2023-07-03
      * @example
      * @author Wang Chunsheng
      * @since
      */
     public function actionRegister(): array
-   {
-        $DdMember = new DdMember();
+    {
+        $register_type = Yii::$app->request->input('register_type');
+
+        if (!in_array($register_type,['mobile','username'])){
+            return ResultHelper::json(401, 'register_type 不在可用范围');
+        }
+
+        $DdMember = new DdMember([
+            'scenario' => $register_type
+        ]);
+
         $data = Yii::$app->request->post();
-        $username = $data['username'];
+        $mobile = $data['mobile']??'';
+        $username = $data['username']??'';
+
+        switch ($register_type){
+            case 'mobile':
+                if (empty($mobile)) {
+                    return ResultHelper::json(401, '手机号不能为空');
+                }
+
+                break;
+            case 'username':
+                if (empty($username)) {
+                    return ResultHelper::json(401, '用户名不能为空');
+                }
+                break;
+        }
+
         $password = $data['password'];
 
-        if (empty($username)) {
-            return ResultHelper::json(401, '用户名不能为空');
-        }
 
         if (empty($password)) {
             return ResultHelper::json(401, '密码不能为空');
         }
-
-
-        $mobile = '';
 
         $res = $DdMember->signup($username, $mobile, $password);
 
@@ -101,10 +124,23 @@ class UserController extends AController
     }
 
 
+    /**
+     * 账号登录
+     * @return array
+     */
     public function actionLogin(): array
-   {
-        $model = new LoginForm();
+    {
         $data = Yii::$app->request->input();
+        $login_type = Yii::$app->request->input('login_type','username');
+
+        if (!in_array($login_type,['mobile','username'])){
+            return ResultHelper::json('401', ' login_type 值错误');
+        }
+
+        $model = new LoginForm([
+            'scenario'=> $login_type
+        ]);
+
         if ($model->load($data, '') && $userinfo = $model->login()) {
             return ResultHelper::json(200, '登录成功', (array)$userinfo);
         } else {
@@ -114,9 +150,14 @@ class UserController extends AController
         }
     }
 
-
+    /**
+     * 重置密码
+     * @return array
+     * @throws ErrorException
+     * @throws Exception
+     */
     public function actionRepassword(): array
-   {
+    {
         $model = new PasswdForm();
         if ($model->load(Yii::$app->request->post(), '')) {
             if (!$model->validate()) {
@@ -156,10 +197,16 @@ class UserController extends AController
         }
     }
 
+    /**
+     * 修改密码
+     * @return array
+     * @throws ErrorException
+     * @throws Exception
+     */
     public function actionUpRepassword(): array
-   {
-        $newpassword =\Yii::$app->request->input('password');
-        $member_id = Yii::$app->user->identity->member_id??0;
+    {
+        $newpassword = Yii::$app->request->input('password');
+        $member_id = Yii::$app->user->identity->member_id ?? 0;
         if (empty($member_id)) {
             return ResultHelper::json(401, 'member_id为空');
         }
@@ -181,15 +228,18 @@ class UserController extends AController
         return ResultHelper::json(404, $this->analyErr($member->getFirstErrors()));
     }
 
-
+    /**
+     * 用户信息
+     * @return array
+     */
     public function actionUserinfo(): array
-   {
+    {
 
-        $mobile =\Yii::$app->request->input('mobile');
+        $mobile = Yii::$app->request->input('mobile');
 
         $data = Yii::$app->request->post();
 
-        $member_id = Yii::$app->user->identity->member_id??0;
+        $member_id = Yii::$app->user->identity->member_id ?? 0;
 
         if (!empty($mobile)) {
             $userobj = DdMember::findByMobile($data['mobile']);
@@ -202,7 +252,7 @@ class UserController extends AController
 
         $service = Yii::$app->service;
         $service->namespace = 'api';
-        $userinfo =  [];
+        $userinfo = [];
         if ($userobj) {
             $userinfo = $service->AccessTokenService->getAccessToken($userobj, 1);
         }
@@ -210,30 +260,36 @@ class UserController extends AController
         return ResultHelper::json(200, '获取成功', ['userinfo' => $userinfo]);
     }
 
-
+    /**
+     * 用户信息
+     * @return array|object[]|string[]
+     */
     public function actionBindmobile()
-   {
+    {
 
-        $code =\Yii::$app->request->input('code');
-        $mobile =\Yii::$app->request->input('mobile');
+        $code = Yii::$app->request->input('code');
+        $mobile = Yii::$app->request->input('mobile');
         $sendcode = Yii::$app->cache->get($mobile . '_code');
 
         if ($code != $sendcode) {
             return ResultHelper::json(401, '验证码错误');
         }
 
-        $member_id = Yii::$app->user->identity->member_id??0;
+        $member_id = Yii::$app->user->identity->member_id ?? 0;
         $fields['mobile'] = $mobile;
         $res = Yii::$app->service->commonMemberService->editInfo($member_id, $fields);
 
         if ($res) {
             return ResultHelper::json(200, '绑定手机号成功', []);
-        }else{
+        } else {
             return ResultHelper::json(401, '绑定手机号失败');
         }
     }
 
-
+    /**
+     * 修改用户信息
+     * @return array
+     */
     public function actionEdituserinfo(): array
     {
         $model = new EdituserinfoForm();
@@ -256,7 +312,10 @@ class UserController extends AController
         }
     }
 
-
+    /**
+     * 忘记密码
+     * @return array
+     */
     public function actionForgetpass(): array
     {
         $data = Yii::$app->request->post();
@@ -279,10 +338,14 @@ class UserController extends AController
         }
     }
 
-
+    /**
+     * 发送验证码
+     * @return array
+     * @throws \Exception
+     */
     public function actionSendcode(): array
-   {
-        $type =\Yii::$app->request->input('type');
+    {
+        $type = Yii::$app->request->input('type');
         if (!in_array($type, ['forgetpass', 'register', 'bindMobile'])) {
             return ResultHelper::json(401, '验证码请求不合法，请传入字段类型type');
         }
@@ -311,7 +374,7 @@ class UserController extends AController
         }
 
         $code = random_int(1000, 9999);
-        Yii::$app->cache->set((int) $mobile . '_code', $code);
+        Yii::$app->cache->set((int)$mobile . '_code', $code);
 
         $usage = '忘记密码验证';
 
@@ -320,11 +383,14 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', $res);
     }
 
-
+    /**
+     * 刷下token
+     * @return array
+     */
     public function actionRefresh(): array
-   {
+    {
 
-        $refresh_token =\Yii::$app->request->input('refresh_token');
+        $refresh_token = Yii::$app->request->input('refresh_token');
 
         $user = DdApiAccessToken::find()
             ->where(['refresh_token' => $refresh_token])
@@ -343,13 +409,16 @@ class UserController extends AController
         return ResultHelper::json(200, '发送成功', $userinfo);
     }
 
-
+    /**
+     * 反馈信息
+     * @return array
+     */
     public function actionFeedback(): array
-   {
+    {
 
-        $name =\Yii::$app->request->input('name');
-        $contact =\Yii::$app->request->input('contact');
-        $feedback =\Yii::$app->request->input('feedback');
+        $name = Yii::$app->request->input('name');
+        $contact = Yii::$app->request->input('contact');
+        $feedback = Yii::$app->request->input('feedback');
         $contacts = new DdWebsiteContact();
 
         $data = [
@@ -371,9 +440,13 @@ class UserController extends AController
     {
         $sms = Yii::$app->params['conf']['sms'];
 
-        return ResultHelper::json(200, '短信配置或者成功', ['is_login' => $sms['is_login']]);
+        return ResultHelper::json(200, '短信配置获取成功', ['is_login' => $sms['is_login']]);
     }
 
+    /**
+     * 留言
+     * @return array
+     */
     public function actionRelations(): array
     {
         $model = new DdWebsiteContact();
