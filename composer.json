@@ -27,7 +27,6 @@
     "leandrogehlen/yii2-treegrid": "~1.1.0",
     "richardfan1126/yii2-js-register": "~0.0.1",
     "ramsey/uuid": "^3.9",
-    "overtrue/easy-sms": "^1.1",
     "yii-diandi/yii2-admin": "^3.2",
     "yii-diandi/yii2-region": "^1.0",
     "2amigos/qrcode-library": "^2.0",
@@ -53,7 +52,8 @@
     "ext-redis": "*",
     "vlucas/phpdotenv": "^5.5",
     "yiithings/yii2-dotenv": "^1.1",
-    "yii-diandi/yii2-iot": "^1.0"
+    "yii-diandi/yii2-iot": "^1.0",
+    "overtrue/easy-sms": "^2.5"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

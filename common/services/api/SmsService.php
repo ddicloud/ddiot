@@ -49,6 +49,7 @@ class SmsService extends BaseService
         parent::__construct();
 
         $sms = Yii::$app->params['conf']['sms'];
+        var_dump($sms);
 
         $this->config = [
             // HTTP 请求的超时时间（秒）
@@ -60,6 +61,7 @@ class SmsService extends BaseService
                 // 默认可用的发送网关
                 'gateways' => [
                     'aliyun',
+                    'qcloud'
                 ],
             ],
             // 可用的网关配置
