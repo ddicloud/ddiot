@@ -60,6 +60,16 @@ class AController extends ActiveController
     public $modelClass = '';
 
     /**
+     * 不用进行管理员登录验证的方法
+     * 手机端作为管理端使用参数
+     *  例如： ['index', 'update', 'create', 'view', 'delete']
+     *  默认全部需要验证
+     * @var array
+     */
+    protected array $adminAuth = ['*'];
+
+
+    /**
      * 行为
      */
     public function behaviors(): array
