@@ -49,7 +49,6 @@ class SmsService extends BaseService
         parent::__construct();
 
         $sms = Yii::$app->params['conf']['sms'];
-        var_dump($sms);
 
         $this->config = [
             // HTTP 请求的超时时间（秒）
@@ -112,7 +111,7 @@ class SmsService extends BaseService
             ]));
         }
 
-        return $this->realSend($mobile, $code, $usage, $member_id = 0, $ip);
+        return $this->realSend($mobile, $code, $usage, $member_id , $ip);
     }
 
     /**

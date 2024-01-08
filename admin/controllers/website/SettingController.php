@@ -64,17 +64,24 @@ class SettingController extends AController
         $settings = Yii::$app->settings;
         $settings->invalidateCache();
         $info = $settings->getAllBySection('Website');
-        if (isset($info['blogo'])){
-            $info['blogo'] = ImageHelper::tomedia($info['blogo']);
+
+        $user_id = Yii::$app->user->identity->user_id ?? 0;
+
+        if (empty($user_id)){
+            //没有登录的登录页使用
+            if (isset($info['blogo'])){
+                $info['blogo'] = ImageHelper::tomedia($info['blogo']);
+            }
+
+            if (isset($info['loginbg'])){
+                $info['loginbg'] = ImageHelper::tomedia($info['loginbg']);
+            }
+
+            if (isset($info['flogo'])){
+                $info['flogo'] = ImageHelper::tomedia($info['flogo']);
+            }
         }
 
-        if (isset($info['loginbg'])){
-            $info['loginbg'] = ImageHelper::tomedia($info['loginbg']);
-        }
-
-        if (isset($info['flogo'])){
-            $info['flogo'] = ImageHelper::tomedia($info['flogo']);
-        }
 
         return ResultHelper::json(200, '获取成功', (array)$info);
     }
