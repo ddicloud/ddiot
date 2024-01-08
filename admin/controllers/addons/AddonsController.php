@@ -79,7 +79,10 @@ class AddonsController extends AController
         ])->with(['addons'])->orderBy(['is_default'=>SORT_DESC])->asArray()->all();
         $lists = [];
         foreach ($list as  $item) {
-            $lists[] = $item['addons'];
+            if ($item['addons']){
+                //防止部分插件卸载
+                $lists[] = $item['addons'];
+            }
         }
         return ResultHelper::json(200, '获取成功',$lists);
     }
