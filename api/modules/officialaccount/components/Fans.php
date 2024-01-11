@@ -58,7 +58,9 @@ class Fans extends BaseObject
             }
         }
 
-        $DdMember = new DdMember();
+        $DdMember = new DdMember([
+            'scenario'=>'all'
+        ]);
         // 校验openID是否存在
 
         $fans = $this->fansByopenid($openid);

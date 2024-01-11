@@ -32,7 +32,7 @@ class AddonsController extends AController
 
     public function actionInfo(): array
    {
-        $addons =\Yii::$app->request->input('addons');
+        $addons = Yii::$app->request->input('addons');
         $info = CommonAddonsService::getAddonsInfo($addons);
 
         return ResultHelper::json(200, '获取成功', $info);
@@ -74,13 +74,12 @@ class AddonsController extends AController
     {
         $AddonsUser = new AddonsUser();
 
-        $list = $AddonsUser->find()->where([
-            'user_id' => Yii::$app->user->id,
-        ])->with(['addons'])->orderBy(['is_default'=>SORT_DESC])->asArray()->all();
+        $list = $AddonsUser->find()->alias('a')->joinWith('addons as s')->where([
+            'a.user_id' => Yii::$app->user->id,
+        ])->orderBy(['a.is_default'=>SORT_DESC,'s.displayorder'=>SORT_ASC])->asArray()->all();
         $lists = [];
-        foreach ($list as  $item) {
+        foreach ($list as $item) {
             if ($item['addons']){
-                //防止部分插件卸载
                 $lists[] = $item['addons'];
             }
         }
@@ -89,7 +88,7 @@ class AddonsController extends AController
 
     public function actionChild(): array
    {
-        $parent_mid =\Yii::$app->request->input('parent_mid');
+        $parent_mid = Yii::$app->request->input('parent_mid');
         if (empty($parent_mid)) {
             return ResultHelper::json(400, '父级应用parent_mid不能为空');
         }
@@ -109,7 +108,7 @@ class AddonsController extends AController
      */
     public function actionUninstalled(): array
    {
-        $title =\Yii::$app->request->input('title') ?? '';
+        $title = Yii::$app->request->input('title','');
         $list = addonsService::unAddons($title);
 
         return ResultHelper::json(200, '获取成功', [

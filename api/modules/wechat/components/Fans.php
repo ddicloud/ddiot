@@ -58,7 +58,11 @@ class Fans extends BaseObject
                 return Yii::$app->cache->get($keys);
             }
         }
-        $DdMember = new DdMember();
+
+        $DdMember = new DdMember([
+            'scenario'=>'all'
+        ]);
+
         // 校验openID是否存在
         $isHave = $this->checkByopenid($openid);
         FileHelper::writeLog($logPath, '登录日志:校验openid是否存在' . json_encode([

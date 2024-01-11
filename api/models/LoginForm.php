@@ -86,10 +86,10 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (empty($user->toArray())){
+            if (empty($user)){
                 $this->addError($attribute,  $this->scenario === 'username'?'用户不存在':'手机号不存在');
             }
-            if (!$user->validatePassword($this->password)) {
+            if ($user && !$user->validatePassword($this->password)) {
                 $this->addError($attribute, '密码不正确');
             }
             return true;
